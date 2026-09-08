@@ -4,6 +4,8 @@ import OperatorRidgelet.Tempered.Basic
 import OperatorRidgelet.Tempered.ReLU
 import OperatorRidgelet.Tempered.WeightedDuality
 import OperatorRidgelet.Tempered.Polynomial
+import OperatorRidgelet.Tempered.Regularized
+import OperatorRidgelet.Tempered.Reconstruction
 
 /-!
 # Statements of Section 5 (tempered synthesis activations and ReLU) and Appendix C
@@ -47,6 +49,7 @@ compactly supported, smooth approximate identity `(η_ε)_{ε>0}`. -/
 theorem def_regularized_synthesis_ii : ∃ η : ℝ → ℝ → ℝ, IsApproximateIdentity η :=
   ⟨bumpApproximateIdentity, isApproximateIdentity_bumpApproximateIdentity⟩
 
+set_option linter.unusedVariables false in
 /-- **Definition [def:regularized-synthesis]** Regularized synthesis.  For real `β`, band-pass
 `ρ`, a cutoff `χ`, and an approximate identity `(η_ε)`, the regularized spectrum
 `β̂_ε = χ (β̂ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})` for every `ε > 0`. -/
@@ -55,17 +58,19 @@ theorem def_regularized_synthesis_iii (β : TemperedDistribution ℝ ℂ) (hβ :
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
     ContDiff ℝ (⊤ : ℕ∞) (regularizedSpectrum β χ η ε) ∧
       HasCompactSupport (regularizedSpectrum β χ η ε) ∧
-      (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) := by
-  sorry
+      (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) :=
+  ⟨hχ.contDiff_regularizedSpectrum hη hε β, hχ.hasCompactSupport_regularizedSpectrum η ε β,
+    hχ.zero_notMem_tsupport_regularizedSpectrum η ε β⟩
 
+set_option linter.unusedVariables false in
 /-- **Definition [def:regularized-synthesis]** Regularized synthesis.  There is a real Schwartz
 function `β_ε` with `β̂_ε = χ (β̂ * η_ε)`: the chosen `regularizedActivation` has this Fourier
 transform. -/
 theorem def_regularized_synthesis_iv (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
-    ∀ ω : ℝ, filterFourier (regularizedActivation β χ η ε) ω = regularizedSpectrum β χ η ε ω := by
-  sorry
+    ∀ ω : ℝ, filterFourier (regularizedActivation β χ η ε) ω = regularizedSpectrum β χ η ε ω :=
+  filterFourier_regularizedActivation hβ hχ hη hε
 
 set_option linter.unusedVariables false in
 /-- **Definition [def:regularized-synthesis]** Regularized synthesis.  The real Schwartz function
@@ -102,6 +107,8 @@ theorem def_regularized_synthesis_vi (μ ν : Measure H) [IsProbabilityMeasure �
 
 /-! ### Theorem `thm:tempered-reconstruction` -/
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  For
 every `f ∈ 𝓔_α` the limit `S_β R_ρ f = lim_{ε ↓ 0} S_{β_ε} R_ρ f` exists in `𝓔_α'`. -/
 theorem thm_tempered_reconstruction_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -111,9 +118,11 @@ theorem thm_tempered_reconstruction_i (μ ν : Measure H) [IsProbabilityMeasure 
     (hη : IsApproximateIdentity η) (f : spectralRange μ ν) :
     ∃ F : SpectralAntiDual μ ν,
       Tendsto (fun ε : ℝ => regularizedSynthesis μ ν β χ η ε (ridgeletExtension μ ν ρ f))
-        (𝓝[>] 0) (𝓝 F) := by
-  sorry
+        (𝓝[>] 0) (𝓝 F) :=
+  ⟨_, tendsto_regularizedSynthesis μ ν hν hβ hρ hχ hη f⟩
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  The
 limit `S_β R_ρ f` does not depend on the cutoff `χ` or on the approximate identity `(η_ε)`. -/
 theorem thm_tempered_reconstruction_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -124,8 +133,11 @@ theorem thm_tempered_reconstruction_ii (μ ν : Measure H) [IsProbabilityMeasure
     (f : spectralRange μ ν) :
     temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f) =
       temperedSynthesis μ ν β χ' η' (ridgeletExtension μ ν ρ f) := by
-  sorry
+  rw [temperedSynthesis_ridgeletExtension_eq μ ν hν hβ hρ hχ hη f,
+    temperedSynthesis_ridgeletExtension_eq μ ν hν hβ hρ hχ' hη' f]
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  The
 frame identity `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f` for `f ∈ 𝓔_α`. -/
 theorem thm_tempered_reconstruction_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -134,9 +146,11 @@ theorem thm_tempered_reconstruction_iii (μ ν : Measure H) [IsProbabilityMeasur
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (f : spectralRange μ ν) :
     temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f) =
-      temperedAdmissibilityConst α β ρ • rieszMap μ ν f := by
-  sorry
+      temperedAdmissibilityConst α β ρ • rieszMap μ ν f :=
+  temperedSynthesis_ridgeletExtension_eq μ ν hν hβ hρ hχ hη f
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
 `C^{(α)}_{β,ρ} ≠ 0`, then `f = (C^{(α)}_{β,ρ})⁻¹ T_α⁻¹ S_β R_ρ f` for `f ∈ 𝓔_α`. -/
 theorem thm_tempered_reconstruction_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -148,8 +162,11 @@ theorem thm_tempered_reconstruction_iv (μ ν : Measure H) [IsProbabilityMeasure
     f = (temperedAdmissibilityConst α β ρ)⁻¹ •
       rieszInv μ ν
         (temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f)) := by
-  sorry
+  rw [temperedSynthesis_ridgeletExtension_eq μ ν hν hβ hρ hχ hη f, ← map_smul, rieszInv_rieszMap,
+    smul_smul, inv_mul_cancel₀ hC, one_smul]
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
 `C^{(α)}_{β,ρ} ≠ 0`, then `g = (C^{(α)}_{β,ρ})⁻¹ S_β (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
 theorem thm_tempered_reconstruction_v (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -161,7 +178,8 @@ theorem thm_tempered_reconstruction_v (μ ν : Measure H) [IsProbabilityMeasure 
     g = (temperedAdmissibilityConst α β ρ)⁻¹ •
       temperedSynthesis μ ν β χ η
         (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
-  sorry
+  rw [temperedSynthesis_ridgeletExtension_eq μ ν hν hβ hρ hχ hη, rieszMap_rieszInv, smul_smul,
+    inv_mul_cancel₀ hC, one_smul]
 
 set_option linter.unusedVariables false in
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
@@ -236,7 +254,10 @@ theorem cor_relu_admissible_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
     f = rieszInv μ ν
       (temperedSynthesis μ ν reluDistribution χ η
         (ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
-  sorry
+  obtain ⟨hb, hC⟩ := reluNormalizedFilter_spec hα hρ hρ_real hρ_even hρ_nonpos
+  have h := thm_tempered_reconstruction_iv μ ν hα hν reluDistribution
+    isRealDistribution_reluDistribution _ hb χ hχ η hη (by rw [hC]; exact one_ne_zero) f
+  rwa [hC, inv_one, one_smul] at h
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  With the rescaled filter the second
 reconstruction formula holds with ReLU synthesis for every `α > 0`:
@@ -250,7 +271,10 @@ theorem cor_relu_admissible_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     (g : SpectralAntiDual μ ν) :
     g = temperedSynthesis μ ν reluDistribution χ η
       (ridgeletExtension μ ν (reluNormalizedFilter α ρ) (rieszInv μ ν g)) := by
-  sorry
+  obtain ⟨hb, hC⟩ := reluNormalizedFilter_spec hα hρ hρ_real hρ_even hρ_nonpos
+  have h := thm_tempered_reconstruction_v μ ν hα hν reluDistribution
+    isRealDistribution_reluDistribution _ hb χ hχ η hη (by rw [hC]; exact one_ne_zero) g
+  rwa [hC, inv_one, one_smul] at h
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  With the rescaled filter Theorem
 A(iii) holds with ReLU synthesis for every `α > 0`: for `G` regular along rays and every `x`,

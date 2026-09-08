@@ -170,13 +170,13 @@ attribute [blueprint "def:regularized-synthesis-ii"
 
 attribute [blueprint "def:regularized-synthesis-iii"
   (statement := /-- $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)\in
-    C_c^\infty(\mathbb R\setminus\{0\})$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_iii
+    C_c^\infty(\mathbb R\setminus\{0\})$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_iii
 
 attribute [blueprint "def:regularized-synthesis-iv"
   (statement := /-- There is a real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_iv
+    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_iv
 
 attribute [blueprint "def:regularized-synthesis-v"
   (statement := /-- The real Schwartz function $\beta_\varepsilon$ is unique. -/)]
@@ -193,30 +193,30 @@ attribute [blueprint "def:regularized-synthesis-vi"
 attribute [blueprint "thm:tempered-reconstruction-i"
   (statement := /-- For every $f\in\mathcal E_\alpha$ the limit
     $\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}R_\rho f$ exists in $\mathcal
-    E_\alpha'$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_i
+    E_\alpha'$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_i
 
 attribute [blueprint "thm:tempered-reconstruction-ii"
   (statement := /-- The limit $S_\beta R_\rho f$ does not depend on $\chi$ or
-    $(\eta_\varepsilon)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_ii
+    $(\eta_\varepsilon)$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_ii
 
 attribute [blueprint "thm:tempered-reconstruction-iii"
   (statement := /-- $S_\beta R_\rho f=C^{(\alpha)}_{\beta,\rho}T_\alpha f$ for
-    $f\in\mathcal E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_iii
+    $f\in\mathcal E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_iii
 
 attribute [blueprint "thm:tempered-reconstruction-iv"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $f=(C^{(\alpha)}_{\beta,\rho})^{-1}T_\alpha^{-1}S_\beta R_\rho f$ for
-    $f\in\mathcal E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_iv
+    $f\in\mathcal E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_iv
 
 attribute [blueprint "thm:tempered-reconstruction-v"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $g=(C^{(\alpha)}_{\beta,\rho})^{-1}S_\beta(R_\rho T_\alpha^{-1}g)$ for
-    $g\in\mathcal E_\alpha'$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_v
+    $g\in\mathcal E_\alpha'$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_v
 
 attribute [blueprint "thm:tempered-reconstruction-vi"
   (statement := /-- If $\beta$ is not a polynomial, then a band-pass $\rho$ with
@@ -255,13 +255,13 @@ attribute [blueprint "cor:relu-admissible-v"
 
 attribute [blueprint "cor:relu-admissible-vi"
   (statement := /-- With the rescaled filter, $f=T_\alpha^{-1}S_{\operatorname{ReLU}}R_\rho f$
-    for $f\in\mathcal E_\alpha$ and every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_vi
+    for $f\in\mathcal E_\alpha$ and every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_vi
 
 attribute [blueprint "cor:relu-admissible-vii"
   (statement := /-- With the rescaled filter, $g=S_{\operatorname{ReLU}}(R_\rho T_\alpha^{-1}g)$
-    for $g\in\mathcal E_\alpha'$ and every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_vii
+    for $g\in\mathcal E_\alpha'$ and every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_vii
 
 attribute [blueprint "cor:relu-admissible-viii"
   (statement := /-- With the rescaled filter, Theorem A(iii) holds with ReLU synthesis: for $G$

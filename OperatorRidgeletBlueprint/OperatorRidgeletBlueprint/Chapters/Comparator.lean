@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 135.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 144.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 28
-  * 13
+  * 30
+  * 11
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -1739,7 +1739,7 @@ Status: *statement only (proof pending)*.
 
 ## Definition 5.1 — Regularized synthesis (`def:regularized-synthesis`)
 
-Blueprint node: {bpref "def:regularized-synthesis"}[]. Status: *partial 4/6* (4 of 6 Lean theorems verified).
+Blueprint node: {bpref "def:regularized-synthesis"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. A real β ∈ 𝒮'(ℝ) is a `TemperedDistribution ℝ ℂ` fixed by the vendored distributional conjugation (`IsRealDistribution`); χ and (η\_ε) are functions with the predicates `IsCutoff ρ χ` (even, C\_c^∞(ℝ∖\{0\}), = 1 on a neighbourhood of supp ρ̂) and `IsApproximateIdentity η` (each η\_ε smooth, compactly supported, even, nonnegative, of integral one, supports shrinking to \{0\}); β̂ \* η\_ε is the pairing ⟨β̂, η\_ε(ω - ·)⟩ and β\_ε is the real Schwartz map with Fourier transform χ(β̂ \* η\_ε), obtained by choice (junk 0). 𝓔\_α', R\_ρ on 𝓔\_α ≅ 𝒦\_α, and S\_ρ = R\_ρ' are the Section 4 objects `SpectralAntiDual μ ν` (= `spectralRange μ ν →L⋆[ℂ] ℂ`), `ridgeletExtension μ ν ρ` (the bounded extension of Theorem B(ii), chosen from its defining property) and `synthesis μ ν ρ γ = (innerSLFlip ℂ γ).comp (ridgeletExtension μ ν ρ)` of Reconstruction/Defs, so that S\_\{β\_ε\} γ = `regularizedSynthesis` = `synthesis μ ν β_ε γ` and (S\_\{β\_ε\} γ)\[g\] = ⟨γ, R\_\{β\_ε\} g⟩ holds by definition (the earlier local stand-ins `Tempered.spectralAntiDual`, `Tempered.ridgeletExtension` = G ↦ W\_ρ G, and the choice-based `Tempered.synthesisFunctional` were removed in favour of these). S\_β γ is the limit of S\_\{β\_ε\} γ in the norm of 𝓔\_α' along ε ↓ 0, obtained by choice whenever it exists (junk 0). Parts i–vi are the claims implicit in the definition: existence of χ and of (η\_ε), β̂\_ε ∈ C\_c^∞(ℝ∖\{0\}), existence and uniqueness of β\_ε, and well-definedness of S\_\{β\_ε\} γ for γ ∈ Ran R\_ρ = `ridgeletRange μ ν ρ` (part vi, which is now `rfl`).
 
@@ -1794,7 +1794,7 @@ theorem def_regularized_synthesis_iii (β : TemperedDistribution ℝ ℂ) (hβ :
       (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L44):
 
@@ -1808,7 +1808,7 @@ theorem def_regularized_synthesis_iv (β : TemperedDistribution ℝ ℂ) (hβ : 
     ∀ ω : ℝ, filterFourier (regularizedActivation β χ η ε) ω = regularizedSpectrum β χ η ε ω := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L53):
 
@@ -1848,7 +1848,7 @@ Status: *verified by comparator*.
 
 ## Theorem 5.2 — Reconstruction with a tempered activation (`thm:tempered-reconstruction`)
 
-Blueprint node: {bpref "thm:tempered-reconstruction"}[]. Status: *partial 1/6* (1 of 6 Lean theorems verified).
+Blueprint node: {bpref "thm:tempered-reconstruction"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. Stated for the abstract pair (μ, ν) of Appendix H (ν σ-finite, full support, homogeneous of degree α), of which the Gaussian pair is the instance; f ∈ 𝓔\_α is f : spectralRange μ ν and R\_ρ f is the Section 4 extension `ridgeletExtension μ ν ρ f` (Theorem B(ii); its identification with W\_ρ f is Theorem C(iii)). Parts: existence of the limit in `SpectralAntiDual μ ν`, independence of χ and (η\_ε), the frame identity S\_β R\_ρ f = C^\{(α)\}\_\{β,ρ\} T\_α f with T\_α = `rieszMap μ ν` = innerSLFlip ℂ (T\_α f \[g\] = ⟨f,g⟩\_𝓔 = ⟪g,f⟫ in Mathlib's inner product), the two reconstruction formulas with T\_α⁻¹ = `rieszInv μ ν` (the Riesz representation through InnerProductSpace.toDual, from Reconstruction/Defs; the local `Tempered.*` stand-ins were removed), and the existence of a band-pass ρ with C ≠ 0 for non-polynomial β (`¬ IsPolynomialDistribution β`: β does not act by integration against a polynomial, which is β ≠ 0 in 𝒮'/𝒫).
 
@@ -1867,7 +1867,7 @@ theorem thm_tempered_reconstruction_i (μ ν : Measure H) [IsProbabilityMeasure 
         (𝓝[>] 0) (𝓝 F) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_ii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L93):
 
@@ -1884,7 +1884,7 @@ theorem thm_tempered_reconstruction_ii (μ ν : Measure H) [IsProbabilityMeasure
       temperedSynthesis μ ν β χ' η' (ridgeletExtension μ ν ρ f) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_iii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L105):
 
@@ -1900,7 +1900,7 @@ theorem thm_tempered_reconstruction_iii (μ ν : Measure H) [IsProbabilityMeasur
       temperedAdmissibilityConst α β ρ • rieszMap μ ν f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L116):
 
@@ -1918,7 +1918,7 @@ theorem thm_tempered_reconstruction_iv (μ ν : Measure H) [IsProbabilityMeasure
         (temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L129):
 
@@ -1936,7 +1936,7 @@ theorem thm_tempered_reconstruction_v (μ ν : Measure H) [IsProbabilityMeasure 
         (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_vi`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L142):
 
@@ -1953,7 +1953,7 @@ Status: *verified by comparator*.
 
 ## Corollary 5.3 — ReLU is admissible (`cor:relu-admissible`)
 
-Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 4/8* (4 of 8 Lean theorems verified).
+Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 6/8* (6 of 8 Lean theorems verified).
 
 Formalization note. ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^\{-2\}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim\_\{ε↓0\}(∫\_\{|ω|>ε\} φ ω^\{-2\} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^\{-2\} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^\{-α-2\} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm\_A\_iii\_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖\{0\} containing supp ρ̂, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g\_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed.
 
@@ -2053,7 +2053,7 @@ theorem cor_relu_admissible_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
         (ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_vii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L214):
 
@@ -2072,7 +2072,7 @@ theorem cor_relu_admissible_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
       (ridgeletExtension μ ν (reluNormalizedFilter α ρ) (rieszInv μ ν g)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_viii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L228):
 

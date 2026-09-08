@@ -26,6 +26,9 @@ import OperatorRidgelet.Tempered.Fourier
 import OperatorRidgelet.Tempered.ReLU
 import OperatorRidgelet.Tempered.WeightedDuality
 import OperatorRidgelet.Tempered.Polynomial
+import OperatorRidgelet.Tempered.Regularized
+import OperatorRidgelet.Tempered.Frame
+import OperatorRidgelet.Tempered.Reconstruction
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Examples.Defs
@@ -52,7 +55,9 @@ import OperatorRidgelet.ToMathlib.SchwartzAwayFromZero
 import OperatorRidgelet.ToMathlib.SchwartzFourier
 import OperatorRidgelet.ToMathlib.StarProjectionBessel
 import OperatorRidgelet.ToMathlib.TemperateGrowthInv
+import OperatorRidgelet.ToMathlib.TemperedDistributionConvolution
 import OperatorRidgelet.ToMathlib.TemperedDistributionPointSupport
+import OperatorRidgelet.ToMathlib.TemperedDistributionTranslate
 import OperatorRidgelet.ToMathlib.TendstoUniformlyOnCompact
 import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity

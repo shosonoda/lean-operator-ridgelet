@@ -16,8 +16,9 @@ Every Hermitian symmetric `ψ ∈ C_c^∞(ℝ ∖ {0})` is the test filter `ρ̂
 band-pass filter `ρ` with `ρ̂(ω) = ψ(-ω)|ω|^α` (`exists_isBandPass_temperedTestFilter_eq`), and
 every `φ ∈ C_c^∞(ℝ ∖ {0})` is a combination `ψ₁ + i ψ₂` of two Hermitian symmetric ones.  So if
 all the constants vanish, `β̂` vanishes on `C_c^∞(ℝ ∖ {0})`, hence is a combination of
-derivatives of `δ₀` (`TemperedDistribution.exists_sum_iteratedDeriv_zero_of_forall_hasCompactSupport`),
-and `β = F⁻¹ β̂` acts by integration against a polynomial
+derivatives of `δ₀`
+(`TemperedDistribution.exists_sum_iteratedDeriv_zero_of_forall_hasCompactSupport`), and
+`β = F⁻¹ β̂` acts by integration against a polynomial
 (`isPolynomialDistribution_of_forall_angularFourierDistribution_eq_zero`).  For real `β` the
 constant is real (`IsRealDistribution.temperedAdmissibilityConst_eq_re`), so a real rescaling of
 `ρ` normalizes it to one.  Finally, a bounded continuous nonconstant function is not a
@@ -431,7 +432,8 @@ theorem not_isPolynomialDistribution_of_bounded {β : TemperedDistribution ℝ �
       exact (ψ.continuous.mul hbC).integrable_of_hasCompactSupport
         ((hg_supp.comp_left Complex.ofReal_zero).mul_right)
     have hint2 : Integrable fun x : ℝ => ψ x * p.eval (x : ℂ) :=
-      (ψ.continuous.mul (p.continuous.comp Complex.continuous_ofReal)).integrable_of_hasCompactSupport
+      (ψ.continuous.mul
+        (p.continuous.comp Complex.continuous_ofReal)).integrable_of_hasCompactSupport
         ((hg_supp.comp_left Complex.ofReal_zero).mul_right)
     have : (∫ x : ℝ, g x • ((b x : ℂ) - p.eval (x : ℂ))) =
         (∫ x : ℝ, ψ x * (b x : ℂ)) - ∫ x : ℝ, ψ x * p.eval (x : ℂ) := by

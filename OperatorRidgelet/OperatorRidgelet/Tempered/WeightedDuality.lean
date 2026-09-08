@@ -150,7 +150,8 @@ theorem memActivationSpace_activationRealization (s t : ℝ) (σ : L2 ℝ volume
     angularBesselPotential_neg_angularBesselPotential,
     ← angularFourierInvDistribution_temperedWeightMultiplier,
     temperedWeightMultiplier_temperedWeightMultiplier_neg, ← hτ,
-    toTemperedDistribution_angularFourierLp, angularFourierInvDistribution_angularFourierDistribution]
+    toTemperedDistribution_angularFourierLp,
+    angularFourierInvDistribution_angularFourierDistribution]
   rfl
 
 /-- The coordinate of the realization of `σ` is `σ`, as a distribution. -/

@@ -12,7 +12,8 @@ import Mathlib.LinearAlgebra.Quotient.Basic
 
 A tempered distribution `u ∈ 𝓢'(ℝ, ℂ)` vanishing on every Schwartz function whose support avoids
 `0` is a finite linear combination of derivatives of the Dirac mass at `0`:
-`u φ = ∑_{k ≤ N} c_k φ^{(k)}(0)` (`TemperedDistribution.exists_sum_iteratedDeriv_zero_of_forall_apply_eq_zero`).
+`u φ = ∑_{k ≤ N} c_k φ^{(k)}(0)`
+(`TemperedDistribution.exists_sum_iteratedDeriv_zero_of_forall_apply_eq_zero`).
 
 The proof is the classical one.  Continuity of `u` bounds `‖u φ‖` by finitely many Schwartz
 seminorms of orders `≤ N` (`Seminorm.bound_of_continuous`).  If `φ^{(k)}(0) = 0` for `k ≤ N`,
