@@ -4,7 +4,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 32 | 5 | 9 |
+| 57 | 43 | 6 | 9 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -31,13 +31,13 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | 5.2 | `thm:tempered-reconstruction` | theorem | Reconstruction with a tempered activation | — | — |
 | 5.3 | `cor:relu-admissible` | corollary | ReLU is admissible | — | — |
 | 5.4 | `ex:standard-activations` | example | Standard activations | — | — |
-| 6.1 | `def:rademacher-complexity` | definition | Activation-dependent Rademacher complexity | — | — |
-| 6.2 | `thm:general-rademacher` | theorem | General compact-open sampling bound | — | — |
-| 6.3 | `thm:lipschitz-barron` | theorem | Dimension-free compact-open Barron bound | — | — |
-| 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | — | — |
+| 6.1 | `def:rademacher-complexity` | definition | Activation-dependent Rademacher complexity | `OperatorRidgelet.compactSupNorm`<br>`OperatorRidgelet.polarDensity`<br>`OperatorRidgelet.polarWeight`<br>`OperatorRidgelet.polarLaw`<br>`OperatorRidgelet.sampleLaw`<br>`OperatorRidgelet.rademacherMeasure`<br>`OperatorRidgelet.sampledNetwork`<br>`OperatorRidgelet.rademacherComplexity` | defined |
+| 6.2 | `thm:general-rademacher` | theorem | General compact-open sampling bound | `OperatorRidgelet.Paper.thm_general_rademacher` | stated |
+| 6.3 | `thm:lipschitz-barron` | theorem | Dimension-free compact-open Barron bound | `OperatorRidgelet.Paper.thm_lipschitz_barron_i`<br>`OperatorRidgelet.Paper.thm_lipschitz_barron_ii` | stated |
+| 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | `OperatorRidgelet.Paper.thm_E_i`<br>`OperatorRidgelet.Paper.thm_E_ii`<br>`OperatorRidgelet.Paper.thm_E_iii`<br>`OperatorRidgelet.Paper.thm_E_iv` | stated |
 | 6.5 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | `OperatorRidgelet.Paper.lem_ray_regular_examples_a`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii` | stated |
-| 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | — | — |
-| 6.7 | `cor:vector-rates` | corollary | Vector-valued rates | — | — |
+| 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | `OperatorRidgelet.Paper.thm_D`<br>`OperatorRidgelet.Paper.thm_D_dense`<br>`OperatorRidgelet.Paper.thm_D_vec` | stated |
+| 6.7 | `cor:vector-rates` | corollary | Vector-valued rates | `OperatorRidgelet.Paper.cor_vector_rates_i_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_i_b`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_b` | stated |
 | 7.1 | `ex:closed-form` | example | Closed-form transform and its filtered network | — | — |
 | 7.2 | `ex:gaussian-parameter` | example | ReLU and Gaussian networks with Gaussian parameters | — | — |
 | 7.3 | `cor:relu-discretization` | corollary | Discretization of the Gaussian-parameter ReLU network | — | — |
@@ -51,11 +51,11 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | B.3 | `prop:coefficient-projection` | proposition | Bounded backprojection and orthogonal range projection | `OperatorRidgelet.Paper.prop_coefficient_projection_i`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_ii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_iii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_iv`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_v`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_vi`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_vii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_viii` | stated |
 | C.1 | `lem:weighted-duality` | lemma | Hilbert structure and continuous activation pairing | — | — |
 | C.2 | `lem:standard-activation-class` | lemma | Standard activations and admissible test filters | — | — |
-| D.1 | `lem:qualitative-sampling` | lemma | Qualitative finite-atomic approximation | — | — |
-| D.2 | `cor:sampling-concentration` | corollary | Concentration for bounded parameters | — | — |
-| D.3 | `lem:hilbert-sampling` | lemma | Hilbert-valued sampling identity | — | — |
-| D.4 | `cor:operator-sampling` | corollary | Sampling in operator parameters | — | — |
-| D.5 | `cor:two-stage-error` | corollary | Input truncation and sampling are separate errors | — | — |
+| D.1 | `lem:qualitative-sampling` | lemma | Qualitative finite-atomic approximation | `OperatorRidgelet.Paper.lem_qualitative_sampling` | stated |
+| D.2 | `cor:sampling-concentration` | corollary | Concentration for bounded parameters | `OperatorRidgelet.Paper.cor_sampling_concentration` | stated |
+| D.3 | `lem:hilbert-sampling` | lemma | Hilbert-valued sampling identity | `OperatorRidgelet.Paper.lem_hilbert_sampling_i`<br>`OperatorRidgelet.Paper.lem_hilbert_sampling_ii`<br>`OperatorRidgelet.Paper.lem_hilbert_sampling_iii` | stated |
+| D.4 | `cor:operator-sampling` | corollary | Sampling in operator parameters | `OperatorRidgelet.Paper.cor_operator_sampling_i`<br>`OperatorRidgelet.Paper.cor_operator_sampling_ii` | stated |
+| D.5 | `cor:two-stage-error` | corollary | Input truncation and sampling are separate errors | `OperatorRidgelet.Paper.cor_two_stage_error_i`<br>`OperatorRidgelet.Paper.cor_two_stage_error_ii` | stated |
 | E.1 | `lem:gaussian-quadratic` | lemma | Gaussian integral of a quadratic exponential | — | — |
 | E.2 | `lem:gaussian-hinge` | lemma | Absolute hinge representation of the Gaussian | — | — |
 | F.1 | `lem:hs-reduction` | lemma | Hilbert--Schmidt reduction | `OperatorRidgelet.Paper.lem_hs_reduction` | stated |

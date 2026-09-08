@@ -338,8 +338,17 @@
       "number": "6.1",
       "page": "16",
       "title": "Activation-dependent Rademacher complexity",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.compactSupNorm",
+        "OperatorRidgelet.polarDensity",
+        "OperatorRidgelet.polarWeight",
+        "OperatorRidgelet.polarLaw",
+        "OperatorRidgelet.sampleLaw",
+        "OperatorRidgelet.rademacherMeasure",
+        "OperatorRidgelet.sampledNetwork",
+        "OperatorRidgelet.rademacherComplexity"
+      ],
+      "note": "The sample space of N i.i.d. parameters is Fin N → H × ℝ with the product measure sampleLaw N p = Measure.pi (fun _ => p); Rademacher signs are real coordinates ε : Fin N → ℝ with the law rademacherMeasure N = Measure.pi of (δ_{-1} + δ_1)/2; 𝔑_N(K;p,β) = rademacherComplexity N K p β h is the Bochner integral over the product law of sup_{x∈K} ‖N⁻¹ Σ ε_j β(⟨a_j,x⟩+c_j) h(θ_j)‖, polymorphic in the output space (Y-valued h gives 𝔑^Y_N). The polar decomposition Γ = h|Γ| of a VectorMeasure of finite variation is polarDensity Γ = h (a density of Γ w.r.t. Γ.variation with ‖h‖ = 1 a.e., chosen when one exists, junk 0 otherwise), polarWeight Γ = V = ‖Γ‖_TV, polarLaw Γ = p = |Γ|/V (the zero measure when Γ = 0, the manuscript's zero network). The sampled network eq:polar-network is sampledNetwork β V h θ = finiteNetwork with outer weights (V/N) h(θ_j). ‖·‖_{C(K)} is compactSupNorm K f = sSup ((‖f ·‖) '' K)."
     },
     {
       "label": "thm:general-rademacher",
@@ -347,8 +356,10 @@
       "number": "6.2",
       "page": "16",
       "title": "General compact-open sampling bound",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_general_rademacher"
+      ],
+      "note": "'The atoms are measurable and integrably bounded in C(K)' is encoded as a Bochner-integrable map Φ : H × ℝ → (K →ᵇ ℂ) (BoundedContinuousFunction on the subtype K) with respect to p whose values are the atoms h(θ)β(⟨a,·⟩+c) on K. Expectation is the Bochner integral over sampleLaw N (polarLaw Γ) of compactSupNorm K (f_N θ − S_β Γ); N > 0 is assumed (the bound is void for N = 0). The theorem is stated with f = integralNetwork β Γ, which is the vector-measure integral (0 if the integrand is not integrable) — under the hypothesis it is the Bochner integral."
     },
     {
       "label": "thm:lipschitz-barron",
@@ -356,8 +367,11 @@
       "number": "6.3",
       "page": "16",
       "title": "Dimension-free compact-open Barron bound",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_lipschitz_barron_i",
+        "OperatorRidgelet.Paper.thm_lipschitz_barron_ii"
+      ],
+      "note": "Real β with LipschitzWith L β; Lip(β) is any such L (equivalent to the least constant). M₂² < ∞ is Integrable (‖a‖² + |c|²) (polarLaw Γ), and M₂ = √(secondMoment (polarLaw Γ)); R_K = compactRadius K = sSup of √(‖x‖²+1) over K. Part i is the expectation bound over sampleLaw N (polarLaw Γ) with N > 0; part ii the existence of a deterministic sample θ : Fin N → H × ℝ with the same bound. Γ = 0 is allowed (all quantities vanish)."
     },
     {
       "label": "thm:E",
@@ -365,8 +379,13 @@
       "number": "6.4",
       "page": "17",
       "title": "Finite variation and moments of the coefficient",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_E_i",
+        "OperatorRidgelet.Paper.thm_E_ii",
+        "OperatorRidgelet.Paper.thm_E_iii",
+        "OperatorRidgelet.Paper.thm_E_iv"
+      ],
+      "note": "Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α) with an explicit frequency window I of ρ (IsFrequencyWindow ρ I), as thm:A. Part i: ∃ c < ∞ (depending on ρ, α, I) such that for all G regular along rays the lintegral ∫⁻ (1+‖a‖²+|c|²) ‖γ_G‖ₑ dλ_α ≤ c · rayMoment ν I G 4, with γ_G = coefficientFormula ρ G; part ii the finiteness '< ∞' as Bochner integrability. Parts iii and iv take the tempered β as the pair (β, b) with IsTemperedFunction β b, LipschitzWith L b, ¬IsPolynomialFun b: iii is C^{(α)}_{β,ρ} g_G = integralNetworkDensity b λ_α γ_G pointwise, iv the 8V/√N bound with V = densityWeight λ_α γ_G = ‖γ_G‖_{L¹}, p = densityLaw λ_α γ_G = |γ_G|λ_α/V, h = densityPhase γ_G = γ_G/|γ_G|, for every compact K and N > 0."
     },
     {
       "label": "lem:ray-regular-examples",
@@ -389,8 +408,12 @@
       "number": "6.6",
       "page": "18",
       "title": "Constructive universal approximation with rates",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_D",
+        "OperatorRidgelet.Paper.thm_D_dense",
+        "OperatorRidgelet.Paper.thm_D_vec"
+      ],
+      "note": "thm_D is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g_G) < ε, (ii) g_G = integralNetworkDensity b λ_α γ_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ_G‖) λ_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^{(α)}_{β,ρ} = 1 is temperedAdmissibilityConst α β ρ = 1. thm_D_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K, with the same hypotheses on b only. thm_D_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the vector-valued compact-open rate ε + 2V 𝔑^Y_N(K;p,β) of cor:vector-rates(ii) (the manuscript's 'vector-valued rate of subsec:vector-sampling'; the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement)."
     },
     {
       "label": "cor:vector-rates",
@@ -398,8 +421,13 @@
       "number": "6.7",
       "page": "18",
       "title": "Vector-valued rates",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.cor_vector_rates_i_a",
+        "OperatorRidgelet.Paper.cor_vector_rates_i_b",
+        "OperatorRidgelet.Paper.cor_vector_rates_ii_a",
+        "OperatorRidgelet.Paper.cor_vector_rates_ii_b"
+      ],
+      "note": "Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i_a (‖·‖²_{L²(ζ;Y)} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i_b (explicit bound with ‖β 0‖² and L²); part ii into ii_a (2V 𝔑^Y_N bound, with 𝔑^Y_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii_b (Tendsto to 0 as N → ∞). N > 0 in i and ii_a."
     },
     {
       "label": "ex:closed-form",
@@ -553,8 +581,10 @@
       "number": "D.1",
       "page": "31",
       "title": "Qualitative finite-atomic approximation",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_qualitative_sampling"
+      ],
+      "note": "The hypothesis ∫ ‖β(⟨a,·⟩+c)‖_{C(K)} d|Γ| < ∞ is Integrable (θ ↦ compactSupNorm K (β(⟨a,·⟩+c))) Γ.variation; a finite atomic complex measure is atomicMeasure w θ = Σ_j VectorMeasure.dirac (θ_j) (w_j), and its synthesis is integralNetwork β (atomicMeasure w θ)."
     },
     {
       "label": "cor:sampling-concentration",
@@ -562,8 +592,10 @@
       "number": "D.2",
       "page": "31",
       "title": "Concentration for bounded parameters",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.cor_sampling_concentration"
+      ],
+      "note": "'‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set {θ | bound < ‖f_N θ − f‖_{C(K)}} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M_K = |β 0| + L R_K B."
     },
     {
       "label": "lem:hilbert-sampling",
@@ -571,8 +603,12 @@
       "number": "D.3",
       "page": "32",
       "title": "Hilbert-valued sampling identity",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_hilbert_sampling_i",
+        "OperatorRidgelet.Paper.lem_hilbert_sampling_ii",
+        "OperatorRidgelet.Paper.lem_hilbert_sampling_iii"
+      ],
+      "note": "X is a separable real Hilbert space (a complex Hilbert space is one via InnerProductSpace.complexToReal, and only norms enter); Y ∈ L²(p;X) is MemLp Y 2 p on an abstract probability space (Ω, p); independent copies are the coordinates of sampleLaw N p on Fin N → Ω; f = V • ∫ Y dp and f_N ω = (V/N) • Σ_j Y (ω j). Part i the identity, ii the upper bound, iii the deterministic sample; N > 0."
     },
     {
       "label": "cor:operator-sampling",
@@ -580,8 +616,11 @@
       "number": "D.4",
       "page": "32",
       "title": "Sampling in operator parameters",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.cor_operator_sampling_i",
+        "OperatorRidgelet.Paper.cor_operator_sampling_ii"
+      ],
+      "note": "Γ_op is a ComplexMeasure on (H →L[ℝ] H) × H with finite variation carried by 𝓛₂(H) × H (∀ᵐ q ∂Γ_op.variation, IsHilbertSchmidt q.1), as in lem:measure-transport; its polar data are polarDensity/polarWeight/polarLaw Γ_op; M_op² < ∞ is Integrable (‖A*ψ‖² + |⟨ψ,b⟩|²) (polarLaw Γ_op) and M_op = √(operatorSecondMoment ψ (polarLaw Γ_op)). The sampled operator network is sampledOperatorNetwork (rankOneActivation β ψ z) ℓ V h ω, an operatorFiniteNetwork with weights (V/N) h(A_j,b_j), and S_op Γ_op is operatorSynthesis; the readout is normalized by ⟨ℓ,z⟩ = 1 and ψ ≠ 0 is not needed (as in lem:measure-transport), so it is not assumed. Part ii (M_op² ≤ ‖ψ‖² ∫(‖A‖²_{𝓛₂}+‖b‖²) dp_op) is stated with lintegrals and hsNormSq (∞ off 𝓛₂), so that no integrability hypothesis is needed."
     },
     {
       "label": "cor:two-stage-error",
@@ -589,8 +628,11 @@
       "number": "D.5",
       "page": "32",
       "title": "Input truncation and sampling are separate errors",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.cor_two_stage_error_i",
+        "OperatorRidgelet.Paper.cor_two_stage_error_ii"
+      ],
+      "note": "Π_m is P : ℕ → (H →L[ℝ] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the same samples θ with directions P m a_j give sampledNetwork with parameters (P m (θ j).1, (θ j).2); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup_K ‖x − Π_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary."
     },
     {
       "label": "lem:gaussian-quadratic",
