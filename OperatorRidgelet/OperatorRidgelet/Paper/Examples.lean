@@ -1,7 +1,13 @@
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Sampling.Defs
+import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Examples.Basic
+import OperatorRidgelet.Examples.GaussianLaw
+import OperatorRidgelet.Examples.NotCylindrical
+import OperatorRidgelet.Examples.OperatorLayer
+import OperatorRidgelet.Examples.HingeMeasure
+import OperatorRidgelet.Paper.Transform
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Network.Defs
@@ -39,13 +45,14 @@ noncomputable section
 namespace OperatorRidgelet.Paper
 
 open MeasureTheory Complex Filter Topology LeanRidgelet
-open scoped ENNReal NNReal RealInnerProductSpace
+open scoped ENNReal NNReal RealInnerProductSpace BoundedContinuousFunction
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
 /-! ### Lemma `lem:gaussian-quadratic` -/
 
+set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
 /-- **Lemma [lem:gaussian-quadratic]** Gaussian integral of a quadratic exponential.  For a
 positive self-adjoint trace-class `Σ` and a bounded positive self-adjoint `S`, the operator
@@ -53,7 +60,20 @@ positive self-adjoint trace-class `Σ` and a bounded positive self-adjoint `S`, 
 theorem lem_gaussian_quadratic_i {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTraceClass Cov)
     (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov) :
     HasSummableTrace (R * S * R) := by
-  sorry
+  obtain ⟨ι, b, hb⟩ := hCov.hasSummableTrace
+  refine ⟨ι, b, ?_⟩
+  have hform : ∀ x, ⟪(R * S * R) x, x⟫ = ⟪S (R x), R x⟫ := fun x =>
+    hR.isSelfAdjoint.isSymmetric (S (R x)) x
+  have hRR : ∀ x, ⟪R x, R x⟫ = ⟪Cov x, x⟫ := fun x => by
+    rw [← hR.mul_self]
+    exact (hR.isSelfAdjoint.isSymmetric (R x) x).symm
+  refine Summable.of_nonneg_of_le (fun i => ?_) (fun i => ?_) (hb.mul_left ‖S‖)
+  · rw [hform]
+    exact hS0 _
+  · rw [hform, ← hRR, real_inner_self_eq_norm_sq]
+    calc ⟪S (R (b i)), R (b i)⟫ ≤ ‖S (R (b i))‖ * ‖R (b i)‖ := real_inner_le_norm _ _
+      _ ≤ ‖S‖ * ‖R (b i)‖ * ‖R (b i)‖ := by gcongr; exact S.le_opNorm _
+      _ = ‖S‖ * ‖R (b i)‖ ^ 2 := by ring
 
 /-- **Lemma [lem:gaussian-quadratic]** Gaussian integral of a quadratic exponential.  With
 `M = Σ^{1/2} S Σ^{1/2}`,
@@ -95,8 +115,8 @@ theorem lem_gaussian_hinge_i_a (u : ℝ) :
 /-- **Lemma [lem:gaussian-hinge]** Absolute hinge representation of the Gaussian.  For
 `φ(u) = e^{-u²/2}`, `φ(u) = ∫ (u-b)_+ φ''(b) db` for each `u`. -/
 theorem lem_gaussian_hinge_i_b (u : ℝ) :
-    ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianFun u := by
-  sorry
+    ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianFun u :=
+  integral_relu_sub_mul_gaussianActDeriv2 u
 
 /-- **Lemma [lem:gaussian-hinge]** Absolute hinge representation of the Gaussian.
 `∫ (1 + |b|^k) |φ''(b)| db < ∞` for every `k ≥ 0`. -/
@@ -165,7 +185,13 @@ cylindrical when `W` has infinite rank. -/
 theorem ex_closed_form_i_d (W : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hWi : Function.Injective W) (hrank : HasInfiniteRank (W : H →ₗ[ℝ] H)) :
     ¬ IsCylindrical (gaussianTarget W) := by
-  sorry
+  refine not_isCylindrical_of_ne_zero hrank.not_finiteDimensional fun x hx => ?_
+  unfold gaussianTarget
+  simp only [map_zero, inner_zero_left, neg_zero, zero_div, Real.exp_zero, Complex.ofReal_one,
+    ne_eq, Complex.ofReal_eq_one, Real.exp_eq_one_iff]
+  have h1 : 0 < ⟪W x, x⟫ := hW.isSymmetric.inner_map_self_pos_of_injective hW0 hWi hx
+  intro h
+  linarith
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
 band-pass `ρ`, the density `G = 𝒢_Q f_W` is regular along rays. -/
@@ -309,50 +335,87 @@ theorem ex_core_elements_v (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
     MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
-  sorry
+  have hcont := hL.continuous_layerObservable_gaussianFun φ
+  have hC0 : 0 ≤ ∫ y, ‖layerWeight b φ y‖ ∂m := integral_nonneg fun y => norm_nonneg _
+  have hf2 : MemLp (layerObservable m a b gaussianFun φ) 2 μ :=
+    MemLp.of_bound hcont.aestronglyMeasurable _
+      (Eventually.of_forall (hL.norm_layerObservable_gaussianFun_le φ))
+  refine ⟨hf2, (toLp_mem_spectralCore_iff hf2).1 ?_⟩
+  have hdecay := hL.norm_gaussFourier_layerObservable_gaussianFun_le hQ.toIsPositiveTraceClass hμ φ
+  refine lem_gaussian_decay_ii hH hP hQ hN hα μ hμ (hf2.toLp _) ((∫ y, ‖layerWeight b φ y‖ ∂m) + 1)
+    0 (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ (by linarith) le_rfl (by positivity) fun ξ => ?_
+  rw [gaussFourier_congr_ae hf2.coeFn_toLp, Real.rpow_zero, mul_one]
+  refine (hdecay ξ).trans ?_
+  gcongr
+  linarith
 
 /-! ### Example `ex:gaussian-parameter` -/
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.
 `F_Q(x) = ∫ ReLU(⟨a,x⟩) 𝒩(0,Q)(da) = √(⟨Qx,x⟩/2π)`. -/
 theorem ex_gaussian_parameter_i {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H) (q : ℕ → ℝ)
     (hq : ∀ j, 0 < q j) (hqs : Summable q) (hQe : ∀ j, Q (e j) = q j • e j) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
-    ∀ x : H, gaussianParameterReLU μ x = Real.sqrt (⟪Q x, x⟫ / (2 * Real.pi)) := by
-  sorry
+    ∀ x : H, gaussianParameterReLU μ x = Real.sqrt (⟪Q x, x⟫ / (2 * Real.pi)) := fun x =>
+  gaussianParameterReLU_eq hμ x (inner_map_self_nonneg_of_eigen e q hq hQe x)
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.
 `Φ_Q(x) = ∫ Φ(⟨a,x⟩) 𝒩(0,Q)(da) = (1 + ⟨Qx,x⟩)^{-1/2}`. -/
 theorem ex_gaussian_parameter_ii {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H) (q : ℕ → ℝ)
     (hq : ∀ j, 0 < q j) (hqs : Summable q) (hQe : ∀ j, Q (e j) = q j • e j) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
-    ∀ x : H, gaussianParameterGauss μ x = (Real.sqrt (1 + ⟪Q x, x⟫))⁻¹ := by
-  sorry
+    ∀ x : H, gaussianParameterGauss μ x = (Real.sqrt (1 + ⟪Q x, x⟫))⁻¹ := fun x =>
+  gaussianParameterGauss_eq hμ x (inner_map_self_nonneg_of_eigen e q hq hQe x)
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.
 `Φ_Q(x) = ∫∫ ReLU(⟨a,x⟩ - b) φ''(b) 𝒩(0,Q)(da) db` with `φ''(b) = (b² - 1) e^{-b²/2}`. -/
 theorem ex_gaussian_parameter_iii {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H) (q : ℕ → ℝ)
     (hq : ∀ j, 0 < q j) (hqs : Summable q) (hQe : ∀ j, Q (e j) = q j • e j) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     ∀ x : H, gaussianParameterGauss μ x =
-      ∫ p : H × ℝ, relu (⟪p.1, x⟫ - p.2) * gaussianActDeriv2 p.2 ∂(μ.prod volume) := by
-  sorry
+      ∫ p : H × ℝ, relu (⟪p.1, x⟫ - p.2) * gaussianActDeriv2 p.2 ∂(μ.prod volume) := fun x =>
+  gaussianParameterGauss_eq_integral_prod hμ x (inner_map_self_nonneg_of_eigen e q hq hQe x)
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.
 `F_Q` is not cylindrical. -/
 theorem ex_gaussian_parameter_iv {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H) (q : ℕ → ℝ)
     (hq : ∀ j, 0 < q j) (hqs : Summable q) (hQe : ∀ j, Q (e j) = q j • e j) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     ¬ IsCylindrical (gaussianParameterReLU μ) := by
-  sorry
+  refine not_isCylindrical_of_ne_zero (not_finiteDimensional_of_hilbertBasis e) fun x hx => ?_
+  rw [gaussianParameterReLU_eq hμ x (inner_map_self_nonneg_of_eigen e q hq hQe x),
+    gaussianParameterReLU_eq hμ 0 (by simp)]
+  simp only [map_zero, inner_zero_left, zero_div, Real.sqrt_zero]
+  exact (Real.sqrt_pos.mpr (div_pos (inner_map_self_pos_of_eigen e q hq hQe hx)
+    (by positivity))).ne'
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.
 `Φ_Q` is not cylindrical. -/
 theorem ex_gaussian_parameter_v {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H) (q : ℕ → ℝ)
     (hq : ∀ j, 0 < q j) (hqs : Summable q) (hQe : ∀ j, Q (e j) = q j • e j) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     ¬ IsCylindrical (gaussianParameterGauss μ) := by
-  sorry
+  refine not_isCylindrical_of_ne_zero (not_finiteDimensional_of_hilbertBasis e) fun x hx => ?_
+  rw [gaussianParameterGauss_eq hμ x (inner_map_self_nonneg_of_eigen e q hq hQe x),
+    gaussianParameterGauss_eq hμ 0 (by simp)]
+  simp only [map_zero, inner_zero_left, add_zero, Real.sqrt_one, inv_one, ne_eq, inv_eq_one]
+  have hpos := inner_map_self_pos_of_eigen e q hq hQe hx
+  intro h
+  have h1 : (1 : ℝ) + ⟪Q x, x⟫ = 1 := by
+    have := Real.sq_sqrt (by linarith : (0 : ℝ) ≤ 1 + ⟪Q x, x⟫)
+    rw [h] at this
+    linarith
+  linarith
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.  A
@@ -367,6 +430,8 @@ theorem ex_gaussian_parameter_vi_a {Y : Type*} [NormedAddCommGroup Y] [InnerProd
       integralNetwork (fun t => (relu t : ℂ)) (hingeCoefficientMeasure lam γ) := by
   sorry
 
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.  The
 ReLU coefficient measure `Γ'` of a Gaussian-activation network with finite coefficient measure
@@ -375,9 +440,10 @@ theorem ex_gaussian_parameter_vi_b {Y : Type*} [NormedAddCommGroup Y] [InnerProd
     [CompleteSpace Y] (lam : Measure (H × ℝ)) [SigmaFinite lam] (γ : H × ℝ → Y)
     (hγ : Integrable γ lam)
     (hmom : ∀ k : ℕ, Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ k * ‖γ θ‖) lam) :
-    IsFiniteMeasure (hingeCoefficientMeasure lam γ).variation := by
-  sorry
+    IsFiniteMeasure (hingeCoefficientMeasure lam γ).variation :=
+  isFiniteMeasure_hingeCoefficientMeasure_variation lam hγ
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.  The
 ReLU coefficient measure `Γ'` of a Gaussian-activation network with finite coefficient measure
@@ -387,8 +453,8 @@ theorem ex_gaussian_parameter_vi_c {Y : Type*} [NormedAddCommGroup Y] [InnerProd
     (hγ : Integrable γ lam)
     (hmom : ∀ k : ℕ, Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ k * ‖γ θ‖) lam) :
     ∀ k : ℕ, ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ k)
-      ∂(hingeCoefficientMeasure lam γ).variation < ⊤ := by
-  sorry
+      ∂(hingeCoefficientMeasure lam γ).variation < ⊤ :=
+  lintegral_hingeCoefficientMeasure_variation_lt_top lam hγ hmom
 
 /-! ### Corollary `cor:relu-discretization` -/
 
@@ -405,7 +471,61 @@ theorem cor_relu_discretization {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
             (gaussianParameterReLU μ x : ℂ))
         ∂sampleLaw n (μ.map fun a => (a, (0 : ℝ))) ≤
       8 * compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n := by
-  sorry
+  have hπ : Measurable fun a : H => (a, (0 : ℝ)) := measurable_id.prodMk measurable_const
+  set p : Measure (H × ℝ) := μ.map fun a : H => (a, (0 : ℝ)) with hp
+  haveI : IsProbabilityMeasure p := Measure.isProbabilityMeasure_map hπ.aemeasurable
+  have hM2 : ∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂p = traceOf Q := by
+    rw [hp, integral_map hπ.aemeasurable (by fun_prop), ← hμ.integral_norm_sq_eq_traceOf hQ]
+    simp
+  have hMint : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p := by
+    rw [hp, integrable_map_measure (by fun_prop) hπ.aemeasurable]
+    refine (hμ.integrable_norm_sq hQ).congr (Eventually.of_forall fun a => ?_)
+    simp [Function.comp]
+  have hβ : LipschitzWith 1 relu := lipschitzWith_relu
+  have hh1 : ∀ᵐ θ ∂p, ‖(fun _ : H × ℝ => (1 : ℂ)) θ‖ ≤ 1 := Eventually.of_forall fun _ => by simp
+  set Φ : H × ℝ → (K →ᵇ ℂ) := fun θ =>
+    (fun _ : H × ℝ => (1 : ℂ)) θ • ridgeAtom hK (continuous_ofReal_comp hβ) (id θ) with hΦdef
+  have hint : Integrable Φ p :=
+    integrable_smul_ridgeAtom hK hβ p measurable_id aestronglyMeasurable_const hh1 hMint
+  have hΦ : ∀ θ (x : K), Φ θ x =
+      (relu (⟪(id θ).1, (x : H)⟫ + (id θ).2) : ℂ) * (fun _ : H × ℝ => (1 : ℂ)) θ :=
+    smul_ridgeAtom_apply hK (continuous_ofReal_comp hβ) id (fun _ => 1)
+  have hpt : ∀ θ : Fin n → H × ℝ, compactSupNorm K (fun x =>
+      sampledNetwork (fun t => (relu t : ℂ)) 1 (fun _ => (1 : ℂ)) θ x -
+        (gaussianParameterReLU μ x : ℂ)) =
+      1 / n * ‖∑ j, Φ (θ j) - (n : ℝ) • ∫ θ', Φ θ' ∂p‖ := by
+    intro θ
+    rw [← compactSupNorm_sampled_sub_eq p (fun t => (relu t : ℂ)) id (fun _ => 1) hΦ hint
+      zero_le_one hn θ]
+    refine compactSupNorm_congr fun x _ => ?_
+    simp only [sampledNetwork, finiteNetwork, id, one_smul]
+    congr 1
+    have hmeas' : AEStronglyMeasurable
+        (fun ω' : H × ℝ => ((relu (⟪ω'.1, x⟫ + ω'.2) : ℝ) : ℂ) • (1 : ℂ)) p :=
+      ((Complex.continuous_ofReal.comp (continuous_relu.comp (by fun_prop))).smul
+        continuous_const).aestronglyMeasurable
+    rw [hp, integral_map hπ.aemeasurable hmeas']
+    simp only [add_zero, smul_eq_mul, mul_one, gaussianParameterReLU]
+    exact integral_ofReal.symm
+  calc ∫ θ, compactSupNorm K (fun x =>
+          sampledNetwork (fun t => (relu t : ℂ)) 1 (fun _ => (1 : ℂ)) θ x -
+            (gaussianParameterReLU μ x : ℂ)) ∂sampleLaw n p
+      = ∫ θ, 1 / n * ‖∑ j, Φ (θ j) - (n : ℝ) • ∫ θ', Φ θ' ∂p‖ ∂sampleLaw n p :=
+        integral_congr_ae (Eventually.of_forall hpt)
+    _ = 1 / n * ∫ θ, ‖∑ j, Φ (θ j) - (n : ℝ) • ∫ θ', Φ θ' ∂p‖ ∂sampleLaw n p :=
+        integral_const_mul _ _
+    _ ≤ 1 / n * (8 * Real.sqrt n * (|relu 0| + (1 : ℝ≥0) * compactRadius K *
+          Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂p))) :=
+        mul_le_mul_of_nonneg_left (integral_norm_sum_smul_ridgeAtom_sub_le hK hβ p measurable_id
+          aestronglyMeasurable_const hh1 hMint n) (by positivity)
+    _ = 8 * compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n := by
+        rw [hM2]
+        simp only [relu, max_self, abs_zero, zero_add, NNReal.coe_one, one_mul]
+        calc 1 / (n : ℝ) * (8 * Real.sqrt n * (compactRadius K * Real.sqrt (traceOf Q)))
+            = 8 * compactRadius K * Real.sqrt (traceOf Q) * (Real.sqrt n / n) := by ring
+          _ = 8 * compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n := by
+              rw [Real.sqrt_div_self']
+              ring
 
 /-! ### Example `ex:operator-layer` -/
 
@@ -422,14 +542,16 @@ theorem ex_operator_layer_i_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
     operatorLayer m a b β = integralNetwork (fun t => (β t : ℂ)) (layerMeasure m a b) := by
   sorry
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The total
 variation of `Γ` is at most `∫ ‖b_y‖ m(dy)`. -/
 theorem ex_operator_layer_i_b (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
-    totalVariation (layerMeasure m a b) ≤ ∫⁻ y, ‖b y‖ₑ ∂m := by
-  sorry
+    totalVariation (layerMeasure m a b) ≤ ∫⁻ y, ‖b y‖ₑ ∂m :=
+  VectorMeasure.variation_map_withDensityᵥ_univ_le hL.integrable_b _
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The second
 parameter moment of `Γ` is at most `‖A‖_∞²`: `∫ (‖a‖² + c²) d|Γ| ≤ ‖A‖_∞² ‖Γ‖_TV`. -/
@@ -437,7 +559,10 @@ theorem ex_operator_layer_i_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
     (hL : IsLayerData m a b) :
     ∫⁻ θ : H × ℝ, ENNReal.ofReal (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂(layerMeasure m a b).variation ≤
       ENNReal.ofReal (layerSupNorm a ^ 2) * totalVariation (layerMeasure m a b) := by
-  sorry
+  refine VectorMeasure.lintegral_variation_map_le_of_forall_le _ _ fun y => ?_
+  simp only [abs_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero]
+  exact ENNReal.ofReal_le_ofReal
+    (pow_le_pow_left₀ (norm_nonneg _) (hL.norm_le_layerSupNorm y) 2)
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Hence
@@ -478,8 +603,8 @@ theorem ex_operator_layer_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
-    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
-  sorry
+    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) :=
+  ex_core_elements_v hH hP hQ hN hα μ hμ m a b hL φ
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
@@ -508,6 +633,7 @@ theorem ex_operator_layer_ii_c {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
   sorry
 
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+set_option linter.unusedSectionVars false in
   [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: `S_y ≥ (1 + ‖Q‖ ‖A‖_∞²)⁻¹ Q`. -/
@@ -515,7 +641,8 @@ theorem ex_operator_layer_ii_d {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
     ∀ (y : Ω) (ξ : H),
       (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫ ≤ ⟪layerCovariance Q a y ξ, ξ⟫ := by
-  sorry
+  intro y ξ
+  exact hL.inner_layerCovariance_ge hQ.toIsPositiveTraceClass y ξ
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: consequently `𝒢_Q F_φ` is regular along rays, for every band-pass `ρ`. -/
@@ -628,7 +755,28 @@ theorem ex_operator_layer_ii_k (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
     MemSpectralCoreVec μ (gaussianMixture N α) (operatorLayer m a b gaussianFun) := by
-  sorry
+  have hcont := hL.continuous_operatorLayer_gaussianFun
+  refine ⟨MemLp.of_bound hcont.aestronglyMeasurable _
+    (Eventually.of_forall hL.norm_operatorLayer_gaussianFun_le), ?_⟩
+  have hdecay := hL.norm_gaussFourierVec_operatorLayer_gaussianFun_le hQ.toIsPositiveTraceClass hμ
+  have hGcont := hL.continuous_gaussFourierVec_operatorLayer_gaussianFun μ
+  refine (memLp_two_iff_integrable_sq_norm hGcont.aestronglyMeasurable).mpr ?_
+  have h0 := lem_gaussian_decay_i hH hP hQ hN hα (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹
+    (by positivity) 0
+  simp only [mul_zero, pow_zero, one_mul] at h0
+  refine (h0.const_mul ((∫ y, ‖b y‖ ∂m) ^ 2)).mono' (hGcont.norm.pow 2).aestronglyMeasurable
+    (Eventually.of_forall fun ξ => ?_)
+  rw [norm_pow, norm_norm]
+  calc ‖gaussFourierVec μ (operatorLayer m a b gaussianFun) ξ‖ ^ 2
+      ≤ ((∫ y, ‖b y‖ ∂m) *
+          Real.exp (-(1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫ / 2)) ^ 2 := by
+        gcongr
+        exact hdecay ξ
+    _ = (∫ y, ‖b y‖ ∂m) ^ 2 * Real.exp (-(1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫) := by
+        rw [mul_pow, ← Real.exp_nat_mul]
+        congr 2
+        push_cast
+        ring
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
@@ -698,6 +846,7 @@ theorem ex_operator_layer_ii_p (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
           (gaussFourierVec μ (operatorLayer m a b gaussianFun)) x := by
   sorry
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
 by `eq:gaussian-parameter-closed-forms`, the Gaussian-activation layer is
@@ -706,8 +855,8 @@ theorem ex_operator_layer_iii_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
     (hL : IsLayerData m a b) :
     ∀ x : H, operatorLayer m a b gaussianFun x =
       ∫ p : Ω × ℝ, ((gaussianActDeriv2 p.2 * relu (⟪a p.1, x⟫ - p.2) : ℝ) : ℂ) • b p.1
-        ∂(m.prod volume) := by
-  sorry
+        ∂(m.prod volume) := fun x =>
+  hL.operatorLayer_gaussianFun_eq_integral_prod x
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
@@ -719,13 +868,14 @@ theorem ex_operator_layer_iii_b (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
       integralNetwork (fun t => (relu t : ℂ)) (layerHingeMeasure m a b) := by
   sorry
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
 the ReLU coefficient measure is finite. -/
 theorem ex_operator_layer_iii_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
-    IsFiniteMeasure (layerHingeMeasure m a b).variation := by
-  sorry
+    IsFiniteMeasure (layerHingeMeasure m a b).variation :=
+  hL.isFiniteMeasure_layerHingeMeasure_variation
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
@@ -733,8 +883,8 @@ the ReLU coefficient measure has all moments finite. -/
 theorem ex_operator_layer_iii_d (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
     ∀ k : ℕ, ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ k)
-      ∂(layerHingeMeasure m a b).variation < ⊤ := by
-  sorry
+      ∂(layerHingeMeasure m a b).variation < ⊤ :=
+  hL.lintegral_layerHingeMeasure_variation_lt_top
 
 omit [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
   [SecondCountableTopology Y] in
@@ -744,8 +894,8 @@ Non-cylindricity: if `A` has infinite rank, `β = Φ`, and `w_φ > 0` `m`-almost
 theorem ex_operator_layer_iv (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) (hA : HasInfiniteRank (layerA m a))
     (hw : ∀ᵐ y ∂m, 0 < (layerWeight b φ y).re ∧ (layerWeight b φ y).im = 0) :
-    ¬ IsCylindrical (layerObservable m a b gaussianFun φ) := by
-  sorry
+    ¬ IsCylindrical (layerObservable m a b gaussianFun φ) :=
+  hL.not_isCylindrical_layerObservable_gaussianFun φ hA hw
 
 end OperatorLayer
 

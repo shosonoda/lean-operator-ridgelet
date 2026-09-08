@@ -26,11 +26,17 @@ import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Examples.Basic
+import OperatorRidgelet.Examples.GaussianLaw
+import OperatorRidgelet.Examples.NotCylindrical
+import OperatorRidgelet.Examples.OperatorLayer
+import OperatorRidgelet.Examples.HingeMeasure
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierEven
+import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
 import OperatorRidgelet.ToMathlib.GaussianFourier
 import OperatorRidgelet.ToMathlib.GaussianHilbert
 import OperatorRidgelet.ToMathlib.GaussianQuadraticForm
+import OperatorRidgelet.ToMathlib.GaussianRealIntegral
 import OperatorRidgelet.ToMathlib.GiryMonad
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.IntegralSqrt
@@ -47,6 +53,7 @@ import OperatorRidgelet.ToMathlib.SchwartzFourier
 import OperatorRidgelet.ToMathlib.StarProjectionBessel
 import OperatorRidgelet.ToMathlib.TendstoUniformlyOnCompact
 import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
+import OperatorRidgelet.ToMathlib.VectorMeasureMapDensity
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.Paper
 import OperatorRidgelet.ArchitectBridge
