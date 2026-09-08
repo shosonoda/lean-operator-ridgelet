@@ -11,6 +11,7 @@ import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.Architecture.Reduction
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Transform.Infra
+import OperatorRidgelet.Transform.Gaussian
 import OperatorRidgelet.Transform.Basic
 import OperatorRidgelet.Transform.Mixture
 import OperatorRidgelet.FiniteDim.Defs
@@ -26,6 +27,8 @@ import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianFourier
+import OperatorRidgelet.ToMathlib.GaussianHilbert
+import OperatorRidgelet.ToMathlib.GaussianQuadraticForm
 import OperatorRidgelet.ToMathlib.GiryMonad
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.MeasurePi
@@ -35,6 +38,7 @@ import OperatorRidgelet.ToMathlib.RpowIntegral
 import OperatorRidgelet.ToMathlib.SchwartzFourier
 import OperatorRidgelet.ToMathlib.StarProjectionBessel
 import OperatorRidgelet.ToMathlib.TendstoUniformlyOnCompact
+import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.Paper
 import OperatorRidgelet.ArchitectBridge

@@ -3,6 +3,7 @@ import OperatorRidgelet.FiniteDim.Defs
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Transform.Basic
 import OperatorRidgelet.Transform.Mixture
+import OperatorRidgelet.Transform.Gaussian
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.GaussianFourier
 
@@ -38,15 +39,16 @@ theorem lem_homogeneous_mixture_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     SigmaFinite (gaussianMixture N α) := by
-  sorry
+  haveI := hP.isLocallyFiniteMeasure_gaussianMixture hH hN hα
+  infer_instance
 
 /-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
 finite on bounded Borel sets. -/
 theorem lem_homogeneous_mixture_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
-    ∀ E : Set H, MeasurableSet E → Bornology.IsBounded E → gaussianMixture N α E < ⊤ := by
-  sorry
+    ∀ E : Set H, MeasurableSet E → Bornology.IsBounded E → gaussianMixture N α E < ⊤ :=
+  fun _ _ hE => hP.gaussianMixture_lt_top_of_isBounded hH hN hα hE
 
 set_option linter.unusedVariables false in
 /-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
@@ -57,13 +59,14 @@ theorem lem_homogeneous_mixture_iii (hH : ¬ FiniteDimensional ℝ H) {P : H →
     gaussianMixture N α Set.univ = ⊤ :=
   hN.gaussianMixture_univ α
 
+set_option linter.unusedVariables false in
 /-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` has
 full support: it charges every nonempty open set. -/
 theorem lem_homogeneous_mixture_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
-    (gaussianMixture N α).IsOpenPosMeasure := by
-  sorry
+    (gaussianMixture N α).IsOpenPosMeasure :=
+  hP.isOpenPosMeasure_gaussianMixture hN α
 
 set_option linter.unusedVariables false in
 /-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  Homogeneity:
@@ -464,8 +467,13 @@ theorem lem_gaussian_decay_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     ∀ t : ℝ, 0 < t → ∀ m : ℕ,
       Integrable (fun ξ : H => ‖ξ‖ ^ (2 * m) * Real.exp (-t * ⟪Q ξ, ξ⟫))
         (gaussianMixture N α) := by
-  sorry
+  intro t ht m
+  refine ⟨(by fun_prop : Continuous fun ξ : H =>
+    ‖ξ‖ ^ (2 * m) * Real.exp (-t * ⟪Q ξ, ξ⟫)).aestronglyMeasurable, ?_⟩
+  rw [hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun ξ => by positivity)]
+  exact hP.lintegral_norm_pow_mul_exp_gaussianMixture_lt_top hH hQ hN hα ht m
 
+set_option linter.unusedVariables false in
 /-- **Lemma [lem:gaussian-decay]** Gaussian decay with polynomial weights.  If `f ∈ L²(μ_Q)` and
 `|𝒢_Q f(ξ)| ≤ C (1+‖ξ‖)^p e^{-t⟨Qξ,ξ⟩/2}`, then `f ∈ 𝒟_α` for every `α > 0`. -/
 theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -476,7 +484,52 @@ theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hdecay : ∀ ξ : H,
       ‖gaussFourier μ f ξ‖ ≤ C * (1 + ‖ξ‖) ^ p * Real.exp (-t * ⟪Q ξ, ξ⟫ / 2)) :
     f ∈ spectralCore μ (gaussianMixture N α) := by
-  sorry
+  rw [mem_spectralCore_iff]
+  have hf : Integrable (f : H → ℂ) μ := (Lp.memLp f).integrable one_le_two
+  have hcont := continuous_gaussFourier μ hf
+  refine (memLp_two_iff_integrable_sq_norm hcont.aestronglyMeasurable).mpr ?_
+  set M : ℕ := ⌈p⌉₊ with hM
+  have h0 := lem_gaussian_decay_i hH hP hQ hN hα t ht 0
+  have hMint := lem_gaussian_decay_i hH hP hQ hN hα t ht M
+  simp only [mul_zero, pow_zero, one_mul] at h0
+  have hbound : Integrable (fun ξ : H => C ^ 2 * 4 ^ M *
+      (Real.exp (-t * ⟪Q ξ, ξ⟫) + ‖ξ‖ ^ (2 * M) * Real.exp (-t * ⟪Q ξ, ξ⟫)))
+      (gaussianMixture N α) :=
+    (h0.add hMint).const_mul _
+  refine hbound.mono' (hcont.norm.pow 2).aestronglyMeasurable (Eventually.of_forall fun ξ => ?_)
+  rw [norm_pow, norm_norm]
+  have h1 : ‖gaussFourier μ f ξ‖ ^ 2 ≤
+      (C * (1 + ‖ξ‖) ^ p * Real.exp (-t * ⟪Q ξ, ξ⟫ / 2)) ^ 2 :=
+    pow_le_pow_left₀ (norm_nonneg _) (hdecay ξ) 2
+  refine h1.trans ?_
+  have hx : (0 : ℝ) ≤ ‖ξ‖ := norm_nonneg _
+  have h2 : (1 + ‖ξ‖) ^ p ≤ (1 + ‖ξ‖) ^ (M : ℝ) :=
+    Real.rpow_le_rpow_of_exponent_le (by linarith) (Nat.le_ceil p)
+  have h3 : ((1 + ‖ξ‖) ^ (M : ℝ)) ^ 2 = (1 + ‖ξ‖) ^ (2 * M) := by
+    rw [Real.rpow_natCast, ← pow_mul, mul_comm]
+  have h4 : (1 + ‖ξ‖) ^ (2 * M) ≤ 2 ^ (2 * M) * (1 + ‖ξ‖ ^ (2 * M)) :=
+    one_add_pow_le_two_pow_mul hx _
+  have h5 : Real.exp (-t * ⟪Q ξ, ξ⟫ / 2) ^ 2 = Real.exp (-t * ⟪Q ξ, ξ⟫) := by
+    rw [← Real.exp_nat_mul]
+    congr 1
+    push_cast
+    ring
+  have h6 : (2 : ℝ) ^ (2 * M) = 4 ^ M := by
+    rw [pow_mul]
+    norm_num
+  have hrp : 0 ≤ (1 + ‖ξ‖) ^ p := Real.rpow_nonneg (by linarith) _
+  calc (C * (1 + ‖ξ‖) ^ p * Real.exp (-t * ⟪Q ξ, ξ⟫ / 2)) ^ 2
+      = C ^ 2 * ((1 + ‖ξ‖) ^ p) ^ 2 * Real.exp (-t * ⟪Q ξ, ξ⟫ / 2) ^ 2 := by ring
+    _ ≤ C ^ 2 * ((1 + ‖ξ‖) ^ (M : ℝ)) ^ 2 * Real.exp (-t * ⟪Q ξ, ξ⟫) := by
+        rw [h5]
+        gcongr
+    _ = C ^ 2 * (1 + ‖ξ‖) ^ (2 * M) * Real.exp (-t * ⟪Q ξ, ξ⟫) := by rw [h3]
+    _ ≤ C ^ 2 * (2 ^ (2 * M) * (1 + ‖ξ‖ ^ (2 * M))) * Real.exp (-t * ⟪Q ξ, ξ⟫) := by
+        gcongr
+    _ = C ^ 2 * 4 ^ M *
+          (Real.exp (-t * ⟪Q ξ, ξ⟫) + ‖ξ‖ ^ (2 * M) * Real.exp (-t * ⟪Q ξ, ξ⟫)) := by
+        rw [h6]
+        ring
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
 /-- **Example [ex:core-elements]** Elements of `𝒟_α`.  The constant function has
@@ -494,7 +547,18 @@ theorem ex_core_elements_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ (gaussianMixture N α) := by
-  sorry
+  rw [mem_spectralCore_iff, gaussFourier_toLp_const]
+  have hform := ex_core_elements_i μ hμ
+  refine (memLp_two_iff_integrable_sq_norm
+    (continuous_gaussFourier μ (integrable_const _)).aestronglyMeasurable).mpr ?_
+  have h := lem_gaussian_decay_i hH hP hQ hN hα 1 one_pos 0
+  simp only [mul_zero, pow_zero, one_mul, neg_mul] at h
+  refine h.congr (Eventually.of_forall fun ξ => ?_)
+  dsimp only
+  rw [hform ξ, ← Complex.ofReal_neg, Complex.norm_exp_ofReal, ← Real.exp_nat_mul]
+  congr 1
+  push_cast
+  ring
 
 /-- **Example [ex:core-elements]** Elements of `𝒟_α`.  Consequently `𝓔_α ≠ {0}`. -/
 theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -502,7 +566,23 @@ theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     spectralRange μ (gaussianMixture N α) ≠ ⊥ := by
-  sorry
+  rw [Submodule.ne_bot_iff]
+  have hmem := ex_core_elements_ii hH hP hQ hN hα μ hμ
+  refine ⟨gaussFourierLp μ _ ⟨_, hmem⟩,
+    Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, rfl⟩), fun h0 => ?_⟩
+  have hae : (gaussFourier μ
+      ((MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) : Lp ℂ 2 μ) : H → ℂ))
+        =ᵐ[gaussianMixture N α] 0 :=
+    (MemLp.coeFn_toLp _).symm.trans (Lp.eq_zero_iff_ae_eq_zero.mp h0)
+  rw [gaussFourier_toLp_const] at hae
+  have hne : ∀ ξ, gaussFourier μ (fun _ => (1 : ℂ)) ξ ≠ 0 := fun ξ => by
+    rw [ex_core_elements_i μ hμ ξ]
+    exact Complex.exp_ne_zero _
+  have hall : gaussianMixture N α Set.univ = 0 := by
+    have := ae_iff.mp hae
+    simpa [hne] using this
+  rw [hN.gaussianMixture_univ] at hall
+  exact ENNReal.top_ne_zero hall
 
 /-! ### Theorem `thm:B` (Gaussian case) -/
 

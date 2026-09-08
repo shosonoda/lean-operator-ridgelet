@@ -229,17 +229,17 @@ attribute [blueprint "infra:gaussian-layers-exist"
   (statement := /-- For an injective, positive, self-adjoint, trace-class $P$ there is a family
     of Gaussian layers $\mathcal N(0,2sP)$, $s>0$ (the Gaussian series of
     Appendix A). -/)
-  (notReady := true)] OperatorRidgelet.exists_isCenteredGaussianLayers
+  ] OperatorRidgelet.exists_isCenteredGaussianLayers
 
 /-! ## Paper statements -/
 
 attribute [blueprint "lem:homogeneous-mixture-i"
   (statement := /-- If $\dim H=\infty$ and $\alpha>0$, then $\nu_\alpha$ is sigma-finite. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_i
+  ] OperatorRidgelet.Paper.lem_homogeneous_mixture_i
 
 attribute [blueprint "lem:homogeneous-mixture-ii"
   (statement := /-- $\nu_\alpha$ is finite on bounded Borel sets. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_ii
+  ] OperatorRidgelet.Paper.lem_homogeneous_mixture_ii
 
 attribute [blueprint "lem:homogeneous-mixture-iii"
   (statement := /-- $\nu_\alpha(H)=\infty$. -/)]
@@ -247,7 +247,7 @@ attribute [blueprint "lem:homogeneous-mixture-iii"
 
 attribute [blueprint "lem:homogeneous-mixture-iv"
   (statement := /-- $\nu_\alpha$ has full support. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_iv
+  ] OperatorRidgelet.Paper.lem_homogeneous_mixture_iv
 
 attribute [blueprint "lem:homogeneous-mixture-v"
   (statement := /-- $(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha$ for $\omega\ne0$. -/)]
@@ -326,12 +326,12 @@ attribute [blueprint "lem:spectral-unitary-iii"
 attribute [blueprint "lem:gaussian-decay-i"
   (statement := /-- $\int_H\|\xi\|^{2m}e^{-t\langle Q\xi,\xi\rangle}\,\nu_\alpha(\mathrm
     d\xi)<\infty$ for $t>0$, $\alpha>0$, $m\ge0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_gaussian_decay_i
+  ] OperatorRidgelet.Paper.lem_gaussian_decay_i
 
 attribute [blueprint "lem:gaussian-decay-ii"
   (statement := /-- If $f\in L^2(\mu_Q)$ and $|\mathcal G_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle
     Q\xi,\xi\rangle/2}$, then $f\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_gaussian_decay_ii
+  ] OperatorRidgelet.Paper.lem_gaussian_decay_ii
 
 attribute [blueprint "ex:core-elements-i"
   (statement := /-- $\mathcal G_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}$. -/)]
@@ -339,11 +339,11 @@ attribute [blueprint "ex:core-elements-i"
 
 attribute [blueprint "ex:core-elements-ii"
   (statement := /-- $1\in\mathcal D_\alpha$ for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_core_elements_ii
+  ] OperatorRidgelet.Paper.ex_core_elements_ii
 
 attribute [blueprint "ex:core-elements-iii"
   (statement := /-- $\mathcal E_\alpha\ne\{0\}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_core_elements_iii
+  ] OperatorRidgelet.Paper.ex_core_elements_iii
 
 attribute [blueprint "thm:B-i-a"
   (statement := /-- For $f\in\mathcal D_\alpha$ and $\alpha$-admissible $\rho$, $R_\rho f\in
