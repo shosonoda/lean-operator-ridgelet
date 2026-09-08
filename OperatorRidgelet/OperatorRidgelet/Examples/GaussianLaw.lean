@@ -132,18 +132,19 @@ theorem gaussianParameterGauss_eq_integral_prod (hμ : IsCenteredGaussian Q μ) 
   funext a
   exact (integral_relu_sub_mul_gaussianActDeriv2 ⟪a, x⟫).symm
 
-/-- The mixed Gaussian integral of the layer transform: for `σ² = ⟪Qv,v⟫` and
-`S_v = Q - (1+σ²)⁻¹ (Qv) ⊗ (Qv)`,
+omit [OpensMeasurableSpace H] in
+/-- The mixed Gaussian integral of the layer transform, for a.e.-measurable coordinates: for
+`σ² = ⟪Qv,v⟫` and `S_v = Q - (1+σ²)⁻¹ (Qv) ⊗ (Qv)`,
 `∫ Φ(⟪v,x⟫) e^{-i⟪x,ξ⟫} 𝒩(0,Q)(dx) = (1+σ²)^{-1/2} e^{-⟪S_v ξ,ξ⟫/2}`. -/
-theorem IsCenteredGaussian.integral_gaussianFun_mul_character [CompleteSpace H]
-    (hQ : IsSelfAdjoint Q)
-    (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (v ξ : H) :
+theorem IsCenteredGaussian.integral_gaussianFun_mul_character' [CompleteSpace H]
+    (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (v ξ : H)
+    (hv : AEMeasurable (fun x => ⟪x, v⟫) μ) (hξ : AEMeasurable (fun x => ⟪x, ξ⟫) μ) :
     ∫ x, ((gaussianFun ⟪v, x⟫ : ℝ) : ℂ) * character ξ x ∂μ =
       (((Real.sqrt (1 + ⟪Q v, v⟫))⁻¹ *
         Real.exp (-⟪(Q - (1 + ⟪Q v, v⟫)⁻¹ • InnerProductSpace.rankOne ℝ (Q v) (Q v)) ξ, ξ⟫ / 2) :
           ℝ) : ℂ) := by
-  have key := MeasureTheory.integral_exp_neg_inner_sq_half_mul_exp_neg_inner_mul_I μ v ξ (hQ0 v)
-    (fun s t => hμ.charFun_smul_add_smul hQ v ξ s t)
+  have key := MeasureTheory.integral_exp_neg_inner_sq_half_mul_exp_neg_inner_mul_I' μ v ξ hv hξ
+    (hQ0 v) (fun s t => hμ.charFun_smul_add_smul hQ v ξ s t)
   have hL : (fun x => ((gaussianFun ⟪v, x⟫ : ℝ) : ℂ) * character ξ x) =
       fun x => Complex.exp (-((⟪x, v⟫ ^ 2 / 2 : ℝ) : ℂ)) *
         Complex.exp (-((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) := by
@@ -165,6 +166,17 @@ theorem IsCenteredGaussian.integral_gaussianFun_mul_character [CompleteSpace H]
   push_cast
   congr 2
   field_simp
+
+/-- The mixed Gaussian integral of the layer transform: for `σ² = ⟪Qv,v⟫` and
+`S_v = Q - (1+σ²)⁻¹ (Qv) ⊗ (Qv)`,
+`∫ Φ(⟪v,x⟫) e^{-i⟪x,ξ⟫} 𝒩(0,Q)(dx) = (1+σ²)^{-1/2} e^{-⟪S_v ξ,ξ⟫/2}`. -/
+theorem IsCenteredGaussian.integral_gaussianFun_mul_character [CompleteSpace H]
+    (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (v ξ : H) :
+    ∫ x, ((gaussianFun ⟪v, x⟫ : ℝ) : ℂ) * character ξ x ∂μ =
+      (((Real.sqrt (1 + ⟪Q v, v⟫))⁻¹ *
+        Real.exp (-⟪(Q - (1 + ⟪Q v, v⟫)⁻¹ • InnerProductSpace.rankOne ℝ (Q v) (Q v)) ξ, ξ⟫ / 2) :
+          ℝ) : ℂ) :=
+  hμ.integral_gaussianFun_mul_character' hQ hQ0 v ξ (by fun_prop) (by fun_prop)
 
 end Coordinate
 

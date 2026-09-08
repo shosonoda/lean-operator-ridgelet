@@ -7,6 +7,11 @@ import OperatorRidgelet.Examples.GaussianLaw
 import OperatorRidgelet.Examples.NotCylindrical
 import OperatorRidgelet.Examples.OperatorLayer
 import OperatorRidgelet.Examples.HingeMeasure
+import OperatorRidgelet.Examples.Convolution
+import OperatorRidgelet.Examples.GaussianMeasurability
+import OperatorRidgelet.Examples.Dirichlet
+import OperatorRidgelet.Examples.LayerRidgelet
+import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Paper.Transform
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
@@ -615,9 +620,10 @@ theorem ex_operator_layer_ii_b {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
     ∀ ξ : H, gaussFourier μ (layerObservable m a b gaussianFun φ) ξ =
       ∫ y, layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
-        Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) ∂m := by
-  sorry
+        Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) ∂m := fun ξ =>
+  hL.gaussFourier_layerObservable_gaussianFun' hQ.isSelfAdjoint hQ.inner_nonneg hμ φ ξ
 
+set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: for every band-pass `ρ`,
@@ -629,11 +635,11 @@ theorem ex_operator_layer_ii_c {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     (hL : IsLayerData m a b) (φ : Y) :
     ∀ p : H × ℝ, ridgelet μ ρ (layerObservable m a b gaussianFun φ) p =
       ∫ y, layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
-        gaussianSmooth ρ ⟪layerCovariance Q a y p.1, p.1⟫ p.2 : ℝ) : ℂ) ∂m := by
-  sorry
+        gaussianSmooth ρ ⟪layerCovariance Q a y p.1, p.1⟫ p.2 : ℝ) : ℂ) ∂m := fun p =>
+  hL.ridgelet_layerObservable_gaussianFun' hQ.isSelfAdjoint hQ.inner_nonneg hμ ρ φ p
 
-omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 set_option linter.unusedSectionVars false in
+omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
   [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: `S_y ≥ (1 + ‖Q‖ ‖A‖_∞²)⁻¹ Q`. -/
@@ -676,6 +682,7 @@ theorem ex_operator_layer_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
   sorry
 
+set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the ridgelet coefficient of `F_φ` is the coefficient `γ_G` of `G = 𝒢_Q F_φ`. -/
@@ -684,8 +691,9 @@ theorem ex_operator_layer_ii_g {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
     ridgelet μ ρ (layerObservable m a b gaussianFun φ) =
-      coefficientFormula ρ (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
-  sorry
+      coefficientFormula ρ (gaussFourier μ (layerObservable m a b gaussianFun φ)) :=
+  ridgelet_eq_coefficientFormula' μ ρ hμ.aemeasurable_inner
+    (hL.integrable_layerObservable_gaussianFun' hμ φ)
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the ridgelet coefficient `R_ρ F_φ` has finite variation and moments,
@@ -787,8 +795,8 @@ theorem ex_operator_layer_ii_l {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
     ∀ ξ : H, gaussFourierVec μ (operatorLayer m a b gaussianFun) ξ =
       ∫ y, (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
-        Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • b y ∂m := by
-  sorry
+        Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • b y ∂m := fun ξ =>
+  hL.gaussFourierVec_operatorLayer_gaussianFun' hQ.isSelfAdjoint hQ.inner_nonneg hμ ξ
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `𝒢_Q ℱ` is regular along rays for every band-pass
@@ -877,6 +885,7 @@ theorem ex_operator_layer_iii_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
     IsFiniteMeasure (layerHingeMeasure m a b).variation :=
   hL.isFiniteMeasure_layerHingeMeasure_variation
 
+set_option linter.unusedSectionVars false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
 the ReLU coefficient measure has all moments finite. -/
@@ -907,8 +916,8 @@ section Convolution
 `⟨a_y, x⟩ = (k * x)(y)`. -/
 theorem ex_convolution_i (d : ℕ) (k : TorusL2 d) :
     ∀ (x : TorusL2 d) (y : Torus d),
-      ⟪convDirection k y, x⟫ = ∫ t, k (y - t) * x t ∂torusHaar d := by
-  sorry
+      ⟪convDirection k y, x⟫ = ∫ t, k (y - t) * x t ∂torusHaar d := fun x y =>
+  inner_convDirection k x y
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  With `a_y = k(y - ·)` and
 `b_y = ψ(· - y)`, the layer is `ℱ(x) = ψ * β(k * x)`. -/
@@ -922,13 +931,13 @@ theorem ex_convolution_ii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `‖A‖_∞ = ‖k‖₂`. -/
 theorem ex_convolution_iii (d : ℕ) (k : TorusL2 d) :
-    layerSupNorm (convDirection k) = ‖k‖ := by
-  sorry
+    layerSupNorm (convDirection k) = ‖k‖ :=
+  layerSupNorm_convDirection k
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `∫ ‖b_y‖ dy = ‖ψ‖₂`. -/
 theorem ex_convolution_iv (d : ℕ) (ψ : TorusL2 d) :
-    ∫ y, ‖convOutput ψ y‖ ∂torusHaar d = ‖ψ‖ := by
-  sorry
+    ∫ y, ‖convOutput ψ y‖ ∂torusHaar d = ‖ψ‖ :=
+  integral_norm_convOutput ψ
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  The convolution layer satisfies the
 standing hypotheses of the neural-operator layer (`y ↦ a_y`, `y ↦ b_y` are continuous and
@@ -1058,14 +1067,14 @@ theorem ex_dirichlet_v : HasInfiniteRank (dirichletOperator : UnitL2 →ₗ[ℝ]
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.
 `‖A‖_∞ ≤ sup_y ‖g(y,·)‖₂ < ∞`: the directions `a_y = g(y,·)` are bounded in `L²(0,1)`. -/
 theorem ex_dirichlet_vi :
-    BddAbove (Set.range fun y : UnitOpenInterval => ‖dirichletDirection y‖) := by
-  sorry
+    BddAbove (Set.range fun y : UnitOpenInterval => ‖dirichletDirection y‖) :=
+  ⟨Real.sinh 1, by rintro _ ⟨y, rfl⟩; exact norm_dirichletDirection_le y⟩
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  With
 `a_y = b_y = g(y,·)` the standing hypotheses of the neural-operator layer hold, so Example
 `ex:operator-layer` applies. -/
-theorem ex_dirichlet_vii : IsLayerData volume dirichletDirection dirichletOutput := by
-  sorry
+theorem ex_dirichlet_vii : IsLayerData volume dirichletDirection dirichletOutput :=
+  isLayerData_dirichlet
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  With
 `a_y = b_y = g(y,·)` the layer is `ℱ(x) = 𝖦 β(𝖦x)`. -/

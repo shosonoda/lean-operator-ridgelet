@@ -1,5 +1,6 @@
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Examples.OperatorLayer
+import OperatorRidgelet.ToMathlib.LpOfReal
 
 /-!
 # The periodic convolution layer
@@ -16,15 +17,6 @@ namespace OperatorRidgelet
 
 open MeasureTheory
 open scoped RealInnerProductSpace
-
-/-- The norm of `L.compLp f` for the isometric embedding `ℝ → ℂ` is the norm of `f`. -/
-theorem norm_ofRealCLM_compLp {α : Type*} [MeasurableSpace α] {μ : Measure α} {p : ENNReal}
-    (f : Lp ℝ p μ) : ‖Complex.ofRealCLM.compLp f‖ = ‖f‖ := by
-  rw [Lp.norm_def, Lp.norm_def]
-  congr 1
-  refine eLpNorm_congr_norm_ae ?_
-  filter_upwards [Complex.ofRealCLM.coeFn_compLp' f] with t ht
-  rw [ht, Complex.ofRealCLM_apply, Complex.norm_real]
 
 variable {d : ℕ}
 
@@ -59,6 +51,6 @@ theorem inner_convDirection (k x : TorusL2 d) (y : Torus d) :
   change ⟪(Lp.compMeasurePreserving (fun t => y - t)
     (Measure.measurePreserving_sub_left (torusHaar d) y) k) t, x t⟫ = _
   rw [ht, Function.comp_apply]
-  simp [RCLike.inner_apply]
+  simp [RCLike.inner_apply, mul_comm]
 
 end OperatorRidgelet

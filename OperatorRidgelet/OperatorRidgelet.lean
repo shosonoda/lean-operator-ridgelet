@@ -30,6 +30,11 @@ import OperatorRidgelet.Examples.GaussianLaw
 import OperatorRidgelet.Examples.NotCylindrical
 import OperatorRidgelet.Examples.OperatorLayer
 import OperatorRidgelet.Examples.HingeMeasure
+import OperatorRidgelet.Examples.Convolution
+import OperatorRidgelet.Examples.GaussianMeasurability
+import OperatorRidgelet.Examples.Dirichlet
+import OperatorRidgelet.Examples.LayerRidgelet
+import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
@@ -37,11 +42,13 @@ import OperatorRidgelet.ToMathlib.GaussianFourier
 import OperatorRidgelet.ToMathlib.GaussianHilbert
 import OperatorRidgelet.ToMathlib.GaussianQuadraticForm
 import OperatorRidgelet.ToMathlib.GaussianRealIntegral
+import OperatorRidgelet.ToMathlib.GaussianTilt
 import OperatorRidgelet.ToMathlib.GiryMonad
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.IntegralSqrt
 import OperatorRidgelet.ToMathlib.Symmetrization
 import OperatorRidgelet.ToMathlib.Logic
+import OperatorRidgelet.ToMathlib.LpOfReal
 import OperatorRidgelet.ToMathlib.MeasurePi
 import OperatorRidgelet.ToMathlib.PolynomialCoeffBound
 import OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv

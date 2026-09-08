@@ -421,14 +421,14 @@ attribute [blueprint "ex:operator-layer-ii-a"
 attribute [blueprint "ex:operator-layer-ii-b"
   (statement := /-- $\mathcal G_QF_\varphi(\xi)=\int_\Omega
     w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm
-    dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_b
+    dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_b
 
 attribute [blueprint "ex:operator-layer-ii-c"
   (statement := /-- $R_\rho F_\varphi(a,c)=\int_\Omega
     w_\varphi(y)(1+\sigma_y^2)^{-1/2}(\rho*\phi_{\langle
-    S_ya,a\rangle})(c)\,m(\mathrm dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_c
+    S_ya,a\rangle})(c)\,m(\mathrm dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_c
 
 attribute [blueprint "ex:operator-layer-ii-d"
   (statement := /-- $S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q$. -/)]
@@ -444,8 +444,8 @@ attribute [blueprint "ex:operator-layer-ii-f"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_f
 
 attribute [blueprint "ex:operator-layer-ii-g"
-  (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_g
+  (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_g
 
 attribute [blueprint "ex:operator-layer-ii-h"
   (statement := /-- $R_\rho F_\varphi$ has finite variation and moments. -/)
@@ -467,8 +467,8 @@ attribute [blueprint "ex:operator-layer-ii-k"
 
 attribute [blueprint "ex:operator-layer-ii-l"
   (statement := /-- $\mathcal G_Q\mathcal F(\xi)=\int_\Omega(1+\sigma_y^2)^{-1/2}e^{-\langle
-    S_y\xi,\xi\rangle/2}b_y\,m(\mathrm dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_l
+    S_y\xi,\xi\rangle/2}b_y\,m(\mathrm dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_l
 
 attribute [blueprint "ex:operator-layer-ii-m"
   (statement := /-- $\mathcal G_Q\mathcal F$ is regular along rays. -/)
@@ -513,20 +513,20 @@ attribute [blueprint "ex:operator-layer-iv"
   OperatorRidgelet.Paper.ex_operator_layer_iv
 
 attribute [blueprint "ex:convolution-i"
-  (statement := /-- $\langle a_y,x\rangle=(k*x)(y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_i
+  (statement := /-- $\langle a_y,x\rangle=(k*x)(y)$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_i
 
 attribute [blueprint "ex:convolution-ii"
   (statement := /-- $\mathcal F(x)=\psi*\beta(k*x)$. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_convolution_ii
 
 attribute [blueprint "ex:convolution-iii"
-  (statement := /-- $\|A\|_\infty=\|k\|_2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_iii
+  (statement := /-- $\|A\|_\infty=\|k\|_2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_iii
 
 attribute [blueprint "ex:convolution-iv"
-  (statement := /-- $\int\|b_y\|\,\mathrm dy=\|\psi\|_2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_iv
+  (statement := /-- $\int\|b_y\|\,\mathrm dy=\|\psi\|_2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_iv
 
 attribute [blueprint "ex:convolution-v"
   (statement := /-- The convolution layer satisfies the standing hypotheses of the
@@ -591,12 +591,12 @@ attribute [blueprint "ex:dirichlet-v"
   (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_v
 
 attribute [blueprint "ex:dirichlet-vi"
-  (statement := /-- $\|A\|_\infty\le\sup_y\|g(y,\cdot)\|_2<\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_vi
+  (statement := /-- $\|A\|_\infty\le\sup_y\|g(y,\cdot)\|_2<\infty$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_vi
 
 attribute [blueprint "ex:dirichlet-vii"
-  (statement := /-- With $a_y=b_y=g(y,\cdot)$ the neural-operator layer example applies. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_vii
+  (statement := /-- With $a_y=b_y=g(y,\cdot)$ the neural-operator layer example applies. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_vii
 
 attribute [blueprint "ex:dirichlet-viii"
   (statement := /-- The layer is $\mathcal F(x)=\mathsf G\beta(\mathsf Gx)$. -/)
