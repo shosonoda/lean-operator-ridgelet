@@ -25,9 +25,9 @@ namespace OperatorRidgelet
 
 open LeanRidgelet.Fourier
 
+open Classical in
 /-- The test filter `ω ↦ ρ̂(-ω) |ω|^{-α}` as a Schwartz function, when one with these values
 exists (in particular when `ρ` is band-pass); `0` otherwise. -/
-open Classical in
 def temperedTestFilter (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ ℂ :=
   if h : ∃ φ : SchwartzMap ℝ ℂ, ∀ ω : ℝ, φ ω = filterFourier ρ (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ)
   then h.choose else 0
