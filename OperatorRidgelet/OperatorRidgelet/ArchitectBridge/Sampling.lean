@@ -204,10 +204,10 @@ attribute [blueprint "lem:qualitative-sampling"
 
 attribute [blueprint "cor:sampling-concentration"
   (statement := /-- Under the hypotheses of the Barron bound, if $\|a\|^2+|c|^2\le B^2$ almost
-    surely and $M_K=|\beta(0)|+\operatorname{Lip}(\beta)R_KB$, then with probability at least
-    $1-\delta$, $\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)
-    R_KM_2)+VM_K\sqrt{2\log(1/\delta)/N}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_sampling_concentration
+    surely for some $B\ge0$ and $M_K=|\beta(0)|+\operatorname{Lip}(\beta)R_KB$, then with
+    probability at least $1-\delta$, $\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|
+    +\operatorname{Lip}(\beta)R_KM_2)+VM_K\sqrt{2\log(1/\delta)/N}$. -/)]
+  OperatorRidgelet.Paper.cor_sampling_concentration
 
 attribute [blueprint "lem:hilbert-sampling-i"
   (statement := /-- For $Y\in L^2(p;X)$ with values in a separable Hilbert space, independent
@@ -244,7 +244,9 @@ attribute [blueprint "cor:two-stage-error-i"
 
 attribute [blueprint "cor:two-stage-error-ii"
   (statement := /-- If $f=S_\beta\Gamma$ satisfies the hypotheses of the Barron bound and the
-    same samples are used with directions $\Pi_ma_j$, then
+    same samples and weights $(V/N)h(\theta_j)$ are used with the truncated directions
+    $\Pi_ma_j$ inside the activation, $f_{m,N}(x)=(V/N)\sum_jh(\theta_j)\beta(\langle\Pi_ma_j,
+    x\rangle+c_j)$, then
     $\mathbb E\|f-f_{m,N}\|_{C(K)}\le\operatorname{Lip}(\beta)\bigl(\int\|a\|\,\mathrm d|\Gamma|
-    \bigr)\sup_K\|x-\Pi_mx\|+\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_two_stage_error_ii
+    \bigr)\sup_K\|x-\Pi_mx\|+\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$. -/)]
+  OperatorRidgelet.Paper.cor_two_stage_error_ii
