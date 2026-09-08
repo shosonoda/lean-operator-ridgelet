@@ -955,7 +955,7 @@
         "OperatorRidgelet.Paper.ex_mexican_hat_v",
         "OperatorRidgelet.Paper.ex_mexican_hat_vi"
       ],
-      "note": "ρ_MH is obtained by choice as the Schwartz map equal to (1-t²)e^{-t²/2} (mexicanHat); admissibility exactly for 0 < α < 5 with C = Γ((5-α)/2), C^{(1)} = 1, not band pass."
+      "note": "ρ_MH is obtained by choice as the Schwartz map equal to (1-t²)e^{-t²/2} (mexicanHat); admissibility exactly for 0 < α < 5 with C = Γ((5-α)/2), C^{(1)} = 1, not band pass. Part (iii) is stated under the manuscript's standing assumption α > 0 (for α ≤ 0 the admissibility integral also converges, so 'exactly for 0 < α < 5' is only true given α > 0)."
     }
   ]
 }

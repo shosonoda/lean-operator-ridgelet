@@ -558,7 +558,7 @@ attribute [blueprint "ex:mexican-hat-ii"
   OperatorRidgelet.Paper.ex_mexican_hat_ii
 
 attribute [blueprint "ex:mexican-hat-iii"
-  (statement := /-- $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly for $0<\alpha<5$. -/)
+  (statement := /-- For $\alpha>0$, $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly when $\alpha<5$. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_iii
 
 attribute [blueprint "ex:mexican-hat-iv"

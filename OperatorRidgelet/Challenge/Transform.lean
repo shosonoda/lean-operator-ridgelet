@@ -710,9 +710,9 @@ theorem ex_mexican_hat_ii :
       ((Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) : ℂ) := by
   sorry
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  `ρ_MH` is `α`-admissible exactly for
-`0 < α < 5`. -/
-theorem ex_mexican_hat_iii : ∀ α : ℝ, IsAdmissible α mexicanHat ↔ 0 < α ∧ α < 5 := by
+/-- **Example [ex:mexican-hat]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
+`α`-admissible exactly for `α < 5`. -/
+theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
   sorry
 
 /-- **Example [ex:mexican-hat]** Mexican hat.  For `0 < α < 5`,
