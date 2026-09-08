@@ -196,8 +196,15 @@
       "number": "4.1",
       "page": "11",
       "title": "Regularity along rays",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.IsFrequencyWindow",
+        "OperatorRidgelet.rayDerivBound",
+        "OperatorRidgelet.rayMoment",
+        "OperatorRidgelet.IsRegularAlongRays",
+        "OperatorRidgelet.spectralTarget",
+        "OperatorRidgelet.Paper.def_ray_regular"
+      ],
+      "note": "The compact symmetric set I ⊆ ℝ∖{0} containing supp ρ̂ fixed before the definition is the predicate IsFrequencyWindow ρ I; the ray-derivative bound max_{k≤m} sup_{ω∈I} |∂^k_ω G(ωa)| and the moment M_m(G) are taken in ℝ≥0∞ so that 'M_m(G) < ∞' is literally rayMoment ν I G m < ⊤; IsRegularAlongRays bundles boundedness, Borel measurability (StronglyMeasurable), smoothness of ω ↦ G(ωa) on an open neighbourhood of I, and finiteness of every M_m(G); it is polymorphic in the target space (the Y-valued version with ‖·‖_Y is the same predicate). The target g_G with spectral density G is spectralTarget ν G (stated for the abstract direction measure ν), and the coefficient γ_G is coefficientFormula ρ G of Section 3. The remark after the definition (regular along rays ⇒ G ∈ L¹(ν_α) ∩ L²(ν_α)) is def_ray_regular."
     },
     {
       "label": "thm:A",
@@ -205,8 +212,19 @@
       "number": "4.2",
       "page": "11",
       "title": "Integral representation of targets with a spectral density",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_A_i_a",
+        "OperatorRidgelet.Paper.thm_A_i_b",
+        "OperatorRidgelet.Paper.thm_A_i_c",
+        "OperatorRidgelet.Paper.thm_A_ii_a",
+        "OperatorRidgelet.Paper.thm_A_ii_b",
+        "OperatorRidgelet.Paper.thm_A_ii_c",
+        "OperatorRidgelet.Paper.thm_A_iii_a",
+        "OperatorRidgelet.Paper.thm_A_iii_b",
+        "OperatorRidgelet.Paper.thm_A_iii_c",
+        "OperatorRidgelet.Paper.thm_A_iii_d"
+      ],
+      "note": "Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α), as the manuscript notes after the proof; the Gaussian case is ν = gaussianMixture N α. Part i (bound, continuity, uniqueness) involves neither ρ nor homogeneity and is stated for G ∈ L¹(ν) alone. Part ii: absolute convergence is the a.e. integrability of the inner integrand plus the ν-integrability of the inner integral (ii_a), the identity with C^{(α)}_ρ (ii_b), and the integral-network form integralNetworkDensity when γ_G ∈ L¹(λ_α) (ii_c); it is stated with the band-pass hypothesis of the theorem although, as the manuscript remarks, only admissibility is used. Part iii: a tempered β that is a continuous function of polynomial growth is the pair (β : TemperedDistribution ℝ ℂ, b : ℝ → ℝ) with IsTemperedFunction β b (b continuous, |b| ≤ C(1+|t|)^p, β = integration against b); 'not a polynomial' is ¬ IsPolynomialFun b; the constant is temperedAdmissibilityConst α β ρ of Tempered/Const; iii_a, iii_b are the two absolute convergences, iii_c the identity, iii_d the existence of a band-pass ρ with C^{(α)}_{β,ρ} ≠ 0 for every such non-polynomial β. The remark that the constant is a pairing with a test function supported in -supp ρ̂ is the definition of temperedTestFilter and is not restated."
     },
     {
       "label": "thm:C",
@@ -214,8 +232,26 @@
       "number": "4.3",
       "page": "12",
       "title": "Reconstruction and the frame operator",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_C_i_a",
+        "OperatorRidgelet.Paper.thm_C_i_b",
+        "OperatorRidgelet.Paper.thm_C_i_c",
+        "OperatorRidgelet.Paper.thm_C_i_d",
+        "OperatorRidgelet.Paper.thm_C_ii_a",
+        "OperatorRidgelet.Paper.thm_C_ii_b",
+        "OperatorRidgelet.Paper.thm_C_iii_a",
+        "OperatorRidgelet.Paper.thm_C_iii_b",
+        "OperatorRidgelet.Paper.thm_C_iii_c",
+        "OperatorRidgelet.Paper.thm_C_iii_d",
+        "OperatorRidgelet.Paper.thm_C_iii_e",
+        "OperatorRidgelet.Paper.thm_C_iv_a",
+        "OperatorRidgelet.Paper.thm_C_iv_b",
+        "OperatorRidgelet.Paper.thm_C_iv_c",
+        "OperatorRidgelet.Paper.thm_C_iv_d",
+        "OperatorRidgelet.Paper.thm_C_iv_e",
+        "OperatorRidgelet.Paper.thm_C_iv_f"
+      ],
+      "note": "Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv_d–iv_f add μ = 𝒩(0,Q). 𝓔_α is represented by 𝒦_α = spectralRange μ ν with U_α the inclusion; the continuous anti-dual 𝓔_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆[ℂ] ℂ), so that J_α = rieszMap = innerSLFlip ℂ, U_α' = transposeEmbed, T_α = frameOperator = U_α' U_α, S_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R_ρ on 𝓔_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T_α⁻¹ is rieszInv = J_α⁻¹ (part i_a says T_α = J_α, proved by rfl; i_b/i_c: J_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii_a is the representation of T_α f by g_{𝒢f}, iii_b the converse identity R_ρ T_α⁻¹ U_α' G = W_ρ G, iii_c the representation of U_α' G by g_G for G ∈ L¹, iii_d the second reconstruction formula for U_α' G, and iii_e its concrete form (U_α' G paired with g ∈ 𝒟_α equals C⁻¹ ∫ S_ρ[γ_G λ_α] conj g dμ, the spectral synthesis identity) when γ_G ∈ L¹(λ_α). Part iv: Λ_ρ = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the ray average of a given representative); boundedness iv_a is square integrability with a norm bound (linearity of Λ_ρ on L²(λ_α) is a consequence of prop_coefficient_projection_iv); iv_b is Λ_ρ W_ρ = C Id; iv_c is the pointwise identity Λ_ρ R_ρ f = C 𝒢f using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^{t²τ²/2} 𝒢f(tξ)); iv_e is totality on 𝒟_α; iv_f is f = Δ_Q[C⁻¹ Λ_ρ R_ρ f] with Δ_Q = gaussFourierInv the inverse of 𝒢 on its range on 𝒟_α (chosen by uniqueness)."
     },
     {
       "label": "thm:vector-valued",
@@ -223,8 +259,42 @@
       "number": "4.7",
       "page": "14",
       "title": "Vector-valued extension",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_vector_valued_A_i_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_i_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_i_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_ii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_ii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_ii_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_iii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_iii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_A_iii_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_i_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_i_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_d",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_iii",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_d",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iii_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iii_d",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iii_e",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_d",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_e",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_f"
+      ],
+      "note": "One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y ([InnerProductSpace ℂ Y] [CompleteSpace Y] [SecondCountableTopology Y]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique."
     },
     {
       "label": "def:regularized-synthesis",
@@ -304,8 +374,14 @@
       "number": "6.5",
       "page": "17",
       "title": "Densities that are regular along rays",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_ray_regular_examples_a",
+        "OperatorRidgelet.Paper.lem_ray_regular_examples_b_i",
+        "OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii",
+        "OperatorRidgelet.Paper.lem_ray_regular_examples_c_i",
+        "OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii"
+      ],
+      "note": "'For every band-pass ρ' is quantified together with every frequency window I of ρ (IsFrequencyWindow ρ I). Part a (Gaussian type) needs the Gaussian mixture ν_α and Q and is stated with S : H →L[ℝ] H self-adjoint with θ⟨Qξ,ξ⟩ ≤ ⟨Sξ,ξ⟩ (positivity follows), and q an MvPolynomial with complex coefficients in k bounded linear functionals ℓ_i and in κ(ξ) = ⟨Sξ,ξ⟩ (variable index Option (Fin k), none ↦ κ). Part b_i: φ ∈ C_c^∞(ℝ) is ContDiff ℝ ⊤ φ with compact support (complex valued); b_ii: 'C^∞ along rays' is read as in def:ray-regular (smooth on an open neighbourhood of I for every direction), 'vanishes outside a bounded set' as G ξ = 0 for ‖ξ‖ > R₀, and the derivative bounds are sup over ω ∈ I ≤ C_k (1+‖a‖)^{p_k}; both b parts use ν_α (finite on bounded sets). Part c_i (finite linear combinations) and c_ii (Bochner integrals ∫ G_y m(dy)) are stated for a general ν; in c_ii the measurable family is Measurable (uncurry G), and 'bounds uniform in y' is read as a uniform sup bound on G_y together with, for each order k, a y-independent majorant h of the ray-derivative bounds whose weighted integral ∫ (1+‖a‖)^{k+2} h dν is finite."
     },
     {
       "label": "thm:D",
@@ -413,8 +489,11 @@
       "number": "B.1",
       "page": "27",
       "title": "Synthesis of an integrable coefficient is the integral network",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_weak_equals_strong_i",
+        "OperatorRidgelet.Paper.lem_weak_equals_strong_ii"
+      ],
+      "note": "γ ∈ L¹(λ_α) ∩ L²(λ_α) is γ : Lp ℂ 2 (parameterMeasure ν) with Integrable γ; S_ρ[γ λ_α] is integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν) γ. Part i: measurable and bounded (ν σ-finite; no μ is involved). Part ii is stated with the defining pairing (S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ_α)} written out with the transform ridgelet μ ρ g on 𝒟_α, since the lemma assumes only that ρ is real Schwartz (for admissible ρ this is synthesis μ ν ρ γ (spectralEmbed μ ν g) by Theorem thm:B(ii))."
     },
     {
       "label": "lem:hermite-totality",
@@ -422,8 +501,15 @@
       "number": "B.2",
       "page": "27",
       "title": "Entire extension and totality of the Hermite coefficients",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_hermite_totality_i",
+        "OperatorRidgelet.Paper.lem_hermite_totality_ii",
+        "OperatorRidgelet.Paper.lem_hermite_totality_iii",
+        "OperatorRidgelet.Paper.lem_hermite_totality_iv",
+        "OperatorRidgelet.Paper.lem_hermite_totality_v",
+        "OperatorRidgelet.Paper.lem_hermite_totality_vi"
+      ],
+      "note": "𝒢_Q f(zξ) for complex z is the analytic continuation gaussFourierLine μ f ξ z = ∫ f(x) e^{-iz⟨x,ξ⟩} dμ, and G_f(zξ) = hermiteExtension μ Q f ξ z = e^{z²⟨Qξ,ξ⟩/2} 𝒢_Q f(zξ); He_n is Mathlib's Polynomial.hermite (probabilists' normalization, He_{n+1} = X He_n − He_n'), evaluated at ⟨x,ξ⟩/√⟨Qξ,ξ⟩ through Polynomial.aeval; the coefficients E_{μ_Q}[f He_n(⟨x,ξ⟩/τ)] are hermiteCoefficient μ Q f ξ n. Parts: i entire (Differentiable ℂ), ii the series (HasSum for every z), iii locally uniform convergence of the partial sums (TendstoLocallyUniformly), iv the bound with ‖f‖_{L²} = √∫|f|², v the Hermite inversion formula (real-variable iterated derivative at 0), vi totality (the coefficients over all ξ ≠ 0 and n determine f in L²(μ_Q), as injectivity). μ = 𝒩(0,Q) with Q a trace-class covariance."
     },
     {
       "label": "prop:coefficient-projection",
@@ -431,8 +517,17 @@
       "number": "B.3",
       "page": "28",
       "title": "Bounded backprojection and orthogonal range projection",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.prop_coefficient_projection_i",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_ii",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_iii",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_iv",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_v",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_vi",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_vii",
+        "OperatorRidgelet.Paper.prop_coefficient_projection_viii"
+      ],
+      "note": "𝒴 = L²(λ_α) with its usual norm (the norm through the partial bias Fourier transform equals the L²(λ_α)-norm by Plancherel). Λ_ρ = backprojection α ν ρ γ is the ray average eq:ray-average of a jointly measurable bias-Fourier representative of γ chosen through HasBiasFourier; backprojectionOf α ρ Φ is the ray average of a given representative Φ. Parts: i absolute convergence ν_α-a.e. for every jointly measurable representative, ii independence of the representative (a.e. equality of the ray averages of two representatives), iii square integrability with ∫|Λ_ρ γ|² ≤ C ‖γ‖² (the bound ‖Λ_ρ γ‖ ≤ √C ‖γ‖_𝒴 squared), iv the Hilbert-adjoint identity ⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨Λ_ρ γ, F⟩_{L²(ν_α)} in the manuscript's convention (linear in the first argument), v Λ_ρ W_ρ = C Id a.e., vi Π_ρ = coefficientProjection = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ (with Mathlib's starProjection onto spectralRange, which is complete) is the orthogonal projection onto Ran R_ρ = ridgeletRange, encoded as Π_ρ γ ∈ Ran R_ρ and γ − Π_ρ γ ∈ (Ran R_ρ)ᗮ, vii the minimum-norm solution C⁻¹ R_ρ J_α⁻¹ F of S_ρ γ = F (it solves the equation and has the least norm among solutions), viii the solution set is the minimum-norm solution plus (Ran R_ρ)ᗮ. ρ is α-admissible as in the manuscript; parts vi–viii involve μ through 𝒦_α and R_ρ."
     },
     {
       "label": "lem:weighted-duality",
