@@ -40,7 +40,7 @@ eigenbasis of $`M`; and $`(I+M)^{-1}` enters through the quadratic form
 $`\langle S(I+M)^{-1}Sx,x\rangle`.
 :::
 
-:::definition "aux:gaussian-target" (lean := "OperatorRidgelet.gaussianFun, OperatorRidgelet.gaussianFunDeriv2, OperatorRidgelet.gaussianSmooth, OperatorRidgelet.gaussianTarget, OperatorRidgelet.gaussianKappa, OperatorRidgelet.gaussianTargetResolvent, OperatorRidgelet.mixtureLayerCovariance, OperatorRidgelet.MemSpectralCore, OperatorRidgelet.MemSpectralCoreVec, OperatorRidgelet.toLpOrZero, OperatorRidgelet.gaussFourier_congr_ae, OperatorRidgelet.toLp_mem_spectralCore_iff, OperatorRidgelet.memSpectralCore_iff") (uses := "aux:trace-class-operators, def:spectral-space, aux:gaussian-mixture")
+:::definition "aux:gaussian-target" (lean := "OperatorRidgelet.gaussianFun, OperatorRidgelet.gaussianActDeriv2, OperatorRidgelet.gaussianSmooth, OperatorRidgelet.gaussianTarget, OperatorRidgelet.gaussianKappa, OperatorRidgelet.gaussianTargetResolvent, OperatorRidgelet.mixtureLayerCovariance, OperatorRidgelet.MemSpectralCore, OperatorRidgelet.MemSpectralCoreVec, OperatorRidgelet.toLpOrZero, OperatorRidgelet.gaussFourier_congr_ae, OperatorRidgelet.toLp_mem_spectralCore_iff, OperatorRidgelet.memSpectralCore_iff") (uses := "aux:trace-class-operators, def:spectral-space, aux:gaussian-mixture")
 The Gaussian activation $`\Phi(u)=\phi(u)=e^{-u^2/2}` with $`\phi''(b)=(b^2-1)e^{-b^2/2}`,
 the convolution $`(\rho*\phi_v)(c)` with the centred Gaussian of variance $`v\ge0`, the
 Gaussian target $`f_W(x)=e^{-\langle Wx,x\rangle/2}`, and, for $`M=Q^{1/2}WQ^{1/2}`,
