@@ -39,6 +39,19 @@ def main() -> int:
     not_ready = {m.group("name") for m in NOTREADY_RE.finditer(bridge) if "notReady := true" in m.group("opts")}
     tagged = {m.group("name") for m in NOTREADY_RE.finditer(bridge)}
 
+    # Proofs that cite a still-`sorry` Paper theorem depend on `sorryAx` even when their own text
+    # is `sorry`-free; propagate that to a fixed point so they are not reported as unregistered.
+    sorry_dep = {n for n, d in solution.items() if d.kind in ("theorem", "lemma") and "sorry" in d.body}
+    changed = True
+    while changed:
+        changed = False
+        for n, d in solution.items():
+            if n in sorry_dep or d.kind not in ("theorem", "lemma"):
+                continue
+            short = {m.rsplit(".", 1)[-1]: m for m in sorry_dep}
+            if any(re.search(r"\b" + re.escape(k) + r"\b", d.body) for k in short):
+                sorry_dep.add(n); changed = True
+
     warnings: list[str] = []
     for n in sorted(verified):
         if n not in solution:
@@ -48,7 +61,7 @@ def main() -> int:
     for n, d in sorted(solution.items()):
         if d.kind not in ("theorem", "lemma"):
             continue
-        proved = "sorry" not in d.body
+        proved = n not in sorry_dep
         if proved and n not in verified:
             warnings.append(f"`{n}` has no `sorry` but is not in theorem_names (add it and run comparator)")
         if not proved and n in verified:
