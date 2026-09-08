@@ -120,6 +120,42 @@ theorem IsLayerData.integrable_smul (hL : IsLayerData m a b) {c : Ω → ℂ}
     Integrable (fun y => c y • b y) m :=
   hL.integrable_b.bdd_smul C hc (Eventually.of_forall hC)
 
+omit [InnerProductSpace ℂ Y] [CompleteSpace Y] [IsFiniteMeasure m] in
+/-- A continuous activation is bounded along the pairings `y ↦ ⟪a_y, x⟫` of bounded
+directions. -/
+theorem IsLayerData.exists_bound_comp_inner (hL : IsLayerData m a b) {β : ℝ → ℝ}
+    (hβ : Continuous β) (x : H) : ∃ C : ℝ, ∀ y, |β ⟪a y, x⟫| ≤ C := by
+  obtain ⟨C, hC⟩ := isCompact_Icc.exists_bound_of_continuousOn
+    (s := Set.Icc (-(layerSupNorm a * ‖x‖)) (layerSupNorm a * ‖x‖)) hβ.continuousOn
+  refine ⟨C, fun y => ?_⟩
+  have h : |⟪a y, x⟫| ≤ layerSupNorm a * ‖x‖ :=
+    (abs_real_inner_le_norm _ _).trans
+      (mul_le_mul_of_nonneg_right (hL.norm_le_layerSupNorm y) (norm_nonneg _))
+  simpa [Real.norm_eq_abs] using hC _ (abs_le.mp h)
+
+omit [CompleteSpace Y] [IsFiniteMeasure m] in
+/-- The layer integrand `y ↦ β(⟪a_y, x⟫) b_y` is integrable for a continuous activation `β`. -/
+theorem IsLayerData.integrable_ofReal_comp_inner_smul (hL : IsLayerData m a b) {β : ℝ → ℝ}
+    (hβ : Continuous β) (x : H) :
+    Integrable (fun y => ((β ⟪a y, x⟫ : ℝ) : ℂ) • b y) m := by
+  obtain ⟨C, hC⟩ := hL.exists_bound_comp_inner hβ x
+  refine hL.integrable_smul (Complex.continuous_ofReal.comp_stronglyMeasurable
+    (hβ.comp_stronglyMeasurable (hL.stronglyMeasurable_inner x))).aestronglyMeasurable
+    (C := C) fun y => ?_
+  rw [Complex.norm_real, Real.norm_eq_abs]
+  exact hC y
+
+omit [IsFiniteMeasure m] in
+/-- `F_φ(x) = ∫ β(⟪a_y, x⟫) ⟪φ, b_y⟫ m(dy)` for a continuous activation `β`. -/
+theorem IsLayerData.layerObservable_eq_integral_inner (hL : IsLayerData m a b) {β : ℝ → ℝ}
+    (hβ : Continuous β) (φ : Y) (x : H) :
+    layerObservable m a b β φ x = ∫ y, ((β ⟪a y, x⟫ : ℝ) : ℂ) * inner ℂ φ (b y) ∂m := by
+  unfold layerObservable operatorLayer
+  rw [← integral_inner (hL.integrable_ofReal_comp_inner_smul hβ x) φ]
+  congr 1
+  funext y
+  rw [inner_smul_right]
+
 omit [IsFiniteMeasure m] [InnerProductSpace ℂ Y] [CompleteSpace Y] in
 /-- `y ↦ Φ(⟪a_y, x⟫)` is strongly measurable. -/
 theorem IsLayerData.stronglyMeasurable_gaussianFun_inner (hL : IsLayerData m a b) (x : H) :

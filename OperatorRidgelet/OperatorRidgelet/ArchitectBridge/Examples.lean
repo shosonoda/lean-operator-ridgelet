@@ -475,8 +475,8 @@ attribute [blueprint "ex:operator-layer-ii-m"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_m
 
 attribute [blueprint "ex:operator-layer-ii-n"
-  (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_n
+  (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_n
 
 attribute [blueprint "ex:operator-layer-ii-o"
   (statement := /-- $R_\rho\mathcal F$ has finite variation and moments. -/)
@@ -517,8 +517,8 @@ attribute [blueprint "ex:convolution-i"
   OperatorRidgelet.Paper.ex_convolution_i
 
 attribute [blueprint "ex:convolution-ii"
-  (statement := /-- $\mathcal F(x)=\psi*\beta(k*x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_ii
+  (statement := /-- $\mathcal F(x)=\psi*\beta(k*x)$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_ii
 
 attribute [blueprint "ex:convolution-iii"
   (statement := /-- $\|A\|_\infty=\|k\|_2$. -/)]
@@ -530,8 +530,8 @@ attribute [blueprint "ex:convolution-iv"
 
 attribute [blueprint "ex:convolution-v"
   (statement := /-- The convolution layer satisfies the standing hypotheses of the
-    neural-operator layer. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_v
+    neural-operator layer. -/)]
+  OperatorRidgelet.Paper.ex_convolution_v
 
 attribute [blueprint "ex:convolution-vi"
   (statement := /-- $\mathcal F$ commutes with all translations of $\mathbb T^d$. -/)
@@ -547,8 +547,8 @@ attribute [blueprint "ex:convolution-viii"
   (notReady := true)] OperatorRidgelet.Paper.ex_convolution_viii
 
 attribute [blueprint "ex:convolution-ix"
-  (statement := /-- $F_1(x)=\widehat\psi(0)\int_{\mathbb T^d}\beta((k*x)(y))\,\mathrm dy$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_ix
+  (statement := /-- $F_1(x)=\widehat\psi(0)\int_{\mathbb T^d}\beta((k*x)(y))\,\mathrm dy$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_ix
 
 attribute [blueprint "ex:convolution-x"
   (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$ and $\widehat\psi(0)\ne0$,
@@ -570,8 +570,8 @@ attribute [blueprint "ex:convolution-xiii"
   (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xiii
 
 attribute [blueprint "ex:dirichlet-i"
-  (statement := /-- $(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_i
+  (statement := /-- $(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_i
 
 attribute [blueprint "ex:dirichlet-ii"
   (statement := /-- $u=\mathsf Gx$ solves $-u''+u=x$, $u(0)=u(1)=0$. -/)
@@ -599,8 +599,8 @@ attribute [blueprint "ex:dirichlet-vii"
   OperatorRidgelet.Paper.ex_dirichlet_vii
 
 attribute [blueprint "ex:dirichlet-viii"
-  (statement := /-- The layer is $\mathcal F(x)=\mathsf G\beta(\mathsf Gx)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_viii
+  (statement := /-- The layer is $\mathcal F(x)=\mathsf G\beta(\mathsf Gx)$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_viii
 
 attribute [blueprint "ex:dirichlet-ix"
   (statement := /-- $\mathsf Gx=\sum_n\lambda_ne_n[\operatorname{ReLU}(\langle

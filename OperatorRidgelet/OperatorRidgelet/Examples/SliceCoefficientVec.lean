@@ -55,6 +55,7 @@ section AEMeasurable
 variable (hcoord : ∀ v : H, AEMeasurable (fun x => ⟪x, v⟫) μ)
 include hcoord
 
+omit [SFinite μ] [CompleteSpace Y] in
 /-- The kernel `(x, c) ↦ ρ(⟪a, x⟫ + c) • F(x)` is jointly integrable against `μ ⊗ dc`. -/
 theorem integrable_ridgeletVec_kernel' {F : H → Y} (hF : Integrable F μ) (a : H) :
     Integrable (fun q : H × ℝ => (ρ (⟪a, q.1⟫ + q.2) : ℂ) • F q.1) (μ.prod volume) := by
@@ -83,11 +84,13 @@ theorem integrable_ridgeletVec_kernel' {F : H → Y} (hF : Integrable F μ) (a :
     rw [this]
     exact hF.norm.mul_const _
 
+omit [CompleteSpace Y] in
 /-- The bias function `R_ρ F(a, ·)` is integrable. -/
 theorem integrable_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) :
     Integrable (fun c : ℝ => ridgeletVec μ ρ F (a, c)) :=
   (integrable_ridgeletVec_kernel' μ ρ hcoord hF a).integral_prod_right
 
+omit [SFinite μ] [CompleteSpace Y] in
 /-- The bias function `R_ρ F(a, ·)` is continuous. -/
 theorem continuous_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) :
     Continuous fun c : ℝ => ridgeletVec μ ρ F (a, c) := by
@@ -115,14 +118,14 @@ theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) 
       (Complex.exp (-((ω * q.2 : ℝ) * Complex.I)) * (ρ (⟪a, q.1⟫ + q.2) : ℂ)) • F q.1)
       (μ.prod volume) := by
     have h := integrable_ridgeletVec_kernel' μ ρ hcoord hF a
-    refine (h.smul_of_top_left (φ := fun q : H × ℝ => Complex.exp (-((ω * q.2 : ℝ) * Complex.I)))
+    refine (h.smul_of_top_right (φ := fun q : H × ℝ => Complex.exp (-((ω * q.2 : ℝ) * Complex.I)))
       (memLp_top_of_bound ((by fun_prop : Continuous fun t : ℝ =>
         Complex.exp (-((ω * t : ℝ) * Complex.I))).comp_aestronglyMeasurable
         measurable_snd.aestronglyMeasurable) 1 (Eventually.of_forall fun q => ?_))).congr
       (Eventually.of_forall fun q => ?_)
     · rw [show -((ω * q.2 : ℝ) * Complex.I) = ((-(ω * q.2) : ℝ) : ℂ) * Complex.I by
         push_cast; ring, Complex.norm_exp_ofReal_mul_I]
-    · simp only [smul_smul]
+    · simp only [Pi.smul_apply', smul_smul]
   have hchar : ∀ x : H, character (-(ω • a)) x =
       Complex.exp (((ω * ⟪a, x⟫ : ℝ) : ℂ) * Complex.I) := by
     intro x
@@ -139,8 +142,8 @@ theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) 
     ring
   simp_rw [hexp]
   calc ∫ c : ℝ, Complex.exp (-((ω * c : ℝ) * Complex.I)) • ridgeletVec μ ρ F (a, c)
-      = ∫ c : ℝ, ∫ x, (Complex.exp (-((ω * c : ℝ) * Complex.I)) *
-          (ρ (⟪a, x⟫ + c) : ℂ)) • F x ∂μ := by
+      = ∫ c : ℝ, (∫ x, (Complex.exp (-((ω * c : ℝ) * Complex.I)) *
+          (ρ (⟪a, x⟫ + c) : ℂ)) • F x ∂μ) := by
         congr 1
         funext c
         unfold ridgeletVec
@@ -148,8 +151,8 @@ theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) 
         congr 1
         funext x
         rw [smul_smul]
-    _ = ∫ x, ∫ c : ℝ, (Complex.exp (-((ω * c : ℝ) * Complex.I)) *
-          (ρ (⟪a, x⟫ + c) : ℂ)) • F x ∂μ :=
+    _ = ∫ x, (∫ c : ℝ, (Complex.exp (-((ω * c : ℝ) * Complex.I)) *
+          (ρ (⟪a, x⟫ + c) : ℂ)) • F x) ∂μ :=
         (integral_integral_swap hF').symm
     _ = ∫ x, (character (-(ω • a)) x * filterFourier ρ ω) • F x ∂μ := by
         congr 1
@@ -168,6 +171,7 @@ theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) 
         funext x
         rw [smul_smul, mul_comm]
 
+omit hcoord [MeasurableSpace H] [CompleteSpace Y] in
 /-- The `Y`-valued explicit coefficient is a Fourier transform along each ray. -/
 theorem coefficientFormulaVec_eq_fourier (G : H → Y) (a : H) (c : ℝ) :
     coefficientFormulaVec ρ G (a, c) =
@@ -187,6 +191,7 @@ theorem coefficientFormulaVec_eq_fourier (G : H → Y) (a : H) (c : ℝ) :
   rw [this]
   ring
 
+omit hcoord [SFinite μ] [CompleteSpace Y] in
 /-- `𝒢_μ F` is bounded by `∫ ‖F‖ dμ`. -/
 theorem norm_gaussFourierVec_le (F : H → Y) (ξ : H) :
     ‖gaussFourierVec μ F ξ‖ ≤ ∫ x, ‖F x‖ ∂μ := by
@@ -196,6 +201,7 @@ theorem norm_gaussFourierVec_le (F : H → Y) (ξ : H) :
   funext x
   rw [norm_smul, norm_character, one_mul]
 
+omit [SFinite μ] [CompleteSpace Y] in
 /-- `𝒢_μ F` is continuous for integrable `F`. -/
 theorem continuous_gaussFourierVec' {F : H → Y} (hF : Integrable F μ) :
     Continuous (gaussFourierVec μ F) := by
@@ -210,16 +216,18 @@ theorem continuous_gaussFourierVec' {F : H → Y} (hF : Integrable F μ) :
     exact (by unfold character; fun_prop : Continuous fun ξ : H => character ξ x).smul
       continuous_const
 
+omit [SFinite μ] [CompleteSpace Y] in
 /-- The Fourier slice `u ↦ ρ̂(2πu) • 𝒢_μ F(-2πu a)` is integrable. -/
 theorem integrable_fourierVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) :
     Integrable fun u : ℝ =>
       filterFourier ρ (2 * Real.pi * u) • gaussFourierVec μ F (-((2 * Real.pi * u) • a)) := by
   have h1 : Integrable fun u : ℝ => filterFourier ρ (2 * Real.pi * u) :=
     (integrable_filterFourier ρ).comp_mul_left' (by positivity)
-  refine h1.smul_of_top_left (memLp_top_of_bound ?_ (∫ x, ‖F x‖ ∂μ)
-    (Eventually.of_forall fun u => norm_gaussFourierVec_le μ F _))
-  exact ((continuous_gaussFourierVec' μ hcoord hF).comp
-    (by fun_prop : Continuous fun u : ℝ => -((2 * Real.pi * u) • a))).aestronglyMeasurable
+  have hb : MemLp (fun u : ℝ => gaussFourierVec μ F (-((2 * Real.pi * u) • a))) ⊤ volume :=
+    memLp_top_of_bound ((continuous_gaussFourierVec' μ hcoord hF).comp
+      (by fun_prop : Continuous fun u : ℝ => -((2 * Real.pi * u) • a))).aestronglyMeasurable
+      (∫ x, ‖F x‖ ∂μ) (Eventually.of_forall fun u => norm_gaussFourierVec_le μ F _)
+  exact h1.smul_of_top_left hb
 
 /-- **The `Y`-valued slice as a coefficient**: for integrable `F`, `R_ρ F = γ_G` with
 `G = 𝒢_μ F`. -/

@@ -10,8 +10,10 @@ import OperatorRidgelet.Examples.HingeMeasure
 import OperatorRidgelet.Examples.Convolution
 import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
+import OperatorRidgelet.Examples.DirichletOperator
 import OperatorRidgelet.Examples.LayerRidgelet
 import OperatorRidgelet.Examples.SliceCoefficient
+import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Paper.Transform
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
@@ -812,6 +814,7 @@ theorem ex_operator_layer_ii_m (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
         (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
   sorry
 
+set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ = γ_{𝒢_Q ℱ}` for every band-pass `ρ`. -/
@@ -820,8 +823,9 @@ theorem ex_operator_layer_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
     ridgeletVec μ ρ (operatorLayer m a b gaussianFun) =
-      coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
-  sorry
+      coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianFun)) :=
+  ridgeletVec_eq_coefficientFormulaVec' μ ρ hμ.aemeasurable_inner
+    (hL.integrable_operatorLayer_gaussianFun' hμ)
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ` has finite variation and moments. -/
@@ -919,6 +923,7 @@ theorem ex_convolution_i (d : ℕ) (k : TorusL2 d) :
       ⟪convDirection k y, x⟫ = ∫ t, k (y - t) * x t ∂torusHaar d := fun x y =>
   inner_convDirection k x y
 
+set_option linter.unusedVariables false in
 /-- **Example [ex:convolution]** Periodic convolution layer.  With `a_y = k(y - ·)` and
 `b_y = ψ(· - y)`, the layer is `ℱ(x) = ψ * β(k * x)`. -/
 theorem ex_convolution_ii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc : Continuous β)
@@ -926,8 +931,8 @@ theorem ex_convolution_ii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
     ∀ x : TorusL2 d,
       ⇑(operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x)
         =ᵐ[torusHaar d] fun t =>
-          ∫ y, ((ψ (t - y) * β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
-  sorry
+          ∫ y, ((ψ (t - y) * β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := fun x =>
+  operatorLayer_conv_coeFn_ae k ψ hβc x
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `‖A‖_∞ = ‖k‖₂`. -/
 theorem ex_convolution_iii (d : ℕ) (k : TorusL2 d) :
@@ -943,8 +948,8 @@ theorem ex_convolution_iv (d : ℕ) (ψ : TorusL2 d) :
 standing hypotheses of the neural-operator layer (`y ↦ a_y`, `y ↦ b_y` are continuous and
 bounded into `L²`), so Example `ex:operator-layer` applies. -/
 theorem ex_convolution_v (d : ℕ) (k ψ : TorusL2 d) :
-    IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) := by
-  sorry
+    IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) :=
+  isLayerData_conv k ψ
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `ℱ` commutes with all translations
 of `𝕋^d`: `ℱ(τ_z x) = τ_z ℱ(x)`. -/
@@ -978,6 +983,7 @@ theorem ex_convolution_viii (d : ℕ) (k : TorusL2 d)
     HasInfiniteRank (layerA (torusHaar d) (convDirection k)) := by
   sorry
 
+set_option linter.unusedVariables false in
 /-- **Example [ex:convolution]** Periodic convolution layer.  With `φ ≡ 1` the observable is
 `F_1(x) = ψ̂(0) ∫ β((k * x)(y)) dy`. -/
 theorem ex_convolution_ix (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc : Continuous β)
@@ -985,8 +991,8 @@ theorem ex_convolution_ix (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
     ∀ x : TorusL2 d,
       layerObservable (torusHaar d) (convDirection k) (convOutput ψ) β (torusOne d) x =
         torusFourierCoeff (fun t => (ψ t : ℂ)) 0 *
-          ∫ y, ((β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
-  sorry
+          ∫ y, ((β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := fun x =>
+  layerObservable_conv_torusOne k ψ hβc x
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  If `k̂(n) ≠ 0` for infinitely many
 `n` and `ψ̂(0) ≠ 0`, then the observable `F_1` of the Gaussian-activation layer is not
@@ -1034,8 +1040,8 @@ section Dirichlet
 the integral operator with kernel `g`: `(𝖦x)(y) = ∫₀¹ g(y,t) x(t) dt`. -/
 theorem ex_dirichlet_i :
     ∀ x : UnitL2, (dirichletOperator x : UnitOpenInterval → ℝ) =ᵐ[volume]
-      fun y : UnitOpenInterval => ∫ t : UnitOpenInterval, dirichletKernel y t * x t := by
-  sorry
+      fun y : UnitOpenInterval => ∫ t : UnitOpenInterval, dirichletKernel y t * x t :=
+  dirichletOperator_apply_ae
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  For a
 continuous source `x`, `u = 𝖦x` solves `-u'' + u = x` on `(0,1)` with `u(0) = u(1) = 0`. -/
@@ -1076,13 +1082,14 @@ theorem ex_dirichlet_vi :
 theorem ex_dirichlet_vii : IsLayerData volume dirichletDirection dirichletOutput :=
   isLayerData_dirichlet
 
+set_option linter.unusedVariables false in
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  With
 `a_y = b_y = g(y,·)` the layer is `ℱ(x) = 𝖦 β(𝖦x)`. -/
 theorem ex_dirichlet_viii (β : ℝ → ℝ) (hβc : Continuous β) (hβp : HasPolynomialGrowth β) :
     ∀ x : UnitL2, operatorLayer volume dirichletDirection dirichletOutput β x =
       Complex.ofRealCLM.compLp
-        (dirichletOperator (toLpOrZero 2 volume fun t => β (dirichletOperator x t))) := by
-  sorry
+        (dirichletOperator (toLpOrZero 2 volume fun t => β (dirichletOperator x t))) :=
+  fun x => operatorLayer_dirichlet_eq hβc x
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  `𝖦` is
 the exact ReLU network `𝖦x = ∑_n λ_n e_n [ReLU(⟨e_n,x⟩) - ReLU(-⟨e_n,x⟩)]`. -/

@@ -77,6 +77,7 @@ theorem integrable_ridgelet_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H
     Integrable (fun c : ℝ => ridgelet μ ρ f (a, c)) :=
   (integrable_ridgelet_kernel' μ ρ hcoord hf a).integral_prod_right
 
+omit [SFinite μ] in
 /-- The bias function `R_ρ f(a, ·)` is continuous. -/
 theorem continuous_ridgelet_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H) :
     Continuous fun c : ℝ => ridgelet μ ρ f (a, c) := by
@@ -165,6 +166,7 @@ theorem aestronglyMeasurable_character' (ξ : H) : AEStronglyMeasurable (charact
     (hcoord ξ).aestronglyMeasurable
   exact h
 
+omit [SFinite μ] in
 /-- `𝒢_μ f` is continuous for integrable `f`. -/
 theorem continuous_gaussFourier' {f : H → ℂ} (hf : Integrable f μ) :
     Continuous (gaussFourier μ f) := by
@@ -178,6 +180,7 @@ theorem continuous_gaussFourier' {f : H → ℂ} (hf : Integrable f μ) :
   · filter_upwards with x
     exact continuous_const.mul (by unfold character; fun_prop)
 
+omit [SFinite μ] in
 /-- The Fourier slice `u ↦ ρ̂(2πu) 𝒢_μ f(-2πu a)` is integrable. -/
 theorem integrable_fourier_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H) :
     Integrable fun u : ℝ =>

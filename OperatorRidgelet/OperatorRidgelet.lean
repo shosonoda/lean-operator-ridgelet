@@ -33,8 +33,10 @@ import OperatorRidgelet.Examples.HingeMeasure
 import OperatorRidgelet.Examples.Convolution
 import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
+import OperatorRidgelet.Examples.DirichletOperator
 import OperatorRidgelet.Examples.LayerRidgelet
 import OperatorRidgelet.Examples.SliceCoefficient
+import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw

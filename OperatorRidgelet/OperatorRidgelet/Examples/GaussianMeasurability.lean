@@ -219,6 +219,28 @@ theorem IsLayerData.integrable_layerObservable_gaussianFun' (hμ : IsCenteredGau
   Integrable.of_bound (hL.aestronglyMeasurable_layerObservable_gaussianFun' hμ φ) _
     (Eventually.of_forall (hL.norm_layerObservable_gaussianFun_le φ))
 
+omit [IsProbabilityMeasure μ] [CompleteSpace H] [CompleteSpace Y] in
+/-- The layer `ℱ` is a.e. strongly measurable under `𝒩(0,Q)`, for an arbitrary σ-algebra on
+`H`. -/
+theorem IsLayerData.aestronglyMeasurable_operatorLayer_gaussianFun' (hμ : IsCenteredGaussian Q μ)
+    (hL : IsLayerData m a b) :
+    AEStronglyMeasurable (operatorLayer m a b gaussianFun) μ := by
+  unfold operatorLayer
+  have h1 : AEStronglyMeasurable (fun z : H × Ω => ⟪a z.2, z.1⟫) (μ.prod m) :=
+    aestronglyMeasurable_inner_prod_of_aemeasurable hμ.aemeasurable_inner hL.stronglyMeasurable_a
+  have h2 : AEStronglyMeasurable (fun z : H × Ω => ((gaussianFun ⟪a z.2, z.1⟫ : ℝ) : ℂ) • b z.2)
+      (μ.prod m) :=
+    ((Complex.continuous_ofReal.comp continuous_gaussianFun).comp_aestronglyMeasurable h1).smul
+      (hL.stronglyMeasurable_b.comp_measurable measurable_snd).aestronglyMeasurable
+  exact h2.integral_prod_right'
+
+omit [CompleteSpace H] [CompleteSpace Y] in
+/-- The layer `ℱ` is integrable under `𝒩(0,Q)`, for an arbitrary σ-algebra on `H`. -/
+theorem IsLayerData.integrable_operatorLayer_gaussianFun' (hμ : IsCenteredGaussian Q μ)
+    (hL : IsLayerData m a b) : Integrable (operatorLayer m a b gaussianFun) μ :=
+  Integrable.of_bound (hL.aestronglyMeasurable_operatorLayer_gaussianFun' hμ) _
+    (Eventually.of_forall hL.norm_operatorLayer_gaussianFun_le)
+
 /-- **Example `ex:operator-layer`(ii)**, the transform of the scalar observable, for an
 arbitrary σ-algebra on `H`:
 `𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/

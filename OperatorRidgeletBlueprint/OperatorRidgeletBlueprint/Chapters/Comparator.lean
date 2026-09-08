@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 148.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 154.
 
 :::table +header
 *
@@ -3113,7 +3113,7 @@ Status: *verified by comparator*.
 
 ## Example 7.4 — Neural-operator layer as an integral network (`ex:operator-layer`)
 
-Blueprint node: {bpref "ex:operator-layer"}[]. Status: *partial 13/26* (13 of 26 Lean theorems verified).
+Blueprint node: {bpref "ex:operator-layer"}[]. Status: *partial 14/26* (14 of 26 Lean theorems verified).
 
 Formalization note. Setting: (Ω,m) a finite measure space, a : Ω → H, b : Ω → Y with IsLayerData m a b (Borel, ‖a\_y‖ bounded, ∫‖b\_y‖ < ∞), β continuous of polynomial growth (HasPolynomialGrowth), ℱ = operatorLayer m a b β, F\_φ = layerObservable = ⟨ℱ(·),φ⟩\_Y = inner ℂ φ (ℱ x), w\_φ = layerWeight, ‖A‖\_∞ = layerSupNorm a, A = layerA m a : H →ₗ (Ω →ₘ\[m\] ℝ), Γ = layerMeasure m a b (VectorMeasure map of withDensityᵥ), S\_y = layerCovariance Q a y. i\_a: ℱ = integralNetwork β Γ; i\_b: ‖Γ‖\_TV ≤ ∫⁻‖b\_y‖; i\_c: ∫(‖a‖²+c²)d|Γ| ≤ ‖A‖²\_∞ ‖Γ‖\_TV (second parameter moment ≤ ‖A‖²\_∞); i\_d: the L²(ζ;Y) rate of cor:vector-rates for the polar sampled network polarSampledNetwork β Γ of Γ = layerMeasure m a b with samples from polarLaw Γ (Sampling/Defs, exactly the objects of cor:vector-rates), as a Bochner expectation over sampleLaw n, with the manuscript's constant 2(∫‖b\_y‖ dm)²/n(|β(0)|²+Lip(β)²(1+∫‖x‖²dζ)‖A‖²\_∞) (which dominates the constant of cor:vector-rates by i\_b and i\_c); i\_e: the C(K) bound of thm:lipschitz-barron for the polar sampled network of the scalar measure Γ\_φ = layerMeasure m a w\_φ = ι\_#(w\_φ m) with samples from polarLaw Γ\_φ, with the constant 8‖w\_φ‖\_\{L¹(m)\}/√n(|β(0)|+Lip(β)R\_K‖A‖\_∞), n ≥ 1 (the earlier local Examples.layerSampleVec/layerSampleScalar, which sampled y ∈ Ω from normalizedLaw, and the lower-integral form were replaced by the Sampling/Defs objects the manuscript's proof invokes). ii (β = Φ = gaussianFun): ii\_a F\_φ ∈ 𝒟\_α; ii\_b, ii\_c the two formulas of eq:operator-layer-transform (with gaussianSmooth); ii\_d S\_y ≥ (1+‖Q‖‖A‖²\_∞)⁻¹Q; ii\_e regularity along rays; ii\_f the frame-operator representation of thm:C(iii); ii\_g R\_ρ F\_φ = γ\_G; ii\_h finite variation and moments; ii\_i the synthesis identity with any Lipschitz non-polynomial β'; ii\_j the rate of eq:spectral-barron in the conventions of Section 6, as thm\_E\_iv with γ = R\_ρ F\_φ (densitySampledNetwork, densityLaw, densityWeight, secondMoment, compactSupNorm, compactRadius); ii\_k–ii\_p the same for ℱ as a Y-valued target (membership in 𝒟\_α(Y), 𝒢\_Q ℱ, regularity, R\_ρ ℱ = γ, moments, synthesis). iii\_a: the ReLU double integral over m ⊗ db; iii\_b: ℱ = integralNetwork ReLU of layerHingeMeasure; iii\_c, iii\_d: finiteness and moments of that measure. iv: A of infinite rank (HasInfiniteRank (layerA m a)), w\_φ > 0 a.e. (real positive: 0 < re, im = 0) ⇒ F\_φ not cylindrical.
 
@@ -3463,7 +3463,7 @@ theorem ex_operator_layer_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
       coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_o`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L617):
 
@@ -3582,7 +3582,7 @@ Status: *verified by comparator*.
 
 ## Example 7.5 — Periodic convolution layer (`ex:convolution`)
 
-Blueprint node: {bpref "ex:convolution"}[]. Status: *partial 3/13* (3 of 13 Lean theorems verified).
+Blueprint node: {bpref "ex:convolution"}[]. Status: *partial 6/13* (6 of 13 Lean theorems verified).
 
 Formalization note. Concrete torus: Torus d = Fin d → AddCircle (2π), torusHaar d = the product of the normalized Haar measures (a probability measure), H = TorusL2 d = Lp ℝ 2, Y = TorusL2C d = Lp ℂ 2, k ψ : TorusL2 d, a\_y = convDirection k y = k(y - ·) and b\_y = convOutput ψ y = ψ(· - y) through Lp.compMeasurePreserving, τ\_z = torusTranslate d z (a linear isometry), Fourier coefficients torusFourierCoeff with the characters torusCharacter n = ∏ fourier (n j) (t j), (I-Δ)^\{-s\} = besselOperator d s (the bounded operator multiplying the n-th Fourier coefficient by (1+|n|²)^\{-s\}, chosen through Classical.choose). i: ⟨a\_y,x⟩ = (k\*x)(y); ii: ℱ(x) = ψ\*β(k\*x) a.e.; iii: ‖A‖\_∞ = ‖k‖; iv: ∫‖b\_y‖ = ‖ψ‖; v: IsLayerData (so ex:operator-layer applies); vi: translation equivariance ℱ(τ\_z x) = τ\_z ℱ(x); vii: 'every isometry of 𝕋^d fixing k and ψ' is read as an isometric additive automorphism σ that is measure preserving with k ∘ σ = k and ψ ∘ σ = ψ a.e. (translations being claim vi), with ℱ(x ∘ σ) = ℱ(x) ∘ σ; viii: infinitely many nonzero k̂(n) ⇒ A of infinite rank; ix: F\_1 = ψ̂(0) ∫ β((k\*x)(y)) dy with φ ≡ 1 = torusOne d; x: non-cylindricity of F\_1 for β = Φ (the reading given by the proof) when ψ̂(0) ≠ 0 and k̂(n) ≠ 0 for infinitely many n; xi: IsTraceClassCovariance (besselOperator d s) for s > d/2; xii: translation invariance of (I-Δ)^\{-s\}; xiii: R\_ρ\[f ∘ τ\_z\](a,c) = R\_ρ f(τ\_z a, c) for μ = 𝒩(0,(I-Δ)^\{-s\}) (Borel structure on TorusL2 d taken as instance hypotheses) and f ∈ L¹(μ).
 
@@ -3611,7 +3611,7 @@ theorem ex_convolution_ii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           ∫ y, ((ψ (t - y) * β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_iii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L720):
 
@@ -3643,7 +3643,7 @@ theorem ex_convolution_v (d : ℕ) (k ψ : TorusL2 d) :
     IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_vi`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L737):
 
@@ -3705,7 +3705,7 @@ theorem ex_convolution_ix (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           ∫ y, ((β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_x`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L779):
 
@@ -3765,7 +3765,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 7.6 — Dirichlet solution operator with a pointwise nonlinearity (`ex:dirichlet`)
 
-Blueprint node: {bpref "ex:dirichlet"}[]. Status: *partial 3/11* (3 of 11 Lean theorems verified).
+Blueprint node: {bpref "ex:dirichlet"}[]. Status: *partial 5/11* (5 of 11 Lean theorems verified).
 
 Formalization note. Ω = (0,1) is the subtype UnitOpenInterval with Lebesgue measure volume (a probability measure), H = UnitL2 = Lp ℝ 2 volume, Y = UnitL2C (complex), g = dirichletKernel, 𝖦 = dirichletOperator (the integral operator with kernel g, chosen through its defining property), λ\_n = dirichletEigenvalue, e\_n = dirichletEigenfunction (e\_0 = 0), a\_y = dirichletDirection y = g(y,·), b\_y = dirichletOutput y, 𝖦\_N = dirichletReLUTruncation N (spectralReLUNetwork over n ∈ \[1,N\]). i: (𝖦x)(y) = ∫ g(y,t)x(t)dt a.e.; ii: for continuous x, u = 𝖦x has u(0) = u(1) = 0, is differentiable on (0,1), and u'' = u - x there; iii: eigenpairs for n ≥ 1; iv: IsTraceClassCovariance 𝖦 (injective, positive, self-adjoint, trace class); v: infinite rank; vi: sup\_y ‖g(y,·)‖₂ < ∞ (= ‖A‖\_∞ by definition); vii: IsLayerData (ex:operator-layer applies); viii: ℱ(x) = 𝖦β(𝖦x); ix: the exact ReLU network as a HasSum; x: ‖𝖦x - 𝖦\_N x‖ ≤ λ\_\{N+1\}‖x‖; xi: λ\_\{N+1\} ≤ π⁻²(N+1)⁻² (the O(N^\{-2\}) rate). The remark that with Q = P = 𝖦 the input measure is the law of the solution with white-noise source is not formalized.
 
@@ -3779,7 +3779,7 @@ theorem ex_dirichlet_i :
       fun y : UnitOpenInterval => ∫ t : UnitOpenInterval, dirichletKernel y t * x t := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L828):
 
@@ -3861,7 +3861,7 @@ theorem ex_dirichlet_viii (β : ℝ → ℝ) (hβc : Continuous β) (hβp : HasP
         (dirichletOperator (toLpOrZero 2 volume fun t => β (dirichletOperator x t))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_ix`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L875):
 
