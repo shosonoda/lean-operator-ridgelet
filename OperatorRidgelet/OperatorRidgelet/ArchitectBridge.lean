@@ -135,10 +135,6 @@ attribute [blueprint "operator-ridgelet:operator-parameter-redundancy"
 
 /-! ## Statistical-learning components (intended for FoML) -/
 
-attribute [blueprint "operator-ridgelet:foml-relu"
-  (statement := /-- The rectified linear unit is $\operatorname{ReLU}(x)=\max(x,0)$. -/)
-  (hasProof := false)] OperatorRidgelet.relu
-
 attribute [blueprint "operator-ridgelet:foml-relu-lipschitz"
   (statement := /-- ReLU is $1$-Lipschitz. -/)] OperatorRidgelet.abs_relu_sub_relu_le
 

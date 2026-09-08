@@ -1,5 +1,7 @@
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
+import OperatorRidgelet.Tempered.Defs
+import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Activation
 import OperatorRidgelet.Cylindrical
@@ -14,9 +16,9 @@ import Mathlib.MeasureTheory.VectorMeasure.WithDensity
 # Definitions for Section 7 (genuinely infinite-dimensional examples) and Appendix E
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
-module.  They build on the Section 2–4 objects (`gaussFourier`, `ridgelet`, `spectralCore`,
-`spectralTarget`, `IsRegularAlongRays`, `integralNetwork`, ...) and record the following design
-choices.
+module.  They build on the Section 2–6 objects (`gaussFourier`, `ridgelet`, `spectralCore`,
+`spectralTarget`, `IsRegularAlongRays`, `integralNetwork`, `gaussianFun`, `compactSupNorm`,
+`sampledNetwork`, ...) and record the following design choices.
 
 ## Cylindrical functions
 
@@ -30,11 +32,11 @@ range of a linear map is not finite dimensional.
 
 Mathlib v4.32.0 has neither trace-class operators nor Fredholm determinants.
 
-* `traceOf P = ∑ ⟪P e_i, e_i⟫` along a Hilbert basis for which the sum converges
-  (`HasSummableTrace`; `0` if there is none).  For a positive operator the value is basis
-  independent; this is a later proof obligation, not part of the definition.
-* `IsPositiveTraceClass P` is the covariance hypothesis without injectivity (positive,
-  self-adjoint, summable trace), used by Lemma `lem:gaussian-quadratic`.
+* The trace `traceOf P = ∑ ⟪P e_i, e_i⟫` along a Hilbert basis for which the sum converges
+  (`HasSummableTrace`; `0` if there is none) and the hypothesis `IsPositiveTraceClass P` of
+  Lemma `lem:gaussian-quadratic` (positive, self-adjoint, summable trace: the covariance
+  hypothesis `IsTraceClassCovariance` without injectivity, of which it is the parent
+  structure) are defined in `OperatorRidgelet.Transform.Defs` next to `IsTraceClassCovariance`.
 * Square roots such as `Q^{1/2}` are data `S` with `IsPositiveSqrt S Q` (`S` positive
   self-adjoint and `S * S = Q`).
 * `(I + M)⁻¹` is `Ring.inverse (1 + M)` in the ring `H →L[ℝ] H` (`0` if `1 + M` is not a unit;
@@ -48,9 +50,10 @@ Mathlib v4.32.0 has neither trace-class operators nor Fredholm determinants.
 
 ## Gaussian functions
 
-`gaussianAct u = e^{-u²/2}` is the Gaussian activation `Φ = φ` of Section 7 (this is the
-function the manuscript denotes `Φ` there; it is not the distribution function),
-`gaussianActDeriv2 b = (b² - 1) e^{-b²/2}` is `φ''`, `gaussianSmooth ρ v c = (ρ * φ_v)(c)` is
+The Gaussian activation `Φ = φ`, `φ(u) = e^{-u²/2}`, of Section 7 is `gaussianFun` of
+`OperatorRidgelet.Tempered.Defs` (the function the manuscript denotes `Φ` there; it is not the
+distribution function `gaussianCdf`), `gaussianActDeriv2 b = (b² - 1) e^{-b²/2}` is its second
+derivative `φ''`, `gaussianSmooth ρ v c = (ρ * φ_v)(c)` is
 the convolution with the centred Gaussian of variance `v` (Mathlib's `gaussianReal 0 v`, which
 is `δ_0` for `v = 0`), `gaussianTarget W x = e^{-⟨Wx,x⟩/2}` is `f_W`, and
 `gaussianKappa S W ξ = ⟨S (I+M)⁻¹ S ξ, ξ⟩` is `κ_W` for `S = Q^{1/2}` and `M = S W S`.
@@ -70,14 +73,34 @@ measure `layerMeasure m a b = ι_#(b_y m(dy))`, the covariances `layerCovariance
 and the hinge coefficient measure `layerHingeMeasure` of the ReLU form.  The standing
 hypotheses on `(a, b)` are `IsLayerData m a b`.
 
-## Local sampling definitions (to be reconciled with `OperatorRidgelet.Sampling.Defs`)
+## Sampling claims
 
-The sampling claims inside the examples are stated with the local definitions of
-`OperatorRidgelet.Examples`: `supNormOn K f = ‖f‖_{C(K)}`, `compactRadius K = R_K`,
-`gaussianReLUSample a x = F_{Q,N}(x)`, `normalizedLaw m w = ‖w‖ m / ∫‖w‖ dm`,
-`polarSample β λ γ θ x = f_N(x)` (the polar sampled network `eq:polar-network` of `γ λ`),
-`secondMoment p = M₂²`, and the pushforward samples `layerSampleScalar`, `layerSampleVec` of a
-layer.  Expectations are integrals over `Measure.pi (fun _ : Fin N => law)`.
+The sampling claims inside the examples are stated with the Section 6 objects of
+`OperatorRidgelet.Sampling.Defs`: `‖·‖_{C(K)}` is `compactSupNorm K`, `R_K` is `compactRadius K`,
+`M₂²` is `secondMoment`, the sample `θ_1, …, θ_N ∼ p` has the law `sampleLaw N p`, and the
+expectation `𝔼‖f_N − f‖` is the Bochner integral against it.
+
+* The sampled network of a coefficient measure `γ λ_α` with a density (Example
+  `ex:closed-form`(iii), Example `ex:operator-layer`(ii)) is `densitySampledNetwork β λ_α γ`
+  with the law `densityLaw λ_α γ = |γ| λ_α / V`, `V = densityWeight λ_α γ`, exactly as in
+  Theorem `thm:E`(iv).
+* The sampled networks of the neural-operator layer `ℱ = S_β[Γ]`, `Γ = ι_#(b_y m(dy))`, and of
+  its scalar observables `F_φ = S_β[Γ_φ]`, `Γ_φ = ι_#(w_φ m)` (Example `ex:operator-layer`(i))
+  are the polar sampled networks `polarSampledNetwork β Γ` of Corollary `cor:vector-rates` and
+  Theorem `thm:lipschitz-barron`, with samples from `polarLaw Γ`; the manuscript invokes exactly
+  these two results, and the constants `∫ ‖b_y‖ m(dy) ≥ ‖Γ‖_TV` and `‖A‖_∞ ≥ M₂` are kept.
+* The discretized Gaussian-parameter ReLU network `F_{Q,N}` of Corollary
+  `cor:relu-discretization` is `sampledNetwork ReLU 1 1 θ` with `θ_j = (a_j, 0)`, i.e. samples
+  of the law `ι_# 𝒩(0,Q)`, `ι(a) = (a, 0)`, which is the case `V = 1`, `c = 0`, `h = 1` of
+  Theorem `thm:lipschitz-barron` used in the manuscript's proof.
+
+An earlier version of this module carried local stand-ins (`Examples.supNormOn`,
+`Examples.compactRadius`, `Examples.secondMoment`, `Examples.normalizedLaw`,
+`Examples.polarSample`, `Examples.gaussianReLUSample`, `Examples.layerSampleScalar`,
+`Examples.layerSampleVec`) and stated the expectations as lower integrals `∫⁻` of
+`ENNReal.ofReal` over `Measure.pi`; they were removed in favour of the Section 6 definitions and
+of the Bochner-integral convention of Section 6 (the two conventions agree whenever the error is
+integrable, which is part of the content of the cited Section 6 theorems).
 
 ## The periodic convolution layer and the Dirichlet solution operator
 
@@ -127,34 +150,6 @@ section Operators
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
-/-- The trace `∑ ⟪P e_i, e_i⟫` of `P` along the Hilbert basis `b`. -/
-def traceAlong {ι : Type*} (b : HilbertBasis ι ℝ H) (P : H →L[ℝ] H) : ℝ :=
-  ∑' i, ⟪P (b i), b i⟫
-
-/-- `P` has a summable trace along some Hilbert basis. -/
-def HasSummableTrace (P : H →L[ℝ] H) : Prop :=
-  ∃ (ι : Type) (b : HilbertBasis ι ℝ H), Summable fun i => ⟪P (b i), b i⟫
-
-open Classical in
-/-- The trace `tr P = ∑ ⟪P e_i, e_i⟫`, along a Hilbert basis for which the sum converges (`0`
-if there is none); for a positive operator the value does not depend on the basis. -/
-def traceOf (P : H →L[ℝ] H) : ℝ :=
-  if h : HasSummableTrace P then traceAlong h.choose_spec.choose P else 0
-
-/-- A positive, self-adjoint, trace-class operator (the covariance hypothesis
-`IsTraceClassCovariance` without injectivity). -/
-structure IsPositiveTraceClass (P : H →L[ℝ] H) : Prop where
-  /-- `P` is self-adjoint. -/
-  isSelfAdjoint : IsSelfAdjoint P
-  /-- `P` is positive. -/
-  inner_nonneg : ∀ x, 0 ≤ ⟪P x, x⟫
-  /-- `P` is trace class. -/
-  hasSummableTrace : HasSummableTrace P
-
-theorem IsTraceClassCovariance.isPositiveTraceClass {P : H →L[ℝ] H}
-    (hP : IsTraceClassCovariance P) : IsPositiveTraceClass P :=
-  ⟨hP.isSelfAdjoint, hP.inner_nonneg, hP.summable_trace⟩
-
 /-- `S` is the positive square root of `Q`: `S` is positive self-adjoint and `S² = Q`. -/
 structure IsPositiveSqrt (S Q : H →L[ℝ] H) : Prop where
   /-- `S` is self-adjoint. -/
@@ -191,11 +186,8 @@ end Operators
 
 section GaussianFunctions
 
-/-- The Gaussian activation `Φ(u) = φ(u) = e^{-u²/2}`. -/
-def gaussianAct (u : ℝ) : ℝ :=
-  Real.exp (-u ^ 2 / 2)
-
-/-- The second derivative `φ''(b) = (b² - 1) e^{-b²/2}` of the Gaussian activation. -/
+/-- The second derivative `φ''(b) = (b² - 1) e^{-b²/2}` of the Gaussian activation
+`φ = gaussianFun`. -/
 def gaussianActDeriv2 (b : ℝ) : ℝ :=
   (b ^ 2 - 1) * Real.exp (-b ^ 2 / 2)
 
@@ -283,7 +275,7 @@ def gaussianParameterReLU (μ : Measure H) (x : H) : ℝ :=
 /-- The Gaussian-activation network with Gaussian parameters,
 `Φ_Q(x) = ∫ Φ(⟨a,x⟩) 𝒩(0,Q)(da)` (`eq:gaussian-parameter-networks`). -/
 def gaussianParameterGauss (μ : Measure H) (x : H) : ℝ :=
-  ∫ a, gaussianAct ⟪a, x⟫ ∂μ
+  ∫ a, gaussianFun ⟪a, x⟫ ∂μ
 
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
@@ -296,80 +288,9 @@ def hingeCoefficientMeasure (lam : Measure (H × ℝ)) (γ : H × ℝ → Y) : V
 
 end GaussianParameter
 
-/-! ### Local sampling definitions -/
-
-namespace Examples
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-
-/-- The norm `‖f‖_{C(K)} = sup_{x ∈ K} ‖f x‖` (junk if `f` is unbounded on `K`). -/
-def supNormOn {Y : Type*} [Norm Y] (K : Set H) (f : H → Y) : ℝ :=
-  ⨆ x ∈ K, ‖f x‖
-
-/-- `R_K = sup_{x ∈ K} √(‖x‖² + 1)`. -/
-def compactRadius (K : Set H) : ℝ :=
-  ⨆ x ∈ K, Real.sqrt (‖x‖ ^ 2 + 1)
-
-/-- The discretized Gaussian-parameter ReLU network `F_{Q,N}(x) = N⁻¹ ∑_j ReLU(⟨a_j,x⟩)`. -/
-def gaussianReLUSample {N : ℕ} (a : Fin N → H) (x : H) : ℝ :=
-  (N : ℝ)⁻¹ * ∑ j, relu ⟪a j, x⟫
-
-/-- The second parameter moment `M₂² = ∫ (‖a‖² + |c|²) p(da,dc)` of a law `p` on `H × ℝ`
-(`eq:second-moment`). -/
-def secondMoment [MeasurableSpace H] (p : Measure (H × ℝ)) : ℝ :=
-  ∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂p
-
-variable {Ω : Type*} [MeasurableSpace Ω]
-
-open Classical in
-/-- The probability law `‖w‖ m / ∫ ‖w‖ dm` of a nonzero integrable weight `w` (`0` otherwise):
-the sampling law `p = |Γ|/V` of `eq:polar-decomposition` for `Γ = w m`. -/
-def normalizedLaw {E : Type*} [NormedAddCommGroup E] (m : Measure Ω) (w : Ω → E) : Measure Ω :=
-  if Integrable w m ∧ 0 < ∫ y, ‖w y‖ ∂m then
-    (ENNReal.ofReal (∫ y, ‖w y‖ ∂m))⁻¹ • m.withDensity fun y => ‖w y‖ₑ
-  else 0
-
-instance {E : Type*} [NormedAddCommGroup E] (m : Measure Ω) (w : Ω → E) :
-    IsFiniteMeasure (normalizedLaw m w) := by
-  unfold normalizedLaw
-  split_ifs with h
-  · have hw : (∫⁻ y, ‖w y‖ₑ ∂m) < ⊤ := h.1.hasFiniteIntegral
-    refine ⟨?_⟩
-    rw [Measure.smul_apply, smul_eq_mul, withDensity_apply _ MeasurableSet.univ,
-      Measure.restrict_univ]
-    exact ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (ENNReal.ofReal_pos.2 h.2)) hw
-  · infer_instance
-
-/-- The polar sampled network `f_N(x) = (V/N) ∑_j h(θ_j) β(⟨a_j,x⟩ + c_j)` of the coefficient
-measure `γ λ` (`eq:polar-network`), with `V = ∫ |γ| dλ` and `h = γ/|γ|`. -/
-def polarSample {N : ℕ} [MeasurableSpace H] (β : ℝ → ℝ) (lam : Measure (H × ℝ))
-    (γ : H × ℝ → ℂ) (θ : Fin N → H × ℝ) (x : H) : ℂ :=
-  (((∫ p, ‖γ p‖ ∂lam) / N : ℝ) : ℂ) *
-    ∑ j, γ (θ j) / (‖γ (θ j)‖ : ℂ) * (β (⟪(θ j).1, x⟫ + (θ j).2) : ℂ)
-
-/-- The sampled scalar observable of a layer, `F_{φ,N}(x) = (V/N) ∑_j h(y_j) β(⟨a_{y_j},x⟩)`
-with `V = ∫ |w_φ| dm` and `h = w_φ/|w_φ|`, for a sample `y_j` of the law `|w_φ| m / V`. -/
-def layerSampleScalar {N : ℕ} (m : Measure Ω) (a : Ω → H) (w : Ω → ℂ) (β : ℝ → ℝ)
-    (y : Fin N → Ω) (x : H) : ℂ :=
-  (((∫ y, ‖w y‖ ∂m) / N : ℝ) : ℂ) * ∑ j, w (y j) / (‖w (y j)‖ : ℂ) * (β ⟪a (y j), x⟫ : ℂ)
-
-variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
-
-/-- The sampled `Y`-valued layer, `f_N(x) = (V/N) ∑_j β(⟨a_{y_j},x⟩) b_{y_j}/‖b_{y_j}‖` with
-`V = ∫ ‖b_y‖ dm`, for a sample `y_j` of the law `‖b‖ m / V`. -/
-def layerSampleVec {N : ℕ} (m : Measure Ω) (a : Ω → H) (b : Ω → Y) (β : ℝ → ℝ)
-    (y : Fin N → Ω) (x : H) : Y :=
-  (((∫ y, ‖b y‖ ∂m) / N : ℝ) : ℂ) • ∑ j, ((β ⟪a (y j), x⟫ / ‖b (y j)‖ : ℝ) : ℂ) • b (y j)
-
-end Examples
-
 /-! ### The neural-operator layer -/
 
 section OperatorLayer
-
-/-- `β` has polynomial growth: `|β(t)| ≤ C (1 + |t|)^p`. -/
-def HasPolynomialGrowth (β : ℝ → ℝ) : Prop :=
-  ∃ C p : ℝ, ∀ t, |β t| ≤ C * (1 + |t|) ^ p
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
@@ -387,7 +308,9 @@ structure IsLayerData (m : Measure Ω) (a : Ω → H) (b : Ω → Y) : Prop wher
   /-- `∫ ‖b_y‖ m(dy) < ∞`. -/
   integrable_b : Integrable b m
 
-/-- `‖A‖_∞ = sup_y ‖a_y‖`. -/
+/-- `‖A‖_∞ = sup_y ‖a_y‖`, the supremum over the parameter space `Ω` of the layer (junk `0` if
+unbounded).  This is a genuinely different notion from the compact-open norm `compactSupNorm K`
+of `OperatorRidgelet.Sampling.Defs`, which is a supremum over a set of inputs `x ∈ K`. -/
 def layerSupNorm (a : Ω → H) : ℝ :=
   ⨆ y, ‖a y‖
 

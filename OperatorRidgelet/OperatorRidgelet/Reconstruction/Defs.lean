@@ -30,9 +30,10 @@ module.  They build on the Section 3 objects of `OperatorRidgelet.Transform.Defs
 
 A tempered distribution `β ∈ 𝒮'(ℝ)` "that is a continuous function of polynomial growth" is
 represented by the pair of `β : TemperedDistribution ℝ ℂ` and a function `b : ℝ → ℝ` with
-`IsTemperedFunction β b`: `b` is continuous, `|b(t)| ≤ C(1+|t|)^p`, and `β` is integration
-against `b`.  The distributional constant `C^{(α)}_{β,ρ}` is `temperedAdmissibilityConst α β ρ`
-of `OperatorRidgelet.Tempered.Const`; the bias integrals use the function `b`.
+`IsTemperedFunction β b`: `b` is continuous, of polynomial growth (`HasPolynomialGrowth b` of
+`OperatorRidgelet.Network.Defs`), and `β` is integration against `b`.  The distributional
+constant `C^{(α)}_{β,ρ}` is `temperedAdmissibilityConst α β ρ` of
+`OperatorRidgelet.Tempered.Const`; the bias integrals use the function `b`.
 
 ## The frame operator, the synthesis operator, and the reconstruction formulas
 
@@ -54,6 +55,11 @@ manuscript's in the second; `innerSLFlip ℂ f g = ⟪g, f⟫ = ⟨f,g⟩_manusc
   when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:B`(ii), a theorem
   and not a definition); `ridgeletRange μ ν ρ = Ran R_ρ`.
 * `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, `(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ)}` (`eq:weak-synthesis`).
+
+These are the only definitions of `𝓔_α'`, `R_ρ` on `𝓔_α`, `S_ρ`, `J_α`, `J_α⁻¹`, `g_G`, and
+regularity along rays in the library: Section 5 (`OperatorRidgelet.Tempered.Defs`, the
+regularized and tempered synthesis `S_{β_ε}`, `S_β`, and Corollary `cor:relu-admissible`) and
+Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 ## Backprojection, coefficient projection, and the Hermite inverse
 
@@ -152,7 +158,7 @@ structure IsTemperedFunction (β : TemperedDistribution ℝ ℂ) (b : ℝ → �
   /-- `b` is continuous. -/
   continuous : Continuous b
   /-- `b` has polynomial growth. -/
-  polynomialGrowth : ∃ C p : ℝ, ∀ t, |b t| ≤ C * (1 + |t|) ^ p
+  polynomialGrowth : HasPolynomialGrowth b
   /-- `β` is integration against `b`. -/
   apply_eq : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ t, (b t : ℂ) * φ t
 
