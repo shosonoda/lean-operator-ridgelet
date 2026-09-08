@@ -465,7 +465,7 @@ attribute [blueprint "lem:ray-regular-examples-a"
     $\kappa(\xi)=\langle S\xi,\xi\rangle$, $S\ge\theta Q$, with $q$ a polynomial in $\kappa$
     and in functionals $\ell_i$ dominated by the quadratic form,
     $|\ell_i(\xi)|^2\le C_i\kappa(\xi)$, are regular along rays for every band-pass $\rho$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_ray_regular_examples_a
+] OperatorRidgelet.Paper.lem_ray_regular_examples_a
 
 attribute [blueprint "lem:ray-regular-examples-b-i"
   (statement := /-- $G(\xi)=\varphi(\|\xi-\xi_0\|^2)$ with $\varphi\in C_c^\infty(\mathbb R)$ is

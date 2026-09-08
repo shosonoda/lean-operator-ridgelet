@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 109.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 117.
 
 :::table +header
 *
@@ -57,7 +57,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 22
+  * 24
   * 14
 :::
 
@@ -126,7 +126,7 @@ Status: *verified by comparator*.
 
 ## Lemma 3.1 — Homogeneous Gaussian mixture (`lem:homogeneous-mixture`)
 
-Blueprint node: {bpref "lem:homogeneous-mixture"}[]. Status: *partial 3/6* (3 of 6 Lean theorems verified).
+Blueprint node: {bpref "lem:homogeneous-mixture"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. Stated for Gaussian layers N with IsCenteredGaussianLayers P N (ν\_α := gaussianMixture N α, a Giry-monad bind); parts: σ-finite, finite on bounded Borel sets, ν\_α(H) = ∞, full support (IsOpenPosMeasure), the pushforward identity, and its integrated form for nonnegative Borel F. The existence of the layers is the separate infrastructure statement OperatorRidgelet.exists\_isCenteredGaussianLayers.
 
@@ -141,7 +141,7 @@ theorem lem_homogeneous_mixture_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[
     SigmaFinite (gaussianMixture N α) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_homogeneous_mixture_ii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L30):
 
@@ -154,7 +154,7 @@ theorem lem_homogeneous_mixture_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L
     ∀ E : Set H, MeasurableSet E → Bornology.IsBounded E → gaussianMixture N α E < ⊤ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_homogeneous_mixture_iii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L38):
 
@@ -180,7 +180,7 @@ theorem lem_homogeneous_mixture_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L
     (gaussianMixture N α).IsOpenPosMeasure := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_homogeneous_mixture_v`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L54):
 
@@ -485,7 +485,7 @@ Status: *verified by comparator*.
 
 ## Lemma 3.9 — Gaussian decay with polynomial weights (`lem:gaussian-decay`)
 
-Blueprint node: {bpref "lem:gaussian-decay"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:gaussian-decay"}[]. Status: *verified* (all 2 Lean theorems verified).
 
 Formalization note. dim H = ∞ (the standing assumption under which ν\_α is defined) is explicit; in part (ii) the exponent p is allowed to be 0 (0 ≤ p), which the proof of ex:core-elements uses.
 
@@ -502,7 +502,7 @@ theorem lem_gaussian_decay_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
         (gaussianMixture N α) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_gaussian_decay_ii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L209):
 
@@ -519,11 +519,11 @@ theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     f ∈ spectralCore μ (gaussianMixture N α) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Example 3.10 — Elements of \\(\\cD\_\\alpha\\) (`ex:core-elements`)
 
-Blueprint node: {bpref "ex:core-elements"}[]. Status: *partial 1/5* (1 of 5 Lean theorems verified).
+Blueprint node: {bpref "ex:core-elements"}[]. Status: *partial 3/5* (3 of 5 Lean theorems verified).
 
 Formalization note. Claims i–iii (in Paper.Transform) are the first sentence: 𝒢\_Q 1, 1 ∈ 𝒟\_α, 𝓔\_α ≠ \{0\}. Claims iv (f\_W ∈ 𝒟\_α, with the hypotheses of ex:closed-form: W positive injective self-adjoint, S = Q^\{1/2\} as data with IsPositiveSqrt S Q, M = S W S with a summable trace) and v (the observables F\_φ = ⟨ℱ(·),φ⟩ of the Gaussian-activation operator layers, under IsLayerData) are in Paper.Examples; membership of a function in 𝒟\_α is MemSpectralCore μ ν f (f ∈ L²(μ) and 𝒢\_μ f ∈ L²(ν)), related to the submodule spectralCore by memSpectralCore\_iff.
 
@@ -552,7 +552,7 @@ theorem ex_core_elements_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
     MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ (gaussianMixture N α) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_core_elements_iii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L238):
 
@@ -565,7 +565,7 @@ theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     spectralRange μ (gaussianMixture N α) ≠ ⊥ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_core_elements_iv`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L237):
 
@@ -2460,7 +2460,7 @@ Status: *statement only (proof pending)*.
 
 ## Lemma 6.5 — Densities that are regular along rays (`lem:ray-regular-examples`)
 
-Blueprint node: {bpref "lem:ray-regular-examples"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:ray-regular-examples"}[]. Status: *partial 1/5* (1 of 5 Lean theorems verified).
 
 Formalization note. 'For every band-pass ρ' is quantified together with every frequency window I of ρ (IsFrequencyWindow ρ I). Part a (Gaussian type) needs the Gaussian mixture ν\_α and Q and is stated with S : H →L\[ℝ\] H self-adjoint with θ⟨Qξ,ξ⟩ ≤ ⟨Sξ,ξ⟩ (positivity follows), and q an MvPolynomial with complex coefficients in k bounded linear functionals ℓ\_i and in κ(ξ) = ⟨Sξ,ξ⟩ (variable index Option (Fin k), none ↦ κ); each ℓ\_i is dominated by the quadratic form, (ℓ\_i ξ)² ≤ C\_i ⟨Sξ,ξ⟩ (hypothesis hℓ), without which q e^\{-κ/2\} need not be bounded. The proof is the reduction lemma isRegularAlongRays\_of\_gaussian\_decay (boundedness, measurability, smoothness along rays, and the pointwise derivative bound sup\_\{ω∈I\}|∂\_ω^k G(ωa)| ≤ C\_k (1+‖a‖)^\{p\_k\} e^\{-r²θ⟨Qa,a⟩/2\} are proved outright) applied to the Gaussian-decay integrability of lem:gaussian-decay (i). Part b\_i: φ ∈ C\_c^∞(ℝ) is ContDiff ℝ ⊤ φ with compact support (complex valued); b\_ii: 'C^∞ along rays' is read as in def:ray-regular (smooth on an open neighbourhood of I for every direction), 'vanishes outside a bounded set' as G ξ = 0 for ‖ξ‖ > R₀, and the derivative bounds are sup over ω ∈ I ≤ C\_k (1+‖a‖)^\{p\_k\}; both b parts use ν\_α (finite on bounded sets). Part c\_i (finite linear combinations) and c\_ii (Bochner integrals ∫ G\_y m(dy)) are stated for a general ν; in c\_ii the measurable family is Measurable (uncurry G), and 'bounds uniform in y' is read as a uniform sup bound on G\_y together with, for each order k, a y-independent majorant h of the ray-derivative bounds whose weighted integral ∫ (1+‖a‖)^\{k+2\} h dν is finite.
 
@@ -2485,7 +2485,7 @@ theorem lem_ray_regular_examples_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H �
           Complex.exp (-((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L533):
 
