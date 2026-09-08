@@ -1,5 +1,6 @@
 import OperatorRidgelet.Tempered.Regularized
 import OperatorRidgelet.Tempered.Frame
+import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.ToMathlib.TemperedDistributionConvolution
 
 /-!
@@ -297,11 +298,6 @@ theorem temperedSynthesis_ridgeletExtension_eq (μ ν : Measure H) [IsProbabilit
         (𝓝[>] 0) (𝓝 F) := ⟨_, ht⟩
   rw [temperedSynthesis, dif_pos hex]
   exact tendsto_nhds_unique hex.choose_spec ht
-
-/-- `J⁻¹ (J f) = f`. -/
-theorem rieszInv_rieszMap (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralRange μ ν) :
-    rieszInv μ ν (rieszMap μ ν f) = f :=
-  innerSLFlip_injective (rieszMap_rieszInv μ ν (rieszMap μ ν f))
 
 end Synthesis
 
