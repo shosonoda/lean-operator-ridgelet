@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 104.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 109.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 18
-  * 15
+  * 22
+  * 14
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -2305,7 +2305,7 @@ Formalization note. The sample space of N i.i.d. parameters is Fin N → H × �
 
 ## Theorem 6.2 — General compact-open sampling bound (`thm:general-rademacher`)
 
-Blueprint node: {bpref "thm:general-rademacher"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "thm:general-rademacher"}[]. Status: *verified* (its Lean theorem is verified).
 
 Formalization note. 'The atoms are measurable and integrably bounded in C(K)' is encoded as a Bochner-integrable map Φ : H × ℝ → (K →ᵇ ℂ) (BoundedContinuousFunction on the subtype K) with respect to p whose values are the atoms h(θ)β(⟨a,·⟩+c) on K. Expectation is the Bochner integral over sampleLaw N (polarLaw Γ) of compactSupNorm K (f\_N θ − S\_β Γ); N > 0 is assumed (the bound is void for N = 0). The theorem is stated with f = integralNetwork β Γ, which is the vector-measure integral (0 if the integrand is not integrable) — under the hypothesis it is the Bochner integral.
 
@@ -2326,11 +2326,11 @@ theorem thm_general_rademacher [MeasurableSpace H] [BorelSpace H] (β : ℝ → 
       2 * polarWeight Γ * rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Theorem 6.3 — Dimension-free compact-open Barron bound (`thm:lipschitz-barron`)
 
-Blueprint node: {bpref "thm:lipschitz-barron"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "thm:lipschitz-barron"}[]. Status: *verified* (all 2 Lean theorems verified).
 
 Formalization note. Real β with LipschitzWith L β; Lip(β) is any such L (equivalent to the least constant). M₂² < ∞ is Integrable (‖a‖² + |c|²) (polarLaw Γ), and M₂ = √(secondMoment (polarLaw Γ)); R\_K = compactRadius K = sSup of √(‖x‖²+1) over K. Part i is the expectation bound over sampleLaw N (polarLaw Γ) with N > 0; part ii the existence of a deterministic sample θ : Fin N → H × ℝ with the same bound. Γ = 0 is allowed (all quantities vanish).
 
@@ -2353,7 +2353,7 @@ theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → 
         (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_lipschitz_barron_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L54):
 
@@ -2373,7 +2373,7 @@ theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ →
           (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Theorem 6.4 — Finite variation and moments of the coefficient (`thm:E`)
 
@@ -4550,7 +4550,7 @@ Status: *statement only (proof pending)*.
 
 ## Lemma D.1 — Qualitative finite-atomic approximation (`lem:qualitative-sampling`)
 
-Blueprint node: {bpref "lem:qualitative-sampling"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:qualitative-sampling"}[]. Status: *verified* (its Lean theorem is verified).
 
 Formalization note. The hypothesis ∫ ‖β(⟨a,·⟩+c)‖\_\{C(K)\} d|Γ| < ∞ is Integrable (θ ↦ compactSupNorm K (β(⟨a,·⟩+c))) Γ.variation; a finite atomic complex measure is atomicMeasure w θ = Σ\_j VectorMeasure.dirac (θ\_j) (w\_j), and its synthesis is integralNetwork β (atomicMeasure w θ).
 
@@ -4572,7 +4572,7 @@ theorem lem_qualitative_sampling [MeasurableSpace H] [BorelSpace H] {β : ℝ �
         (fun x => integralNetwork β (atomicMeasure w θ) x - integralNetwork β Γ x) < ε := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Corollary D.2 — Concentration for bounded parameters (`cor:sampling-concentration`)
 
@@ -4653,7 +4653,7 @@ Status: *verified by comparator*.
 
 ## Corollary D.4 — Sampling in operator parameters (`cor:operator-sampling`)
 
-Blueprint node: {bpref "cor:operator-sampling"}[]. Status: *partial 1/2* (1 of 2 Lean theorems verified).
+Blueprint node: {bpref "cor:operator-sampling"}[]. Status: *verified* (all 2 Lean theorems verified).
 
 Formalization note. Γ\_op is a ComplexMeasure on (H →L\[ℝ\] H) × H with finite variation carried by 𝓛₂(H) × H (∀ᵐ q ∂Γ\_op.variation, IsHilbertSchmidt q.1), as in lem:measure-transport; its polar data are polarDensity/polarWeight/polarLaw Γ\_op; M\_op² < ∞ is Integrable (‖A\*ψ‖² + |⟨ψ,b⟩|²) (polarLaw Γ\_op) and M\_op = √(operatorSecondMoment ψ (polarLaw Γ\_op)). The sampled operator network is sampledOperatorNetwork (rankOneActivation β ψ z) ℓ V h ω, an operatorFiniteNetwork with weights (V/N) h(A\_j,b\_j), and S\_op Γ\_op is operatorSynthesis; the readout is normalized by ⟨ℓ,z⟩ = 1 and ψ ≠ 0 is not needed (as in lem:measure-transport), so it is not assumed. Part ii (M\_op² ≤ ‖ψ‖² ∫(‖A‖²\_\{𝓛₂\}+‖b‖²) dp\_op) is stated with lintegrals and hsNormSq (∞ off 𝓛₂), so that no integrability hypothesis is needed.
 
@@ -4683,7 +4683,7 @@ theorem cor_operator_sampling_i [CompleteSpace H] [SecondCountableTopology H]
           Real.sqrt (operatorSecondMoment ψ (polarLaw Γop))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_operator_sampling_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L371):
 
