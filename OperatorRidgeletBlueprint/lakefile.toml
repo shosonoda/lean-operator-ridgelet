@@ -1,0 +1,27 @@
+name = "OperatorRidgeletBlueprint"
+version = "0.1.0"
+defaultTargets = ["OperatorRidgeletBlueprint"]
+precompileModules = false
+
+[[require]]
+name = "VersoBlueprint"
+git = "https://github.com/leanprover/verso-blueprint"
+rev = "v4.32.0"
+
+[[require]]
+name = "OperatorRidgelet"
+path = "../OperatorRidgelet"
+
+# Keep Mathlib last so that its transitive pins win.
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.32.0"
+
+[[lean_lib]]
+name = "OperatorRidgeletBlueprint"
+
+[[lean_exe]]
+name = "operator-ridgelet-blueprint"
+root = "OperatorRidgeletBlueprintMain"
+supportInterpreter = true

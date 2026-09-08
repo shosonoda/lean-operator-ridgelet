@@ -1,0 +1,523 @@
+{
+  "manuscript": {
+    "file": "main.tex",
+    "commit": "1f63d03",
+    "synced": "2026-09-08"
+  },
+  "naming": "OperatorRidgelet.Paper.<kind>_<label>[_<part>] where <label> drops the prefix and uses _ for -",
+  "items": [
+    {
+      "label": "def:finite-network",
+      "kind": "definition",
+      "number": "2.1",
+      "page": "6",
+      "title": "Finite-width network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:integral-network",
+      "kind": "definition",
+      "number": "2.2",
+      "page": "7",
+      "title": "Integral network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:homogeneous-mixture",
+      "kind": "lemma",
+      "number": "3.1",
+      "page": "7",
+      "title": "Homogeneous Gaussian mixture",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:admissible-filter",
+      "kind": "definition",
+      "number": "3.2",
+      "page": "8",
+      "title": "Admissible analysis filter",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:ridgelet-analysis",
+      "kind": "definition",
+      "number": "3.3",
+      "page": "8",
+      "title": "Gaussian-weighted ridgelet transform",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:fourier-slice",
+      "kind": "lemma",
+      "number": "3.4",
+      "page": "8",
+      "title": "Fourier-slice identity",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:spectral-coefficient",
+      "kind": "definition",
+      "number": "3.5",
+      "page": "9",
+      "title": "The coefficient operator",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:coefficient-isometry",
+      "kind": "lemma",
+      "number": "3.6",
+      "page": "9",
+      "title": "The coefficient operator is a scaled isometry",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:spectral-space",
+      "kind": "definition",
+      "number": "3.7",
+      "page": "9",
+      "title": "The Hilbert space \\(\\cE_\\alpha\\)",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:spectral-unitary",
+      "kind": "lemma",
+      "number": "3.8",
+      "page": "9",
+      "title": "Positivity and the unitary extension",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:gaussian-decay",
+      "kind": "lemma",
+      "number": "3.9",
+      "page": "10",
+      "title": "Gaussian decay with polynomial weights",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:core-elements",
+      "kind": "example",
+      "number": "3.10",
+      "page": "10",
+      "title": "Elements of \\(\\cD_\\alpha\\)",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:B",
+      "kind": "theorem",
+      "number": "3.12",
+      "page": "10",
+      "title": "Plancherel identity and injectivity",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:ray-regular",
+      "kind": "definition",
+      "number": "4.1",
+      "page": "11",
+      "title": "Regularity along rays",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:A",
+      "kind": "theorem",
+      "number": "4.2",
+      "page": "11",
+      "title": "Integral representation of targets with a spectral density",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:C",
+      "kind": "theorem",
+      "number": "4.3",
+      "page": "12",
+      "title": "Reconstruction and the frame operator",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:vector-valued",
+      "kind": "theorem",
+      "number": "4.7",
+      "page": "14",
+      "title": "Vector-valued extension",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:regularized-synthesis",
+      "kind": "definition",
+      "number": "5.1",
+      "page": "14",
+      "title": "Regularized synthesis",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:tempered-reconstruction",
+      "kind": "theorem",
+      "number": "5.2",
+      "page": "14",
+      "title": "Reconstruction with a tempered activation",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:relu-admissible",
+      "kind": "corollary",
+      "number": "5.3",
+      "page": "15",
+      "title": "ReLU is admissible",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:standard-activations",
+      "kind": "example",
+      "number": "5.4",
+      "page": "15",
+      "title": "Standard activations",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "def:rademacher-complexity",
+      "kind": "definition",
+      "number": "6.1",
+      "page": "16",
+      "title": "Activation-dependent Rademacher complexity",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:general-rademacher",
+      "kind": "theorem",
+      "number": "6.2",
+      "page": "16",
+      "title": "General compact-open sampling bound",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:lipschitz-barron",
+      "kind": "theorem",
+      "number": "6.3",
+      "page": "16",
+      "title": "Dimension-free compact-open Barron bound",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:E",
+      "kind": "theorem",
+      "number": "6.4",
+      "page": "17",
+      "title": "Finite variation and moments of the coefficient",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:ray-regular-examples",
+      "kind": "lemma",
+      "number": "6.5",
+      "page": "17",
+      "title": "Densities that are regular along rays",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:D",
+      "kind": "theorem",
+      "number": "6.6",
+      "page": "18",
+      "title": "Constructive universal approximation with rates",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:vector-rates",
+      "kind": "corollary",
+      "number": "6.7",
+      "page": "18",
+      "title": "Vector-valued rates",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:closed-form",
+      "kind": "example",
+      "number": "7.1",
+      "page": "19",
+      "title": "Closed-form transform and its filtered network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:gaussian-parameter",
+      "kind": "example",
+      "number": "7.2",
+      "page": "20",
+      "title": "ReLU and Gaussian networks with Gaussian parameters",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:relu-discretization",
+      "kind": "corollary",
+      "number": "7.3",
+      "page": "20",
+      "title": "Discretization of the Gaussian-parameter ReLU network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:operator-layer",
+      "kind": "example",
+      "number": "7.4",
+      "page": "20",
+      "title": "Neural-operator layer as an integral network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:convolution",
+      "kind": "example",
+      "number": "7.5",
+      "page": "21",
+      "title": "Periodic convolution layer",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:dirichlet",
+      "kind": "example",
+      "number": "7.6",
+      "page": "22",
+      "title": "Dirichlet solution operator with a pointwise nonlinearity",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:mixture-integration",
+      "kind": "lemma",
+      "number": "A.1",
+      "page": "24",
+      "title": "Measurability and integration of the mixture",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:mixture-character",
+      "kind": "lemma",
+      "number": "A.2",
+      "page": "25",
+      "title": "Gaussian-layer regularization",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:weak-equals-strong",
+      "kind": "lemma",
+      "number": "B.1",
+      "page": "27",
+      "title": "Synthesis of an integrable coefficient is the integral network",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:hermite-totality",
+      "kind": "lemma",
+      "number": "B.2",
+      "page": "27",
+      "title": "Entire extension and totality of the Hermite coefficients",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "prop:coefficient-projection",
+      "kind": "proposition",
+      "number": "B.3",
+      "page": "28",
+      "title": "Bounded backprojection and orthogonal range projection",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:weighted-duality",
+      "kind": "lemma",
+      "number": "C.1",
+      "page": "29",
+      "title": "Hilbert structure and continuous activation pairing",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:standard-activation-class",
+      "kind": "lemma",
+      "number": "C.2",
+      "page": "29",
+      "title": "Standard activations and admissible test filters",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:qualitative-sampling",
+      "kind": "lemma",
+      "number": "D.1",
+      "page": "31",
+      "title": "Qualitative finite-atomic approximation",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:sampling-concentration",
+      "kind": "corollary",
+      "number": "D.2",
+      "page": "31",
+      "title": "Concentration for bounded parameters",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:hilbert-sampling",
+      "kind": "lemma",
+      "number": "D.3",
+      "page": "32",
+      "title": "Hilbert-valued sampling identity",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:operator-sampling",
+      "kind": "corollary",
+      "number": "D.4",
+      "page": "32",
+      "title": "Sampling in operator parameters",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:two-stage-error",
+      "kind": "corollary",
+      "number": "D.5",
+      "page": "32",
+      "title": "Input truncation and sampling are separate errors",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:gaussian-quadratic",
+      "kind": "lemma",
+      "number": "E.1",
+      "page": "32",
+      "title": "Gaussian integral of a quadratic exponential",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:gaussian-hinge",
+      "kind": "lemma",
+      "number": "E.2",
+      "page": "33",
+      "title": "Absolute hinge representation of the Gaussian",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:hs-reduction",
+      "kind": "lemma",
+      "number": "F.1",
+      "page": "34",
+      "title": "Hilbert--Schmidt reduction",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:rank-one-lift",
+      "kind": "lemma",
+      "number": "F.2",
+      "page": "35",
+      "title": "Exact rank-one lift",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "prop:scalar-universality",
+      "kind": "proposition",
+      "number": "F.3",
+      "page": "35",
+      "title": "Compact-open universality by finite-dimensional reduction",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "lem:measure-transport",
+      "kind": "lemma",
+      "number": "F.4",
+      "page": "35",
+      "title": "Bounded synthesis and exact transport of measures",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "cor:finite-backprojection",
+      "kind": "corollary",
+      "number": "G.1",
+      "page": "36",
+      "title": "The frame operator in finite dimension",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "prop:dilation-obstruction",
+      "kind": "proposition",
+      "number": "G.2",
+      "page": "36",
+      "title": "Dilation obstruction",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "thm:general-weights",
+      "kind": "theorem",
+      "number": "H.1",
+      "page": "37",
+      "title": "Abstract-weight extension",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:bandlimited-filter",
+      "kind": "example",
+      "number": "I.1",
+      "page": "38",
+      "title": "A band-pass filter for every \\(\\alpha>0\\)",
+      "lean": [],
+      "note": ""
+    },
+    {
+      "label": "ex:mexican-hat",
+      "kind": "example",
+      "number": "I.2",
+      "page": "38",
+      "title": "Mexican hat",
+      "lean": [],
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+name = "OperatorRidgelet"
+version = "0.1.0"
+defaultTargets = ["OperatorRidgelet"]
+precompileModules = false
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+
+[[require]]
+name = "FoML"
+git = "https://github.com/auto-res/lean-rademacher.git"
+rev = "f509f2b359ecba4133dc8426eeabcdc32e66e02d"  # branch v4.32.0
+
+[[require]]
+name = "LeanArchitect"
+git = "https://github.com/hanwenzhu/LeanArchitect.git"
+rev = "3810ba48f2e5bbd83b32623d21fc059b279dbf81"  # tag v4.32.0
+
+# Keep Mathlib last so that its transitive pins win.
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.32.0"
+
+# Vendored subset of shosonoda/lean-ridgelet (see LeanRidgelet.lean).
+[[lean_lib]]
+name = "LeanRidgelet"
+
+[[lean_lib]]
+name = "OperatorRidgelet"
+
+# comparator (https://github.com/leanprover/comparator): paper statements with `sorry`.
+[[lean_lib]]
+name = "Challenge"
+
+# comparator: the same statements, proved from the library.
+[[lean_lib]]
+name = "Solution"

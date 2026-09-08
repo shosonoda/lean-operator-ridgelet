@@ -1,2 +1,8 @@
 # cache and other artifacts produced by Lean's Lake build tool
 .lake/
+# Verso Blueprint generated site
+_out/
+# local scratch
+tmp/
+# Python bytecode from the scripts
+__pycache__/

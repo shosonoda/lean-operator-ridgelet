@@ -1,0 +1,64 @@
+# Agent guide for lean-operator-ridgelet
+
+This repository is the public development repository of the Lean formalization of the operator
+ridgelet manuscript.  The manuscript itself and the planning notes live in the author's private
+manuscript repository; do not add them here.
+
+## Read first
+
+1. `README.md` for the layout and the build, comparator, and blueprint commands.
+2. `STATUS.md` for what is stated and what is verified.  It is generated; never edit it by hand.
+3. `OperatorRidgelet/comparator/paper.json` for the manuscript index (labels, numbers, Lean names).
+4. `git status --short`; preserve unrelated edits.
+
+## Two Lake projects, one toolchain
+
+- `OperatorRidgelet/` is the mathematics.  `OperatorRidgeletBlueprint/` is the human-facing Verso
+  Blueprint and depends on `../OperatorRidgelet` by path.  Both use Lean 4.32.0 and Mathlib
+  v4.32.0.  Keep `lean-toolchain` and the Mathlib revision identical in both.
+- `lake-manifest.json` files are tracked; run `lake update <pkg>` only to change a pin on purpose.
+- `OperatorRidgelet/LeanRidgelet/` is a verbatim copy of eight files of `shosonoda/lean-ridgelet`
+  (revision in `LeanRidgelet.lean`).  Do not edit them; update by diffing against upstream.
+- Never run two `lake build`s in the same project concurrently.  For parallel work use a git
+  worktree and symlink `OperatorRidgelet/.lake/packages` to the main checkout's package cache.
+
+## The comparator scheme is the record of formalization
+
+- Every theorem, proposition, lemma, corollary, and example of the manuscript is a theorem
+  `OperatorRidgelet.Paper.<kind>_<label>[_<part>]` (`<label>` is the LaTeX label without its
+  prefix, `-` replaced by `_`; multi-part results are split per part, e.g. `thm_B_i`).
+- The statement is written twice with identical text: in `Challenge/<Section>.lean` with proof
+  `sorry`, and in `OperatorRidgelet/Paper/<Section>.lean` with the real proof (or `sorry` while
+  outstanding).  `Challenge` imports only definition modules, never `OperatorRidgelet.Paper`.
+- `comparator/config.json` `theorem_names` lists exactly the Paper theorems whose proofs are
+  complete.  Adding a name and running `scripts/comparator-check.sh` is the definition of
+  "verified".  A `sorry`-ed theorem is never in `theorem_names`.
+- Definitions used in statements live in `*/Defs.lean` modules and are `sorry`-free.  Close heavy
+  proof obligations inside definitions with junk values in the Mathlib style; state the
+  properties as theorems.
+- Run `scripts/check-challenge.py` after editing either side, and regenerate `STATUS.md` with
+  `scripts/status.py > ../STATUS.md`.
+
+## LeanArchitect and Verso Blueprint
+
+- LeanArchitect and Verso Blueprint both define an attribute named `blueprint`.  All LeanArchitect
+  annotations are `attribute [blueprint ...]` commands in `OperatorRidgelet/ArchitectBridge.lean`;
+  no other module imports `Architect`, and no blueprint chapter imports `ArchitectBridge`.
+- Tag a statement whose proof is `sorry` with `(notReady := true)`; remove the flag when the proof
+  is done.  `scripts/status.py` checks that the flag agrees with `theorem_names`.
+- Blueprint node labels are the manuscript labels (`thm:B-i`, `lem:fourier-slice`, ...).
+- Build LeanArchitect metadata with `lake build OperatorRidgelet:blueprintJson` (library name
+  required), and the blueprint with `lake exe vbp build && lake exe vbp check` in
+  `OperatorRidgeletBlueprint/`.
+
+## Conventions
+
+- Namespace `OperatorRidgelet`; Mathlib naming (`lowerCamelCase` definitions, `snake_case`
+  theorems); Fourier convention `f̂(ξ) = ∫ f(x) e^{-i⟨x,ξ⟩} dx` as in the manuscript.
+- `H` is a real Hilbert space (`[NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+  [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]`); `μ` the input probability
+  measure, `ν` the σ-finite homogeneous direction measure.  State the core theory for abstract
+  `(μ, ν)` and specialize to the Gaussian case.
+- Every new statement is added to `paper.json` (`lean` list), `Challenge`, `Paper`, and
+  `ArchitectBridge.lean` in the same change.
+- Commit messages describe the manuscript items touched (e.g. `Prove lem:fourier-slice`).
