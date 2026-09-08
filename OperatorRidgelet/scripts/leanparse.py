@@ -9,7 +9,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-DECL_RE = re.compile(r"^(?P<kw>theorem|lemma|def|noncomputable def|abbrev|structure)\s+(?P<name>[\w.']+)", re.M)
+DECL_RE = re.compile(r"^(?P<kw>theorem|lemma|def|noncomputable def|abbrev|noncomputable abbrev|structure|class|inductive)\s+(?P<name>[\w.']+)", re.M)
 NS_RE = re.compile(r"^(namespace|end)\s+([\w.']+)\s*$", re.M)
 
 
