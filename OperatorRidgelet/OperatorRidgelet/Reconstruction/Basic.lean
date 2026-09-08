@@ -1,6 +1,7 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv
 import OperatorRidgelet.ToMathlib.PolynomialGrowthBounds
+import OperatorRidgelet.ToMathlib.IteratedDerivMeasurable
 import LeanRidgelet.ToMathlib.GaussianSchwartz
 import Mathlib.Topology.Algebra.MvPolynomial
 
@@ -18,8 +19,16 @@ uniformly in `a` and whose coefficients grow polynomially in `‖a‖`; the deri
 `OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv` then gives the pointwise ray-derivative
 bound `sup_{ω ∈ I} |∂_ω^n G(ωa)| ≤ C_n (1 + ‖a‖)^{p_n} e^{-r² κ(a)/2}`, `r = min_I |ω|`, and the
 reduction lemma `isRegularAlongRays_of_gaussian_decay` derives regularity along rays from the
-Gaussian-decay integrability of Lemma `lem:gaussian-decay`, taken as a hypothesis.  This module
-is not imported by `Challenge`.
+Gaussian-decay integrability of Lemma `lem:gaussian-decay`, taken as a hypothesis.
+
+The remaining sections prove the other parts of Lemma `lem:ray-regular-examples`: densities
+vanishing outside a bounded set with polynomially bounded ray derivatives are regular along rays
+for any direction measure finite on balls (the ray derivatives vanish for `‖a‖ > R₀ / min_I |ω|`),
+radial bumps `φ(‖ξ - ξ₀‖²)` by the chain-rule bound `norm_iteratedFDeriv_comp_le`, and finite
+linear combinations; the last needs the Borel measurability of the ray-derivative bound
+`a ↦ max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` (`measurable_rayDerivBound`), obtained from
+`OperatorRidgelet.ToMathlib.IteratedDerivMeasurable` and a countable dense subset of `I`.  This
+module is not imported by `Challenge`.
 -/
 
 noncomputable section
@@ -412,5 +421,472 @@ theorem isRegularAlongRays_of_gaussian_decay (ν : Measure H) {Q : H →L[ℝ] H
         rayMoment_gaussianTypeDensity_lt_top ν hQ0 hdecay S hθ hSQ ℓ q hI hI0 m }
 
 end GaussianType
+
+/-! ### Densities with bounded support -/
+
+section BoundedSupport
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+/-- For a density vanishing outside the ball of radius `R₀`, every ray derivative vanishes at a
+frequency `ω` with `|ω| ‖a‖ > R₀` (the ray function vanishes near `ω`). -/
+theorem iteratedDeriv_smul_eq_zero_of_norm_gt {G : H → ℂ} {R₀ : ℝ}
+    (hG0 : ∀ ξ : H, R₀ < ‖ξ‖ → G ξ = 0) {a : H} {ω : ℝ} (hω : R₀ < |ω| * ‖a‖) (k : ℕ) :
+    iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω = 0 := by
+  have hev : (fun ω : ℝ => G (ω • a)) =ᶠ[𝓝 ω] fun _ => (0 : ℂ) := by
+    have hopen : IsOpen {ω' : ℝ | R₀ < |ω'| * ‖a‖} :=
+      isOpen_lt continuous_const (continuous_abs.mul continuous_const)
+    filter_upwards [hopen.mem_nhds hω] with ω' hω'
+    exact hG0 _ (by rw [norm_smul, Real.norm_eq_abs]; exact hω')
+  rw [hev.iteratedDeriv_eq k, iteratedDeriv_const]
+  simp
+
+/-- For a density vanishing outside the ball of radius `R₀` and a frequency window
+`I ⊆ {r ≤ |ω|}`, the ray-derivative bound vanishes once `r ‖a‖ > R₀`. -/
+theorem rayDerivBound_eq_zero_of_norm_gt {I : Set ℝ} {r : ℝ} (hr : ∀ ω ∈ I, r ≤ |ω|)
+    {G : H → ℂ} {R₀ : ℝ} (hG0 : ∀ ξ : H, R₀ < ‖ξ‖ → G ξ = 0) (m : ℕ) {a : H}
+    (ha : R₀ < r * ‖a‖) :
+    rayDerivBound I G m a = 0 := by
+  unfold rayDerivBound
+  refine le_antisymm (iSup_le fun k => iSup₂_le fun ω hω => ?_) bot_le
+  rw [iteratedDeriv_smul_eq_zero_of_norm_gt hG0
+    (lt_of_lt_of_le ha (mul_le_mul_of_nonneg_right (hr ω hω) (norm_nonneg a))) k]
+  simp
+
+/-- A uniform bound `B k` on the `k`-th ray derivatives over `I`, `k ≤ m`, bounds the
+ray-derivative bound by `∑_{k ≤ m} B k`. -/
+theorem rayDerivBound_le_ofReal_sum {I : Set ℝ} {G : H → ℂ} {m : ℕ} {a : H} {B : ℕ → ℝ}
+    (hB0 : ∀ k, 0 ≤ B k)
+    (hB : ∀ k ≤ m, ∀ ω ∈ I, ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ ≤ B k) :
+    rayDerivBound I G m a ≤ ENNReal.ofReal (∑ k ∈ Finset.range (m + 1), B k) := by
+  unfold rayDerivBound
+  refine iSup_le fun k => iSup₂_le fun ω hω => ?_
+  rw [← ofReal_norm]
+  refine ENNReal.ofReal_le_ofReal ((hB k (Nat.lt_succ_iff.mp k.2) ω hω).trans ?_)
+  exact Finset.single_le_sum (fun i _ => hB0 i) (Finset.mem_range.mpr k.2)
+
+variable [MeasurableSpace H] [OpensMeasurableSpace H]
+
+/-- **Lemma `lem:ray-regular-examples`(b), general form.**  A bounded Borel density that is
+smooth along rays near the compact window `I ⊆ ℝ ∖ {0}`, vanishes outside a bounded set, and
+has polynomially bounded ray derivatives on `I` is regular along rays with respect to any
+direction measure that is finite on balls: the ray derivatives vanish for `‖a‖ > R₀ / min_I |ω|`
+and are bounded on the remaining ball. -/
+theorem isRegularAlongRays_of_bounded_support (ν : Measure H)
+    (hν : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤) {G : H → ℂ} (hG : Measurable G)
+    (hGb : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M) {R₀ : ℝ} (hG0 : ∀ ξ : H, R₀ < ‖ξ‖ → G ξ = 0) {I : Set ℝ}
+    (hI : IsCompact I) (hI0 : (0 : ℝ) ∉ I)
+    (hsmooth : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U)
+    (hbound : ∀ k : ℕ, ∃ C p : ℝ, ∀ a : H, ∀ ω ∈ I,
+      ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ ≤ C * (1 + ‖a‖) ^ p) :
+    IsRegularAlongRays ν I G := by
+  obtain ⟨r, R, hr, hrR⟩ := hI.exists_pos_le_abs_le hI0
+  choose C p hCp using hbound
+  refine ⟨hG.stronglyMeasurable, hGb, hsmooth, fun m => ?_⟩
+  set Ra := max (R₀ / r) 0 with hRa
+  have hRa0 : 0 ≤ Ra := le_max_right _ _
+  set B : ℕ → ℝ := fun k => max (C k) 0 * (1 + Ra) ^ |p k| with hB
+  have hB0 : ∀ k, 0 ≤ B k := fun k => by positivity
+  have hBk : ∀ k, ∀ a : H, ‖a‖ ≤ Ra → ∀ ω ∈ I,
+      ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ ≤ B k := by
+    intro k a ha ω hω
+    refine (hCp k a ω hω).trans ?_
+    have h1 : (1 + ‖a‖) ^ (p k) ≤ (1 + Ra) ^ |p k| := by
+      rcases le_or_gt 0 (p k) with hp | hp
+      · rw [abs_of_nonneg hp]
+        exact Real.rpow_le_rpow (by linarith [norm_nonneg a]) (by linarith) hp
+      · rw [abs_of_neg hp]
+        calc (1 + ‖a‖) ^ (p k) ≤ 1 :=
+              Real.rpow_le_one_of_one_le_of_nonpos (by linarith [norm_nonneg a]) hp.le
+          _ ≤ (1 + Ra) ^ (-p k) := Real.one_le_rpow (by linarith) (by linarith)
+    calc C k * (1 + ‖a‖) ^ (p k) ≤ max (C k) 0 * (1 + ‖a‖) ^ (p k) :=
+          mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)
+      _ ≤ max (C k) 0 * (1 + Ra) ^ |p k| := mul_le_mul_of_nonneg_left h1 (le_max_right _ _)
+  have hzero : ∀ a : H, Ra < ‖a‖ → rayDerivBound I G m a = 0 := by
+    intro a ha
+    refine rayDerivBound_eq_zero_of_norm_gt (fun ω hω => (hrR ω hω).1) hG0 m ?_
+    have h1 : R₀ / r < ‖a‖ := lt_of_le_of_lt (le_max_left _ _) ha
+    rwa [div_lt_iff₀ hr, mul_comm] at h1
+  have hle : ∀ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I G m a ≤
+      (Metric.closedBall (0 : H) Ra).indicator
+        (fun _ => ENNReal.ofReal ((1 + Ra) ^ (m + 2) * ∑ k ∈ Finset.range (m + 1), B k)) a := by
+    intro a
+    by_cases ha : ‖a‖ ≤ Ra
+    · rw [Set.indicator_of_mem (mem_closedBall_zero_iff.mpr ha), ENNReal.ofReal_mul (by positivity)]
+      refine mul_le_mul' (ENNReal.ofReal_le_ofReal
+        (pow_le_pow_left₀ (by linarith [norm_nonneg a]) (by linarith) _)) ?_
+      exact rayDerivBound_le_ofReal_sum hB0 fun k _ ω hω => hBk k a ha ω hω
+    · rw [Set.indicator_of_notMem (fun h => ha (mem_closedBall_zero_iff.mp h)),
+        hzero a (not_le.mp ha), mul_zero]
+  unfold rayMoment
+  refine lt_of_le_of_lt (lintegral_mono hle) ?_
+  rw [lintegral_indicator Metric.isClosed_closedBall.measurableSet, setLIntegral_const]
+  exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hν Ra)
+
+end BoundedSupport
+
+/-! ### Radial bumps -/
+
+section RadialBump
+
+/-- The quadratic `‖ωa - ξ₀‖² = ‖a‖² ω² - 2⟪a,ξ₀⟫ ω + ‖ξ₀‖²` along the ray through `a`. -/
+theorem norm_smul_sub_sq_eq {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+    (ξ₀ a : H) (ω : ℝ) :
+    ‖ω • a - ξ₀‖ ^ 2 = ‖a‖ ^ 2 * ω ^ 2 - 2 * ⟪a, ξ₀⟫ * ω + ‖ξ₀‖ ^ 2 := by
+  rw [norm_sub_sq_real, norm_smul, real_inner_smul_left, Real.norm_eq_abs, mul_pow, sq_abs]
+  ring
+
+/-- The derivative of a real quadratic. -/
+theorem hasDerivAt_quadratic (A B C ω : ℝ) :
+    HasDerivAt (fun ω : ℝ => A * ω ^ 2 - B * ω + C) (2 * A * ω - B) ω := by
+  have h := (((hasDerivAt_pow 2 ω).const_mul A).sub ((hasDerivAt_id ω).const_mul B)).add_const C
+  exact h.congr_deriv (by norm_num; ring)
+
+/-- `iteratedDeriv 1` of a real quadratic. -/
+theorem iteratedDeriv_one_quadratic (A B C : ℝ) :
+    iteratedDeriv 1 (fun ω : ℝ => A * ω ^ 2 - B * ω + C) = fun ω => 2 * A * ω - B := by
+  rw [iteratedDeriv_one]
+  funext ω
+  exact (hasDerivAt_quadratic A B C ω).deriv
+
+/-- `iteratedDeriv 2` of a real quadratic. -/
+theorem iteratedDeriv_two_quadratic (A B C : ℝ) :
+    iteratedDeriv 2 (fun ω : ℝ => A * ω ^ 2 - B * ω + C) = fun _ => 2 * A := by
+  rw [iteratedDeriv_succ, iteratedDeriv_one_quadratic]
+  funext ω
+  have h := (((hasDerivAt_id ω).const_mul (2 * A)).sub_const B).deriv
+  simp only [id, mul_one] at h
+  exact h
+
+/-- The iterated derivatives of order `≥ 3` of a real quadratic vanish. -/
+theorem iteratedDeriv_add_three_quadratic (A B C : ℝ) (i : ℕ) :
+    iteratedDeriv (i + 3) (fun ω : ℝ => A * ω ^ 2 - B * ω + C) = 0 := by
+  induction i with
+  | zero =>
+    rw [iteratedDeriv_succ, iteratedDeriv_two_quadratic]
+    funext ω
+    exact deriv_const ω (2 * A)
+  | succ i ih =>
+    rw [iteratedDeriv_succ, ih]
+    funext ω
+    exact deriv_const ω (0 : ℝ)
+
+/-- The iterated derivatives of a real quadratic on `|ω| ≤ R` are bounded by `D ^ i` for
+`i ≥ 1`, when `D ≥ 1` dominates `2|A|R + |B|` and `2|A|`. -/
+theorem norm_iteratedDeriv_quadratic_le {A B C R D : ℝ} (hD1 : 1 ≤ D)
+    (hD : 2 * |A| * R + |B| ≤ D) (hD' : 2 * |A| ≤ D) {ω : ℝ} (hω : |ω| ≤ R) {i : ℕ}
+    (hi : 1 ≤ i) :
+    ‖iteratedDeriv i (fun ω : ℝ => A * ω ^ 2 - B * ω + C) ω‖ ≤ D ^ i := by
+  match i, hi with
+  | 1, _ =>
+    rw [iteratedDeriv_one_quadratic]
+    simp only [Real.norm_eq_abs, pow_one]
+    calc |2 * A * ω - B| ≤ |2 * A * ω| + |B| := abs_sub _ _
+      _ = 2 * |A| * |ω| + |B| := by rw [abs_mul, abs_mul, abs_two]
+      _ ≤ 2 * |A| * R + |B| := by gcongr
+      _ ≤ D := hD
+  | 2, _ =>
+    rw [iteratedDeriv_two_quadratic]
+    simp only [Real.norm_eq_abs]
+    rw [abs_mul, abs_two]
+    calc 2 * |A| ≤ D := hD'
+      _ ≤ D ^ 2 := by nlinarith
+  | i + 3, _ =>
+    rw [iteratedDeriv_add_three_quadratic]
+    simp only [Pi.zero_apply, norm_zero]
+    positivity
+
+/-- The chain rule bound for a smooth function composed with a real quadratic:
+`‖∂^n (φ ∘ q)(ω)‖ ≤ n! C D^n` when `‖∂^i φ‖ ≤ C` for `i ≤ n` and the quadratic's derivatives
+are bounded by `D^i`. -/
+theorem norm_iteratedDeriv_comp_quadratic_le {φ : ℝ → ℂ} (hφ : ContDiff ℝ (⊤ : ℕ∞) φ) {n : ℕ}
+    {Cφ : ℝ} (hC : ∀ i ≤ n, ∀ y, ‖iteratedFDeriv ℝ i φ y‖ ≤ Cφ) (A B C : ℝ) {R D : ℝ}
+    (hD1 : 1 ≤ D) (hD : 2 * |A| * R + |B| ≤ D) (hD' : 2 * |A| ≤ D) {ω : ℝ} (hω : |ω| ≤ R) :
+    ‖iteratedDeriv n (fun ω : ℝ => φ (A * ω ^ 2 - B * ω + C)) ω‖ ≤
+      n.factorial * Cφ * D ^ n := by
+  have hq : ContDiff ℝ (⊤ : ℕ∞) (fun ω : ℝ => A * ω ^ 2 - B * ω + C) := by fun_prop
+  have h := norm_iteratedFDeriv_comp_le hφ hq (n := n) (by exact_mod_cast le_top) ω
+    (C := Cφ) (D := D) (fun i hi => hC i hi _) fun i hi1 _ => by
+      rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]
+      exact norm_iteratedDeriv_quadratic_le hD1 hD hD' hω hi1
+  rw [← norm_iteratedFDeriv_eq_norm_iteratedDeriv]
+  exact h
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [OpensMeasurableSpace H]
+
+/-- **Lemma `lem:ray-regular-examples`(b), radial bumps.**  `G(ξ) = φ(‖ξ - ξ₀‖²)` with
+`φ ∈ C_c^∞(ℝ)` is regular along rays with respect to any direction measure finite on balls,
+for every compact window `I ⊆ ℝ ∖ {0}`. -/
+theorem isRegularAlongRays_radialBump (ν : Measure H)
+    (hν : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤) (ξ₀ : H) {φ : ℝ → ℂ}
+    (hφ : ContDiff ℝ (⊤ : ℕ∞) φ) (hφc : HasCompactSupport φ) {I : Set ℝ} (hI : IsCompact I)
+    (hI0 : (0 : ℝ) ∉ I) :
+    IsRegularAlongRays ν I fun ξ => φ (‖ξ - ξ₀‖ ^ 2) := by
+  have hcont : Continuous fun ξ : H => φ (‖ξ - ξ₀‖ ^ 2) := hφ.continuous.comp (by fun_prop)
+  obtain ⟨M, hM⟩ := hφ.continuous.bounded_above_of_compact_support hφc
+  obtain ⟨T, hT⟩ := hφc.isBounded.subset_closedBall (0 : ℝ)
+  have hG0 : ∀ ξ : H, ‖ξ₀‖ + Real.sqrt (max T 0) < ‖ξ‖ → φ (‖ξ - ξ₀‖ ^ 2) = 0 := by
+    intro ξ hξ
+    apply image_eq_zero_of_notMem_tsupport
+    intro hmem
+    have h1 := hT hmem
+    rw [Metric.mem_closedBall, dist_zero_right, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+      at h1
+    have h2 : Real.sqrt (max T 0) < ‖ξ - ξ₀‖ := by
+      have := norm_sub_norm_le ξ ξ₀
+      linarith
+    have h3 : max T 0 < ‖ξ - ξ₀‖ ^ 2 := by
+      have := Real.sq_sqrt (le_max_right T 0)
+      nlinarith [Real.sqrt_nonneg (max T 0)]
+    linarith [le_max_left T 0]
+  have hsmooth : ∀ a : H, ContDiff ℝ (⊤ : ℕ∞) fun ω : ℝ => φ (‖ω • a - ξ₀‖ ^ 2) := fun a =>
+    hφ.comp ((contDiff_norm_sq ℝ).comp ((contDiff_id.smul contDiff_const).sub contDiff_const))
+  obtain ⟨r, R, hr, hrR⟩ := hI.exists_pos_le_abs_le hI0
+  have hφi : ∀ i : ℕ, ContDiff ℝ i φ := fun i => hφ.of_le (by exact_mod_cast le_top)
+  choose Cφ hCφ using fun i : ℕ =>
+    (hφi i).continuous_iteratedFDeriv'.bounded_above_of_compact_support (hφc.iteratedFDeriv i)
+  refine isRegularAlongRays_of_bounded_support ν hν hcont.measurable ⟨M, fun ξ => hM _⟩ hG0 hI hI0
+    (fun a => ⟨Set.univ, isOpen_univ, Set.subset_univ _, (hsmooth a).contDiffOn⟩) fun k => ?_
+  refine ⟨k.factorial * (∑ i ∈ Finset.range (k + 1), |Cφ i|) *
+    (4 * (1 + |R|) * (1 + ‖ξ₀‖)) ^ k, 2 * k, fun a ω hω => ?_⟩
+  have hfun : (fun ω : ℝ => φ (‖ω • a - ξ₀‖ ^ 2)) =
+      fun ω => φ (‖a‖ ^ 2 * ω ^ 2 - 2 * ⟪a, ξ₀⟫ * ω + ‖ξ₀‖ ^ 2) := by
+    funext ω
+    rw [norm_smul_sub_sq_eq]
+  rw [hfun]
+  set P := (1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 with hP
+  have ha1 : 1 ≤ (1 + ‖a‖) ^ 2 := one_le_pow₀ (by linarith [norm_nonneg a])
+  have hP1 : 1 ≤ P := by
+    rw [hP]
+    calc (1 : ℝ) = 1 * 1 * 1 := by ring
+      _ ≤ (1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 := by
+        gcongr <;> linarith [abs_nonneg R, norm_nonneg ξ₀]
+  have hPa : ‖a‖ ^ 2 * |R| ≤ P := by
+    rw [hP]
+    calc ‖a‖ ^ 2 * |R| ≤ (1 + ‖a‖) ^ 2 * (1 + |R|) := by
+          gcongr <;> linarith [norm_nonneg a, abs_nonneg R]
+      _ = (1 + |R|) * 1 * (1 + ‖a‖) ^ 2 := by ring
+      _ ≤ (1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 := by
+          gcongr
+          linarith [norm_nonneg ξ₀]
+  have hPb : ‖a‖ * ‖ξ₀‖ ≤ P := by
+    rw [hP]
+    have h1 : ‖a‖ ≤ (1 + ‖a‖) ^ 2 := by nlinarith [norm_nonneg a]
+    calc ‖a‖ * ‖ξ₀‖ ≤ (1 + ‖a‖) ^ 2 * (1 + ‖ξ₀‖) := by
+          gcongr
+          linarith [norm_nonneg ξ₀]
+      _ = 1 * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 := by ring
+      _ ≤ (1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 := by
+          gcongr
+          linarith [abs_nonneg R]
+  have hD1 : 1 ≤ 4 * P := by linarith
+  have hD : 2 * |‖a‖ ^ 2| * |R| + |2 * ⟪a, ξ₀⟫| ≤ 4 * P := by
+    rw [abs_of_nonneg (by positivity), abs_mul, abs_two]
+    have := abs_real_inner_le_norm a ξ₀
+    linarith
+  have hD' : 2 * |‖a‖ ^ 2| ≤ 4 * P := by
+    rw [abs_of_nonneg (by positivity)]
+    have : ‖a‖ ^ 2 ≤ P := by
+      rw [hP]
+      calc ‖a‖ ^ 2 ≤ (1 + ‖a‖) ^ 2 := by gcongr; linarith [norm_nonneg a]
+        _ = 1 * 1 * (1 + ‖a‖) ^ 2 := by ring
+        _ ≤ (1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2 := by
+            gcongr <;> linarith [abs_nonneg R, norm_nonneg ξ₀]
+    linarith
+  have hC : ∀ i ≤ k, ∀ y, ‖iteratedFDeriv ℝ i φ y‖ ≤ ∑ i ∈ Finset.range (k + 1), |Cφ i| :=
+    fun i hi y => (hCφ i y).trans ((le_abs_self _).trans
+      (Finset.single_le_sum (fun j _ => abs_nonneg (Cφ j))
+        (Finset.mem_range.mpr (Nat.lt_succ_of_le hi))))
+  have h := norm_iteratedDeriv_comp_quadratic_le hφ hC (‖a‖ ^ 2) (2 * ⟪a, ξ₀⟫) (‖ξ₀‖ ^ 2)
+    hD1 hD hD' ((hrR ω hω).2.trans (le_abs_self R))
+  refine h.trans (le_of_eq ?_)
+  rw [hP, show (4 : ℝ) * ((1 + |R|) * (1 + ‖ξ₀‖) * (1 + ‖a‖) ^ 2) =
+    (4 * (1 + |R|) * (1 + ‖ξ₀‖)) * (1 + ‖a‖) ^ 2 by ring, mul_pow, ← pow_mul,
+    show (2 : ℝ) * (k : ℝ) = ((2 * k : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]
+  ring
+
+end RadialBump
+
+/-! ### Measurability of the ray-derivative bound -/
+
+section RayMeasurable
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H]
+
+/-- For a Borel density smooth along rays near `I`, the ray derivative at a fixed `ω ∈ I` is a
+Borel function of the direction (`OperatorRidgelet.ToMathlib.IteratedDerivMeasurable`). -/
+theorem measurable_iteratedDeriv_ray {G : H → ℂ} (hG : Measurable G) {I : Set ℝ}
+    (hsmooth : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U)
+    (k : ℕ) {ω : ℝ} (hω : ω ∈ I) :
+    Measurable fun a : H => iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω :=
+  measurable_iteratedDeriv_of_forall_contDiffOn (f := fun a ω => G (ω • a))
+    (fun t => hG.comp (measurable_const_smul t))
+    (fun a => by
+      obtain ⟨U, hU, hIU, hf⟩ := hsmooth a
+      exact ⟨U, hU, hIU hω, hf⟩) k
+
+omit [MeasurableSpace H] [BorelSpace H] in
+/-- The supremum over `I` in the ray-derivative bound may be taken over a subset dense in `I`
+when the ray derivatives are continuous on `I`. -/
+theorem rayDerivBound_eq_biSup_dense {G : H → ℂ} {I D : Set ℝ} (hD : D ⊆ I)
+    (hdense : I ⊆ closure D) (m : ℕ) (a : H)
+    (hcont : ∀ k : ℕ, ContinuousOn (iteratedDeriv k fun ω : ℝ => G (ω • a)) I) :
+    rayDerivBound I G m a =
+      ⨆ k : Fin (m + 1), ⨆ ω ∈ D, ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ₑ := by
+  unfold rayDerivBound
+  congr 1
+  funext k
+  exact biSup_eq_biSup_of_subset_closure hD hdense (hcont k).enorm
+
+/-- **Measurability of the ray-derivative bound.**  For a Borel density smooth along rays on a
+neighbourhood of `I`, `a ↦ max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` is Borel: the supremum over
+`I` is a supremum over a countable dense subset by continuity, and each ray derivative is a
+Borel function of the direction. -/
+theorem measurable_rayDerivBound {G : H → ℂ} (hG : Measurable G) {I : Set ℝ}
+    (hsmooth : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U)
+    (m : ℕ) :
+    Measurable fun a : H => rayDerivBound I G m a := by
+  obtain ⟨D, hDI, hDc, hdense⟩ :=
+    (TopologicalSpace.IsSeparable.of_separableSpace I).exists_countable_dense_subset
+  have heq : (fun a : H => rayDerivBound I G m a) = fun a =>
+      ⨆ k : Fin (m + 1), ⨆ ω ∈ D, ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ₑ := by
+    funext a
+    obtain ⟨U, hU, hIU, hf⟩ := hsmooth a
+    exact rayDerivBound_eq_biSup_dense hDI hdense m a fun k =>
+      ((hf.iteratedDeriv_of_isOpen hU k).continuousOn).mono hIU
+  rw [heq]
+  exact Measurable.iSup fun k => Measurable.biSup D hDc fun ω hω =>
+    (measurable_iteratedDeriv_ray hG hsmooth k (hDI hω)).enorm
+
+end RayMeasurable
+
+/-! ### Finite linear combinations -/
+
+section FinsetSum
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+/-- A common open neighbourhood of `I` on which finitely many ray functions are smooth. -/
+theorem exists_isOpen_forall_contDiffOn {ι : Type*} (s : Finset ι) (G : ι → H → ℂ) {I : Set ℝ}
+    (a : H)
+    (h : ∀ i ∈ s, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G i (ω • a)) U) :
+    ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ∀ i ∈ s, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G i (ω • a)) U := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    exact ⟨Set.univ, isOpen_univ, Set.subset_univ _, fun i hi => absurd hi (Finset.notMem_empty i)⟩
+  | insert j s hj ih =>
+    obtain ⟨U, hU, hIU, hUs⟩ := ih fun i hi => h i (Finset.mem_insert_of_mem hi)
+    obtain ⟨V, hV, hIV, hVj⟩ := h j (Finset.mem_insert_self j s)
+    refine ⟨U ∩ V, hU.inter hV, Set.subset_inter hIU hIV, fun i hi => ?_⟩
+    rcases Finset.mem_insert.mp hi with rfl | hi
+    · exact hVj.mono Set.inter_subset_right
+    · exact (hUs i hi).mono Set.inter_subset_left
+
+/-- Iterated derivatives of a finite linear combination of functions smooth on an open set. -/
+theorem iteratedDeriv_finset_sum_mul {ι : Type*} (s : Finset ι) (c : ι → ℂ) (g : ι → ℝ → ℂ)
+    {U : Set ℝ} (hU : IsOpen U) {x : ℝ} (hx : x ∈ U) (n : ℕ)
+    (hg : ∀ i ∈ s, ContDiffOn ℝ (⊤ : ℕ∞) (g i) U) :
+    iteratedDeriv n (fun ω => ∑ i ∈ s, c i * g i ω) x =
+      ∑ i ∈ s, c i * iteratedDeriv n (g i) x := by
+  classical
+  have hwithin : ∀ f : ℝ → ℂ, iteratedDerivWithin n f U x = iteratedDeriv n f x := fun f =>
+    iteratedDerivWithin_of_isOpen hU hx
+  simp_rw [← hwithin]
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty, iteratedDerivWithin_const]
+    split_ifs <;> rfl
+  | insert j s hj ih =>
+    have hgj : ContDiffWithinAt ℝ n (g j) U x :=
+      ((hg j (Finset.mem_insert_self j s)) x hx).of_le (by exact_mod_cast le_top)
+    have hgs : ∀ i ∈ s, ContDiffWithinAt ℝ n (g i) U x := fun i hi =>
+      ((hg i (Finset.mem_insert_of_mem hi)) x hx).of_le (by exact_mod_cast le_top)
+    have hsum : ContDiffWithinAt ℝ n (fun ω => ∑ i ∈ s, c i * g i ω) U x :=
+      (ContDiffWithinAt.sum fun i hi => contDiffWithinAt_const.mul (hgs i hi))
+    simp_rw [Finset.sum_insert hj]
+    rw [show (fun ω => c j * g j ω + ∑ i ∈ s, c i * g i ω) =
+      (fun ω => c j * g j ω) + fun ω => ∑ i ∈ s, c i * g i ω from rfl,
+      iteratedDerivWithin_add hx hU.uniqueDiffOn (contDiffWithinAt_const.mul hgj) hsum,
+      iteratedDerivWithin_const_mul hx hU.uniqueDiffOn (c j) hgj,
+      ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
+
+/-- The ray-derivative bound of a finite linear combination is dominated by the linear
+combination of the ray-derivative bounds. -/
+theorem rayDerivBound_finset_sum_le {ι : Type*} (s : Finset ι) (c : ι → ℂ) (G : ι → H → ℂ)
+    {I : Set ℝ} (m : ℕ) (a : H)
+    (h : ∀ i ∈ s, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G i (ω • a)) U) :
+    rayDerivBound I (fun ξ => ∑ i ∈ s, c i * G i ξ) m a ≤
+      ∑ i ∈ s, ‖c i‖ₑ * rayDerivBound I (G i) m a := by
+  obtain ⟨U, hU, hIU, hUs⟩ := exists_isOpen_forall_contDiffOn s G a h
+  unfold rayDerivBound
+  refine iSup_le fun k => iSup₂_le fun ω hω => ?_
+  rw [iteratedDeriv_finset_sum_mul s c (fun i ω => G i (ω • a)) hU (hIU hω) k hUs]
+  refine (enorm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
+  rw [enorm_mul]
+  exact mul_le_mul' le_rfl (le_iSup_of_le k (le_iSup₂_of_le ω hω le_rfl))
+
+variable [MeasurableSpace H] [BorelSpace H]
+
+/-- **Lemma `lem:ray-regular-examples`(c), finite linear combinations.**  Finite linear
+combinations of densities regular along rays are regular along rays: the ray moments are
+subadditive, the summands' ray-derivative bounds being Borel. -/
+theorem IsRegularAlongRays.finset_sum {ν : Measure H} {I : Set ℝ} {ι : Type*} (s : Finset ι)
+    (c : ι → ℂ) (G : ι → H → ℂ) (hG : ∀ i ∈ s, IsRegularAlongRays ν I (G i)) :
+    IsRegularAlongRays ν I fun ξ => ∑ i ∈ s, c i * G i ξ := by
+  have hb : ∀ i, ∃ M : ℝ, ∀ ξ, i ∈ s → ‖G i ξ‖ ≤ M := by
+    intro i
+    by_cases hi : i ∈ s
+    · obtain ⟨M, hM⟩ := (hG i hi).bounded
+      exact ⟨M, fun ξ _ => hM ξ⟩
+    · exact ⟨0, fun ξ h => absurd h hi⟩
+  choose M hM using hb
+  refine ⟨Finset.stronglyMeasurable_fun_sum s fun i hi =>
+    stronglyMeasurable_const.mul (hG i hi).stronglyMeasurable,
+    ⟨∑ i ∈ s, ‖c i‖ * M i, fun ξ => ?_⟩, fun a => ?_, fun m => ?_⟩
+  · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i hi => ?_)
+    rw [norm_mul]
+    exact mul_le_mul_of_nonneg_left (hM i ξ hi) (norm_nonneg _)
+  · obtain ⟨U, hU, hIU, hUs⟩ := exists_isOpen_forall_contDiffOn s G a fun i hi =>
+      (hG i hi).contDiffOn a
+    exact ⟨U, hU, hIU, ContDiffOn.sum fun i hi => contDiffOn_const.mul (hUs i hi)⟩
+  · have hmeas : ∀ i ∈ s, Measurable fun a : H =>
+        ‖c i‖ₑ * (ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I (G i) m a) := by
+      intro i hi
+      refine Measurable.const_mul (Measurable.mul ?_ ?_) _
+      · exact (ENNReal.continuous_ofReal.comp
+          (by fun_prop : Continuous fun a : H => (1 + ‖a‖) ^ (m + 2))).measurable
+      · exact measurable_rayDerivBound (hG i hi).stronglyMeasurable.measurable
+          (fun a => (hG i hi).contDiffOn a) m
+    have hle : ∀ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+        rayDerivBound I (fun ξ => ∑ i ∈ s, c i * G i ξ) m a ≤
+        ∑ i ∈ s, ‖c i‖ₑ * (ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I (G i) m a) := by
+      intro a
+      calc ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+            rayDerivBound I (fun ξ => ∑ i ∈ s, c i * G i ξ) m a
+          ≤ ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+              ∑ i ∈ s, ‖c i‖ₑ * rayDerivBound I (G i) m a :=
+            mul_le_mul' le_rfl (rayDerivBound_finset_sum_le s c G m a fun i hi =>
+              (hG i hi).contDiffOn a)
+        _ = _ := by
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun i _ => ?_
+            ring
+    unfold rayMoment
+    refine lt_of_le_of_lt (lintegral_mono hle) ?_
+    rw [lintegral_finsetSum s hmeas]
+    refine ENNReal.sum_lt_top.mpr fun i hi => ?_
+    rw [lintegral_const_mul' _ _ enorm_ne_top]
+    exact ENNReal.mul_lt_top enorm_lt_top ((hG i hi).rayMoment_lt_top m)
+
+end FinsetSum
 
 end OperatorRidgelet

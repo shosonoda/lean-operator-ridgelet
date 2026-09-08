@@ -250,36 +250,36 @@ attribute [blueprint "reconstruction:coefficient-projection-vec"
 
 attribute [blueprint "def:ray-regular-integrable"
   (statement := /-- A density that is regular along rays belongs to $L^1(\nu_\alpha)\cap
-    L^2(\nu_\alpha)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_ray_regular
+    L^2(\nu_\alpha)$. -/)]
+  OperatorRidgelet.Paper.def_ray_regular
 
 attribute [blueprint "thm:A-i-a"
   (statement := /-- For $G\in L^1(\nu_\alpha)$, $\|g_G\|_\infty\le\|G\|_{L^1(\nu_\alpha)}$. -/)]
   OperatorRidgelet.Paper.thm_A_i_a
 
 attribute [blueprint "thm:A-i-b"
-  (statement := /-- For $G\in L^1(\nu_\alpha)$, $g_G$ is continuous. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_i_b
+  (statement := /-- For $G\in L^1(\nu_\alpha)$, $g_G$ is continuous. -/)]
+  OperatorRidgelet.Paper.thm_A_i_b
 
 attribute [blueprint "thm:A-i-c"
-  (statement := /-- For $G\in L^1(\nu_\alpha)$, $g_G=0$ only if $G=0$ $\nu_\alpha$-a.e. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_i_c
+  (statement := /-- For $G\in L^1(\nu_\alpha)$, $g_G=0$ only if $G=0$ $\nu_\alpha$-a.e. -/)]
+  OperatorRidgelet.Paper.thm_A_i_c
 
 attribute [blueprint "thm:A-ii-a"
   (statement := /-- For $G\in L^1(\nu_\alpha)\cap L^2(\nu_\alpha)$ the iterated integral
     $\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm
-    dc]\,\nu_\alpha(\mathrm da)$ converges absolutely. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_ii_a
+    dc]\,\nu_\alpha(\mathrm da)$ converges absolutely. -/)]
+  OperatorRidgelet.Paper.thm_A_ii_a
 
 attribute [blueprint "thm:A-ii-b"
   (statement := /-- $\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm
-    dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_\rho g_G(x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_ii_b
+    dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_\rho g_G(x)$. -/)]
+  OperatorRidgelet.Paper.thm_A_ii_b
 
 attribute [blueprint "thm:A-ii-c"
   (statement := /-- If moreover $\gamma_G\in L^1(\lambda_\alpha)$, the left side is the integral
-    network $S_\rho[\gamma_G\lambda_\alpha](x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_ii_c
+    network $S_\rho[\gamma_G\lambda_\alpha](x)$. -/)]
+  OperatorRidgelet.Paper.thm_A_ii_c
 
 attribute [blueprint "thm:A-iii-a"
   (statement := /-- For tempered $\beta$ that is a continuous non-polynomial function of
@@ -315,44 +315,44 @@ attribute [blueprint "thm:C-i-c"
   OperatorRidgelet.Paper.thm_C_i_c
 
 attribute [blueprint "thm:C-i-d"
-  (statement := /-- $S_\rho R_\rho f=C^{(\alpha)}_\rho T_\alpha f$ for $f\in\mathcal E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_i_d
+  (statement := /-- $S_\rho R_\rho f=C^{(\alpha)}_\rho T_\alpha f$ for $f\in\mathcal E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_i_d
 
 attribute [blueprint "thm:C-ii-a"
   (statement := /-- $f=(C^{(\alpha)}_\rho)^{-1}T_\alpha^{-1}S_\rho R_\rho f$ for $f\in\mathcal
-    E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_ii_a
+    E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_ii_a
 
 attribute [blueprint "thm:C-ii-b"
   (statement := /-- $g=(C^{(\alpha)}_\rho)^{-1}S_\rho(R_\rho T_\alpha^{-1}g)$ for $g\in\mathcal
-    E_\alpha'$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_ii_b
+    E_\alpha'$. -/)]
+  OperatorRidgelet.Paper.thm_C_ii_b
 
 attribute [blueprint "thm:C-iii-a"
   (statement := /-- If $f\in\mathcal D_\alpha$ and $\mathcal G_Qf\in L^1(\nu_\alpha)$, then
     $T_\alpha f[g]=\int_Hg_{\mathcal G_Qf}(x)\overline{g(x)}\,\mu_Q(\mathrm dx)$ for
-    $g\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iii_a
+    $g\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_iii_a
 
 attribute [blueprint "thm:C-iii-b"
-  (statement := /-- For $G\in\mathcal K_\alpha$, $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iii_b
+  (statement := /-- For $G\in\mathcal K_\alpha$, $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$. -/)]
+  OperatorRidgelet.Paper.thm_C_iii_b
 
 attribute [blueprint "thm:C-iii-c"
   (statement := /-- For $G\in\mathcal K_\alpha\cap L^1(\nu_\alpha)$, $U_\alpha'G$ is represented
-    by $g_G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iii_c
+    by $g_G$. -/)]
+  OperatorRidgelet.Paper.thm_C_iii_c
 
 attribute [blueprint "thm:C-iii-d"
   (statement := /-- For $G\in\mathcal K_\alpha$, $U_\alpha'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
-    W_\rho G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iii_d
+    W_\rho G$. -/)]
+  OperatorRidgelet.Paper.thm_C_iii_d
 
 attribute [blueprint "thm:C-iii-e"
   (statement := /-- For $G\in\mathcal K_\alpha\cap L^1(\nu_\alpha)$ with $\gamma_G\in
     L^1(\lambda_\alpha)$, the second reconstruction formula for $U_\alpha'G$ is the spectral
-    synthesis identity paired with $g\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iii_e
+    synthesis identity paired with $g\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_iii_e
 
 attribute [blueprint "thm:C-iv-a"
   (statement := /-- $\Lambda_\rho$ is a bounded operator $L^2(\lambda_\alpha)\to
@@ -365,8 +365,8 @@ attribute [blueprint "thm:C-iv-b"
 
 attribute [blueprint "thm:C-iv-c"
   (statement := /-- $\Lambda_\rho R_\rho f=C^{(\alpha)}_\rho\mathcal G_Qf$ pointwise for
-    $f\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_c
+    $f\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_iv_c
 
 attribute [blueprint "thm:C-iv-d"
   (statement := /-- $\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle
@@ -382,20 +382,20 @@ attribute [blueprint "thm:C-iv-e"
 
 attribute [blueprint "thm:C-iv-f"
   (statement := /-- $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}\Lambda_\rho R_\rho f]$ for
-    $f\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_f
+    $f\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_C_iv_f
 
 attribute [blueprint "lem:weak-equals-strong-i"
   (statement := /-- For real $\rho\in\mathcal S(\mathbb R)$ and $\gamma\in
     L^1(\lambda_\alpha)\cap L^2(\lambda_\alpha)$, $S_\rho[\gamma\lambda_\alpha]$ is a bounded
-    Borel function. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weak_equals_strong_i
+    Borel function. -/)]
+  OperatorRidgelet.Paper.lem_weak_equals_strong_i
 
 attribute [blueprint "lem:weak-equals-strong-ii"
   (statement := /-- $(S_\rho\gamma)[g]=\langle\gamma,R_\rho
     g\rangle_{L^2(\lambda_\alpha)}=\int_HS_\rho[\gamma\lambda_\alpha](x)\overline{g(x)}\,
-    \mu_Q(\mathrm dx)$ for $g\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weak_equals_strong_ii
+    \mu_Q(\mathrm dx)$ for $g\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.lem_weak_equals_strong_ii
 
 attribute [blueprint "lem:hermite-totality-i"
   (statement := /-- $z\mapsto G_f(z\xi)$ is entire. -/)
@@ -452,13 +452,13 @@ attribute [blueprint "prop:coefficient-projection-vi"
 
 attribute [blueprint "prop:coefficient-projection-vii"
   (statement := /-- The minimum-norm solution of $S_\rho\gamma=F\in\mathcal E_\alpha'$ is
-    $C^{-1}R_\rho J_\alpha^{-1}F$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_vii
+    $C^{-1}R_\rho J_\alpha^{-1}F$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_vii
 
 attribute [blueprint "prop:coefficient-projection-viii"
   (statement := /-- All solutions of $S_\rho\gamma=F$ differ from the minimum-norm solution by
-    an element of $(\operatorname{Ran}R_\rho)^\perp$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_viii
+    an element of $(\operatorname{Ran}R_\rho)^\perp$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_viii
 
 attribute [blueprint "lem:ray-regular-examples-a"
   (statement := /-- Gaussian-type densities $G(\xi)=q(\xi)e^{-\kappa(\xi)/2}$,
@@ -469,18 +469,18 @@ attribute [blueprint "lem:ray-regular-examples-a"
 
 attribute [blueprint "lem:ray-regular-examples-b-i"
   (statement := /-- $G(\xi)=\varphi(\|\xi-\xi_0\|^2)$ with $\varphi\in C_c^\infty(\mathbb R)$ is
-    regular along rays for every band-pass $\rho$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_ray_regular_examples_b_i
+    regular along rays for every band-pass $\rho$. -/)]
+  OperatorRidgelet.Paper.lem_ray_regular_examples_b_i
 
 attribute [blueprint "lem:ray-regular-examples-b-ii"
   (statement := /-- A bounded $G$ that is $C^\infty$ along rays, vanishes outside a bounded set,
-    and has polynomially bounded ray derivatives is regular along rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii
+    and has polynomially bounded ray derivatives is regular along rays. -/)]
+  OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii
 
 attribute [blueprint "lem:ray-regular-examples-c-i"
   (statement := /-- Finite linear combinations of densities regular along rays are regular along
-    rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_ray_regular_examples_c_i
+    rays. -/)]
+  OperatorRidgelet.Paper.lem_ray_regular_examples_c_i
 
 attribute [blueprint "lem:ray-regular-examples-c-ii"
   (statement := /-- Bochner integrals $\int G_y\,m(\mathrm dy)$ of a measurable family with
@@ -493,27 +493,27 @@ attribute [blueprint "thm:vector-valued-A-i-a"
   OperatorRidgelet.Paper.thm_vector_valued_A_i_a
 
 attribute [blueprint "thm:vector-valued-A-i-b"
-  (statement := /-- Theorem A for $Y$-valued targets: $g_G$ is continuous. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_i_b
+  (statement := /-- Theorem A for $Y$-valued targets: $g_G$ is continuous. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_i_b
 
 attribute [blueprint "thm:vector-valued-A-i-c"
-  (statement := /-- Theorem A for $Y$-valued targets: $g_G=0$ only if $G=0$ $\nu_\alpha$-a.e. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_i_c
+  (statement := /-- Theorem A for $Y$-valued targets: $g_G=0$ only if $G=0$ $\nu_\alpha$-a.e. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_i_c
 
 attribute [blueprint "thm:vector-valued-A-ii-a"
   (statement := /-- Theorem A for $Y$-valued targets: The iterated integral of Theorem A(ii)
-    converges absolutely. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_ii_a
+    converges absolutely. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_ii_a
 
 attribute [blueprint "thm:vector-valued-A-ii-b"
   (statement := /-- Theorem A for $Y$-valued targets: $\int_H[\int_{\mathbb R}\rho(\langle
-    a,x\rangle+c)\gamma_G(a,c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_\rho g_G(x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_ii_b
+    a,x\rangle+c)\gamma_G(a,c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_\rho g_G(x)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_ii_b
 
 attribute [blueprint "thm:vector-valued-A-ii-c"
   (statement := /-- Theorem A for $Y$-valued targets: If $\gamma_G\in L^1(\lambda_\alpha;Y)$,
-    the left side is the integral network $S_\rho[\gamma_G\lambda_\alpha](x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_ii_c
+    the left side is the integral network $S_\rho[\gamma_G\lambda_\alpha](x)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_ii_c
 
 attribute [blueprint "thm:vector-valued-A-iii-a"
   (statement := /-- Theorem A for $Y$-valued targets: The inner integral with a tempered $\beta$

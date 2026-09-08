@@ -5,8 +5,8 @@ import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 /-!
 # Fourier uniqueness for integrable densities
 
-A complex integrable density `f` against a finite measure `μ` on a complete second-countable
-real inner product space is determined by its Fourier transform
+A complex integrable density `f` against a measure `μ` on a complete second-countable real
+inner product space is determined by its Fourier transform
 `t ↦ ∫ f(x) exp(i⟪x, t⟫) dμ(x)`: if the transform vanishes identically, then `f = 0`
 `μ`-almost everywhere.  The proof reduces to `MeasureTheory.Measure.ext_of_charFun` by splitting
 `f` into real and imaginary parts and each of those into positive and negative parts, which
@@ -56,8 +56,10 @@ theorem Integrable.conj_comp {X : Type*} [MeasurableSpace X] {μ : Measure X} {f
 variable [CompleteSpace E] [SecondCountableTopology E] [BorelSpace E]
 
 /-- **Fourier uniqueness for real densities**: a real integrable function whose Fourier
-transform against the finite measure `μ` vanishes identically is zero almost everywhere. -/
-theorem Integrable.ae_eq_zero_of_forall_integral_mul_exp_eq_zero_real [IsFiniteMeasure μ]
+transform against the measure `μ` vanishes identically is zero almost everywhere.  (No
+finiteness of `μ` is needed: the positive and negative parts of `u` are densities of finite
+measures.) -/
+theorem Integrable.ae_eq_zero_of_forall_integral_mul_exp_eq_zero_real
     {u : E → ℝ} (hu : Integrable u μ)
     (h : ∀ t : E, ∫ x, (u x : ℂ) * Complex.exp ((⟪x, t⟫ : ℝ) * Complex.I) ∂μ = 0) :
     u =ᵐ[μ] 0 := by
@@ -107,8 +109,8 @@ theorem Integrable.ae_eq_zero_of_forall_integral_mul_exp_eq_zero_real [IsFiniteM
     exact (ENNReal.ofReal_pos.mpr hgt).ne' hx'
 
 /-- **Fourier uniqueness for complex densities**: a complex integrable function whose Fourier
-transform against the finite measure `μ` vanishes identically is zero almost everywhere. -/
-theorem Integrable.ae_eq_zero_of_forall_integral_mul_exp_eq_zero [IsFiniteMeasure μ]
+transform against the measure `μ` vanishes identically is zero almost everywhere. -/
+theorem Integrable.ae_eq_zero_of_forall_integral_mul_exp_eq_zero
     {f : E → ℂ} (hf : Integrable f μ)
     (h : ∀ t : E, ∫ x, f x * Complex.exp ((⟪x, t⟫ : ℝ) * Complex.I) ∂μ = 0) :
     f =ᵐ[μ] 0 := by

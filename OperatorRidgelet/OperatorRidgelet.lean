@@ -20,6 +20,7 @@ import OperatorRidgelet.FiniteDim.Defs
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
+import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Tempered.Basic
@@ -49,6 +50,7 @@ import OperatorRidgelet.ToMathlib.StarProjectionBessel
 import OperatorRidgelet.ToMathlib.TendstoUniformlyOnCompact
 import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
+import OperatorRidgelet.ToMathlib.IteratedDerivMeasurable
 import OperatorRidgelet.Paper
 import OperatorRidgelet.ArchitectBridge
 

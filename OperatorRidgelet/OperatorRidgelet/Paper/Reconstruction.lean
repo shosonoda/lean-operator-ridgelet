@@ -1,5 +1,6 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
+import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Paper.Transform
 
 /-!
@@ -34,13 +35,17 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
 
 /-! ### Definition `def:ray-regular` -/
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Definition [def:ray-regular]** Regularity along rays.  A density that is regular along
 rays belongs to `L¹(ν_α) ∩ L²(ν_α)` (homogeneity with a fixed `ω ∈ I`). -/
 theorem def_ray_regular (ν : Measure H) [SigmaFinite ν] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     Integrable G ν ∧ MemLp G 2 ν := by
-  sorry
+  obtain ⟨ω₀, hω₀⟩ := hI.nonempty hρ
+  have hω₀' : ω₀ ≠ 0 := fun h => hI.zero_notMem (h ▸ hω₀)
+  exact ⟨hG.integrable hν hω₀ hω₀', hG.memLp_two hν hω₀ hω₀'⟩
 
 /-! ### Theorem `thm:A` -/
 
@@ -55,19 +60,24 @@ theorem thm_A_i_a (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : 
   filter_upwards with ξ
   rw [smul_eq_mul, norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α)` the target `g_G` is continuous. -/
 theorem thm_A_i_b (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν) :
     Continuous (spectralTarget ν G) := by
-  sorry
+  exact continuous_spectralTarget ν hG₁
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α)`, `g_G = 0` only if `G = 0` `ν_α`-almost everywhere. -/
 theorem thm_A_i_c (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν)
     (h : spectralTarget ν G = 0) :
     G =ᵐ[ν] 0 := by
-  sorry
+  exact ae_eq_zero_of_spectralTarget_eq_zero ν hG₁ h
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` and every `x`, the iterated integral
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da)` converges absolutely: the inner integral converges
@@ -79,8 +89,13 @@ theorem thm_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
       (∀ᵐ a ∂ν, Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∧
         Integrable
           (fun a : H => ∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ν := by
-  sorry
+  intro x
+  have hρ' := def_admissible_filter ρ hρ α hα
+  exact ⟨ae_integrable_coefficientFormula_mul_ridge hα hν hρ' hG hG₂ x,
+    integrable_integral_coefficientFormula_mul_ridge hα hν hρ' hG hG₁ hG₂ x⟩
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` the spectral synthesis identity
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_ρ g_G(x)` holds for every `x`. -/
@@ -90,8 +105,12 @@ theorem thm_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∂ν =
         admissibilityConst α ρ * spectralTarget ν G x := by
-  sorry
+  intro x
+  exact integral_integral_coefficientFormula_mul_ridge hα hν (def_admissible_filter ρ hρ α hα)
+    hG hG₁ hG₂ x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  If moreover
 `γ_G ∈ L¹(λ_α)`, the left side of the spectral synthesis identity is the integral network
 `S_ρ[γ_G λ_α](x)`. -/
@@ -103,7 +122,8 @@ theorem thm_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∂ν =
         integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν)
           (coefficientFormula ρ G) x := by
-  sorry
+  intro x
+  exact integral_integral_coefficientFormula_eq_integralNetworkDensity hγ x
 
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
@@ -186,6 +206,8 @@ theorem thm_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     Function.Bijective (rieszMap μ ν) := by
   exact ⟨innerSLFlip_injective, fun F => ⟨rieszInv μ ν F, rieszMap_rieszInv μ ν F⟩⟩
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The frame identity
 `S_ρ R_ρ f = C^{(α)}_ρ T_α f` for `f ∈ 𝓔_α`. -/
 theorem thm_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -194,8 +216,11 @@ theorem thm_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     ∀ f : spectralRange μ ν,
       synthesis μ ν ρ (ridgeletExtension μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperator μ ν f := by
-  sorry
+  intro f
+  exact synthesis_ridgeletExtension hν (def_admissible_filter ρ hρ α hα) f
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The first reconstruction
 formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α` (`T_α⁻¹ = J_α⁻¹` by part (i)). -/
 theorem thm_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -204,8 +229,14 @@ theorem thm_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
     ∀ f : spectralRange μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInv μ ν (synthesis μ ν ρ (ridgeletExtension μ ν ρ f)) := by
-  sorry
+  intro f
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  rw [synthesis_ridgeletExtension hν hρ' f, thm_C_i_a μ ν hα hν ρ hρ f, ← map_smul,
+    rieszInv_rieszMap, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The second reconstruction
 formula `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
 theorem thm_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -214,8 +245,14 @@ theorem thm_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
     ∀ g : SpectralAntiDual μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
-  sorry
+  intro g
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  rw [synthesis_ridgeletExtension hν hρ', thm_C_i_a μ ν hα hν ρ hρ, rieszMap_rieszInv, smul_smul,
+    Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  If `f ∈ 𝒟_α` and
 `𝒢_Q f ∈ L¹(ν_α)`, then `T_α f` is represented by the bounded continuous function
 `g_{𝒢_Q f}`: `T_α f [g] = ∫ g_{𝒢_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
@@ -225,8 +262,22 @@ theorem thm_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
     ∀ g : spectralCore μ ν,
       frameOperator μ ν (spectralEmbed μ ν f) (spectralEmbed μ ν g) =
         ∫ x, spectralTarget ν (gaussFourier μ f) x * (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
-  sorry
+  intro g
+  have hg : Integrable ((g : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
+  have hf' : (((spectralEmbed μ ν f : spectralRange μ ν) : Lp ℂ 2 ν) : H → ℂ) =ᵐ[ν]
+      gaussFourier μ f := MemLp.coeFn_toLp f.2
+  have hg' : (((spectralEmbed μ ν g : spectralRange μ ν) : Lp ℂ 2 ν) : H → ℂ) =ᵐ[ν]
+      gaussFourier μ g := MemLp.coeFn_toLp g.2
+  rw [integral_spectralTarget_mul_conj μ ν hG hg]
+  show inner ℂ ((spectralEmbed μ ν g : spectralRange μ ν) : Lp ℂ 2 ν)
+    ((spectralEmbed μ ν f : spectralRange μ ν) : Lp ℂ 2 ν) = _
+  rw [L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hf', hg'] with ξ hξf hξg
+  rw [RCLike.inner_apply, hξf, hξg]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  Conversely, for `G ∈ 𝒦_α` the
 functional `U_α' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ U_α' G = W_ρ G`. -/
 theorem thm_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -235,8 +286,13 @@ theorem thm_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
     ∀ G : spectralRange μ ν,
       ridgeletExtension μ ν ρ (rieszInv μ ν (transposeEmbed μ ν G)) =
         spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
-  sorry
+  intro G
+  have hρ' := def_admissible_filter ρ hρ α hα
+  rw [rieszInv_transposeEmbed_coe, ridgeletExtension_eq hν hρ']
+  exact ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ' μ G
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)`, the
 functional `U_α' G` is represented by `g_G`: `U_α' G [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for
 `g ∈ 𝒟_α`. -/
@@ -248,8 +304,19 @@ theorem thm_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
         transposeEmbed μ ν G (spectralEmbed μ ν g) =
           ∫ x, spectralTarget ν ((G : Lp ℂ 2 ν) : H → ℂ) x * (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x)
             ∂μ := by
-  sorry
+  intro G hG g
+  have hg : Integrable ((g : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
+  have hg' : (((spectralEmbed μ ν g : spectralRange μ ν) : Lp ℂ 2 ν) : H → ℂ) =ᵐ[ν]
+      gaussFourier μ g := MemLp.coeFn_toLp g.2
+  rw [integral_spectralTarget_mul_conj μ ν hG hg]
+  show inner ℂ ((spectralEmbed μ ν g : spectralRange μ ν) : Lp ℂ 2 ν) (G : Lp ℂ 2 ν) = _
+  rw [L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hg'] with ξ hξg
+  rw [RCLike.inner_apply, hξg]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  For `G ∈ 𝒦_α` the second
 reconstruction formula applied to `U_α' G` reads `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
 theorem thm_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
@@ -258,8 +325,16 @@ theorem thm_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
     ∀ G : spectralRange μ ν,
       transposeEmbed μ ν G = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ)) := by
-  sorry
+  intro G
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  rw [← ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ' μ G, ← ridgeletExtension_eq hν hρ',
+    synthesis_ridgeletExtension hν hρ' G, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC,
+    one_smul]
+  rfl
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)` and
 `γ_G ∈ L¹(λ_α)`, the second reconstruction formula for `U_α' G` is the spectral synthesis
 identity: paired with `g ∈ 𝒟_α`, `U_α' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_ρ[γ_G λ_α](x) conj(g(x)) μ_Q(dx)`
@@ -275,7 +350,9 @@ theorem thm_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
             ∫ x, integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν)
                 (coefficientFormula ρ ((G : Lp ℂ 2 ν) : H → ℂ)) x *
               (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
-  sorry
+  intro G hG hγ g
+  exact transposeEmbed_apply_eq_integral_integralNetworkDensity hν
+    (def_admissible_filter ρ hρ α hα) hα G hγ g
 
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The backprojection `Λ_ρ` is a
 bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
@@ -296,6 +373,8 @@ theorem thm_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
         fun ξ => admissibilityConst α ρ * F ξ := by
   sorry
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  For `f ∈ 𝒟_α` the identity
 `Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` holds pointwise in `ξ`, with `Λ_ρ` computed from the continuous
 Fourier-slice representative `(a,ω) ↦ \widehat{R_ρ f}(a,ω)` of the transform. -/
@@ -305,7 +384,9 @@ theorem thm_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
     ∀ ξ : H,
       backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ =
         admissibilityConst α ρ * gaussFourier μ f ξ := by
-  sorry
+  intro ξ
+  exact backprojectionOf_biasFourier_ridgelet μ α ρ
+    ((Lp.memLp (f : Lp ℂ 2 μ)).integrable one_le_two) ξ
 
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The Hermite inversion formula
 `E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))] = i^n τ(ξ)^{-n} (d/dt)^n (e^{t²τ(ξ)²/2} 𝒢_Q f(tξ))|_{t=0}`,
@@ -331,6 +412,8 @@ theorem thm_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
         f = g := by
   sorry
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  Reconstruction by
 backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α`, with `Δ_Q` the inverse of
 `𝒢_Q` on its range on `𝒟_α`. -/
@@ -342,10 +425,21 @@ theorem thm_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) *
           backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ) =
       (f : Lp ℂ 2 μ) := by
-  sorry
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  have hf : Integrable ((f : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
+  have hfun : (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) *
+      backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ) = gaussFourier μ f := by
+    funext ξ
+    rw [backprojectionOf_biasFourier_ridgelet μ α ρ hf ξ, ← mul_assoc, Complex.ofReal_inv,
+      inv_mul_cancel₀ hC, one_mul]
+  rw [hfun]
+  exact gaussFourierInv_gaussFourier μ ν f
 
 /-! ### Lemma `lem:weak-equals-strong` -/
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:weak-equals-strong]** Synthesis of an integrable coefficient is the integral
 network.  For real Schwartz `ρ` and `γ ∈ L¹(λ_α) ∩ L²(λ_α)`, the integral network
 `S_ρ[γ λ_α]` is a bounded Borel function on `H`. -/
@@ -354,8 +448,16 @@ theorem lem_weak_equals_strong_i (ν : Measure H) [SigmaFinite ν] (ρ : Schwart
     Measurable (integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν) γ) ∧
       ∃ M : ℝ, ∀ x : H,
         ‖integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν) γ x‖ ≤ M := by
-  sorry
+  obtain ⟨C, hC⟩ := ρ.decay 0 0
+  simp only [pow_zero, one_mul, norm_iteratedFDeriv_zero] at hC
+  haveI : SFinite (parameterMeasure ν) := by
+    unfold parameterMeasure
+    infer_instance
+  exact ⟨measurable_integralNetworkDensity ρ _ (Lp.aestronglyMeasurable γ),
+    C * ∫ θ, ‖γ θ‖ ∂parameterMeasure ν, fun x => norm_integralNetworkDensity_le ρ _ hγ x hC.2⟩
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:weak-equals-strong]** Synthesis of an integrable coefficient is the integral
 network.  For every `g ∈ 𝒟_α`, the synthesis functional `(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ_α)}`
 of `eq:weak-synthesis` equals `∫ S_ρ[γ λ_α](x) conj(g(x)) μ_Q(dx)`. -/
@@ -366,7 +468,8 @@ theorem lem_weak_equals_strong_ii (μ ν : Measure H) [IsProbabilityMeasure μ] 
       ∫ p, γ p * (starRingEnd ℂ) (ridgelet μ ρ g p) ∂parameterMeasure ν =
         ∫ x, integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν) γ x *
           (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
-  sorry
+  intro g
+  exact integral_mul_conj_ridgelet μ ν ρ hγ ((Lp.memLp _).integrable one_le_two)
 
 /-! ### Lemma `lem:hermite-totality` -/
 
@@ -502,6 +605,8 @@ theorem prop_coefficient_projection_vi (μ ν : Measure H) [IsProbabilityMeasure
         γ - coefficientProjection α μ ν ρ γ ∈ (ridgeletRange μ ν ρ)ᗮ := by
   sorry
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  The minimum-norm solution of `S_ρ γ = F ∈ 𝓔_α'` is `C⁻¹ R_ρ J_α⁻¹ F`: it solves
 the equation, and every solution has at least its norm. -/
@@ -515,8 +620,25 @@ theorem prop_coefficient_projection_vii (μ ν : Measure H) [IsProbabilityMeasur
       ∀ γ : Lp ℂ 2 (parameterMeasure ν), synthesis μ ν ρ γ = F →
         ‖(((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) • ridgeletExtension μ ν ρ (rieszInv μ ν F)‖ ≤
           ‖γ‖ := by
-  sorry
+  intro F
+  have hsol := synthesis_smul_ridgeletExtension_rieszInv hν hρ (μ := μ) F
+  refine ⟨hsol, fun γ hγ => ?_⟩
+  set γ₀ := (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) • ridgeletExtension μ ν ρ (rieszInv μ ν F)
+    with hγ₀
+  have hmem : γ₀ ∈ ridgeletRange μ ν ρ := by
+    rw [hγ₀, ← map_smul]
+    exact LinearMap.mem_range.mpr ⟨_, rfl⟩
+  have horth : γ - γ₀ ∈ (ridgeletRange μ ν ρ)ᗮ := by
+    rw [← synthesis_eq_zero_iff, synthesis_sub, hγ, hsol, sub_self]
+  have hinner : inner ℂ γ₀ (γ - γ₀) = 0 := (Submodule.mem_orthogonal _ _).mp horth γ₀ hmem
+  have hpyth := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero γ₀ (γ - γ₀) hinner
+  rw [add_sub_cancel] at hpyth
+  have h2 : ‖γ₀‖ ^ 2 ≤ ‖γ‖ ^ 2 := by
+    nlinarith [hpyth, mul_self_nonneg ‖γ - γ₀‖]
+  exact (pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h2
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  The solutions of `S_ρ γ = F` are exactly the coefficients that differ from the
 minimum-norm solution by an element of `(Ran R_ρ)^⊥`. -/
@@ -527,7 +649,9 @@ theorem prop_coefficient_projection_viii (μ ν : Measure H) [IsProbabilityMeasu
       synthesis μ ν ρ γ = F ↔
         γ - (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) • ridgeletExtension μ ν ρ (rieszInv μ ν F) ∈
           (ridgeletRange μ ν ρ)ᗮ := by
-  sorry
+  intro F γ
+  rw [← synthesis_eq_zero_iff, synthesis_sub, synthesis_smul_ridgeletExtension_rieszInv hν hρ,
+    sub_eq_zero]
 
 /-! ### Lemma `lem:ray-regular-examples` -/
 
@@ -552,6 +676,8 @@ theorem lem_ray_regular_examples_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H �
   exact isRegularAlongRays_of_gaussian_decay (gaussianMixture N α) hQ.inner_nonneg
     (lem_gaussian_decay_i hH hP hQ hN hα) S hθ hSQ ℓ hℓ q hI.isCompact hI.zero_notMem
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Radial bumps
 `G(ξ) = φ(‖ξ - ξ₀‖²)` with `φ ∈ C_c^∞(ℝ)` are regular along rays for every band-pass `ρ`. -/
 theorem lem_ray_regular_examples_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
@@ -560,8 +686,13 @@ theorem lem_ray_regular_examples_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H �
     (hφc : HasCompactSupport φ) :
     ∀ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ → ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I fun ξ => φ (‖ξ - ξ₀‖ ^ 2) := by
-  sorry
+  intro ρ _ I hI
+  exact isRegularAlongRays_radialBump _
+    (fun R => hP.gaussianMixture_lt_top_of_isBounded hH hN hα Metric.isBounded_closedBall) ξ₀ hφ
+    hφc hI.isCompact hI.zero_notMem
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  More generally,
 a bounded Borel `G` that is `C^∞` along rays (on a neighbourhood of the frequency window),
 vanishes outside a bounded set, and satisfies `sup_{ω ∈ I} |∂_ω^k G(ωa)| ≤ C_k (1+‖a‖)^{p_k}`
@@ -576,14 +707,20 @@ theorem lem_ray_regular_examples_b_ii (hH : ¬ FiniteDimensional ℝ H) {P : H �
       (∀ k : ℕ, ∃ C p : ℝ, ∀ a : H, ∀ ω ∈ I,
         ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ ≤ C * (1 + ‖a‖) ^ p) →
       IsRegularAlongRays (gaussianMixture N α) I G := by
-  sorry
+  intro ρ _ I hI hsmooth hbound
+  obtain ⟨R₀, hG0⟩ := hG0
+  exact isRegularAlongRays_of_bounded_support _
+    (fun R => hP.gaussianMixture_lt_top_of_isBounded hH hN hα Metric.isBounded_closedBall) hG hGb
+    hG0 hI.isCompact hI.zero_notMem hsmooth hbound
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Finite linear
 combinations of densities that are regular along rays are regular along rays. -/
 theorem lem_ray_regular_examples_c_i (ν : Measure H) (I : Set ℝ) {ι : Type*} (s : Finset ι)
     (c : ι → ℂ) (G : ι → H → ℂ) (hG : ∀ i ∈ s, IsRegularAlongRays ν I (G i)) :
     IsRegularAlongRays ν I fun ξ => ∑ i ∈ s, c i * G i ξ := by
-  sorry
+  exact IsRegularAlongRays.finset_sum s c G hG
 
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Bochner
 integrals `∫ G_y m(dy)` of a measurable family of densities that are regular along rays, over
@@ -619,20 +756,26 @@ theorem thm_vector_valued_A_i_a (ν : Measure H) (G : H → Y) (hG : StronglyMea
   filter_upwards with ξ
   rw [norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(i) for `Y`-valued
 densities: `g_G` is continuous. -/
 theorem thm_vector_valued_A_i_b (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
     (hG₁ : Integrable G ν) :
     Continuous (spectralTarget ν G) := by
-  sorry
+  exact continuous_spectralTarget ν hG₁
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(i) for `Y`-valued
 densities: `g_G = 0` only if `G = 0` `ν_α`-almost everywhere. -/
 theorem thm_vector_valued_A_i_c (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
     (hG₁ : Integrable G ν) (h : spectralTarget ν G = 0) :
     G =ᵐ[ν] 0 := by
-  sorry
+  exact ae_eq_zero_of_spectralTarget_eq_zero_vec ν hG₁ h
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the iterated integral `∫ [∫ ρ(⟨a,x⟩+c) γ_G(a,c) dc] ν_α(da)` converges absolutely. -/
 theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
@@ -643,8 +786,13 @@ theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
         (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∧
         Integrable
           (fun a : H => ∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ν := by
-  sorry
+  intro x
+  have hρ' := def_admissible_filter ρ hρ α hα
+  exact ⟨ae_integrable_smul_coefficientFormulaVec_ridge hα hν hρ' hG hG₂ x,
+    integrable_integral_smul_coefficientFormulaVec_ridge hα hν hρ' hG hG₁ hG₂ x⟩
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the spectral synthesis identity with the same constant `C^{(α)}_ρ`. -/
 theorem thm_vector_valued_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
@@ -653,8 +801,12 @@ theorem thm_vector_valued_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
         (admissibilityConst α ρ : ℂ) • spectralTarget ν G x := by
-  sorry
+  intro x
+  exact integral_integral_smul_coefficientFormulaVec_ridge hα hν (def_admissible_filter ρ hρ α hα)
+    hG hG₁ hG₂ x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: if `γ_G ∈ L¹(λ_α; Y)`, the left side is the `Y`-valued integral network
 `S_ρ[γ_G λ_α](x)`. -/
@@ -666,7 +818,8 @@ theorem thm_vector_valued_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
       ∫ a, (∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
         integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν)
           (coefficientFormulaVec ρ G) x := by
-  sorry
+  intro x
+  exact integral_integral_coefficientFormulaVec_eq_integralNetworkDensity hγ x
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
 `Y`-valued densities regular along rays (with `‖·‖_Y` in place of the absolute value): the
