@@ -4,14 +4,14 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 0 | 0 | 0 |
+| 57 | 6 | 3 | 1 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
 | No. | Label | Kind | Title | Lean | Status |
 |---|---|---|---|---|---|
-| 2.1 | `def:finite-network` | definition | Finite-width network | — | — |
-| 2.2 | `def:integral-network` | definition | Integral network | — | — |
+| 2.1 | `def:finite-network` | definition | Finite-width network | `OperatorRidgelet.finiteNetwork` | defined |
+| 2.2 | `def:integral-network` | definition | Integral network | `OperatorRidgelet.integralNetwork`<br>`OperatorRidgelet.totalVariation`<br>`OperatorRidgelet.integralNetworkDensity`<br>`OperatorRidgelet.Paper.def_integral_network_i`<br>`OperatorRidgelet.Paper.def_integral_network_ii` | partial 1/2 |
 | 3.1 | `lem:homogeneous-mixture` | lemma | Homogeneous Gaussian mixture | — | — |
 | 3.2 | `def:admissible-filter` | definition | Admissible analysis filter | — | — |
 | 3.3 | `def:ridgelet-analysis` | definition | Gaussian-weighted ridgelet transform | — | — |
@@ -58,10 +58,10 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | D.5 | `cor:two-stage-error` | corollary | Input truncation and sampling are separate errors | — | — |
 | E.1 | `lem:gaussian-quadratic` | lemma | Gaussian integral of a quadratic exponential | — | — |
 | E.2 | `lem:gaussian-hinge` | lemma | Absolute hinge representation of the Gaussian | — | — |
-| F.1 | `lem:hs-reduction` | lemma | Hilbert--Schmidt reduction | — | — |
-| F.2 | `lem:rank-one-lift` | lemma | Exact rank-one lift | — | — |
-| F.3 | `prop:scalar-universality` | proposition | Compact-open universality by finite-dimensional reduction | — | — |
-| F.4 | `lem:measure-transport` | lemma | Bounded synthesis and exact transport of measures | — | — |
+| F.1 | `lem:hs-reduction` | lemma | Hilbert--Schmidt reduction | `OperatorRidgelet.Paper.lem_hs_reduction` | stated |
+| F.2 | `lem:rank-one-lift` | lemma | Exact rank-one lift | `OperatorRidgelet.Paper.lem_rank_one_lift_i`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_ii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iv`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_v`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vi`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vii` | verified |
+| F.3 | `prop:scalar-universality` | proposition | Compact-open universality by finite-dimensional reduction | `OperatorRidgelet.Paper.prop_scalar_universality_i`<br>`OperatorRidgelet.Paper.prop_scalar_universality_ii` | stated |
+| F.4 | `lem:measure-transport` | lemma | Bounded synthesis and exact transport of measures | `OperatorRidgelet.Paper.lem_measure_transport_i`<br>`OperatorRidgelet.Paper.lem_measure_transport_ii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iv`<br>`OperatorRidgelet.Paper.lem_measure_transport_v` | verified |
 | G.1 | `cor:finite-backprojection` | corollary | The frame operator in finite dimension | — | — |
 | G.2 | `prop:dilation-obstruction` | proposition | Dilation obstruction | — | — |
 | H.1 | `thm:general-weights` | theorem | Abstract-weight extension | — | — |

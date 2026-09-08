@@ -1,7 +1,25 @@
 {
     "challenge_module": "Challenge",
     "solution_module": "Solution",
-    "theorem_names": [],
-    "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+    "theorem_names": [
+        "OperatorRidgelet.Paper.def_integral_network_i",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_i",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_ii",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_iii",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_iv",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_v",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_vi",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_vii",
+        "OperatorRidgelet.Paper.lem_measure_transport_i",
+        "OperatorRidgelet.Paper.lem_measure_transport_ii",
+        "OperatorRidgelet.Paper.lem_measure_transport_iii",
+        "OperatorRidgelet.Paper.lem_measure_transport_iv",
+        "OperatorRidgelet.Paper.lem_measure_transport_v"
+    ],
+    "permitted_axioms": [
+        "propext",
+        "Quot.sound",
+        "Classical.choice"
+    ],
     "enable_nanoda": false
 }

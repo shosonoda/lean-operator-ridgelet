@@ -12,8 +12,10 @@
       "number": "2.1",
       "page": "6",
       "title": "Finite-width network",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.finiteNetwork"
+      ],
+      "note": "Width-N network with `Fin N`-indexed parameters; Y a complex Banach space in the definition (the manuscript's Y is a separable complex Hilbert space)."
     },
     {
       "label": "def:integral-network",
@@ -21,8 +23,14 @@
       "number": "2.2",
       "page": "7",
       "title": "Integral network",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.integralNetwork",
+        "OperatorRidgelet.totalVariation",
+        "OperatorRidgelet.integralNetworkDensity",
+        "OperatorRidgelet.Paper.def_integral_network_i",
+        "OperatorRidgelet.Paper.def_integral_network_ii"
+      ],
+      "note": "A Y-valued Borel measure of bounded variation is a Mathlib `VectorMeasure (H × ℝ) Y` with `[IsFiniteMeasure Γ.variation]`; the Bochner integral is `VectorMeasure.integral` with the pairing `lsmul ℝ ℂ`, which is 0 when the integrand is not integrable ('whenever the Bochner integral exists'). The moment condition is encoded as `Integrable (fun θ => 1 + ‖θ.1‖ + |θ.2|) Γ.variation`. Part i: Lipschitz β and the moment condition give integrability; part ii: the density case `Γ = λ.withDensityᵥ γ` agrees with the Bochner integral `integralNetworkDensity` (stated with the integrability of the integrand as hypothesis)."
     },
     {
       "label": "lem:homogeneous-mixture",
@@ -444,8 +452,10 @@
       "number": "F.1",
       "page": "34",
       "title": "Hilbert--Schmidt reduction",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_hs_reduction"
+      ],
+      "note": "Mathlib has no Hilbert–Schmidt class: `hsNormSq` is the supremum over finite orthonormal families of ∑‖Ae‖², so `IsHilbertSchmidt` is basis-free; 𝓛₂(H) is the set `{A | IsHilbertSchmidt A}` of bounded operators. Neurons are the elements of `C(H, ℝ)` (compact-open topology) whose function is `operatorNeuron σ ℓ A b`; closures are of the ℝ-span as a set."
     },
     {
       "label": "lem:rank-one-lift",
@@ -453,8 +463,16 @@
       "number": "F.2",
       "page": "35",
       "title": "Exact rank-one lift",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_rank_one_lift_i",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_ii",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_iii",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_iv",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_v",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_vi",
+        "OperatorRidgelet.Paper.lem_rank_one_lift_vii"
+      ],
+      "note": "A_a = rankOneLift ψ a, b_c = biasLift ψ c, π_ψ = operatorParameterMap ψ, J_ψ = operatorRidgeletSection ψ (module OperatorValuedRidgelet). Part i holds without ψ ≠ 0 (A_0 = 0). Part v states continuity of J_ψ into 𝓛₂(H) × H as: the Hilbert–Schmidt norm of the operator increment plus the norm of the bias increment tends to 0 (the space 𝓛₂(H) is not bundled as a normed space); continuity for the operator norm is `continuous_operatorRidgeletSection`. Parts vi (integral networks, Y = ℂ) and vii (finite-width networks, Y a complex Hilbert space) are the exact lifts with ⟪ℓ, z⟫ = 1; z ≠ 0 is implied by the normalization and is not assumed separately. Part vi needs no integrability hypothesis because J_ψ is a closed embedding."
     },
     {
       "label": "prop:scalar-universality",
@@ -462,8 +480,11 @@
       "number": "F.3",
       "page": "35",
       "title": "Compact-open universality by finite-dimensional reduction",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.prop_scalar_universality_i",
+        "OperatorRidgelet.Paper.prop_scalar_universality_ii"
+      ],
+      "note": "'Not a polynomial' is `¬ IsPolynomialFun β` (β is not the evaluation of any `Polynomial ℝ`); density is `Dense` of the ℝ-span in `C(H, ℝ)` with the compact-open topology; H is assumed second countable (separable) as in the manuscript's standing assumptions."
     },
     {
       "label": "lem:measure-transport",
@@ -471,8 +492,14 @@
       "number": "F.4",
       "page": "35",
       "title": "Bounded synthesis and exact transport of measures",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_measure_transport_i",
+        "OperatorRidgelet.Paper.lem_measure_transport_ii",
+        "OperatorRidgelet.Paper.lem_measure_transport_iii",
+        "OperatorRidgelet.Paper.lem_measure_transport_iv",
+        "OperatorRidgelet.Paper.lem_measure_transport_v"
+      ],
+      "note": "Γ_op is a `ComplexMeasure` on `(H →L[ℝ] H) × H` (Borel for the operator norm) with finite variation, carried by 𝓛₂(H) × H (`∀ᵐ p ∂Γop.variation, IsHilbertSchmidt p.1`) and with `Integrable (fun p => 1 + hsNorm p.1 + ‖p.2‖) Γop.variation`; the Borel σ-algebra of the Hilbert–Schmidt norm on 𝓛₂(H) coincides with the trace of the operator-norm Borel σ-algebra (both separable metrizable, continuous injective identity). S_op integrates the real neuron as a complex-valued function. Parts i and iii hold for every ψ (ψ ≠ 0 is not used) and are stated without it; part ii holds for every complex measure (Mathlib `variation_map_le`) and is stated without the other hypotheses; part iii uses r_K = sSup (‖·‖ '' K) and Lip(β) = any L with `LipschitzWith L β`; part iv needs only ψ ≠ 0; part v (S_op (J_ψ)_# Γ = S_β Γ) is proved without the moment condition because J_ψ is a closed embedding, so that hypothesis is dropped."
     },
     {
       "label": "cor:finite-backprojection",

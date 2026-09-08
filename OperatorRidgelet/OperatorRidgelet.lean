@@ -7,6 +7,8 @@ import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
 import OperatorRidgelet.Network.Defs
+import OperatorRidgelet.Architecture.Defs
+import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Defs
