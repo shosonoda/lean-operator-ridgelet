@@ -44,8 +44,9 @@ lake build OperatorRidgelet:blueprintJson   # LeanArchitect metadata (library na
 ## Verify the paper statements with comparator
 
 Build [comparator](https://github.com/leanprover/comparator) and
-[lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` (by default the script
-looks for them in `../../lean-tools/`), then
+[lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and put the
+`comparator`, `lean4export`, and `landrun` executables on `PATH` (or point the environment
+variables `COMPARATOR_BIN`, `COMPARATOR_LEAN4EXPORT`, and `COMPARATOR_LANDRUN` at them), then
 
 ```sh
 scripts/comparator-check.sh
@@ -53,14 +54,14 @@ scripts/check-challenge.py           # fast textual check that Challenge and Pap
 scripts/status.py > ../STATUS.md     # regenerate the status table
 ```
 
-On Linux, comparator sandboxes the build with `landrun`; on macOS the script falls back to
-comparator's `fake-landrun.sh` shim, which does not sandbox.
+comparator sandboxes the builds with `landrun`, which needs Linux; comparator ships a
+`scripts/fake-landrun.sh` shim for development on other systems (no sandbox).
 
 ## Blueprint
 
 ```sh
 cd OperatorRidgeletBlueprint
-mkdir -p .lake && ln -s ../../OperatorRidgelet/.lake/packages .lake/packages   # optional: share the package cache
+lake exe cache get                                        # first time only: Mathlib cache
 lake exe vbp build --serve --port 8001                    # then open http://127.0.0.1:8001/
 lake exe vbp check
 lake exe vbp query work-queue                             # statements whose proof is still `sorry`

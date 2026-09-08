@@ -1,8 +1,8 @@
 # Agent guide for lean-operator-ridgelet
 
-This repository is the public development repository of the Lean formalization of the operator
-ridgelet manuscript.  The manuscript itself and the planning notes live in the author's private
-manuscript repository; do not add them here.
+This repository is the development repository of the Lean formalization of the operator ridgelet
+manuscript.  The manuscript itself is not part of this repository; `comparator/paper.json` carries
+the index of its statements.
 
 ## Read first
 
@@ -19,8 +19,7 @@ manuscript repository; do not add them here.
 - `lake-manifest.json` files are tracked; run `lake update <pkg>` only to change a pin on purpose.
 - `OperatorRidgelet/LeanRidgelet/` is a verbatim copy of eight files of `shosonoda/lean-ridgelet`
   (revision in `LeanRidgelet.lean`).  Do not edit them; update by diffing against upstream.
-- Never run two `lake build`s in the same project concurrently.  For parallel work use a git
-  worktree and symlink `OperatorRidgelet/.lake/packages` to the main checkout's package cache.
+- Never run two `lake build`s in the same project concurrently.
 
 ## The comparator scheme is the record of formalization
 

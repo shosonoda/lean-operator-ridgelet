@@ -1,7 +1,7 @@
 {
   "manuscript": {
     "file": "main.tex",
-    "commit": "1f63d03",
+    "version": "2026-09-08 revision",
     "synced": "2026-09-08"
   },
   "naming": "OperatorRidgelet.Paper.<kind>_<label>[_<part>] where <label> drops the prefix and uses _ for -",
