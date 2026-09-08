@@ -1,6 +1,5 @@
 import OperatorRidgelet.Activation
 import OperatorRidgelet.Cylindrical
-import OperatorRidgelet.GaussianWeighted
 import OperatorRidgelet.RankOneLift
 import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.ToFoML.ActivationContraction
@@ -10,6 +9,9 @@ import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs
 import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.Transform.Defs
+import OperatorRidgelet.Transform.Infra
+import OperatorRidgelet.FiniteDim.Defs
+import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Sampling.Defs

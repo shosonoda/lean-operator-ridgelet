@@ -4,7 +4,7 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 6 | 3 | 1 |
+| 57 | 24 | 5 | 6 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -12,17 +12,17 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 |---|---|---|---|---|---|
 | 2.1 | `def:finite-network` | definition | Finite-width network | `OperatorRidgelet.finiteNetwork` | defined |
 | 2.2 | `def:integral-network` | definition | Integral network | `OperatorRidgelet.integralNetwork`<br>`OperatorRidgelet.totalVariation`<br>`OperatorRidgelet.integralNetworkDensity`<br>`OperatorRidgelet.Paper.def_integral_network_i`<br>`OperatorRidgelet.Paper.def_integral_network_ii` | partial 1/2 |
-| 3.1 | `lem:homogeneous-mixture` | lemma | Homogeneous Gaussian mixture | — | — |
-| 3.2 | `def:admissible-filter` | definition | Admissible analysis filter | — | — |
-| 3.3 | `def:ridgelet-analysis` | definition | Gaussian-weighted ridgelet transform | — | — |
-| 3.4 | `lem:fourier-slice` | lemma | Fourier-slice identity | — | — |
-| 3.5 | `def:spectral-coefficient` | definition | The coefficient operator | — | — |
-| 3.6 | `lem:coefficient-isometry` | lemma | The coefficient operator is a scaled isometry | — | — |
-| 3.7 | `def:spectral-space` | definition | The Hilbert space \(\cE_\alpha\) | — | — |
-| 3.8 | `lem:spectral-unitary` | lemma | Positivity and the unitary extension | — | — |
-| 3.9 | `lem:gaussian-decay` | lemma | Gaussian decay with polynomial weights | — | — |
-| 3.10 | `ex:core-elements` | example | Elements of \(\cD_\alpha\) | — | — |
-| 3.12 | `thm:B` | theorem | Plancherel identity and injectivity | — | — |
+| 3.1 | `lem:homogeneous-mixture` | lemma | Homogeneous Gaussian mixture | `OperatorRidgelet.Paper.lem_homogeneous_mixture_i`<br>`OperatorRidgelet.Paper.lem_homogeneous_mixture_ii`<br>`OperatorRidgelet.Paper.lem_homogeneous_mixture_iii`<br>`OperatorRidgelet.Paper.lem_homogeneous_mixture_iv`<br>`OperatorRidgelet.Paper.lem_homogeneous_mixture_v`<br>`OperatorRidgelet.Paper.lem_homogeneous_mixture_vi` | stated |
+| 3.2 | `def:admissible-filter` | definition | Admissible analysis filter | `OperatorRidgelet.IsAdmissible`<br>`OperatorRidgelet.admissibilityConst`<br>`OperatorRidgelet.IsBandPass`<br>`OperatorRidgelet.crossAdmissibilityConst`<br>`OperatorRidgelet.Paper.def_admissible_filter` | stated |
+| 3.3 | `def:ridgelet-analysis` | definition | Gaussian-weighted ridgelet transform | `OperatorRidgelet.ridgelet`<br>`OperatorRidgelet.parameterMeasure`<br>`OperatorRidgelet.gaussFourier` | defined |
+| 3.4 | `lem:fourier-slice` | lemma | Fourier-slice identity | `OperatorRidgelet.Paper.lem_fourier_slice_i`<br>`OperatorRidgelet.Paper.lem_fourier_slice_ii`<br>`OperatorRidgelet.Paper.lem_fourier_slice_iii`<br>`OperatorRidgelet.Paper.lem_fourier_slice_iv`<br>`OperatorRidgelet.Paper.lem_fourier_slice_v` | partial 1/5 |
+| 3.5 | `def:spectral-coefficient` | definition | The coefficient operator | `OperatorRidgelet.HasBiasFourier`<br>`OperatorRidgelet.spectralCoefficient`<br>`OperatorRidgelet.coefficientFormula`<br>`OperatorRidgelet.Paper.def_spectral_coefficient` | stated |
+| 3.6 | `lem:coefficient-isometry` | lemma | The coefficient operator is a scaled isometry | `OperatorRidgelet.Paper.lem_coefficient_isometry_i`<br>`OperatorRidgelet.Paper.lem_coefficient_isometry_ii`<br>`OperatorRidgelet.Paper.lem_coefficient_isometry_iii`<br>`OperatorRidgelet.Paper.lem_coefficient_isometry_iv`<br>`OperatorRidgelet.Paper.def_spectral_coefficient` | stated |
+| 3.7 | `def:spectral-space` | definition | The Hilbert space \(\cE_\alpha\) | `OperatorRidgelet.spectralCore`<br>`OperatorRidgelet.spectralInner`<br>`OperatorRidgelet.spectralRange`<br>`OperatorRidgelet.gaussFourierLp`<br>`OperatorRidgelet.spectralEmbed` | defined |
+| 3.8 | `lem:spectral-unitary` | lemma | Positivity and the unitary extension | `OperatorRidgelet.Paper.lem_spectral_unitary_i`<br>`OperatorRidgelet.Paper.lem_spectral_unitary_ii`<br>`OperatorRidgelet.Paper.lem_spectral_unitary_iii` | partial 1/3 |
+| 3.9 | `lem:gaussian-decay` | lemma | Gaussian decay with polynomial weights | `OperatorRidgelet.Paper.lem_gaussian_decay_i`<br>`OperatorRidgelet.Paper.lem_gaussian_decay_ii` | stated |
+| 3.10 | `ex:core-elements` | example | Elements of \(\cD_\alpha\) | `OperatorRidgelet.Paper.ex_core_elements_i`<br>`OperatorRidgelet.Paper.ex_core_elements_ii`<br>`OperatorRidgelet.Paper.ex_core_elements_iii` | partial 1/3 |
+| 3.12 | `thm:B` | theorem | Plancherel identity and injectivity | `OperatorRidgelet.Paper.thm_B_i_a`<br>`OperatorRidgelet.Paper.thm_B_i_b`<br>`OperatorRidgelet.Paper.thm_B_ii_a`<br>`OperatorRidgelet.Paper.thm_B_ii_b`<br>`OperatorRidgelet.Paper.thm_B_ii_c`<br>`OperatorRidgelet.Paper.thm_B_ii_d`<br>`OperatorRidgelet.Paper.thm_B_iii` | stated |
 | 4.1 | `def:ray-regular` | definition | Regularity along rays | — | — |
 | 4.2 | `thm:A` | theorem | Integral representation of targets with a spectral density | — | — |
 | 4.3 | `thm:C` | theorem | Reconstruction and the frame operator | — | — |
@@ -44,8 +44,8 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | 7.4 | `ex:operator-layer` | example | Neural-operator layer as an integral network | — | — |
 | 7.5 | `ex:convolution` | example | Periodic convolution layer | — | — |
 | 7.6 | `ex:dirichlet` | example | Dirichlet solution operator with a pointwise nonlinearity | — | — |
-| A.1 | `lem:mixture-integration` | lemma | Measurability and integration of the mixture | — | — |
-| A.2 | `lem:mixture-character` | lemma | Gaussian-layer regularization | — | — |
+| A.1 | `lem:mixture-integration` | lemma | Measurability and integration of the mixture | `OperatorRidgelet.Paper.lem_mixture_integration_i`<br>`OperatorRidgelet.Paper.lem_mixture_integration_ii`<br>`OperatorRidgelet.Paper.lem_mixture_integration_iii`<br>`OperatorRidgelet.Paper.lem_mixture_integration_iv` | stated |
+| A.2 | `lem:mixture-character` | lemma | Gaussian-layer regularization | `OperatorRidgelet.Paper.lem_mixture_character_i`<br>`OperatorRidgelet.Paper.lem_mixture_character_ii`<br>`OperatorRidgelet.Paper.lem_mixture_character_iii`<br>`OperatorRidgelet.Paper.lem_mixture_character_iv` | stated |
 | B.1 | `lem:weak-equals-strong` | lemma | Synthesis of an integrable coefficient is the integral network | — | — |
 | B.2 | `lem:hermite-totality` | lemma | Entire extension and totality of the Hermite coefficients | — | — |
 | B.3 | `prop:coefficient-projection` | proposition | Bounded backprojection and orthogonal range projection | — | — |
@@ -62,8 +62,8 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | F.2 | `lem:rank-one-lift` | lemma | Exact rank-one lift | `OperatorRidgelet.Paper.lem_rank_one_lift_i`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_ii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iv`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_v`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vi`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vii` | verified |
 | F.3 | `prop:scalar-universality` | proposition | Compact-open universality by finite-dimensional reduction | `OperatorRidgelet.Paper.prop_scalar_universality_i`<br>`OperatorRidgelet.Paper.prop_scalar_universality_ii` | stated |
 | F.4 | `lem:measure-transport` | lemma | Bounded synthesis and exact transport of measures | `OperatorRidgelet.Paper.lem_measure_transport_i`<br>`OperatorRidgelet.Paper.lem_measure_transport_ii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iv`<br>`OperatorRidgelet.Paper.lem_measure_transport_v` | verified |
-| G.1 | `cor:finite-backprojection` | corollary | The frame operator in finite dimension | — | — |
-| G.2 | `prop:dilation-obstruction` | proposition | Dilation obstruction | — | — |
-| H.1 | `thm:general-weights` | theorem | Abstract-weight extension | — | — |
-| I.1 | `ex:bandlimited-filter` | example | A band-pass filter for every \(\alpha>0\) | — | — |
-| I.2 | `ex:mexican-hat` | example | Mexican hat | — | — |
+| G.1 | `cor:finite-backprojection` | corollary | The frame operator in finite dimension | `OperatorRidgelet.Paper.cor_finite_backprojection_i`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_ii`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_iii`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_iv`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_v`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_vi` | stated |
+| G.2 | `prop:dilation-obstruction` | proposition | Dilation obstruction | `OperatorRidgelet.Paper.prop_dilation_obstruction_i_a`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_b`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_c`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_d`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_ii` | partial 1/5 |
+| H.1 | `thm:general-weights` | theorem | Abstract-weight extension | `OperatorRidgelet.Paper.thm_general_weights_plancherel_memLp`<br>`OperatorRidgelet.Paper.thm_general_weights_plancherel`<br>`OperatorRidgelet.Paper.thm_general_weights_extension`<br>`OperatorRidgelet.Paper.thm_general_weights_extension_norm`<br>`OperatorRidgelet.Paper.thm_general_weights_extension_closed_range`<br>`OperatorRidgelet.Paper.thm_general_weights_extension_coefficient`<br>`OperatorRidgelet.Paper.thm_general_weights_injective`<br>`OperatorRidgelet.Paper.thm_general_weights_one_mem_iff` | stated |
+| I.1 | `ex:bandlimited-filter` | example | A band-pass filter for every \(\alpha>0\) | `OperatorRidgelet.Paper.ex_bandlimited_filter_i`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_ii`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_iii`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_iv`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_v`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_vi`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_vii`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_viii`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_ix`<br>`OperatorRidgelet.Paper.ex_bandlimited_filter_x` | partial 3/10 |
+| I.2 | `ex:mexican-hat` | example | Mexican hat | `OperatorRidgelet.Paper.ex_mexican_hat_i`<br>`OperatorRidgelet.Paper.ex_mexican_hat_ii`<br>`OperatorRidgelet.Paper.ex_mexican_hat_iii`<br>`OperatorRidgelet.Paper.ex_mexican_hat_iv`<br>`OperatorRidgelet.Paper.ex_mexican_hat_v`<br>`OperatorRidgelet.Paper.ex_mexican_hat_vi` | stated |
