@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 117.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 118.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 24
-  * 14
+  * 25
+  * 13
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -603,7 +603,7 @@ Status: *statement only (proof pending)*.
 
 ## Theorem 3.12 — Plancherel identity and injectivity (`thm:B`)
 
-Blueprint node: {bpref "thm:B"}[]. Status: *partial 6/7* (6 of 7 Lean theorems verified).
+Blueprint node: {bpref "thm:B"}[]. Status: *verified* (all 7 Lean theorems verified).
 
 Formalization note. Gaussian case with explicit hypotheses (IsCenteredGaussian Q μ, IsCenteredGaussianLayers P N, P, Q trace-class covariances, dim H = ∞); (i) split into membership in L²(λ\_α) and the identity, (ii) into unique extension, norm identity, closed range, R\_ρ = W\_ρ U\_α; the same claims for the abstract pair are thm:general-weights.
 
@@ -736,7 +736,7 @@ theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     f =ᵐ[μ] 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 # Manuscript Section 4
 

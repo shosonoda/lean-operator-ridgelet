@@ -699,6 +699,7 @@ theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   rw [eq_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ R hR]
   exact ridgeletExtensionCLM_eq_spectralCoefficient (hN.isHomogeneous_gaussianMixture α) hα hρ μ G
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
 `α`-admissible and `f ∈ L²(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
 `μ_Q`-almost everywhere. -/
@@ -709,9 +710,10 @@ theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure (gaussianMixture N α)] 0) :
     f =ᵐ[μ] 0 := by
-  -- `ae_eq_zero_of_ridgelet_ae_eq_zero` proves this once the full support of `ν_α`
-  -- (`lem_homogeneous_mixture_iv`, `IsOpenPosMeasure (gaussianMixture N α)`) is available.
-  sorry
+  haveI : SFinite (gaussianMixture N α) := hN.sfinite_gaussianMixture α
+  haveI : (gaussianMixture N α).IsOpenPosMeasure := hP.isOpenPosMeasure_gaussianMixture hN α
+  exact ae_eq_zero_of_ridgelet_ae_eq_zero μ hα (hN.isHomogeneous_gaussianMixture α) hρ
+    (hf.integrable one_le_two) h
 
 /-! ### Lemma `lem:mixture-integration` -/
 
