@@ -4,7 +4,7 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 24 | 5 | 6 |
+| 57 | 32 | 5 | 9 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -23,10 +23,10 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | 3.9 | `lem:gaussian-decay` | lemma | Gaussian decay with polynomial weights | `OperatorRidgelet.Paper.lem_gaussian_decay_i`<br>`OperatorRidgelet.Paper.lem_gaussian_decay_ii` | stated |
 | 3.10 | `ex:core-elements` | example | Elements of \(\cD_\alpha\) | `OperatorRidgelet.Paper.ex_core_elements_i`<br>`OperatorRidgelet.Paper.ex_core_elements_ii`<br>`OperatorRidgelet.Paper.ex_core_elements_iii` | partial 1/3 |
 | 3.12 | `thm:B` | theorem | Plancherel identity and injectivity | `OperatorRidgelet.Paper.thm_B_i_a`<br>`OperatorRidgelet.Paper.thm_B_i_b`<br>`OperatorRidgelet.Paper.thm_B_ii_a`<br>`OperatorRidgelet.Paper.thm_B_ii_b`<br>`OperatorRidgelet.Paper.thm_B_ii_c`<br>`OperatorRidgelet.Paper.thm_B_ii_d`<br>`OperatorRidgelet.Paper.thm_B_iii` | stated |
-| 4.1 | `def:ray-regular` | definition | Regularity along rays | — | — |
-| 4.2 | `thm:A` | theorem | Integral representation of targets with a spectral density | — | — |
-| 4.3 | `thm:C` | theorem | Reconstruction and the frame operator | — | — |
-| 4.7 | `thm:vector-valued` | theorem | Vector-valued extension | — | — |
+| 4.1 | `def:ray-regular` | definition | Regularity along rays | `OperatorRidgelet.IsFrequencyWindow`<br>`OperatorRidgelet.rayDerivBound`<br>`OperatorRidgelet.rayMoment`<br>`OperatorRidgelet.IsRegularAlongRays`<br>`OperatorRidgelet.spectralTarget`<br>`OperatorRidgelet.Paper.def_ray_regular` | stated |
+| 4.2 | `thm:A` | theorem | Integral representation of targets with a spectral density | `OperatorRidgelet.Paper.thm_A_i_a`<br>`OperatorRidgelet.Paper.thm_A_i_b`<br>`OperatorRidgelet.Paper.thm_A_i_c`<br>`OperatorRidgelet.Paper.thm_A_ii_a`<br>`OperatorRidgelet.Paper.thm_A_ii_b`<br>`OperatorRidgelet.Paper.thm_A_ii_c`<br>`OperatorRidgelet.Paper.thm_A_iii_a`<br>`OperatorRidgelet.Paper.thm_A_iii_b`<br>`OperatorRidgelet.Paper.thm_A_iii_c`<br>`OperatorRidgelet.Paper.thm_A_iii_d` | partial 1/10 |
+| 4.3 | `thm:C` | theorem | Reconstruction and the frame operator | `OperatorRidgelet.Paper.thm_C_i_a`<br>`OperatorRidgelet.Paper.thm_C_i_b`<br>`OperatorRidgelet.Paper.thm_C_i_c`<br>`OperatorRidgelet.Paper.thm_C_i_d`<br>`OperatorRidgelet.Paper.thm_C_ii_a`<br>`OperatorRidgelet.Paper.thm_C_ii_b`<br>`OperatorRidgelet.Paper.thm_C_iii_a`<br>`OperatorRidgelet.Paper.thm_C_iii_b`<br>`OperatorRidgelet.Paper.thm_C_iii_c`<br>`OperatorRidgelet.Paper.thm_C_iii_d`<br>`OperatorRidgelet.Paper.thm_C_iii_e`<br>`OperatorRidgelet.Paper.thm_C_iv_a`<br>`OperatorRidgelet.Paper.thm_C_iv_b`<br>`OperatorRidgelet.Paper.thm_C_iv_c`<br>`OperatorRidgelet.Paper.thm_C_iv_d`<br>`OperatorRidgelet.Paper.thm_C_iv_e`<br>`OperatorRidgelet.Paper.thm_C_iv_f` | partial 3/17 |
+| 4.7 | `thm:vector-valued` | theorem | Vector-valued extension | `OperatorRidgelet.Paper.thm_vector_valued_A_i_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_i_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_i_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_ii_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_ii_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_ii_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_iii_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_iii_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_A_iii_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_i_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_i_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_ii_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_ii_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_ii_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_ii_d`<br>`OperatorRidgelet.Paper.thm_vector_valued_B_iii`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_i_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_i_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_i_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_i_d`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_ii_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_ii_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iii_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iii_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iii_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iii_d`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iii_e`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_a`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_b`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_c`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_d`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_e`<br>`OperatorRidgelet.Paper.thm_vector_valued_C_iv_f` | partial 4/33 |
 | 5.1 | `def:regularized-synthesis` | definition | Regularized synthesis | — | — |
 | 5.2 | `thm:tempered-reconstruction` | theorem | Reconstruction with a tempered activation | — | — |
 | 5.3 | `cor:relu-admissible` | corollary | ReLU is admissible | — | — |
@@ -35,7 +35,7 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | 6.2 | `thm:general-rademacher` | theorem | General compact-open sampling bound | — | — |
 | 6.3 | `thm:lipschitz-barron` | theorem | Dimension-free compact-open Barron bound | — | — |
 | 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | — | — |
-| 6.5 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | — | — |
+| 6.5 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | `OperatorRidgelet.Paper.lem_ray_regular_examples_a`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii` | stated |
 | 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | — | — |
 | 6.7 | `cor:vector-rates` | corollary | Vector-valued rates | — | — |
 | 7.1 | `ex:closed-form` | example | Closed-form transform and its filtered network | — | — |
@@ -46,9 +46,9 @@ Manuscript `main.tex` at commit `1f63d03` (numbers synced 2026-09-08). Generated
 | 7.6 | `ex:dirichlet` | example | Dirichlet solution operator with a pointwise nonlinearity | — | — |
 | A.1 | `lem:mixture-integration` | lemma | Measurability and integration of the mixture | `OperatorRidgelet.Paper.lem_mixture_integration_i`<br>`OperatorRidgelet.Paper.lem_mixture_integration_ii`<br>`OperatorRidgelet.Paper.lem_mixture_integration_iii`<br>`OperatorRidgelet.Paper.lem_mixture_integration_iv` | stated |
 | A.2 | `lem:mixture-character` | lemma | Gaussian-layer regularization | `OperatorRidgelet.Paper.lem_mixture_character_i`<br>`OperatorRidgelet.Paper.lem_mixture_character_ii`<br>`OperatorRidgelet.Paper.lem_mixture_character_iii`<br>`OperatorRidgelet.Paper.lem_mixture_character_iv` | stated |
-| B.1 | `lem:weak-equals-strong` | lemma | Synthesis of an integrable coefficient is the integral network | — | — |
-| B.2 | `lem:hermite-totality` | lemma | Entire extension and totality of the Hermite coefficients | — | — |
-| B.3 | `prop:coefficient-projection` | proposition | Bounded backprojection and orthogonal range projection | — | — |
+| B.1 | `lem:weak-equals-strong` | lemma | Synthesis of an integrable coefficient is the integral network | `OperatorRidgelet.Paper.lem_weak_equals_strong_i`<br>`OperatorRidgelet.Paper.lem_weak_equals_strong_ii` | stated |
+| B.2 | `lem:hermite-totality` | lemma | Entire extension and totality of the Hermite coefficients | `OperatorRidgelet.Paper.lem_hermite_totality_i`<br>`OperatorRidgelet.Paper.lem_hermite_totality_ii`<br>`OperatorRidgelet.Paper.lem_hermite_totality_iii`<br>`OperatorRidgelet.Paper.lem_hermite_totality_iv`<br>`OperatorRidgelet.Paper.lem_hermite_totality_v`<br>`OperatorRidgelet.Paper.lem_hermite_totality_vi` | stated |
+| B.3 | `prop:coefficient-projection` | proposition | Bounded backprojection and orthogonal range projection | `OperatorRidgelet.Paper.prop_coefficient_projection_i`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_ii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_iii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_iv`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_v`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_vi`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_vii`<br>`OperatorRidgelet.Paper.prop_coefficient_projection_viii` | stated |
 | C.1 | `lem:weighted-duality` | lemma | Hilbert structure and continuous activation pairing | — | — |
 | C.2 | `lem:standard-activation-class` | lemma | Standard activations and admissible test filters | — | — |
 | D.1 | `lem:qualitative-sampling` | lemma | Qualitative finite-atomic approximation | — | — |
