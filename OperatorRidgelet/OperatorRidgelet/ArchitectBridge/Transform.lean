@@ -242,49 +242,49 @@ attribute [blueprint "lem:homogeneous-mixture-ii"
   (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_ii
 
 attribute [blueprint "lem:homogeneous-mixture-iii"
-  (statement := /-- $\nu_\alpha(H)=\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_iii
+  (statement := /-- $\nu_\alpha(H)=\infty$. -/)]
+  OperatorRidgelet.Paper.lem_homogeneous_mixture_iii
 
 attribute [blueprint "lem:homogeneous-mixture-iv"
   (statement := /-- $\nu_\alpha$ has full support. -/)
   (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_iv
 
 attribute [blueprint "lem:homogeneous-mixture-v"
-  (statement := /-- $(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha$ for $\omega\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_v
+  (statement := /-- $(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha$ for $\omega\ne0$. -/)]
+  OperatorRidgelet.Paper.lem_homogeneous_mixture_v
 
 attribute [blueprint "lem:homogeneous-mixture-vi"
   (statement := /-- $\int_HF(\omega a)\,\nu_\alpha(\mathrm
     da)=|\omega|^{-\alpha}\int_HF\,\mathrm d\nu_\alpha$ for nonnegative Borel
-    $F$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_homogeneous_mixture_vi
+    $F$. -/)]
+  OperatorRidgelet.Paper.lem_homogeneous_mixture_vi
 
 attribute [blueprint "def:admissible-filter-every-alpha"
-  (statement := /-- A band-pass filter is $\alpha$-admissible for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_admissible_filter
+  (statement := /-- A band-pass filter is $\alpha$-admissible for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.def_admissible_filter
 
 attribute [blueprint "lem:fourier-slice-i"
   (statement := /-- $R_\rho f$ is bounded on $H\times\mathbb R$. -/)]
   OperatorRidgelet.Paper.lem_fourier_slice_i
 
 attribute [blueprint "lem:fourier-slice-ii"
-  (statement := /-- $R_\rho f$ is jointly continuous on $H\times\mathbb R$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_fourier_slice_ii
+  (statement := /-- $R_\rho f$ is jointly continuous on $H\times\mathbb R$. -/)]
+  OperatorRidgelet.Paper.lem_fourier_slice_ii
 
 attribute [blueprint "lem:fourier-slice-iii"
   (statement := /-- $\|R_\rho f(a,\cdot)\|_{L^1(\mathbb
-    R)}\le\|f\|_{L^1(\mu)}\|\rho\|_{L^1(\mathbb R)}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_fourier_slice_iii
+    R)}\le\|f\|_{L^1(\mu)}\|\rho\|_{L^1(\mathbb R)}$. -/)]
+  OperatorRidgelet.Paper.lem_fourier_slice_iii
 
 attribute [blueprint "lem:fourier-slice-iv"
   (statement := /-- $\|R_\rho f(a,\cdot)\|_{L^2(\mathbb
-    R)}^2\le\|f\|_{L^2(\mu)}^2\|\rho\|_{L^2(\mathbb R)}^2$ if $f\in L^2(\mu)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_fourier_slice_iv
+    R)}^2\le\|f\|_{L^2(\mu)}^2\|\rho\|_{L^2(\mathbb R)}^2$ if $f\in L^2(\mu)$. -/)]
+  OperatorRidgelet.Paper.lem_fourier_slice_iv
 
 attribute [blueprint "lem:fourier-slice-v"
   (statement := /-- $\widehat{R_\rho f}(a,\omega)=\widehat\rho(\omega)\,\mathcal G_\mu f(-\omega
-    a)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_fourier_slice_v
+    a)$. -/)]
+  OperatorRidgelet.Paper.lem_fourier_slice_v
 
 attribute [blueprint "def:spectral-coefficient-l1"
   (statement := /-- If $G\in L^1(\nu)\cap L^2(\nu)$, then $W_\rho G=\gamma_G$ almost everywhere. -/)
@@ -296,8 +296,8 @@ attribute [blueprint "lem:coefficient-isometry-i"
   (notReady := true)] OperatorRidgelet.Paper.lem_coefficient_isometry_i
 
 attribute [blueprint "lem:coefficient-isometry-ii"
-  (statement := /-- $W_\rho G$ is independent of the Borel representative of $G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_coefficient_isometry_ii
+  (statement := /-- $W_\rho G$ is independent of the Borel representative of $G$. -/)]
+  OperatorRidgelet.Paper.lem_coefficient_isometry_ii
 
 attribute [blueprint "lem:coefficient-isometry-iii"
   (statement := /-- $\|W_\rho G\|_{L^2(\lambda)}^2=C^{(\alpha)}_\rho\|G\|_{L^2(\nu)}^2$. -/)
@@ -305,8 +305,8 @@ attribute [blueprint "lem:coefficient-isometry-iii"
 
 attribute [blueprint "lem:coefficient-isometry-iv"
   (statement := /-- If $G\in L^1(\nu)$, then $\omega\mapsto G(-\omega a)$ is integrable on
-    compact subsets of $\mathbb R\setminus\{0\}$ for $\nu$-almost every $a$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_coefficient_isometry_iv
+    compact subsets of $\mathbb R\setminus\{0\}$ for $\nu$-almost every $a$. -/)]
+  OperatorRidgelet.Paper.lem_coefficient_isometry_iv
 
 attribute [blueprint "lem:spectral-unitary-i"
   (statement := /-- The spectral form is positive definite on $\mathcal D$. -/)
@@ -320,8 +320,8 @@ attribute [blueprint "lem:spectral-unitary-ii"
 attribute [blueprint "lem:spectral-unitary-iii"
   (statement := /-- $\mathcal G_\mu(\mathcal D)$ is dense in $\mathcal K$, so $\mathcal G_\mu$
     extends uniquely to a unitary $U_\alpha:\mathcal E_\alpha\to\mathcal
-    K_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_spectral_unitary_iii
+    K_\alpha$. -/)]
+  OperatorRidgelet.Paper.lem_spectral_unitary_iii
 
 attribute [blueprint "lem:gaussian-decay-i"
   (statement := /-- $\int_H\|\xi\|^{2m}e^{-t\langle Q\xi,\xi\rangle}\,\nu_\alpha(\mathrm
@@ -379,42 +379,42 @@ attribute [blueprint "thm:B-iii"
   (notReady := true)] OperatorRidgelet.Paper.thm_B_iii
 
 attribute [blueprint "lem:mixture-integration-i"
-  (statement := /-- $s\mapsto\mathcal N(0,2sP)(E)$ is Borel measurable on $(0,\infty)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_integration_i
+  (statement := /-- $s\mapsto\mathcal N(0,2sP)(E)$ is Borel measurable on $(0,\infty)$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_integration_i
 
 attribute [blueprint "lem:mixture-integration-ii"
   (statement := /-- $\nu_\alpha(E)=\int_0^\infty\mathcal N(0,2sP)(E)\,s^{\alpha/2-1}\,\mathrm
-    ds$ defines a countably additive Borel measure. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_integration_ii
+    ds$ defines a countably additive Borel measure. -/)]
+  OperatorRidgelet.Paper.lem_mixture_integration_ii
 
 attribute [blueprint "lem:mixture-integration-iii"
   (statement := /-- $\int_HF\,\mathrm d\nu_\alpha=\int_0^\infty\int_HF\,\mathrm d\mathcal
-    N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds$ for nonnegative Borel $F$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_integration_iii
+    N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds$ for nonnegative Borel $F$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_integration_iii
 
 attribute [blueprint "lem:mixture-integration-iv"
   (statement := /-- The integration formula holds for complex $F$ with $\int_H|F|\,\mathrm
-    d\nu_\alpha<\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_integration_iv
+    d\nu_\alpha<\infty$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_integration_iv
 
 attribute [blueprint "lem:mixture-character-i"
-  (statement := /-- $q=\langle Pz,z\rangle>0$ for $z\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_character_i
+  (statement := /-- $q=\langle Pz,z\rangle>0$ for $z\ne0$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_character_i
 
 attribute [blueprint "lem:mixture-character-ii"
   (statement := /-- $\lim_{\varepsilon\downarrow0,M\uparrow\infty}\int_He^{i\langle
     z,\xi\rangle}\,\nu_\alpha^{\varepsilon,M}(\mathrm
-    d\xi)=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_character_ii
+    d\xi)=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_character_ii
 
 attribute [blueprint "lem:mixture-character-iii"
   (statement := /-- $\int_0^\infty e^{-sq}s^{\alpha/2-1}\,\mathrm
-    ds=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_character_iii
+    ds=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_character_iii
 
 attribute [blueprint "lem:mixture-character-iv"
-  (statement := /-- $\int_H|e^{i\langle z,\xi\rangle}|\,\nu_\alpha(\mathrm d\xi)=\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_mixture_character_iv
+  (statement := /-- $\int_H|e^{i\langle z,\xi\rangle}|\,\nu_\alpha(\mathrm d\xi)=\infty$. -/)]
+  OperatorRidgelet.Paper.lem_mixture_character_iv
 
 attribute [blueprint "cor:finite-backprojection-i"
   (statement := /-- If $f\in L^2(p\,\mathrm dx)$ with $g=fp\in\mathcal S(\mathbb R^m)$, then
@@ -447,8 +447,8 @@ attribute [blueprint "cor:finite-backprojection-vi"
   (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_vi
 
 attribute [blueprint "prop:dilation-obstruction-i-a"
-  (statement := /-- The sets $E_t$ are Borel. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_dilation_obstruction_i_a
+  (statement := /-- The sets $E_t$ are Borel. -/)]
+  OperatorRidgelet.Paper.prop_dilation_obstruction_i_a
 
 attribute [blueprint "prop:dilation-obstruction-i-b"
   (statement := /-- The sets $E_t$ are pairwise disjoint. -/)]
@@ -503,12 +503,12 @@ attribute [blueprint "thm:general-weights-injective"
 
 attribute [blueprint "thm:general-weights-one-mem-iff"
   (statement := /-- $1\in\mathcal D_{\mu,\nu}$ if and only if
-    $\int_H|\widehat\mu(\xi)|^2\,\nu(\mathrm d\xi)<\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_one_mem_iff
+    $\int_H|\widehat\mu(\xi)|^2\,\nu(\mathrm d\xi)<\infty$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_one_mem_iff
 
 attribute [blueprint "ex:bandlimited-filter-i"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is smooth. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_i
+  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is smooth. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_i
 
 attribute [blueprint "ex:bandlimited-filter-ii"
   (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is nonpositive. -/)]
@@ -524,51 +524,51 @@ attribute [blueprint "ex:bandlimited-filter-iv"
 
 attribute [blueprint "ex:bandlimited-filter-v"
   (statement := /-- $\rho_{\mathrm{bp}}$ is a real Schwartz function, the inverse Fourier
-    transform of $\widehat\rho_{\mathrm{bp}}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_v
+    transform of $\widehat\rho_{\mathrm{bp}}$. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_v
 
 attribute [blueprint "ex:bandlimited-filter-vi"
-  (statement := /-- $\rho_{\mathrm{bp}}$ is even. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_vi
+  (statement := /-- $\rho_{\mathrm{bp}}$ is even. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_vi
 
 attribute [blueprint "ex:bandlimited-filter-vii"
   (statement := /-- The Fourier transform of $\rho_{\mathrm{bp}}$ is the prescribed
-    $\widehat\rho_{\mathrm{bp}}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_vii
+    $\widehat\rho_{\mathrm{bp}}$. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_vii
 
 attribute [blueprint "ex:bandlimited-filter-viii"
-  (statement := /-- $\rho_{\mathrm{bp}}$ satisfies the band-pass condition. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_viii
+  (statement := /-- $\rho_{\mathrm{bp}}$ satisfies the band-pass condition. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_viii
 
 attribute [blueprint "ex:bandlimited-filter-ix"
-  (statement := /-- $\rho_{\mathrm{bp}}$ is $\alpha$-admissible for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_ix
+  (statement := /-- $\rho_{\mathrm{bp}}$ is $\alpha$-admissible for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_ix
 
 attribute [blueprint "ex:bandlimited-filter-x"
   (statement := /-- Multiplying by $(C^{(\alpha)}_{\rho_{\mathrm{bp}}})^{-1/2}$ normalizes the
-    admissibility constant to one. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_bandlimited_filter_x
+    admissibility constant to one. -/)]
+  OperatorRidgelet.Paper.ex_bandlimited_filter_x
 
 attribute [blueprint "ex:mexican-hat-i"
-  (statement := /-- $\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}$ is a Schwartz function. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_i
+  (statement := /-- $\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}$ is a Schwartz function. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_i
 
 attribute [blueprint "ex:mexican-hat-ii"
-  (statement := /-- $\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_ii
+  (statement := /-- $\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_ii
 
 attribute [blueprint "ex:mexican-hat-iii"
   (statement := /-- $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly for $0<\alpha<5$. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_iii
 
 attribute [blueprint "ex:mexican-hat-iv"
-  (statement := /-- $C^{(\alpha)}_{\rho_{\mathrm{MH}}}=\Gamma((5-\alpha)/2)$ for $0<\alpha<5$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_iv
+  (statement := /-- $C^{(\alpha)}_{\rho_{\mathrm{MH}}}=\Gamma((5-\alpha)/2)$ for $0<\alpha<5$. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_iv
 
 attribute [blueprint "ex:mexican-hat-v"
-  (statement := /-- $C^{(1)}_{\rho_{\mathrm{MH}}}=1$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_v
+  (statement := /-- $C^{(1)}_{\rho_{\mathrm{MH}}}=1$. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_v
 
 attribute [blueprint "ex:mexican-hat-vi"
-  (statement := /-- $\rho_{\mathrm{MH}}$ is not band pass. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_vi
+  (statement := /-- $\rho_{\mathrm{MH}}$ is not band pass. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_vi

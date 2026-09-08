@@ -41,8 +41,8 @@ attribute [blueprint "def:integral-network-i"
 
 attribute [blueprint "def:integral-network-ii"
   (statement := /-- For $\Gamma=\gamma\lambda$ with $\lambda$ $\sigma$-finite,
-    $S_\beta[\gamma\lambda]=S_\beta[\gamma]$ whenever the Bochner integral exists. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_integral_network_ii
+    $S_\beta[\gamma\lambda]=S_\beta[\gamma]$ whenever the Bochner integral exists. -/)]
+  OperatorRidgelet.Paper.def_integral_network_ii
 
 attribute [blueprint "operator-ridgelet:is-polynomial-fun"
   (statement := /-- $\beta:\mathbb R\to\mathbb R$ is a polynomial. -/)
@@ -102,8 +102,8 @@ attribute [blueprint "operator-ridgelet:operator-synthesis"
 attribute [blueprint "lem:hs-reduction"
   (statement := /-- For globally Lipschitz $\sigma:H\to H$, the finite linear spans of the
     neurons $\mathrm n_{\ell,A,b}$ with $A\in\mathcal L(H)$ and with $A\in\mathcal L_2(H)$ have
-    the same compact-open closure in $C(H;\mathbb R)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hs_reduction
+    the same compact-open closure in $C(H;\mathbb R)$. -/)]
+  OperatorRidgelet.Paper.lem_hs_reduction
 
 attribute [blueprint "lem:rank-one-lift-i"
   (statement := /-- $A_a=\|\psi\|^{-2}\psi\otimes a$ is Hilbert--Schmidt. -/)]

@@ -2,6 +2,7 @@ import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Const
+import OperatorRidgelet.Sampling.Basic
 
 /-!
 # Statements of Section 6 (finite-width approximation) and Appendix D
@@ -330,14 +331,15 @@ section Hilbert
 variable {Ω : Type*} [MeasurableSpace Ω] {X : Type*} [NormedAddCommGroup X]
   [InnerProductSpace ℝ X] [CompleteSpace X] [SecondCountableTopology X]
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.  For `Y ∈ L²(p; X)` with
 values in a separable Hilbert space, independent copies `Y_j`, `f = V 𝔼Y`, and
 `f_N = V N⁻¹ ∑_j Y_j`: `𝔼‖f_N − f‖² = (V²/N)(𝔼‖Y‖² − ‖𝔼Y‖²)`. -/
 theorem lem_hilbert_sampling_i (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
     ∫ ω, ‖(V / N : ℝ) • ∑ j, Y (ω j) - V • ∫ ω', Y ω' ∂p‖ ^ 2 ∂sampleLaw N p =
-      V ^ 2 / N * ((∫ ω', ‖Y ω'‖ ^ 2 ∂p) - ‖∫ ω', Y ω' ∂p‖ ^ 2) := by
-  sorry
+      V ^ 2 / N * ((∫ ω', ‖Y ω'‖ ^ 2 ∂p) - ‖∫ ω', Y ω' ∂p‖ ^ 2) :=
+  integral_norm_sq_sampleMean p hY V hN
 
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.
 `𝔼‖f_N − f‖² ≤ (V²/N) 𝔼‖Y‖²`. -/
@@ -345,7 +347,10 @@ theorem lem_hilbert_sampling_ii (p : Measure Ω) [IsProbabilityMeasure p] {Y : �
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
     ∫ ω, ‖(V / N : ℝ) • ∑ j, Y (ω j) - V • ∫ ω', Y ω' ∂p‖ ^ 2 ∂sampleLaw N p ≤
       V ^ 2 / N * ∫ ω', ‖Y ω'‖ ^ 2 ∂p := by
-  sorry
+  rw [lem_hilbert_sampling_i p hY V hN]
+  have h1 : 0 ≤ V ^ 2 / N := by positivity
+  have h2 : 0 ≤ ‖∫ ω', Y ω' ∂p‖ ^ 2 := by positivity
+  nlinarith
 
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.  A deterministic sample
 satisfies the same upper bound `‖f_N − f‖² ≤ (V²/N) 𝔼‖Y‖²`. -/
@@ -353,7 +358,12 @@ theorem lem_hilbert_sampling_iii (p : Measure Ω) [IsProbabilityMeasure p] {Y : 
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
     ∃ ω : Fin N → Ω,
       ‖(V / N : ℝ) • ∑ j, Y (ω j) - V • ∫ ω', Y ω' ∂p‖ ^ 2 ≤ V ^ 2 / N * ∫ ω', ‖Y ω'‖ ^ 2 ∂p := by
-  sorry
+  have hL : MemLp (fun ω : Fin N → Ω => (V / N : ℝ) • ∑ j, Y (ω j) - V • ∫ ω', Y ω' ∂p) 2
+      (sampleLaw N p) :=
+    ((memLp_finsetSum Finset.univ fun j _ => memLp_eval_pi p hY j).const_smul
+      (V / N : ℝ)).sub ((memLp_const _).const_smul V)
+  obtain ⟨ω, hω⟩ := exists_le_integral ((memLp_two_iff_integrable_sq_norm hL.1).mp hL)
+  exact ⟨ω, hω.trans (lem_hilbert_sampling_ii p hY V hN)⟩
 
 end Hilbert
 
@@ -387,7 +397,30 @@ theorem cor_operator_sampling_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpa
     (hHS : ∀ᵐ q ∂Γop.variation, IsHilbertSchmidt q.1) :
     ∫⁻ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ₑ ^ 2 + ‖⟪ψ, q.2⟫‖ₑ ^ 2) ∂polarLaw Γop ≤
       ‖ψ‖ₑ ^ 2 * ∫⁻ q, (hsNormSq q.1 + ‖q.2‖ₑ ^ 2) ∂polarLaw Γop := by
-  sorry
+  rw [← lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top)]
+  refine lintegral_mono_ae ?_
+  have hHS' : ∀ᵐ q ∂polarLaw Γop, IsHilbertSchmidt q.1 := Measure.ae_smul_measure hHS _
+  filter_upwards [hHS'] with q hq
+  rw [mul_add]
+  gcongr
+  · have hA : ‖ContinuousLinearMap.adjoint q.1 ψ‖ ≤ hsNorm q.1 * ‖ψ‖ := by
+      calc ‖ContinuousLinearMap.adjoint q.1 ψ‖
+          ≤ ‖ContinuousLinearMap.adjoint q.1‖ * ‖ψ‖ := (ContinuousLinearMap.adjoint q.1).le_opNorm ψ
+        _ = ‖q.1‖ * ‖ψ‖ := by rw [LinearIsometryEquiv.norm_map]
+        _ ≤ hsNorm q.1 * ‖ψ‖ := by gcongr; exact opNorm_le_hsNorm hq
+    have hsq : hsNormSq q.1 = ENNReal.ofReal (hsNorm q.1 ^ 2) := by
+      rw [hsNorm, Real.sq_sqrt ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hq]
+    rw [hsq, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _),
+      ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity)]
+    apply ENNReal.ofReal_le_ofReal
+    calc ‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 ≤ (hsNorm q.1 * ‖ψ‖) ^ 2 := by gcongr
+      _ = ‖ψ‖ ^ 2 * hsNorm q.1 ^ 2 := by ring
+  · rw [← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _),
+      ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_pow (norm_nonneg _),
+      ← ENNReal.ofReal_mul (by positivity)]
+    apply ENNReal.ofReal_le_ofReal
+    calc ‖⟪ψ, q.2⟫‖ ^ 2 ≤ (‖ψ‖ * ‖q.2‖) ^ 2 := by gcongr; exact norm_inner_le_norm ψ q.2
+      _ = ‖ψ‖ ^ 2 * ‖q.2‖ ^ 2 := by ring
 
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  For
 finite-rank orthogonal projections `Π_m` converging strongly to the identity, `f ∈ C(H)`, and
@@ -397,7 +430,39 @@ theorem cor_two_stage_error_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
     (hlim : ∀ x : H, Tendsto (fun m => P m x) atTop (𝓝 x)) {f : H → ℂ} (hf : Continuous f)
     {K : Set H} (hK : IsCompact K) :
     Tendsto (fun m => compactSupNorm K (fun x => f x - f (P m x))) atTop (𝓝 0) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  have hcont : ∀ x : H, ∃ δ > 0, ∀ y, dist y x < δ → dist (f y) (f x) < ε / 3 := fun x =>
+    Metric.continuous_iff.mp hf x (ε / 3) (by positivity)
+  choose δ hδpos hδ using hcont
+  obtain ⟨t, -, hcover⟩ := hK.elim_nhds_subcover (fun x => Metric.ball x (δ x / 2))
+    fun x _ => Metric.ball_mem_nhds x (by linarith [hδpos x])
+  have hev : ∀ᶠ m in atTop, ∀ x ∈ t, dist (P m x) x < δ x / 2 := by
+    rw [eventually_all_finset]
+    intro x _
+    exact Metric.tendsto_nhds.mp (hlim x) _ (by linarith [hδpos x])
+  obtain ⟨M, hM⟩ := eventually_atTop.mp hev
+  refine ⟨M, fun m hm => ?_⟩
+  rw [dist_zero_right, Real.norm_eq_abs, abs_of_nonneg (compactSupNorm_nonneg _ _)]
+  refine lt_of_le_of_lt (compactSupNorm_le (a := 2 * ε / 3) (by positivity) fun x hx => ?_)
+    (by linarith)
+  obtain ⟨i, hi, hxi⟩ := Set.mem_iUnion₂.mp (hcover hx)
+  rw [Metric.mem_ball] at hxi
+  have h1 : dist (f x) (f i) < ε / 3 := hδ i x (by linarith [hδpos i])
+  have h2 : dist (P m x) i < δ i := by
+    calc dist (P m x) i ≤ dist (P m x) (P m i) + dist (P m i) i := dist_triangle _ _ _
+      _ < δ i / 2 + δ i / 2 := by
+          refine add_lt_add_of_le_of_lt ?_ (hM m hm i hi)
+          rw [dist_eq_norm, ← map_sub]
+          calc ‖P m (x - i)‖ ≤ ‖x - i‖ := (hP m).norm_apply_le _
+            _ = dist x i := (dist_eq_norm x i).symm
+            _ ≤ δ i / 2 := hxi.le
+      _ = δ i := by ring
+  have h3 : dist (f (P m x)) (f i) < ε / 3 := hδ i _ h2
+  calc ‖f x - f (P m x)‖ = dist (f x) (f (P m x)) := (dist_eq_norm _ _).symm
+    _ ≤ dist (f x) (f i) + dist (f i) (f (P m x)) := dist_triangle _ _ _
+    _ ≤ ε / 3 + ε / 3 := by rw [dist_comm (f i)]; linarith
+    _ = 2 * ε / 3 := by ring
 
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  If
 `f = S_β Γ` satisfies the hypotheses of Theorem `thm:lipschitz-barron` and the same samples are

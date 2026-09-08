@@ -212,16 +212,16 @@ attribute [blueprint "cor:sampling-concentration"
 attribute [blueprint "lem:hilbert-sampling-i"
   (statement := /-- For $Y\in L^2(p;X)$ with values in a separable Hilbert space, independent
     copies $Y_j$, $f=V\mathbb EY$, and $f_N=VN^{-1}\sum_jY_j$,
-    $\mathbb E\|f_N-f\|_X^2=\frac{V^2}N(\mathbb E\|Y\|_X^2-\|\mathbb EY\|_X^2)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hilbert_sampling_i
+    $\mathbb E\|f_N-f\|_X^2=\frac{V^2}N(\mathbb E\|Y\|_X^2-\|\mathbb EY\|_X^2)$. -/)]
+  OperatorRidgelet.Paper.lem_hilbert_sampling_i
 
 attribute [blueprint "lem:hilbert-sampling-ii"
-  (statement := /-- $\mathbb E\|f_N-f\|_X^2\le\frac{V^2}N\mathbb E\|Y\|_X^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hilbert_sampling_ii
+  (statement := /-- $\mathbb E\|f_N-f\|_X^2\le\frac{V^2}N\mathbb E\|Y\|_X^2$. -/)]
+  OperatorRidgelet.Paper.lem_hilbert_sampling_ii
 
 attribute [blueprint "lem:hilbert-sampling-iii"
-  (statement := /-- A deterministic sample satisfies the same upper bound. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hilbert_sampling_iii
+  (statement := /-- A deterministic sample satisfies the same upper bound. -/)]
+  OperatorRidgelet.Paper.lem_hilbert_sampling_iii
 
 attribute [blueprint "cor:operator-sampling-i"
   (statement := /-- For a finite complex measure $\Gamma_{\rm op}$ on $\mathcal L_2(H)\times H$
@@ -234,13 +234,13 @@ attribute [blueprint "cor:operator-sampling-i"
 
 attribute [blueprint "cor:operator-sampling-ii"
   (statement := /-- $M_{\rm op}^2\le\|\psi\|^2\int(\|A\|_{\mathcal L_2}^2+\|b\|^2)\,
-    \mathrm dp_{\rm op}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_operator_sampling_ii
+    \mathrm dp_{\rm op}$. -/)]
+  OperatorRidgelet.Paper.cor_operator_sampling_ii
 
 attribute [blueprint "cor:two-stage-error-i"
   (statement := /-- For finite-rank orthogonal projections $\Pi_m$ converging strongly to the
-    identity, $f\in C(H)$, and compact $K$, $\|f-f\circ\Pi_m\|_{C(K)}\to0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_two_stage_error_i
+    identity, $f\in C(H)$, and compact $K$, $\|f-f\circ\Pi_m\|_{C(K)}\to0$. -/)]
+  OperatorRidgelet.Paper.cor_two_stage_error_i
 
 attribute [blueprint "cor:two-stage-error-ii"
   (statement := /-- If $f=S_\beta\Gamma$ satisfies the hypotheses of the Barron bound and the
