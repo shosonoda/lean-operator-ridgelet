@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 87.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 104.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 14
-  * 17
+  * 18
+  * 15
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -319,7 +319,7 @@ Status: *verified by comparator*.
 
 ## Definition 3.5 — The coefficient operator (`def:spectral-coefficient`)
 
-Blueprint node: {bpref "def:spectral-coefficient"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "def:spectral-coefficient"}[]. Status: *verified* (its Lean theorem is verified).
 
 Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula).
 
@@ -341,11 +341,11 @@ theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [Sig
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma 3.6 — The coefficient operator is a scaled isometry (`lem:coefficient-isometry`)
 
-Blueprint node: {bpref "lem:coefficient-isometry"}[]. Status: *partial 2/5* (2 of 5 Lean theorems verified).
+Blueprint node: {bpref "lem:coefficient-isometry"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. Stated for an abstract σ-finite homogeneous ν; the formula claim is def\_spectral\_coefficient (shared with def:spectral-coefficient).
 
@@ -362,7 +362,7 @@ theorem lem_coefficient_isometry_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [S
       HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G (-(ω • a))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_coefficient_isometry_ii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L142):
 
@@ -389,7 +389,7 @@ theorem lem_coefficient_isometry_iii {α : ℝ} (hα : 0 < α) (ν : Measure H) 
       admissibilityConst α ρ * ∫ ξ, ‖G ξ‖ ^ 2 ∂ν := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_coefficient_isometry_iv`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L159):
 
@@ -418,7 +418,7 @@ theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [Sig
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Definition 3.7 — The Hilbert space \\(\\cE\_\\alpha\\) (`def:spectral-space`)
 
@@ -438,7 +438,7 @@ Formalization note. 𝓔\_α is represented by 𝒦\_α = spectralRange (the clo
 
 ## Lemma 3.8 — Positivity and the unitary extension (`lem:spectral-unitary`)
 
-Blueprint node: {bpref "lem:spectral-unitary"}[]. Status: *partial 2/3* (2 of 3 Lean theorems verified).
+Blueprint node: {bpref "lem:spectral-unitary"}[]. Status: *verified* (all 3 Lean theorems verified).
 
 Formalization note. Stated for abstract (μ, ν) with ν σ-finite of full support; parts: positive definiteness, isometry of 𝒢\_μ into 𝒦 (Mathlib's inner product is conjugate linear in the first slot, hence ⟨Uf,Ug⟩ = ⟨g,f⟩\_𝓔), density of the image (the unitary extension is the identity of 𝒦 in this representation).
 
@@ -452,7 +452,7 @@ theorem lem_spectral_unitary_i (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
     ∀ f : Lp ℂ 2 μ, f ∈ spectralCore μ ν → spectralInner μ ν f f = 0 → f = 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_spectral_unitary_ii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L178):
 
@@ -603,7 +603,7 @@ Status: *statement only (proof pending)*.
 
 ## Theorem 3.12 — Plancherel identity and injectivity (`thm:B`)
 
-Blueprint node: {bpref "thm:B"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "thm:B"}[]. Status: *partial 6/7* (6 of 7 Lean theorems verified).
 
 Formalization note. Gaussian case with explicit hypotheses (IsCenteredGaussian Q μ, IsCenteredGaussianLayers P N, P, Q trace-class covariances, dim H = ∞); (i) split into membership in L²(λ\_α) and the identity, (ii) into unique extension, norm identity, closed range, R\_ρ = W\_ρ U\_α; the same claims for the abstract pair are thm:general-weights.
 
@@ -620,7 +620,7 @@ theorem thm_B_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     MemLp (ridgelet μ ρ f) 2 (parameterMeasure (gaussianMixture N α)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_i_b`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L258):
 
@@ -639,7 +639,7 @@ theorem thm_B_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ (gaussianMixture N α) f g := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_ii_a`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L272):
 
@@ -658,7 +658,7 @@ theorem thm_B_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
           =ᵐ[parameterMeasure (gaussianMixture N α)] ridgelet μ ρ f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_ii_b`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L286):
 
@@ -678,7 +678,7 @@ theorem thm_B_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     ∀ G : spectralRange μ (gaussianMixture N α), ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_ii_c`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L301):
 
@@ -697,7 +697,7 @@ theorem thm_B_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     IsClosed (Set.range R) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_ii_d`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L315):
 
@@ -719,7 +719,7 @@ theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
         ((G : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_B_iii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L332):
 
@@ -5265,7 +5265,7 @@ Status: *statement only (proof pending)*.
 
 ## Theorem H.1 — Abstract-weight extension (`thm:general-weights`)
 
-Blueprint node: {bpref "thm:general-weights"}[]. Status: *partial 1/8* (1 of 8 Lean theorems verified).
+Blueprint node: {bpref "thm:general-weights"}[]. Status: *verified* (all 8 Lean theorems verified).
 
 Formalization note. The Fourier-slice identity is already stated for general μ (lem\_fourier\_slice\_v); thm:B for the abstract pair is the eight parts here; the abstract-weight versions of thm:A and thm:C(i)-(iii) belong to the reconstruction work package.
 
@@ -5280,7 +5280,7 @@ theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityM
     MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_plancherel`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L572):
 
@@ -5296,7 +5296,7 @@ theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ ν f g := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_extension`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L583):
 
@@ -5311,7 +5311,7 @@ theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure 
         (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_extension_norm`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L593):
 
@@ -5327,7 +5327,7 @@ theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMea
     ∀ G : spectralRange μ ν, ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_extension_closed_range`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L604):
 
@@ -5343,7 +5343,7 @@ theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbab
     IsClosed (Set.range R) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_extension_coefficient`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L615):
 
@@ -5359,7 +5359,7 @@ theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabi
     ∀ G : spectralRange μ ν, R G = spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_injective`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L626):
 
@@ -5373,7 +5373,7 @@ theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure 
     f =ᵐ[μ] 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_general_weights_one_mem_iff`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L635):
 

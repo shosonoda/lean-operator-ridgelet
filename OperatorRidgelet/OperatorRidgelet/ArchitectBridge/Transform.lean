@@ -287,21 +287,22 @@ attribute [blueprint "lem:fourier-slice-v"
   OperatorRidgelet.Paper.lem_fourier_slice_v
 
 attribute [blueprint "def:spectral-coefficient-l1"
-  (statement := /-- If $G\in L^1(\nu)\cap L^2(\nu)$, then $W_\rho G=\gamma_G$ almost everywhere. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_spectral_coefficient
+  (statement := /-- If $G\in L^1(\nu)\cap L^2(\nu)$, then $W_\rho G=\gamma_G$ almost
+    everywhere. -/)]
+  OperatorRidgelet.Paper.def_spectral_coefficient
 
 attribute [blueprint "lem:coefficient-isometry-i"
   (statement := /-- $W_\rho G$ is well defined: exactly one element of $L^2(\lambda)$ has
-    partial bias Fourier transform $\widehat\rho(\omega)G(-\omega a)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_coefficient_isometry_i
+    partial bias Fourier transform $\widehat\rho(\omega)G(-\omega a)$. -/)]
+  OperatorRidgelet.Paper.lem_coefficient_isometry_i
 
 attribute [blueprint "lem:coefficient-isometry-ii"
   (statement := /-- $W_\rho G$ is independent of the Borel representative of $G$. -/)]
   OperatorRidgelet.Paper.lem_coefficient_isometry_ii
 
 attribute [blueprint "lem:coefficient-isometry-iii"
-  (statement := /-- $\|W_\rho G\|_{L^2(\lambda)}^2=C^{(\alpha)}_\rho\|G\|_{L^2(\nu)}^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_coefficient_isometry_iii
+  (statement := /-- $\|W_\rho G\|_{L^2(\lambda)}^2=C^{(\alpha)}_\rho\|G\|_{L^2(\nu)}^2$. -/)]
+  OperatorRidgelet.Paper.lem_coefficient_isometry_iii
 
 attribute [blueprint "lem:coefficient-isometry-iv"
   (statement := /-- If $G\in L^1(\nu)$, then $\omega\mapsto G(-\omega a)$ is integrable on
@@ -309,8 +310,8 @@ attribute [blueprint "lem:coefficient-isometry-iv"
   OperatorRidgelet.Paper.lem_coefficient_isometry_iv
 
 attribute [blueprint "lem:spectral-unitary-i"
-  (statement := /-- The spectral form is positive definite on $\mathcal D$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_spectral_unitary_i
+  (statement := /-- The spectral form is positive definite on $\mathcal D$. -/)]
+  OperatorRidgelet.Paper.lem_spectral_unitary_i
 
 attribute [blueprint "lem:spectral-unitary-ii"
   (statement := /-- $\mathcal G_\mu$ is an isometry from $(\mathcal
@@ -347,31 +348,31 @@ attribute [blueprint "ex:core-elements-iii"
 
 attribute [blueprint "thm:B-i-a"
   (statement := /-- For $f\in\mathcal D_\alpha$ and $\alpha$-admissible $\rho$, $R_\rho f\in
-    L^2(\lambda_\alpha)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_i_a
+    L^2(\lambda_\alpha)$. -/)]
+  OperatorRidgelet.Paper.thm_B_i_a
 
 attribute [blueprint "thm:B-i-b"
   (statement := /-- $\langle
     R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=C^{(\alpha)}_{\rho_1,\rho_2}\langle
-    f,g\rangle_{\mathcal E_\alpha}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_i_b
+    f,g\rangle_{\mathcal E_\alpha}$. -/)]
+  OperatorRidgelet.Paper.thm_B_i_b
 
 attribute [blueprint "thm:B-ii-a"
   (statement := /-- An $\alpha$-admissible $\rho$ determines a unique bounded extension
-    $R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_ii_a
+    $R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)$. -/)]
+  OperatorRidgelet.Paper.thm_B_ii_a
 
 attribute [blueprint "thm:B-ii-b"
-  (statement := /-- $\|R_\rho f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha}^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_ii_b
+  (statement := /-- $\|R_\rho f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha}^2$. -/)]
+  OperatorRidgelet.Paper.thm_B_ii_b
 
 attribute [blueprint "thm:B-ii-c"
-  (statement := /-- The range of $R_\rho$ is closed. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_ii_c
+  (statement := /-- The range of $R_\rho$ is closed. -/)]
+  OperatorRidgelet.Paper.thm_B_ii_c
 
 attribute [blueprint "thm:B-ii-d"
-  (statement := /-- $R_\rho=W_\rho U_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_B_ii_d
+  (statement := /-- $R_\rho=W_\rho U_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_B_ii_d
 
 attribute [blueprint "thm:B-iii"
   (statement := /-- If $\rho$ is $\alpha$-admissible and $f\in L^2(\mu_Q)$, then $R_\rho f=0$
@@ -470,36 +471,36 @@ attribute [blueprint "prop:dilation-obstruction-ii"
 
 attribute [blueprint "thm:general-weights-plancherel-memLp"
   (statement := /-- For the abstract pair $(\mu,\nu)$, $R_\rho f\in L^2(\lambda)$ for
-    $f\in\mathcal D_{\mu,\nu}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_plancherel_memLp
+    $f\in\mathcal D_{\mu,\nu}$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_plancherel_memLp
 
 attribute [blueprint "thm:general-weights-plancherel"
   (statement := /-- For the abstract pair, $\langle
     R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda)}=C^{(\alpha)}_{\rho_1,\rho_2}\langle
-    f,g\rangle_{\mathcal E_{\mu,\nu}}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_plancherel
+    f,g\rangle_{\mathcal E_{\mu,\nu}}$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_plancherel
 
 attribute [blueprint "thm:general-weights-extension"
   (statement := /-- For the abstract pair, $R_\rho$ has a unique bounded extension $\mathcal
-    E_{\mu,\nu}\to L^2(\lambda)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_extension
+    E_{\mu,\nu}\to L^2(\lambda)$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_extension
 
 attribute [blueprint "thm:general-weights-extension-norm"
   (statement := /-- For the abstract pair, $\|R_\rho f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal
-    E_{\mu,\nu}}^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_extension_norm
+    E_{\mu,\nu}}^2$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_extension_norm
 
 attribute [blueprint "thm:general-weights-extension-closed-range"
-  (statement := /-- For the abstract pair, the range of $R_\rho$ is closed. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_extension_closed_range
+  (statement := /-- For the abstract pair, the range of $R_\rho$ is closed. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_extension_closed_range
 
 attribute [blueprint "thm:general-weights-extension-coefficient"
-  (statement := /-- For the abstract pair, $R_\rho=W_\rho U$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_extension_coefficient
+  (statement := /-- For the abstract pair, $R_\rho=W_\rho U$. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_extension_coefficient
 
 attribute [blueprint "thm:general-weights-injective"
-  (statement := /-- For the abstract pair, $R_\rho f=0$ $\lambda$-a.e. implies $f=0$ $\mu$-a.e. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_weights_injective
+  (statement := /-- For the abstract pair, $R_\rho f=0$ $\lambda$-a.e. implies $f=0$ $\mu$-a.e. -/)]
+  OperatorRidgelet.Paper.thm_general_weights_injective
 
 attribute [blueprint "thm:general-weights-one-mem-iff"
   (statement := /-- $1\in\mathcal D_{\mu,\nu}$ if and only if

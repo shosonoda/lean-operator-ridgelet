@@ -3,6 +3,7 @@ import OperatorRidgelet.FiniteDim.Defs
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Transform.Basic
 import OperatorRidgelet.Transform.Mixture
+import OperatorRidgelet.Transform.Plancherel
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.GaussianFourier
 
@@ -327,6 +328,8 @@ theorem lem_fourier_slice_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sch
 
 /-! ### Definition `def:spectral-coefficient` and Lemma `lem:coefficient-isometry` -/
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Definition [def:spectral-coefficient]** The coefficient operator.  For
 `G ∈ L¹(ν) ∩ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
 `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
@@ -334,8 +337,10 @@ theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [Sig
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
-  sorry
+  rw [spectralCoefficient_eq_toLp hν hα hρ hG hG₂]
+  exact MemLp.coeFn_toLp _
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.  `W_ρ G`
 is well defined: there is exactly one element of `L²(λ)` whose partial Fourier transform in the
 bias is `ρ̂(ω) G(-ωa)`. -/
@@ -343,8 +348,8 @@ theorem lem_coefficient_isometry_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [S
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     ∃! γ : Lp ℂ 2 (parameterMeasure ν),
-      HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G (-(ω • a))) := by
-  sorry
+      HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G (-(ω • a))) :=
+  existsUnique_hasBiasFourier hν hα hρ hG hG₂
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -388,14 +393,15 @@ theorem lem_coefficient_isometry_ii {α : ℝ} (hα : 0 < α) (ν : Measure H) [
       fun h' => h (h'.imp fun γ => (key γ).mpr)
     rw [dif_neg h, dif_neg h']
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.
 `‖W_ρ G‖²_{L²(λ)} = C^{(α)}_ρ ‖G‖²_{L²(ν)}`. -/
 theorem lem_coefficient_isometry_iii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     ∫ p, ‖(spectralCoefficient ν ρ G : H × ℝ → ℂ) p‖ ^ 2 ∂parameterMeasure ν =
-      admissibilityConst α ρ * ∫ ξ, ‖G ξ‖ ^ 2 ∂ν := by
-  sorry
+      admissibilityConst α ρ * ∫ ξ, ‖G ξ‖ ^ 2 ∂ν :=
+  integral_spectralCoefficient_norm_sq hν hα hρ hG hG₂
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -416,7 +422,10 @@ positive definite on `𝒟`: `⟨f,f⟩_𝓔 = 0` forces `f = 0` in `L²(μ)`. -
 theorem lem_spectral_unitary_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
     ∀ f : Lp ℂ 2 μ, f ∈ spectralCore μ ν → spectralInner μ ν f f = 0 → f = 0 := by
-  sorry
+  intro f hf h
+  rw [spectralInner, integral_mul_conj_self, Complex.ofReal_eq_zero] at h
+  exact Lp.eq_zero_iff_ae_eq_zero.mpr (ae_eq_zero_of_integral_norm_gaussFourier_sq_eq_zero μ
+    ((Lp.memLp f).integrable one_le_two) hf h)
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
 /-- **Lemma [lem:spectral-unitary]** Positivity and the unitary extension.  `𝒢_μ` is an
@@ -506,6 +515,7 @@ theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
 
 /-! ### Theorem `thm:B` (Gaussian case) -/
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  For `f ∈ 𝒟_α` and an
 `α`-admissible `ρ`, the transform `R_ρ f` belongs to `L²(λ_α)`. -/
 theorem thm_B_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -514,8 +524,11 @@ theorem thm_B_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ (gaussianMixture N α)) :
     MemLp (ridgelet μ ρ f) 2 (parameterMeasure (gaussianMixture N α)) := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  exact memLp_ridgelet μ (hN.isHomogeneous_gaussianMixture α) hρ
+    ((Lp.memLp f).integrable one_le_two) (Lp.memLp f) hf
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  The Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ_α)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_α}` for `f, g ∈ 𝒟_α`. -/
 theorem thm_B_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -528,8 +541,12 @@ theorem thm_B_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     ∫ p, ridgelet μ ρ₁ f p * (starRingEnd ℂ) (ridgelet μ ρ₂ g p)
         ∂parameterMeasure (gaussianMixture N α) =
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ (gaussianMixture N α) f g := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  exact integral_ridgelet_mul_conj μ (hN.isHomogeneous_gaussianMixture α) hρ₁ hρ₂
+    ((Lp.memLp f).integrable one_le_two) (Lp.memLp f) ((Lp.memLp g).integrable one_le_two)
+    (Lp.memLp g) hf hg
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  An `α`-admissible `ρ` determines a
 unique bounded extension `R_ρ : 𝓔_α → L²(λ_α)` of `f ↦ R_ρ f` from `𝒟_α`. -/
 theorem thm_B_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -542,8 +559,10 @@ theorem thm_B_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
       ∀ f : spectralCore μ (gaussianMixture N α),
         (R (spectralEmbed μ (gaussianMixture N α) f) : H × ℝ → ℂ)
           =ᵐ[parameterMeasure (gaussianMixture N α)] ridgelet μ ρ f := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  exact existsUnique_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension satisfies
 `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_α}`. -/
 theorem thm_B_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -557,8 +576,12 @@ theorem thm_B_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
       (R (spectralEmbed μ (gaussianMixture N α) f) : H × ℝ → ℂ)
         =ᵐ[parameterMeasure (gaussianMixture N α)] ridgelet μ ρ f) :
     ∀ G : spectralRange μ (gaussianMixture N α), ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  intro G
+  rw [eq_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ R hR]
+  exact norm_ridgeletExtensionCLM_sq (hN.isHomogeneous_gaussianMixture α) hρ G
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension has closed range. -/
 theorem thm_B_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -571,8 +594,11 @@ theorem thm_B_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
       (R (spectralEmbed μ (gaussianMixture N α) f) : H × ℝ → ℂ)
         =ᵐ[parameterMeasure (gaussianMixture N α)] ridgelet μ ρ f) :
     IsClosed (Set.range R) := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  rw [eq_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ R hR]
+  exact isClosed_range_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ
 
+set_option linter.unusedVariables false in
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension factors as
 `R_ρ = W_ρ U_α`: on `𝒦_α` it is the coefficient operator. -/
 theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -588,7 +614,10 @@ theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     ∀ G : spectralRange μ (gaussianMixture N α),
       R G = spectralCoefficient (gaussianMixture N α) ρ
         ((G : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ) := by
-  sorry
+  haveI := hN.sfinite_gaussianMixture α
+  intro G
+  rw [eq_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ R hR]
+  exact ridgeletExtensionCLM_eq_spectralCoefficient (hN.isHomogeneous_gaussianMixture α) hα hρ μ G
 
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
 `α`-admissible and `f ∈ L²(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
@@ -600,6 +629,8 @@ theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure (gaussianMixture N α)] 0) :
     f =ᵐ[μ] 0 := by
+  -- `ae_eq_zero_of_ridgelet_ae_eq_zero` proves this once the full support of `ν_α`
+  -- (`lem_homogeneous_mixture_iv`, `IsOpenPosMeasure (gaussianMixture N α)`) is available.
   sorry
 
 /-! ### Lemma `lem:mixture-integration` -/
@@ -1020,14 +1051,18 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
 
 /-! ### Theorem `thm:general-weights` -/
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(i) for the
 abstract pair: `R_ρ f ∈ L²(λ)` for `f ∈ 𝒟_{μ,ν}` and `α`-admissible `ρ`. -/
 theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) :
-    MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) := by
-  sorry
+    MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) :=
+  memLp_ridgelet μ hν hρ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f) hf
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(i) for the
 abstract pair: the Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_{μ,ν}}`. -/
@@ -1036,9 +1071,12 @@ theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure
     (ρ₁ ρ₂ : SchwartzMap ℝ ℝ) (hρ₁ : IsAdmissible α ρ₁) (hρ₂ : IsAdmissible α ρ₂)
     (f g : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) (hg : g ∈ spectralCore μ ν) :
     ∫ p, ridgelet μ ρ₁ f p * (starRingEnd ℂ) (ridgelet μ ρ₂ g p) ∂parameterMeasure ν =
-      crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ ν f g := by
-  sorry
+      crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ ν f g :=
+  integral_ridgelet_mul_conj μ hν hρ₁ hρ₂ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f)
+    ((Lp.memLp g).integrable one_le_two) (Lp.memLp g) hf hg
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
 abstract pair: the unique bounded extension `R_ρ : 𝓔_{μ,ν} → L²(λ)`. -/
 theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -1046,9 +1084,11 @@ theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure 
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃! R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν),
       ∀ f : spectralCore μ ν,
-        (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f := by
-  sorry
+        (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f :=
+  existsUnique_ridgeletExtensionCLM hν hρ
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
 abstract pair: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_{μ,ν}}`. -/
 theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -1058,8 +1098,12 @@ theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMea
     (hR : ∀ f : spectralCore μ ν,
       (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
     ∀ G : spectralRange μ ν, ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
-  sorry
+  intro G
+  rw [eq_ridgeletExtensionCLM hν hρ R hR]
+  exact norm_ridgeletExtensionCLM_sq hν hρ G
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
 abstract pair: the extension has closed range. -/
 theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -1069,8 +1113,11 @@ theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbab
     (hR : ∀ f : spectralCore μ ν,
       (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
     IsClosed (Set.range R) := by
-  sorry
+  rw [eq_ridgeletExtensionCLM hν hρ R hR]
+  exact isClosed_range_ridgeletExtensionCLM hν hρ
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
 abstract pair: `R_ρ = W_ρ U`. -/
 theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -1080,7 +1127,9 @@ theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabi
     (hR : ∀ f : spectralCore μ ν,
       (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
     ∀ G : spectralRange μ ν, R G = spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
-  sorry
+  intro G
+  rw [eq_ridgeletExtensionCLM hν hρ R hR]
+  exact ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ μ G
 
 /-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(iii) for the
 abstract pair: `R_ρ f = 0` `λ`-a.e. implies `f = 0` `μ`-a.e. for `f ∈ L²(μ)`. -/
@@ -1088,8 +1137,8 @@ theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure 
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure ν] 0) :
-    f =ᵐ[μ] 0 := by
-  sorry
+    f =ᵐ[μ] 0 :=
+  ae_eq_zero_of_ridgelet_ae_eq_zero μ hα hν hρ (hf.integrable one_le_two) h
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
