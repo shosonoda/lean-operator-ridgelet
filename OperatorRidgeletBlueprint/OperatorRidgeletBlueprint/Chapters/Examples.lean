@@ -30,7 +30,7 @@ $`P` if $`P(x)=P(y)` but $`F(x)\ne F(y)`; in particular, if $`F` separates $`0` 
 in the kernel of a linear $`P`, then $`F` is not cylindrical through $`P`.
 :::
 
-:::definition "aux:trace-class-operators" (lean := "OperatorRidgelet.traceAlong, OperatorRidgelet.HasSummableTrace, OperatorRidgelet.traceOf, OperatorRidgelet.IsPositiveTraceClass, OperatorRidgelet.IsTraceClassCovariance.isPositiveTraceClass, OperatorRidgelet.IsPositiveSqrt, OperatorRidgelet.HasEigenbasis, OperatorRidgelet.fredholmDetAlong, OperatorRidgelet.fredholmDet, OperatorRidgelet.resolventForm") (uses := "aux:centered-gaussian, roadmap:trace-and-determinant")
+:::definition "aux:trace-class-operators" (lean := "OperatorRidgelet.traceAlong, OperatorRidgelet.HasSummableTrace, OperatorRidgelet.traceOf, OperatorRidgelet.IsPositiveTraceClass, OperatorRidgelet.IsPositiveSqrt, OperatorRidgelet.HasEigenbasis, OperatorRidgelet.fredholmDetAlong, OperatorRidgelet.fredholmDet, OperatorRidgelet.resolventForm") (uses := "aux:centered-gaussian, roadmap:trace-and-determinant")
 Mathlib has neither trace-class operators nor Fredholm determinants. The trace
 $`\operatorname{tr}P=\sum_i\langle Pe_i,e_i\rangle` is taken along a Hilbert basis for which
 the sum converges; a positive trace-class operator is positive, self-adjoint, with summable
@@ -40,7 +40,7 @@ eigenbasis of $`M`; and $`(I+M)^{-1}` enters through the quadratic form
 $`\langle S(I+M)^{-1}Sx,x\rangle`.
 :::
 
-:::definition "aux:gaussian-target" (lean := "OperatorRidgelet.gaussianAct, OperatorRidgelet.gaussianActDeriv2, OperatorRidgelet.gaussianSmooth, OperatorRidgelet.gaussianTarget, OperatorRidgelet.gaussianKappa, OperatorRidgelet.gaussianTargetResolvent, OperatorRidgelet.mixtureLayerCovariance, OperatorRidgelet.MemSpectralCore, OperatorRidgelet.MemSpectralCoreVec, OperatorRidgelet.toLpOrZero, OperatorRidgelet.gaussFourier_congr_ae, OperatorRidgelet.toLp_mem_spectralCore_iff, OperatorRidgelet.memSpectralCore_iff") (uses := "aux:trace-class-operators, def:spectral-space, aux:gaussian-mixture")
+:::definition "aux:gaussian-target" (lean := "OperatorRidgelet.gaussianFun, OperatorRidgelet.gaussianFunDeriv2, OperatorRidgelet.gaussianSmooth, OperatorRidgelet.gaussianTarget, OperatorRidgelet.gaussianKappa, OperatorRidgelet.gaussianTargetResolvent, OperatorRidgelet.mixtureLayerCovariance, OperatorRidgelet.MemSpectralCore, OperatorRidgelet.MemSpectralCoreVec, OperatorRidgelet.toLpOrZero, OperatorRidgelet.gaussFourier_congr_ae, OperatorRidgelet.toLp_mem_spectralCore_iff, OperatorRidgelet.memSpectralCore_iff") (uses := "aux:trace-class-operators, def:spectral-space, aux:gaussian-mixture")
 The Gaussian activation $`\Phi(u)=\phi(u)=e^{-u^2/2}` with $`\phi''(b)=(b^2-1)e^{-b^2/2}`,
 the convolution $`(\rho*\phi_v)(c)` with the centred Gaussian of variance $`v\ge0`, the
 Gaussian target $`f_W(x)=e^{-\langle Wx,x\rangle/2}`, and, for $`M=Q^{1/2}WQ^{1/2}`,
