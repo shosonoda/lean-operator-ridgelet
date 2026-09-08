@@ -13,6 +13,7 @@ import OperatorRidgelet.Transform.Infra
 import OperatorRidgelet.FiniteDim.Defs
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Reconstruction.Defs
+import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Examples.Defs
