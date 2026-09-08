@@ -232,8 +232,26 @@
       "number": "5.1",
       "page": "14",
       "title": "Regularized synthesis",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.IsRealDistribution",
+        "OperatorRidgelet.IsCutoff",
+        "OperatorRidgelet.IsApproximateIdentity",
+        "OperatorRidgelet.distributionConvolution",
+        "OperatorRidgelet.regularizedSpectrum",
+        "OperatorRidgelet.regularizedActivation",
+        "OperatorRidgelet.Tempered.spectralAntiDual",
+        "OperatorRidgelet.Tempered.ridgeletExtension",
+        "OperatorRidgelet.Tempered.synthesisFunctional",
+        "OperatorRidgelet.regularizedSynthesis",
+        "OperatorRidgelet.temperedSynthesis",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_i",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_ii",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_iii",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_iv",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_v",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_vi"
+      ],
+      "note": "A real β ∈ 𝒮'(ℝ) is a `TemperedDistribution ℝ ℂ` fixed by the vendored distributional conjugation (`IsRealDistribution`); χ and (η_ε) are functions with the predicates `IsCutoff ρ χ` (even, C_c^∞(ℝ∖{0}), = 1 on a neighbourhood of supp ρ̂) and `IsApproximateIdentity η` (each η_ε smooth, compactly supported, even, nonnegative, of integral one, supports shrinking to {0}); β̂ * η_ε is the pairing ⟨β̂, η_ε(ω - ·)⟩ and β_ε is the real Schwartz map with Fourier transform χ(β̂ * η_ε), obtained by choice (junk 0). 𝓔_α' is the continuous anti-dual `spectralRange μ ν →L⋆[ℂ] ℂ` (`Tempered.spectralAntiDual`), the extension R_ρ to 𝓔_α ≅ 𝒦_α is G ↦ W_ρ G (`Tempered.ridgeletExtension`, Theorem B(ii)), and S_ρ γ = R_ρ' γ is the anti-linear functional g ↦ ⟨γ, R_ρ g⟩ obtained by choice (`Tempered.synthesisFunctional`); these are local stand-ins for the Section 4 objects of the reconstruction work package. S_β γ is the limit of S_{β_ε} γ in the norm of 𝓔_α' along ε ↓ 0, obtained by choice whenever it exists (junk 0). Parts i–vi are the claims implicit in the definition: existence of χ and of (η_ε), β̂_ε ∈ C_c^∞(ℝ∖{0}), existence and uniqueness of β_ε, and well-definedness of S_{β_ε} γ for γ ∈ Ran R_ρ."
     },
     {
       "label": "thm:tempered-reconstruction",
@@ -241,8 +259,15 @@
       "number": "5.2",
       "page": "14",
       "title": "Reconstruction with a tempered activation",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_i",
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_ii",
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_iii",
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_iv",
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_v",
+        "OperatorRidgelet.Paper.thm_tempered_reconstruction_vi"
+      ],
+      "note": "Stated for the abstract pair (μ, ν) of Appendix H (ν σ-finite, full support, homogeneous of degree α), of which the Gaussian pair is the instance; f ∈ 𝓔_α is f : spectralRange μ ν and R_ρ f = W_ρ f (`Tempered.ridgeletExtension`). Parts: existence of the limit, independence of χ and (η_ε), the frame identity S_β R_ρ f = C^{(α)}_{β,ρ} T_α f with T_α = innerSLFlip ℂ (`Tempered.rieszMap`, T_α f [g] = ⟨f,g⟩_𝓔 = ⟪g,f⟫ in Mathlib's inner product), the two reconstruction formulas with T_α⁻¹ = `Tempered.rieszInv` (inverse by choice, defined on all of 𝓔_α' by Riesz), and the existence of a band-pass ρ with C ≠ 0 for non-polynomial β (`¬ IsPolynomialDistribution β`: β does not act by integration against a polynomial, which is β ≠ 0 in 𝒮'/𝒫)."
     },
     {
       "label": "cor:relu-admissible",
@@ -250,8 +275,22 @@
       "number": "5.3",
       "page": "15",
       "title": "ReLU is admissible",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.reluDistribution",
+        "OperatorRidgelet.reluAdmissibilityScale",
+        "OperatorRidgelet.reluNormalizedFilter",
+        "OperatorRidgelet.Tempered.spectralTarget",
+        "OperatorRidgelet.Tempered.IsRayRegular",
+        "OperatorRidgelet.Paper.cor_relu_admissible_i",
+        "OperatorRidgelet.Paper.cor_relu_admissible_ii",
+        "OperatorRidgelet.Paper.cor_relu_admissible_iii",
+        "OperatorRidgelet.Paper.cor_relu_admissible_iv",
+        "OperatorRidgelet.Paper.cor_relu_admissible_v",
+        "OperatorRidgelet.Paper.cor_relu_admissible_vi",
+        "OperatorRidgelet.Paper.cor_relu_admissible_vii",
+        "OperatorRidgelet.Paper.cor_relu_admissible_viii"
+      ],
+      "note": "ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^{-2}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim_{ε↓0}(∫_{|ω|>ε} φ ω^{-2} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^{-2} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^{-α-2} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter; viii: Theorem A(iii) with ReLU synthesis, using the minimal local `Tempered.IsRayRegular ν I G` (bounded Borel, C^∞ along rays near the symmetric compact I ⊇ supp ρ̂, all moments M_m(G) finite) and g_G = `Tempered.spectralTarget`, both to be unified with the reconstruction work package."
     },
     {
       "label": "ex:standard-activations",
@@ -259,8 +298,25 @@
       "number": "5.4",
       "page": "15",
       "title": "Standard activations",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_not_polynomial",
+        "OperatorRidgelet.Paper.ex_standard_activations_relu",
+        "OperatorRidgelet.Paper.ex_standard_activations_tanh",
+        "OperatorRidgelet.Paper.ex_standard_activations_gaussianCdf",
+        "OperatorRidgelet.Paper.ex_standard_activations_gaussian"
+      ],
+      "note": "The three properties (membership in 𝒜_{0,2}, global Lipschitz continuity, not a polynomial) are the theorems of lem:standard-activation-class (shared); 'covered by thm:tempered-reconstruction, thm:A(iii), and Section 6' is stated as its instance: for every α > 0 there is a band-pass ρ with C^{(α)}_{β,ρ} ≠ 0, for β = ReLU, tanh, Φ = `gaussianCdfDistribution`, e^{-u²/2} = `gaussianDistribution` (the last two realized through `weightedDistribution 2`, which acts by integration against the function)."
     },
     {
       "label": "def:rademacher-complexity",
@@ -440,8 +496,19 @@
       "number": "C.1",
       "page": "29",
       "title": "Hilbert structure and continuous activation pairing",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.activationFourierCoordinate",
+        "OperatorRidgelet.activationCoordinate",
+        "OperatorRidgelet.activationNorm",
+        "OperatorRidgelet.testFilterCoordinate",
+        "OperatorRidgelet.testFilterNorm",
+        "OperatorRidgelet.Paper.lem_weighted_duality_i",
+        "OperatorRidgelet.Paper.lem_weighted_duality_ii",
+        "OperatorRidgelet.Paper.lem_weighted_duality_iii",
+        "OperatorRidgelet.Paper.lem_weighted_duality_iv",
+        "OperatorRidgelet.Paper.lem_weighted_duality_v"
+      ],
+      "note": "𝒜_{s,t} is the vendored `MemActivationSpace s t` (⟨x⟩^{-t} β ∈ H^s), B^q is the vendored angular Bessel potential, and the coordinate ⟨ω⟩^s B^{-t} β̂ is `activationFourierCoordinate` with L² representative `activationCoordinate` (by choice); the norm ‖β‖_{𝒜_{s,t}} is its L² norm (the isometry is the definition of the norm). 'Isometric isomorphism 𝒜_{s,t} → L²' is split into: the coordinate exists for β ∈ 𝒜_{s,t} (i), injectivity (ii), surjectivity through the vendored `activationRealization` (iii). The dual test norm ‖r‖_{ℋ^♯_{s,t}} = ‖⟨ω⟩^{-s} B^t r‖_{L²} is `testFilterNorm`; the bound is (iv), and the extension to the completion (v) is a continuous linear functional on L²(ℝ) (the completion of the test filters via r ↦ ⟨ω⟩^{-s} B^t r) of norm ≤ (2π)⁻¹‖β‖ that agrees with (2π)⁻¹⟨β̂, r⟩ on test filters."
     },
     {
       "label": "lem:standard-activation-class",
@@ -449,8 +516,26 @@
       "number": "C.2",
       "page": "29",
       "title": "Standard activations and admissible test filters",
-      "lean": [],
-      "note": ""
+      "lean": [
+        "OperatorRidgelet.MemActivationSpaceFun",
+        "OperatorRidgelet.gaussianCdf",
+        "OperatorRidgelet.gaussianFun",
+        "OperatorRidgelet.weightedDistribution",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_relu_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_mem",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_lipschitz",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_not_polynomial",
+        "OperatorRidgelet.Paper.lem_standard_activation_class_exists_filter"
+      ],
+      "note": "Membership 'β ∈ 𝒜_{0,2}' for a function β is `MemActivationSpaceFun 0 2 β`: some tempered distribution acting by integration against β satisfies the vendored `MemActivationSpace 0 2` (for ReLU and tanh this is the vendored realization, for Φ = `gaussianCdf` and e^{-u²/2} = `gaussianFun` it is `weightedDistribution 2`); globally Lipschitz is ∃ L, LipschitzWith L β; not a polynomial is ¬ IsPolynomialFun β. The last claim (a real band-pass ρ with C^{(α)}_{β,ρ} = 1 for every non-polynomial real β ∈ 𝒮') is stated for the standing α > 0."
     },
     {
       "label": "lem:qualitative-sampling",

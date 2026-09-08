@@ -15,6 +15,7 @@ import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Tempered.Defs
+import OperatorRidgelet.Tempered.Basic
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Paper
