@@ -38,6 +38,26 @@ attribute [blueprint "transform:homogeneous"
     $(D_\omega)_\#\nu=|\omega|^{-\alpha}\nu$ for every $\omega\ne0$. -/)
   (hasProof := false)] OperatorRidgelet.IsHomogeneous
 
+attribute [blueprint "transform:trace-along"
+  (statement := /-- The trace $\sum_i\langle Pe_i,e_i\rangle$ of $P$ along a Hilbert basis
+    $(e_i)$. -/)
+  (hasProof := false)] OperatorRidgelet.traceAlong
+
+attribute [blueprint "transform:has-summable-trace"
+  (statement := /-- $P$ is trace class: $\sum_i\langle Pe_i,e_i\rangle$ converges along some
+    Hilbert basis. -/)
+  (hasProof := false)] OperatorRidgelet.HasSummableTrace
+
+attribute [blueprint "transform:trace-of"
+  (statement := /-- $\operatorname{tr}P=\sum_i\langle Pe_i,e_i\rangle$ along a Hilbert basis for
+    which the sum converges. -/)
+  (hasProof := false)] OperatorRidgelet.traceOf
+
+attribute [blueprint "transform:positive-trace-class"
+  (statement := /-- A positive, self-adjoint, trace-class operator (the covariance hypothesis
+    without injectivity). -/)
+  (hasProof := false)] OperatorRidgelet.IsPositiveTraceClass
+
 attribute [blueprint "transform:trace-class-covariance"
   (statement := /-- An operator is an injective, positive, self-adjoint, trace-class covariance;
     the trace is taken along a Hilbert basis. -/)

@@ -14,7 +14,10 @@ module.
 * `integralNetwork`: the integral network `S_β[Γ](x) = ∫ β(⟪a, x⟫ + c) Γ(da, dc)` of Definition
   `def:integral-network`, together with `totalVariation` and the density form
   `integralNetworkDensity` (`S_β[γ]` for `Γ = γ λ`).
-* `IsPolynomialFun`: the scalar activations excluded by the universality statements.
+* `IsPolynomialFun`: the scalar activations excluded by the universality statements;
+  `HasPolynomialGrowth`: the growth condition `|β(t)| ≤ C (1 + |t|)^p` on scalar activations
+  (used by the tempered activations of Section 4 and by the neural-operator layers of
+  Section 7).
 
 ## Vector measures of bounded variation
 
@@ -53,6 +56,10 @@ def finiteNetwork {N : ℕ} (β : ℝ → ℂ) (v : Fin N → Y) (a : Fin N → 
 universality statements assume `¬ IsPolynomialFun β`. -/
 def IsPolynomialFun (β : ℝ → ℝ) : Prop :=
   ∃ p : Polynomial ℝ, ∀ t, β t = p.eval t
+
+/-- `β : ℝ → ℝ` has polynomial growth: `|β(t)| ≤ C (1 + |t|)^p` for some constants `C`, `p`. -/
+def HasPolynomialGrowth (β : ℝ → ℝ) : Prop :=
+  ∃ C p : ℝ, ∀ t, |β t| ≤ C * (1 + |t|) ^ p
 
 section IntegralNetwork
 

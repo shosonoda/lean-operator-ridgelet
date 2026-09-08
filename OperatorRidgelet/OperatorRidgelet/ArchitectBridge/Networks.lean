@@ -48,6 +48,10 @@ attribute [blueprint "operator-ridgelet:is-polynomial-fun"
   (statement := /-- $\beta:\mathbb R\to\mathbb R$ is a polynomial. -/)
   (hasProof := false)] OperatorRidgelet.IsPolynomialFun
 
+attribute [blueprint "operator-ridgelet:has-polynomial-growth"
+  (statement := /-- $\beta$ has polynomial growth: $|\beta(t)|\le C(1+|t|)^p$. -/)
+  (hasProof := false)] OperatorRidgelet.HasPolynomialGrowth
+
 /-! ## Appendix F: definitions -/
 
 attribute [blueprint "operator-ridgelet:hs-norm-sq"

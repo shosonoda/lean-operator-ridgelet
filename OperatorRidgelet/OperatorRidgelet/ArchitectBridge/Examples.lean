@@ -21,24 +21,6 @@ attribute [blueprint "examples:has-infinite-rank"
   (statement := /-- A linear map has infinite rank when its range is not finite dimensional. -/)
   (hasProof := false)] OperatorRidgelet.HasInfiniteRank
 
-attribute [blueprint "examples:trace-along"
-  (statement := /-- The trace $\sum_i\langle Pe_i,e_i\rangle$ of $P$ along a Hilbert basis
-    $(e_i)$. -/)
-  (hasProof := false)] OperatorRidgelet.traceAlong
-
-attribute [blueprint "examples:has-summable-trace"
-  (statement := /-- $P$ has a summable trace along some Hilbert basis. -/)
-  (hasProof := false)] OperatorRidgelet.HasSummableTrace
-
-attribute [blueprint "examples:trace-of"
-  (statement := /-- $\operatorname{tr}P=\sum_i\langle Pe_i,e_i\rangle$ along a Hilbert basis for
-    which the sum converges. -/)
-  (hasProof := false)] OperatorRidgelet.traceOf
-
-attribute [blueprint "examples:is-positive-trace-class"
-  (statement := /-- A positive, self-adjoint, trace-class operator. -/)
-  (hasProof := false)] OperatorRidgelet.IsPositiveTraceClass
-
 attribute [blueprint "examples:is-positive-sqrt"
   (statement := /-- $S$ is the positive square root of $Q$: $S$ is positive self-adjoint and
     $S^2=Q$. -/)
@@ -61,10 +43,6 @@ attribute [blueprint "examples:fredholm-det"
 attribute [blueprint "examples:resolvent-form"
   (statement := /-- The quadratic form $\langle S(I+M)^{-1}Sx,x\rangle$. -/)
   (hasProof := false)] OperatorRidgelet.resolventForm
-
-attribute [blueprint "examples:gaussian-act"
-  (statement := /-- The Gaussian activation $\Phi(u)=\varphi(u)=e^{-u^2/2}$. -/)
-  (hasProof := false)] OperatorRidgelet.gaussianAct
 
 attribute [blueprint "examples:gaussian-act-deriv2"
   (statement := /-- $\varphi''(b)=(b^2-1)e^{-b^2/2}$. -/)
@@ -122,47 +100,6 @@ attribute [blueprint "examples:hinge-coefficient-measure"
     $\varphi''(b)\gamma(a,c)\,\lambda(\mathrm da,\mathrm dc)\,\mathrm db$ under
     $(a,c,b)\mapsto(a,c-b)$. -/)
   (hasProof := false)] OperatorRidgelet.hingeCoefficientMeasure
-
-attribute [blueprint "examples:sup-norm-on"
-  (statement := /-- $\|f\|_{C(K)}=\sup_{x\in K}\|f(x)\|$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.supNormOn
-
-attribute [blueprint "examples:compact-radius"
-  (statement := /-- $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.compactRadius
-
-attribute [blueprint "examples:gaussian-relu-sample"
-  (statement := /-- $F_{Q,N}(x)=\frac1N\sum_{j=1}^N\operatorname{ReLU}(\langle a_j,x\rangle)$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.gaussianReLUSample
-
-attribute [blueprint "examples:second-moment"
-  (statement := /-- $M_2^2=\int_{H\times\mathbb R}(\|a\|^2+|c|^2)\,p(\mathrm da,\mathrm dc)$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.secondMoment
-
-attribute [blueprint "examples:normalized-law"
-  (statement := /-- The probability law $\|w\|m/\int\|w\|\,\mathrm dm$ of a nonzero integrable
-    weight $w$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.normalizedLaw
-
-attribute [blueprint "examples:polar-sample"
-  (statement := /-- The polar sampled network $f_N(x)=\frac
-    VN\sum_{j=1}^Nh(\theta_j)\beta(\langle a_j,x\rangle+c_j)$ of
-    $\gamma\lambda$, $V=\int|\gamma|\,\mathrm d\lambda$, $h=\gamma/|\gamma|$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.polarSample
-
-attribute [blueprint "examples:layer-sample-scalar"
-  (statement := /-- The sampled scalar observable $F_{\varphi,N}(x)=\frac
-    VN\sum_jh(y_j)\beta(\langle a_{y_j},x\rangle)$ of a layer. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.layerSampleScalar
-
-attribute [blueprint "examples:layer-sample-vec"
-  (statement := /-- The sampled $Y$-valued layer $f_N(x)=\frac VN\sum_j\beta(\langle
-    a_{y_j},x\rangle)\,b_{y_j}/\|b_{y_j}\|$. -/)
-  (hasProof := false)] OperatorRidgelet.Examples.layerSampleVec
-
-attribute [blueprint "examples:has-polynomial-growth"
-  (statement := /-- $\beta$ has polynomial growth: $|\beta(t)|\le C(1+|t|)^p$. -/)
-  (hasProof := false)] OperatorRidgelet.HasPolynomialGrowth
 
 attribute [blueprint "examples:is-layer-data"
   (statement := /-- The standing hypotheses of the neural-operator layer: $y\mapsto a_y$ is
@@ -332,10 +269,6 @@ attribute [blueprint "examples:mem-spectral-core-iff"
   (statement := /-- $f\in\mathcal D_\alpha$ as a function if and only if $f\in L^2(\mu)$ and its
     class lies in the submodule $\mathcal D$. -/)]
   OperatorRidgelet.memSpectralCore_iff
-
-attribute [blueprint "examples:trace-class-covariance-positive"
-  (statement := /-- A trace-class covariance is positive trace class. -/)]
-  OperatorRidgelet.IsTraceClassCovariance.isPositiveTraceClass
 
 /-! ## Statements -/
 

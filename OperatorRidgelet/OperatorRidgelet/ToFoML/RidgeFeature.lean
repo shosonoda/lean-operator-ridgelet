@@ -15,6 +15,8 @@ universe u v
 
 namespace OperatorRidgelet
 
+open LeanRidgelet
+
 variable {H : Type u} {E : Type v}
   [SeminormedAddCommGroup E] [InnerProductSpace ℝ E]
 

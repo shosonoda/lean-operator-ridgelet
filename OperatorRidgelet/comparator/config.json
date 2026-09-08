@@ -4,6 +4,7 @@
     "theorem_names": [
         "OperatorRidgelet.Paper.def_integral_network_i",
         "OperatorRidgelet.Paper.def_regularized_synthesis_ii",
+        "OperatorRidgelet.Paper.def_regularized_synthesis_vi",
         "OperatorRidgelet.Paper.ex_bandlimited_filter_ii",
         "OperatorRidgelet.Paper.ex_bandlimited_filter_iii",
         "OperatorRidgelet.Paper.ex_bandlimited_filter_iv",

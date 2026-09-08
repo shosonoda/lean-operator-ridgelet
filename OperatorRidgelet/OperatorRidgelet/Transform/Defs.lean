@@ -27,8 +27,13 @@ The Gaussian objects are represented as follows.
 * `𝒩(0,Q)` is the predicate `IsCenteredGaussian Q μ`: `μ` is a probability measure with
   characteristic functional `ξ ↦ exp(-⟨Qξ,ξ⟩/2)`, which is the manuscript's definition of the
   centred Gaussian measure with covariance `Q`.
-* "injective, positive, self-adjoint, trace class" is the predicate `IsTraceClassCovariance`;
-  the trace is taken along a Hilbert basis (for a positive operator it is basis independent).
+* "positive, self-adjoint, trace class" is the predicate `IsPositiveTraceClass` (the
+  hypothesis of Lemma `lem:gaussian-quadratic`), and "injective, positive, self-adjoint, trace
+  class" is `IsTraceClassCovariance`, which extends it by injectivity.  The trace condition
+  `HasSummableTrace P` is the summability of `∑ ⟪P e_j, e_j⟫` along some Hilbert basis, and the
+  trace `tr P` is `traceOf P`, the sum along such a basis (`traceAlong`); for a positive
+  operator the value is basis independent, which is a proof obligation and not part of the
+  definition.
 * The Gaussian layers `𝒩(0,2sP)`, `s > 0`, are a family `N : ℝ → Measure H` satisfying
   `IsCenteredGaussianLayers P N`; Mathlib has no constructor of a Gaussian measure with a
   prescribed trace-class covariance in infinite dimension, so the existence of such a family is
@@ -155,18 +160,39 @@ section Gaussian
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [MeasurableSpace H]
 
-/-- The standing hypothesis on the covariance operators `P` and `Q` of the manuscript: injective,
-positive, self-adjoint, and trace class.  The trace condition is expressed along a Hilbert
-basis; for a positive operator the sum `∑ ⟪P e_j, e_j⟫` does not depend on the basis. -/
-structure IsTraceClassCovariance (P : H →L[ℝ] H) : Prop where
-  /-- `P` is injective. -/
-  injective : Function.Injective P
+/-- The trace `∑ ⟪P e_i, e_i⟫` of `P` along the Hilbert basis `b`. -/
+def traceAlong {ι : Type*} (b : HilbertBasis ι ℝ H) (P : H →L[ℝ] H) : ℝ :=
+  ∑' i, ⟪P (b i), b i⟫
+
+/-- `P` is trace class in the sense of the manuscript: `∑ ⟪P e_i, e_i⟫` converges along some
+Hilbert basis. -/
+def HasSummableTrace (P : H →L[ℝ] H) : Prop :=
+  ∃ (ι : Type) (b : HilbertBasis ι ℝ H), Summable fun i => ⟪P (b i), b i⟫
+
+open Classical in
+/-- The trace `tr P = ∑ ⟪P e_i, e_i⟫`, along a Hilbert basis for which the sum converges (`0`
+if there is none); for a positive operator the value does not depend on the basis. -/
+def traceOf (P : H →L[ℝ] H) : ℝ :=
+  if h : HasSummableTrace P then traceAlong h.choose_spec.choose P else 0
+
+/-- A positive, self-adjoint, trace-class operator: the hypothesis on `Σ` in Lemma
+`lem:gaussian-quadratic`, and the covariance hypothesis `IsTraceClassCovariance` without
+injectivity. -/
+structure IsPositiveTraceClass (P : H →L[ℝ] H) : Prop where
   /-- `P` is self-adjoint. -/
   isSelfAdjoint : IsSelfAdjoint P
   /-- `P` is positive: `⟪P x, x⟫ ≥ 0`. -/
   inner_nonneg : ∀ x, 0 ≤ ⟪P x, x⟫
   /-- `P` is trace class: `∑ ⟪P e_j, e_j⟫ < ∞` along a Hilbert basis. -/
-  summable_trace : ∃ (ι : Type) (b : HilbertBasis ι ℝ H), Summable fun i => ⟪P (b i), b i⟫
+  hasSummableTrace : HasSummableTrace P
+
+/-- The standing hypothesis on the covariance operators `P` and `Q` of the manuscript: injective,
+positive, self-adjoint, and trace class (`IsPositiveTraceClass` together with injectivity).  The
+trace condition is expressed along a Hilbert basis; for a positive operator the sum
+`∑ ⟪P e_j, e_j⟫` does not depend on the basis. -/
+structure IsTraceClassCovariance (P : H →L[ℝ] H) : Prop extends IsPositiveTraceClass P where
+  /-- `P` is injective. -/
+  injective : Function.Injective P
 
 /-- `μ = 𝒩(0,Q)`: the manuscript's centred Gaussian measure with covariance `Q` is the Borel
 probability measure whose characteristic functional is `∫ e^{i⟪x,ξ⟫} dμ(x) = e^{-⟪Qξ,ξ⟫/2}`. -/

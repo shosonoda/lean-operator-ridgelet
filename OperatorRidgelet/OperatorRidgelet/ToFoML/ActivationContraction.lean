@@ -1,11 +1,13 @@
 import FoML.Learning.Contraction
+import LeanRidgelet.Activation.ReLU
 import Mathlib.Algebra.Order.Group.MinMax
 
 /-!
 # Activation contraction for ridge-feature classes
 
 FoML proves the contraction theorem for observation-dependent Lipschitz maps.  We expose its
-activation specialization in the operator-ridgelet blueprint and prove the ReLU corollary.
+activation specialization in the operator-ridgelet blueprint and prove the ReLU corollary.  ReLU
+is the vendored `LeanRidgelet.relu`, the single definition of ReLU used throughout the library.
 -/
 
 noncomputable section
@@ -14,12 +16,12 @@ universe u v
 
 namespace OperatorRidgelet
 
+open LeanRidgelet
+
 variable {H : Type u} {𝒳 : Type v}
 
-/-- A local ReLU definition, kept independent of the Lean-4.32 `lean-ridgelet` package. -/
-def relu (x : ℝ) : ℝ := max x 0
-
 theorem abs_relu_sub_relu_le (u v : ℝ) : |relu u - relu v| ≤ |u - v| := by
+  simp only [relu]
   exact abs_max_sub_max_le_abs u v 0
 
 theorem empiricalRademacherComplexity_activation_contraction_finite

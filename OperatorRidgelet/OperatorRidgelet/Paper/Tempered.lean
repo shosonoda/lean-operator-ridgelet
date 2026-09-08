@@ -1,4 +1,5 @@
 import OperatorRidgelet.Tempered.Defs
+import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Basic
 
 /-!
@@ -10,10 +11,14 @@ Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical
 The statements are made for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability measure,
 `ν` σ-finite with full support and homogeneous of degree `α`), of which the Gaussian pair
 `(μ_Q, ν_α)` of the manuscript is the instance; `𝓔_α` is represented by `𝒦_α = spectralRange μ ν`,
-its anti-dual by `Tempered.spectralAntiDual μ ν`, the extended transform `R_ρ` by
-`Tempered.ridgeletExtension`, and the Riesz map `T_α` by `Tempered.rieszMap` (see
-`OperatorRidgelet.Tempered.Defs` for these design choices).  The distributional admissibility
-constant `C^{(α)}_{β,ρ}` is the shared `temperedAdmissibilityConst`.
+its anti-dual by `SpectralAntiDual μ ν`, the extended transform `R_ρ` by `ridgeletExtension`,
+the synthesis `S_ρ` by `synthesis`, and the Riesz map `T_α` and its inverse by `rieszMap` and
+`rieszInv`, all from `OperatorRidgelet.Reconstruction.Defs` (Section 4; see also the discussion
+in `OperatorRidgelet.Tempered.Defs`).  The target `g_G` and regularity along rays in Corollary
+`cor:relu-admissible`(viii) are `spectralTarget` and `IsRegularAlongRays` with the frequency
+window `IsFrequencyWindow ρ I`, so that (viii) is the instance `b = ReLU` of Theorem A(iii).
+The distributional admissibility constant `C^{(α)}_{β,ρ}` is the shared
+`temperedAdmissibilityConst`.
 -/
 
 noncomputable section
@@ -68,19 +73,23 @@ theorem def_regularized_synthesis_v (β : TemperedDistribution ℝ ℂ) (hβ : I
       b = regularizedActivation β χ η ε := by
   sorry
 
+set_option linter.unusedVariables false in
+omit [CompleteSpace H] [SecondCountableTopology H] in
 /-- **Definition [def:regularized-synthesis]** Regularized synthesis.  For `γ ∈ Ran R_ρ` the
 regularized synthesis `S_{β_ε} γ = R'_{β_ε} γ` is a well-defined element of `𝓔_α'`: it is the
-continuous anti-linear functional `g ↦ ⟨γ, R_{β_ε} g⟩_{L²(λ)}`. -/
+continuous anti-linear functional `g ↦ ⟨γ, R_{β_ε} g⟩_{L²(λ)}` (in the representation of
+`OperatorRidgelet.Reconstruction.Defs`, where `S_ρ` is the transpose of the bounded extension
+`R_ρ`, this holds by definition). -/
 theorem def_regularized_synthesis_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) (γ : Lp ℂ 2 (parameterMeasure ν))
-    (hγ : γ ∈ Set.range (Tempered.ridgeletExtension μ ν ρ)) :
+    (hγ : γ ∈ ridgeletRange μ ν ρ) :
     ∀ g : spectralRange μ ν,
       regularizedSynthesis μ ν β χ η ε γ g =
-        inner ℂ (Tempered.ridgeletExtension μ ν (regularizedActivation β χ η ε) g) γ := by
-  sorry
+        inner ℂ (ridgeletExtension μ ν (regularizedActivation β χ η ε) g) γ :=
+  fun _ => rfl
 
 /-! ### Theorem `thm:tempered-reconstruction` -/
 
@@ -91,8 +100,8 @@ theorem thm_tempered_reconstruction_i (μ ν : Measure H) [IsProbabilityMeasure 
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (f : spectralRange μ ν) :
-    ∃ F : Tempered.spectralAntiDual μ ν,
-      Tendsto (fun ε : ℝ => regularizedSynthesis μ ν β χ η ε (Tempered.ridgeletExtension μ ν ρ f))
+    ∃ F : SpectralAntiDual μ ν,
+      Tendsto (fun ε : ℝ => regularizedSynthesis μ ν β χ η ε (ridgeletExtension μ ν ρ f))
         (𝓝[>] 0) (𝓝 F) := by
   sorry
 
@@ -104,8 +113,8 @@ theorem thm_tempered_reconstruction_ii (μ ν : Measure H) [IsProbabilityMeasure
     (hρ : IsBandPass ρ) (χ χ' : ℝ → ℝ) (hχ : IsCutoff ρ χ) (hχ' : IsCutoff ρ χ')
     (η η' : ℝ → ℝ → ℝ) (hη : IsApproximateIdentity η) (hη' : IsApproximateIdentity η')
     (f : spectralRange μ ν) :
-    temperedSynthesis μ ν β χ η (Tempered.ridgeletExtension μ ν ρ f) =
-      temperedSynthesis μ ν β χ' η' (Tempered.ridgeletExtension μ ν ρ f) := by
+    temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f) =
+      temperedSynthesis μ ν β χ' η' (ridgeletExtension μ ν ρ f) := by
   sorry
 
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  The
@@ -115,8 +124,8 @@ theorem thm_tempered_reconstruction_iii (μ ν : Measure H) [IsProbabilityMeasur
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (f : spectralRange μ ν) :
-    temperedSynthesis μ ν β χ η (Tempered.ridgeletExtension μ ν ρ f) =
-      temperedAdmissibilityConst α β ρ • Tempered.rieszMap μ ν f := by
+    temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f) =
+      temperedAdmissibilityConst α β ρ • rieszMap μ ν f := by
   sorry
 
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
@@ -128,8 +137,8 @@ theorem thm_tempered_reconstruction_iv (μ ν : Measure H) [IsProbabilityMeasure
     (hη : IsApproximateIdentity η) (hC : temperedAdmissibilityConst α β ρ ≠ 0)
     (f : spectralRange μ ν) :
     f = (temperedAdmissibilityConst α β ρ)⁻¹ •
-      Tempered.rieszInv μ ν
-        (temperedSynthesis μ ν β χ η (Tempered.ridgeletExtension μ ν ρ f)) := by
+      rieszInv μ ν
+        (temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f)) := by
   sorry
 
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
@@ -139,10 +148,10 @@ theorem thm_tempered_reconstruction_v (μ ν : Measure H) [IsProbabilityMeasure 
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (hC : temperedAdmissibilityConst α β ρ ≠ 0)
-    (g : Tempered.spectralAntiDual μ ν) :
+    (g : SpectralAntiDual μ ν) :
     g = (temperedAdmissibilityConst α β ρ)⁻¹ •
       temperedSynthesis μ ν β χ η
-        (Tempered.ridgeletExtension μ ν ρ (Tempered.rieszInv μ ν g)) := by
+        (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
   sorry
 
 /-- **Theorem [thm:tempered-reconstruction]** Reconstruction with a tempered activation.  If
@@ -212,9 +221,9 @@ theorem cor_relu_admissible_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) (χ : ℝ → ℝ)
     (hχ : IsCutoff (reluNormalizedFilter α ρ) χ) (η : ℝ → ℝ → ℝ) (hη : IsApproximateIdentity η)
     (f : spectralRange μ ν) :
-    f = Tempered.rieszInv μ ν
+    f = rieszInv μ ν
       (temperedSynthesis μ ν reluDistribution χ η
-        (Tempered.ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
+        (ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
   sorry
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  With the rescaled filter the second
@@ -226,9 +235,9 @@ theorem cor_relu_admissible_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) (χ : ℝ → ℝ)
     (hχ : IsCutoff (reluNormalizedFilter α ρ) χ) (η : ℝ → ℝ → ℝ) (hη : IsApproximateIdentity η)
-    (g : Tempered.spectralAntiDual μ ν) :
+    (g : SpectralAntiDual μ ν) :
     g = temperedSynthesis μ ν reluDistribution χ η
-      (Tempered.ridgeletExtension μ ν (reluNormalizedFilter α ρ) (Tempered.rieszInv μ ν g)) := by
+      (ridgeletExtension μ ν (reluNormalizedFilter α ρ) (rieszInv μ ν g)) := by
   sorry
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  With the rescaled filter Theorem
@@ -239,9 +248,8 @@ theorem cor_relu_admissible_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
-    (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) (I : Set ℝ) (hI : IsCompact I)
-    (hI₀ : (0 : ℝ) ∉ I) (hIsymm : ∀ ω ∈ I, -ω ∈ I) (hIρ : tsupport (filterFourier ρ) ⊆ I)
-    (G : H → ℂ) (hG : Tempered.IsRayRegular ν I G) :
+    (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       (∀ᵐ a ∂ν, Integrable fun c : ℝ =>
         coefficientFormula (reluNormalizedFilter α ρ) G (a, c) * (relu (⟪a, x⟫ + c) : ℂ)) ∧
@@ -249,7 +257,7 @@ theorem cor_relu_admissible_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
         coefficientFormula (reluNormalizedFilter α ρ) G (a, c) * (relu (⟪a, x⟫ + c) : ℂ)) ν ∧
       ∫ a : H, (∫ c : ℝ,
         coefficientFormula (reluNormalizedFilter α ρ) G (a, c) * (relu (⟪a, x⟫ + c) : ℂ)) ∂ν =
-        Tempered.spectralTarget ν G x := by
+        spectralTarget ν G x := by
   sorry
 
 /-! ### Example `ex:standard-activations` -/

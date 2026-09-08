@@ -1,6 +1,7 @@
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Network.Defs
+import OperatorRidgelet.Reconstruction.Defs
 import LeanRidgelet.Fourier.AngularDistribution
 import LeanRidgelet.Fourier.AngularLp
 import LeanRidgelet.Space.Activation
@@ -44,26 +45,39 @@ the theorems `OperatorRidgelet.Paper.def_regularized_synthesis_*`.
 ## The anti-dual `𝓔_α'`, the extended transform, synthesis, and the Riesz map
 
 Section 4 defines `𝓔_α'` as the continuous *anti-dual* of `𝓔_α`, `S_ρ := R_ρ'` and the Riesz
-map `T_α = J_α`, `J_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects belong to the reconstruction work
-package; the minimal versions needed here live in the namespace `OperatorRidgelet.Tempered`
-(to be unified with `Reconstruction/Defs.lean`):
+map `T_α = J_α`, `J_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the Section 4 definitions of
+`OperatorRidgelet.Reconstruction.Defs`, used here without change:
 
-* `Tempered.spectralAntiDual μ ν := spectralRange μ ν →L⋆[ℂ] ℂ`, continuous conjugate-linear
-  functionals on `𝒦_α` (which represents `𝓔_α`, see `Transform/Defs.lean`), a normed space.
-  In a linear-dual representation (`NormedSpace.Dual ℂ 𝒦`) every functional below is replaced
-  by its complex conjugate and `T_α` by `InnerProductSpace.toDual ℂ 𝒦`.
-* `Tempered.ridgeletExtension μ ν ρ G := W_ρ G` is the bounded extension `R_ρ : 𝓔_α → L²(λ)`
-  of Theorem B(ii): `R_ρ = W_ρ U_α` and `U_α` is the identity of `𝒦_α` in this representation.
-* `Tempered.synthesisFunctional μ ν ρ γ` is `S_ρ γ = R_ρ' γ`, the continuous anti-linear
-  functional `g ↦ ⟨γ, R_ρ g⟩_{L²(λ)}` (in Mathlib's inner product, conjugate linear in the first
-  slot, this is `inner ℂ (R_ρ g) γ`), obtained by choice (junk `0` if none).
-* `Tempered.rieszMap μ ν := innerSLFlip ℂ`, `f ↦ (g ↦ ⟪g, f⟫) = (g ↦ ⟨f, g⟩_{𝓔_α})`, and
-  `Tempered.rieszInv μ ν` its inverse, obtained by choice (junk `0` off the range, which is all
-  of `𝓔_α'` by the Riesz representation theorem).
+* `SpectralAntiDual μ ν = spectralRange μ ν →L⋆[ℂ] ℂ`, the continuous conjugate-linear
+  functionals on `𝒦_α` (which represents `𝓔_α`, see `Transform/Defs.lean`);
+* `ridgeletExtension μ ν ρ : 𝒦_α →L[ℂ] L²(λ)`, the bounded extension `R_ρ` of Theorem B(ii),
+  chosen from its defining property (a continuous linear map agreeing a.e. with `R_ρ` on
+  `U_α(𝒟_α)`).  Its identification with the coefficient operator, `R_ρ G = W_ρ G` for
+  `G ∈ 𝒦_α`, is the content of Theorem B(ii) and Theorem C(iii), i.e. a theorem and not a
+  definition;
+* `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, the transpose `(innerSLFlip ℂ γ).comp (R_ρ)`, so that
+  `(S_ρ γ)[g] = ⟪R_ρ g, γ⟫ = ⟨γ, R_ρ g⟩_{L²(λ)}` holds by definition (Mathlib's inner product is
+  conjugate linear in the first slot);
+* `rieszMap μ ν = innerSLFlip ℂ`, `f ↦ (g ↦ ⟪g, f⟫) = (g ↦ ⟨f, g⟩_{𝓔_α})`, and its inverse
+  `rieszInv μ ν`, the Riesz representation through `InnerProductSpace.toDual`.
 
-The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ` is `regularizedSynthesis`, and the synthesis
-with `β` is `temperedSynthesis μ ν β χ η γ := lim_{ε ↓ 0} S_{β_ε} γ` in `𝓔_α'`, obtained by choice
-whenever the limit exists (junk `0` otherwise).
+An earlier version of this module carried local stand-ins for these objects in a namespace
+`Tempered` (`spectralAntiDual`, `ridgeletExtension G := W_ρ G`, a `synthesisFunctional` and a
+`rieszInv` obtained by choice, and for Corollary `cor:relu-admissible` a real-valued
+`rayDerivBound`, an `IsRayRegular` with a Bochner-integrable moment, and a `spectralTarget`).
+They were removed in favour of the Section 4 definitions: the extension by choice makes
+`synthesis` a genuine composition of continuous linear maps (no choice, and `S_ρ` is defined on
+all of `L²(λ)` rather than through an existence statement), the Riesz inverse through
+`InnerProductSpace.toDual` needs no junk value, and the `ℝ≥0∞`-valued ray bounds make the
+moment condition `M_m(G) < ∞` literal instead of relying on a junk supremum when the derivative
+bounds are unbounded.  Corollary `cor:relu-admissible`(viii) is therefore stated exactly as the
+instance `b = ReLU` of Theorem A(iii) (`IsFrequencyWindow`, `IsRegularAlongRays`,
+`spectralTarget`).
+
+The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ = synthesis μ ν β_ε γ` is
+`regularizedSynthesis`, and the synthesis with `β` is
+`temperedSynthesis μ ν β χ η γ := lim_{ε ↓ 0} S_{β_ε} γ` in `𝓔_α'`, obtained by choice whenever
+the limit exists (junk `0` otherwise).
 
 ## Standard activations and the weighted Sobolev spaces (Appendix C)
 
@@ -81,12 +95,6 @@ some tempered distribution acting by integration against `β` satisfies the vend
 the frequency variable is the vendored `angularBesselPotential q` on distributions and
 `SchwartzMap.fourierMultiplierCLM ℂ (angularBesselSymbol q)` on Schwartz functions.
 
-## Regularity along rays (Definition `def:ray-regular`, minimal local version)
-
-`Tempered.IsRayRegular ν I G` and the target `Tempered.spectralTarget ν G = g_G` are the minimal
-versions of the Section 4 objects needed to state that Theorem A(iii) holds with ReLU synthesis
-(Corollary `cor:relu-admissible`); they belong to the reconstruction work package and are to be
-unified with `Reconstruction/Defs.lean`.
 -/
 
 noncomputable section
@@ -164,93 +172,25 @@ def regularizedActivation (β : TemperedDistribution ℝ ℂ) (χ : ℝ → ℝ)
     h.choose
   else 0
 
-/-! ### The anti-dual `𝓔_α'`, the extended transform, synthesis, and the Riesz map -/
-
-namespace Tempered
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
-  [OpensMeasurableSpace H]
-
-/-- The continuous anti-dual `𝓔_α'` of `𝓔_α`, represented by the continuous conjugate-linear
-functionals on `𝒦_α = spectralRange μ ν`. -/
-abbrev spectralAntiDual (μ ν : Measure H) [IsFiniteMeasure μ] : Type _ :=
-  spectralRange μ ν →L⋆[ℂ] ℂ
-
-/-- The bounded extension `R_ρ : 𝓔_α → L²(λ)` of the transform (Theorem B(ii)): in the
-representation `𝓔_α ≅ 𝒦_α` it is `R_ρ = W_ρ U_α` with `U_α` the identity of `𝒦_α`, so
-`R_ρ G = W_ρ G`. -/
-def ridgeletExtension (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ) (G : spectralRange μ ν) :
-    Lp ℂ 2 (parameterMeasure ν) :=
-  spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ)
-
-open Classical in
-/-- Synthesis with the filter `ρ` as the transpose of the transform, `S_ρ γ = R_ρ' γ ∈ 𝓔_α'`,
-`(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ)}` (conjugate linear in `g`): the continuous anti-linear
-functional with these values, and `0` if there is none. -/
-def synthesisFunctional (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ)
-    (γ : Lp ℂ 2 (parameterMeasure ν)) : spectralAntiDual μ ν :=
-  if h : ∃ F : spectralAntiDual μ ν, ∀ g : spectralRange μ ν,
-      F g = inner ℂ (ridgeletExtension μ ν ρ g) γ then
-    h.choose
-  else 0
-
-/-- The Riesz map `T_α = J_α : 𝓔_α → 𝓔_α'`, `T_α f [g] = ⟨f, g⟩_{𝓔_α}`, which in Mathlib's inner
-product (conjugate linear in the first slot) is `f ↦ (g ↦ ⟪g, f⟫)`. -/
-def rieszMap (μ ν : Measure H) [IsFiniteMeasure μ] :
-    spectralRange μ ν →L[ℂ] spectralAntiDual μ ν :=
-  innerSLFlip ℂ
-
-open Classical in
-/-- The inverse `T_α⁻¹ : 𝓔_α' → 𝓔_α` of the Riesz map, obtained by choice (junk `0` off the
-range, which is all of `𝓔_α'` by the Riesz representation theorem). -/
-def rieszInv (μ ν : Measure H) [IsFiniteMeasure μ] (F : spectralAntiDual μ ν) :
-    spectralRange μ ν :=
-  if h : ∃ f : spectralRange μ ν, rieszMap μ ν f = F then h.choose else 0
-
-/-- The target `g_G(x) = ∫ e^{i⟪x,ξ⟫} G(ξ) ν(dξ)` with spectral density `G` (minimal local
-version of the Section 4 object). -/
-def spectralTarget (ν : Measure H) (G : H → ℂ) (x : H) : ℂ :=
-  ∫ ξ, Complex.exp (((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) * G ξ ∂ν
-
-/-- The ray bound `max_{k ≤ m} sup_{ω ∈ I} |∂_ω^k G(ω a)|` of Definition `def:ray-regular`. -/
-def rayDerivBound (I : Set ℝ) (m : ℕ) (G : H → ℂ) (a : H) : ℝ :=
-  ⨆ k : Fin (m + 1), ⨆ ω ∈ I, ‖iteratedDeriv (k : ℕ) (fun ω : ℝ => G (ω • a)) ω‖
-
-/-- `G` is regular along rays with respect to the symmetric compact set `I ⊆ ℝ ∖ {0}`
-(Definition `def:ray-regular`, minimal local version): `G` is bounded Borel, for every `a` the
-function `ω ↦ G(ωa)` is `C^∞` on a neighbourhood of `I`, and for every `m ≥ 0`
-`M_m(G) = ∫ (1 + ‖a‖)^{m+2} max_{k ≤ m} sup_{ω ∈ I} |∂_ω^k G(ωa)| ν(da) < ∞`. -/
-structure IsRayRegular (ν : Measure H) (I : Set ℝ) (G : H → ℂ) : Prop where
-  /-- `G` is Borel. -/
-  measurable : Measurable G
-  /-- `G` is bounded. -/
-  bounded : ∃ M : ℝ, ∀ ξ : H, ‖G ξ‖ ≤ M
-  /-- `ω ↦ G(ωa)` is `C^∞` on a neighbourhood of `I`. -/
-  contDiffOn : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
-    ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U
-  /-- `M_m(G) < ∞` for every `m`. -/
-  integrable : ∀ m : ℕ, Integrable (fun a : H => (1 + ‖a‖) ^ (m + 2) * rayDerivBound I m G a) ν
-
-end Tempered
-
 section Synthesis
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
-/-- The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ ∈ 𝓔_α'`. -/
+/-- The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ ∈ 𝓔_α'`, the synthesis operator
+`synthesis` of Section 4 with the regularized activation `β_ε` as filter. -/
 def regularizedSynthesis (μ ν : Measure H) [IsFiniteMeasure μ] (β : TemperedDistribution ℝ ℂ)
     (χ : ℝ → ℝ) (η : ℝ → ℝ → ℝ) (ε : ℝ) (γ : Lp ℂ 2 (parameterMeasure ν)) :
-    Tempered.spectralAntiDual μ ν :=
-  Tempered.synthesisFunctional μ ν (regularizedActivation β χ η ε) γ
+    SpectralAntiDual μ ν :=
+  synthesis μ ν (regularizedActivation β χ η ε) γ
 
 open Classical in
 /-- The synthesis with the tempered activation `β`, `S_β γ := lim_{ε ↓ 0} S_{β_ε} γ` in
 `𝓔_α'`, whenever the limit exists (and `0` otherwise). -/
 def temperedSynthesis (μ ν : Measure H) [IsFiniteMeasure μ] (β : TemperedDistribution ℝ ℂ)
     (χ : ℝ → ℝ) (η : ℝ → ℝ → ℝ) (γ : Lp ℂ 2 (parameterMeasure ν)) :
-    Tempered.spectralAntiDual μ ν :=
-  if h : ∃ F : Tempered.spectralAntiDual μ ν,
+    SpectralAntiDual μ ν :=
+  if h : ∃ F : SpectralAntiDual μ ν,
       Tendsto (fun ε : ℝ => regularizedSynthesis μ ν β χ η ε γ) (𝓝[>] 0) (𝓝 F) then
     h.choose
   else 0

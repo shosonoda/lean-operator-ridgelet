@@ -66,49 +66,11 @@ attribute [blueprint "def:regularized-synthesis-activation"
     $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedActivation
 
-/-! ## Definitions: the anti-dual, the extended transform, synthesis, the Riesz map -/
+/-! ## Definitions: the regularized and the tempered synthesis
 
-attribute [blueprint "tempered:spectral-anti-dual"
-  (statement := /-- The continuous anti-dual $\mathcal E_\alpha'$ of
-    $\mathcal E_\alpha\cong\mathcal K_\alpha$: continuous conjugate-linear functionals on
-    $\mathcal K_\alpha$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.spectralAntiDual
-
-attribute [blueprint "tempered:ridgelet-extension"
-  (statement := /-- The bounded extension $R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)$,
-    $R_\rho=W_\rho U_\alpha$, which is $G\mapsto W_\rho G$ on $\mathcal K_\alpha$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.ridgeletExtension
-
-attribute [blueprint "tempered:synthesis-functional"
-  (statement := /-- Synthesis as the transpose of the transform, $S_\rho\gamma=R_\rho'\gamma$,
-    $(S_\rho\gamma)[g]=\langle\gamma,R_\rho g\rangle_{L^2(\lambda_\alpha)}$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.synthesisFunctional
-
-attribute [blueprint "tempered:riesz-map"
-  (statement := /-- The Riesz map $T_\alpha=J_\alpha:\mathcal E_\alpha\to\mathcal E_\alpha'$,
-    $T_\alpha f[g]=\langle f,g\rangle_{\mathcal E_\alpha}$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.rieszMap
-
-attribute [blueprint "tempered:riesz-inv"
-  (statement := /-- The inverse $T_\alpha^{-1}:\mathcal E_\alpha'\to\mathcal E_\alpha$ of the
-    Riesz map. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.rieszInv
-
-attribute [blueprint "tempered:spectral-target"
-  (statement := /-- The target $g_G(x)=\int_He^{i\langle x,\xi\rangle}G(\xi)\,\nu_\alpha(\mathrm
-    d\xi)$ with spectral density $G$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.spectralTarget
-
-attribute [blueprint "tempered:ray-deriv-bound"
-  (statement := /-- The ray bound $\max_{k\le m}\sup_{\omega\in
-    I}|\partial_\omega^kG(\omega a)|$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.rayDerivBound
-
-attribute [blueprint "tempered:ray-regular"
-  (statement := /-- $G$ is regular along rays: bounded Borel, $\omega\mapsto G(\omega a)$ is
-    $C^\infty$ near $I$, and $M_m(G)=\int_H(1+\|a\|)^{m+2}\max_{k\le m}\sup_{\omega\in
-    I}|\partial_\omega^kG(\omega a)|\,\nu_\alpha(\mathrm da)<\infty$ for every $m$. -/)
-  (hasProof := false)] OperatorRidgelet.Tempered.IsRayRegular
+The anti-dual `𝓔_α'`, the extended transform `R_ρ`, the synthesis `S_ρ`, the Riesz map and its
+inverse, the target `g_G`, and regularity along rays are the Section 4 definitions tagged in
+`OperatorRidgelet.ArchitectBridge.Reconstruction`. -/
 
 attribute [blueprint "def:regularized-synthesis-regularized"
   (statement := /-- The regularized synthesis
@@ -223,8 +185,8 @@ attribute [blueprint "def:regularized-synthesis-v"
 attribute [blueprint "def:regularized-synthesis-vi"
   (statement := /-- For $\gamma\in\operatorname{Ran}R_\rho$,
     $S_{\beta_\varepsilon}\gamma=R_{\beta_\varepsilon}'\gamma$ is the continuous anti-linear
-    functional $g\mapsto\langle\gamma,R_{\beta_\varepsilon}g\rangle_{L^2(\lambda_\alpha)}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_vi
+    functional $g\mapsto\langle\gamma,R_{\beta_\varepsilon}g\rangle_{L^2(\lambda_\alpha)}$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_vi
 
 /-! ## Paper statements: Theorem `thm:tempered-reconstruction` -/
 

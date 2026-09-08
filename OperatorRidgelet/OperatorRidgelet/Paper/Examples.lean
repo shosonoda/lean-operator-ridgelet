@@ -1,4 +1,6 @@
 import OperatorRidgelet.Examples.Defs
+import OperatorRidgelet.Sampling.Defs
+import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
@@ -16,15 +18,20 @@ Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical
 The examples are stated in the Gaussian setting of the manuscript (`μ = 𝒩(0,Q)` through
 `IsCenteredGaussian Q μ`, `ν_α = gaussianMixture N α` through Gaussian layers `N` for `P`, with
 `dim H = ∞`), one theorem per claim.  The representations of traces, square roots, resolvents,
-Fredholm determinants, cylindrical functions, the neural-operator layer, the local sampling
-objects, the torus, and the Dirichlet operator are documented in
-`OperatorRidgelet.Examples.Defs`.  Sampling claims are stated as bounds on the lower integral
-`∫⁻` of the error over the product law of the sample, with the width `n ≥ 1` (the layers of
-`ν_α` are `N`).  Example `ex:gaussian-parameter` is stated on a Hilbert space with a Hilbert basis
-`e` diagonalizing `Q` (`Q e_j = q_j e_j`, `q_j > 0`, `∑ q_j < ∞`), which is the manuscript's
-`ℓ²(ℕ)` up to the unitary identification.  The two claims of Example `ex:core-elements` on `f_W`
-and on the operator layers are `ex_core_elements_iv` and `ex_core_elements_v` (the first claim is
-`ex_core_elements_i`–`iii` in `OperatorRidgelet.Paper.Transform`).
+Fredholm determinants, cylindrical functions, the neural-operator layer, the torus, and the
+Dirichlet operator are documented in `OperatorRidgelet.Examples.Defs`.  Sampling claims are
+stated in the conventions of Section 6 (`OperatorRidgelet.Sampling.Defs`): the expectation of the
+error is the Bochner integral over the product law `sampleLaw n p` of the sample, with the
+width `n ≥ 1` (the layers of `ν_α` are `N`), and the sampled networks are `densitySampledNetwork`
+(coefficient densities, as in Theorem `thm:E`(iv)), `polarSampledNetwork` (the layer measures
+`Γ`, `Γ_φ`, as in Corollary `cor:vector-rates` and Theorem `thm:lipschitz-barron`), and
+`sampledNetwork` with `V = 1` (Corollary `cor:relu-discretization`).  The Gaussian activation
+`Φ` is `gaussianFun`.  Example `ex:gaussian-parameter` is stated on a Hilbert space with a
+Hilbert basis `e` diagonalizing `Q` (`Q e_j = q_j e_j`, `q_j > 0`, `∑ q_j < ∞`), which is the
+manuscript's `ℓ²(ℕ)` up to the unitary identification.  The two claims of Example
+`ex:core-elements` on `f_W` and on the operator layers are `ex_core_elements_iv` and
+`ex_core_elements_v` (the first claim is `ex_core_elements_i`–`iii` in
+`OperatorRidgelet.Paper.Transform`).
 -/
 
 noncomputable section
@@ -88,7 +95,7 @@ theorem lem_gaussian_hinge_i_a (u : ℝ) :
 /-- **Lemma [lem:gaussian-hinge]** Absolute hinge representation of the Gaussian.  For
 `φ(u) = e^{-u²/2}`, `φ(u) = ∫ (u-b)_+ φ''(b) db` for each `u`. -/
 theorem lem_gaussian_hinge_i_b (u : ℝ) :
-    ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianAct u := by
+    ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianFun u := by
   sorry
 
 /-- **Lemma [lem:gaussian-hinge]** Absolute hinge representation of the Gaussian.
@@ -251,9 +258,10 @@ theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
   sorry
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
-real, globally Lipschitz, non-polynomial `β`, the sampled network of `R_ρ f_W λ_α` converges
-to `C^{(α)}_{β,ρ} g_G` at the rate `n^{-1/2}` in `C(K)`, as in `eq:spectral-barron`:
-`E‖f_n - C g_G‖_{C(K)} ≤ 8V n^{-1/2} (|β(0)| + Lip(β) R_K M₂)`. -/
+real, globally Lipschitz, non-polynomial `β`, the sampled network `eq:polar-network` of
+`R_ρ f_W λ_α` (with `V = ‖R_ρ f_W‖_{L¹(λ_α)}` and samples from `p = |R_ρ f_W| λ_α / V`, as in
+Theorem `thm:E`(iv)) converges to `C^{(α)}_{β,ρ} g_G` at the rate `n^{-1/2}` in `C(K)`, as in
+`eq:spectral-barron`: `E‖f_n - C g_G‖_{C(K)} ≤ 8V n^{-1/2} (|β(0)| + Lip(β) R_K M₂)`. -/
 theorem ex_closed_form_iii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -263,20 +271,18 @@ theorem ex_closed_form_iii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b) {L : ℝ≥0}
     (hb : LipschitzWith L b) (hbp : ¬ IsPolynomialFun b) (K : Set H) (hK : IsCompact K)
     (n : ℕ) (hn : 0 < n) :
-    ∫⁻ θ, ENNReal.ofReal (Examples.supNormOn K fun x =>
-        Examples.polarSample b (parameterMeasure (gaussianMixture N α))
-            (ridgelet μ ρ (gaussianTarget W)) θ x -
-          temperedAdmissibilityConst α β ρ *
-            spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x)
-        ∂(Measure.pi fun _ : Fin n =>
-          Examples.normalizedLaw (parameterMeasure (gaussianMixture N α))
-            (ridgelet μ ρ (gaussianTarget W))) ≤
-      ENNReal.ofReal (8 * (∫ p, ‖ridgelet μ ρ (gaussianTarget W) p‖
-          ∂parameterMeasure (gaussianMixture N α)) / Real.sqrt n *
-        (|b 0| + L * Examples.compactRadius K *
-          Real.sqrt (Examples.secondMoment
-            (Examples.normalizedLaw (parameterMeasure (gaussianMixture N α))
-              (ridgelet μ ρ (gaussianTarget W)))))) := by
+    ∫ θ, compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure (gaussianMixture N α))
+              (ridgelet μ ρ (gaussianTarget W)) θ x -
+            temperedAdmissibilityConst α β ρ *
+              spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x)
+        ∂sampleLaw n (densityLaw (parameterMeasure (gaussianMixture N α))
+          (ridgelet μ ρ (gaussianTarget W))) ≤
+      8 * densityWeight (parameterMeasure (gaussianMixture N α))
+            (ridgelet μ ρ (gaussianTarget W)) / Real.sqrt n *
+        (|b 0| + (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (densityLaw (parameterMeasure (gaussianMixture N α))
+            (ridgelet μ ρ (gaussianTarget W))))) := by
   sorry
 
 /-! ### Example `ex:core-elements`, second and third claims -/
@@ -302,7 +308,7 @@ theorem ex_core_elements_v (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     [InnerProductSpace ℂ Y] [CompleteSpace Y] [SecondCountableTopology Y] {Ω : Type*}
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
-    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianAct φ) := by
+    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
   sorry
 
 /-! ### Example `ex:gaussian-parameter` -/
@@ -357,7 +363,7 @@ theorem ex_gaussian_parameter_vi_a {Y : Type*} [NormedAddCommGroup Y] [InnerProd
     [CompleteSpace Y] (lam : Measure (H × ℝ)) [SigmaFinite lam] (γ : H × ℝ → Y)
     (hγ : Integrable γ lam)
     (hmom : ∀ k : ℕ, Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ k * ‖γ θ‖) lam) :
-    integralNetworkDensity (fun t => (gaussianAct t : ℂ)) lam γ =
+    integralNetworkDensity (fun t => (gaussianFun t : ℂ)) lam γ =
       integralNetwork (fun t => (relu t : ℂ)) (hingeCoefficientMeasure lam γ) := by
   sorry
 
@@ -387,17 +393,18 @@ theorem ex_gaussian_parameter_vi_c {Y : Type*} [NormedAddCommGroup Y] [InnerProd
 /-! ### Corollary `cor:relu-discretization` -/
 
 /-- **Corollary [cor:relu-discretization]** Discretization of the Gaussian-parameter ReLU
-network.  For `a_1, …, a_n` independent with law `𝒩(0,Q)` and
-`F_{Q,n}(x) = n⁻¹ ∑_j ReLU(⟨a_j,x⟩)`, every compact `K ⊆ H` satisfies
+network.  For `a_1, …, a_n` independent with law `𝒩(0,Q)` (the samples `θ_j = (a_j, 0)` of the
+law `ι_# 𝒩(0,Q)`, `ι(a) = (a, 0)`) and `F_{Q,n}(x) = n⁻¹ ∑_j ReLU(⟨a_j,x⟩)` (the sampled network
+`eq:polar-network` with `V = 1` and phase `1`), every compact `K ⊆ H` satisfies
 `E‖F_{Q,n} - F_Q‖_{C(K)} ≤ 8 R_K √(tr Q) / √n`. -/
 theorem cor_relu_discretization {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (K : Set H) (hK : IsCompact K)
     (n : ℕ) (hn : 0 < n) :
-    ∫⁻ a, ENNReal.ofReal (Examples.supNormOn K fun x =>
-        Examples.gaussianReLUSample a x - gaussianParameterReLU μ x)
-        ∂(Measure.pi fun _ : Fin n => μ) ≤
-      ENNReal.ofReal
-        (8 * Examples.compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n) := by
+    ∫ θ, compactSupNorm K (fun x =>
+          sampledNetwork (fun t => (relu t : ℂ)) 1 (fun _ => (1 : ℂ)) θ x -
+            (gaussianParameterReLU μ x : ℂ))
+        ∂sampleLaw n (μ.map fun a => (a, (0 : ℝ))) ≤
+      8 * compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n := by
   sorry
 
 /-! ### Example `ex:operator-layer` -/
@@ -435,29 +442,33 @@ theorem ex_operator_layer_i_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Hence
 Corollary `cor:vector-rates` gives width-`n` networks approximating `ℱ` at the rate `n^{-1/2}` in
-`L²(ζ;Y)`: for globally Lipschitz `β`, the sampled layer of `‖b_y‖ m(dy)/V`, `V = ∫ ‖b_y‖ m(dy)`,
-satisfies `E‖f_n - ℱ‖²_{L²(ζ;Y)} ≤ 2V² n⁻¹ (|β(0)|² + Lip(β)² (1 + ∫‖x‖² dζ) ‖A‖_∞²)`. -/
+`L²(ζ;Y)`: for globally Lipschitz `β`, the polar sampled network of `Γ` (samples from
+`p = |Γ|/V`) satisfies, by (b) and (c),
+`E‖f_n - ℱ‖²_{L²(ζ;Y)} ≤ 2 (∫‖b_y‖ m(dy))² n⁻¹ (|β(0)|² + Lip(β)² (1 + ∫‖x‖² dζ) ‖A‖_∞²)`. -/
 theorem ex_operator_layer_i_d (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (β : ℝ → ℝ) {L : ℝ≥0} (hβ : LipschitzWith L β) (ζ : Measure H)
     [IsProbabilityMeasure ζ] (hζ : Integrable (fun x : H => ‖x‖ ^ 2) ζ) (n : ℕ) (hn : 0 < n) :
-    ∫⁻ y, ENNReal.ofReal (∫ x, ‖Examples.layerSampleVec m a b β y x - operatorLayer m a b β x‖ ^ 2
-        ∂ζ) ∂(Measure.pi fun _ : Fin n => Examples.normalizedLaw m b) ≤
-      ENNReal.ofReal (2 * (∫ y, ‖b y‖ ∂m) ^ 2 / n *
-        (|β 0| ^ 2 + (L : ℝ) ^ 2 * (1 + ∫ x, ‖x‖ ^ 2 ∂ζ) * layerSupNorm a ^ 2)) := by
+    ∫ θ, (∫ x, ‖polarSampledNetwork (fun t => (β t : ℂ)) (layerMeasure m a b) θ x -
+            operatorLayer m a b β x‖ ^ 2 ∂ζ)
+        ∂sampleLaw n (polarLaw (layerMeasure m a b)) ≤
+      2 * (∫ y, ‖b y‖ ∂m) ^ 2 / n *
+        (|β 0| ^ 2 + (L : ℝ) ^ 2 * (1 + ∫ x, ‖x‖ ^ 2 ∂ζ) * layerSupNorm a ^ 2) := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  For each
-`φ ∈ Y` and globally Lipschitz `β`, Theorem `thm:lipschitz-barron` gives for the sampled
-observable `E‖F_{φ,n} - F_φ‖_{C(K)} ≤ 8 ‖w_φ‖_{L¹(m)} n^{-1/2} (|β(0)| + Lip(β) R_K ‖A‖_∞)`. -/
+`φ ∈ Y` and globally Lipschitz `β`, Theorem `thm:lipschitz-barron` applied to
+`F_φ = S_β[Γ_φ]`, `Γ_φ = ι_#(w_φ m)`, gives for the polar sampled network `F_{φ,n}` of `Γ_φ`
+`E‖F_{φ,n} - F_φ‖_{C(K)} ≤ 8 ‖w_φ‖_{L¹(m)} n^{-1/2} (|β(0)| + Lip(β) R_K ‖A‖_∞)`. -/
 theorem ex_operator_layer_i_e (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (β : ℝ → ℝ) {L : ℝ≥0} (hβ : LipschitzWith L β) (φ : Y) (K : Set H)
     (hK : IsCompact K) (n : ℕ) (hn : 0 < n) :
-    ∫⁻ y, ENNReal.ofReal (Examples.supNormOn K fun x =>
-        Examples.layerSampleScalar m a (layerWeight b φ) β y x - layerObservable m a b β φ x)
-        ∂(Measure.pi fun _ : Fin n => Examples.normalizedLaw m (layerWeight b φ)) ≤
-      ENNReal.ofReal (8 * (∫ y, ‖layerWeight b φ y‖ ∂m) / Real.sqrt n *
-        (|β 0| + L * Examples.compactRadius K * layerSupNorm a)) := by
+    ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) (layerMeasure m a (layerWeight b φ)) θ x -
+            layerObservable m a b β φ x)
+        ∂sampleLaw n (polarLaw (layerMeasure m a (layerWeight b φ))) ≤
+      8 * (∫ y, ‖layerWeight b φ y‖ ∂m) / Real.sqrt n *
+        (|β 0| + (L : ℝ) * compactRadius K * layerSupNorm a) := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
@@ -467,7 +478,7 @@ theorem ex_operator_layer_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
-    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianAct φ) := by
+    MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
   sorry
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
@@ -477,7 +488,7 @@ activation: with `σ_y² = ⟨Qa_y,a_y⟩` and `S_y = Q - (1+σ_y²)⁻¹ (Qa_y)
 theorem ex_operator_layer_ii_b {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
-    ∀ ξ : H, gaussFourier μ (layerObservable m a b gaussianAct φ) ξ =
+    ∀ ξ : H, gaussFourier μ (layerObservable m a b gaussianFun φ) ξ =
       ∫ y, layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
         Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) ∂m := by
   sorry
@@ -491,7 +502,7 @@ theorem ex_operator_layer_ii_c {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
-    ∀ p : H × ℝ, ridgelet μ ρ (layerObservable m a b gaussianAct φ) p =
+    ∀ p : H × ℝ, ridgelet μ ρ (layerObservable m a b gaussianFun φ) p =
       ∫ y, layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
         gaussianSmooth ρ ⟪layerCovariance Q a y p.1, p.1⟫ p.2 : ℝ) : ℂ) ∂m := by
   sorry
@@ -516,7 +527,7 @@ theorem ex_operator_layer_ii_e (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hL : IsLayerData m a b) (φ : Y) :
     ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I
-        (gaussFourier μ (layerObservable m a b gaussianAct φ)) := by
+        (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
@@ -529,12 +540,12 @@ theorem ex_operator_layer_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
     ∀ F : spectralCore μ (gaussianMixture N α),
-      (F : H → ℂ) =ᵐ[μ] layerObservable m a b gaussianAct φ →
+      (F : H → ℂ) =ᵐ[μ] layerObservable m a b gaussianFun φ →
       ∀ g : spectralCore μ (gaussianMixture N α),
         frameOperator μ (gaussianMixture N α) (spectralEmbed μ (gaussianMixture N α) F)
             (spectralEmbed μ (gaussianMixture N α) g) =
           ∫ x, spectralTarget (gaussianMixture N α)
-              (gaussFourier μ (layerObservable m a b gaussianAct φ)) x *
+              (gaussFourier μ (layerObservable m a b gaussianFun φ)) x *
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
   sorry
 
@@ -545,8 +556,8 @@ theorem ex_operator_layer_ii_g {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
-    ridgelet μ ρ (layerObservable m a b gaussianAct φ) =
-      coefficientFormula ρ (gaussFourier μ (layerObservable m a b gaussianAct φ)) := by
+    ridgelet μ ρ (layerObservable m a b gaussianFun φ) =
+      coefficientFormula ρ (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
@@ -559,7 +570,7 @@ theorem ex_operator_layer_ii_h (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) :
     Integrable (fun p : H × ℝ =>
-        (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgelet μ ρ (layerObservable m a b gaussianAct φ) p‖)
+        (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgelet μ ρ (layerObservable m a b gaussianFun φ) p‖)
       (parameterMeasure (gaussianMixture N α)) := by
   sorry
 
@@ -575,15 +586,17 @@ theorem ex_operator_layer_ii_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hβ' : IsTemperedFunction β' b') {L : ℝ≥0} (hb' : LipschitzWith L b')
     (hb'p : ¬ IsPolynomialFun b') :
     integralNetworkDensity (fun t => (b' t : ℂ)) (parameterMeasure (gaussianMixture N α))
-        (ridgelet μ ρ (layerObservable m a b gaussianAct φ)) =
+        (ridgelet μ ρ (layerObservable m a b gaussianFun φ)) =
       fun x => temperedAdmissibilityConst α β' ρ *
         spectralTarget (gaussianMixture N α)
-          (gaussFourier μ (layerObservable m a b gaussianAct φ)) x := by
+          (gaussFourier μ (layerObservable m a b gaussianFun φ)) x := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
-activation: the sampled network of `R_ρ F_φ λ_α` with a real Lipschitz non-polynomial `β'`
-converges to `C^{(α)}_{β',ρ} g_G` at the finite-width rate of `eq:spectral-barron`. -/
+activation: the sampled network `eq:polar-network` of `R_ρ F_φ λ_α` with a real Lipschitz
+non-polynomial `β'` (with `V = ‖R_ρ F_φ‖_{L¹(λ_α)}` and samples from `p = |R_ρ F_φ| λ_α / V`,
+as in Theorem `thm:E`(iv)) converges to `C^{(α)}_{β',ρ} g_G` at the finite-width rate of
+`eq:spectral-barron`. -/
 theorem ex_operator_layer_ii_j (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -592,21 +605,19 @@ theorem ex_operator_layer_ii_j (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hL : IsLayerData m a b) (φ : Y) (β' : TemperedDistribution ℝ ℂ) (b' : ℝ → ℝ)
     (hβ' : IsTemperedFunction β' b') {L : ℝ≥0} (hb' : LipschitzWith L b')
     (hb'p : ¬ IsPolynomialFun b') (K : Set H) (hK : IsCompact K) (n : ℕ) (hn : 0 < n) :
-    ∫⁻ θ, ENNReal.ofReal (Examples.supNormOn K fun x =>
-        Examples.polarSample b' (parameterMeasure (gaussianMixture N α))
-            (ridgelet μ ρ (layerObservable m a b gaussianAct φ)) θ x -
-          temperedAdmissibilityConst α β' ρ *
-            spectralTarget (gaussianMixture N α)
-              (gaussFourier μ (layerObservable m a b gaussianAct φ)) x)
-        ∂(Measure.pi fun _ : Fin n =>
-          Examples.normalizedLaw (parameterMeasure (gaussianMixture N α))
-            (ridgelet μ ρ (layerObservable m a b gaussianAct φ))) ≤
-      ENNReal.ofReal (8 * (∫ p, ‖ridgelet μ ρ (layerObservable m a b gaussianAct φ) p‖
-          ∂parameterMeasure (gaussianMixture N α)) / Real.sqrt n *
-        (|b' 0| + L * Examples.compactRadius K *
-          Real.sqrt (Examples.secondMoment
-            (Examples.normalizedLaw (parameterMeasure (gaussianMixture N α))
-              (ridgelet μ ρ (layerObservable m a b gaussianAct φ)))))) := by
+    ∫ θ, compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (b' t : ℂ)) (parameterMeasure (gaussianMixture N α))
+              (ridgelet μ ρ (layerObservable m a b gaussianFun φ)) θ x -
+            temperedAdmissibilityConst α β' ρ *
+              spectralTarget (gaussianMixture N α)
+                (gaussFourier μ (layerObservable m a b gaussianFun φ)) x)
+        ∂sampleLaw n (densityLaw (parameterMeasure (gaussianMixture N α))
+          (ridgelet μ ρ (layerObservable m a b gaussianFun φ))) ≤
+      8 * densityWeight (parameterMeasure (gaussianMixture N α))
+            (ridgelet μ ρ (layerObservable m a b gaussianFun φ)) / Real.sqrt n *
+        (|b' 0| + (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (densityLaw (parameterMeasure (gaussianMixture N α))
+            (ridgelet μ ρ (layerObservable m a b gaussianFun φ))))) := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
@@ -616,7 +627,7 @@ theorem ex_operator_layer_ii_k (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
-    MemSpectralCoreVec μ (gaussianMixture N α) (operatorLayer m a b gaussianAct) := by
+    MemSpectralCoreVec μ (gaussianMixture N α) (operatorLayer m a b gaussianFun) := by
   sorry
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
@@ -626,7 +637,7 @@ holds for `ℱ` itself as a `Y`-valued target:
 theorem ex_operator_layer_ii_l {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
-    ∀ ξ : H, gaussFourierVec μ (operatorLayer m a b gaussianAct) ξ =
+    ∀ ξ : H, gaussFourierVec μ (operatorLayer m a b gaussianFun) ξ =
       ∫ y, (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
         Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • b y ∂m := by
   sorry
@@ -642,7 +653,7 @@ theorem ex_operator_layer_ii_m (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hL : IsLayerData m a b) :
     ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I
-        (gaussFourierVec μ (operatorLayer m a b gaussianAct)) := by
+        (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
   sorry
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
@@ -652,8 +663,8 @@ theorem ex_operator_layer_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
-    ridgeletVec μ ρ (operatorLayer m a b gaussianAct) =
-      coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianAct)) := by
+    ridgeletVec μ ρ (operatorLayer m a b gaussianFun) =
+      coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
@@ -665,7 +676,7 @@ theorem ex_operator_layer_ii_o (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
     Integrable (fun p : H × ℝ =>
-        (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgeletVec μ ρ (operatorLayer m a b gaussianAct) p‖)
+        (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgeletVec μ ρ (operatorLayer m a b gaussianFun) p‖)
       (parameterMeasure (gaussianMixture N α)) := by
   sorry
 
@@ -681,10 +692,10 @@ theorem ex_operator_layer_ii_p (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hβ' : IsTemperedFunction β' b') {L : ℝ≥0} (hb' : LipschitzWith L b')
     (hb'p : ¬ IsPolynomialFun b') :
     integralNetworkDensity (fun t => (b' t : ℂ)) (parameterMeasure (gaussianMixture N α))
-        (ridgeletVec μ ρ (operatorLayer m a b gaussianAct)) =
+        (ridgeletVec μ ρ (operatorLayer m a b gaussianFun)) =
       fun x => temperedAdmissibilityConst α β' ρ •
         spectralTarget (gaussianMixture N α)
-          (gaussFourierVec μ (operatorLayer m a b gaussianAct)) x := by
+          (gaussFourierVec μ (operatorLayer m a b gaussianFun)) x := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
@@ -693,7 +704,7 @@ by `eq:gaussian-parameter-closed-forms`, the Gaussian-activation layer is
 `ℱ(x) = ∫∫ b_y φ''(b) ReLU(⟨a_y,x⟩ - b) m(dy) db`. -/
 theorem ex_operator_layer_iii_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
-    ∀ x : H, operatorLayer m a b gaussianAct x =
+    ∀ x : H, operatorLayer m a b gaussianFun x =
       ∫ p : Ω × ℝ, ((gaussianActDeriv2 p.2 * relu (⟪a p.1, x⟫ - p.2) : ℝ) : ℂ) • b p.1
         ∂(m.prod volume) := by
   sorry
@@ -704,7 +715,7 @@ the Gaussian-activation layer is the ReLU network with the coefficient measure
 `(y,b) ↦ (a_y, -b)`-pushforward of `φ''(b) b_y m(dy) db`. -/
 theorem ex_operator_layer_iii_b (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) :
-    operatorLayer m a b gaussianAct =
+    operatorLayer m a b gaussianFun =
       integralNetwork (fun t => (relu t : ℂ)) (layerHingeMeasure m a b) := by
   sorry
 
@@ -733,7 +744,7 @@ Non-cylindricity: if `A` has infinite rank, `β = Φ`, and `w_φ > 0` `m`-almost
 theorem ex_operator_layer_iv (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
     (hL : IsLayerData m a b) (φ : Y) (hA : HasInfiniteRank (layerA m a))
     (hw : ∀ᵐ y ∂m, 0 < (layerWeight b φ y).re ∧ (layerWeight b φ y).im = 0) :
-    ¬ IsCylindrical (layerObservable m a b gaussianAct φ) := by
+    ¬ IsCylindrical (layerObservable m a b gaussianFun φ) := by
   sorry
 
 end OperatorLayer
@@ -825,7 +836,7 @@ theorem ex_convolution_x (d : ℕ) (k ψ : TorusL2 d)
     (hk : Set.Infinite {n : Fin d → ℤ | torusFourierCoeff (fun t => (k t : ℂ)) n ≠ 0})
     (hψ : torusFourierCoeff (fun t => (ψ t : ℂ)) 0 ≠ 0) :
     ¬ IsCylindrical
-      (layerObservable (torusHaar d) (convDirection k) (convOutput ψ) gaussianAct
+      (layerObservable (torusHaar d) (convDirection k) (convOutput ψ) gaussianFun
         (torusOne d)) := by
   sorry
 
