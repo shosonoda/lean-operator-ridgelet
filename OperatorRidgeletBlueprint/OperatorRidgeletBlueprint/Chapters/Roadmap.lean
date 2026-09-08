@@ -20,24 +20,24 @@ formalized in Lean and only their proofs are outstanding, so they appear in the 
 `statementStatus` formalized and `proofStatus` incomplete. The items below are the analytic
 prerequisites that those proofs will need.
 
-:::theorem "roadmap:gaussian-mixture" (uses := "gauss-ridgelet:homogeneous-exists")
-Construct the Gaussian mixture $`\nu_\alpha=\int_0^\infty\mathcal N(0,2sP)s^{\alpha/2-1}\mathrm ds`
-on a separable Hilbert space and prove the small-ball estimate that makes it finite on balls. This
-needs centred Gaussian measures with a prescribed trace-class covariance, together with their
-supports and characteristic functionals.
+:::theorem "roadmap:gaussian-mixture" (uses := "infra:gaussian-layers-exist")
+Construct the Gaussian layers $`\mathcal N(0,2sP)` with a prescribed trace-class covariance on a
+separable Hilbert space (the Gaussian series of Appendix A), together with their supports and
+characteristic functionals, and prove the small-ball estimate that makes the mixture
+$`\nu_\alpha=\int_0^\infty\mathcal N(0,2sP)s^{\alpha/2-1}\mathrm ds` finite on balls.
 :::
 
-:::theorem "roadmap:feldman-hajek" (uses := "gauss-ridgelet:dilation-obstruction")
-Prove the Feldman--H\'ajek dichotomy in the special case needed here: two centred Gaussian measures
-with proportional trace-class covariances are mutually singular on an infinite-dimensional space
-unless the proportionality constant is one.
+:::theorem "roadmap:feldman-hajek" (uses := "prop:dilation-obstruction-i-d")
+Prove the strong law of large numbers for the normalized Gaussian coordinates, which gives
+$`\mathcal N(0,tW)(E_t)=1`; this is the special case of the Feldman--H\'ajek dichotomy needed for
+the dilation obstruction.
 :::
 
-:::theorem "roadmap:wick-powers-total" (uses := "gauss-ridgelet:de-gaussianized-determines")
+:::theorem "roadmap:wick-powers-total"
 Prove that the Wick powers $`:\langle x,\xi\rangle^n:`, over all $`n` and all $`\xi`, are total in
 $`L^2(H,\mu)` for a centred Gaussian $`\mu`. This is the Wiener--It\^o chaos decomposition together
-with polarization on symmetric tensor powers, and it is what makes the inversion of the analysis
-map unambiguous.
+with polarization on symmetric tensor powers, and it is what the Hermite inversion of the
+reconstruction chapter needs.
 :::
 
 :::theorem "roadmap:gaussian-relu" (uses := "operator-ridgelet:kernel-obstruction")

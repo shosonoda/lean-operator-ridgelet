@@ -1,7 +1,19 @@
 {
     "challenge_module": "Challenge",
     "solution_module": "Solution",
-    "theorem_names": [],
-    "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+    "theorem_names": [
+        "OperatorRidgelet.Paper.ex_bandlimited_filter_ii",
+        "OperatorRidgelet.Paper.ex_bandlimited_filter_iii",
+        "OperatorRidgelet.Paper.ex_bandlimited_filter_iv",
+        "OperatorRidgelet.Paper.ex_core_elements_i",
+        "OperatorRidgelet.Paper.lem_fourier_slice_i",
+        "OperatorRidgelet.Paper.lem_spectral_unitary_ii",
+        "OperatorRidgelet.Paper.prop_dilation_obstruction_i_b"
+    ],
+    "permitted_axioms": [
+        "propext",
+        "Quot.sound",
+        "Classical.choice"
+    ],
     "enable_nanoda": false
 }
