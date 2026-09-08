@@ -50,6 +50,24 @@ the index of its statements.
   required), and the blueprint with `lake exe vbp build && lake exe vbp check` in
   `OperatorRidgeletBlueprint/`.
 
+## Where general mathematics goes
+
+- Before writing a general-purpose result (Fourier analysis, functional analysis, measure
+  theory, anything that makes sense without neural networks or ridgelet transforms), search
+  Mathlib first, then the vendored files under `OperatorRidgelet/LeanRidgelet/`, then the
+  `LeanRidgelet/ToMathlib/` directory of <https://github.com/shosonoda/lean-ridgelet>, which
+  holds the general tools that earlier ridgelet formalizations needed (weighted Sobolev spaces,
+  Fourier conventions and Plancherel, Gaussian Schwartz functions, Bochner integrals in `L²`,
+  Hilbert–Schmidt kernels, Lipschitz discretization, ...).
+- If the result exists in `lean-ridgelet`'s `ToMathlib`, vendor that file verbatim into
+  `OperatorRidgelet/LeanRidgelet/ToMathlib/` with the same provenance header as the other vendored
+  files (upstream path and revision), add it to `LeanRidgelet.lean`, and do not edit it.
+- If it exists in neither, implement it in `OperatorRidgelet/OperatorRidgelet/ToMathlib/`
+  (module `OperatorRidgelet.ToMathlib.*`): Mathlib-only imports, Mathlib generality and naming, no
+  reference to ridgelet-specific definitions, a docstring on every declaration.  These files are
+  staged to be merged into `lean-ridgelet`'s `ToMathlib` later, so keep them self-contained.
+- Ridgelet-specific auxiliary lemmas stay in the `*/Basic.lean` modules next to their definitions.
+
 ## Conventions
 
 - Namespace `OperatorRidgelet`; Mathlib naming (`lowerCamelCase` definitions, `snake_case`
