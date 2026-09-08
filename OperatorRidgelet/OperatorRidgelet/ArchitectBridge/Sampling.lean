@@ -102,20 +102,20 @@ attribute [blueprint "sampling:finite-rank-projection"
 attribute [blueprint "thm:general-rademacher"
   (statement := /-- Whenever the atoms $x\mapsto h(\theta)\beta(\langle a,x\rangle+c)$ are
     measurable and integrably bounded in $C(K)$, the sampled network satisfies
-    $\mathbb E\|f_N-f\|_{C(K)}\le2V\,\mathfrak R_N(K;p,\beta)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_general_rademacher
+    $\mathbb E\|f_N-f\|_{C(K)}\le2V\,\mathfrak R_N(K;p,\beta)$. -/)]
+  OperatorRidgelet.Paper.thm_general_rademacher
 
 attribute [blueprint "thm:lipschitz-barron-i"
   (statement := /-- For real globally Lipschitz $\beta$ and
     $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
     $\mathbb E\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$
-    with $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_lipschitz_barron_i
+    with $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)]
+  OperatorRidgelet.Paper.thm_lipschitz_barron_i
 
 attribute [blueprint "thm:lipschitz-barron-ii"
   (statement := /-- At least one deterministic width-$N$ realization satisfies the same
-    bound. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_lipschitz_barron_ii
+    bound. -/)]
+  OperatorRidgelet.Paper.thm_lipschitz_barron_ii
 
 /-! ## Section 6: finite variation from the spectral density -/
 
@@ -199,8 +199,8 @@ attribute [blueprint "lem:qualitative-sampling"
   (statement := /-- For continuous $\beta$, compact $K$, and
     $\int\|\beta(\langle a,\cdot\rangle+c)\|_{C(K)}\,\mathrm d|\Gamma|<\infty$, for every
     $\varepsilon>0$ there is a finite atomic complex measure $\Gamma_\varepsilon$ with
-    $\|S_\beta\Gamma_\varepsilon-S_\beta\Gamma\|_{C(K)}<\varepsilon$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_qualitative_sampling
+    $\|S_\beta\Gamma_\varepsilon-S_\beta\Gamma\|_{C(K)}<\varepsilon$. -/)]
+  OperatorRidgelet.Paper.lem_qualitative_sampling
 
 attribute [blueprint "cor:sampling-concentration"
   (statement := /-- Under the hypotheses of the Barron bound, if $\|a\|^2+|c|^2\le B^2$ almost
@@ -229,8 +229,8 @@ attribute [blueprint "cor:operator-sampling-i"
     $M_{\rm op}^2=\int(\|A^*\psi\|^2+|\langle\psi,b\rangle|^2)\,\mathrm dp_{\rm op}<\infty$,
     sampling $(A_j,b_j)$ from $p_{\rm op}$ with the weights $h_{\rm op}$ gives
     $\mathbb E\|f_{{\rm op},N}-S_{\rm op}\Gamma_{\rm op}\|_{C(K)}
-    \le8V_{\rm op}N^{-1/2}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_{\rm op})$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_operator_sampling_i
+    \le8V_{\rm op}N^{-1/2}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_{\rm op})$. -/)]
+  OperatorRidgelet.Paper.cor_operator_sampling_i
 
 attribute [blueprint "cor:operator-sampling-ii"
   (statement := /-- $M_{\rm op}^2\le\|\psi\|^2\int(\|A\|_{\mathcal L_2}^2+\|b\|^2)\,

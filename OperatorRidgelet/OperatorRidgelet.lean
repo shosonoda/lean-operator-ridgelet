@@ -5,6 +5,7 @@ import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
+import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs
 import OperatorRidgelet.Architecture.Basic
@@ -27,6 +28,9 @@ import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianFourier
 import OperatorRidgelet.ToMathlib.GiryMonad
+import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
+import OperatorRidgelet.ToMathlib.IntegralSqrt
+import OperatorRidgelet.ToMathlib.Symmetrization
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.MeasurePi
 import OperatorRidgelet.ToMathlib.PolynomialGaussianSchwartz

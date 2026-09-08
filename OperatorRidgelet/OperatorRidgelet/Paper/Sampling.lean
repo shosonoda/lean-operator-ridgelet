@@ -46,7 +46,41 @@ theorem thm_general_rademacher [MeasurableSpace H] [BorelSpace H] (β : ℝ → 
     ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
         ∂sampleLaw N (polarLaw Γ) ≤
       2 * polarWeight Γ * rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ) := by
-  sorry
+  have _hK := hK
+  by_cases h0 : totalVariation Γ = 0
+  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
+      polarWeight_eq_zero_of_totalVariation_eq_zero h0, mul_zero, zero_mul]
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
+  have hΦ' : ∀ θ (x : K), Φ θ x = β (⟪(id θ).1, (x : H)⟫ + (id θ).2) * polarDensity Γ θ := hΦ
+  have hpt : ∀ θ : Fin N → H × ℝ,
+      compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x) =
+        polarWeight Γ / N * ‖∑ j, Φ (θ j) - (N : ℝ) • ∫ θ', Φ θ' ∂polarLaw Γ‖ := by
+    intro θ
+    rw [← compactSupNorm_sampled_sub_eq (polarLaw Γ) β id (polarDensity Γ) hΦ' hint
+      (polarWeight_nonneg Γ) hN θ]
+    refine compactSupNorm_congr fun x hx => ?_
+    rw [integralNetwork_eq_integral_polarLaw β Γ h0
+      (integrable_ridge_of_integrable_atom (polarLaw Γ) β id hh hh1 hΦ' hint ⟨x, hx⟩)]
+    rfl
+  have hsym := integral_norm_sum_sub_le (polarLaw Γ) hint (signVector (N := N))
+    (fun _ => (2 ^ N : ℝ)⁻¹) (fun _ => by positivity) (sum_signs_inv_pow_two N)
+    fun σ j => signVector_eq_one_or_neg_one σ j
+  rw [rademacherComplexity_eq_sum_signs N (polarLaw Γ) β (polarDensity Γ) hΦ hint]
+  calc ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
+        ∂sampleLaw N (polarLaw Γ)
+      = ∫ θ, polarWeight Γ / N * ‖∑ j, Φ (θ j) - (N : ℝ) • ∫ θ', Φ θ' ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) := integral_congr_ae (Eventually.of_forall hpt)
+    _ = polarWeight Γ / N * ∫ θ, ‖∑ j, Φ (θ j) - (N : ℝ) • ∫ θ', Φ θ' ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) := integral_const_mul _ _
+    _ ≤ polarWeight Γ / N * (2 * ∑ σ : Signs N, (2 ^ N : ℝ)⁻¹ *
+          ∫ θ, ‖∑ j, signVector σ j • Φ (θ j)‖ ∂sampleLaw N (polarLaw Γ)) :=
+        mul_le_mul_of_nonneg_left hsym (div_nonneg (polarWeight_nonneg Γ) (Nat.cast_nonneg N))
+    _ = _ := by
+        rw [← Finset.mul_sum]
+        ring
 
 /-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  For real
 globally Lipschitz `β` and `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`, the sampled network of the polar
@@ -62,7 +96,45 @@ theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → 
         ∂sampleLaw N (polarLaw Γ) ≤
       8 * polarWeight Γ / Real.sqrt N *
         (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-  sorry
+  by_cases h0 : totalVariation Γ = 0
+  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
+      polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ ≤ 1 :=
+    (ae_polarLaw_norm_polarDensity_eq_one Γ).mono fun θ hθ => hθ.le
+  have hsqrt : Real.sqrt N / N = 1 / Real.sqrt N := Real.sqrt_div_self'
+  calc ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x) ∂sampleLaw N (polarLaw Γ)
+      = ∫ θ, polarWeight Γ / N *
+          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
+            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
+              ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) :=
+        integral_congr_ae (Eventually.of_forall
+          (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN))
+    _ = polarWeight Γ / N * ∫ θ,
+          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
+            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
+              ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) := integral_const_mul _ _
+    _ ≤ polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+          Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ))) :=
+        mul_le_mul_of_nonneg_left
+          (integral_norm_sum_smul_ridgeAtom_sub_le hK hβ (polarLaw Γ) measurable_id hh hh1 hM N)
+          (div_nonneg (polarWeight_nonneg Γ) (Nat.cast_nonneg N))
+    _ = 8 * polarWeight Γ / Real.sqrt N *
+          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
+        rw [secondMoment]
+        calc polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)))
+            = 8 * polarWeight Γ * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)) * (Real.sqrt N / N) := by
+              ring
+          _ = _ := by rw [hsqrt]; ring
 
 /-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  At least one
 deterministic width-`N` realization satisfies the same bound
@@ -77,7 +149,21 @@ theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ →
             integralNetwork (fun t => (β t : ℂ)) Γ x) ≤
         8 * polarWeight Γ / Real.sqrt N *
           (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-  sorry
+  by_cases h0 : totalVariation Γ = 0
+  · refine ⟨fun _ => (0, 0), ?_⟩
+    rw [polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    refine le_of_le_of_eq (compactSupNorm_le le_rfl fun x _ => ?_) (by simp)
+    rw [polarSampledNetwork_eq_zero _ h0, integralNetwork_eq_zero_of_totalVariation_eq_zero _ h0,
+      sub_zero, norm_zero]
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hint : Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
+      polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+        integralNetwork (fun t => (β t : ℂ)) Γ x)) (sampleLaw N (polarLaw Γ)) :=
+    ((integrable_norm_sum_sub (polarLaw Γ) (integrable_polar_atom hK hβ Γ h0 hM) N).const_mul
+      (polarWeight Γ / N)).congr (Eventually.of_forall fun θ =>
+        (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN θ).symm)
+  obtain ⟨θ, hθ⟩ := exists_realization_le_mean _ _ hint
+  exact ⟨θ, hθ.trans (thm_lipschitz_barron_i hβ Γ hM hK hN)⟩
 
 /-! ## Section 6: finite variation from the spectral density -/
 
@@ -252,6 +338,9 @@ theorem cor_vector_rates_i_a [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
     ∫ θ, (∫ x, ‖polarSampledNetwork β Γ θ x - integralNetwork β Γ x‖ ^ 2 ∂ζ)
         ∂sampleLaw N (polarLaw Γ) ≤
       polarWeight Γ ^ 2 / N * ∫ θ, (∫ x, ‖β (⟪θ.1, x⟫ + θ.2)‖ ^ 2 ∂ζ) ∂polarLaw Γ := by
+  -- Requires the polar decomposition `Γ = h|Γ|` of a `Y`-valued measure, i.e. the
+  -- Radon–Nikodym theorem for Hilbert-space-valued measures, which Mathlib only provides for
+  -- signed and complex measures (`polarDensity Γ` is the junk value `0` otherwise).
   sorry
 
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  The `L²(ζ;Y)` rate is explicit:
@@ -304,7 +393,113 @@ theorem lem_qualitative_sampling [MeasurableSpace H] [BorelSpace H] {β : ℝ �
     ∃ (n : ℕ) (w : Fin n → ℂ) (θ : Fin n → H × ℝ),
       compactSupNorm K
         (fun x => integralNetwork β (atomicMeasure w θ) x - integralNetwork β Γ x) < ε := by
-  sorry
+  by_cases h0 : totalVariation Γ = 0
+  · refine ⟨0, fun i => i.elim0, fun i => i.elim0, ?_⟩
+    refine lt_of_le_of_lt (compactSupNorm_le le_rfl fun x _ => ?_) hε
+    rw [integralNetwork_atomicMeasure, integralNetwork_eq_zero_of_totalVariation_eq_zero β h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hV : 0 < polarWeight Γ := polarWeight_pos Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
+  set h₀ := hh.mk (polarDensity Γ) with hh₀def
+  have hh₀m : StronglyMeasurable h₀ := hh.stronglyMeasurable_mk
+  have hh₀eq : polarDensity Γ =ᵐ[polarLaw Γ] h₀ := hh.ae_eq_mk
+  -- the ridge atoms in `C(K)` and the atoms `h₀ β(⟪a, ·⟫ + c)`
+  have hΨm : StronglyMeasurable (ridgeAtom hK hβ) := stronglyMeasurable_ridgeAtom hK hβ
+  have hΨint : Integrable (ridgeAtom hK hβ) (polarLaw Γ) :=
+    (hint.smul_measure (ENNReal.inv_ne_top.mpr h0)).mono' hΨm.aestronglyMeasurable
+      (Eventually.of_forall fun θ => (norm_ridgeAtom hK hβ θ).le)
+  set Φ₀ : H × ℝ → (K →ᵇ ℂ) := fun θ => h₀ θ • ridgeAtom hK hβ θ with hΦ₀def
+  have hΦ₀m : StronglyMeasurable Φ₀ := hh₀m.smul hΨm
+  have hΦ₀ : Integrable Φ₀ (polarLaw Γ) := by
+    refine hΨint.norm.mono' hΦ₀m.aestronglyMeasurable ?_
+    filter_upwards [hh1, hh₀eq] with θ h1 h2
+    rw [norm_smul, ← h2, h1, one_mul]
+  -- the target is `V ∫ Φ₀` on `K`
+  have hf : ∀ x (hx : x ∈ K),
+      integralNetwork β Γ x = polarWeight Γ • (∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
+    intro x hx
+    have hintx : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) (polarLaw Γ) := by
+      have hΨnorm : Integrable (fun θ => ‖ridgeAtom hK hβ θ‖) (polarLaw Γ) := hΨint.norm
+      refine hΨnorm.mono'
+        (hβ.comp (by fun_prop : Continuous fun θ : H × ℝ => ⟪θ.1, x⟫ + θ.2)).aestronglyMeasurable
+        (Eventually.of_forall fun θ => ?_)
+      exact BoundedContinuousFunction.norm_coe_le_norm (ridgeAtom hK hβ θ) ⟨x, hx⟩
+    rw [integralNetwork_eq_integral_polarLaw β Γ h0 hintx]
+    congr 1
+    change _ = (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K)) (∫ θ, Φ₀ θ ∂polarLaw Γ)
+    rw [← ContinuousLinearMap.integral_comp_comm _ hΦ₀]
+    refine integral_congr_ae ?_
+    filter_upwards [hh₀eq] with θ hθ
+    change β (⟪θ.1, x⟫ + θ.2) • polarDensity Γ θ = (h₀ θ • ridgeAtom hK hβ θ) ⟨x, hx⟩
+    rw [hθ]
+    simp only [BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply]
+    ring
+  -- simple-function approximation of `Φ₀` in the separable space `C(K)`
+  borelize (K →ᵇ ℂ)
+  haveI : SecondCountableTopology (K →ᵇ ℂ) := secondCountableTopology_boundedContinuousFunction hK
+  haveI : TopologicalSpace.SeparableSpace (Set.range Φ₀) :=
+    (TopologicalSpace.IsSeparable.of_separableSpace _).separableSpace
+  have hΦ₀meas : Measurable Φ₀ := hΦ₀m.measurable
+  obtain ⟨θ₁⟩ : Nonempty (H × ℝ) := inferInstance
+  have hy₀ : Φ₀ θ₁ ∈ Set.range Φ₀ := ⟨θ₁, rfl⟩
+  have htend := SimpleFunc.tendsto_approxOn_L1_enorm hΦ₀meas hy₀ (μ := polarLaw Γ)
+    (Eventually.of_forall fun θ => subset_closure ⟨θ, rfl⟩) (hΦ₀.sub (integrable_const _)).2
+  have hεV : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / polarWeight Γ) :=
+    ENNReal.ofReal_pos.mpr (div_pos hε hV)
+  obtain ⟨n, hn⟩ := (htend.eventually (gt_mem_nhds hεV)).exists
+  set φ := SimpleFunc.approxOn Φ₀ hΦ₀meas (Set.range Φ₀) (Φ₀ θ₁) hy₀ n with hφdef
+  have hφint : Integrable φ (polarLaw Γ) :=
+    SimpleFunc.integrable_approxOn hΦ₀meas hΦ₀ hy₀ (integrable_const _) n
+  have hφmem : ∀ y ∈ φ.range, ∃ θ, Φ₀ θ = y := by
+    intro y hy
+    obtain ⟨θ, hθ⟩ := SimpleFunc.mem_range.mp hy
+    obtain ⟨θ', hθ'⟩ := SimpleFunc.approxOn_mem hΦ₀meas hy₀ n θ
+    exact ⟨θ', hθ'.trans hθ⟩
+  choose! θy hθy using hφmem
+  let e : φ.range ≃ Fin φ.range.card := φ.range.equivFin
+  refine ⟨φ.range.card,
+    fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
+      h₀ (θy (e.symm i)),
+    fun i => θy (e.symm i), ?_⟩
+  -- the atomic network is `V ∫ φ` on `K`
+  have hatom : ∀ x (hx : x ∈ K), integralNetwork β (atomicMeasure
+      (fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
+        h₀ (θy (e.symm i))) (fun i => θy (e.symm i))) x =
+      polarWeight Γ • (∫ θ, φ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
+    intro x hx
+    rw [integralNetwork_atomicMeasure, ← SimpleFunc.integral_eq_integral φ hφint,
+      SimpleFunc.integral_eq]
+    change _ = polarWeight Γ • (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K))
+      (∑ y ∈ φ.range, (polarLaw Γ).real (φ ⁻¹' {y}) • y)
+    rw [map_sum, ← Finset.sum_coe_sort φ.range, ← Equiv.sum_comp e.symm, Finset.smul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    have hy := hθy (e.symm i) (e.symm i).2
+    have hyx : (Φ₀ (θy (e.symm i))) ⟨x, hx⟩ = (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩ := by rw [hy]
+    change _ = polarWeight Γ •
+      ((polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) • (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩)
+    rw [← hyx]
+    simp only [hΦ₀def, BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply,
+      Complex.real_smul, Complex.ofReal_mul]
+    ring
+  have hnorm : ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖ < ε / polarWeight Γ := by
+    rw [← integral_sub hφint hΦ₀]
+    refine (norm_integral_le_integral_norm _).trans_lt ?_
+    rw [integral_norm_eq_lintegral_enorm (f := fun a => φ a - Φ₀ a)
+      (hφint.sub hΦ₀).aestronglyMeasurable]
+    exact ENNReal.toReal_lt_of_lt_ofReal hn
+  refine lt_of_le_of_lt (compactSupNorm_le
+    (a := polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖)
+    (mul_nonneg hV.le (norm_nonneg _)) fun x hx => ?_) ?_
+  · rw [hatom x hx, hf x hx, ← smul_sub, norm_smul, Real.norm_eq_abs, abs_of_pos hV]
+    refine mul_le_mul_of_nonneg_left ?_ hV.le
+    exact BoundedContinuousFunction.norm_coe_le_norm
+      (∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩
+  · calc polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖
+        < polarWeight Γ * (ε / polarWeight Γ) := mul_lt_mul_of_pos_left hnorm hV
+      _ = ε := mul_div_cancel₀ ε hV.ne'
 
 /-- **Corollary [cor:sampling-concentration]** Concentration for bounded parameters.  Under the
 hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely and
@@ -324,6 +519,11 @@ theorem cor_sampling_concentration [MeasurableSpace H] [BorelSpace H] {β : ℝ 
           polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
             integralNetwork (fun t => (β t : ℂ)) Γ x)} ≤
       ENNReal.ofReal δ := by
+  -- Not provable as stated: `hB` does not force `0 ≤ B`, and for `B < 0` the constant
+  -- `M_K = |β(0)| + Lip(β) R_K B` can be negative, so the threshold tends to `-∞` as `δ → 0`
+  -- while the error is nonnegative (e.g. `β = id`, `Γ = δ_{(1,0)}`, `B = -1`).  With `0 ≤ B`
+  -- the statement follows from `thm_lipschitz_barron_i` and FoML's McDiarmid inequality
+  -- applied to the sample clamped to `{‖a‖² + c² ≤ B², |h| ≤ 1}`.
   sorry
 
 section Hilbert
@@ -388,7 +588,83 @@ theorem cor_operator_sampling_i [CompleteSpace H] [SecondCountableTopology H]
       8 * polarWeight Γop / Real.sqrt N *
         (|β 0| + (L : ℝ) * compactRadius K *
           Real.sqrt (operatorSecondMoment ψ (polarLaw Γop))) := by
-  sorry
+  have _hHS := hHS
+  by_cases h0 : totalVariation Γop = 0
+  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
+      polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γop h0
+  have hπ : Measurable (operatorParameterMap ψ) := measurable_operatorParameterMap ψ
+  have hM' : Integrable (fun q : OperatorRidgeParameter H =>
+      ‖(operatorParameterMap ψ q).1‖ ^ 2 + |(operatorParameterMap ψ q).2| ^ 2) (polarLaw Γop) :=
+    hM
+  have hh : AEStronglyMeasurable (polarDensity Γop) (polarLaw Γop) :=
+    aestronglyMeasurable_polarDensity Γop (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ q ∂polarLaw Γop, ‖polarDensity Γop q‖ ≤ 1 :=
+    (ae_polarLaw_norm_polarDensity_eq_one Γop).mono fun q hq => hq.le
+  have hΦ : Integrable (fun q => polarDensity Γop q •
+      ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ q)) (polarLaw Γop) :=
+    integrable_smul_ridgeAtom hK hβ (polarLaw Γop) hπ hh hh1 hM'
+  have hneuron : ∀ (q : OperatorRidgeParameter H) (x : H),
+      operatorNeuron (rankOneActivation β ψ z) ℓ q.1 q.2 x =
+        β (⟪(operatorParameterMap ψ q).1, x⟫ + (operatorParameterMap ψ q).2) := fun q x => by
+    rw [operatorNeuron_rankOneActivation, hℓz, one_mul]
+    rfl
+  have hpt : ∀ ω : Fin N → OperatorRidgeParameter H,
+      compactSupNorm K (fun x =>
+        sampledOperatorNetwork (rankOneActivation β ψ z) ℓ (polarWeight Γop) (polarDensity Γop)
+            ω x - operatorSynthesis (rankOneActivation β ψ z) ℓ Γop x) =
+      polarWeight Γop / N * ‖∑ j, polarDensity Γop (ω j) •
+          ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ (ω j)) -
+        (N : ℝ) • ∫ q, polarDensity Γop q •
+          ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ q) ∂polarLaw Γop‖ := by
+    intro ω
+    rw [← compactSupNorm_sampled_sub_eq (polarLaw Γop) (fun t => (β t : ℂ))
+      (operatorParameterMap ψ) (polarDensity Γop)
+      (smul_ridgeAtom_apply hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ)
+        (polarDensity Γop)) hΦ (polarWeight_nonneg Γop) hN ω]
+    refine compactSupNorm_congr fun x _ => ?_
+    have hsyn : operatorSynthesis (rankOneActivation β ψ z) ℓ Γop x =
+        polarWeight Γop • ∫ q, (β (⟪(operatorParameterMap ψ q).1, x⟫ +
+          (operatorParameterMap ψ q).2) : ℂ) • polarDensity Γop q ∂polarLaw Γop := by
+      unfold operatorSynthesis
+      simp_rw [hneuron]
+      exact vectorIntegral_eq_integral_polarLaw Γop h0 (integrable_ridge_of_secondMoment
+        (polarLaw Γop) hπ (lipschitzWith_ofReal_comp hβ) hM' x)
+    rw [hsyn]
+    simp only [sampledOperatorNetwork, operatorFiniteNetwork, hneuron, Complex.real_smul,
+      smul_eq_mul]
+  have hsqrt : Real.sqrt N / N = 1 / Real.sqrt N := Real.sqrt_div_self'
+  calc ∫ ω, compactSupNorm K (fun x =>
+          sampledOperatorNetwork (rankOneActivation β ψ z) ℓ (polarWeight Γop)
+              (polarDensity Γop) ω x -
+            operatorSynthesis (rankOneActivation β ψ z) ℓ Γop x) ∂sampleLaw N (polarLaw Γop)
+      = ∫ ω, polarWeight Γop / N * ‖∑ j, polarDensity Γop (ω j) •
+            ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ (ω j)) -
+          (N : ℝ) • ∫ q, polarDensity Γop q •
+            ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ q) ∂polarLaw Γop‖
+          ∂sampleLaw N (polarLaw Γop) := integral_congr_ae (Eventually.of_forall hpt)
+    _ = polarWeight Γop / N * ∫ ω, ‖∑ j, polarDensity Γop (ω j) •
+            ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ (ω j)) -
+          (N : ℝ) • ∫ q, polarDensity Γop q •
+            ridgeAtom hK (continuous_ofReal_comp hβ) (operatorParameterMap ψ q) ∂polarLaw Γop‖
+          ∂sampleLaw N (polarLaw Γop) := integral_const_mul _ _
+    _ ≤ polarWeight Γop / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+          Real.sqrt (∫ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2)
+            ∂polarLaw Γop))) :=
+        mul_le_mul_of_nonneg_left
+          (integral_norm_sum_smul_ridgeAtom_sub_le hK hβ (polarLaw Γop) hπ hh hh1 hM' N)
+          (div_nonneg (polarWeight_nonneg Γop) (Nat.cast_nonneg N))
+    _ = 8 * polarWeight Γop / Real.sqrt N * (|β 0| + (L : ℝ) * compactRadius K *
+          Real.sqrt (operatorSecondMoment ψ (polarLaw Γop))) := by
+        rw [operatorSecondMoment]
+        calc polarWeight Γop / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2)
+                  ∂polarLaw Γop)))
+            = 8 * polarWeight Γop * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2)
+                  ∂polarLaw Γop)) * (Real.sqrt N / N) := by ring
+          _ = _ := by rw [hsqrt]; ring
 
 /-- **Corollary [cor:operator-sampling]** Sampling in operator parameters.
 `M_op² ≤ ‖ψ‖² ∫ (‖A‖²_{𝓛₂} + ‖b‖²) dp_op`. -/
@@ -483,6 +759,11 @@ theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace
       (L : ℝ) * (∫ θ, ‖θ.1‖ ∂Γ.variation) * compactSupNorm K (fun x => x - P m x) +
         8 * polarWeight Γ / Real.sqrt N *
           (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
+  -- As stated, the truncated network `sampledNetwork β V h (fun j => (Π_m a_j, c_j))` evaluates
+  -- the phase `h = polarDensity Γ` at the projected parameters `(Π_m a_j, c_j)`, which form a
+  -- `|Γ|`-null set in general; `polarDensity Γ` is only specified `|Γ|`-almost everywhere, so
+  -- the statement is not provable from the polar decomposition.  The manuscript keeps the
+  -- weights `h(θ_j)` at the original samples.
   sorry
 
 end OperatorRidgelet.Paper
