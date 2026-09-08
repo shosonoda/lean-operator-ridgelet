@@ -6,3 +6,5 @@ _out/
 tmp/
 # Python bytecode from the scripts
 __pycache__/
+# GitHub Pages site assembled by OperatorRidgeletBlueprint/scripts/ci-pages.sh
+_site/

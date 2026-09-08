@@ -1,0 +1,83 @@
+name: Blueprint pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      # With `auto-config: false` lean-action only installs elan (the toolchain comes from
+      # OperatorRidgeletBlueprint/lean-toolchain) and runs `lake exe cache get` in the blueprint
+      # project, which clones every dependency into OperatorRidgeletBlueprint/.lake/packages and
+      # unpacks the prebuilt Mathlib and its upstream packages there.  This step must precede the
+      # cache restore below: Lake cannot clone a package into a directory that already exists.
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: OperatorRidgeletBlueprint
+          auto-config: false
+          use-github-cache: false
+          use-mathlib-cache: true
+
+      # Everything that `lake exe cache get` does not supply: the library, the blueprint, the
+      # Verso packages, and the other non-Mathlib dependencies.  The exact key is the current
+      # commit; the fallback key restores the preceding successful run with the same toolchain and
+      # manifests, after which Lake rebuilds only the modules whose inputs changed.
+      - name: Restore the previous incremental build
+        uses: actions/cache@v5
+        with:
+          path: |
+            OperatorRidgelet/.lake/build
+            OperatorRidgeletBlueprint/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/VersoBlueprint/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/verso/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/verso-slides/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/subverso/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/illuminate/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/MD4Lean/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/FoML/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/LeanArchitect/.lake/build
+            OperatorRidgeletBlueprint/.lake/packages/checkdecls/.lake/build
+          key: lake-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('OperatorRidgelet/lean-toolchain', 'OperatorRidgeletBlueprint/lean-toolchain', 'OperatorRidgelet/lake-manifest.json', 'OperatorRidgeletBlueprint/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lake-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('OperatorRidgelet/lean-toolchain', 'OperatorRidgeletBlueprint/lean-toolchain', 'OperatorRidgelet/lake-manifest.json', 'OperatorRidgeletBlueprint/lake-manifest.json') }}-
+
+      - name: Build and validate the blueprint, assemble the site
+        run: ./scripts/ci-pages.sh
+        working-directory: OperatorRidgeletBlueprint
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: OperatorRidgeletBlueprint/_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
