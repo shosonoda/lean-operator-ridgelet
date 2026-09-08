@@ -24,12 +24,16 @@ import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Examples.Basic
+import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianFourier
 import OperatorRidgelet.ToMathlib.GiryMonad
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.MeasurePi
+import OperatorRidgelet.ToMathlib.PolynomialCoeffBound
+import OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv
 import OperatorRidgelet.ToMathlib.PolynomialGaussianSchwartz
+import OperatorRidgelet.ToMathlib.PolynomialGrowthBounds
 import OperatorRidgelet.ToMathlib.PositiveOperator
 import OperatorRidgelet.ToMathlib.RpowIntegral
 import OperatorRidgelet.ToMathlib.SchwartzFourier

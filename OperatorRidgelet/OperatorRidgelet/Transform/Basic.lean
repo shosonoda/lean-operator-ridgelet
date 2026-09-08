@@ -3,6 +3,9 @@ import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.ToMathlib.PositiveOperator
 import OperatorRidgelet.ToMathlib.SchwartzFourier
 import OperatorRidgelet.ToMathlib.FourierEven
+import OperatorRidgelet.ToMathlib.CharFunCoordinate
+import Mathlib.Probability.Distributions.Gaussian.Real
+import Mathlib.Probability.StrongLaw
 
 /-!
 # Auxiliary lemmas for Section 3 (the Gaussian-weighted ridgelet transform)
@@ -11,8 +14,11 @@ Ridgelet-specific facts used by the proofs of `OperatorRidgelet.Paper.Transform`
 the quadratic form of a trace-class covariance, the bridge between the manuscript's Fourier
 transform `ρ̂(ω) = ∫ ρ(t) e^{-itω} dt` and Mathlib's `𝓕`, the nonvanishing of the Fourier
 transform of a nonzero filter, the joint integrability of the ridgelet kernel, the integrated
-forms of the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`, and the smoothness of the explicit band-pass
-Fourier transform of Appendix I.  General-purpose tools live in `OperatorRidgelet.ToMathlib`.
+forms of the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`, the smoothness of the explicit band-pass
+Fourier transform of Appendix I, and the coordinates of a centred Gaussian measure `𝒩(0,Q)`
+(the law of `x ↦ ⟪x, v⟫` is `𝒩(0, ⟪Qv,v⟫)`, and `Q`-orthogonal coordinates are independent),
+which drive the strong law in Proposition `prop:dilation-obstruction`.  General-purpose tools
+live in `OperatorRidgelet.ToMathlib`.
 -/
 
 noncomputable section
@@ -446,5 +452,49 @@ theorem admissibilityConst_smul (α c : ℝ) (ρ : SchwartzMap ℝ ℝ) :
   ring
 
 end Scaling
+
+/-! ### Coordinates of a centred Gaussian measure -/
+
+section CenteredGaussian
+
+open ProbabilityTheory
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [OpensMeasurableSpace H]
+
+/-- The law of the coordinate `x ↦ ⟪x, v⟫` under `𝒩(0,Q)` is the real Gaussian `𝒩(0, ⟪Qv,v⟫)`. -/
+theorem IsCenteredGaussian.map_inner_eq_gaussianReal {Q : H →L[ℝ] H} {μ : Measure H}
+    (hμ : IsCenteredGaussian Q μ) (v : H) (hv : 0 ≤ ⟪Q v, v⟫) :
+    μ.map (fun x => ⟪x, v⟫) = gaussianReal 0 (Real.toNNReal ⟪Q v, v⟫) := by
+  haveI := hμ.isProbabilityMeasure
+  have hmeas : Measurable fun x : H => ⟪x, v⟫ := (continuous_id.inner continuous_const).measurable
+  haveI : IsProbabilityMeasure (μ.map fun x => ⟪x, v⟫) :=
+    Measure.isProbabilityMeasure_map hmeas.aemeasurable
+  refine Measure.ext_of_charFun (funext fun s => ?_)
+  rw [charFun_map_inner_right, hμ.charFun_eq, charFun_gaussianReal, map_smul,
+    real_inner_smul_left, real_inner_smul_right, Real.coe_toNNReal _ hv]
+  congr 1
+  push_cast
+  ring
+
+/-- Two coordinates `x ↦ ⟪x, v⟫` and `x ↦ ⟪x, w⟫` of `𝒩(0,Q)` are independent when
+`⟪Qv, w⟫ = ⟪Qw, v⟫ = 0`. -/
+theorem IsCenteredGaussian.indepFun_inner {Q : H →L[ℝ] H} {μ : Measure H}
+    (hμ : IsCenteredGaussian Q μ) {v w : H} (hvw : ⟪Q v, w⟫ = 0) (hwv : ⟪Q w, v⟫ = 0) :
+    IndepFun (fun x => ⟪x, v⟫) (fun x => ⟪x, w⟫) μ := by
+  haveI := hμ.isProbabilityMeasure
+  have hv : Measurable fun x : H => ⟪x, v⟫ := (continuous_id.inner continuous_const).measurable
+  have hw : Measurable fun x : H => ⟪x, w⟫ := (continuous_id.inner continuous_const).measurable
+  rw [indepFun_iff_charFun_prod hv.aemeasurable hw.aemeasurable]
+  intro t
+  rw [charFun_map_inner_pair, charFun_map_inner_right, charFun_map_inner_right, hμ.charFun_eq,
+    hμ.charFun_eq, hμ.charFun_eq, ← Complex.exp_add]
+  congr 1
+  simp only [map_add, map_smul, inner_add_left, inner_add_right, real_inner_smul_left,
+    real_inner_smul_right, hvw, hwv]
+  push_cast
+  ring
+
+end CenteredGaussian
 
 end OperatorRidgelet

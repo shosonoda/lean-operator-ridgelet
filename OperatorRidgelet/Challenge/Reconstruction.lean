@@ -514,14 +514,15 @@ theorem prop_coefficient_projection_viii (μ ν : Measure H) [IsProbabilityMeasu
 
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Gaussian-type
 densities `G(ξ) = q(ξ) e^{-κ(ξ)/2}`, `κ(ξ) = ⟨Sξ,ξ⟩` with `S` a bounded positive operator with
-`S ≥ θQ`, `θ > 0`, and `q` a polynomial in finitely many bounded linear functionals of `ξ` and
-in `κ(ξ)`, are regular along rays for every band-pass `ρ` (and every frequency window of
-`ρ`). -/
+`S ≥ θQ`, `θ > 0`, and `q` a polynomial in `κ(ξ)` and in finitely many bounded linear
+functionals `ℓ_i` of `ξ` dominated by the quadratic form, `|ℓ_i(ξ)|² ≤ C_i κ(ξ)`, are regular
+along rays for every band-pass `ρ` (and every frequency window of `ρ`). -/
 theorem lem_ray_regular_examples_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (S : H →L[ℝ] H)
     (hS : IsSelfAdjoint S) {θ : ℝ} (hθ : 0 < θ) (hSQ : ∀ ξ, θ * ⟪Q ξ, ξ⟫ ≤ ⟪S ξ, ξ⟫) {k : ℕ}
-    (ℓ : Fin k → (H →L[ℝ] ℝ)) (q : MvPolynomial (Option (Fin k)) ℂ) :
+    (ℓ : Fin k → (H →L[ℝ] ℝ)) (hℓ : ∀ i, ∃ C : ℝ, ∀ ξ, (ℓ i ξ) ^ 2 ≤ C * ⟪S ξ, ξ⟫)
+    (q : MvPolynomial (Option (Fin k)) ℂ) :
     ∀ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ → ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I fun ξ =>
         MvPolynomial.eval (fun o : Option (Fin k) =>

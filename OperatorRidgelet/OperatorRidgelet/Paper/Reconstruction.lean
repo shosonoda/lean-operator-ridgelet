@@ -1,5 +1,6 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
+import OperatorRidgelet.Paper.Transform
 
 /-!
 # Statements of Section 4 (representation and reconstruction) and Appendix B
@@ -530,22 +531,26 @@ theorem prop_coefficient_projection_viii (μ ν : Measure H) [IsProbabilityMeasu
 
 /-! ### Lemma `lem:ray-regular-examples` -/
 
+set_option linter.unusedVariables false in
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Gaussian-type
 densities `G(ξ) = q(ξ) e^{-κ(ξ)/2}`, `κ(ξ) = ⟨Sξ,ξ⟩` with `S` a bounded positive operator with
-`S ≥ θQ`, `θ > 0`, and `q` a polynomial in finitely many bounded linear functionals of `ξ` and
-in `κ(ξ)`, are regular along rays for every band-pass `ρ` (and every frequency window of
-`ρ`). -/
+`S ≥ θQ`, `θ > 0`, and `q` a polynomial in `κ(ξ)` and in finitely many bounded linear
+functionals `ℓ_i` of `ξ` dominated by the quadratic form, `|ℓ_i(ξ)|² ≤ C_i κ(ξ)`, are regular
+along rays for every band-pass `ρ` (and every frequency window of `ρ`). -/
 theorem lem_ray_regular_examples_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (S : H →L[ℝ] H)
     (hS : IsSelfAdjoint S) {θ : ℝ} (hθ : 0 < θ) (hSQ : ∀ ξ, θ * ⟪Q ξ, ξ⟫ ≤ ⟪S ξ, ξ⟫) {k : ℕ}
-    (ℓ : Fin k → (H →L[ℝ] ℝ)) (q : MvPolynomial (Option (Fin k)) ℂ) :
+    (ℓ : Fin k → (H →L[ℝ] ℝ)) (hℓ : ∀ i, ∃ C : ℝ, ∀ ξ, (ℓ i ξ) ^ 2 ≤ C * ⟪S ξ, ξ⟫)
+    (q : MvPolynomial (Option (Fin k)) ℂ) :
     ∀ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ → ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I fun ξ =>
         MvPolynomial.eval (fun o : Option (Fin k) =>
             o.elim ((⟪S ξ, ξ⟫ : ℝ) : ℂ) fun i => ((ℓ i ξ : ℝ) : ℂ)) q *
           Complex.exp (-((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
-  sorry
+  intro ρ _ I hI
+  exact isRegularAlongRays_of_gaussian_decay (gaussianMixture N α) hQ.inner_nonneg
+    (lem_gaussian_decay_i hH hP hQ hN hα) S hθ hSQ ℓ hℓ q hI.isCompact hI.zero_notMem
 
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Radial bumps
 `G(ξ) = φ(‖ξ - ξ₀‖²)` with `φ ∈ C_c^∞(ℝ)` are regular along rays for every band-pass `ρ`. -/
