@@ -455,13 +455,13 @@ attribute [blueprint "prop:dilation-obstruction-i-b"
   OperatorRidgelet.Paper.prop_dilation_obstruction_i_b
 
 attribute [blueprint "prop:dilation-obstruction-i-c"
-  (statement := /-- $\mathcal N(0,tW)(E_t)=1$ for $t>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_dilation_obstruction_i_c
+  (statement := /-- $\mathcal N(0,tW)(E_t)=1$ for $t>0$. -/)]
+  OperatorRidgelet.Paper.prop_dilation_obstruction_i_c
 
 attribute [blueprint "prop:dilation-obstruction-i-d"
   (statement := /-- A sigma-finite measure dominates $\mathcal N(0,tW)$ for at most countably
-    many $t$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_dilation_obstruction_i_d
+    many $t$. -/)]
+  OperatorRidgelet.Paper.prop_dilation_obstruction_i_d
 
 attribute [blueprint "prop:dilation-obstruction-ii"
   (statement := /-- No finite complex Borel measure on $H\times\mathbb R$ has bias slices

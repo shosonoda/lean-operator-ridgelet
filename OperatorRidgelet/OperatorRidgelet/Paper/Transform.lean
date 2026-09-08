@@ -898,6 +898,7 @@ theorem prop_dilation_obstruction_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H �
   intro t t' htt'
   exact Set.disjoint_left.mpr fun x hx hx' => htt' (tendsto_nhds_unique hx hx')
 
+set_option linter.unusedVariables false in
 /-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  For `t > 0`,
 `𝒩(0,tW)(E_t) = 1`. -/
 theorem prop_dilation_obstruction_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
@@ -905,7 +906,82 @@ theorem prop_dilation_obstruction_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H �
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
     ∀ t : ℝ, 0 < t → γ t (strongLawSet e w t) = 1 := by
-  sorry
+  intro t ht
+  have hμ := hγ t ht
+  haveI := hμ.isProbabilityMeasure
+  -- the normalized coordinates `Y j x = ⟪x, e j⟫ / √(w j)` are i.i.d. `𝒩(0, t)`
+  obtain ⟨c, hc_def⟩ : ∃ c : ℕ → ℝ, c = fun j => (Real.sqrt (w j))⁻¹ := ⟨_, rfl⟩
+  have hc : ∀ j, c j ^ 2 * w j = 1 := fun j => by
+    rw [hc_def, inv_pow, Real.sq_sqrt (hw j).le]
+    exact inv_mul_cancel₀ (hw j).ne'
+  obtain ⟨Y, hY⟩ : ∃ Y : ℕ → H → ℝ, Y = fun j x => ⟪x, c j • e j⟫ := ⟨_, rfl⟩
+  have hYmeas : ∀ j, Measurable (Y j) := fun j => by
+    rw [hY]
+    exact (continuous_id.inner continuous_const).measurable
+  have hQ : ∀ j, ⟪(t • W) (c j • e j), c j • e j⟫ = t := by
+    intro j
+    simp only [smul_apply, map_smul, hWe j, real_inner_smul_left, real_inner_smul_right,
+      real_inner_self_eq_norm_sq, e.orthonormal.1 j]
+    linear_combination t * hc j
+  have hlaw : ∀ j, (γ t).map (Y j) = ProbabilityTheory.gaussianReal 0 t.toNNReal := by
+    intro j
+    rw [hY, hμ.map_inner_eq_gaussianReal (c j • e j) (by rw [hQ j]; exact ht.le), hQ j]
+  have hYident : ∀ j, ProbabilityTheory.IdentDistrib (Y j) (Y 0) (γ t) (γ t) := fun j =>
+    ⟨(hYmeas j).aemeasurable, (hYmeas 0).aemeasurable, by rw [hlaw j, hlaw 0]⟩
+  have hYindep : ∀ i j, i ≠ j → ProbabilityTheory.IndepFun (Y i) (Y j) (γ t) := by
+    intro i j hij
+    rw [hY]
+    refine hμ.indepFun_inner ?_ ?_
+    · simp only [smul_apply, map_smul, hWe i, real_inner_smul_left, real_inner_smul_right,
+        e.orthonormal.inner_eq_zero hij, mul_zero]
+    · simp only [smul_apply, map_smul, hWe j, real_inner_smul_left, real_inner_smul_right,
+        e.orthonormal.inner_eq_zero hij.symm, mul_zero]
+  have hYsq : ∀ j x, Y j x ^ 2 = ⟪x, e j⟫ ^ 2 / w j := by
+    intro j x
+    rw [hY]
+    simp only [real_inner_smul_right]
+    rw [mul_pow, eq_div_iff (hw j).ne']
+    linear_combination ⟪x, e j⟫ ^ 2 * hc j
+  -- the squares `X j = Y j ^ 2` are i.i.d., integrable, with mean `t`
+  obtain ⟨X, hX⟩ : ∃ X : ℕ → H → ℝ, X = fun j x => Y j x ^ 2 := ⟨_, rfl⟩
+  have hsq : Measurable fun y : ℝ => y ^ 2 := measurable_id.pow_const 2
+  have hXident : ∀ j, ProbabilityTheory.IdentDistrib (X j) (X 0) (γ t) (γ t) := by
+    rw [hX]
+    exact fun j => (hYident j).comp hsq
+  have hXindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) (γ t) := by
+    rw [hX]
+    exact fun i j hij => (hYindep i j hij).comp hsq hsq
+  have hY2 : MemLp (Y 0) 2 (γ t) := by
+    have h := ProbabilityTheory.memLp_id_gaussianReal' (μ := 0) (v := t.toNNReal) 2 (by simp)
+    rw [← hlaw 0, memLp_map_measure_iff aestronglyMeasurable_id (hYmeas 0).aemeasurable] at h
+    exact h
+  have hXint : Integrable (X 0) (γ t) := by
+    rw [hX]
+    exact hY2.integrable_sq
+  have hmean : ∫ x, X 0 x ∂(γ t) = t := by
+    have h1 : ∫ x, X 0 x ∂(γ t) = ∫ y, y ^ 2 ∂((γ t).map (Y 0)) := by
+      rw [integral_map (hYmeas 0).aemeasurable (by fun_prop), hX]
+    have h2 := ProbabilityTheory.variance_eq_sub (μ := ProbabilityTheory.gaussianReal 0 t.toNNReal)
+      (ProbabilityTheory.memLp_id_gaussianReal' 2 (by simp))
+    rw [ProbabilityTheory.variance_id_gaussianReal] at h2
+    simp only [Pi.pow_apply, id_eq] at h2
+    rw [ProbabilityTheory.integral_id_gaussianReal] at h2
+    simp only [zero_pow two_ne_zero, sub_zero] at h2
+    rw [h1, hlaw 0, ← h2, Real.coe_toNNReal _ ht.le]
+  -- the strong law of large numbers
+  have hslln := ProbabilityTheory.strong_law_ae X hXint hXindep hXident
+  rw [hmean] at hslln
+  have hE : ∀ᵐ x ∂(γ t), x ∈ strongLawSet e w t := by
+    filter_upwards [hslln] with x hx
+    show Tendsto (fun n : ℕ => (n : ℝ)⁻¹ * ∑ j ∈ Finset.range n, ⟪x, e j⟫ ^ 2 / w j)
+      atTop (𝓝 t)
+    refine hx.congr fun n => ?_
+    rw [smul_eq_mul]
+    congr 1
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [hX, ← hYsq j x]
+  exact (prob_compl_eq_zero_iff (prop_dilation_obstruction_i_a hH hW e w hw hWe t)).mp
+    (ae_iff.mp hE)
 
 /-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  Consequently a σ-finite
 measure dominates `𝒩(0,tW)` for at most countably many `t > 0`. -/
@@ -914,7 +990,18 @@ theorem prop_dilation_obstruction_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H �
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
     ∀ ν : Measure H, SigmaFinite ν → Set.Countable {t : ℝ | 0 < t ∧ γ t ≪ ν} := by
-  sorry
+  intro ν hν
+  have hcount : Set.Countable {t : ℝ | 0 < ν (strongLawSet e w t)} :=
+    Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
+      (prop_dilation_obstruction_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_dilation_obstruction_i_b hH hW e w hw hWe t t' htt')
+  refine hcount.mono fun t ⟨ht, hac⟩ => ?_
+  show 0 < ν (strongLawSet e w t)
+  by_contra h
+  rw [not_lt, nonpos_iff_eq_zero] at h
+  have h1 := hac h
+  rw [prop_dilation_obstruction_i_c hH hW e w hw hWe γ hγ t ht] at h1
+  exact one_ne_zero h1
 
 /-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  For a bounded Borel `r`
 with `{r ≠ 0}` of positive Lebesgue measure, no finite complex Borel measure `Γ = h m` on
