@@ -1,6 +1,8 @@
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs
 import OperatorRidgelet.Architecture.Basic
+import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
+import OperatorRidgelet.Architecture.Reduction
 
 /-!
 # Statements of Section 2 (networks with Hilbert-space inputs) and Appendix F (operator-valued parameters)
@@ -45,7 +47,18 @@ theorem def_integral_network_ii [MeasurableSpace H] [BorelSpace H] {Y : Type*}
     (hγ : Integrable γ lam) (x : H)
     (hint : Integrable (fun θ : H × ℝ => β (inner ℝ θ.1 x + θ.2) • γ θ) lam) :
     integralNetwork β (lam.withDensityᵥ γ) x = integralNetworkDensity β lam γ x := by
-  sorry
+  unfold integralNetwork integralNetworkDensity
+  have hmeas : AEStronglyMeasurable (fun θ : H × ℝ => β (inner ℝ θ.1 x + θ.2)) lam :=
+    (hβ.comp (by fun_prop : Continuous fun θ : H × ℝ => inner ℝ θ.1 x + θ.2)).aestronglyMeasurable
+  have hf : Integrable (fun θ : H × ℝ => β (inner ℝ θ.1 x + θ.2))
+      (lam.withDensity fun θ => ‖γ θ‖ₑ) := by
+    refine (integrable_withDensity_iff_integrable_coe_smul₀
+      hγ.aestronglyMeasurable.nnnorm.aemeasurable).mpr ?_
+    refine hint.norm.mono' (hγ.aestronglyMeasurable.norm.smul hmeas)
+      (Filter.Eventually.of_forall fun θ => ?_)
+    rw [norm_smul, norm_smul, coe_nnnorm, Real.norm_eq_abs, abs_norm, mul_comm]
+  rw [VectorMeasure.integral_withDensityᵥ hγ hf]
+  rfl
 
 /-! ## Appendix F: Hilbert–Schmidt reduction and the rank-one lift -/
 
@@ -57,7 +70,14 @@ theorem lem_hs_reduction [CompleteSpace H] [SecondCountableTopology H] {σ : H �
     closure (Submodule.span ℝ (operatorNeuronSet σ Set.univ) : Set C(H, ℝ)) =
       closure (Submodule.span ℝ (operatorNeuronSet σ {A | IsHilbertSchmidt A}) :
         Set C(H, ℝ)) := by
-  sorry
+  apply le_antisymm
+  · refine closure_minimal ?_ isClosed_closure
+    rw [← Submodule.topologicalClosure_coe]
+    refine SetLike.coe_subset_coe.mpr (Submodule.span_le.mpr ?_)
+    rintro F ⟨ℓ, b, A, -, hF⟩
+    rw [SetLike.mem_coe, ← SetLike.mem_coe, Submodule.topologicalClosure_coe]
+    exact operatorNeuron_mem_closure_span_hilbertSchmidt hσ ℓ A b hF
+  · exact closure_mono (Submodule.span_mono fun F ⟨ℓ, b, A, _, hF⟩ => ⟨ℓ, b, A, trivial, hF⟩)
 
 /-- **Lemma [lem:rank-one-lift]** Exact rank-one lift.  `A_a = ‖ψ‖⁻² ψ ⊗ a` is
 Hilbert–Schmidt. -/
