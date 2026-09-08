@@ -294,14 +294,14 @@ theorem lem_qualitative_sampling [MeasurableSpace H] [BorelSpace H] {β : ℝ �
   sorry
 
 /-- **Corollary [cor:sampling-concentration]** Concentration for bounded parameters.  Under the
-hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely and
-`M_K = |β(0)| + Lip(β) R_K B`, then with probability at least `1 − δ`,
+hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely for some
+`B ≥ 0` and `M_K = |β(0)| + Lip(β) R_K B`, then with probability at least `1 − δ`,
 `‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂) + V M_K √(2 log(1/δ)/N)`. -/
 theorem cor_sampling_concentration [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {B : ℝ}
-    (hB : ∀ᵐ θ ∂polarLaw Γ, ‖θ.1‖ ^ 2 + |θ.2| ^ 2 ≤ B ^ 2) {K : Set H} (hK : IsCompact K)
-    {N : ℕ} (hN : 0 < N) {δ : ℝ} (hδ : 0 < δ) :
+    (hB0 : 0 ≤ B) (hB : ∀ᵐ θ ∂polarLaw Γ, ‖θ.1‖ ^ 2 + |θ.2| ^ 2 ≤ B ^ 2) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) {δ : ℝ} (hδ : 0 < δ) :
     sampleLaw N (polarLaw Γ) {θ |
         8 * polarWeight Γ / Real.sqrt N *
             (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) +
@@ -388,8 +388,9 @@ theorem cor_two_stage_error_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
   sorry
 
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  If
-`f = S_β Γ` satisfies the hypotheses of Theorem `thm:lipschitz-barron` and the same samples are
-used with the truncated directions `Π_m a_j`, then
+`f = S_β Γ` satisfies the hypotheses of Theorem `thm:lipschitz-barron` and the same samples and
+weights `(V/N) h(θ_j)` are used with the truncated directions `Π_m a_j` inside the activation,
+`f_{m,N}(x) = (V/N) ∑_j h(θ_j) β(⟪Π_m a_j, x⟫ + c_j)`, then
 `𝔼‖f − f_{m,N}‖_{C(K)} ≤ Lip(β) (∫ ‖a‖ d|Γ|) sup_K ‖x − Π_m x‖ +
 (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
 theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
@@ -400,8 +401,9 @@ theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) (m : ℕ) :
     ∫ θ, compactSupNorm K (fun x =>
           integralNetwork (fun t => (β t : ℂ)) Γ x -
-            sampledNetwork (fun t => (β t : ℂ)) (polarWeight Γ) (polarDensity Γ)
-              (fun j => (P m (θ j).1, (θ j).2)) x)
+            finiteNetwork (fun t => (β t : ℂ))
+              (fun j => ((polarWeight Γ / N : ℝ) : ℂ) • polarDensity Γ (θ j))
+              (fun j => P m (θ j).1) (fun j => (θ j).2) x)
         ∂sampleLaw N (polarLaw Γ) ≤
       (L : ℝ) * (∫ θ, ‖θ.1‖ ∂Γ.variation) * compactSupNorm K (fun x => x - P m x) +
         8 * polarWeight Γ / Real.sqrt N *

@@ -3,6 +3,7 @@ import OperatorRidgelet.Cylindrical
 import OperatorRidgelet.RankOneLift
 import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.ToFoML.ActivationContraction
+import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
 import OperatorRidgelet.ToFoML.RademacherSigns

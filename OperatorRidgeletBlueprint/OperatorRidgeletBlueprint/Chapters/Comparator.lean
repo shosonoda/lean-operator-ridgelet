@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 118.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 120.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 25
-  * 13
+  * 27
+  * 12
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -4576,22 +4576,22 @@ Status: *verified by comparator*.
 
 ## Corollary D.2 — Concentration for bounded parameters (`cor:sampling-concentration`)
 
-Blueprint node: {bpref "cor:sampling-concentration"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "cor:sampling-concentration"}[]. Status: *verified* (its Lean theorem is verified).
 
-Formalization note. '‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set \{θ | bound < ‖f\_N θ − f‖\_\{C(K)\}\} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M\_K = |β 0| + L R\_K B.
+Formalization note. '‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ), with the bound B ≥ 0 (hB0 : 0 ≤ B; implicit in the manuscript, where B bounds a norm, and needed since the threshold could be negative for B < 0). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set \{θ | bound < ‖f\_N θ − f‖\_\{C(K)\}\} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M\_K = |β 0| + L R\_K B.
 
 `OperatorRidgelet.Paper.cor_sampling_concentration`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L296):
 
 ```
 /-- **Corollary [cor:sampling-concentration]** Concentration for bounded parameters.  Under the
-hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely and
-`M_K = |β(0)| + Lip(β) R_K B`, then with probability at least `1 − δ`,
+hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely for some
+`B ≥ 0` and `M_K = |β(0)| + Lip(β) R_K B`, then with probability at least `1 − δ`,
 `‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂) + V M_K √(2 log(1/δ)/N)`. -/
 theorem cor_sampling_concentration [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {B : ℝ}
-    (hB : ∀ᵐ θ ∂polarLaw Γ, ‖θ.1‖ ^ 2 + |θ.2| ^ 2 ≤ B ^ 2) {K : Set H} (hK : IsCompact K)
-    {N : ℕ} (hN : 0 < N) {δ : ℝ} (hδ : 0 < δ) :
+    (hB0 : 0 ≤ B) (hB : ∀ᵐ θ ∂polarLaw Γ, ‖θ.1‖ ^ 2 + |θ.2| ^ 2 ≤ B ^ 2) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) {δ : ℝ} (hδ : 0 < δ) :
     sampleLaw N (polarLaw Γ) {θ |
         8 * polarWeight Γ / Real.sqrt N *
             (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) +
@@ -4603,7 +4603,7 @@ theorem cor_sampling_concentration [MeasurableSpace H] [BorelSpace H] {β : ℝ 
       ENNReal.ofReal δ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma D.3 — Hilbert-valued sampling identity (`lem:hilbert-sampling`)
 
@@ -4701,9 +4701,9 @@ Status: *verified by comparator*.
 
 ## Corollary D.5 — Input truncation and sampling are separate errors (`cor:two-stage-error`)
 
-Blueprint node: {bpref "cor:two-stage-error"}[]. Status: *partial 1/2* (1 of 2 Lean theorems verified).
+Blueprint node: {bpref "cor:two-stage-error"}[]. Status: *verified* (all 2 Lean theorems verified).
 
-Formalization note. Π\_m is P : ℕ → (H →L\[ℝ\] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the same samples θ with directions P m a\_j give sampledNetwork with parameters (P m (θ j).1, (θ j).2); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup\_K ‖x − Π\_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary.
+Formalization note. Π\_m is P : ℕ → (H →L\[ℝ\] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the truncated network f\_\{m,N\} keeps the samples θ\_j and the weights (V/N) h(θ\_j) of the polar sampled network and projects only the directions inside the activation, f\_\{m,N\}(x) = (V/N) ∑\_j h(θ\_j) β(⟪P m a\_j, x⟫ + c\_j), encoded as finiteNetwork β (fun j => (V/N) • polarDensity Γ (θ j)) (fun j => P m (θ j).1) (fun j => (θ j).2) (the phase h = polarDensity Γ is only specified |Γ|-a.e., so it may not be evaluated at the projected parameters); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup\_K ‖x − Π\_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary.
 
 `OperatorRidgelet.Paper.cor_two_stage_error_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L380):
 
@@ -4724,8 +4724,9 @@ Status: *verified by comparator*.
 
 ```
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  If
-`f = S_β Γ` satisfies the hypotheses of Theorem `thm:lipschitz-barron` and the same samples are
-used with the truncated directions `Π_m a_j`, then
+`f = S_β Γ` satisfies the hypotheses of Theorem `thm:lipschitz-barron` and the same samples and
+weights `(V/N) h(θ_j)` are used with the truncated directions `Π_m a_j` inside the activation,
+`f_{m,N}(x) = (V/N) ∑_j h(θ_j) β(⟪Π_m a_j, x⟫ + c_j)`, then
 `𝔼‖f − f_{m,N}‖_{C(K)} ≤ Lip(β) (∫ ‖a‖ d|Γ|) sup_K ‖x − Π_m x‖ +
 (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
 theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
@@ -4736,15 +4737,16 @@ theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) (m : ℕ) :
     ∫ θ, compactSupNorm K (fun x =>
           integralNetwork (fun t => (β t : ℂ)) Γ x -
-            sampledNetwork (fun t => (β t : ℂ)) (polarWeight Γ) (polarDensity Γ)
-              (fun j => (P m (θ j).1, (θ j).2)) x)
+            finiteNetwork (fun t => (β t : ℂ))
+              (fun j => ((polarWeight Γ / N : ℝ) : ℂ) • polarDensity Γ (θ j))
+              (fun j => P m (θ j).1) (fun j => (θ j).2) x)
         ∂sampleLaw N (polarLaw Γ) ≤
       (L : ℝ) * (∫ θ, ‖θ.1‖ ∂Γ.variation) * compactSupNorm K (fun x => x - P m x) +
         8 * polarWeight Γ / Real.sqrt N *
           (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 # Appendix E
 

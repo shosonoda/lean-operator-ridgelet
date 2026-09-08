@@ -7,6 +7,7 @@ import OperatorRidgelet.ToMathlib.IntegralSqrt
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
+import OperatorRidgelet.ToFoML.BoundedDifference
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Topology.ContinuousMap.SecondCountableSpace
 
@@ -32,6 +33,13 @@ Facts used by the proofs of `OperatorRidgelet.Paper.Sampling`.
   contraction principle, and the Hilbert-space Rademacher average; it is stated on an abstract
   probability space with a measurable parameter map `π : Ω → H × ℝ`, which covers the scalar,
   operator, and truncated-direction sampled networks at once.
+* The ingredients of the two corollaries of Appendix D: the envelope `|β(0)| + Lip(β) R_K B` of
+  a ridge atom with `‖a‖² + c² ≤ B²` (`norm_ridgeAtom_le_of_sq_le`, for the bounded-difference
+  constant of Corollary `cor:sampling-concentration`), the pointwise bound of the sampled-network
+  error by its compact sup norm (`norm_polarSampledNetwork_sub_le_compactSupNorm`), and the
+  Lipschitz estimate for projecting the directions inside the activation
+  (`norm_finiteNetwork_sub_finiteNetwork_map_le`, `norm_sampledNetwork_sub_truncated_le`, for
+  Corollary `cor:two-stage-error`).
 
 The Hilbert-valued variance identity of Lemma D.3 is the general `integral_norm_sq_sampleMean`
 of `OperatorRidgelet.ToMathlib.MeasurePi`.
@@ -490,6 +498,30 @@ omit [InnerProductSpace ℝ H] in
 theorem compactRadius_nonneg (K : Set H) : 0 ≤ compactRadius K :=
   Real.sSup_nonneg fun _ ⟨_, _, h⟩ => h ▸ Real.sqrt_nonneg _
 
+/-- The envelope of a ridge atom with bounded parameters: for `‖a‖² + c² ≤ B²` and `B ≥ 0`,
+`‖β(⟪a, ·⟫ + c)‖_{C(K)} ≤ |β(0)| + Lip(β) R_K B`. -/
+theorem norm_ridgeAtom_le_of_sq_le (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) {B : ℝ} (hB0 : 0 ≤ B) {θ : H × ℝ}
+    (hθ : ‖θ.1‖ ^ 2 + |θ.2| ^ 2 ≤ B ^ 2) :
+    ‖ridgeAtom hK (continuous_ofReal_comp hβ) θ‖ ≤ |β 0| + L * compactRadius K * B := by
+  have hR : 0 ≤ compactRadius K := compactRadius_nonneg K
+  have hC : 0 ≤ |β 0| + L * compactRadius K * B := by positivity
+  refine (BoundedContinuousFunction.norm_le hC).mpr fun x => ?_
+  rw [ridgeAtom_apply, Complex.norm_real, Real.norm_eq_abs]
+  have h1 : |β (⟪θ.1, (x : H)⟫ + θ.2)| ≤ |β 0| + L * |⟪θ.1, (x : H)⟫ + θ.2| := by
+    have := hβ.dist_le_mul (⟪θ.1, (x : H)⟫ + θ.2) 0
+    rw [Real.dist_eq, Real.dist_eq, sub_zero] at this
+    linarith [abs_sub_abs_le_abs_sub (β (⟪θ.1, (x : H)⟫ + θ.2)) (β 0)]
+  have hsq : Real.sqrt (‖θ.1‖ ^ 2 + θ.2 ^ 2) ≤ B := by
+    rw [← sq_abs θ.2]
+    exact (Real.sqrt_le_sqrt hθ).trans_eq (Real.sqrt_sq hB0)
+  have h2 : |⟪θ.1, (x : H)⟫ + θ.2| ≤ B * compactRadius K :=
+    (abs_inner_add_le_sqrt θ.1 x θ.2).trans
+      (mul_le_mul hsq (le_compactRadius hK x.2) (Real.sqrt_nonneg _) hB0)
+  calc |β (⟪θ.1, (x : H)⟫ + θ.2)| ≤ |β 0| + L * |⟪θ.1, (x : H)⟫ + θ.2| := h1
+    _ ≤ |β 0| + L * (B * compactRadius K) := by gcongr
+    _ = |β 0| + L * compactRadius K * B := by ring
+
 /-- The linear Rademacher process on `K`:
 `sup_{x ∈ K} |∑_j σ_j (⟪a_j, x⟫ + c_j)| ≤ √(‖∑_j σ_j a_j‖² + (∑_j σ_j c_j)²) R_K`. -/
 theorem sSup_abs_sum_mul_ridge_le (hK : IsCompact K) {N : ℕ} (σ : Fin N → ℝ)
@@ -928,7 +960,95 @@ theorem compactSupNorm_polarSampledNetwork_sub_eq (hK : IsCompact K) {β : ℝ �
         (smul_ridgeAtom_apply hK (continuous_ofReal_comp hβ) id (polarDensity Γ))
         (integrable_polar_atom hK hβ Γ h0 hM) (polarWeight_nonneg Γ) hN θ
 
+/-- The error of the polar sampled network at a point of `K` is bounded by its compact sup
+norm (the error is the restriction to `K` of a bounded continuous function). -/
+theorem norm_polarSampledNetwork_sub_le_compactSupNorm (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ))
+    [IsFiniteMeasure Γ.variation] (h0 : totalVariation Γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {N : ℕ}
+    (hN : 0 < N) (θ : Fin N → H × ℝ) {x : H} (hx : x ∈ K) :
+    ‖polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x - integralNetwork (fun t => (β t : ℂ)) Γ x‖ ≤
+      compactSupNorm K (fun x =>
+        polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+          integralNetwork (fun t => (β t : ℂ)) Γ x) := by
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hΦint := integrable_polar_atom hK hβ Γ h0 hM
+  refine le_compactSupNorm_of_forall (g := fun x =>
+      polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x - integralNetwork (fun t => (β t : ℂ)) Γ x)
+    ((polarWeight Γ / N : ℝ) •
+      (∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
+        (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
+          ∂polarLaw Γ))
+    (fun y => ?_) hx
+  refine (smul_sum_sub_apply (polarLaw Γ) (fun t => (β t : ℂ)) id (polarDensity Γ)
+    (smul_ridgeAtom_apply hK (continuous_ofReal_comp hβ) id (polarDensity Γ)) hΦint
+    (polarWeight Γ) hN θ y).trans ?_
+  rw [integralNetwork_eq_integral_polarLaw (fun t => (β t : ℂ)) Γ h0
+    (integrable_ridge_of_secondMoment (π := id) (polarLaw Γ) measurable_id
+      (lipschitzWith_ofReal_comp hβ) hM y)]
+  simp only [polarSampledNetwork, sampledNetwork, finiteNetwork, id]
+
 end Barron
+
+/-! ### Projecting the directions inside the activation -/
+
+section Truncation
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H] {K : Set H}
+
+/-- Projecting the directions inside the activation by a self-adjoint `P`:
+`‖∑_j β(⟪a_j, x⟫ + c_j) v_j − ∑_j β(⟪P a_j, x⟫ + c_j) v_j‖ ≤
+Lip(β) ‖x − P x‖ ∑_j ‖v_j‖ ‖a_j‖`. -/
+theorem norm_finiteNetwork_sub_finiteNetwork_map_le {β : ℝ → ℂ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) {P : H →L[ℝ] H} (hP : IsSelfAdjoint P) {N : ℕ} (v : Fin N → ℂ)
+    (a : Fin N → H) (c : Fin N → ℝ) (x : H) :
+    ‖finiteNetwork β v a c x - finiteNetwork β v (fun j => P (a j)) c x‖ ≤
+      L * ‖x - P x‖ * ∑ j, ‖v j‖ * ‖a j‖ := by
+  have hsym : ∀ j, ⟪P (a j), x⟫ = ⟪a j, P x⟫ := fun j =>
+    (ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hP) (a j) x
+  unfold finiteNetwork
+  rw [← Finset.sum_sub_distrib, Finset.mul_sum]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)
+  rw [← sub_smul, norm_smul]
+  have h1 : ‖β (⟪a j, x⟫ + c j) - β (⟪P (a j), x⟫ + c j)‖ ≤ L * (‖a j‖ * ‖x - P x‖) := by
+    have := hβ.dist_le_mul (⟪a j, x⟫ + c j) (⟪P (a j), x⟫ + c j)
+    rw [dist_eq_norm, Real.dist_eq] at this
+    refine this.trans (mul_le_mul_of_nonneg_left ?_ L.coe_nonneg)
+    rw [hsym, show ⟪a j, x⟫ + c j - (⟪a j, P x⟫ + c j) = ⟪a j, x - P x⟫ by
+      rw [inner_sub_right]; ring]
+    exact abs_real_inner_le_norm _ _
+  calc ‖β (⟪a j, x⟫ + c j) - β (⟪P (a j), x⟫ + c j)‖ * ‖v j‖
+      ≤ L * (‖a j‖ * ‖x - P x‖) * ‖v j‖ := mul_le_mul_of_nonneg_right h1 (norm_nonneg _)
+    _ = L * ‖x - P x‖ * (‖v j‖ * ‖a j‖) := by ring
+
+/-- The sampled network with the directions projected by a self-adjoint `P` differs from the
+sampled network on `K` by at most `Lip(β) sup_K ‖x − P x‖ (V/N) ∑_j ‖a_j‖`, for phases
+`‖h(θ_j)‖ ≤ 1`. -/
+theorem norm_sampledNetwork_sub_truncated_le (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) {P : H →L[ℝ] H} (hP : IsSelfAdjoint P) {V : ℝ} (hV : 0 ≤ V)
+    {N : ℕ} (h : H × ℝ → ℂ) (θ : Fin N → H × ℝ) (hh : ∀ j, ‖h (θ j)‖ ≤ 1) {x : H}
+    (hx : x ∈ K) :
+    ‖sampledNetwork (fun t => (β t : ℂ)) V h θ x -
+        finiteNetwork (fun t => (β t : ℂ)) (fun j => ((V / N : ℝ) : ℂ) • h (θ j))
+          (fun j => P (θ j).1) (fun j => (θ j).2) x‖ ≤
+      L * compactSupNorm K (fun x => x - P x) * (V / N * ∑ j, ‖(θ j).1‖) := by
+  have hD : ‖x - P x‖ ≤ compactSupNorm K (fun x => x - P x) :=
+    le_csSup (hK.image (by fun_prop : Continuous fun x : H => ‖x - P x‖)).bddAbove ⟨x, hx, rfl⟩
+  have hVN : 0 ≤ V / N := div_nonneg hV (Nat.cast_nonneg N)
+  have hv : ∀ j, ‖((V / N : ℝ) : ℂ) • h (θ j)‖ ≤ V / N := fun j => by
+    rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hVN]
+    exact mul_le_of_le_one_right hVN (hh j)
+  have hD0 : 0 ≤ compactSupNorm K (fun x => x - P x) := compactSupNorm_nonneg _ _
+  refine (norm_finiteNetwork_sub_finiteNetwork_map_le (lipschitzWith_ofReal_comp hβ) hP
+    (fun j => ((V / N : ℝ) : ℂ) • h (θ j)) (fun j => (θ j).1) (fun j => (θ j).2) x).trans ?_
+  calc L * ‖x - P x‖ * ∑ j, ‖((V / N : ℝ) : ℂ) • h (θ j)‖ * ‖(θ j).1‖
+      ≤ L * compactSupNorm K (fun x => x - P x) * ∑ j, V / N * ‖(θ j).1‖ := by
+        gcongr with j _
+        exact hv j
+    _ = L * compactSupNorm K (fun x => x - P x) * (V / N * ∑ j, ‖(θ j).1‖) := by
+        simp only [Finset.mul_sum]
+
+end Truncation
 
 /-! ### The Rademacher complexity as a finite average over the sign vectors -/
 

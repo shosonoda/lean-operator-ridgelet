@@ -4,7 +4,9 @@
     "theorem_names": [
         "OperatorRidgelet.Paper.cor_operator_sampling_i",
         "OperatorRidgelet.Paper.cor_operator_sampling_ii",
+        "OperatorRidgelet.Paper.cor_sampling_concentration",
         "OperatorRidgelet.Paper.cor_two_stage_error_i",
+        "OperatorRidgelet.Paper.cor_two_stage_error_ii",
         "OperatorRidgelet.Paper.def_admissible_filter",
         "OperatorRidgelet.Paper.def_integral_network_i",
         "OperatorRidgelet.Paper.def_integral_network_ii",

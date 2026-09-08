@@ -4,7 +4,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 57 | 25 | 13 |
+| 57 | 57 | 27 | 12 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -52,10 +52,10 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | C.1 | `lem:weighted-duality` | lemma | Hilbert structure and continuous activation pairing | `OperatorRidgelet.activationFourierCoordinate`<br>`OperatorRidgelet.activationCoordinate`<br>`OperatorRidgelet.activationNorm`<br>`OperatorRidgelet.testFilterCoordinate`<br>`OperatorRidgelet.testFilterNorm`<br>`OperatorRidgelet.Paper.lem_weighted_duality_i`<br>`OperatorRidgelet.Paper.lem_weighted_duality_ii`<br>`OperatorRidgelet.Paper.lem_weighted_duality_iii`<br>`OperatorRidgelet.Paper.lem_weighted_duality_iv`<br>`OperatorRidgelet.Paper.lem_weighted_duality_v` | stated |
 | C.2 | `lem:standard-activation-class` | lemma | Standard activations and admissible test filters | `OperatorRidgelet.MemActivationSpaceFun`<br>`OperatorRidgelet.gaussianCdf`<br>`OperatorRidgelet.gaussianFun`<br>`OperatorRidgelet.weightedDistribution`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_relu_mem`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_relu_lipschitz`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_relu_not_polynomial`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_tanh_mem`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_tanh_lipschitz`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_tanh_not_polynomial`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_mem`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_lipschitz`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussianCdf_not_polynomial`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_mem`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_lipschitz`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_gaussian_not_polynomial`<br>`OperatorRidgelet.Paper.lem_standard_activation_class_exists_filter` | partial 12/13 |
 | D.1 | `lem:qualitative-sampling` | lemma | Qualitative finite-atomic approximation | `OperatorRidgelet.Paper.lem_qualitative_sampling` | verified |
-| D.2 | `cor:sampling-concentration` | corollary | Concentration for bounded parameters | `OperatorRidgelet.Paper.cor_sampling_concentration` | stated |
+| D.2 | `cor:sampling-concentration` | corollary | Concentration for bounded parameters | `OperatorRidgelet.Paper.cor_sampling_concentration` | verified |
 | D.3 | `lem:hilbert-sampling` | lemma | Hilbert-valued sampling identity | `OperatorRidgelet.Paper.lem_hilbert_sampling_i`<br>`OperatorRidgelet.Paper.lem_hilbert_sampling_ii`<br>`OperatorRidgelet.Paper.lem_hilbert_sampling_iii` | verified |
 | D.4 | `cor:operator-sampling` | corollary | Sampling in operator parameters | `OperatorRidgelet.Paper.cor_operator_sampling_i`<br>`OperatorRidgelet.Paper.cor_operator_sampling_ii` | verified |
-| D.5 | `cor:two-stage-error` | corollary | Input truncation and sampling are separate errors | `OperatorRidgelet.Paper.cor_two_stage_error_i`<br>`OperatorRidgelet.Paper.cor_two_stage_error_ii` | partial 1/2 |
+| D.5 | `cor:two-stage-error` | corollary | Input truncation and sampling are separate errors | `OperatorRidgelet.Paper.cor_two_stage_error_i`<br>`OperatorRidgelet.Paper.cor_two_stage_error_ii` | verified |
 | E.1 | `lem:gaussian-quadratic` | lemma | Gaussian integral of a quadratic exponential | `OperatorRidgelet.Paper.lem_gaussian_quadratic_i`<br>`OperatorRidgelet.Paper.lem_gaussian_quadratic_ii` | stated |
 | E.2 | `lem:gaussian-hinge` | lemma | Absolute hinge representation of the Gaussian | `OperatorRidgelet.Paper.lem_gaussian_hinge_i_a`<br>`OperatorRidgelet.Paper.lem_gaussian_hinge_i_b`<br>`OperatorRidgelet.Paper.lem_gaussian_hinge_ii` | partial 2/3 |
 | F.1 | `lem:hs-reduction` | lemma | Hilbert--Schmidt reduction | `OperatorRidgelet.Paper.lem_hs_reduction` | verified |

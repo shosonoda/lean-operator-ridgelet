@@ -753,7 +753,7 @@
       "lean": [
         "OperatorRidgelet.Paper.cor_sampling_concentration"
       ],
-      "note": "'‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set {θ | bound < ‖f_N θ − f‖_{C(K)}} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M_K = |β 0| + L R_K B."
+      "note": "'‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ), with the bound B ≥ 0 (hB0 : 0 ≤ B; implicit in the manuscript, where B bounds a norm, and needed since the threshold could be negative for B < 0). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set {θ | bound < ‖f_N θ − f‖_{C(K)}} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M_K = |β 0| + L R_K B."
     },
     {
       "label": "lem:hilbert-sampling",
@@ -790,7 +790,7 @@
         "OperatorRidgelet.Paper.cor_two_stage_error_i",
         "OperatorRidgelet.Paper.cor_two_stage_error_ii"
       ],
-      "note": "Π_m is P : ℕ → (H →L[ℝ] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the same samples θ with directions P m a_j give sampledNetwork with parameters (P m (θ j).1, (θ j).2); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup_K ‖x − Π_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary."
+      "note": "Π_m is P : ℕ → (H →L[ℝ] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the truncated network f_{m,N} keeps the samples θ_j and the weights (V/N) h(θ_j) of the polar sampled network and projects only the directions inside the activation, f_{m,N}(x) = (V/N) ∑_j h(θ_j) β(⟪P m a_j, x⟫ + c_j), encoded as finiteNetwork β (fun j => (V/N) • polarDensity Γ (θ j)) (fun j => P m (θ j).1) (fun j => (θ j).2) (the phase h = polarDensity Γ is only specified |Γ|-a.e., so it may not be evaluated at the projected parameters); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup_K ‖x − Π_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary."
     },
     {
       "label": "lem:gaussian-quadratic",
