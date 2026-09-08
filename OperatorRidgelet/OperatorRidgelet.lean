@@ -6,6 +6,12 @@ import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
+import OperatorRidgelet.Network.Defs
+import OperatorRidgelet.Transform.Defs
+import OperatorRidgelet.Reconstruction.Defs
+import OperatorRidgelet.Tempered.Defs
+import OperatorRidgelet.Sampling.Defs
+import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Paper
 import OperatorRidgelet.ArchitectBridge
 

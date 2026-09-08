@@ -1,3 +1,10 @@
+import Challenge.Networks
+import Challenge.Transform
+import Challenge.Reconstruction
+import Challenge.Tempered
+import Challenge.Sampling
+import Challenge.Examples
+
 /-!
 # comparator challenge
 

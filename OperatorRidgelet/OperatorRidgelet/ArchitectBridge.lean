@@ -7,6 +7,12 @@ import OperatorRidgelet.RankOneLift
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
+import OperatorRidgelet.ArchitectBridge.Networks
+import OperatorRidgelet.ArchitectBridge.Transform
+import OperatorRidgelet.ArchitectBridge.Reconstruction
+import OperatorRidgelet.ArchitectBridge.Tempered
+import OperatorRidgelet.ArchitectBridge.Sampling
+import OperatorRidgelet.ArchitectBridge.Examples
 
 /-!
 # LeanArchitect metadata bridge

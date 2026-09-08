@@ -1,3 +1,10 @@
+import OperatorRidgelet.Paper.Networks
+import OperatorRidgelet.Paper.Transform
+import OperatorRidgelet.Paper.Reconstruction
+import OperatorRidgelet.Paper.Tempered
+import OperatorRidgelet.Paper.Sampling
+import OperatorRidgelet.Paper.Examples
+
 /-!
 # Statements of the manuscript
 
