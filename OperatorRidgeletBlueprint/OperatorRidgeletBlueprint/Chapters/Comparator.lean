@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 148.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 212.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 29
-  * 13
+  * 36
+  * 15
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -523,7 +523,7 @@ Status: *verified by comparator*.
 
 ## Example 3.10 — Elements of \\(\\cD\_\\alpha\\) (`ex:core-elements`)
 
-Blueprint node: {bpref "ex:core-elements"}[]. Status: *partial 3/5* (3 of 5 Lean theorems verified).
+Blueprint node: {bpref "ex:core-elements"}[]. Status: *partial 4/5* (4 of 5 Lean theorems verified).
 
 Formalization note. Claims i–iii (in Paper.Transform) are the first sentence: 𝒢\_Q 1, 1 ∈ 𝒟\_α, 𝓔\_α ≠ \{0\}. Claims iv (f\_W ∈ 𝒟\_α, with the hypotheses of ex:closed-form: W positive injective self-adjoint, S = Q^\{1/2\} as data with IsPositiveSqrt S Q, M = S W S with a summable trace) and v (the observables F\_φ = ⟨ℱ(·),φ⟩ of the Gaussian-activation operator layers, under IsLayerData) are in Paper.Examples; membership of a function in 𝒟\_α is MemSpectralCore μ ν f (f ∈ L²(μ) and 𝒢\_μ f ∈ L²(ν)), related to the submodule spectralCore by memSpectralCore\_iff.
 
@@ -599,7 +599,7 @@ theorem ex_core_elements_v (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Theorem 3.12 — Plancherel identity and injectivity (`thm:B`)
 
@@ -1739,7 +1739,7 @@ Status: *statement only (proof pending)*.
 
 ## Definition 5.1 — Regularized synthesis (`def:regularized-synthesis`)
 
-Blueprint node: {bpref "def:regularized-synthesis"}[]. Status: *partial 2/6* (2 of 6 Lean theorems verified).
+Blueprint node: {bpref "def:regularized-synthesis"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. A real β ∈ 𝒮'(ℝ) is a `TemperedDistribution ℝ ℂ` fixed by the vendored distributional conjugation (`IsRealDistribution`); χ and (η\_ε) are functions with the predicates `IsCutoff ρ χ` (even, C\_c^∞(ℝ∖\{0\}), = 1 on a neighbourhood of supp ρ̂) and `IsApproximateIdentity η` (each η\_ε smooth, compactly supported, even, nonnegative, of integral one, supports shrinking to \{0\}); β̂ \* η\_ε is the pairing ⟨β̂, η\_ε(ω - ·)⟩ and β\_ε is the real Schwartz map with Fourier transform χ(β̂ \* η\_ε), obtained by choice (junk 0). 𝓔\_α', R\_ρ on 𝓔\_α ≅ 𝒦\_α, and S\_ρ = R\_ρ' are the Section 4 objects `SpectralAntiDual μ ν` (= `spectralRange μ ν →L⋆[ℂ] ℂ`), `ridgeletExtension μ ν ρ` (the bounded extension of Theorem B(ii), chosen from its defining property) and `synthesis μ ν ρ γ = (innerSLFlip ℂ γ).comp (ridgeletExtension μ ν ρ)` of Reconstruction/Defs, so that S\_\{β\_ε\} γ = `regularizedSynthesis` = `synthesis μ ν β_ε γ` and (S\_\{β\_ε\} γ)\[g\] = ⟨γ, R\_\{β\_ε\} g⟩ holds by definition (the earlier local stand-ins `Tempered.spectralAntiDual`, `Tempered.ridgeletExtension` = G ↦ W\_ρ G, and the choice-based `Tempered.synthesisFunctional` were removed in favour of these). S\_β γ is the limit of S\_\{β\_ε\} γ in the norm of 𝓔\_α' along ε ↓ 0, obtained by choice whenever it exists (junk 0). Parts i–vi are the claims implicit in the definition: existence of χ and of (η\_ε), β̂\_ε ∈ C\_c^∞(ℝ∖\{0\}), existence and uniqueness of β\_ε, and well-definedness of S\_\{β\_ε\} γ for γ ∈ Ran R\_ρ = `ridgeletRange μ ν ρ` (part vi, which is now `rfl`).
 
@@ -1768,7 +1768,7 @@ theorem def_regularized_synthesis_i (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass
     ∃ χ : ℝ → ℝ, IsCutoff ρ χ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_ii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L28):
 
@@ -1794,7 +1794,7 @@ theorem def_regularized_synthesis_iii (β : TemperedDistribution ℝ ℂ) (hβ :
       (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L44):
 
@@ -1808,7 +1808,7 @@ theorem def_regularized_synthesis_iv (β : TemperedDistribution ℝ ℂ) (hβ : 
     ∀ ω : ℝ, filterFourier (regularizedActivation β χ η ε) ω = regularizedSpectrum β χ η ε ω := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L53):
 
@@ -1822,7 +1822,7 @@ theorem def_regularized_synthesis_v (β : TemperedDistribution ℝ ℂ) (hβ : I
       b = regularizedActivation β χ η ε := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.def_regularized_synthesis_vi`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L62):
 
@@ -1848,7 +1848,7 @@ Status: *verified by comparator*.
 
 ## Theorem 5.2 — Reconstruction with a tempered activation (`thm:tempered-reconstruction`)
 
-Blueprint node: {bpref "thm:tempered-reconstruction"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "thm:tempered-reconstruction"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. Stated for the abstract pair (μ, ν) of Appendix H (ν σ-finite, full support, homogeneous of degree α), of which the Gaussian pair is the instance; f ∈ 𝓔\_α is f : spectralRange μ ν and R\_ρ f is the Section 4 extension `ridgeletExtension μ ν ρ f` (Theorem B(ii); its identification with W\_ρ f is Theorem C(iii)). Parts: existence of the limit in `SpectralAntiDual μ ν`, independence of χ and (η\_ε), the frame identity S\_β R\_ρ f = C^\{(α)\}\_\{β,ρ\} T\_α f with T\_α = `rieszMap μ ν` = innerSLFlip ℂ (T\_α f \[g\] = ⟨f,g⟩\_𝓔 = ⟪g,f⟫ in Mathlib's inner product), the two reconstruction formulas with T\_α⁻¹ = `rieszInv μ ν` (the Riesz representation through InnerProductSpace.toDual, from Reconstruction/Defs; the local `Tempered.*` stand-ins were removed), and the existence of a band-pass ρ with C ≠ 0 for non-polynomial β (`¬ IsPolynomialDistribution β`: β does not act by integration against a polynomial, which is β ≠ 0 in 𝒮'/𝒫).
 
@@ -1867,7 +1867,7 @@ theorem thm_tempered_reconstruction_i (μ ν : Measure H) [IsProbabilityMeasure 
         (𝓝[>] 0) (𝓝 F) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_ii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L93):
 
@@ -1884,7 +1884,7 @@ theorem thm_tempered_reconstruction_ii (μ ν : Measure H) [IsProbabilityMeasure
       temperedSynthesis μ ν β χ' η' (ridgeletExtension μ ν ρ f) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_iii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L105):
 
@@ -1900,7 +1900,7 @@ theorem thm_tempered_reconstruction_iii (μ ν : Measure H) [IsProbabilityMeasur
       temperedAdmissibilityConst α β ρ • rieszMap μ ν f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L116):
 
@@ -1918,7 +1918,7 @@ theorem thm_tempered_reconstruction_iv (μ ν : Measure H) [IsProbabilityMeasure
         (temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L129):
 
@@ -1936,7 +1936,7 @@ theorem thm_tempered_reconstruction_v (μ ν : Measure H) [IsProbabilityMeasure 
         (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_tempered_reconstruction_vi`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L142):
 
@@ -1949,11 +1949,11 @@ theorem thm_tempered_reconstruction_vi {α : ℝ} (hα : 0 < α) (β : TemperedD
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Corollary 5.3 — ReLU is admissible (`cor:relu-admissible`)
 
-Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 6/8* (6 of 8 Lean theorems verified).
 
 Formalization note. ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^\{-2\}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim\_\{ε↓0\}(∫\_\{|ω|>ε\} φ ω^\{-2\} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^\{-2\} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^\{-α-2\} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm\_A\_iii\_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖\{0\} containing supp ρ̂, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g\_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed.
 
@@ -1990,7 +1990,7 @@ theorem cor_relu_admissible_ii :
       angularFourierDistribution reluDistribution φ = ∫ ω : ℝ, -((ω : ℂ) ^ 2)⁻¹ * φ ω := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_iii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L171):
 
@@ -2004,7 +2004,7 @@ theorem cor_relu_admissible_iii {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ 
     temperedAdmissibilityConst α reluDistribution ρ = (reluAdmissibilityScale α ρ : ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L180):
 
@@ -2018,7 +2018,7 @@ theorem cor_relu_admissible_iv {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ �
     0 < reluAdmissibilityScale α ρ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L189):
 
@@ -2033,7 +2033,7 @@ theorem cor_relu_admissible_v {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ �
       temperedAdmissibilityConst α reluDistribution (reluNormalizedFilter α ρ) = 1 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_vi`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L199):
 
@@ -2053,7 +2053,7 @@ theorem cor_relu_admissible_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
         (ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_vii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L214):
 
@@ -2072,7 +2072,7 @@ theorem cor_relu_admissible_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
       (ridgeletExtension μ ν (reluNormalizedFilter α ρ) (rieszInv μ ν g)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_viii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L228):
 
@@ -2101,7 +2101,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 5.4 — Standard activations (`ex:standard-activations`)
 
-Blueprint node: {bpref "ex:standard-activations"}[]. Status: *partial 12/16* (12 of 16 Lean theorems verified).
+Blueprint node: {bpref "ex:standard-activations"}[]. Status: *verified* (all 16 Lean theorems verified).
 
 Formalization note. The three properties (membership in 𝒜\_\{0,2\}, global Lipschitz continuity, not a polynomial) are the theorems of lem:standard-activation-class (shared); 'covered by thm:tempered-reconstruction, thm:A(iii), and Section 6' is stated as its instance: for every α > 0 there is a band-pass ρ with C^\{(α)\}\_\{β,ρ\} ≠ 0, for β = ReLU, tanh, Φ = `gaussianCdfDistribution`, e^\{-u²/2\} = `gaussianDistribution` (the last two realized through `weightedDistribution 2`, which acts by integration against the function).
 
@@ -2239,7 +2239,7 @@ theorem ex_standard_activations_relu {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α reluDistribution ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_standard_activations_tanh`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L257):
 
@@ -2251,7 +2251,7 @@ theorem ex_standard_activations_tanh {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α tanhDistribution ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_standard_activations_gaussianCdf`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L264):
 
@@ -2264,7 +2264,7 @@ theorem ex_standard_activations_gaussianCdf {α : ℝ} (hα : 0 < α) :
       temperedAdmissibilityConst α gaussianCdfDistribution ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_standard_activations_gaussian`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L272):
 
@@ -2277,7 +2277,7 @@ theorem ex_standard_activations_gaussian {α : ℝ} (hα : 0 < α) :
       temperedAdmissibilityConst α gaussianDistribution ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 # Manuscript Section 6
 
@@ -2739,7 +2739,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 7.1 — Closed-form transform and its filtered network (`ex:closed-form`)
 
-Blueprint node: {bpref "ex:closed-form"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "ex:closed-form"}[]. Status: *partial 1/11* (1 of 11 Lean theorems verified).
 
 Formalization note. Standing hypotheses: W self-adjoint, ⟨Wx,x⟩ ≥ 0, injective; Q^\{1/2\} is data S with IsPositiveSqrt S Q; M = S \* W \* S with HasSummableTrace; f\_W = gaussianTarget W, D = fredholmDet (S\*W\*S), κ\_W = gaussianKappa S W = ⟨S (I+M)⁻¹ S ξ, ξ⟩ with Ring.inverse. i\_a: 𝒢\_Q f\_W = D^\{-1/2\} e^\{-κ\_W/2\}; i\_b: R\_ρ f\_W(a,c) = D^\{-1/2\}(ρ\*φ\_\{κ\_W(a)\})(c) with gaussianSmooth (convolution with Mathlib's gaussianReal 0 v, δ\_0 for v = 0), stated for every (a,c); i\_c: f\_W ∈ 𝒟\_α (MemSpectralCore); i\_d: non-cylindricity for W of infinite rank (IsCylindrical allows any linear finite-rank L, so the claim is slightly stronger than the manuscript's). ii\_a: G = 𝒢\_Q f\_W regular along rays for every frequency window of ρ; ii\_b: T\_α f\_W is represented by g\_G (frame-operator identity of thm:C(iii), for the element of 𝒟\_α equal a.e. to f\_W); ii\_c: eq:filtered-gaussian-target with P^\{1/2\} as data R, S\_W = gaussianTargetResolvent S W, Σ\_s = mixtureLayerCovariance R S\_W s, det(I + 2s P^\{1/2\} S\_W P^\{1/2\}) = fredholmDet ((2s) • (R S\_W R)), the s-integral over Ioi 0. iii: β is a tempered distribution that is a Lipschitz non-polynomial function b (IsTemperedFunction, LipschitzWith L b, ¬IsPolynomialFun b); iii\_a: R\_ρ f\_W = γ\_G pointwise; iii\_b: ∫ (1+‖a‖²+|c|²)|R\_ρ f\_W| dλ\_α < ∞ (finite variation and second moment); iii\_c: S\_β\[R\_ρ f\_W λ\_α\] = C\_\{β,ρ\} g\_G (integralNetworkDensity, temperedAdmissibilityConst); iii\_d: the rate eq:spectral-barron in the conventions of Section 6, exactly as thm\_E\_iv with γ = R\_ρ f\_W: the Bochner expectation over sampleLaw n (densityLaw λ\_α γ) of ‖densitySampledNetwork β λ\_α γ θ − C g\_G‖\_\{C(K)\} (compactSupNorm) is at most 8V/√n (|β(0)| + Lip(β) R\_K M₂) with V = densityWeight λ\_α γ, R\_K = compactRadius K, M₂² = secondMoment (densityLaw λ\_α γ), n ≥ 1 (the earlier local Examples.polarSample/normalizedLaw/supNormOn/compactRadius/secondMoment and the lower-integral form were replaced by the Sampling/Defs objects).
 
@@ -2807,7 +2807,7 @@ theorem ex_closed_form_i_d (W : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀
     ¬ IsCylindrical (gaussianTarget W) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_ii_a`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L117):
 
@@ -2964,7 +2964,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 7.2 — ReLU and Gaussian networks with Gaussian parameters (`ex:gaussian-parameter`)
 
-Blueprint node: {bpref "ex:gaussian-parameter"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "ex:gaussian-parameter"}[]. Status: *partial 7/8* (7 of 8 Lean theorems verified).
 
 Formalization note. H = ℓ²(ℕ) with Q e\_j = q\_j e\_j is stated on an abstract H with a Hilbert basis e : HilbertBasis ℕ ℝ H, q\_j > 0 summable, and Q (e j) = q j • e j (the manuscript's setting up to the unitary identification with ℓ²); the parameter law is μ with IsCenteredGaussian Q μ; F\_Q = gaussianParameterReLU μ, Φ\_Q = gaussianParameterGauss μ with Φ = gaussianFun = e^\{-u²/2\} of Tempered/Defs (the manuscript's Gaussian activation, not the distribution function gaussianCdf; the duplicate Examples definition gaussianAct was removed). i, ii: the closed forms; iii: the ReLU integral over μ ⊗ db with φ'' = gaussianActDeriv2; iv, v: neither target is cylindrical; vi: 'a Gaussian-activation network with finite coefficient measure is also a ReLU network with finite coefficient measure, with all parameter moments finite' is stated for a Y-valued coefficient density γ with respect to a σ-finite λ, integrable with all moments finite: vi\_a the integral-network identity with the hinge coefficient measure hingeCoefficientMeasure λ γ (a Mathlib VectorMeasure), vi\_b its finiteness, vi\_c its moments.
 
@@ -2979,7 +2979,7 @@ theorem ex_gaussian_parameter_i {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H)
     ∀ x : H, gaussianParameterReLU μ x = Real.sqrt (⟪Q x, x⟫ / (2 * Real.pi)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L271):
 
@@ -2992,7 +2992,7 @@ theorem ex_gaussian_parameter_ii {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H
     ∀ x : H, gaussianParameterGauss μ x = (Real.sqrt (1 + ⟪Q x, x⟫))⁻¹ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_iii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L279):
 
@@ -3006,7 +3006,7 @@ theorem ex_gaussian_parameter_iii {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ 
       ∫ p : H × ℝ, relu (⟪p.1, x⟫ - p.2) * gaussianActDeriv2 p.2 ∂(μ.prod volume) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_iv`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L288):
 
@@ -3019,7 +3019,7 @@ theorem ex_gaussian_parameter_iv {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H
     ¬ IsCylindrical (gaussianParameterReLU μ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_v`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L296):
 
@@ -3032,7 +3032,7 @@ theorem ex_gaussian_parameter_v {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H)
     ¬ IsCylindrical (gaussianParameterGauss μ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_vi_a`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L304):
 
@@ -3066,7 +3066,7 @@ theorem ex_gaussian_parameter_vi_b {Y : Type*} [NormedAddCommGroup Y] [InnerProd
     IsFiniteMeasure (hingeCoefficientMeasure lam γ).variation := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_gaussian_parameter_vi_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L328):
 
@@ -3083,11 +3083,11 @@ theorem ex_gaussian_parameter_vi_c {Y : Type*} [NormedAddCommGroup Y] [InnerProd
       ∂(hingeCoefficientMeasure lam γ).variation < ⊤ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Corollary 7.3 — Discretization of the Gaussian-parameter ReLU network (`cor:relu-discretization`)
 
-Blueprint node: {bpref "cor:relu-discretization"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "cor:relu-discretization"}[]. Status: *verified* (its Lean theorem is verified).
 
 Formalization note. Stated in the conventions of Section 6 (Sampling/Defs), as the case V = 1, c = 0, h = 1 of thm:lipschitz-barron used in the manuscript's proof: the samples are θ\_j = (a\_j, 0) with law ι\_# 𝒩(0,Q) = μ.map (a ↦ (a, 0)), F\_\{Q,n\} = sampledNetwork ReLU 1 1 θ = n⁻¹ Σ ReLU(⟨a\_j,·⟩), ‖·‖\_\{C(K)\} = compactSupNorm K, R\_K = compactRadius K, tr Q = traceOf Q (Transform/Defs), the expectation over n ≥ 1 samples is the Bochner integral over sampleLaw n, and F\_Q = gaussianParameterReLU μ (real valued, coerced to ℂ). The earlier local Examples.gaussianReLUSample/supNormOn/compactRadius and the lower-integral form were replaced.
 
@@ -3109,11 +3109,11 @@ theorem cor_relu_discretization {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
       8 * compactRadius K * Real.sqrt (traceOf Q) / Real.sqrt n := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Example 7.4 — Neural-operator layer as an integral network (`ex:operator-layer`)
 
-Blueprint node: {bpref "ex:operator-layer"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "ex:operator-layer"}[]. Status: *partial 14/26* (14 of 26 Lean theorems verified).
 
 Formalization note. Setting: (Ω,m) a finite measure space, a : Ω → H, b : Ω → Y with IsLayerData m a b (Borel, ‖a\_y‖ bounded, ∫‖b\_y‖ < ∞), β continuous of polynomial growth (HasPolynomialGrowth), ℱ = operatorLayer m a b β, F\_φ = layerObservable = ⟨ℱ(·),φ⟩\_Y = inner ℂ φ (ℱ x), w\_φ = layerWeight, ‖A‖\_∞ = layerSupNorm a, A = layerA m a : H →ₗ (Ω →ₘ\[m\] ℝ), Γ = layerMeasure m a b (VectorMeasure map of withDensityᵥ), S\_y = layerCovariance Q a y. i\_a: ℱ = integralNetwork β Γ; i\_b: ‖Γ‖\_TV ≤ ∫⁻‖b\_y‖; i\_c: ∫(‖a‖²+c²)d|Γ| ≤ ‖A‖²\_∞ ‖Γ‖\_TV (second parameter moment ≤ ‖A‖²\_∞); i\_d: the L²(ζ;Y) rate of cor:vector-rates for the polar sampled network polarSampledNetwork β Γ of Γ = layerMeasure m a b with samples from polarLaw Γ (Sampling/Defs, exactly the objects of cor:vector-rates), as a Bochner expectation over sampleLaw n, with the manuscript's constant 2(∫‖b\_y‖ dm)²/n(|β(0)|²+Lip(β)²(1+∫‖x‖²dζ)‖A‖²\_∞) (which dominates the constant of cor:vector-rates by i\_b and i\_c); i\_e: the C(K) bound of thm:lipschitz-barron for the polar sampled network of the scalar measure Γ\_φ = layerMeasure m a w\_φ = ι\_#(w\_φ m) with samples from polarLaw Γ\_φ, with the constant 8‖w\_φ‖\_\{L¹(m)\}/√n(|β(0)|+Lip(β)R\_K‖A‖\_∞), n ≥ 1 (the earlier local Examples.layerSampleVec/layerSampleScalar, which sampled y ∈ Ω from normalizedLaw, and the lower-integral form were replaced by the Sampling/Defs objects the manuscript's proof invokes). ii (β = Φ = gaussianFun): ii\_a F\_φ ∈ 𝒟\_α; ii\_b, ii\_c the two formulas of eq:operator-layer-transform (with gaussianSmooth); ii\_d S\_y ≥ (1+‖Q‖‖A‖²\_∞)⁻¹Q; ii\_e regularity along rays; ii\_f the frame-operator representation of thm:C(iii); ii\_g R\_ρ F\_φ = γ\_G; ii\_h finite variation and moments; ii\_i the synthesis identity with any Lipschitz non-polynomial β'; ii\_j the rate of eq:spectral-barron in the conventions of Section 6, as thm\_E\_iv with γ = R\_ρ F\_φ (densitySampledNetwork, densityLaw, densityWeight, secondMoment, compactSupNorm, compactRadius); ii\_k–ii\_p the same for ℱ as a Y-valued target (membership in 𝒟\_α(Y), 𝒢\_Q ℱ, regularity, R\_ρ ℱ = γ, moments, synthesis). iii\_a: the ReLU double integral over m ⊗ db; iii\_b: ℱ = integralNetwork ReLU of layerHingeMeasure; iii\_c, iii\_d: finiteness and moments of that measure. iv: A of infinite rank (HasInfiniteRank (layerA m a)), w\_φ > 0 a.e. (real positive: 0 < re, im = 0) ⇒ F\_φ not cylindrical.
 
@@ -3141,7 +3141,7 @@ theorem ex_operator_layer_i_b (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
     totalVariation (layerMeasure m a b) ≤ ∫⁻ y, ‖b y‖ₑ ∂m := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_i_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L380):
 
@@ -3155,7 +3155,7 @@ theorem ex_operator_layer_i_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
       ENNReal.ofReal (layerSupNorm a ^ 2) * totalVariation (layerMeasure m a b) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_i_d`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L389):
 
@@ -3212,7 +3212,7 @@ theorem ex_operator_layer_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     MemSpectralCore μ (gaussianMixture N α) (layerObservable m a b gaussianFun φ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_b`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L431):
 
@@ -3229,7 +3229,7 @@ theorem ex_operator_layer_ii_b {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
         Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) ∂m := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L443):
 
@@ -3248,7 +3248,7 @@ theorem ex_operator_layer_ii_c {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
         gaussianSmooth ρ ⟪layerCovariance Q a y p.1, p.1⟫ p.2 : ℝ) : ℂ) ∂m := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_d`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L457):
 
@@ -3263,7 +3263,7 @@ theorem ex_operator_layer_ii_d {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
       (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫ ≤ ⟪layerCovariance Q a y ξ, ξ⟫ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_e`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L467):
 
@@ -3321,7 +3321,7 @@ theorem ex_operator_layer_ii_g {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
       coefficientFormula ρ (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_h`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L510):
 
@@ -3411,7 +3411,7 @@ theorem ex_operator_layer_ii_k (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     MemSpectralCoreVec μ (gaussianMixture N α) (operatorLayer m a b gaussianFun) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_l`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L580):
 
@@ -3428,7 +3428,7 @@ theorem ex_operator_layer_ii_l {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
         Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • b y ∂m := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_m`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L592):
 
@@ -3463,7 +3463,7 @@ theorem ex_operator_layer_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
       coefficientFormulaVec ρ (gaussFourierVec μ (operatorLayer m a b gaussianFun)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_o`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L617):
 
@@ -3520,7 +3520,7 @@ theorem ex_operator_layer_iii_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
         ∂(m.prod volume) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_iii_b`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L659):
 
@@ -3548,7 +3548,7 @@ theorem ex_operator_layer_iii_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
     IsFiniteMeasure (layerHingeMeasure m a b).variation := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_iii_d`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L677):
 
@@ -3562,7 +3562,7 @@ theorem ex_operator_layer_iii_d (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
       ∂(layerHingeMeasure m a b).variation < ⊤ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_iv`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L686):
 
@@ -3578,11 +3578,11 @@ theorem ex_operator_layer_iv (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H)
     ¬ IsCylindrical (layerObservable m a b gaussianFun φ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Example 7.5 — Periodic convolution layer (`ex:convolution`)
 
-Blueprint node: {bpref "ex:convolution"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "ex:convolution"}[]. Status: *partial 8/13* (8 of 13 Lean theorems verified).
 
 Formalization note. Concrete torus: Torus d = Fin d → AddCircle (2π), torusHaar d = the product of the normalized Haar measures (a probability measure), H = TorusL2 d = Lp ℝ 2, Y = TorusL2C d = Lp ℂ 2, k ψ : TorusL2 d, a\_y = convDirection k y = k(y - ·) and b\_y = convOutput ψ y = ψ(· - y) through Lp.compMeasurePreserving, τ\_z = torusTranslate d z (a linear isometry), Fourier coefficients torusFourierCoeff with the characters torusCharacter n = ∏ fourier (n j) (t j), (I-Δ)^\{-s\} = besselOperator d s (the bounded operator multiplying the n-th Fourier coefficient by (1+|n|²)^\{-s\}, chosen through Classical.choose). i: ⟨a\_y,x⟩ = (k\*x)(y); ii: ℱ(x) = ψ\*β(k\*x) a.e.; iii: ‖A‖\_∞ = ‖k‖; iv: ∫‖b\_y‖ = ‖ψ‖; v: IsLayerData (so ex:operator-layer applies); vi: translation equivariance ℱ(τ\_z x) = τ\_z ℱ(x); vii: 'every isometry of 𝕋^d fixing k and ψ' is read as an isometric additive automorphism σ that is measure preserving with k ∘ σ = k and ψ ∘ σ = ψ a.e. (translations being claim vi), with ℱ(x ∘ σ) = ℱ(x) ∘ σ; viii: infinitely many nonzero k̂(n) ⇒ A of infinite rank; ix: F\_1 = ψ̂(0) ∫ β((k\*x)(y)) dy with φ ≡ 1 = torusOne d; x: non-cylindricity of F\_1 for β = Φ (the reading given by the proof) when ψ̂(0) ≠ 0 and k̂(n) ≠ 0 for infinitely many n; xi: IsTraceClassCovariance (besselOperator d s) for s > d/2; xii: translation invariance of (I-Δ)^\{-s\}; xiii: R\_ρ\[f ∘ τ\_z\](a,c) = R\_ρ f(τ\_z a, c) for μ = 𝒩(0,(I-Δ)^\{-s\}) (Borel structure on TorusL2 d taken as instance hypotheses) and f ∈ L¹(μ).
 
@@ -3596,7 +3596,7 @@ theorem ex_convolution_i (d : ℕ) (k : TorusL2 d) :
       ⟪convDirection k y, x⟫ = ∫ t, k (y - t) * x t ∂torusHaar d := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L710):
 
@@ -3611,7 +3611,7 @@ theorem ex_convolution_ii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           ∫ y, ((ψ (t - y) * β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_iii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L720):
 
@@ -3621,7 +3621,7 @@ theorem ex_convolution_iii (d : ℕ) (k : TorusL2 d) :
     layerSupNorm (convDirection k) = ‖k‖ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_iv`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L725):
 
@@ -3631,7 +3631,7 @@ theorem ex_convolution_iv (d : ℕ) (ψ : TorusL2 d) :
     ∫ y, ‖convOutput ψ y‖ ∂torusHaar d = ‖ψ‖ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_v`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L730):
 
@@ -3643,7 +3643,7 @@ theorem ex_convolution_v (d : ℕ) (k ψ : TorusL2 d) :
     IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_vi`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L737):
 
@@ -3658,7 +3658,7 @@ theorem ex_convolution_vi (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_vii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L747):
 
@@ -3678,7 +3678,7 @@ theorem ex_convolution_vii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc
               (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_viii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L762):
 
@@ -3705,7 +3705,7 @@ theorem ex_convolution_ix (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           ∫ y, ((β ⟪convDirection k y, x⟫ : ℝ) : ℂ) ∂torusHaar d := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_x`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L779):
 
@@ -3765,7 +3765,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 7.6 — Dirichlet solution operator with a pointwise nonlinearity (`ex:dirichlet`)
 
-Blueprint node: {bpref "ex:dirichlet"}[]. Status: *partial 1/11* (1 of 11 Lean theorems verified).
+Blueprint node: {bpref "ex:dirichlet"}[]. Status: *partial 5/11* (5 of 11 Lean theorems verified).
 
 Formalization note. Ω = (0,1) is the subtype UnitOpenInterval with Lebesgue measure volume (a probability measure), H = UnitL2 = Lp ℝ 2 volume, Y = UnitL2C (complex), g = dirichletKernel, 𝖦 = dirichletOperator (the integral operator with kernel g, chosen through its defining property), λ\_n = dirichletEigenvalue, e\_n = dirichletEigenfunction (e\_0 = 0), a\_y = dirichletDirection y = g(y,·), b\_y = dirichletOutput y, 𝖦\_N = dirichletReLUTruncation N (spectralReLUNetwork over n ∈ \[1,N\]). i: (𝖦x)(y) = ∫ g(y,t)x(t)dt a.e.; ii: for continuous x, u = 𝖦x has u(0) = u(1) = 0, is differentiable on (0,1), and u'' = u - x there; iii: eigenpairs for n ≥ 1; iv: IsTraceClassCovariance 𝖦 (injective, positive, self-adjoint, trace class); v: infinite rank; vi: sup\_y ‖g(y,·)‖₂ < ∞ (= ‖A‖\_∞ by definition); vii: IsLayerData (ex:operator-layer applies); viii: ℱ(x) = 𝖦β(𝖦x); ix: the exact ReLU network as a HasSum; x: ‖𝖦x - 𝖦\_N x‖ ≤ λ\_\{N+1\}‖x‖; xi: λ\_\{N+1\} ≤ π⁻²(N+1)⁻² (the O(N^\{-2\}) rate). The remark that with Q = P = 𝖦 the input measure is the law of the solution with white-noise source is not formalized.
 
@@ -3779,7 +3779,7 @@ theorem ex_dirichlet_i :
       fun y : UnitOpenInterval => ∫ t : UnitOpenInterval, dirichletKernel y t * x t := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L828):
 
@@ -3837,7 +3837,7 @@ theorem ex_dirichlet_vi :
     BddAbove (Set.range fun y : UnitOpenInterval => ‖dirichletDirection y‖) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_vii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L861):
 
@@ -3848,7 +3848,7 @@ Status: *statement only (proof pending)*.
 theorem ex_dirichlet_vii : IsLayerData volume dirichletDirection dirichletOutput := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_viii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L867):
 
@@ -3861,7 +3861,7 @@ theorem ex_dirichlet_viii (β : ℝ → ℝ) (hβc : Continuous β) (hβp : HasP
         (dirichletOperator (toLpOrZero 2 volume fun t => β (dirichletOperator x t))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_ix`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L875):
 
@@ -4308,7 +4308,7 @@ Status: *verified by comparator*.
 
 ## Lemma C.1 — Hilbert structure and continuous activation pairing (`lem:weighted-duality`)
 
-Blueprint node: {bpref "lem:weighted-duality"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:weighted-duality"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. 𝒜\_\{s,t\} is the vendored `MemActivationSpace s t` (⟨x⟩^\{-t\} β ∈ H^s), B^q is the vendored angular Bessel potential, and the coordinate ⟨ω⟩^s B^\{-t\} β̂ is `activationFourierCoordinate` with L² representative `activationCoordinate` (by choice); the norm ‖β‖\_\{𝒜\_\{s,t\}\} is its L² norm (the isometry is the definition of the norm). 'Isometric isomorphism 𝒜\_\{s,t\} → L²' is split into: the coordinate exists for β ∈ 𝒜\_\{s,t\} (i), injectivity (ii), surjectivity through the vendored `activationRealization` (iii). The dual test norm ‖r‖\_\{ℋ^♯\_\{s,t\}\} = ‖⟨ω⟩^\{-s\} B^t r‖\_\{L²\} is `testFilterNorm`; the bound is (iv), and the extension to the completion (v) is a continuous linear functional on L²(ℝ) (the completion of the test filters via r ↦ ⟨ω⟩^\{-s\} B^t r) of norm ≤ (2π)⁻¹‖β‖ that agrees with (2π)⁻¹⟨β̂, r⟩ on test filters.
 
@@ -4334,7 +4334,7 @@ theorem lem_weighted_duality_i (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
       Lp.toTemperedDistributionCLM ℂ volume 2 σ = activationFourierCoordinate s t β := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_weighted_duality_ii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L291):
 
@@ -4347,7 +4347,7 @@ theorem lem_weighted_duality_ii (s t : ℝ) (β β' : TemperedDistribution ℝ �
     β = β' := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_weighted_duality_iii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L299):
 
@@ -4361,7 +4361,7 @@ theorem lem_weighted_duality_iii (s t : ℝ) (σ : L2 ℝ volume) :
       activationCoordinate s t (activationRealization s t σ) = σ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_weighted_duality_iv`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L308):
 
@@ -4375,7 +4375,7 @@ theorem lem_weighted_duality_iv (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
       (2 * Real.pi)⁻¹ * activationNorm s t β * testFilterNorm s t r := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_weighted_duality_v`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L317):
 
@@ -4392,11 +4392,11 @@ theorem lem_weighted_duality_v (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
           ((2 * Real.pi)⁻¹ : ℝ) * angularFourierDistribution β r := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma C.2 — Standard activations and admissible test filters (`lem:standard-activation-class`)
 
-Blueprint node: {bpref "lem:standard-activation-class"}[]. Status: *partial 12/13* (12 of 13 Lean theorems verified).
+Blueprint node: {bpref "lem:standard-activation-class"}[]. Status: *verified* (all 13 Lean theorems verified).
 
 Formalization note. Membership 'β ∈ 𝒜\_\{0,2\}' for a function β is `MemActivationSpaceFun 0 2 β`: some tempered distribution acting by integration against β satisfies the vendored `MemActivationSpace 0 2` (for ReLU and tanh this is the vendored realization, for Φ = `gaussianCdf` and e^\{-u²/2\} = `gaussianFun` it is `weightedDistribution 2`); globally Lipschitz is ∃ L, LipschitzWith L β; not a polynomial is ¬ IsPolynomialFun β. The last claim (a real band-pass ρ with C^\{(α)\}\_\{β,ρ\} = 1 for every non-polynomial real β ∈ 𝒮') is stated for the standing α > 0.
 
@@ -4544,7 +4544,7 @@ theorem lem_standard_activation_class_exists_filter {α : ℝ} (hα : 0 < α)
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ = 1 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 # Appendix D
 
@@ -4752,7 +4752,7 @@ Status: *verified by comparator*.
 
 ## Lemma E.1 — Gaussian integral of a quadratic exponential (`lem:gaussian-quadratic`)
 
-Blueprint node: {bpref "lem:gaussian-quadratic"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:gaussian-quadratic"}[]. Status: *partial 1/2* (1 of 2 Lean theorems verified).
 
 Formalization note. Σ (named Cov) is IsPositiveTraceClass (positive, self-adjoint, summable trace HasSummableTrace along a Hilbert basis; no injectivity; defined in Transform/Defs as the parent structure of IsTraceClassCovariance, which adds injectivity), S is self-adjoint with ⟨Sx,x⟩ ≥ 0, Σ^\{1/2\} is data R with IsPositiveSqrt R Σ, 𝒩(0,Σ) is IsCenteredGaussian Cov μ. Part i: M = R S R is trace class (the manuscript's 'which is trace class'); part ii: the integral identity with det(I+M) = fredholmDet (R \* S \* R) (the product ∏(1+m\_i) along an orthonormal eigenbasis chosen through Classical.choose, basis independence being a separate proof obligation), det^\{-1/2\} = (√det)⁻¹, and ⟨Σ^\{1/2\}(I+M)⁻¹Σ^\{1/2\}x,x⟩ = resolventForm R (R\*S\*R) x with (I+M)⁻¹ = Ring.inverse (1 + M).
 
@@ -4768,7 +4768,7 @@ theorem lem_gaussian_quadratic_i {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTra
     HasSummableTrace (R * S * R) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_gaussian_quadratic_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L38):
 
@@ -4788,7 +4788,7 @@ Status: *statement only (proof pending)*.
 
 ## Lemma E.2 — Absolute hinge representation of the Gaussian (`lem:gaussian-hinge`)
 
-Blueprint node: {bpref "lem:gaussian-hinge"}[]. Status: *partial 2/3* (2 of 3 Lean theorems verified).
+Blueprint node: {bpref "lem:gaussian-hinge"}[]. Status: *verified* (all 3 Lean theorems verified).
 
 Formalization note. φ = gaussianFun (Tempered/Defs), φ'' = gaussianActDeriv2 (the explicit formula (b²-1)e^\{-b²/2\}), (u-b)\_+ = LeanRidgelet.relu (u - b). i\_a: absolute convergence (Integrable) for each u; i\_b: the identity; ii: ∫ (1+|b|^k)|φ''(b)| db < ∞ for every k.
 
@@ -4812,7 +4812,7 @@ theorem lem_gaussian_hinge_i_b (u : ℝ) :
     ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianFun u := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_gaussian_hinge_ii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L63):
 

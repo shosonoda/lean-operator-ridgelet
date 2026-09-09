@@ -160,8 +160,8 @@ attribute [blueprint "lem:weighted-duality-test-norm"
 
 attribute [blueprint "def:regularized-synthesis-i"
   (statement := /-- For band-pass $\rho$ there is an even $\chi\in C_c^\infty(\mathbb
-    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\widehat\rho$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_i
+    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\widehat\rho$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_i
 
 attribute [blueprint "def:regularized-synthesis-ii"
   (statement := /-- There is an even, compactly supported, smooth approximate identity
@@ -170,17 +170,17 @@ attribute [blueprint "def:regularized-synthesis-ii"
 
 attribute [blueprint "def:regularized-synthesis-iii"
   (statement := /-- $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)\in
-    C_c^\infty(\mathbb R\setminus\{0\})$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_iii
+    C_c^\infty(\mathbb R\setminus\{0\})$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_iii
 
 attribute [blueprint "def:regularized-synthesis-iv"
   (statement := /-- There is a real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_iv
+    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_iv
 
 attribute [blueprint "def:regularized-synthesis-v"
-  (statement := /-- The real Schwartz function $\beta_\varepsilon$ is unique. -/)
-  (notReady := true)] OperatorRidgelet.Paper.def_regularized_synthesis_v
+  (statement := /-- The real Schwartz function $\beta_\varepsilon$ is unique. -/)]
+  OperatorRidgelet.Paper.def_regularized_synthesis_v
 
 attribute [blueprint "def:regularized-synthesis-vi"
   (statement := /-- For $\gamma\in\operatorname{Ran}R_\rho$,
@@ -193,35 +193,35 @@ attribute [blueprint "def:regularized-synthesis-vi"
 attribute [blueprint "thm:tempered-reconstruction-i"
   (statement := /-- For every $f\in\mathcal E_\alpha$ the limit
     $\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}R_\rho f$ exists in $\mathcal
-    E_\alpha'$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_i
+    E_\alpha'$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_i
 
 attribute [blueprint "thm:tempered-reconstruction-ii"
   (statement := /-- The limit $S_\beta R_\rho f$ does not depend on $\chi$ or
-    $(\eta_\varepsilon)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_ii
+    $(\eta_\varepsilon)$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_ii
 
 attribute [blueprint "thm:tempered-reconstruction-iii"
   (statement := /-- $S_\beta R_\rho f=C^{(\alpha)}_{\beta,\rho}T_\alpha f$ for
-    $f\in\mathcal E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_iii
+    $f\in\mathcal E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_iii
 
 attribute [blueprint "thm:tempered-reconstruction-iv"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $f=(C^{(\alpha)}_{\beta,\rho})^{-1}T_\alpha^{-1}S_\beta R_\rho f$ for
-    $f\in\mathcal E_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_iv
+    $f\in\mathcal E_\alpha$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_iv
 
 attribute [blueprint "thm:tempered-reconstruction-v"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $g=(C^{(\alpha)}_{\beta,\rho})^{-1}S_\beta(R_\rho T_\alpha^{-1}g)$ for
-    $g\in\mathcal E_\alpha'$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_v
+    $g\in\mathcal E_\alpha'$. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_v
 
 attribute [blueprint "thm:tempered-reconstruction-vi"
   (statement := /-- If $\beta$ is not a polynomial, then a band-pass $\rho$ with
-    $C^{(\alpha)}_{\beta,\rho}\ne0$ exists. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_tempered_reconstruction_vi
+    $C^{(\alpha)}_{\beta,\rho}\ne0$ exists. -/)]
+  OperatorRidgelet.Paper.thm_tempered_reconstruction_vi
 
 /-! ## Paper statements: Corollary `cor:relu-admissible` -/
 
@@ -234,34 +234,34 @@ attribute [blueprint "cor:relu-admissible-i"
   (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_i
 
 attribute [blueprint "cor:relu-admissible-ii"
-  (statement := /-- $\widehat{\operatorname{ReLU}}=-\omega^{-2}$ away from the origin. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_ii
+  (statement := /-- $\widehat{\operatorname{ReLU}}=-\omega^{-2}$ away from the origin. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_ii
 
 attribute [blueprint "cor:relu-admissible-iii"
   (statement := /-- For nonzero, even, nonpositive $\widehat\rho\in C_c^\infty(\mathbb
     R\setminus\{0\})$, $C^{(\alpha)}_{\operatorname{ReLU},\rho}=-\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_iii
+    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_iii
 
 attribute [blueprint "cor:relu-admissible-iv"
   (statement := /-- $-\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,
-    \mathrm d\omega>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_iv
+    \mathrm d\omega>0$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_iv
 
 attribute [blueprint "cor:relu-admissible-v"
   (statement := /-- After rescaling, $\rho$ is band-pass and
-    $C^{(\alpha)}_{\operatorname{ReLU},\rho}=1$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_v
+    $C^{(\alpha)}_{\operatorname{ReLU},\rho}=1$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_v
 
 attribute [blueprint "cor:relu-admissible-vi"
   (statement := /-- With the rescaled filter, $f=T_\alpha^{-1}S_{\operatorname{ReLU}}R_\rho f$
-    for $f\in\mathcal E_\alpha$ and every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_vi
+    for $f\in\mathcal E_\alpha$ and every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_vi
 
 attribute [blueprint "cor:relu-admissible-vii"
   (statement := /-- With the rescaled filter, $g=S_{\operatorname{ReLU}}(R_\rho T_\alpha^{-1}g)$
-    for $g\in\mathcal E_\alpha'$ and every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_vii
+    for $g\in\mathcal E_\alpha'$ and every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_vii
 
 attribute [blueprint "cor:relu-admissible-viii"
   (statement := /-- With the rescaled filter, Theorem A(iii) holds with ReLU synthesis: for $G$
@@ -274,52 +274,52 @@ attribute [blueprint "cor:relu-admissible-viii"
 
 attribute [blueprint "ex:standard-activations-relu"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
-    $C^{(\alpha)}_{\operatorname{ReLU},\rho}\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_standard_activations_relu
+    $C^{(\alpha)}_{\operatorname{ReLU},\rho}\ne0$. -/)]
+  OperatorRidgelet.Paper.ex_standard_activations_relu
 
 attribute [blueprint "ex:standard-activations-tanh"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
-    $C^{(\alpha)}_{\tanh,\rho}\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_standard_activations_tanh
+    $C^{(\alpha)}_{\tanh,\rho}\ne0$. -/)]
+  OperatorRidgelet.Paper.ex_standard_activations_tanh
 
 attribute [blueprint "ex:standard-activations-gaussian-cdf"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
-    $C^{(\alpha)}_{\Phi,\rho}\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_standard_activations_gaussianCdf
+    $C^{(\alpha)}_{\Phi,\rho}\ne0$. -/)]
+  OperatorRidgelet.Paper.ex_standard_activations_gaussianCdf
 
 attribute [blueprint "ex:standard-activations-gaussian"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
-    $C^{(\alpha)}_{e^{-u^2/2},\rho}\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_standard_activations_gaussian
+    $C^{(\alpha)}_{e^{-u^2/2},\rho}\ne0$. -/)]
+  OperatorRidgelet.Paper.ex_standard_activations_gaussian
 
 /-! ## Paper statements: Lemma `lem:weighted-duality` -/
 
 attribute [blueprint "lem:weighted-duality-i"
   (statement := /-- For $\beta\in\mathcal A_{s,t}$ the coordinate
     $\langle\omega\rangle^sB^{-t}\widehat\beta$ is represented by an element of $L^2(\mathbb
-    R)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weighted_duality_i
+    R)$. -/)]
+  OperatorRidgelet.Paper.lem_weighted_duality_i
 
 attribute [blueprint "lem:weighted-duality-ii"
   (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is injective on
-    $\mathcal A_{s,t}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weighted_duality_ii
+    $\mathcal A_{s,t}$. -/)]
+  OperatorRidgelet.Paper.lem_weighted_duality_ii
 
 attribute [blueprint "lem:weighted-duality-iii"
   (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is onto $L^2(\mathbb
     R)$: every $\sigma$ is the coordinate of
-    $\beta=\mathcal F^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weighted_duality_iii
+    $\beta=\mathcal F^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)]
+  OperatorRidgelet.Paper.lem_weighted_duality_iii
 
 attribute [blueprint "lem:weighted-duality-iv"
   (statement := /-- $\bigl|\frac1{2\pi}\langle\widehat\beta,r\rangle\bigr|\le\frac1{2\pi}
-    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal H^\sharp_{s,t}}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weighted_duality_iv
+    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal H^\sharp_{s,t}}$. -/)]
+  OperatorRidgelet.Paper.lem_weighted_duality_iv
 
 attribute [blueprint "lem:weighted-duality-v"
   (statement := /-- The pairing extends to the completion of the test filters in $\mathcal
-    H^\sharp_{s,t}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_weighted_duality_v
+    H^\sharp_{s,t}$. -/)]
+  OperatorRidgelet.Paper.lem_weighted_duality_v
 
 /-! ## Paper statements: Lemma `lem:standard-activation-class` -/
 
@@ -373,5 +373,5 @@ attribute [blueprint "lem:standard-activation-class-gaussian-not-polynomial"
 
 attribute [blueprint "lem:standard-activation-class-exists-filter"
   (statement := /-- For every non-polynomial real $\beta\in\mathcal S'$ there is a real
-    band-pass $\rho$ with $C^{(\alpha)}_{\beta,\rho}=1$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_standard_activation_class_exists_filter
+    band-pass $\rho$ with $C^{(\alpha)}_{\beta,\rho}=1$. -/)]
+  OperatorRidgelet.Paper.lem_standard_activation_class_exists_filter

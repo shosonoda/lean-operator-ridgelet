@@ -273,8 +273,8 @@ attribute [blueprint "examples:mem-spectral-core-iff"
 /-! ## Statements -/
 
 attribute [blueprint "lem:gaussian-quadratic-i"
-  (statement := /-- $M=\Sigma^{1/2}S\Sigma^{1/2}$ is trace class. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_gaussian_quadratic_i
+  (statement := /-- $M=\Sigma^{1/2}S\Sigma^{1/2}$ is trace class. -/)]
+  OperatorRidgelet.Paper.lem_gaussian_quadratic_i
 
 attribute [blueprint "lem:gaussian-quadratic-ii"
   (statement := /-- $\int_He^{i\langle x,\xi\rangle-\langle S\xi,\xi\rangle/2}\,\mathcal
@@ -288,8 +288,8 @@ attribute [blueprint "lem:gaussian-hinge-i-a"
   OperatorRidgelet.Paper.lem_gaussian_hinge_i_a
 
 attribute [blueprint "lem:gaussian-hinge-i-b"
-  (statement := /-- $\varphi(u)=\int_{\mathbb R}(u-b)_+\varphi''(b)\,\mathrm db$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_gaussian_hinge_i_b
+  (statement := /-- $\varphi(u)=\int_{\mathbb R}(u-b)_+\varphi''(b)\,\mathrm db$. -/)]
+  OperatorRidgelet.Paper.lem_gaussian_hinge_i_b
 
 attribute [blueprint "lem:gaussian-hinge-ii"
   (statement := /-- $\int_{\mathbb R}(1+|b|^k)|\varphi''(b)|\,\mathrm db<\infty$ for every
@@ -309,8 +309,8 @@ attribute [blueprint "ex:closed-form-i-c"
   (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_i_c
 
 attribute [blueprint "ex:closed-form-i-d"
-  (statement := /-- $f_W$ is not cylindrical when $W$ has infinite rank. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_i_d
+  (statement := /-- $f_W$ is not cylindrical when $W$ has infinite rank. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_i_d
 
 attribute [blueprint "ex:closed-form-ii-a"
   (statement := /-- $G=\mathcal G_Qf_W$ is regular along rays. -/)
@@ -349,29 +349,29 @@ attribute [blueprint "ex:core-elements-iv"
 
 attribute [blueprint "ex:core-elements-v"
   (statement := /-- The components $F_\varphi$ of the Gaussian-activation operator layers belong
-    to $\mathcal D_\alpha$ for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_core_elements_v
+    to $\mathcal D_\alpha$ for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.ex_core_elements_v
 
 attribute [blueprint "ex:gaussian-parameter-i"
-  (statement := /-- $F_Q(x)=\sqrt{\langle Qx,x\rangle/2\pi}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_i
+  (statement := /-- $F_Q(x)=\sqrt{\langle Qx,x\rangle/2\pi}$. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_i
 
 attribute [blueprint "ex:gaussian-parameter-ii"
-  (statement := /-- $\Phi_Q(x)=(1+\langle Qx,x\rangle)^{-1/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_ii
+  (statement := /-- $\Phi_Q(x)=(1+\langle Qx,x\rangle)^{-1/2}$. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_ii
 
 attribute [blueprint "ex:gaussian-parameter-iii"
   (statement := /-- $\Phi_Q(x)=\int_{H\times\mathbb R}\operatorname{ReLU}(\langle
-    a,x\rangle-b)\varphi''(b)\,\mathcal N(0,Q)(\mathrm da)\,\mathrm db$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_iii
+    a,x\rangle-b)\varphi''(b)\,\mathcal N(0,Q)(\mathrm da)\,\mathrm db$. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_iii
 
 attribute [blueprint "ex:gaussian-parameter-iv"
-  (statement := /-- $F_Q$ is not cylindrical. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_iv
+  (statement := /-- $F_Q$ is not cylindrical. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_iv
 
 attribute [blueprint "ex:gaussian-parameter-v"
-  (statement := /-- $\Phi_Q$ is not cylindrical. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_v
+  (statement := /-- $\Phi_Q$ is not cylindrical. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_v
 
 attribute [blueprint "ex:gaussian-parameter-vi-a"
   (statement := /-- A Gaussian-activation network with finite coefficient measure is the ReLU
@@ -379,29 +379,29 @@ attribute [blueprint "ex:gaussian-parameter-vi-a"
   (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_vi_a
 
 attribute [blueprint "ex:gaussian-parameter-vi-b"
-  (statement := /-- The hinge coefficient measure is finite. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_vi_b
+  (statement := /-- The hinge coefficient measure is finite. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_vi_b
 
 attribute [blueprint "ex:gaussian-parameter-vi-c"
-  (statement := /-- The hinge coefficient measure has all parameter moments finite. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_vi_c
+  (statement := /-- The hinge coefficient measure has all parameter moments finite. -/)]
+  OperatorRidgelet.Paper.ex_gaussian_parameter_vi_c
 
 attribute [blueprint "cor:relu-discretization"
   (statement := /-- $\mathbb E\|F_{Q,N}-F_Q\|_{C(K)}\le8R_K\sqrt{\operatorname{tr}Q}/\sqrt N$
-    for every compact $K$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_discretization
+    for every compact $K$. -/)]
+  OperatorRidgelet.Paper.cor_relu_discretization
 
 attribute [blueprint "ex:operator-layer-i-a"
   (statement := /-- $\mathcal F=S_\beta[\Gamma]$ with $\Gamma=\iota_\#(b_y\,m(\mathrm dy))$. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_a
 
 attribute [blueprint "ex:operator-layer-i-b"
-  (statement := /-- $\|\Gamma\|_{\mathrm{TV}}\le\int\|b_y\|\,m(\mathrm dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_b
+  (statement := /-- $\|\Gamma\|_{\mathrm{TV}}\le\int\|b_y\|\,m(\mathrm dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_i_b
 
 attribute [blueprint "ex:operator-layer-i-c"
-  (statement := /-- The second parameter moment of $\Gamma$ is at most $\|A\|_\infty^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_c
+  (statement := /-- The second parameter moment of $\Gamma$ is at most $\|A\|_\infty^2$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_i_c
 
 attribute [blueprint "ex:operator-layer-i-d"
   (statement := /-- Width-$N$ networks approximate $\mathcal F$ at the rate $N^{-1/2}$ in
@@ -415,24 +415,24 @@ attribute [blueprint "ex:operator-layer-i-e"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_e
 
 attribute [blueprint "ex:operator-layer-ii-a"
-  (statement := /-- $F_\varphi\in\mathcal D_\alpha$ for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_a
+  (statement := /-- $F_\varphi\in\mathcal D_\alpha$ for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_a
 
 attribute [blueprint "ex:operator-layer-ii-b"
   (statement := /-- $\mathcal G_QF_\varphi(\xi)=\int_\Omega
     w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm
-    dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_b
+    dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_b
 
 attribute [blueprint "ex:operator-layer-ii-c"
   (statement := /-- $R_\rho F_\varphi(a,c)=\int_\Omega
     w_\varphi(y)(1+\sigma_y^2)^{-1/2}(\rho*\phi_{\langle
-    S_ya,a\rangle})(c)\,m(\mathrm dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_c
+    S_ya,a\rangle})(c)\,m(\mathrm dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_c
 
 attribute [blueprint "ex:operator-layer-ii-d"
-  (statement := /-- $S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_d
+  (statement := /-- $S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_d
 
 attribute [blueprint "ex:operator-layer-ii-e"
   (statement := /-- $\mathcal G_QF_\varphi$ is regular along rays. -/)
@@ -444,8 +444,8 @@ attribute [blueprint "ex:operator-layer-ii-f"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_f
 
 attribute [blueprint "ex:operator-layer-ii-g"
-  (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_g
+  (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_g
 
 attribute [blueprint "ex:operator-layer-ii-h"
   (statement := /-- $R_\rho F_\varphi$ has finite variation and moments. -/)
@@ -462,21 +462,21 @@ attribute [blueprint "ex:operator-layer-ii-j"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_j
 
 attribute [blueprint "ex:operator-layer-ii-k"
-  (statement := /-- $\mathcal F\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_k
+  (statement := /-- $\mathcal F\in\mathcal D_\alpha(Y)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_k
 
 attribute [blueprint "ex:operator-layer-ii-l"
   (statement := /-- $\mathcal G_Q\mathcal F(\xi)=\int_\Omega(1+\sigma_y^2)^{-1/2}e^{-\langle
-    S_y\xi,\xi\rangle/2}b_y\,m(\mathrm dy)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_l
+    S_y\xi,\xi\rangle/2}b_y\,m(\mathrm dy)$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_l
 
 attribute [blueprint "ex:operator-layer-ii-m"
   (statement := /-- $\mathcal G_Q\mathcal F$ is regular along rays. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_m
 
 attribute [blueprint "ex:operator-layer-ii-n"
-  (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_n
+  (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_n
 
 attribute [blueprint "ex:operator-layer-ii-o"
   (statement := /-- $R_\rho\mathcal F$ has finite variation and moments. -/)
@@ -491,8 +491,8 @@ attribute [blueprint "ex:operator-layer-ii-p"
 attribute [blueprint "ex:operator-layer-iii-a"
   (statement := /-- $\mathcal F(x)=\int_{\Omega\times\mathbb
     R}b_y\varphi''(b)\operatorname{ReLU}(\langle a_y,x\rangle-b)\,m(\mathrm
-    dy)\,\mathrm db$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iii_a
+    dy)\,\mathrm db$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_iii_a
 
 attribute [blueprint "ex:operator-layer-iii-b"
   (statement := /-- The Gaussian-activation layer is the ReLU network with the hinge coefficient
@@ -500,55 +500,55 @@ attribute [blueprint "ex:operator-layer-iii-b"
   (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iii_b
 
 attribute [blueprint "ex:operator-layer-iii-c"
-  (statement := /-- The hinge coefficient measure of the layer is finite. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iii_c
+  (statement := /-- The hinge coefficient measure of the layer is finite. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_iii_c
 
 attribute [blueprint "ex:operator-layer-iii-d"
-  (statement := /-- The hinge coefficient measure of the layer has all moments finite. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iii_d
+  (statement := /-- The hinge coefficient measure of the layer has all moments finite. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_iii_d
 
 attribute [blueprint "ex:operator-layer-iv"
   (statement := /-- If $A$ has infinite rank, $\beta=\Phi$, and $w_\varphi>0$ $m$-a.e., then
-    $F_\varphi$ is not cylindrical. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iv
+    $F_\varphi$ is not cylindrical. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_iv
 
 attribute [blueprint "ex:convolution-i"
-  (statement := /-- $\langle a_y,x\rangle=(k*x)(y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_i
+  (statement := /-- $\langle a_y,x\rangle=(k*x)(y)$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_i
 
 attribute [blueprint "ex:convolution-ii"
-  (statement := /-- $\mathcal F(x)=\psi*\beta(k*x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_ii
+  (statement := /-- $\mathcal F(x)=\psi*\beta(k*x)$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_ii
 
 attribute [blueprint "ex:convolution-iii"
-  (statement := /-- $\|A\|_\infty=\|k\|_2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_iii
+  (statement := /-- $\|A\|_\infty=\|k\|_2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_iii
 
 attribute [blueprint "ex:convolution-iv"
-  (statement := /-- $\int\|b_y\|\,\mathrm dy=\|\psi\|_2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_iv
+  (statement := /-- $\int\|b_y\|\,\mathrm dy=\|\psi\|_2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_iv
 
 attribute [blueprint "ex:convolution-v"
   (statement := /-- The convolution layer satisfies the standing hypotheses of the
-    neural-operator layer. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_v
+    neural-operator layer. -/)]
+  OperatorRidgelet.Paper.ex_convolution_v
 
 attribute [blueprint "ex:convolution-vi"
-  (statement := /-- $\mathcal F$ commutes with all translations of $\mathbb T^d$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_vi
+  (statement := /-- $\mathcal F$ commutes with all translations of $\mathbb T^d$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_vi
 
 attribute [blueprint "ex:convolution-vii"
   (statement := /-- $\mathcal F$ commutes with every isometric automorphism of $\mathbb T^d$
-    that fixes $k$ and $\psi$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_vii
+    that fixes $k$ and $\psi$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_vii
 
 attribute [blueprint "ex:convolution-viii"
   (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$, then $A$ has infinite rank. -/)
   (notReady := true)] OperatorRidgelet.Paper.ex_convolution_viii
 
 attribute [blueprint "ex:convolution-ix"
-  (statement := /-- $F_1(x)=\widehat\psi(0)\int_{\mathbb T^d}\beta((k*x)(y))\,\mathrm dy$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_ix
+  (statement := /-- $F_1(x)=\widehat\psi(0)\int_{\mathbb T^d}\beta((k*x)(y))\,\mathrm dy$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_ix
 
 attribute [blueprint "ex:convolution-x"
   (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$ and $\widehat\psi(0)\ne0$,
@@ -570,8 +570,8 @@ attribute [blueprint "ex:convolution-xiii"
   (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xiii
 
 attribute [blueprint "ex:dirichlet-i"
-  (statement := /-- $(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_i
+  (statement := /-- $(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_i
 
 attribute [blueprint "ex:dirichlet-ii"
   (statement := /-- $u=\mathsf Gx$ solves $-u''+u=x$, $u(0)=u(1)=0$. -/)
@@ -591,16 +591,16 @@ attribute [blueprint "ex:dirichlet-v"
   (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_v
 
 attribute [blueprint "ex:dirichlet-vi"
-  (statement := /-- $\|A\|_\infty\le\sup_y\|g(y,\cdot)\|_2<\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_vi
+  (statement := /-- $\|A\|_\infty\le\sup_y\|g(y,\cdot)\|_2<\infty$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_vi
 
 attribute [blueprint "ex:dirichlet-vii"
-  (statement := /-- With $a_y=b_y=g(y,\cdot)$ the neural-operator layer example applies. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_vii
+  (statement := /-- With $a_y=b_y=g(y,\cdot)$ the neural-operator layer example applies. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_vii
 
 attribute [blueprint "ex:dirichlet-viii"
-  (statement := /-- The layer is $\mathcal F(x)=\mathsf G\beta(\mathsf Gx)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_viii
+  (statement := /-- The layer is $\mathcal F(x)=\mathsf G\beta(\mathsf Gx)$. -/)]
+  OperatorRidgelet.Paper.ex_dirichlet_viii
 
 attribute [blueprint "ex:dirichlet-ix"
   (statement := /-- $\mathsf Gx=\sum_n\lambda_ne_n[\operatorname{ReLU}(\langle
