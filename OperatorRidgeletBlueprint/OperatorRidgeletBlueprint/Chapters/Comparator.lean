@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 233.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 234.
 
 :::table +header
 *
@@ -2556,7 +2556,7 @@ Status: *statement only (proof pending)*.
 
 ## Theorem 6.6 — Constructive universal approximation with rates (`thm:D`)
 
-Blueprint node: {bpref "thm:D"}[]. Status: *partial 1/3* (1 of 3 Lean theorems verified).
+Blueprint node: {bpref "thm:D"}[]. Status: *partial 2/3* (2 of 3 Lean theorems verified).
 
 Formalization note. thm\_D is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g\_G) < ε, (ii) g\_G = integralNetworkDensity b λ\_α γ\_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ\_G‖) λ\_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^\{(α)\}\_\{β,ρ\} = 1 is temperedAdmissibilityConst α β ρ = 1. thm\_D\_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K, with the same hypotheses on b only. thm\_D\_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the vector-valued compact-open rate ε + 2V 𝔑^Y\_N(K;p,β) of cor:vector-rates(ii) (the manuscript's 'vector-valued rate of subsec:vector-sampling'; the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement). Both thm\_D and thm\_D\_vec carry one hypothesis the manuscript's sentence does not display, hfin : ∀ R, ν (Metric.closedBall 0 R) < ⊤ (the direction measure is finite on bounded sets), placed right after IsHomogeneous α ν: Step 2 of the proof normalizes a radial bump by ν of a ball and needs that mass finite. lem:homogeneous-mixture supplies it for the Gaussian mixture ν\_α in infinite dimension, and the manuscript states thm:D for ν\_α only — thm:general-weights deliberately omits thm:D from the results it extends to abstract weights. The hypothesis is not redundant: σ-finiteness, full support and homogeneity of degree α > 0 do not imply it (on ℝ² the measure carrying r^\{α−1\} dr on every ray of rational angle has all three and gives infinite mass to every nonempty open set, and for it every continuous G regular along rays vanishes, so (i) fails).
 
@@ -2669,7 +2669,7 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
               (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Corollary 6.7 — Vector-valued rates (`cor:vector-rates`)
 
