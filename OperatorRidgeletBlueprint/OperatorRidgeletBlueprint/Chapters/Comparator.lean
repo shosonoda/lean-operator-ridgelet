@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 228.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 232.
 
 :::table +header
 *
@@ -57,7 +57,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 38
+  * 39
   * 13
 :::
 
@@ -2377,7 +2377,7 @@ Status: *verified by comparator*.
 
 ## Theorem 6.4 — Finite variation and moments of the coefficient (`thm:E`)
 
-Blueprint node: {bpref "thm:E"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "thm:E"}[]. Status: *verified* (all 4 Lean theorems verified).
 
 Formalization note. Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α) with an explicit frequency window I of ρ (IsFrequencyWindow ρ I), as thm:A. Part i: ∃ c < ∞ (depending on ρ, α, I) such that for all G regular along rays the lintegral ∫⁻ (1+‖a‖²+|c|²) ‖γ\_G‖ₑ dλ\_α ≤ c · rayMoment ν I G 4, with γ\_G = coefficientFormula ρ G; part ii the finiteness '< ∞' as Bochner integrability. Parts iii and iv take the tempered β as the pair (β, b) with IsTemperedFunction β b, LipschitzWith L b, ¬IsPolynomialFun b: iii is C^\{(α)\}\_\{β,ρ\} g\_G = integralNetworkDensity b λ\_α γ\_G pointwise, iv the 8V/√N bound with V = densityWeight λ\_α γ\_G = ‖γ\_G‖\_\{L¹\}, p = densityLaw λ\_α γ\_G = |γ\_G|λ\_α/V, h = densityPhase γ\_G = γ\_G/|γ\_G|, for every compact K and N > 0.
 
@@ -2397,7 +2397,7 @@ theorem thm_E_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
         c * rayMoment ν I G 4 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_E_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L88):
 
@@ -2412,7 +2412,7 @@ theorem thm_E_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
       (parameterMeasure ν) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_E_iii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L98):
 
@@ -2430,7 +2430,7 @@ theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : 
         x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_E_iv`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L111):
 
@@ -2456,7 +2456,7 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
           Real.sqrt (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G)))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma 6.5 — Densities that are regular along rays (`lem:ray-regular-examples`)
 

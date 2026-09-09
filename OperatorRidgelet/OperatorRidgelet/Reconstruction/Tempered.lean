@@ -215,16 +215,18 @@ theorem norm_coefficientFormulaVec_le_of_bounds {ρ : SchwartzMap ℝ ℝ} (hρ 
     mul_comm (|c| ^ k) ((2 * Real.pi)⁻¹ : ℝ), mul_assoc]
   exact mul_le_mul_of_nonneg_left (hdecay.trans hint) (by positivity)
 
-/-- **Uniform decay of the explicit coefficient.**  For a density that is smooth along rays near
-the window there is a constant, depending only on `ρ` and `N`, with
-`(1 + |c|)^N ‖γ_G(a,c)‖ₑ ≤ K max_{k ≤ N} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ₑ` for every direction `a`. -/
-theorem exists_const_enorm_coefficientFormulaVec_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
-    {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (G : H → Y)
-    (hGs : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
-      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U) (N : ℕ) :
-    ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧ ∀ (a : H) (c : ℝ),
-      ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
-        K * rayDerivBound I G N a := by
+/-- **Uniform decay of the explicit coefficient, uniformly in the density.**  There is a
+constant, depending only on `ρ`, `I` and `N`, with
+`(1 + |c|)^N ‖γ_G(a,c)‖ₑ ≤ K max_{k ≤ N} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ₑ` for every direction `a`
+and every density `G` that is smooth along rays near the window. -/
+theorem exists_const_forall_enorm_coefficientFormulaVec_le {ρ : SchwartzMap ℝ ℝ}
+    (hρ : IsBandPass ρ) {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (N : ℕ) :
+    ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧ ∀ G : H → Y,
+      (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+        ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U) →
+      ∀ (a : H) (c : ℝ),
+        ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
+          K * rayDerivBound I G N a := by
   obtain ⟨B, hB0, hBb⟩ := exists_bound_iteratedDeriv_filterFourier hρ N
   set V : ℝ := (volume (tsupport (filterFourier ρ))).toReal with hVdef
   have hV0 : (0 : ℝ) ≤ V := ENNReal.toReal_nonneg
@@ -235,7 +237,8 @@ theorem exists_const_enorm_coefficientFormulaVec_le {ρ : SchwartzMap ℝ ℝ} (
     have : (0 : ℝ) ≤ 2 ^ N * (1 + 2 ^ N) * ((2 * Real.pi)⁻¹ * (V * B)) := by
       exact mul_nonneg (by positivity) hE0
     linarith
-  refine ⟨ENNReal.ofReal Kr, ENNReal.ofReal_pos.mpr hKr0, ENNReal.ofReal_lt_top, fun a c => ?_⟩
+  refine ⟨ENNReal.ofReal Kr, ENNReal.ofReal_pos.mpr hKr0, ENNReal.ofReal_lt_top,
+    fun G hGs a c => ?_⟩
   by_cases hRtop : rayDerivBound I G N a = ⊤
   · rw [hRtop, ENNReal.mul_top (ENNReal.ofReal_pos.mpr hKr0).ne']
     exact le_top
@@ -286,6 +289,20 @@ theorem exists_const_enorm_coefficientFormulaVec_le {ρ : SchwartzMap ℝ ℝ} (
   rw [hR, ← ofReal_norm, ← ENNReal.ofReal_mul (by positivity),
     ← ENNReal.ofReal_mul hKr0.le]
   exact ENNReal.ofReal_le_ofReal key
+
+/-- **Uniform decay of the explicit coefficient.**  For a density that is smooth along rays near
+the window there is a constant, depending only on `ρ` and `N`, with
+`(1 + |c|)^N ‖γ_G(a,c)‖ₑ ≤ K max_{k ≤ N} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ₑ` for every direction `a`. -/
+theorem exists_const_enorm_coefficientFormulaVec_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
+    {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (G : H → Y)
+    (hGs : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (ω • a)) U) (N : ℕ) :
+    ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧ ∀ (a : H) (c : ℝ),
+      ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
+        K * rayDerivBound I G N a := by
+  obtain ⟨K, hK0, hKtop, hK⟩ :=
+    exists_const_forall_enorm_coefficientFormulaVec_le (H := H) (Y := Y) hρ hI N
+  exact ⟨K, hK0, hKtop, hK G hGs⟩
 
 end Decay
 

@@ -4,7 +4,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 57 | 38 | 13 |
+| 57 | 57 | 39 | 13 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -34,7 +34,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | 6.1 | `def:rademacher-complexity` | definition | Activation-dependent Rademacher complexity | `OperatorRidgelet.compactSupNorm`<br>`OperatorRidgelet.polarDensity`<br>`OperatorRidgelet.polarWeight`<br>`OperatorRidgelet.polarLaw`<br>`OperatorRidgelet.sampleLaw`<br>`OperatorRidgelet.rademacherMeasure`<br>`OperatorRidgelet.sampledNetwork`<br>`OperatorRidgelet.rademacherComplexity` | defined |
 | 6.2 | `thm:general-rademacher` | theorem | General compact-open sampling bound | `OperatorRidgelet.Paper.thm_general_rademacher` | verified |
 | 6.3 | `thm:lipschitz-barron` | theorem | Dimension-free compact-open Barron bound | `OperatorRidgelet.Paper.thm_lipschitz_barron_i`<br>`OperatorRidgelet.Paper.thm_lipschitz_barron_ii` | verified |
-| 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | `OperatorRidgelet.Paper.thm_E_i`<br>`OperatorRidgelet.Paper.thm_E_ii`<br>`OperatorRidgelet.Paper.thm_E_iii`<br>`OperatorRidgelet.Paper.thm_E_iv` | stated |
+| 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | `OperatorRidgelet.Paper.thm_E_i`<br>`OperatorRidgelet.Paper.thm_E_ii`<br>`OperatorRidgelet.Paper.thm_E_iii`<br>`OperatorRidgelet.Paper.thm_E_iv` | verified |
 | 6.5 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | `OperatorRidgelet.Paper.lem_ray_regular_examples_a`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii` | partial 4/5 |
 | 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | `OperatorRidgelet.Paper.thm_D`<br>`OperatorRidgelet.Paper.thm_D_dense`<br>`OperatorRidgelet.Paper.thm_D_vec` | stated |
 | 6.7 | `cor:vector-rates` | corollary | Vector-valued rates | `OperatorRidgelet.Paper.cor_vector_rates_i_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_i_b`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_b` | stated |

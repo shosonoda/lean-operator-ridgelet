@@ -34,6 +34,7 @@ import OperatorRidgelet.Tempered.Frame
 import OperatorRidgelet.Tempered.Reconstruction
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Sampling.Basic
+import OperatorRidgelet.Sampling.Spectral
 import OperatorRidgelet.Examples.Defs
 import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.Examples.GaussianLaw

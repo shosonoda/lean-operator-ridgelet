@@ -3,6 +3,8 @@ import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Sampling.Basic
+import OperatorRidgelet.Sampling.Spectral
+import OperatorRidgelet.Paper.Reconstruction
 
 /-!
 # Statements of Section 6 (finite-width approximation) and Appendix D
@@ -182,7 +184,12 @@ theorem thm_E_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
       ∫⁻ θ, ENNReal.ofReal (1 + ‖θ.1‖ ^ 2 + |θ.2| ^ 2) * ‖coefficientFormula ρ G θ‖ₑ
           ∂parameterMeasure ν ≤
         c * rayMoment ν I G 4 := by
-  sorry
+  obtain ⟨c, hctop, hc⟩ :=
+    exists_const_lintegral_moment_enorm_coefficientFormulaVec_le (ν := ν) (Y := ℂ) hρ hI 2
+  refine ⟨c, hctop, fun G hG => le_trans (lintegral_mono fun θ => ?_) (hc G hG)⟩
+  rw [← coefficientFormulaVec_eq_coefficientFormula ρ G θ]
+  refine mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl
+  nlinarith [norm_nonneg θ.1, abs_nonneg θ.2]
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For `G` regular along
 rays, `∫ (1 + ‖a‖² + |c|²) |γ_G| dλ_α < ∞`: the coefficient measure `γ_G λ_α` is finite with
@@ -192,7 +199,21 @@ theorem thm_E_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
     (hI : IsFrequencyWindow ρ I) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ ^ 2 + |θ.2| ^ 2) * ‖coefficientFormula ρ G θ‖)
       (parameterMeasure ν) := by
-  sorry
+  have hsm : StronglyMeasurable
+      (fun θ : H × ℝ => (1 + ‖θ.1‖ ^ 2 + |θ.2| ^ 2) * ‖coefficientFormula ρ G θ‖) :=
+    (Continuous.stronglyMeasurable (by fun_prop)).mul
+      (stronglyMeasurable_coefficientFormula ρ hG.stronglyMeasurable.measurable).norm
+  refine (integrable_moment_norm_coefficientFormulaVec (Y := ℂ) hρ hI hG 2).mono
+    hsm.aestronglyMeasurable (Eventually.of_forall fun θ => ?_)
+  have h1 : ‖(1 + ‖θ.1‖ ^ 2 + |θ.2| ^ 2) * ‖coefficientFormula ρ G θ‖‖ =
+      (1 + ‖θ.1‖ ^ 2 + |θ.2| ^ 2) * ‖coefficientFormula ρ G θ‖ :=
+    Real.norm_of_nonneg (by positivity)
+  have h2 : ‖(1 + ‖θ.1‖ + |θ.2|) ^ 2 * ‖coefficientFormulaVec ρ G θ‖‖ =
+      (1 + ‖θ.1‖ + |θ.2|) ^ 2 * ‖coefficientFormulaVec ρ G θ‖ :=
+    Real.norm_of_nonneg (by positivity)
+  rw [h1, h2, coefficientFormulaVec_eq_coefficientFormula]
+  refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+  nlinarith [norm_nonneg θ.1, abs_nonneg θ.2]
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  Consequently, for every
 real `β` that is globally Lipschitz and not a polynomial (a tempered activation that is the
@@ -205,7 +226,21 @@ theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : 
     ∀ x : H, temperedAdmissibilityConst α β ρ * spectralTarget ν G x =
       integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν) (coefficientFormula ρ G)
         x := by
-  sorry
+  intro x
+  have hint : Integrable (fun θ : H × ℝ =>
+      (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormula ρ G θ) (ν.prod volume) := by
+    refine (integrable_prod_smul_coefficientFormulaVec hρ hI hG hβ.continuous
+      hβ.polynomialGrowth x).congr (Eventually.of_forall fun θ => ?_)
+    show (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G (θ.1, θ.2) =
+      (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormula ρ G θ
+    rw [Prod.mk.eta, coefficientFormulaVec_eq_coefficientFormula]
+  rw [← thm_A_iii_c ν hα hν ρ hρ I hI β b hβ hpoly G hG x, integralNetworkDensity,
+    parameterMeasure, integral_prod _ hint]
+  refine integral_congr_ae (Eventually.of_forall fun a => ?_)
+  refine integral_congr_ae (Eventually.of_forall fun c => ?_)
+  show coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) =
+    (b (⟪a, x⟫ + c) : ℂ) * coefficientFormula ρ G (a, c)
+  ring
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For real globally
 Lipschitz non-polynomial `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
@@ -226,7 +261,27 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
       8 * densityWeight (parameterMeasure ν) (coefficientFormula ρ G) / Real.sqrt N *
         (|b 0| + (L : ℝ) * compactRadius K *
           Real.sqrt (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G)))) := by
-  sorry
+  have hfun : coefficientFormulaVec (Y := ℂ) ρ G = coefficientFormula ρ G :=
+    coefficientFormulaVec_eq_coefficientFormula' ρ G
+  have hγ : Integrable (coefficientFormula ρ G) (parameterMeasure ν) :=
+    hfun ▸ integrable_coefficientFormulaVec hρ hI hG
+  have hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2)
+      (densityLaw (parameterMeasure ν) (coefficientFormula ρ G)) :=
+    hfun ▸ integrable_sq_densityLaw_coefficientFormulaVec hρ hI hG
+  have hcongr : ∀ θ : Fin N → H × ℝ,
+      compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+              (coefficientFormula ρ G) θ x -
+            temperedAdmissibilityConst α β ρ * spectralTarget ν G x) =
+        compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+              (coefficientFormula ρ G) θ x -
+            integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+              (coefficientFormula ρ G) x) := fun θ =>
+    compactSupNorm_congr fun x _ => by
+      rw [thm_E_iii ν hα hν ρ hρ I hI β b hβ hb hpoly G hG x]
+  rw [integral_congr_ae (Eventually.of_forall hcongr)]
+  exact integral_compactSupNorm_densitySampledNetwork_sub_le hK hb hγ hM hN
 
 /-! ## Section 6: constructive universal approximation -/
 

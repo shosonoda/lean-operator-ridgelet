@@ -122,18 +122,18 @@ attribute [blueprint "thm:lipschitz-barron-ii"
 attribute [blueprint "thm:E-i"
   (statement := /-- For a band-pass $\rho$ there is a constant $c_\rho<\infty$, depending only
     on $\rho$ and $\alpha$, such that every $G$ regular along rays satisfies
-    $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha\le c_\rho M_4(G)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_E_i
+    $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha\le c_\rho M_4(G)$. -/)]
+  OperatorRidgelet.Paper.thm_E_i
 
 attribute [blueprint "thm:E-ii"
   (statement := /-- For $G$ regular along rays,
-    $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha<\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_E_ii
+    $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha<\infty$. -/)]
+  OperatorRidgelet.Paper.thm_E_ii
 
 attribute [blueprint "thm:E-iii"
   (statement := /-- For every real globally Lipschitz non-polynomial $\beta$,
-    $C^{(\alpha)}_{\beta,\rho}g_G=S_\beta[\gamma_G\lambda_\alpha]$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_E_iii
+    $C^{(\alpha)}_{\beta,\rho}g_G=S_\beta[\gamma_G\lambda_\alpha]$. -/)]
+  OperatorRidgelet.Paper.thm_E_iii
 
 attribute [blueprint "thm:E-iv"
   (statement := /-- The sampled network of $\gamma_G\lambda_\alpha$, with
@@ -141,8 +141,8 @@ attribute [blueprint "thm:E-iv"
     $|\gamma_G|\lambda_\alpha/V$, satisfies
     $\mathbb E\|f_N-C^{(\alpha)}_{\beta,\rho}g_G\|_{C(K)}
     \le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$
-    for every compact $K$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_E_iv
+    for every compact $K$. -/)]
+  OperatorRidgelet.Paper.thm_E_iv
 
 /-! ## Section 6: constructive universal approximation -/
 
