@@ -4,6 +4,7 @@ import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Sampling.Spectral
+import OperatorRidgelet.Sampling.Universality
 import OperatorRidgelet.Paper.Reconstruction
 
 /-!
@@ -171,6 +172,9 @@ theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ →
 
 section Spectral
 
+set_option linter.unusedVariables false
+set_option linter.unusedSectionVars false
+
 variable [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For a band-pass `ρ`
@@ -327,7 +331,22 @@ theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
               (|b 0| + (L : ℝ) * compactRadius K *
                 Real.sqrt
                   (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G))))) := by
-  sorry
+  -- Everything below `hfin` is `exists_spectralDensity_universal_approx`: Stone--Weierstrass
+  -- for the characters, the normalized radial bumps of `bumpDensity`, Theorem `thm:A`(iii)
+  -- with `C^{(α)}_{β,ρ} = 1`, the moments of all orders of Theorem `thm:E`, and the Barron
+  -- bound of Theorem `thm:lipschitz-barron`.
+  -- The one missing ingredient is that `ν` is finite on bounded sets, which the manuscript
+  -- uses in Step 2 of Appendix D.3 ("`ν_α` has full support and is finite on bounded sets")
+  -- but which the abstract hypotheses of this statement do not provide: `SigmaFinite`,
+  -- `IsOpenPosMeasure` and `IsHomogeneous α` with `α > 0` are all satisfied by, for instance,
+  -- the measure on `ℝ²` obtained by putting the density `r^{α-1} dr` on every ray through a
+  -- rational angle, which gives infinite mass to every ball.  For such a `ν` every `G` regular
+  -- along rays that is continuous vanishes identically, so `g_G = 0` and (i) fails.  The
+  -- statement needs `(hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)` (or
+  -- `[IsFiniteMeasureOnCompacts ν]`) as an extra hypothesis.
+  have hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤ := by
+    sorry
+  exact exists_spectralDensity_universal_approx ν hfin hν β b hβ ρ hρ hC I hI hf hK hε
 
 /-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, the
 finite-width networks with a continuous, polynomially growing, non-polynomial real activation
@@ -337,6 +356,12 @@ theorem thm_D_dense (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ :
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
+  -- No direction measure, band-pass filter or dimension hypothesis is available here, so the
+  -- route through `thm_D` is not open: it would have to construct a homogeneous direction
+  -- measure with full support on the given `H` together with a band-pass `ρ` normalized by
+  -- `C^{(α)}_{β,ρ} = 1`.  The direct route is the Leshno--Lin--Pinkus theorem plus the
+  -- finite-dimensional reduction, i.e. `Paper.prop_scalar_universality_i`, which the project
+  -- does not yet prove.
   sorry
 
 /-- **Theorem [thm:D]** Constructive universal approximation with rates.  The same statements
@@ -371,6 +396,18 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
             rademacherComplexity N K
               (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
               (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
+  -- Blocked by the same missing hypothesis as `thm_D` (`ν` finite on bounded sets, see there)
+  -- and by two pieces of `Y`-valued infrastructure the project lacks:
+  -- * a `Y`-valued radial-bump clause of `lem:ray-regular-examples`
+  --   (`isRegularAlongRays_radialBump` and `IsRegularAlongRays.finset_sum` are stated for
+  --   `ℂ`-valued densities only), needed for `G = ∑_j w_j G_j` with `w_j ∈ Y`;
+  -- * a `Y`-valued Rademacher bound for a coefficient measure with a density, i.e. the
+  --   analogue of `thm_general_rademacher` (which is stated for a `ComplexMeasure`) with the
+  --   absolute value replaced by the norm of `Y`; this is the bound `2V 𝔑^Y_N(K; p, β)` of
+  --   `cor:vector-rates`(ii) appearing in the conclusion.
+  -- Step 1 in the vector-valued case (a partition of unity subordinate to a finite cover of
+  -- `K` on which `f` varies by less than `ε/4`, followed by `exists_character_approx` for the
+  -- scalar coefficients) is the remaining, purely topological, ingredient.
   sorry
 
 end Spectral

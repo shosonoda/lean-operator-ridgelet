@@ -479,6 +479,22 @@ theorem integral_compactSupNorm_densitySampledNetwork_sub_le (hK : IsCompact K) 
                   (Real.sqrt N / N) := by ring
           _ = _ := by rw [hsqrt]; ring
 
+/-- The compact-open error of the sampled network of a coefficient density is an integrable
+function of the sample. -/
+theorem integrable_compactSupNorm_densitySampledNetwork_sub (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → ℂ}
+    (hγ : Integrable γ lam) (hV : densityWeight lam γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) :
+    Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x))
+      (sampleLaw N (densityLaw lam γ)) := by
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  exact ((integrable_norm_sum_sub (densityLaw lam γ) (integrable_density_atom hK hβ hγ hV hM)
+    N).const_mul (densityWeight lam γ / N)).congr (Eventually.of_forall fun θ =>
+      (compactSupNorm_densitySampledNetwork_sub_eq hK hβ hγ hV hM hN θ).symm)
+
 /-- **A deterministic realization of the Barron bound** for a coefficient measure with a
 density. -/
 theorem exists_compactSupNorm_densitySampledNetwork_sub_le (hK : IsCompact K) {β : ℝ → ℝ}
@@ -508,12 +524,7 @@ theorem exists_compactSupNorm_densitySampledNetwork_sub_le (hK : IsCompact K) {�
       simp [densitySampledNetwork, sampledNetwork, finiteNetwork, hV]
     rw [h1, h2, sub_zero, norm_zero]
   haveI := isProbabilityMeasure_densityLaw hγ hV
-  have hint : Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
-      densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
-        integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)) (sampleLaw N (densityLaw lam γ)) :=
-    ((integrable_norm_sum_sub (densityLaw lam γ) (integrable_density_atom hK hβ hγ hV hM)
-      N).const_mul (densityWeight lam γ / N)).congr (Eventually.of_forall fun θ =>
-        (compactSupNorm_densitySampledNetwork_sub_eq hK hβ hγ hV hM hN θ).symm)
+  have hint := integrable_compactSupNorm_densitySampledNetwork_sub hK hβ hγ hV hM hN
   obtain ⟨θ, hθ⟩ := exists_realization_le_mean _ _ hint
   exact ⟨θ, hθ.trans (integral_compactSupNorm_densitySampledNetwork_sub_le hK hβ hγ hM hN)⟩
 
