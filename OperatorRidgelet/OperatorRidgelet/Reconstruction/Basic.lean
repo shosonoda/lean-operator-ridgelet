@@ -888,6 +888,116 @@ theorem IsRegularAlongRays.finset_sum {ν : Measure H} {I : Set ℝ} {ι : Type*
     rw [lintegral_const_mul' _ _ enorm_ne_top]
     exact ENNReal.mul_lt_top enorm_lt_top ((hG i hi).rayMoment_lt_top m)
 
+/-! ### Finite combinations with constant weights in a Banach space -/
+
+section FinsetSumSmul
+
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
+
+omit [MeasurableSpace H] [BorelSpace H] in
+/-- Iterated derivatives of a finite combination `∑ g_i(ω) • w_i` of scalar functions smooth on
+an open set, with constant weights `w_i` in a Banach space. -/
+theorem iteratedDeriv_finset_sum_smul {ι : Type*} (s : Finset ι) (g : ι → ℝ → ℂ) (w : ι → Y)
+    {U : Set ℝ} (hU : IsOpen U) {x : ℝ} (hx : x ∈ U) (n : ℕ)
+    (hg : ∀ i ∈ s, ContDiffOn ℝ (⊤ : ℕ∞) (g i) U) :
+    iteratedDeriv n (fun ω => ∑ i ∈ s, g i ω • w i) x =
+      ∑ i ∈ s, iteratedDeriv n (g i) x • w i := by
+  classical
+  have hwithinY : ∀ f : ℝ → Y, iteratedDerivWithin n f U x = iteratedDeriv n f x := fun f =>
+    iteratedDerivWithin_of_isOpen hU hx
+  have hwithinC : ∀ f : ℝ → ℂ, iteratedDerivWithin n f U x = iteratedDeriv n f x := fun f =>
+    iteratedDerivWithin_of_isOpen hU hx
+  rw [← hwithinY]
+  simp_rw [← hwithinC]
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty, iteratedDerivWithin_const]
+    split_ifs <;> rfl
+  | insert j s hj ih =>
+    have hgj : ContDiffWithinAt ℝ n (g j) U x :=
+      ((hg j (Finset.mem_insert_self j s)) x hx).of_le (by exact_mod_cast le_top)
+    have hgs : ∀ i ∈ s, ContDiffWithinAt ℝ n (g i) U x := fun i hi =>
+      ((hg i (Finset.mem_insert_of_mem hi)) x hx).of_le (by exact_mod_cast le_top)
+    have hsum : ContDiffWithinAt ℝ n (fun ω => ∑ i ∈ s, g i ω • w i) U x :=
+      ContDiffWithinAt.sum fun i hi => (hgs i hi).smul_const (w i)
+    simp_rw [Finset.sum_insert hj]
+    rw [show (fun ω => g j ω • w j + ∑ i ∈ s, g i ω • w i) =
+      (fun ω => g j ω • w j) + fun ω => ∑ i ∈ s, g i ω • w i from rfl,
+      iteratedDerivWithin_add hx hU.uniqueDiffOn (hgj.smul_const (w j)) hsum,
+      iteratedDerivWithin_smul_const hx hU.uniqueDiffOn hgj (w j),
+      ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
+
+omit [MeasurableSpace H] [BorelSpace H] in
+/-- The ray-derivative bound of a finite combination with constant weights in a Banach space is
+dominated by the combination of the ray-derivative bounds. -/
+theorem rayDerivBound_finset_sum_smul_le {ι : Type*} (s : Finset ι) (G : ι → H → ℂ) (w : ι → Y)
+    {I : Set ℝ} (m : ℕ) (a : H)
+    (h : ∀ i ∈ s, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G i (ω • a)) U) :
+    rayDerivBound I (fun ξ => ∑ i ∈ s, G i ξ • w i) m a ≤
+      ∑ i ∈ s, ‖w i‖ₑ * rayDerivBound I (G i) m a := by
+  obtain ⟨U, hU, hIU, hUs⟩ := exists_isOpen_forall_contDiffOn s G a h
+  unfold rayDerivBound
+  refine iSup_le fun k => iSup₂_le fun ω hω => ?_
+  rw [iteratedDeriv_finset_sum_smul s (fun i ω => G i (ω • a)) w hU (hIU hω) k hUs]
+  refine (enorm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
+  rw [enorm_smul, mul_comm]
+  exact mul_le_mul' le_rfl (le_iSup_of_le k (le_iSup₂_of_le ω hω le_rfl))
+
+/-- **Lemma `lem:ray-regular-examples`(c) with vector weights.**  A finite combination
+`∑ G_i(ξ) • w_i` of scalar densities regular along rays with constant weights in a Banach space
+is regular along rays.  The measurability of the ray-derivative bounds stays with the scalar
+summands, so no `Y`-valued analogue of `measurable_rayDerivBound` is needed. -/
+theorem IsRegularAlongRays.finset_sum_smul {ν : Measure H} {I : Set ℝ} {ι : Type*} (s : Finset ι)
+    (G : ι → H → ℂ) (w : ι → Y) (hG : ∀ i ∈ s, IsRegularAlongRays ν I (G i)) :
+    IsRegularAlongRays ν I fun ξ => ∑ i ∈ s, G i ξ • w i := by
+  have hb : ∀ i, ∃ M : ℝ, ∀ ξ, i ∈ s → ‖G i ξ‖ ≤ M := by
+    intro i
+    by_cases hi : i ∈ s
+    · obtain ⟨M, hM⟩ := (hG i hi).bounded
+      exact ⟨M, fun ξ _ => hM ξ⟩
+    · exact ⟨0, fun ξ h => absurd h hi⟩
+  choose M hM using hb
+  refine ⟨Finset.stronglyMeasurable_fun_sum s fun i hi =>
+    (hG i hi).stronglyMeasurable.smul_const (w i),
+    ⟨∑ i ∈ s, M i * ‖w i‖, fun ξ => ?_⟩, fun a => ?_, fun m => ?_⟩
+  · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i hi => ?_)
+    rw [norm_smul]
+    exact mul_le_mul_of_nonneg_right (hM i ξ hi) (norm_nonneg _)
+  · obtain ⟨U, hU, hIU, hUs⟩ := exists_isOpen_forall_contDiffOn s G a fun i hi =>
+      (hG i hi).contDiffOn a
+    exact ⟨U, hU, hIU, ContDiffOn.sum fun i hi => (hUs i hi).smul_const (w i)⟩
+  · have hmeas : ∀ i ∈ s, Measurable fun a : H =>
+        ‖w i‖ₑ * (ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I (G i) m a) := by
+      intro i hi
+      refine Measurable.const_mul (Measurable.mul ?_ ?_) _
+      · exact (ENNReal.continuous_ofReal.comp
+          (by fun_prop : Continuous fun a : H => (1 + ‖a‖) ^ (m + 2))).measurable
+      · exact measurable_rayDerivBound (hG i hi).stronglyMeasurable.measurable
+          (fun a => (hG i hi).contDiffOn a) m
+    have hle : ∀ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+        rayDerivBound I (fun ξ => ∑ i ∈ s, G i ξ • w i) m a ≤
+        ∑ i ∈ s, ‖w i‖ₑ * (ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I (G i) m a) := by
+      intro a
+      calc ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+            rayDerivBound I (fun ξ => ∑ i ∈ s, G i ξ • w i) m a
+          ≤ ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) *
+              ∑ i ∈ s, ‖w i‖ₑ * rayDerivBound I (G i) m a :=
+            mul_le_mul' le_rfl (rayDerivBound_finset_sum_smul_le s G w m a fun i hi =>
+              (hG i hi).contDiffOn a)
+        _ = _ := by
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun i _ => ?_
+            ring
+    unfold rayMoment
+    refine lt_of_le_of_lt (lintegral_mono hle) ?_
+    rw [lintegral_finsetSum s hmeas]
+    refine ENNReal.sum_lt_top.mpr fun i hi => ?_
+    rw [lintegral_const_mul' _ _ enorm_ne_top]
+    exact ENNReal.mul_lt_top enorm_lt_top ((hG i hi).rayMoment_lt_top m)
+
+end FinsetSumSmul
+
 end FinsetSum
 
 /-! ### Bochner integrals of measurable families -/

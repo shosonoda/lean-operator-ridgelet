@@ -352,10 +352,24 @@ theorem thm_D_dense (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ :
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
-  -- No direction measure, band-pass filter or dimension hypothesis is available here, so the
-  -- route through `thm_D` is not open: it would have to construct a homogeneous direction
-  -- measure with full support on the given `H` together with a band-pass `ρ` normalized by
-  -- `C^{(α)}_{β,ρ} = 1`.  The direct route is the Leshno--Lin--Pinkus theorem plus the
+  -- The statement supplies a complete separable Borel `H`, but no direction measure, no
+  -- band-pass filter and no dimension hypothesis, so the route through `thm_D` would have to
+  -- construct them.  The Gaussian construction is available only under hypotheses the
+  -- statement does not carry:
+  -- * `¬ FiniteDimensional ℝ H`, which `IsTraceClassCovariance.gaussianMixture_lt_top_of_isBounded`
+  --   requires for `hfin` (the mixture `ν_α` is finite on bounded sets only in infinite
+  --   dimension); in finite dimension a different `ν` (an additive Haar measure, homogeneous
+  --   of degree `dim H`) would be needed;
+  -- * an injective positive trace-class `P : H →L[ℝ] H` (`IsTraceClassCovariance P`), for
+  --   `exists_isCenteredGaussianLayers` and hence `gaussianMixture`; the project has no
+  --   existence statement for one;
+  -- * `IsRealDistribution β` and `¬ IsPolynomialDistribution β`, which
+  --   `lem_standard_activation_class_exists_filter` needs to produce a band-pass `ρ` with
+  --   `C^{(α)}_{β,ρ} = 1`; the statement gives only `¬ IsPolynomialFun b`, and no bridge from
+  --   `IsTemperedFunction β b` to those two properties exists;
+  -- * a frequency window `I` for that `ρ` (derivable from `IsBandPass ρ` as
+  --   `tsupport (filterFourier ρ) ∪ -tsupport (filterFourier ρ)`, but not yet recorded).
+  -- The alternative, hypothesis-free route is the Leshno--Lin--Pinkus theorem plus the
   -- finite-dimensional reduction, i.e. `Paper.prop_scalar_universality_i`, which the project
   -- does not yet prove.
   sorry
@@ -394,19 +408,18 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
             rademacherComplexity N K
               (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
               (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
-  -- Blocked by the same missing hypothesis as `thm_D` (`ν` finite on bounded sets, see there)
-  -- and by two pieces of `Y`-valued infrastructure the project lacks:
-  -- * a `Y`-valued radial-bump clause of `lem:ray-regular-examples`
-  --   (`isRegularAlongRays_radialBump` and `IsRegularAlongRays.finset_sum` are stated for
-  --   `ℂ`-valued densities only), needed for `G = ∑_j w_j G_j` with `w_j ∈ Y`;
-  -- * a `Y`-valued Rademacher bound for a coefficient measure with a density, i.e. the
-  --   analogue of `thm_general_rademacher` (which is stated for a `ComplexMeasure`) with the
-  --   absolute value replaced by the norm of `Y`; this is the bound `2V 𝔑^Y_N(K; p, β)` of
-  --   `cor:vector-rates`(ii) appearing in the conclusion.
-  -- Step 1 in the vector-valued case (a partition of unity subordinate to a finite cover of
-  -- `K` on which `f` varies by less than `ε/4`, followed by `exists_character_approx` for the
-  -- scalar coefficients) is the remaining, purely topological, ingredient.
-  sorry
+  -- Step 1 in the vector-valued case is `exists_character_approx_vec`: the compact set of
+  -- values `f(K)` is covered by finitely many `ε`-balls whose bumps normalize into a partition
+  -- of unity on `K`, which reduces `f` to a finite combination `∑ g_k • y_k` of continuous
+  -- scalar functions with constant weights in `Y`, and Stone--Weierstrass over the characters
+  -- (`exists_character_approx_continuousMap`) approximates each `g_k`.  Step 2 keeps the
+  -- normalized radial bumps `bumpDensity` scalar and attaches the weights `w_i ∈ Y` afterwards,
+  -- so `IsRegularAlongRays.finset_sum_smul` needs the ray-derivative measurability only for the
+  -- `ℂ`-valued summands.  Steps 3--4 are the `Y`-valued moment bounds of `thm:E` and the
+  -- vector-valued Rademacher bound `2V 𝔑^Y_N(K; p, β)` of `cor:vector-rates`(ii) for a
+  -- coefficient measure with a density.  The hypothesis `hfin` is Step 2 of Appendix D.3, as
+  -- in `thm_D`.
+  exact exists_spectralDensity_universal_approx_vec ν hfin hν β b hβ ρ hρ hC I hI hf hK hε
 
 end Spectral
 
