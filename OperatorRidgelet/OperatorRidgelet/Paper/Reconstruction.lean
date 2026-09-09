@@ -2,6 +2,7 @@ import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
 import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Reconstruction.Backprojection
+import OperatorRidgelet.Reconstruction.Tempered
 import OperatorRidgelet.Paper.Transform
 
 /-!
@@ -126,6 +127,8 @@ theorem thm_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
   intro x
   exact integral_integral_coefficientFormula_eq_integralNetworkDensity hγ x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
 `G` regular along rays, the inner integral `∫ γ_G(a,c) β(⟨a,x⟩+c) dc` converges absolutely for
@@ -136,9 +139,11 @@ theorem thm_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
     (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
-      Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) := by
-  sorry
+      Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) := fun x =>
+  ae_integrable_coefficientFormula_mul_activation hρ hI hG hβ.continuous hβ.polynomialGrowth x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
 `G` regular along rays, the `ν_α`-integral of the inner integral converges absolutely. -/
@@ -149,9 +154,12 @@ theorem thm_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
-        (fun a : H => ∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ν := by
-  sorry
+        (fun a : H => ∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ν :=
+  fun x => integrable_integral_coefficientFormula_mul_activation hρ hI hG hβ.continuous
+    hβ.polynomialGrowth x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
 `G` regular along rays, the tempered spectral synthesis identity
@@ -163,8 +171,8 @@ theorem thm_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ∂ν =
-        temperedAdmissibilityConst α β ρ * spectralTarget ν G x := by
-  sorry
+        temperedAdmissibilityConst α β ρ * spectralTarget ν G x := fun x =>
+  integral_integral_coefficientFormula_mul_activation hν hρ hI hG hβ x
 
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For every
 tempered `β` that is a continuous function of polynomial growth and not a polynomial, there is a
@@ -172,7 +180,10 @@ band-pass filter `ρ` with `C^{(α)}_{β,ρ} ≠ 0`. -/
 theorem thm_A_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
-  sorry
+  refine exists_isBandPass_temperedAdmissibilityConst_ne_zero hα β
+    (not_isPolynomialDistribution_of_not_isPolynomialFun (fun φ => ?_) hβ.continuous hb)
+  rw [hβ.apply_eq φ]
+  exact integral_congr_ae (Eventually.of_forall fun x => mul_comm _ _)
 
 /-! ### Theorem `thm:C` -/
 
@@ -841,6 +852,8 @@ theorem thm_vector_valued_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
   intro x
   exact integral_integral_coefficientFormulaVec_eq_integralNetworkDensity hγ x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
 `Y`-valued densities regular along rays (with `‖·‖_Y` in place of the absolute value): the
 inner integral converges absolutely for `ν_α`-almost every `a`. -/
@@ -850,9 +863,12 @@ theorem thm_vector_valued_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
     (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
-      Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := by
-  sorry
+      Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := fun x =>
+  ae_integrable_smul_coefficientFormulaVec_activation hρ hI hG hβ.continuous
+    hβ.polynomialGrowth x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
 `Y`-valued densities regular along rays: the outer integral converges absolutely. -/
 theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
@@ -862,9 +878,12 @@ theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
-        (fun a : H => ∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ν := by
-  sorry
+        (fun a : H => ∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ν :=
+  fun x => integrable_integral_smul_coefficientFormulaVec_activation hρ hI hG hβ.continuous
+    hβ.polynomialGrowth x
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
 `Y`-valued densities regular along rays: the tempered spectral synthesis identity with the
 same constant `C^{(α)}_{β,ρ}`. -/
@@ -875,8 +894,8 @@ theorem thm_vector_valued_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
-        temperedAdmissibilityConst α β ρ • spectralTarget ν G x := by
-  sorry
+        temperedAdmissibilityConst α β ρ • spectralTarget ν G x := fun x =>
+  integral_integral_smul_coefficientFormulaVec_activation hν hρ hI hG hβ x
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(i) for `Y`-valued
 targets: `R_ρ f ∈ L²(λ_α; Y)` for `f ∈ 𝒟_α(Y)` and `α`-admissible `ρ`. -/

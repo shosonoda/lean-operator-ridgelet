@@ -284,22 +284,22 @@ attribute [blueprint "thm:A-ii-c"
 attribute [blueprint "thm:A-iii-a"
   (statement := /-- For tempered $\beta$ that is a continuous non-polynomial function of
     polynomial growth and $G$ regular along rays, $\int_{\mathbb R}\gamma_G(a,c)\beta(\langle
-    a,x\rangle+c)\,\mathrm dc$ converges absolutely for $\nu_\alpha$-a.e. $a$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_iii_a
+    a,x\rangle+c)\,\mathrm dc$ converges absolutely for $\nu_\alpha$-a.e. $a$. -/)]
+  OperatorRidgelet.Paper.thm_A_iii_a
 
 attribute [blueprint "thm:A-iii-b"
-  (statement := /-- The $\nu_\alpha$-integral of the inner integral converges absolutely. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_iii_b
+  (statement := /-- The $\nu_\alpha$-integral of the inner integral converges absolutely. -/)]
+  OperatorRidgelet.Paper.thm_A_iii_b
 
 attribute [blueprint "thm:A-iii-c"
   (statement := /-- $\int_H[\int_{\mathbb R}\gamma_G(a,c)\beta(\langle a,x\rangle+c)\,\mathrm
-    dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_{\beta,\rho}g_G(x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_iii_c
+    dc]\,\nu_\alpha(\mathrm da)=C^{(\alpha)}_{\beta,\rho}g_G(x)$. -/)]
+  OperatorRidgelet.Paper.thm_A_iii_c
 
 attribute [blueprint "thm:A-iii-d"
   (statement := /-- For every non-polynomial $\beta$ a band-pass $\rho$ with
-    $C^{(\alpha)}_{\beta,\rho}\ne0$ exists. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_A_iii_d
+    $C^{(\alpha)}_{\beta,\rho}\ne0$ exists. -/)]
+  OperatorRidgelet.Paper.thm_A_iii_d
 
 attribute [blueprint "thm:C-i-a"
   (statement := /-- The frame operator $T_\alpha=U_\alpha'U_\alpha$ equals the Riesz map
@@ -517,18 +517,18 @@ attribute [blueprint "thm:vector-valued-A-ii-c"
 
 attribute [blueprint "thm:vector-valued-A-iii-a"
   (statement := /-- Theorem A for $Y$-valued targets: The inner integral with a tempered $\beta$
-    converges absolutely for $\nu_\alpha$-a.e. $a$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_iii_a
+    converges absolutely for $\nu_\alpha$-a.e. $a$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_iii_a
 
 attribute [blueprint "thm:vector-valued-A-iii-b"
-  (statement := /-- Theorem A for $Y$-valued targets: The outer integral converges absolutely. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_iii_b
+  (statement := /-- Theorem A for $Y$-valued targets: The outer integral converges absolutely. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_iii_b
 
 attribute [blueprint "thm:vector-valued-A-iii-c"
   (statement := /-- Theorem A for $Y$-valued targets: $\int_H[\int_{\mathbb R}\beta(\langle
     a,x\rangle+c)\gamma_G(a,c)\,\mathrm dc]\,\nu_\alpha(\mathrm
-    da)=C^{(\alpha)}_{\beta,\rho}g_G(x)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_A_iii_c
+    da)=C^{(\alpha)}_{\beta,\rho}g_G(x)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_A_iii_c
 
 attribute [blueprint "thm:vector-valued-B-i-a"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho f\in L^2(\lambda_\alpha;Y)$ for

@@ -1,5 +1,6 @@
 import OperatorRidgelet.Tempered.Basic
 import OperatorRidgelet.Tempered.Fourier
+import OperatorRidgelet.ToMathlib.PolynomialRealPart
 import OperatorRidgelet.ToMathlib.TemperedDistributionPointSupport
 import LeanRidgelet.ToMathlib.Lizorkin
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
@@ -411,12 +412,13 @@ theorem exists_isBandPass_temperedAdmissibilityConst_eq_one {α : ℝ} (hα : 0 
 
 /-! ### Bounded nonconstant functions are not polynomials -/
 
-/-- A tempered distribution acting by integration against a bounded continuous function taking
-two different values is not a polynomial distribution. -/
-theorem not_isPolynomialDistribution_of_bounded {β : TemperedDistribution ℝ ℂ} {b : ℝ → ℝ}
-    (hβ : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ x : ℝ, φ x * (b x : ℂ)) (hb : Continuous b) {M : ℝ}
-    (hM : ∀ x, |b x| ≤ M) {x₀ x₁ : ℝ} (hne : b x₀ ≠ b x₁) : ¬ IsPolynomialDistribution β := by
-  rintro ⟨p, hp⟩
+/-- **The du Bois-Reymond step.**  A tempered distribution acting both by integration against a
+continuous function `b` and by integration against a polynomial `p` forces `b(x) = p(x)` at
+every real `x`. -/
+theorem ofReal_eq_eval_of_isPolynomialDistribution {β : TemperedDistribution ℝ ℂ} {b : ℝ → ℝ}
+    (hβ : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ x : ℝ, φ x * (b x : ℂ)) (hb : Continuous b)
+    {p : Polynomial ℂ} (hp : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ x : ℝ, φ x * p.eval (x : ℂ)) :
+    ∀ x : ℝ, (b x : ℂ) = p.eval (x : ℂ) := by
   have hcont : Continuous fun x : ℝ => (b x : ℂ) - p.eval (x : ℂ) :=
     (Complex.continuous_ofReal.comp hb).sub (p.continuous.comp Complex.continuous_ofReal)
   have hae : ∀ᵐ x : ℝ ∂volume, (b x : ℂ) - p.eval (x : ℂ) = 0 := by
@@ -443,11 +445,29 @@ theorem not_isPolynomialDistribution_of_bounded {β : TemperedDistribution ℝ �
       rw [hψ, Complex.real_smul]
       ring
     rw [this, h1, sub_self]
-  have heq : ∀ x : ℝ, (b x : ℂ) = p.eval (x : ℂ) := by
-    have h := (Continuous.ae_eq_iff_eq volume hcont continuous_zero).mp hae
-    intro x
-    have := congrFun h x
-    simpa [sub_eq_zero] using this
+  have h := (Continuous.ae_eq_iff_eq volume hcont continuous_zero).mp hae
+  intro x
+  have := congrFun h x
+  simpa [sub_eq_zero] using this
+
+/-- A tempered distribution acting by integration against a continuous function that is not a
+polynomial function is not a polynomial distribution. -/
+theorem not_isPolynomialDistribution_of_not_isPolynomialFun {β : TemperedDistribution ℝ ℂ}
+    {b : ℝ → ℝ} (hβ : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ x : ℝ, φ x * (b x : ℂ))
+    (hb : Continuous b) (hpoly : ¬ IsPolynomialFun b) : ¬ IsPolynomialDistribution β := by
+  rintro ⟨p, hp⟩
+  obtain ⟨q, hq⟩ := exists_polynomial_eval_eq_re p
+  refine hpoly ⟨q, fun t => ?_⟩
+  rw [hq t, ← ofReal_eq_eval_of_isPolynomialDistribution hβ hb hp t, Complex.ofReal_re]
+
+/-- A tempered distribution acting by integration against a bounded continuous function taking
+two different values is not a polynomial distribution. -/
+theorem not_isPolynomialDistribution_of_bounded {β : TemperedDistribution ℝ ℂ} {b : ℝ → ℝ}
+    (hβ : ∀ φ : SchwartzMap ℝ ℂ, β φ = ∫ x : ℝ, φ x * (b x : ℂ)) (hb : Continuous b) {M : ℝ}
+    (hM : ∀ x, |b x| ≤ M) {x₀ x₁ : ℝ} (hne : b x₀ ≠ b x₁) : ¬ IsPolynomialDistribution β := by
+  rintro ⟨p, hp⟩
+  have heq : ∀ x : ℝ, (b x : ℂ) = p.eval (x : ℂ) :=
+    ofReal_eq_eval_of_isPolynomialDistribution hβ hb hp
   by_cases hdeg : 0 < p.degree
   · have hlead : (RingHom.id ℂ) p.leadingCoeff ≠ 0 := by
       simpa using Polynomial.leadingCoeff_ne_zero.mpr (Polynomial.ne_zero_of_degree_gt hdeg)

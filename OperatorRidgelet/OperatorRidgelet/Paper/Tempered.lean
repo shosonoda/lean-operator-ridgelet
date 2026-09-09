@@ -6,6 +6,7 @@ import OperatorRidgelet.Tempered.WeightedDuality
 import OperatorRidgelet.Tempered.Polynomial
 import OperatorRidgelet.Tempered.Regularized
 import OperatorRidgelet.Tempered.Reconstruction
+import OperatorRidgelet.Reconstruction.Tempered
 
 /-!
 # Statements of Section 5 (tempered synthesis activations and ReLU) and Appendix C
@@ -276,6 +277,7 @@ theorem cor_relu_admissible_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     isRealDistribution_reluDistribution _ hb χ hχ η hη (by rw [hC]; exact one_ne_zero) g
   rwa [hC, inv_one, one_smul] at h
 
+set_option linter.unusedSectionVars false in
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  With the rescaled filter Theorem
 A(iii) holds with ReLU synthesis for every `α > 0`: for `G` regular along rays and every `x`,
 the inner integral `∫ γ_G(a,c) ReLU(⟪a,x⟫ + c) dc` converges absolutely for `ν`-almost every
@@ -294,7 +296,18 @@ theorem cor_relu_admissible_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
       ∫ a : H, (∫ c : ℝ,
         coefficientFormula (reluNormalizedFilter α ρ) G (a, c) * (relu (⟪a, x⟫ + c) : ℂ)) ∂ν =
         spectralTarget ν G x := by
-  sorry
+  obtain ⟨hb, hC⟩ := reluNormalizedFilter_spec hα hρ hρ_real hρ_even hρ_nonpos
+  have hIw : IsFrequencyWindow (reluNormalizedFilter α ρ) I :=
+    hI.smul (reluAdmissibilityScale α ρ)⁻¹
+  intro x
+  refine ⟨ae_integrable_coefficientFormula_mul_activation hb hIw hG
+      isTemperedFunction_reluDistribution.continuous
+      isTemperedFunction_reluDistribution.polynomialGrowth x,
+    integrable_integral_coefficientFormula_mul_activation hb hIw hG
+      isTemperedFunction_reluDistribution.continuous
+      isTemperedFunction_reluDistribution.polynomialGrowth x, ?_⟩
+  rw [integral_integral_coefficientFormula_mul_activation hν hb hIw hG
+    isTemperedFunction_reluDistribution x, hC, one_mul]
 
 /-! ### Example `ex:standard-activations` -/
 

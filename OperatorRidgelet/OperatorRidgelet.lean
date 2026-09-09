@@ -21,6 +21,7 @@ import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
 import OperatorRidgelet.Reconstruction.Representation
+import OperatorRidgelet.Reconstruction.Tempered
 import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Tempered.Basic
@@ -47,6 +48,7 @@ import OperatorRidgelet.Examples.LayerRidgelet
 import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
+import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
 import OperatorRidgelet.ToMathlib.FourierDilation
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
@@ -58,6 +60,7 @@ import OperatorRidgelet.ToMathlib.GaussianTilt
 import OperatorRidgelet.ToMathlib.GiryMonad
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.IntegralSqrt
+import OperatorRidgelet.ToMathlib.InvOneAddSqLintegral
 import OperatorRidgelet.ToMathlib.Symmetrization
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.LpOfReal
@@ -66,6 +69,7 @@ import OperatorRidgelet.ToMathlib.PolynomialCoeffBound
 import OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv
 import OperatorRidgelet.ToMathlib.PolynomialGaussianSchwartz
 import OperatorRidgelet.ToMathlib.PolynomialGrowthBounds
+import OperatorRidgelet.ToMathlib.PolynomialRealPart
 import OperatorRidgelet.ToMathlib.PositiveOperator
 import OperatorRidgelet.ToMathlib.RpowIntegral
 import OperatorRidgelet.ToMathlib.SchwartzAwayFromZero

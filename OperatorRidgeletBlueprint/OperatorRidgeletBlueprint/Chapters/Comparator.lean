@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 220.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 228.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 37
-  * 14
+  * 38
+  * 13
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -321,7 +321,7 @@ Status: *verified by comparator*.
 
 Blueprint node: {bpref "def:spectral-coefficient"}[]. Status: *verified* (its Lean theorem is verified).
 
-Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula).
+Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula).
 
 `OperatorRidgelet.HasBiasFourier`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L305)); see the Lean panel of the Blueprint node above.
 
@@ -771,7 +771,7 @@ Status: *verified by comparator*.
 
 ## Theorem 4.2 — Integral representation of targets with a spectral density (`thm:A`)
 
-Blueprint node: {bpref "thm:A"}[]. Status: *partial 6/10* (6 of 10 Lean theorems verified).
+Blueprint node: {bpref "thm:A"}[]. Status: *verified* (all 10 Lean theorems verified).
 
 Formalization note. Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α), as the manuscript notes after the proof; the Gaussian case is ν = gaussianMixture N α. Part i (bound, continuity, uniqueness) involves neither ρ nor homogeneity and is stated for G ∈ L¹(ν) alone. Part ii: absolute convergence is the a.e. integrability of the inner integrand plus the ν-integrability of the inner integral (ii\_a), the identity with C^\{(α)\}\_ρ (ii\_b), and the integral-network form integralNetworkDensity when γ\_G ∈ L¹(λ\_α) (ii\_c); it is stated with the band-pass hypothesis of the theorem although, as the manuscript remarks, only admissibility is used. Part iii: a tempered β that is a continuous function of polynomial growth is the pair (β : TemperedDistribution ℝ ℂ, b : ℝ → ℝ) with IsTemperedFunction β b (b continuous, |b| ≤ C(1+|t|)^p, β = integration against b); 'not a polynomial' is ¬ IsPolynomialFun b; the constant is temperedAdmissibilityConst α β ρ of Tempered/Const; iii\_a, iii\_b are the two absolute convergences, iii\_c the identity, iii\_d the existence of a band-pass ρ with C^\{(α)\}\_\{β,ρ\} ≠ 0 for every such non-polynomial β. The remark that the constant is a pairing with a test function supported in -supp ρ̂ is the definition of temperedTestFilter and is not restated.
 
@@ -879,7 +879,7 @@ theorem thm_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
       Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_A_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L103):
 
@@ -897,7 +897,7 @@ theorem thm_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
         (fun a : H => ∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ν := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_A_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L116):
 
@@ -916,7 +916,7 @@ theorem thm_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
         temperedAdmissibilityConst α β ρ * spectralTarget ν G x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_A_iii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L130):
 
@@ -929,7 +929,7 @@ theorem thm_A_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Theorem 4.3 — Reconstruction and the frame operator (`thm:C`)
 
@@ -1212,7 +1212,7 @@ Status: *verified by comparator*.
 
 ## Theorem 4.7 — Vector-valued extension (`thm:vector-valued`)
 
-Blueprint node: {bpref "thm:vector-valued"}[]. Status: *partial 9/33* (9 of 33 Lean theorems verified).
+Blueprint node: {bpref "thm:vector-valued"}[]. Status: *partial 12/33* (12 of 33 Lean theorems verified).
 
 Formalization note. One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y (\[InnerProductSpace ℂ Y\] \[CompleteSpace Y\] \[SecondCountableTopology Y\]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩\_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique.
 
@@ -1320,7 +1320,7 @@ theorem thm_vector_valued_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
       Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_A_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L658):
 
@@ -1337,7 +1337,7 @@ theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
         (fun a : H => ∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ν := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_A_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L670):
 
@@ -1355,7 +1355,7 @@ theorem thm_vector_valued_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
         temperedAdmissibilityConst α β ρ • spectralTarget ν G x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L683):
 
@@ -1953,7 +1953,7 @@ Status: *verified by comparator*.
 
 ## Corollary 5.3 — ReLU is admissible (`cor:relu-admissible`)
 
-Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 6/8* (6 of 8 Lean theorems verified).
+Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 7/8* (7 of 8 Lean theorems verified).
 
 Formalization note. ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^\{-2\}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim\_\{ε↓0\}(∫\_\{|ω|>ε\} φ ω^\{-2\} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^\{-2\} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^\{-α-2\} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm\_A\_iii\_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖\{0\} containing supp ρ̂, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g\_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed.
 
@@ -2097,7 +2097,7 @@ theorem cor_relu_admissible_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
         spectralTarget ν G x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Example 5.4 — Standard activations (`ex:standard-activations`)
 

@@ -267,8 +267,8 @@ attribute [blueprint "cor:relu-admissible-viii"
   (statement := /-- With the rescaled filter, Theorem A(iii) holds with ReLU synthesis: for $G$
     regular along rays and every $x$, $\int_H\int_{\mathbb R}\gamma_G(a,c)\operatorname{ReLU}
     (\langle a,x\rangle+c)\,\mathrm dc\,\nu_\alpha(\mathrm da)=g_G(x)$ with absolute
-    convergence. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_viii
+    convergence. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_viii
 
 /-! ## Paper statements: Example `ex:standard-activations` -/
 

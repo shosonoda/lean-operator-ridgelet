@@ -72,10 +72,10 @@ variable [MeasurableSpace H] [BorelSpace H]
 /-- For a density regular along rays, `∫ ‖G‖ dν < ∞`: the ray moment `M_0(G)` dominates
 `∫ ‖G(ω₀ a)‖ ν(da)` for a fixed `ω₀ ∈ I`, and homogeneity rescales this to `∫ ‖G‖ dν`. -/
 theorem IsRegularAlongRays.lintegral_enorm_lt_top {ν : Measure H} {α : ℝ}
-    (hν : IsHomogeneous α ν) {I : Set ℝ} {ω₀ : ℝ} (hω₀ : ω₀ ∈ I) (hω₀' : ω₀ ≠ 0) {G : H → ℂ}
+    (hν : IsHomogeneous α ν) {I : Set ℝ} {ω₀ : ℝ} (hω₀ : ω₀ ∈ I) (hω₀' : ω₀ ≠ 0) {G : H → Y}
     (hG : IsRegularAlongRays ν I G) :
     ∫⁻ ξ, ‖G ξ‖ₑ ∂ν < ⊤ := by
-  have hmeas : Measurable fun ξ => ‖G ξ‖ₑ := hG.stronglyMeasurable.measurable.enorm
+  have hmeas : Measurable fun ξ => ‖G ξ‖ₑ := hG.stronglyMeasurable.enorm
   have h0 := hG.rayMoment_lt_top 0
   have hle : ∫⁻ a, ‖G (ω₀ • a)‖ₑ ∂ν ≤ rayMoment ν I G 0 := by
     unfold rayMoment
@@ -96,7 +96,7 @@ theorem IsRegularAlongRays.lintegral_enorm_lt_top {ν : Measure H} {α : ℝ}
 
 /-- A density regular along rays is integrable. -/
 theorem IsRegularAlongRays.integrable {ν : Measure H} {α : ℝ} (hν : IsHomogeneous α ν)
-    {I : Set ℝ} {ω₀ : ℝ} (hω₀ : ω₀ ∈ I) (hω₀' : ω₀ ≠ 0) {G : H → ℂ}
+    {I : Set ℝ} {ω₀ : ℝ} (hω₀ : ω₀ ∈ I) (hω₀' : ω₀ ≠ 0) {G : H → Y}
     (hG : IsRegularAlongRays ν I G) :
     Integrable G ν :=
   ⟨hG.stronglyMeasurable.aestronglyMeasurable,
