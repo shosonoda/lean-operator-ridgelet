@@ -37,7 +37,7 @@ namespace OperatorRidgelet
 
 open MeasureTheory Complex Filter Topology Metric
 
-open scoped ENNReal NNReal RealInnerProductSpace Pointwise
+open scoped ENNReal NNReal RealInnerProductSpace Pointwise BoundedContinuousFunction
 
 /-! ### The characters of a compact set -/
 
@@ -703,5 +703,316 @@ theorem exists_spectralDensity_universal_approx (ν : Measure H) [SigmaFinite ν
         linarith
 
 end Universal
+
+
+/-! ### `Y`-valued ridge atoms -/
+
+section VectorAtoms
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] {K : Set H}
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
+
+/-- The `Y`-valued ridge atom `x ↦ β(⟪a, x⟫ + c) • y` of a continuous complex activation,
+restricted to the compact set `K`, as a bounded continuous function on `K`.  The parameter and
+the outer weight are taken as a single argument so that the atom is a continuous function of
+the pair, which is what makes the atoms of a measurable phase strongly measurable. -/
+def ridgeAtomVec (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β) (q : (H × ℝ) × Y) :
+    K →ᵇ Y :=
+  haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  BoundedContinuousFunction.mkOfCompact
+    ⟨fun x : K => β (⟪q.1.1, (x : H)⟫ + q.1.2) • q.2, by fun_prop⟩
+
+theorem ridgeAtomVec_apply (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β)
+    (q : (H × ℝ) × Y) (x : K) :
+    ridgeAtomVec hK hβ q x = β (⟪q.1.1, (x : H)⟫ + q.1.2) • q.2 :=
+  rfl
+
+/-- The `Y`-valued ridge atoms depend continuously on the parameter and the outer weight. -/
+theorem continuous_ridgeAtomVec (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β) :
+    Continuous (ridgeAtomVec (Y := Y) hK hβ) := by
+  haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  let F : C(((H × ℝ) × Y) × K, Y) :=
+    ⟨fun r => β (⟪r.1.1.1, (r.2 : H)⟫ + r.1.1.2) • r.1.2, by fun_prop⟩
+  have hF : ridgeAtomVec (Y := Y) hK hβ = fun q =>
+      ContinuousMap.isometryEquivBoundedOfCompact K Y (ContinuousMap.curry F q) := rfl
+  rw [hF]
+  exact (ContinuousMap.isometryEquivBoundedOfCompact K Y).continuous.comp
+    (ContinuousMap.curry F).continuous
+
+/-- The norm of a `Y`-valued ridge atom is at most the norm of the scalar ridge atom times the
+norm of the outer weight. -/
+theorem norm_ridgeAtomVec_le (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β)
+    (q : (H × ℝ) × Y) : ‖ridgeAtomVec hK hβ q‖ ≤ ‖ridgeAtom hK hβ q.1‖ * ‖q.2‖ := by
+  refine (BoundedContinuousFunction.norm_le
+    (mul_nonneg (norm_nonneg _) (norm_nonneg _))).mpr fun x => ?_
+  rw [ridgeAtomVec_apply, norm_smul]
+  exact mul_le_mul_of_nonneg_right
+    (BoundedContinuousFunction.norm_coe_le_norm (ridgeAtom hK hβ q.1) x) (norm_nonneg _)
+
+end VectorAtoms
+
+section VectorAtomsMeasurable
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H] [SecondCountableTopology H] {K : Set H} {Ω : Type*} [MeasurableSpace Ω]
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
+
+/-- The `C(K;Y)`-valued atoms `ω ↦ β(⟪a(ω), ·⟫ + c(ω)) • h(ω)` of a `Y`-valued sampled network
+with `‖h‖ ≤ 1` are Bochner integrable under the second-moment condition. -/
+theorem integrable_ridgeAtomVec (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (p : Measure Ω) [IsProbabilityMeasure p] {π : Ω → H × ℝ}
+    (hπ : Measurable π) {h : Ω → Y} (hh : AEStronglyMeasurable h p) (hh1 : ∀ᵐ ω ∂p, ‖h ω‖ ≤ 1)
+    (hM : Integrable (fun ω => ‖(π ω).1‖ ^ 2 + |(π ω).2| ^ 2) p) :
+    Integrable (fun ω => ridgeAtomVec hK (continuous_ofReal_comp hβ) (π ω, h ω)) p := by
+  obtain ⟨r, hr⟩ := isBounded_iff_forall_norm_le.mp hK.isBounded
+  have hmeas : AEStronglyMeasurable
+      (fun ω => ridgeAtomVec hK (continuous_ofReal_comp hβ) (π ω, h ω)) p :=
+    (continuous_ridgeAtomVec hK (continuous_ofReal_comp hβ)).comp_aestronglyMeasurable
+      (hπ.aestronglyMeasurable.prodMk hh)
+  set C : ℝ := |β 0| + L * max r 1 with hC
+  have hC0 : 0 ≤ C :=
+    add_nonneg (abs_nonneg _) (mul_nonneg L.coe_nonneg (zero_le_one.trans (le_max_right r 1)))
+  have hbound : Integrable (fun ω => C * (3 + (‖(π ω).1‖ ^ 2 + |(π ω).2| ^ 2))) p :=
+    ((integrable_const 3).add hM).const_mul C
+  refine hbound.mono' hmeas ?_
+  filter_upwards [hh1] with ω hω
+  calc ‖ridgeAtomVec hK (continuous_ofReal_comp hβ) (π ω, h ω)‖
+      ≤ ‖ridgeAtom hK (continuous_ofReal_comp hβ) (π ω)‖ * ‖h ω‖ :=
+        norm_ridgeAtomVec_le hK (continuous_ofReal_comp hβ) (π ω, h ω)
+    _ ≤ (C * (1 + ‖(π ω).1‖ + |(π ω).2|)) * 1 :=
+        mul_le_mul (norm_ridgeAtom_le hK hβ hr _) hω (norm_nonneg _)
+          (mul_nonneg hC0 (by positivity))
+    _ ≤ C * (3 + (‖(π ω).1‖ ^ 2 + |(π ω).2| ^ 2)) := by
+        rw [mul_one]
+        refine mul_le_mul_of_nonneg_left ?_ hC0
+        nlinarith [sq_nonneg (‖(π ω).1‖ - 1), sq_nonneg (|(π ω).2| - 1)]
+
+end VectorAtomsMeasurable
+
+
+/-! ### The `Y`-valued sampled network and its Rademacher bound -/
+
+section VectorSampling
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] {K : Set H}
+  {Ω : Type*} [MeasurableSpace Ω]
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+
+/-- Evaluation of the scaled, centred sum of the `Y`-valued atoms
+`Φ(ω) = β(⟪π(ω)_1, ·⟫ + π(ω)_2) • h(ω)` at a point of `K`: it is the sampled-network error. -/
+theorem smul_sum_sub_applyVec (p : Measure Ω) [IsProbabilityMeasure p] (β : ℝ → ℂ)
+    (π : Ω → H × ℝ) (h : Ω → Y) {Φ : Ω → (K →ᵇ Y)}
+    (hΦ : ∀ ω (x : K), Φ ω x = β (⟪(π ω).1, (x : H)⟫ + (π ω).2) • h ω) (hint : Integrable Φ p)
+    (V : ℝ) {N : ℕ} (hN : 0 < N) (ω : Fin N → Ω) (x : K) :
+    ((V / N : ℝ) • (∑ j, Φ (ω j) - (N : ℝ) • ∫ ω', Φ ω' ∂p)) x =
+      ∑ j, β (⟪(π (ω j)).1, (x : H)⟫ + (π (ω j)).2) • (((V / N : ℝ) : ℂ) • h (ω j)) -
+        V • ∫ ω', β (⟪(π ω').1, (x : H)⟫ + (π ω').2) • h ω' ∂p := by
+  have hN' : (N : ℝ) ≠ 0 := by positivity
+  have heval : (∫ ω', Φ ω' ∂p) x = ∫ ω', β (⟪(π ω').1, (x : H)⟫ + (π ω').2) • h ω' ∂p := by
+    change (BoundedContinuousFunction.evalCLM ℂ x) (∫ ω', Φ ω' ∂p) = _
+    rw [← ContinuousLinearMap.integral_comp_comm _ hint]
+    exact integral_congr_ae (Eventually.of_forall fun ω' => hΦ ω' x)
+  change (V / N : ℝ) • ((BoundedContinuousFunction.evalCLM ℂ x) (∑ j, Φ (ω j)) -
+    (N : ℝ) • (∫ ω', Φ ω' ∂p) x) = _
+  rw [map_sum, heval, smul_sub, smul_smul, div_mul_cancel₀ V hN', Finset.smul_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun j _ => ?_
+  change (V / N : ℝ) • Φ (ω j) x = _
+  rw [hΦ, Complex.coe_smul, smul_comm]
+
+/-- The `Y`-valued sampled-network error on `K` is `V/N` times the `C(K;Y)`-norm of the centred
+sum of the atoms. -/
+theorem compactSupNorm_sampled_sub_eqVec (p : Measure Ω) [IsProbabilityMeasure p] (β : ℝ → ℂ)
+    (π : Ω → H × ℝ) (h : Ω → Y) {Φ : Ω → (K →ᵇ Y)}
+    (hΦ : ∀ ω (x : K), Φ ω x = β (⟪(π ω).1, (x : H)⟫ + (π ω).2) • h ω) (hint : Integrable Φ p)
+    {V : ℝ} (hV : 0 ≤ V) {N : ℕ} (hN : 0 < N) (ω : Fin N → Ω) :
+    compactSupNorm K (fun x =>
+        ∑ j, β (⟪(π (ω j)).1, x⟫ + (π (ω j)).2) • (((V / N : ℝ) : ℂ) • h (ω j)) -
+          V • ∫ ω', β (⟪(π ω').1, x⟫ + (π ω').2) • h ω' ∂p) =
+      V / N * ‖∑ j, Φ (ω j) - (N : ℝ) • ∫ ω', Φ ω' ∂p‖ := by
+  conv_rhs => rw [← abs_of_nonneg (div_nonneg hV (Nat.cast_nonneg N)), ← Real.norm_eq_abs,
+    ← norm_smul]
+  exact compactSupNorm_eq_norm_of_forall _ (smul_sum_sub_applyVec p β π h hΦ hint V hN ω)
+
+/-- The `Y`-valued Rademacher complexity `𝔑^Y_N(K; p, β)` as the uniform average over the `2ᴺ`
+sign vectors of `N⁻¹ 𝔼_θ ‖∑_j σ_j Φ(θ_j)‖_{C(K;Y)}`. -/
+theorem rademacherComplexity_eq_sum_signsVec [MeasurableSpace H] (N : ℕ)
+    (p : Measure (H × ℝ)) [IsProbabilityMeasure p] (β : ℝ → ℂ) (h : H × ℝ → Y)
+    {Φ : H × ℝ → (K →ᵇ Y)}
+    (hΦ : ∀ θ (x : K), Φ θ x = β (⟪θ.1, (x : H)⟫ + θ.2) • h θ) (hint : Integrable Φ p) :
+    rademacherComplexity N K p β h =
+      (N : ℝ)⁻¹ * ((2 ^ N : ℝ)⁻¹ *
+        ∑ σ : Signs N, ∫ θ, ‖∑ j, signVector σ j • Φ (θ j)‖ ∂sampleLaw N p) := by
+  have hpt : ∀ z : (Fin N → H × ℝ) × (Fin N → ℝ),
+      compactSupNorm K (fun x => (N : ℂ)⁻¹ •
+        ∑ j, ((z.2 j : ℝ) : ℂ) • (β (⟪(z.1 j).1, x⟫ + (z.1 j).2) • h (z.1 j))) =
+      (N : ℝ)⁻¹ * ‖∑ j, z.2 j • Φ (z.1 j)‖ := by
+    intro z
+    have hNinv : |(N : ℝ)⁻¹| = (N : ℝ)⁻¹ := abs_of_nonneg (by positivity)
+    rw [← hNinv, ← Real.norm_eq_abs, ← norm_smul]
+    refine compactSupNorm_eq_norm_of_forall _ fun x => ?_
+    have hcast : ((N : ℂ))⁻¹ = (((N : ℝ)⁻¹ : ℝ) : ℂ) := by push_cast; ring
+    rw [hcast, Complex.coe_smul]
+    show (N : ℝ)⁻¹ • (∑ j, z.2 j • Φ (z.1 j)) x = _
+    rw [BoundedContinuousFunction.coe_sum, Finset.sum_apply, Finset.smul_sum, Finset.smul_sum]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [Complex.coe_smul]
+    show (N : ℝ)⁻¹ • (z.2 j • Φ (z.1 j) x) = _
+    rw [hΦ]
+  have hfun : (fun z : (Fin N → H × ℝ) × (Fin N → ℝ) => compactSupNorm K (fun x => (N : ℂ)⁻¹ •
+        ∑ j, ((z.2 j : ℝ) : ℂ) • (β (⟪(z.1 j).1, x⟫ + (z.1 j).2) • h (z.1 j)))) =
+      fun z => (N : ℝ)⁻¹ * ‖∑ j, z.2 j • Φ (z.1 j)‖ := funext hpt
+  have hΦj : ∀ j, Integrable (fun θ : Fin N → H × ℝ => Φ (θ j)) (sampleLaw N p) := fun j =>
+    (measurePreserving_eval (fun _ => p) j).integrable_comp_of_integrable hint
+  have hfst : MeasurePreserving Prod.fst ((sampleLaw N p).prod (rademacherMeasure N))
+      (sampleLaw N p) := ⟨measurable_fst, Measure.fst_prod⟩
+  have hsnd : MeasurePreserving Prod.snd ((sampleLaw N p).prod (rademacherMeasure N))
+      (rademacherMeasure N) := ⟨measurable_snd, Measure.snd_prod⟩
+  have hae : ∀ᵐ z ∂((sampleLaw N p).prod (rademacherMeasure N)), ∀ j, z.2 j = 1 ∨ z.2 j = -1 :=
+    ae_of_ae_map measurable_snd.aemeasurable
+      (by rw [hsnd.map_eq]; exact ae_rademacherMeasure_forall N)
+  have hmeas : AEStronglyMeasurable (fun z : (Fin N → H × ℝ) × (Fin N → ℝ) =>
+      (N : ℝ)⁻¹ * ‖∑ j, z.2 j • Φ (z.1 j)‖) ((sampleLaw N p).prod (rademacherMeasure N)) := by
+    refine AEStronglyMeasurable.const_mul ?_ _
+    have hsum := Finset.aestronglyMeasurable_sum (μ := (sampleLaw N p).prod (rademacherMeasure N))
+      Finset.univ (f := fun j (z : (Fin N → H × ℝ) × (Fin N → ℝ)) => z.2 j • Φ (z.1 j))
+      fun j _ => ((measurable_pi_apply j).comp measurable_snd).aestronglyMeasurable.smul
+        ((hΦj j).aestronglyMeasurable.comp_quasiMeasurePreserving hfst.quasiMeasurePreserving)
+    exact (hsum.congr (Eventually.of_forall fun z => Finset.sum_apply z Finset.univ _)).norm
+  have hbound : Integrable (fun z : (Fin N → H × ℝ) × (Fin N → ℝ) => (N : ℝ)⁻¹ * ∑ j, ‖Φ (z.1 j)‖)
+      ((sampleLaw N p).prod (rademacherMeasure N)) :=
+    (hfst.integrable_comp_of_integrable (integrable_finsetSum Finset.univ
+      (f := fun j (θ : Fin N → H × ℝ) => ‖Φ (θ j)‖) fun j _ => (hΦj j).norm)).const_mul _
+  have hintprod : Integrable (fun z : (Fin N → H × ℝ) × (Fin N → ℝ) =>
+      (N : ℝ)⁻¹ * ‖∑ j, z.2 j • Φ (z.1 j)‖) ((sampleLaw N p).prod (rademacherMeasure N)) := by
+    refine hbound.mono' hmeas ?_
+    filter_upwards [hae] with z hz
+    rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+    refine mul_le_mul_of_nonneg_left ((norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_))
+      (by positivity)
+    rw [norm_smul, Real.norm_eq_abs]
+    rcases hz j with h1 | h1 <;> simp [h1]
+  unfold rademacherComplexity
+  rw [hfun, rademacherMeasure_eq, integral_prod_pi_rademacherSign _ _ hintprod]
+  simp_rw [integral_const_mul]
+  rw [smul_eq_mul, ← Finset.mul_sum]
+  ring
+
+end VectorSampling
+
+
+/-! ### The Rademacher bound for a `Y`-valued coefficient measure with a density -/
+
+section VectorDensityRademacher
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H] [SecondCountableTopology H] {K : Set H}
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+
+/-- The phase of a `Y`-valued coefficient density is measurable for the parameter law. -/
+theorem aestronglyMeasurable_densityPhaseVec {Θ : Type*} [MeasurableSpace Θ] {lam : Measure Θ}
+    {γ : Θ → Y} (hγ : Integrable γ lam) :
+    AEStronglyMeasurable (densityPhase γ) (densityLaw lam γ) := by
+  have h1 : AEStronglyMeasurable (densityPhase γ) lam :=
+    (hγ.aestronglyMeasurable.norm.aemeasurable.inv).aestronglyMeasurable.smul
+      hγ.aestronglyMeasurable
+  exact h1.mono_ac (densityLaw_absolutelyContinuous lam γ)
+
+/-- The `C(K;Y)`-valued atoms of a `Y`-valued coefficient measure with a density are Bochner
+integrable. -/
+theorem integrable_density_atomVec (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y} (hγ : Integrable γ lam)
+    (hV : densityWeight lam γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) :
+    Integrable (fun θ => ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ, densityPhase γ θ))
+      (densityLaw lam γ) := by
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  exact integrable_ridgeAtomVec hK hβ (densityLaw lam γ) measurable_id
+    (aestronglyMeasurable_densityPhaseVec hγ)
+    (Eventually.of_forall fun θ => norm_densityPhase_le_one γ θ) hM
+
+/-- The error of the sampled network of a `Y`-valued coefficient density on `K`, as `V/N` times
+the `C(K;Y)`-norm of the centred sum of the atoms. -/
+theorem compactSupNorm_densitySampledNetwork_sub_eqVec (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y} (hγ : Integrable γ lam)
+    (hV : densityWeight lam γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) (θ : Fin N → H × ℝ) :
+    compactSupNorm K (fun x =>
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x) =
+      densityWeight lam γ / N *
+        ‖∑ j, ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ j, densityPhase γ (θ j)) -
+          (N : ℝ) • ∫ θ', ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ', densityPhase γ θ')
+            ∂densityLaw lam γ‖ := by
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  calc compactSupNorm K (fun x =>
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)
+      = compactSupNorm K (fun x =>
+          ∑ j, (β (⟪(id (θ j)).1, x⟫ + (id (θ j)).2) : ℂ) •
+              (((densityWeight lam γ / N : ℝ) : ℂ) • densityPhase γ (θ j)) -
+            densityWeight lam γ • ∫ θ', (β (⟪(id θ').1, x⟫ + (id θ').2) : ℂ) •
+              densityPhase γ θ' ∂densityLaw lam γ) := by
+        refine compactSupNorm_congr fun x _ => ?_
+        rw [show integralNetworkDensity (fun t => (β t : ℂ)) lam γ x =
+            densityWeight lam γ • ∫ θ', (β (⟪θ'.1, x⟫ + θ'.2) : ℂ) • densityPhase γ θ'
+              ∂densityLaw lam γ from
+          (densityWeight_smul_integral_smul_densityPhase hγ
+            fun θ' => (β (⟪θ'.1, x⟫ + θ'.2) : ℂ)).symm]
+        simp only [densitySampledNetwork, sampledNetwork, finiteNetwork, id]
+    _ = _ := compactSupNorm_sampled_sub_eqVec (densityLaw lam γ) (fun t => (β t : ℂ)) id
+        (densityPhase γ) (fun θ' x => rfl) (integrable_density_atomVec hK hβ hγ hV hM)
+        (densityWeight_nonneg lam γ) hN θ
+
+/-- **The vector-valued Rademacher bound of Corollary `cor:vector-rates`(ii)** for a coefficient
+measure with a density: the mean compact-open error of the sampled network of `γ λ` is at most
+`2V 𝔑^Y_N(K; p, β)`. -/
+theorem integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec (hK : IsCompact K)
+    {β : ℝ → ℝ} {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
+    (hγ : Integrable γ lam)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) :
+    ∫ θ, compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+            integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)
+        ∂sampleLaw N (densityLaw lam γ) ≤
+      2 * densityWeight lam γ *
+        rademacherComplexity N K (densityLaw lam γ) (fun t => (β t : ℂ)) (densityPhase γ) := by
+  by_cases hV : densityWeight lam γ = 0
+  · rw [densityLaw_eq_zero hγ hV, sampleLaw_zero hN, integral_zero_measure, hV]
+    simp
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  set Φ : H × ℝ → (K →ᵇ Y) := fun θ =>
+    ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ, densityPhase γ θ) with hΦdef
+  have hint : Integrable Φ (densityLaw lam γ) := integrable_density_atomVec hK hβ hγ hV hM
+  have hΦ : ∀ θ (x : K), Φ θ x = (β (⟪θ.1, (x : H)⟫ + θ.2) : ℂ) • densityPhase γ θ :=
+    fun _ _ => rfl
+  have hsym := integral_norm_sum_sub_le (densityLaw lam γ) hint (signVector (N := N))
+    (fun _ => (2 ^ N : ℝ)⁻¹) (fun _ => by positivity) (sum_signs_inv_pow_two N)
+    fun σ j => signVector_eq_one_or_neg_one σ j
+  rw [rademacherComplexity_eq_sum_signsVec N (densityLaw lam γ) (fun t => (β t : ℂ))
+    (densityPhase γ) hΦ hint]
+  calc ∫ θ, compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+            integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)
+        ∂sampleLaw N (densityLaw lam γ)
+      = ∫ θ, densityWeight lam γ / N *
+          ‖∑ j, Φ (θ j) - (N : ℝ) • ∫ θ', Φ θ' ∂densityLaw lam γ‖
+          ∂sampleLaw N (densityLaw lam γ) :=
+        integral_congr_ae (Eventually.of_forall
+          (compactSupNorm_densitySampledNetwork_sub_eqVec hK hβ hγ hV hM hN))
+    _ = densityWeight lam γ / N *
+          ∫ θ, ‖∑ j, Φ (θ j) - (N : ℝ) • ∫ θ', Φ θ' ∂densityLaw lam γ‖
+            ∂sampleLaw N (densityLaw lam γ) := integral_const_mul _ _
+    _ ≤ densityWeight lam γ / N * (2 * ∑ σ : Signs N, (2 ^ N : ℝ)⁻¹ *
+          ∫ θ, ‖∑ j, signVector σ j • Φ (θ j)‖ ∂sampleLaw N (densityLaw lam γ)) :=
+        mul_le_mul_of_nonneg_left hsym
+          (div_nonneg (densityWeight_nonneg lam γ) (Nat.cast_nonneg N))
+    _ = _ := by
+        rw [← Finset.mul_sum]
+        ring
+
+end VectorDensityRademacher
 
 end OperatorRidgelet

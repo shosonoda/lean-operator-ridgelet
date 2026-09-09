@@ -147,16 +147,17 @@ attribute [blueprint "thm:E-iv"
 /-! ## Section 6: constructive universal approximation -/
 
 attribute [blueprint "thm:D"
-  (statement := /-- For continuous, polynomially growing, non-polynomial real $\beta$, a
-    band-pass $\rho$ with $C^{(\alpha)}_{\beta,\rho}=1$, continuous $f:H\to\mathbb C$, compact
-    $K$, and $\varepsilon>0$, there is a spectral density $G$, regular along rays, smooth, and
+  (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, continuous,
+    polynomially growing, non-polynomial real $\beta$, a band-pass $\rho$ with
+    $C^{(\alpha)}_{\beta,\rho}=1$, continuous $f:H\to\mathbb C$, compact $K$, and
+    $\varepsilon>0$, there is a spectral density $G$, regular along rays, smooth, and
     vanishing outside a bounded set, with (i) $\|f-g_G\|_{C(K)}<\varepsilon$; (ii)
     $g_G=S_\beta[\gamma_G\lambda_\alpha]$ with a finite coefficient measure with finite moments
     of all orders; (iii) for globally Lipschitz $\beta$,
     $\mathbb E\|f-f_N\|_{C(K)}\le\varepsilon+\frac{8V}{\sqrt N}
     (|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, and one deterministic width-$N$ network
-    satisfies the same bound. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_D
+    satisfies the same bound. -/)]
+  OperatorRidgelet.Paper.thm_D
 
 attribute [blueprint "thm:D-dense"
   (statement := /-- The finite-width networks with activation $\beta$ are dense in $C(H)$ for
@@ -164,8 +165,9 @@ attribute [blueprint "thm:D-dense"
   (notReady := true)] OperatorRidgelet.Paper.thm_D_dense
 
 attribute [blueprint "thm:D-vec"
-  (statement := /-- The same statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i)
-    and (ii) and the vector-valued compact-open rate
+  (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same
+    statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i) and (ii) and the
+    vector-valued compact-open rate
     $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+2V\mathfrak R^Y_N(K;p,\beta)$ in (iii). -/)
   (notReady := true)] OperatorRidgelet.Paper.thm_D_vec
 

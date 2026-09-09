@@ -140,9 +140,15 @@ measure `γ_G λ_α` that is finite with finite moments of all orders; (iii) if 
 Lipschitz, the sampled network of `γ_G λ_α` satisfies
 `𝔼‖f − f_N‖_{C(K)} ≤ ε + (8V/√N)(|β(0)| + Lip(β) R_K M₂)` with `V = ‖γ_G‖_{L¹(λ_α)}` and
 `M₂` the second moment of `|γ_G| λ_α / V`, and at least one deterministic width-`N` network
-satisfies the same bound. -/
+satisfies the same bound.  The direction measure is assumed finite on bounded sets (`hfin`),
+which Lemma `lem:homogeneous-mixture` supplies for the Gaussian mixture `ν_α` in infinite
+dimension and which the manuscript uses throughout, since it states the theorem for `ν_α`
+only; the abstract hypotheses (σ-finite, full support, homogeneous of degree `α > 0`) do not
+imply it, and Theorem `thm:general-weights` deliberately does not extend `thm:D` to abstract
+weights. -/
 theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
@@ -191,13 +197,15 @@ hold for continuous `f : H → Y` with values in a separable complex Hilbert spa
 set, with (i) `‖f − g_G‖_{C(K;Y)} < ε`, (ii) `g_G = S_β[γ_G λ_α]` with a finite coefficient
 measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the
 vector-valued compact-open rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + 2V 𝔑^Y_N(K; p, β)` of Corollary
-`cor:vector-rates`. -/
+`cor:vector-rates`.  As in `thm_D`, the direction measure is assumed finite on bounded sets
+(`hfin`). -/
 theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
     [SecondCountableTopology Y] (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
-    (hI : IsFrequencyWindow ρ I) {f : H → Y} (hf : Continuous f) {K : Set H}
+    (hα : 0 < α) (hν : IsHomogeneous α ν)
+    (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤) (β : TemperedDistribution ℝ ℂ)
+    (b : ℝ → ℝ) (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b)
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1)
+    (I : Set ℝ) (hI : IsFrequencyWindow ρ I) {f : H → Y} (hf : Continuous f) {K : Set H}
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ G : H → Y, IsRegularAlongRays ν I G ∧ ContDiff ℝ (⊤ : ℕ∞) G ∧
       (∃ R : ℝ, ∀ ξ : H, R < ‖ξ‖ → G ξ = 0) ∧

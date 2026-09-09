@@ -298,9 +298,15 @@ measure `γ_G λ_α` that is finite with finite moments of all orders; (iii) if 
 Lipschitz, the sampled network of `γ_G λ_α` satisfies
 `𝔼‖f − f_N‖_{C(K)} ≤ ε + (8V/√N)(|β(0)| + Lip(β) R_K M₂)` with `V = ‖γ_G‖_{L¹(λ_α)}` and
 `M₂` the second moment of `|γ_G| λ_α / V`, and at least one deterministic width-`N` network
-satisfies the same bound. -/
+satisfies the same bound.  The direction measure is assumed finite on bounded sets (`hfin`),
+which Lemma `lem:homogeneous-mixture` supplies for the Gaussian mixture `ν_α` in infinite
+dimension and which the manuscript uses throughout, since it states the theorem for `ν_α`
+only; the abstract hypotheses (σ-finite, full support, homogeneous of degree `α > 0`) do not
+imply it, and Theorem `thm:general-weights` deliberately does not extend `thm:D` to abstract
+weights. -/
 theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
@@ -331,21 +337,11 @@ theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
               (|b 0| + (L : ℝ) * compactRadius K *
                 Real.sqrt
                   (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G))))) := by
-  -- Everything below `hfin` is `exists_spectralDensity_universal_approx`: Stone--Weierstrass
-  -- for the characters, the normalized radial bumps of `bumpDensity`, Theorem `thm:A`(iii)
-  -- with `C^{(α)}_{β,ρ} = 1`, the moments of all orders of Theorem `thm:E`, and the Barron
-  -- bound of Theorem `thm:lipschitz-barron`.
-  -- The one missing ingredient is that `ν` is finite on bounded sets, which the manuscript
-  -- uses in Step 2 of Appendix D.3 ("`ν_α` has full support and is finite on bounded sets")
-  -- but which the abstract hypotheses of this statement do not provide: `SigmaFinite`,
-  -- `IsOpenPosMeasure` and `IsHomogeneous α` with `α > 0` are all satisfied by, for instance,
-  -- the measure on `ℝ²` obtained by putting the density `r^{α-1} dr` on every ray through a
-  -- rational angle, which gives infinite mass to every ball.  For such a `ν` every `G` regular
-  -- along rays that is continuous vanishes identically, so `g_G = 0` and (i) fails.  The
-  -- statement needs `(hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)` (or
-  -- `[IsFiniteMeasureOnCompacts ν]`) as an extra hypothesis.
-  have hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤ := by
-    sorry
+  -- Stone--Weierstrass for the characters, the normalized radial bumps of `bumpDensity`,
+  -- Theorem `thm:A`(iii) with `C^{(α)}_{β,ρ} = 1`, the moments of all orders of Theorem
+  -- `thm:E`, and the Barron bound of Theorem `thm:lipschitz-barron`.  The hypothesis `hfin`
+  -- is Step 2 of Appendix D.3 ("`ν_α` has full support and is finite on bounded sets"): the
+  -- normalization of a radial bump needs `ν (closedBall 0 R) < ⊤`.
   exact exists_spectralDensity_universal_approx ν hfin hν β b hβ ρ hρ hC I hI hf hK hε
 
 /-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, the
@@ -370,13 +366,15 @@ hold for continuous `f : H → Y` with values in a separable complex Hilbert spa
 set, with (i) `‖f − g_G‖_{C(K;Y)} < ε`, (ii) `g_G = S_β[γ_G λ_α]` with a finite coefficient
 measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the
 vector-valued compact-open rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + 2V 𝔑^Y_N(K; p, β)` of Corollary
-`cor:vector-rates`. -/
+`cor:vector-rates`.  As in `thm_D`, the direction measure is assumed finite on bounded sets
+(`hfin`). -/
 theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
     [SecondCountableTopology Y] (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
-    (hI : IsFrequencyWindow ρ I) {f : H → Y} (hf : Continuous f) {K : Set H}
+    (hα : 0 < α) (hν : IsHomogeneous α ν)
+    (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤) (β : TemperedDistribution ℝ ℂ)
+    (b : ℝ → ℝ) (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b)
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1)
+    (I : Set ℝ) (hI : IsFrequencyWindow ρ I) {f : H → Y} (hf : Continuous f) {K : Set H}
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ G : H → Y, IsRegularAlongRays ν I G ∧ ContDiff ℝ (⊤ : ℕ∞) G ∧
       (∃ R : ℝ, ∀ ξ : H, R < ‖ξ‖ → G ξ = 0) ∧
