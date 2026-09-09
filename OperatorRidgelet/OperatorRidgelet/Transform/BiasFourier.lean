@@ -251,6 +251,7 @@ def sliceFourier (γ : H × ℝ → ℂ) (p : H × ℝ) : ℂ :=
   ∫ c : ℝ, Complex.exp (((-2 * Real.pi * c * p.2 : ℝ) : ℂ) * Complex.I) * γ (p.1, c)
 
 omit [MeasurableSpace H] in
+/-- `sliceFourier γ (a, ω)` is the Fourier transform of the ray `c ↦ γ(a, c)`. -/
 theorem sliceFourier_eq (γ : H × ℝ → ℂ) (a : H) (ω : ℝ) :
     sliceFourier γ (a, ω) = 𝓕 (fun c => γ (a, c)) ω :=
   (Real.fourier_real_eq_integral_exp_smul _ _).symm
@@ -389,7 +390,8 @@ theorem exists_measurable_hasBiasFourier {γ : H × ℝ → ℂ} (hγ : Measurab
     filter_upwards [(hΦn₂ n).coeFn_toLp, hΦeq] with p h1 h2
     simp only [Pi.sub_apply, h1, h2]
   -- a subsequence with summable squared errors
-  have hsub : ∀ k : ℕ, ∃ N, ∀ n ≥ N, eLpNorm (Φn n - Φ) 2 (ν.prod volume) ≤ (2⁻¹ : ℝ≥0∞) ^ k := fun k =>
+  have hsub : ∀ k : ℕ, ∃ N, ∀ n ≥ N,
+      eLpNorm (Φn n - Φ) 2 (ν.prod volume) ≤ (2⁻¹ : ℝ≥0∞) ^ k := fun k =>
     ENNReal.tendsto_atTop_zero.mp hΦlim _
       (ENNReal.pow_pos (ENNReal.inv_pos.mpr ENNReal.ofNat_ne_top) k)
   choose N hN using hsub

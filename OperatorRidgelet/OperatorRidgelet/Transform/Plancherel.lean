@@ -32,8 +32,9 @@ measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
   `|ω|^α (1 + ω²)⁻¹`), so the explicit coefficient `γ_G = coefficientFormula ρ G` is defined
   pointwise, is jointly measurable, square integrable, and has the partial Fourier transform
   `ρ̂(ω) G(-ωa)` in the sense of `HasBiasFourier`; uniqueness of the coefficient with a given
-  bias transform follows from the density of test functions.  Hence `W_ρ G = spectralCoefficient ν ρ G` is the class of
-  `γ_G` (`spectralCoefficient_eq_toLp`) with `‖W_ρ G‖² = C_ρ ‖G‖²`.
+  bias transform follows from the density of test functions.  Hence
+  `W_ρ G = spectralCoefficient ν ρ G` is the class of `γ_G` (`spectralCoefficient_eq_toLp`)
+  with `‖W_ρ G‖² = C_ρ ‖G‖²`.
 * **The bounded extension.** `R_ρ` extends from the dense image of the core to
   `ridgeletExtensionCLM : 𝒦 →L L²(λ)` (`LinearMap.extendOfNorm`), a scaled isometry with closed
   range, uniquely determined by its values on the core, and equal to `W_ρ` on `𝒦`.

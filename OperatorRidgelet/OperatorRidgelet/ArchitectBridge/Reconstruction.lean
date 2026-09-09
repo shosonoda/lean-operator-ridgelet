@@ -356,12 +356,12 @@ attribute [blueprint "thm:C-iii-e"
 
 attribute [blueprint "thm:C-iv-a"
   (statement := /-- $\Lambda_\rho$ is a bounded operator $L^2(\lambda_\alpha)\to
-    L^2(\nu_\alpha)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_a
+    L^2(\nu_\alpha)$. -/)]
+  OperatorRidgelet.Paper.thm_C_iv_a
 
 attribute [blueprint "thm:C-iv-b"
-  (statement := /-- $\Lambda_\rho W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_b
+  (statement := /-- $\Lambda_\rho W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$. -/)]
+  OperatorRidgelet.Paper.thm_C_iv_b
 
 attribute [blueprint "thm:C-iv-c"
   (statement := /-- $\Lambda_\rho R_\rho f=C^{(\alpha)}_\rho\mathcal G_Qf$ pointwise for
@@ -424,31 +424,31 @@ attribute [blueprint "lem:hermite-totality-vi"
   (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_vi
 
 attribute [blueprint "prop:coefficient-projection-i"
-  (statement := /-- The ray-average integral converges absolutely for $\nu_\alpha$-a.e. $\xi$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_i
+  (statement := /-- The ray-average integral converges absolutely for $\nu_\alpha$-a.e. $\xi$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_i
 
 attribute [blueprint "prop:coefficient-projection-ii"
   (statement := /-- $\Lambda_\rho\gamma$ is independent, as an $L^2$ class, of the jointly
-    measurable Fourier representative of $\gamma$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_ii
+    measurable Fourier representative of $\gamma$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_ii
 
 attribute [blueprint "prop:coefficient-projection-iii"
-  (statement := /-- $\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_iii
+  (statement := /-- $\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_iii
 
 attribute [blueprint "prop:coefficient-projection-iv"
   (statement := /-- $\Lambda_\rho$ is the Hilbert adjoint of $W_\rho$: $\langle\gamma,W_\rho
-    F\rangle=\langle\Lambda_\rho\gamma,F\rangle$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_iv
+    F\rangle=\langle\Lambda_\rho\gamma,F\rangle$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_iv
 
 attribute [blueprint "prop:coefficient-projection-v"
-  (statement := /-- $\Lambda_\rho W_\rho=C\,\mathrm{Id}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_v
+  (statement := /-- $\Lambda_\rho W_\rho=C\,\mathrm{Id}$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_v
 
 attribute [blueprint "prop:coefficient-projection-vi"
   (statement := /-- $\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}\Lambda_\rho$ is the orthogonal
-    projection onto $\operatorname{Ran}R_\rho$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_coefficient_projection_vi
+    projection onto $\operatorname{Ran}R_\rho$. -/)]
+  OperatorRidgelet.Paper.prop_coefficient_projection_vi
 
 attribute [blueprint "prop:coefficient-projection-vii"
   (statement := /-- The minimum-norm solution of $S_\rho\gamma=F\in\mathcal E_\alpha'$ is

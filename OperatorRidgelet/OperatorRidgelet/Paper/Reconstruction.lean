@@ -1,6 +1,7 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
 import OperatorRidgelet.Reconstruction.Representation
+import OperatorRidgelet.Reconstruction.Backprojection
 import OperatorRidgelet.Paper.Transform
 
 /-!
@@ -354,6 +355,8 @@ theorem thm_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
   exact transposeEmbed_apply_eq_integral_integralNetworkDensity hν
     (def_admissible_filter ρ hρ α hα) hα G hγ g
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The backprojection `Λ_ρ` is a
 bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
 `‖Λ_ρ γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
@@ -362,8 +365,11 @@ theorem thm_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
     ∃ M : ℝ, ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       MemLp (backprojection α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
-  sorry
+  exact ⟨admissibilityConst α ρ,
+    fun γ => hν.memLp_backprojection (def_admissible_filter ρ hρ α hα) γ⟩
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  `Λ_ρ W_ρ = C^{(α)}_ρ Id` on
 `L²(ν_α)`. -/
 theorem thm_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
@@ -371,7 +377,8 @@ theorem thm_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
       backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
         fun ξ => admissibilityConst α ρ * F ξ := by
-  sorry
+  exact fun F hF hF₂ =>
+    hν.backprojection_spectralCoefficient hα (def_admissible_filter ρ hρ α hα) hF hF₂
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -538,6 +545,8 @@ theorem lem_hermite_totality_vi {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
 
 /-! ### Proposition `prop:coefficient-projection` -/
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  For `γ ∈ L²(λ_α)` and a jointly measurable partial bias-Fourier representative
 `Φ` of `γ`, the ray-average integral `eq:ray-average` converges absolutely for `ν_α`-almost
@@ -549,8 +558,11 @@ theorem prop_coefficient_projection_i (ν : Measure H) [SigmaFinite ν] [ν.IsOp
     ∀ᵐ ξ ∂ν,
       Integrable fun ω : ℝ =>
         (starRingEnd ℂ) (filterFourier ρ ω) * ((|ω| ^ (-α) : ℝ) : ℂ) * Φ (-(ω⁻¹ • ξ)) ω := by
-  sorry
+  filter_upwards [HasBiasFourier.ae_rayEnergy_lt_top hν (Lp.memLp γ) hΦ hγΦ] with ξ hξ
+  exact integrable_backprojection_integrand hρ hΦ hξ
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  As an `L²(ν_α)` class, `Λ_ρ γ` does not depend on the jointly measurable
 Fourier representative of `γ`. -/
@@ -560,8 +572,10 @@ theorem prop_coefficient_projection_ii (ν : Measure H) [SigmaFinite ν] [ν.IsO
     (hΦ' : Measurable (Function.uncurry Φ')) (hγΦ : HasBiasFourier ν γ Φ)
     (hγΦ' : HasBiasFourier ν γ Φ') :
     backprojectionOf α ρ Φ =ᵐ[ν] backprojectionOf α ρ Φ' := by
-  sorry
+  exact hν.backprojectionOf_ae_eq _ hΦ hΦ' hγΦ hγΦ'
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  `Λ_ρ γ ∈ L²(ν_α)` with `‖Λ_ρ γ‖_{L²(ν_α)} ≤ √C ‖γ‖_𝒴`, `C = C^{(α)}_ρ`. -/
 theorem prop_coefficient_projection_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
@@ -570,8 +584,10 @@ theorem prop_coefficient_projection_iii (ν : Measure H) [SigmaFinite ν] [ν.Is
     ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       MemLp (backprojection α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ admissibilityConst α ρ * ‖γ‖ ^ 2 := by
-  sorry
+  exact fun γ => hν.memLp_backprojection hρ γ
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  `Λ_ρ` is the Hilbert adjoint of `W_ρ : L²(ν_α) → 𝒴`:
 `⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨Λ_ρ γ, F⟩_{L²(ν_α)}`. -/
@@ -582,8 +598,10 @@ theorem prop_coefficient_projection_iv (ν : Measure H) [SigmaFinite ν] [ν.IsO
       ∫ p, γ p * (starRingEnd ℂ) ((spectralCoefficient ν ρ F : H × ℝ → ℂ) p)
           ∂parameterMeasure ν =
         ∫ ξ, backprojection α ν ρ γ ξ * (starRingEnd ℂ) (F ξ) ∂ν := by
-  sorry
+  exact fun γ F hF hF₂ => hν.integral_mul_conj_spectralCoefficient hα hρ γ hF hF₂
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  `Λ_ρ W_ρ = C Id`. -/
 theorem prop_coefficient_projection_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
@@ -592,8 +610,10 @@ theorem prop_coefficient_projection_v (ν : Measure H) [SigmaFinite ν] [ν.IsOp
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
       backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
         fun ξ => admissibilityConst α ρ * F ξ := by
-  sorry
+  exact fun F hF hF₂ => hν.backprojection_spectralCoefficient hα hρ hF hF₂
 
+set_option linter.unusedVariables false in
+set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ` is the orthogonal projection onto `Ran R_ρ`:
 `Π_ρ γ ∈ Ran R_ρ` and `γ - Π_ρ γ ⊥ Ran R_ρ`. -/
@@ -603,7 +623,7 @@ theorem prop_coefficient_projection_vi (μ ν : Measure H) [IsProbabilityMeasure
     ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       coefficientProjection α μ ν ρ γ ∈ ridgeletRange μ ν ρ ∧
         γ - coefficientProjection α μ ν ρ γ ∈ (ridgeletRange μ ν ρ)ᗮ := by
-  sorry
+  exact fun γ => hν.coefficientProjection_mem_and_sub_mem_orthogonal hα hρ μ γ
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in

@@ -71,6 +71,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 def raySubst (p : H × ℝ) : H × ℝ :=
   (-(p.2⁻¹ • p.1), p.2)
 
+/-- The ray substitution is measurable. -/
 theorem measurable_raySubst : Measurable (raySubst : H × ℝ → H × ℝ) :=
   (measurable_snd.inv.smul measurable_fst).neg.prodMk measurable_snd
 
@@ -254,9 +255,11 @@ theorem backprojectionOf_coefficient_representative (α : ℝ) (ρ : SchwartzMap
 def rayEnergy (α : ℝ) (Φ : H → ℝ → ℂ) (ξ : H) : ℝ≥0∞ :=
   ∫⁻ ω, ENNReal.ofReal (|ω| ^ (-α)) * ‖Φ (-(ω⁻¹ • ξ)) ω‖ₑ ^ 2
 
+/-- The ray energy of a jointly measurable representative is measurable in `ξ`. -/
 theorem measurable_rayEnergy (α : ℝ) {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) :
     Measurable (rayEnergy α Φ) :=
-  ((measurable_rayWeight α).mul ((hΦ.comp measurable_raySubst).enorm.pow_const 2)).lintegral_prod_right'
+  ((measurable_rayWeight α).mul
+    ((hΦ.comp measurable_raySubst).enorm.pow_const 2)).lintegral_prod_right'
 
 variable {α : ℝ} {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
 include hν
@@ -319,7 +322,8 @@ theorem integrable_backprojection_integrand {ρ : SchwartzMap ℝ ℝ} (hρ : Is
       (hΦm.norm.pow_const 2)).aestronglyMeasurable, ?_⟩
     rw [hasFiniteIntegral_iff_enorm]
     refine lt_of_eq_of_lt (lintegral_congr fun ω => ?_) hξ
-    rw [Real.enorm_eq_ofReal (by positivity), ENNReal.ofReal_mul (Real.rpow_nonneg (abs_nonneg _) _),
+    rw [Real.enorm_eq_ofReal (by positivity),
+      ENNReal.ofReal_mul (Real.rpow_nonneg (abs_nonneg _) _),
       ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
   refine Integrable.mono' (hρ.integrable.add h2) hmeas.aestronglyMeasurable ?_
   filter_upwards with ω

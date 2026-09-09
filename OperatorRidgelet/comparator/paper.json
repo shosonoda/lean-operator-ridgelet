@@ -103,7 +103,7 @@
         "OperatorRidgelet.coefficientFormula",
         "OperatorRidgelet.Paper.def_spectral_coefficient"
       ],
-      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions (HasBiasFourier), junk 0 if none; def_spectral_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula)."
+      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def_spectral_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula)."
     },
     {
       "label": "lem:coefficient-isometry",
