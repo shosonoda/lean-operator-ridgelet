@@ -361,40 +361,8 @@ does not depend on the Borel representative of `G`. -/
 theorem lem_coefficient_isometry_ii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G G' : H → ℂ)
     (hG : Measurable G) (hG' : Measurable G') (hG₂ : MemLp G 2 ν) (hGG' : G =ᵐ[ν] G') :
-    spectralCoefficient ν ρ G = spectralCoefficient ν ρ G' := by
-  have key : ∀ γ : Lp ℂ 2 (parameterMeasure ν),
-      HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G (-(ω • a))) ↔
-        HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G' (-(ω • a))) := by
-    intro γ
-    have hae := hν.ae_ae_eq_neg_smul hG hG' hGG'
-    unfold HasBiasFourier
-    constructor
-    · intro h
-      filter_upwards [h, hae] with a ha haa φ
-      rw [ha φ]
-      congr 1
-      apply integral_congr_ae
-      filter_upwards [haa] with ω hω
-      rw [hω]
-    · intro h
-      filter_upwards [h, hae] with a ha haa φ
-      rw [ha φ]
-      congr 1
-      apply integral_congr_ae
-      filter_upwards [haa] with ω hω
-      rw [hω]
-  unfold spectralCoefficient
-  by_cases h : ∃ γ : Lp ℂ 2 (parameterMeasure ν),
-      HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G (-(ω • a)))
-  · have h' : ∃ γ : Lp ℂ 2 (parameterMeasure ν),
-        HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G' (-(ω • a))) :=
-      h.imp fun γ => (key γ).mp
-    rw [dif_pos h, dif_pos h']
-    exact Exists.choose_congr (funext fun γ => propext (key γ)) h h'
-  · have h' : ¬ ∃ γ : Lp ℂ 2 (parameterMeasure ν),
-        HasBiasFourier ν γ (fun a ω => filterFourier ρ ω * G' (-(ω • a))) :=
-      fun h' => h (h'.imp fun γ => (key γ).mpr)
-    rw [dif_neg h, dif_neg h']
+    spectralCoefficient ν ρ G = spectralCoefficient ν ρ G' :=
+  spectralCoefficient_congr_ae hν ρ hGG'
 
 set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.

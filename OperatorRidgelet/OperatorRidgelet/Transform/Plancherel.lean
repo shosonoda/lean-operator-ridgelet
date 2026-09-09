@@ -3,6 +3,7 @@ import OperatorRidgelet.Transform.Mixture
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.CharFunDensity
 import OperatorRidgelet.ToMathlib.L2Glue
+import OperatorRidgelet.ToMathlib.LebesgueScaling
 import LeanRidgelet.ToMathlib.FourierPlancherel
 import LeanRidgelet.ToMathlib.L2Duality
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
@@ -30,8 +31,8 @@ measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
   is in `L¹ ∩ L²` for `ν`-almost every `a` (a weighted Cauchy–Schwarz argument with the weight
   `|ω|^α (1 + ω²)⁻¹`), so the explicit coefficient `γ_G = coefficientFormula ρ G` is defined
   pointwise, is jointly measurable, square integrable, and has the partial Fourier transform
-  `ρ̂(ω) G(-ωa)` in the sense of `HasBiasFourier`; uniqueness of `HasBiasFourier` follows from
-  the density of test functions.  Hence `W_ρ G = spectralCoefficient ν ρ G` is the class of
+  `ρ̂(ω) G(-ωa)` in the sense of `HasBiasFourier`; uniqueness of the coefficient with a given
+  bias transform follows from the density of test functions.  Hence `W_ρ G = spectralCoefficient ν ρ G` is the class of
   `γ_G` (`spectralCoefficient_eq_toLp`) with `‖W_ρ G‖² = C_ρ ‖G‖²`.
 * **The bounded extension.** `R_ρ` extends from the dense image of the core to
   `ridgeletExtensionCLM : 𝒦 →L L²(λ)` (`LinearMap.extendOfNorm`), a scaled isometry with closed
@@ -251,6 +252,11 @@ theorem continuous_filterFourier (ρ : SchwartzMap ℝ ℝ) : Continuous (filter
 theorem integrable_filterFourier (ρ : SchwartzMap ℝ ℝ) : Integrable (filterFourier ρ) := by
   rw [filterFourier_eq_fourier_ofReal]
   exact (𝓕 (SchwartzMap.ofReal ρ)).integrable.comp_mul_left' (by positivity)
+
+/-- `ρ̂` is square integrable. -/
+theorem memLp_filterFourier (ρ : SchwartzMap ℝ ℝ) : MemLp (filterFourier ρ) 2 volume := by
+  rw [filterFourier_eq_fourier_ofReal]
+  exact ((𝓕 (SchwartzMap.ofReal ρ)).memLp 2).comp_mul_left (by positivity)
 
 /-- Quadratic decay of `ρ̂`: `ω² ‖ρ̂(ω)‖ ≤ C`. -/
 theorem exists_sq_mul_norm_filterFourier_le (ρ : SchwartzMap ℝ ℝ) :
@@ -531,7 +537,11 @@ theorem hasBiasFourier_ridgelet (ν : Measure H) {f : H → ℂ} (hf : Integrabl
     (hf₂ : MemLp f 2 μ) :
     HasBiasFourier ν (ridgelet μ ρ f)
       (fun a ω => filterFourier ρ ω * gaussFourier μ f (-(ω • a))) := by
-  refine Eventually.of_forall fun a φ => ?_
+  refine ⟨Eventually.of_forall fun a => ?_, Eventually.of_forall fun a φ => ?_⟩
+  · refine MemLp.mul' (memLp_top_of_bound ?_ (∫ x, ‖f x‖ ∂μ)
+      (Eventually.of_forall fun ω => norm_gaussFourier_le μ f _)) (memLp_filterFourier ρ)
+    exact ((continuous_gaussFourier μ hf).comp
+      (by fun_prop : Continuous fun ω : ℝ => -(ω • a))).aestronglyMeasurable
   rw [← (integrable_ridgelet_slice μ ρ hf a).integral_fourier_mul_conj_fourier
     (memLp_ridgelet_slice μ ρ hf hf₂ a) φ.integrable (φ.memLp 2)]
   simp_rw [fourier_ridgelet_slice μ ρ hf a, fourier_eq_lineFourier (φ : ℝ → ℂ)]
@@ -860,6 +870,7 @@ theorem hasBiasFourier_coefficientFormula (hα : 0 < α) (hν : IsHomogeneous α
     (hρ : IsAdmissible α ρ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     HasBiasFourier ν (coefficientFormula ρ G)
       (fun a ω => filterFourier ρ ω * G (-(ω • a))) := by
+  refine ⟨ae_memLp_ray hν hρ hG hG₂, ?_⟩
   filter_upwards [ae_integrable_ray hα hν hρ hG hG₂] with a ha φ
   set Φ : ℝ → ℂ := fun ω => filterFourier ρ ω * G (-(ω • a)) with hΦ
   have hint : Integrable (fun z : ℝ × ℝ =>
@@ -921,7 +932,8 @@ theorem ae_memLp_slice {ν : Measure H} [SFinite ν] {γ : H × ℝ → ℂ}
 theorem HasBiasFourier.congr_left {ν : Measure H} [SFinite ν] {γ γ' : H × ℝ → ℂ}
     {Φ : H → ℝ → ℂ} (h : HasBiasFourier ν γ Φ) (hγ : γ =ᵐ[ν.prod volume] γ') :
     HasBiasFourier ν γ' Φ := by
-  filter_upwards [h, Measure.ae_ae_of_ae_prod hγ] with a ha hae φ
+  refine ⟨h.memLp, ?_⟩
+  filter_upwards [h.parseval, Measure.ae_ae_of_ae_prod hγ] with a ha hae φ
   rw [← ha φ]
   apply integral_congr_ae
   filter_upwards [hae] with c hc
@@ -932,7 +944,10 @@ theorem HasBiasFourier.congr_left {ν : Measure H} [SFinite ν] {γ γ' : H × �
 theorem HasBiasFourier.congr_right {ν : Measure H} {γ : H × ℝ → ℂ} {Φ Φ' : H → ℝ → ℂ}
     (h : HasBiasFourier ν γ Φ) (hΦ : ∀ᵐ a ∂ν, Φ a =ᵐ[volume] Φ' a) :
     HasBiasFourier ν γ Φ' := by
-  filter_upwards [h, hΦ] with a ha hae φ
+  refine ⟨?_, ?_⟩
+  · filter_upwards [h.memLp, hΦ] with a ha hae
+    exact ha.ae_eq hae
+  filter_upwards [h.parseval, hΦ] with a ha hae φ
   rw [ha φ]
   congr 1
   apply integral_congr_ae
@@ -946,7 +961,8 @@ theorem HasBiasFourier.ae_eq {ν : Measure H} [SFinite ν] {γ₁ γ₂ : H × �
     (hΦ₁ : HasBiasFourier ν γ₁ Φ) (hΦ₂ : HasBiasFourier ν γ₂ Φ) :
     γ₁ =ᵐ[ν.prod volume] γ₂ := by
   have key : ∀ᵐ a ∂ν, ∀ᵐ c : ℝ ∂volume, γ₁ (a, c) = γ₂ (a, c) := by
-    filter_upwards [hΦ₁, hΦ₂, ae_memLp_slice h₁, ae_memLp_slice h₂] with a ha₁ ha₂ hm₁ hm₂
+    filter_upwards [hΦ₁.parseval, hΦ₂.parseval, ae_memLp_slice h₁, ae_memLp_slice h₂]
+      with a ha₁ ha₂ hm₁ hm₂
     have hloc : LocallyIntegrable (fun c : ℝ => γ₁ (a, c) - γ₂ (a, c)) volume :=
       (hm₁.sub hm₂).locallyIntegrable one_le_two
     have h0 := ae_eq_zero_of_integral_contDiff_smul_eq_zero hloc fun g g_diff g_supp => ?_

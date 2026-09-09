@@ -66,7 +66,8 @@ Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 * `backprojectionOf α ρ Φ ξ` is the ray average `eq:ray-average` computed from a partial
   bias-Fourier representative `Φ` of the coefficient; `backprojection α ν ρ γ = Λ_ρ γ` uses a
   jointly measurable representative of `γ ∈ L²(λ)` chosen through `HasBiasFourier` (`0` if there
-  is none); Proposition `prop:coefficient-projection` states that the choice is immaterial.
+  is none), which requires the representative to be square integrable along almost every ray;
+  Proposition `prop:coefficient-projection` states that the choice is immaterial.
   `backprojectionLp` is `Λ_ρ γ` as an element of `L²(ν)` and `coefficientProjection` is
   `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ`.  The space `𝒴` of Appendix B is `L²(λ)`: the norm defined
   through the partial Fourier transform in the bias coincides with the `L²(λ)`-norm by
@@ -259,7 +260,14 @@ def backprojectionOf (α : ℝ) (ρ : ℝ → ℝ) (Φ : H → ℝ → ℂ) (ξ 
 
 open Classical in
 /-- The backprojection `Λ_ρ γ` of a coefficient `γ`, computed from a jointly measurable partial
-bias-Fourier representative of `γ` (`HasBiasFourier`), and `0` if there is none. -/
+bias-Fourier representative of `γ` (`HasBiasFourier`), and `0` if there is none.
+
+`HasBiasFourier` requires the representative to be square integrable along `ν`-almost every
+ray, which pins it down up to a null set on almost every ray (`HasBiasFourier.ae_ae_eq`), and
+the ray substitution `(a, ω) ↦ (-ωa, ω)` preserves null sets by homogeneity; hence the ray
+average does not depend on the chosen representative as an element of `L²(ν)`
+(`prop_coefficient_projection_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
+(`exists_measurable_hasBiasFourier`), so the junk value is never taken on `L²(λ)`. -/
 def backprojection (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → ℂ) : H → ℂ :=
   if h : ∃ Φ : H → ℝ → ℂ, Measurable (Function.uncurry Φ) ∧ HasBiasFourier ν γ Φ then
     backprojectionOf α ρ h.choose
@@ -342,10 +350,14 @@ def biasFourierVec (γ : H × ℝ → Y) (a : H) (ω : ℝ) : Y :=
   ∫ c : ℝ, Complex.exp (-((ω * c : ℝ) * Complex.I)) • γ (a, c)
 
 /-- `HasBiasFourierVec ν γ Φ`: the partial Fourier transform in the bias of the `Y`-valued
-coefficient `γ` is `Φ`, through Parseval's identity against Schwartz test functions for
-`ν`-almost every direction. -/
-def HasBiasFourierVec (ν : Measure H) (γ : H × ℝ → Y) (Φ : H → ℝ → Y) : Prop :=
-  ∀ᵐ a ∂ν, ∀ φ : SchwartzMap ℝ ℂ,
+coefficient `γ` is `Φ`: for `ν`-almost every direction the ray function `Φ(a,·)` is square
+integrable and Parseval's identity against Schwartz test functions holds (the `Y`-valued form
+of `HasBiasFourier`, whose docstring explains the square-integrability clause). -/
+structure HasBiasFourierVec (ν : Measure H) (γ : H × ℝ → Y) (Φ : H → ℝ → Y) : Prop where
+  /-- `Φ(a,·) ∈ L²(ℝ; Y)` for `ν`-almost every direction `a`. -/
+  memLp : ∀ᵐ a ∂ν, MemLp (Φ a) 2 volume
+  /-- Parseval's identity against Schwartz test functions, for `ν`-almost every direction. -/
+  parseval : ∀ᵐ a ∂ν, ∀ φ : SchwartzMap ℝ ℂ,
     ∫ c : ℝ, (starRingEnd ℂ) (φ c) • γ (a, c) =
       ((2 * Real.pi)⁻¹ : ℝ) • ∫ ω : ℝ, (starRingEnd ℂ) (lineFourier φ ω) • Φ a ω
 

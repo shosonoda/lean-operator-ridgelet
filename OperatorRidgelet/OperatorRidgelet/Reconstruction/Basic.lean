@@ -2,6 +2,7 @@ import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv
 import OperatorRidgelet.ToMathlib.PolynomialGrowthBounds
 import OperatorRidgelet.ToMathlib.IteratedDerivMeasurable
+import OperatorRidgelet.ToMathlib.ContDiffOnParametricIntegral
 import LeanRidgelet.ToMathlib.GaussianSchwartz
 import Mathlib.Topology.Algebra.MvPolynomial
 
@@ -888,5 +889,83 @@ theorem IsRegularAlongRays.finset_sum {ν : Measure H} {I : Set ℝ} {ι : Type*
     exact ENNReal.mul_lt_top enorm_lt_top ((hG i hi).rayMoment_lt_top m)
 
 end FinsetSum
+
+/-! ### Bochner integrals of measurable families -/
+
+section BochnerIntegral
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+/-- The ray-derivative bound dominates every ray derivative of order at most `m` on `I`. -/
+theorem enorm_iteratedDeriv_le_rayDerivBound {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
+    (I : Set ℝ) (G : H → Y) {m k : ℕ} (hk : k ≤ m) (a : H) {ω : ℝ} (hω : ω ∈ I) :
+    ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ₑ ≤ rayDerivBound I G m a := by
+  unfold rayDerivBound
+  exact le_iSup_of_le ⟨k, Nat.lt_succ_of_le hk⟩ (le_iSup₂_of_le ω hω le_rfl)
+
+variable [MeasurableSpace H] [BorelSpace H]
+
+omit [BorelSpace H] in
+/-- **Bochner integrals of densities regular along rays** (Lemma `lem:ray-regular-examples`(c)):
+for a measurable family `G y` of bounded densities over a finite measure `m`, smooth along rays
+on a common open neighbourhood `U` of `I` and with a `y`-independent `ν`-integrable majorant of
+the ray-derivative bounds on `U`, the Bochner integral `ξ ↦ ∫ G y ξ ∂m` is regular along rays:
+differentiation under the integral sign (`contDiffOn_integral_of_dominated`) gives smoothness
+along rays and the ray moments. -/
+theorem IsRegularAlongRays.integral {ν : Measure H} {I : Set ℝ} {Ω : Type*} [MeasurableSpace Ω]
+    (m : Measure Ω) [IsFiniteMeasure m] {G : Ω → H → ℂ} (hGm : Measurable (Function.uncurry G))
+    (hGb : ∃ M : ℝ, ∀ y ξ, ‖G y ξ‖ ≤ M) {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
+    (hsmooth : ∀ y a, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G y (ω • a)) U)
+    (hunif : ∀ k : ℕ, ∃ h : H → ℝ,
+      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) ∂ν) < ⊤ ∧
+        ∀ y a, rayDerivBound U (G y) k a ≤ ENNReal.ofReal (h a)) :
+    IsRegularAlongRays ν I fun ξ => ∫ y, G y ξ ∂m := by
+  -- measurability of the ray derivatives in the parameter
+  have hmeas : ∀ (a : H) (k : ℕ), ∀ t ∈ U,
+      AEStronglyMeasurable (fun y => iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t) m :=
+    fun a k t ht => (measurable_iteratedDeriv_of_forall_contDiffOn (f := fun y ω => G y (ω • a))
+      (fun t => hGm.comp (measurable_id.prodMk measurable_const))
+      (fun y => ⟨U, hU, ht, hsmooth y a⟩) k).aestronglyMeasurable
+  -- the uniform bounds are constant in the parameter
+  have hbound : ∀ (a : H) (k : ℕ), ∃ B : Ω → ℝ, Integrable B m ∧
+      ∀ y, ∀ t ∈ U, ‖iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t‖ ≤ B y := by
+    intro a k
+    obtain ⟨h, -, hh⟩ := hunif k
+    refine ⟨fun _ => max (h a) 0, integrable_const _, fun y t ht => ?_⟩
+    have h1 : ‖iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t‖ₑ ≤ ENNReal.ofReal (max (h a) 0) :=
+      ((enorm_iteratedDeriv_le_rayDerivBound U (G y) le_rfl a ht).trans (hh y a)).trans
+        (ENNReal.ofReal_le_ofReal (le_max_left _ _))
+    rw [← ofReal_norm] at h1
+    exact (ENNReal.ofReal_le_ofReal_iff (le_max_right _ _)).mp h1
+  refine ⟨hGm.stronglyMeasurable.integral_prod_left', ?_, fun a => ⟨U, hU, hIU, ?_⟩, ?_⟩
+  · obtain ⟨M, hM⟩ := hGb
+    exact ⟨M * m.real Set.univ, fun ξ =>
+      norm_integral_le_of_norm_le_const (Eventually.of_forall fun y => hM y ξ)⟩
+  · exact contDiffOn_integral_of_dominated hU (fun y => hsmooth y a) (hmeas a) (hbound a)
+  · intro k
+    obtain ⟨h, hint, hh⟩ := hunif k
+    have hray : ∀ a, rayDerivBound I (fun ξ => ∫ y, G y ξ ∂m) k a ≤
+        ENNReal.ofReal (h a) * m Set.univ := by
+      intro a
+      refine iSup_le fun j => iSup₂_le fun ω hω => ?_
+      have hωU : ω ∈ U := hIU hω
+      change ‖iteratedDeriv (j : ℕ) (fun ω : ℝ => ∫ y, G y (ω • a) ∂m) ω‖ₑ ≤ _
+      rw [iteratedDeriv_integral_eq hU (fun y => hsmooth y a) (hmeas a) (hbound a) j hωU,
+        ← lintegral_const]
+      refine (enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun y => ?_)
+      exact (enorm_iteratedDeriv_le_rayDerivBound U (G y) (Nat.lt_succ_iff.mp j.2) a hωU).trans
+        (hh y a)
+    unfold rayMoment
+    calc ∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) *
+          rayDerivBound I (fun ξ => ∫ y, G y ξ ∂m) k a ∂ν
+        ≤ ∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) * m Set.univ ∂ν :=
+          lintegral_mono fun a => by
+            rw [mul_assoc]
+            exact mul_le_mul' le_rfl (hray a)
+      _ = (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) ∂ν) *
+            m Set.univ := lintegral_mul_const' _ _ (measure_ne_top m _)
+      _ < ⊤ := ENNReal.mul_lt_top hint (measure_lt_top m _)
+
+end BochnerIntegral
 
 end OperatorRidgelet

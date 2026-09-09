@@ -54,7 +54,8 @@ and the Riesz map and the extension of `R_ρ` are stated on `𝒦_α`.
 
 `W_ρ G ∈ L²(λ_α)` is "the function whose partial Fourier transform in the bias is
 `ρ̂(ω) G(-ωa)`".  The partial Fourier transform of an `L²` function is characterized through
-Parseval's identity against Schwartz test functions in the bias variable (`HasBiasFourier`), and
+Parseval's identity against Schwartz test functions in the bias variable together with the
+square integrability of the transform along almost every ray (`HasBiasFourier`), and
 `spectralCoefficient` is the element of `L²(λ_α)` with that property (junk value `0` if there is
 none); Lemma 3.6 states existence, uniqueness, and the explicit formula `coefficientFormula`.
 
@@ -287,12 +288,25 @@ def coefficientFormula (ρ : ℝ → ℝ) (G : H → ℂ) (p : H × ℝ) : ℂ :
     ∫ ω : ℝ, filterFourier ρ ω * G (-(ω • p.1)) * Complex.exp ((ω * p.2 : ℝ) * Complex.I)
 
 /-- `HasBiasFourier ν γ Φ` says that the partial Fourier transform of `γ` in the bias is `Φ`:
-for `ν`-almost every direction `a`, Parseval's identity
-`∫ γ(a,c) conj(φ(c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(φ̂(ω)) dω` holds for every Schwartz test
-function `φ` on `ℝ`.  For `γ(a,·) ∈ L²(ℝ)` this characterizes `Φ(a,·) ∈ L²(ℝ)` as the `L²`
-Fourier transform of `γ(a,·)`. -/
-def HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → ℝ → ℂ) : Prop :=
-  ∀ᵐ a ∂ν, ∀ φ : SchwartzMap ℝ ℂ,
+for `ν`-almost every direction `a`, the ray function `Φ(a,·)` is square integrable and
+Parseval's identity `∫ γ(a,c) conj(φ(c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(φ̂(ω)) dω` holds for every
+Schwartz test function `φ` on `ℝ`.  This characterizes `Φ(a,·)` up to a null set as the `L²`
+Fourier transform of `γ(a,·)` (`HasBiasFourier.ae_ae_eq`), and for `γ ∈ L²(λ)` such a
+representative exists and can be chosen jointly measurable
+(`exists_measurable_hasBiasFourier`).
+
+The square-integrability clause is essential.  Parseval's identity alone says nothing about
+`Φ(a,·)` where the integrand `Φ(a,ω) conj(φ̂(ω))` fails to be integrable, since Lean's Bochner
+integral of a non-integrable function is `0`: without the clause an arbitrary non-integrable
+function would be a "representative" of every coefficient, and the ray average
+`backprojectionOf` computed from it would be meaningless.  With the clause all representatives
+of `γ` agree almost everywhere on almost every ray, so that `backprojection` does not depend on
+the choice (Proposition `prop:coefficient-projection`(ii)). -/
+structure HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → ℝ → ℂ) : Prop where
+  /-- `Φ(a,·) ∈ L²(ℝ)` for `ν`-almost every direction `a`. -/
+  memLp : ∀ᵐ a ∂ν, MemLp (Φ a) 2 volume
+  /-- Parseval's identity against Schwartz test functions, for `ν`-almost every direction. -/
+  parseval : ∀ᵐ a ∂ν, ∀ φ : SchwartzMap ℝ ℂ,
     ∫ c : ℝ, γ (a, c) * (starRingEnd ℂ) (φ c) =
       ((2 * Real.pi)⁻¹ : ℝ) * ∫ ω : ℝ, Φ a ω * (starRingEnd ℂ) (lineFourier φ ω)
 
