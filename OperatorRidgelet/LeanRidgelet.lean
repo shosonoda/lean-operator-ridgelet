@@ -11,6 +11,7 @@ import LeanRidgelet.ToMathlib.FourierPlancherel
 import LeanRidgelet.ToMathlib.L2Duality
 import LeanRidgelet.ToMathlib.SchwartzAux
 import LeanRidgelet.ToMathlib.Lizorkin
+import LeanRidgelet.ToMathlib.BochnerIntegralL2
 
 /-!
 # Vendored subset of `lean-ridgelet`
