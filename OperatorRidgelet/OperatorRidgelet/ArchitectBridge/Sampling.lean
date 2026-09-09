@@ -168,8 +168,8 @@ attribute [blueprint "thm:D-vec"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same
     statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i) and (ii) and the
     vector-valued compact-open rate
-    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+2V\mathfrak R^Y_N(K;p,\beta)$ in (iii). -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_D_vec
+    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+2V\mathfrak R^Y_N(K;p,\beta)$ in (iii). -/)]
+  OperatorRidgelet.Paper.thm_D_vec
 
 /-! ## Section 6: vector-valued sampling -/
 

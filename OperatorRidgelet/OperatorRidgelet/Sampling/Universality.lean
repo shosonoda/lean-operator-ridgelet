@@ -150,14 +150,14 @@ theorem charAlgebra_separatesPoints (K : Set H) : (charAlgebra K).SeparatesPoint
   rw [hx] at hcon
   exact Complex.exp_ne_zero ((⟪(y : H), ξ⟫ : ℝ) * Complex.I) (by linear_combination -hcon / 2)
 
-/-- **Step 1 of Theorem `thm:D`.**  Every continuous `f : H → ℂ` is uniformly approximated on a
-compact `K` by a finite linear combination of characters. -/
-theorem exists_character_approx {K : Set H} (hK : IsCompact K) {f : H → ℂ} (hf : Continuous f)
+/-- **Step 1 of Theorem `thm:D`.**  Every continuous `F` on a compact `K` is uniformly
+approximated by a finite linear combination of characters.  The statement is for a continuous
+map on the subtype `K`, so that it applies to functions defined only on `K`. -/
+theorem exists_character_approx_continuousMap {K : Set H} (hK : IsCompact K) (F : C(K, ℂ))
     {ε : ℝ} (hε : 0 < ε) :
-    ∃ (n : ℕ) (w : Fin n → ℂ) (ξ : Fin n → H), ∀ x ∈ K,
-      ‖f x - ∑ i, w i * Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I)‖ ≤ ε := by
+    ∃ (n : ℕ) (w : Fin n → ℂ) (ξ : Fin n → H), ∀ x : K,
+      ‖F x - ∑ i, w i * Complex.exp ((⟪(x : H), ξ i⟫ : ℝ) * Complex.I)‖ ≤ ε := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
-  set F : C(K, ℂ) := (⟨f, hf⟩ : C(H, ℂ)).restrict K with hF
   have htop : (charAlgebra K).topologicalClosure = ⊤ :=
     ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _
       (charAlgebra_separatesPoints K)
@@ -171,18 +171,152 @@ theorem exists_character_approx {K : Set H} (hK : IsCompact K) {f : H → ℂ} (
     obtain ⟨ξ, hξ⟩ := (h i).2
     exact ⟨ξ, hξ.symm⟩
   choose ξ hξ using hchar
-  refine ⟨n, c, ξ, fun x hx => ?_⟩
-  have happ : g ⟨x, hx⟩ = ∑ i, c i * Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) := by
+  refine ⟨n, c, ξ, fun x => ?_⟩
+  have happ : g x = ∑ i, c i * Complex.exp ((⟪(x : H), ξ i⟫ : ℝ) * Complex.I) := by
     rw [← hsum]
     simp only [ContinuousMap.coe_sum, Finset.sum_apply, ContinuousMap.smul_apply, smul_eq_mul]
     exact Finset.sum_congr rfl fun i _ => by rw [hξ i]; rfl
-  have hpt : ‖(F - g) ⟨x, hx⟩‖ ≤ ‖F - g‖ := ContinuousMap.norm_coe_le_norm (F - g) ⟨x, hx⟩
+  have hpt : ‖(F - g) x‖ ≤ ‖F - g‖ := ContinuousMap.norm_coe_le_norm (F - g) x
   rw [ContinuousMap.sub_apply, happ] at hpt
   refine hpt.trans ?_
   rw [← dist_eq_norm]
   exact hgdist.le
 
+/-- **Step 1 of Theorem `thm:D`.**  Every continuous `f : H → ℂ` is uniformly approximated on a
+compact `K` by a finite linear combination of characters. -/
+theorem exists_character_approx {K : Set H} (hK : IsCompact K) {f : H → ℂ} (hf : Continuous f)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ (n : ℕ) (w : Fin n → ℂ) (ξ : Fin n → H), ∀ x ∈ K,
+      ‖f x - ∑ i, w i * Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I)‖ ≤ ε := by
+  obtain ⟨n, w, ξ, h⟩ :=
+    exists_character_approx_continuousMap hK ((⟨f, hf⟩ : C(H, ℂ)).restrict K) hε
+  exact ⟨n, w, ξ, fun x hx => h ⟨x, hx⟩⟩
+
 end Characters
+
+/-! ### `Y`-valued approximation by characters -/
+
+section CharactersVec
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
+
+/-- **Step 1 of Theorem `thm:D`, vector-valued, first half.**  A continuous `Y`-valued map is
+uniformly approximated on a compact `K` by a finite combination `∑ g_k • y_k` of continuous
+scalar functions with constant weights in `Y`: the compact set of values `f(K)` is covered by
+finitely many `ε`-balls, and the bumps `max(0, ε − ‖f(x) − y_k‖)` of their centres normalize
+into a partition of unity on `K`. -/
+theorem exists_scalar_smul_approx {K : Set H} (hK : IsCompact K) {f : H → Y} (hf : Continuous f)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ (m : ℕ) (y : Fin m → Y) (g : Fin m → C(K, ℂ)), ∀ x : K,
+      ‖f x - ∑ k, g k x • y k‖ ≤ ε := by
+  classical
+  obtain ⟨t, -, hcov⟩ := (hK.image hf).elim_nhds_subcover (fun z : Y => Metric.ball z ε)
+    fun z _ => Metric.ball_mem_nhds z hε
+  set y : Fin t.card → Y := fun k => ((t.equivFin.symm k : { z // z ∈ t }) : Y) with hy
+  have hcov' : ∀ x : K, ∃ k : Fin t.card, ‖f (x : H) - y k‖ < ε := by
+    intro x
+    obtain ⟨z, hz, hzx⟩ := Set.mem_iUnion₂.mp (hcov ⟨(x : H), x.2, rfl⟩)
+    refine ⟨t.equivFin ⟨z, hz⟩, ?_⟩
+    have hyk : y (t.equivFin ⟨z, hz⟩) = z := by rw [hy]; simp
+    rw [hyk, ← dist_eq_norm]
+    exact Metric.mem_ball.mp hzx
+  set lam : Fin t.card → H → ℝ := fun k x => max 0 (ε - ‖f x - y k‖) with hlamdef
+  have hlam_cont : ∀ k, Continuous (lam k) := fun k =>
+    continuous_const.max (continuous_const.sub (hf.sub continuous_const).norm)
+  have hlam_nonneg : ∀ k x, 0 ≤ lam k x := fun k x => le_max_left _ _
+  set Lam : H → ℝ := fun x => ∑ k, lam k x with hLamdef
+  have hLam_cont : Continuous Lam := continuous_finsetSum _ fun k _ => hlam_cont k
+  have hLam_pos : ∀ x : K, 0 < Lam (x : H) := by
+    intro x
+    obtain ⟨k, hk⟩ := hcov' x
+    refine lt_of_lt_of_le ?_ (Finset.single_le_sum
+      (f := fun k => lam k (x : H)) (fun k _ => hlam_nonneg k _) (Finset.mem_univ k))
+    exact lt_max_of_lt_right (by linarith)
+  refine ⟨t.card, y, fun k => ⟨fun x : K => ((lam k (x : H) / Lam (x : H) : ℝ) : ℂ), ?_⟩,
+    fun x => ?_⟩
+  · exact Complex.continuous_ofReal.comp
+      (((hlam_cont k).comp continuous_subtype_val).div (hLam_cont.comp continuous_subtype_val)
+        fun x => (hLam_pos x).ne')
+  · simp only [ContinuousMap.coe_mk]
+    have hcnn : ∀ k, 0 ≤ lam k (x : H) / Lam (x : H) := fun k =>
+      div_nonneg (hlam_nonneg k _) (hLam_pos x).le
+    have hcsum : ∑ k, lam k (x : H) / Lam (x : H) = 1 := by
+      rw [← Finset.sum_div]
+      exact div_self (hLam_pos x).ne'
+    have hkey : ∑ k, ((lam k (x : H) / Lam (x : H) : ℝ) : ℂ) • (f (x : H) - y k) =
+        f (x : H) - ∑ k, ((lam k (x : H) / Lam (x : H) : ℝ) : ℂ) • y k := by
+      simp_rw [smul_sub]
+      rw [Finset.sum_sub_distrib, ← Finset.sum_smul, ← Complex.ofReal_sum, hcsum,
+        Complex.ofReal_one, one_smul]
+    rw [← hkey]
+    refine (norm_sum_le _ _).trans ?_
+    have hterm : ∀ k, ‖((lam k (x : H) / Lam (x : H) : ℝ) : ℂ) • (f (x : H) - y k)‖ ≤
+        lam k (x : H) / Lam (x : H) * ε := by
+      intro k
+      rw [norm_smul, Complex.norm_real, Real.norm_of_nonneg (hcnn k)]
+      by_cases h0 : lam k (x : H) = 0
+      · simp [h0]
+      · have hlt : ‖f (x : H) - y k‖ < ε := by
+          by_contra hcon
+          exact h0 (by rw [hlamdef]; exact max_eq_left (by linarith [not_lt.mp hcon]))
+        exact mul_le_mul_of_nonneg_left hlt.le (hcnn k)
+    refine (Finset.sum_le_sum fun k _ => hterm k).trans ?_
+    rw [← Finset.sum_mul, hcsum, one_mul]
+
+/-- **Step 1 of Theorem `thm:D`, vector-valued.**  Every continuous `f : H → Y` is uniformly
+approximated on a compact `K` by a finite combination of characters with constant weights in
+`Y`. -/
+theorem exists_character_approx_vec {K : Set H} (hK : IsCompact K) {f : H → Y}
+    (hf : Continuous f) {ε : ℝ} (hε : 0 < ε) :
+    ∃ (n : ℕ) (w : Fin n → Y) (ξ : Fin n → H), ∀ x ∈ K,
+      ‖f x - ∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i‖ ≤ ε := by
+  classical
+  obtain ⟨m, y, g, hg⟩ := exists_scalar_smul_approx hK hf (half_pos hε)
+  set W : ℝ := ∑ k, ‖y k‖ with hW
+  have hW0 : 0 ≤ W := Finset.sum_nonneg fun k _ => norm_nonneg _
+  have hη : 0 < ε / (2 * (1 + W)) := by positivity
+  choose nn c ζ hc using fun k : Fin m => exists_character_approx_continuousMap hK (g k) hη
+  obtain ⟨N, e⟩ : Σ' N : ℕ, Fin N ≃ Σ k : Fin m, Fin (nn k) :=
+    ⟨Fintype.card (Σ k : Fin m, Fin (nn k)), (Fintype.equivFin _).symm⟩
+  refine ⟨N, fun j => c (e j).1 (e j).2 • y (e j).1, fun j => ζ (e j).1 (e j).2, fun x hx => ?_⟩
+  have hsum : ∑ j : Fin N, Complex.exp ((⟪x, ζ (e j).1 (e j).2⟫ : ℝ) * Complex.I) •
+        (c (e j).1 (e j).2 • y (e j).1) =
+      ∑ k : Fin m, (∑ i : Fin (nn k),
+        c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k := by
+    rw [Equiv.sum_comp e fun p : Σ k : Fin m, Fin (nn k) =>
+      Complex.exp ((⟪x, ζ p.1 p.2⟫ : ℝ) * Complex.I) • (c p.1 p.2 • y p.1),
+      ← Finset.univ_sigma_univ, Finset.sum_sigma]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [Finset.sum_smul]
+    exact Finset.sum_congr rfl fun i _ => by rw [smul_smul, mul_comm]
+  rw [hsum]
+  have hA : ‖f x - ∑ k, g k ⟨x, hx⟩ • y k‖ ≤ ε / 2 := hg ⟨x, hx⟩
+  have hB : ‖∑ k : Fin m, g k ⟨x, hx⟩ • y k -
+      ∑ k : Fin m, (∑ i, c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k‖ ≤ ε / 2 := by
+    rw [← Finset.sum_sub_distrib]
+    refine (norm_sum_le _ _).trans ?_
+    have hterm : ∀ k : Fin m, ‖g k ⟨x, hx⟩ • y k -
+        (∑ i, c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k‖ ≤
+        ε / (2 * (1 + W)) * ‖y k‖ := by
+      intro k
+      rw [← sub_smul, norm_smul]
+      exact mul_le_mul_of_nonneg_right (hc k ⟨x, hx⟩) (norm_nonneg _)
+    refine (Finset.sum_le_sum fun k _ => hterm k).trans ?_
+    rw [← Finset.mul_sum, ← hW, div_mul_eq_mul_div,
+      div_le_div_iff₀ (by positivity) (by norm_num : (0 : ℝ) < 2)]
+    nlinarith
+  calc ‖f x - ∑ k : Fin m, (∑ i, c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k‖
+      = ‖(f x - ∑ k, g k ⟨x, hx⟩ • y k) + (∑ k : Fin m, g k ⟨x, hx⟩ • y k -
+          ∑ k : Fin m, (∑ i, c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k)‖ := by
+        rw [sub_add_sub_cancel]
+    _ ≤ ‖f x - ∑ k, g k ⟨x, hx⟩ • y k‖ + ‖∑ k : Fin m, g k ⟨x, hx⟩ • y k -
+          ∑ k : Fin m, (∑ i, c k i * Complex.exp ((⟪x, ζ k i⟫ : ℝ) * Complex.I)) • y k‖ :=
+        norm_add_le _ _
+    _ ≤ ε / 2 + ε / 2 := add_le_add hA hB
+    _ = ε := by ring
+
+end CharactersVec
 
 /-! ### Normalized radial bumps -/
 
@@ -515,6 +649,110 @@ theorem exists_isRegularAlongRays_norm_sub_spectralTarget_le (ν : Measure H)
       _ = ε := by ring
 
 end Approx
+
+/-! ### The approximating `Y`-valued spectral density -/
+
+section ApproxVec
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H]
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+
+/-- The spectral target of a finite combination of scalar densities with constant weights in
+`Y` is the combination of the scalar targets. -/
+theorem spectralTarget_finset_sum_smul (ν : Measure H) {ι : Type*} (s : Finset ι)
+    (G : ι → H → ℂ) (w : ι → Y) (hG : ∀ i ∈ s, Integrable (G i) ν) (x : H) :
+    spectralTarget ν (fun ξ => ∑ i ∈ s, G i ξ • w i) x =
+      ∑ i ∈ s, spectralTarget ν (G i) x • w i := by
+  have h1 : ∀ ξ : H, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) • (∑ i ∈ s, G i ξ • w i) =
+      ∑ i ∈ s, (Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * G i ξ) • w i := fun ξ => by
+    rw [Finset.smul_sum]
+    exact Finset.sum_congr rfl fun i _ => by rw [smul_smul]
+  calc spectralTarget ν (fun ξ => ∑ i ∈ s, G i ξ • w i) x
+      = ∫ ξ, ∑ i ∈ s, (Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * G i ξ) • w i ∂ν :=
+        integral_congr_ae (Eventually.of_forall h1)
+    _ = ∑ i ∈ s, ∫ ξ, (Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * G i ξ) • w i ∂ν :=
+        integral_finsetSum _ fun i hi => (integrable_expInner_mul (hG i hi) x).smul_const (w i)
+    _ = ∑ i ∈ s, spectralTarget ν (G i) x • w i :=
+        Finset.sum_congr rfl fun i _ => by
+          rw [integral_smul_const, spectralTarget_eq_integral_mul]
+
+/-- **Steps 1--3 of Theorem `thm:D`, vector-valued.**  For a direction measure with full support
+that is finite on bounded sets, every continuous `f : H → Y` is uniformly approximated on a
+compact `K` by the target `g_G` of a `Y`-valued spectral density `G` that is smooth, vanishes
+outside a bounded set, and is regular along rays. -/
+theorem exists_isRegularAlongRays_norm_sub_spectralTarget_leVec (ν : Measure H)
+    [ν.IsOpenPosMeasure] (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) {I : Set ℝ}
+    (hI : IsCompact I) (hI0 : (0 : ℝ) ∉ I) {f : H → Y} (hf : Continuous f) {K : Set H}
+    (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
+    ∃ G : H → Y, IsRegularAlongRays ν I G ∧ ContDiff ℝ (⊤ : ℕ∞) G ∧
+      (∃ R : ℝ, ∀ ξ : H, R < ‖ξ‖ → G ξ = 0) ∧
+      (∀ x ∈ K, ‖f x - spectralTarget ν G x‖ ≤ ε) := by
+  obtain ⟨n, w, ξ, hw⟩ := exists_character_approx_vec hK hf (half_pos hε)
+  obtain ⟨r, hr⟩ := hK.isBounded.subset_closedBall (0 : H)
+  set W : ℝ := ∑ i, ‖w i‖ with hW
+  have hW0 : 0 ≤ W := Finset.sum_nonneg fun i _ => norm_nonneg _
+  set ρ₀ : ℝ := max r 0 with hρ₀
+  have hρ₀0 : 0 ≤ ρ₀ := le_max_right _ _
+  have hxr : ∀ x ∈ K, ‖x‖ ≤ ρ₀ := by
+    intro x hx
+    have hmem := hr hx
+    rw [mem_closedBall, dist_zero_right] at hmem
+    exact hmem.trans (le_max_left _ _)
+  set δ : ℝ := ε / (2 * (1 + ρ₀) * (1 + W)) with hδdef
+  have hδ : 0 < δ := by
+    rw [hδdef]
+    positivity
+  refine ⟨fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i, ?_, ?_, ?_, ?_⟩
+  · exact IsRegularAlongRays.finset_sum_smul Finset.univ (fun i => bumpDensity ν (ξ i) δ) w
+      fun i _ => isRegularAlongRays_bumpDensity ν hfin (ξ i) hδ hI hI0
+  · exact ContDiff.sum fun i _ => (contDiff_bumpDensity ν (ξ i) δ).smul_const (w i)
+  · refine ⟨∑ i, (‖(ξ i : H)‖ + δ), fun ζ hζ => ?_⟩
+    refine Finset.sum_eq_zero fun i _ => ?_
+    have hle : ‖(ξ i : H)‖ + δ ≤ ∑ j, (‖(ξ j : H)‖ + δ) :=
+      Finset.single_le_sum (f := fun j => ‖(ξ j : H)‖ + δ)
+        (fun j _ => by positivity) (Finset.mem_univ i)
+    rw [bumpDensity_eq_zero_of_lt ν (ξ i) hδ (lt_of_le_of_lt hle hζ), zero_smul]
+  · intro x hx
+    have hsplit : spectralTarget ν (fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i) x =
+        ∑ i, spectralTarget ν (bumpDensity ν (ξ i) δ) x • w i :=
+      spectralTarget_finset_sum_smul ν Finset.univ (fun i => bumpDensity ν (ξ i) δ) w
+        (fun i _ => integrable_bumpDensity ν hfin (ξ i) hδ) x
+    have hbound : ‖∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i -
+        spectralTarget ν (fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i) x‖ ≤ ε / 2 := by
+      rw [hsplit, ← Finset.sum_sub_distrib]
+      refine (norm_sum_le _ _).trans ?_
+      have hterm : ∀ i : Fin n,
+          ‖Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i -
+            spectralTarget ν (bumpDensity ν (ξ i) δ) x • w i‖ ≤ ρ₀ * δ * ‖w i‖ := by
+        intro i
+        rw [← sub_smul, norm_smul]
+        refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+        refine (norm_char_sub_spectralTarget_bumpDensity_le ν hfin (ξ i) hδ x).trans ?_
+        exact mul_le_mul_of_nonneg_right (hxr x hx) hδ.le
+      refine (Finset.sum_le_sum fun i _ => hterm i).trans ?_
+      rw [← Finset.mul_sum, ← hW]
+      have h3 : W * ρ₀ ≤ (1 + ρ₀) * (1 + W) := by nlinarith
+      calc ρ₀ * δ * W = W * ρ₀ * δ := by ring
+        _ ≤ (1 + ρ₀) * (1 + W) * δ := mul_le_mul_of_nonneg_right h3 hδ.le
+        _ = ε / 2 := by
+            have h4 : (1 + ρ₀) ≠ 0 := by positivity
+            have h5 : (1 + W) ≠ 0 := by positivity
+            rw [hδdef]
+            field_simp
+    calc ‖f x - spectralTarget ν (fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i) x‖
+        = ‖(f x - ∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i) +
+            (∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i -
+              spectralTarget ν (fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i) x)‖ := by
+          rw [sub_add_sub_cancel]
+      _ ≤ ‖f x - ∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i‖ +
+            ‖∑ i, Complex.exp ((⟪x, ξ i⟫ : ℝ) * Complex.I) • w i -
+              spectralTarget ν (fun ζ => ∑ i, bumpDensity ν (ξ i) δ ζ • w i) x‖ :=
+          norm_add_le _ _
+      _ ≤ ε / 2 + ε / 2 := add_le_add (hw x hx) hbound
+      _ = ε := by ring
+
+end ApproxVec
 
 /-! ### Theorem `thm:D` for a direction measure finite on bounded sets -/
 
@@ -1014,5 +1252,208 @@ theorem integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec (hK :
         ring
 
 end VectorDensityRademacher
+
+/-! ### Theorem `thm:D` for `Y`-valued targets -/
+
+section UniversalVec
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+  [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] {K : Set H}
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+
+/-- The `Y`-valued target with a density regular along rays is the integral network of the
+explicit coefficient; Theorem `thm:A`(iii) without the Lipschitz hypothesis on the
+activation. -/
+theorem spectralTarget_eq_integralNetworkDensityVec (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) {I : Set ℝ}
+    (hI : IsFrequencyWindow ρ I) {β : TemperedDistribution ℝ ℂ} {b : ℝ → ℝ}
+    (hβ : IsTemperedFunction β b) {G : H → Y} (hG : IsRegularAlongRays ν I G) (x : H) :
+    temperedAdmissibilityConst α β ρ • spectralTarget ν G x =
+      integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+        (coefficientFormulaVec ρ G) x := by
+  have hint : Integrable (fun θ : H × ℝ =>
+      (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G θ) (ν.prod volume) := by
+    refine (integrable_prod_smul_coefficientFormulaVec hρ hI hG hβ.continuous
+      hβ.polynomialGrowth x).congr (Eventually.of_forall fun θ => ?_)
+    show (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G (θ.1, θ.2) =
+      (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G θ
+    rw [Prod.mk.eta]
+  rw [← integral_integral_smul_coefficientFormulaVec_activation hν hρ hI hG hβ x,
+    integralNetworkDensity, parameterMeasure, integral_prod _ hint]
+
+/-- The centred sum of `C(K;Y)`-valued atoms is an integrable function of the sample. -/
+theorem integrable_norm_sum_subVec {Ω : Type*} [MeasurableSpace Ω] (p : Measure Ω)
+    [IsProbabilityMeasure p] {Φ : Ω → (K →ᵇ Y)} (hint : Integrable Φ p) (N : ℕ) :
+    Integrable (fun ω : Fin N → Ω => ‖∑ j, Φ (ω j) - (N : ℝ) • ∫ ω', Φ ω' ∂p‖)
+      (sampleLaw N p) :=
+  ((integrable_finsetSum Finset.univ (f := fun j (ω : Fin N → Ω) => Φ (ω j)) fun j _ =>
+    (measurePreserving_eval (fun _ => p) j).integrable_comp_of_integrable hint).sub
+    (integrable_const _)).norm
+
+/-- The compact-open error of the sampled network of a `Y`-valued coefficient density is an
+integrable function of the sample. -/
+theorem integrable_compactSupNorm_densitySampledNetwork_subVec (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
+    (hγ : Integrable γ lam) (hV : densityWeight lam γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) :
+    Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x))
+      (sampleLaw N (densityLaw lam γ)) := by
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  exact ((integrable_norm_sum_subVec (densityLaw lam γ)
+    (integrable_density_atomVec hK hβ hγ hV hM) N).const_mul (densityWeight lam γ / N)).congr
+    (Eventually.of_forall fun θ =>
+      (compactSupNorm_densitySampledNetwork_sub_eqVec hK hβ hγ hV hM hN θ).symm)
+
+/-- The error of the sampled network of a `Y`-valued coefficient density at a point of `K` is
+bounded by its compact sup norm. -/
+theorem norm_densitySampledNetwork_sub_le_compactSupNormVec (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
+    (hγ : Integrable γ lam) (hV : densityWeight lam γ ≠ 0)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) (θ : Fin N → H × ℝ) {x : H} (hx : x ∈ K) :
+    ‖densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+        integralNetworkDensity (fun t => (β t : ℂ)) lam γ x‖ ≤
+      compactSupNorm K (fun x =>
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x) := by
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  have hΦint : Integrable
+      (fun θ' => ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ', densityPhase γ θ'))
+      (densityLaw lam γ) := integrable_density_atomVec hK hβ hγ hV hM
+  refine le_compactSupNorm_of_forall (g := fun x =>
+      densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+        integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)
+    ((densityWeight lam γ / N : ℝ) •
+      (∑ j, ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ j, densityPhase γ (θ j)) -
+        (N : ℝ) • ∫ θ', ridgeAtomVec hK (continuous_ofReal_comp hβ) (θ', densityPhase γ θ')
+          ∂densityLaw lam γ))
+    (fun y => ?_) hx
+  refine (smul_sum_sub_applyVec (densityLaw lam γ) (fun t => (β t : ℂ)) id
+    (densityPhase γ) (fun θ' x => rfl) hΦint (densityWeight lam γ) hN θ y).trans ?_
+  rw [show integralNetworkDensity (fun t => (β t : ℂ)) lam γ (y : H) =
+      densityWeight lam γ • ∫ θ', ((β (⟪θ'.1, (y : H)⟫ + θ'.2) : ℝ) : ℂ) • densityPhase γ θ'
+        ∂densityLaw lam γ from
+    (densityWeight_smul_integral_smul_densityPhase hγ
+      fun θ' => ((β (⟪θ'.1, (y : H)⟫ + θ'.2) : ℝ) : ℂ)).symm]
+  simp only [densitySampledNetwork, sampledNetwork, finiteNetwork, id]
+
+/-- **Theorem `thm:D`, vector-valued**, for a direction measure that is finite on bounded sets:
+a constructive universal approximation of a continuous `f : H → Y` with the vector-valued
+compact-open rate `2V 𝔑^Y_N(K; p, β)` of Corollary `cor:vector-rates`(ii). -/
+theorem exists_spectralDensity_universal_approx_vec (ν : Measure H) [SigmaFinite ν]
+    [ν.IsOpenPosMeasure] (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) {α : ℝ}
+    (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hβ : IsTemperedFunction β b) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+    (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    {f : H → Y} (hf : Continuous f) {K : Set H} (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
+    ∃ G : H → Y, IsRegularAlongRays ν I G ∧ ContDiff ℝ (⊤ : ℕ∞) G ∧
+      (∃ R : ℝ, ∀ ξ : H, R < ‖ξ‖ → G ξ = 0) ∧
+      compactSupNorm K (fun x => f x - spectralTarget ν G x) < ε ∧
+      spectralTarget ν G =
+        integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+          (coefficientFormulaVec ρ G) ∧
+      (∀ m : ℕ, Integrable
+        (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ m * ‖coefficientFormulaVec ρ G θ‖)
+        (parameterMeasure ν)) ∧
+      (∀ L : ℝ≥0, LipschitzWith L b → ∀ N : ℕ, 0 < N →
+        ∫ θ, compactSupNorm K (fun x =>
+              f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x)
+            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) ≤
+          ε + 2 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) *
+            rademacherComplexity N K
+              (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
+              (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
+  obtain ⟨G, hGreg, hGsmooth, hGsupp, hGapp⟩ :=
+    exists_isRegularAlongRays_norm_sub_spectralTarget_leVec ν hfin hI.isCompact hI.zero_notMem
+      hf hK (half_pos hε)
+  have hγ : Integrable (coefficientFormulaVec ρ G) (parameterMeasure ν) :=
+    integrable_coefficientFormulaVec hρ hI hGreg
+  have hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2)
+      (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) :=
+    integrable_sq_densityLaw_coefficientFormulaVec hρ hI hGreg
+  have hgeq : spectralTarget ν G =
+      integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+        (coefficientFormulaVec ρ G) := by
+    funext x
+    rw [← spectralTarget_eq_integralNetworkDensityVec ν hν ρ hρ hI hβ hGreg x, hC, one_smul]
+  have hA : ∀ x ∈ K, ‖f x - integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+      (coefficientFormulaVec ρ G) x‖ ≤ ε / 2 := by
+    intro x hx
+    rw [← hgeq]
+    exact hGapp x hx
+  refine ⟨G, hGreg, hGsmooth, hGsupp, ?_, hgeq, ?_, ?_⟩
+  · exact lt_of_le_of_lt (compactSupNorm_le (by positivity) hGapp) (by linarith)
+  · intro m
+    exact integrable_moment_norm_coefficientFormulaVec hρ hI hGreg m
+  · intro L hb N hN
+    set W : ℝ := densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) with hWdef
+    set R : ℝ := rademacherComplexity N K
+      (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
+      (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G)) with hRdef
+    by_cases hV : W = 0
+    · rw [densityLaw_eq_zero hγ hV, sampleLaw_zero hN, integral_zero_measure, hV, mul_zero,
+        zero_mul, add_zero]
+      exact hε.le
+    · haveI := isProbabilityMeasure_densityLaw hγ hV
+      have hDint := integrable_compactSupNorm_densitySampledNetwork_subVec hK hb hγ hV hM hN
+      have hptw : ∀ θ : Fin N → H × ℝ,
+          compactSupNorm K (fun x => f x - densitySampledNetwork (fun t => (b t : ℂ))
+              (parameterMeasure ν) (coefficientFormulaVec ρ G) θ x) ≤
+            ε / 2 + compactSupNorm K (fun x =>
+              densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x -
+              integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) x) := by
+        intro θ
+        refine compactSupNorm_le (add_nonneg (by positivity) (compactSupNorm_nonneg _ _))
+          fun x hx => ?_
+        calc ‖f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x‖
+            = ‖(f x - integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x) +
+                (integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x -
+                  densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                    (coefficientFormulaVec ρ G) θ x)‖ := by
+              rw [sub_add_sub_cancel]
+          _ ≤ ‖f x - integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x‖ +
+                ‖integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x -
+                  densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                    (coefficientFormulaVec ρ G) θ x‖ := norm_add_le _ _
+          _ ≤ ε / 2 + _ := by
+              refine add_le_add (hA x hx) ?_
+              rw [norm_sub_rev]
+              exact norm_densitySampledNetwork_sub_le_compactSupNormVec hK hb hγ hV hM hN θ hx
+      calc ∫ θ, compactSupNorm K (fun x => f x - densitySampledNetwork (fun t => (b t : ℂ))
+              (parameterMeasure ν) (coefficientFormulaVec ρ G) θ x)
+            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
+          ≤ ∫ θ, (ε / 2 + compactSupNorm K (fun x =>
+              densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x -
+              integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) x))
+            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) :=
+            integral_mono_of_nonneg (Eventually.of_forall fun _ => compactSupNorm_nonneg _ _)
+              (Integrable.add (integrable_const _) hDint) (Eventually.of_forall hptw)
+        _ = ε / 2 + ∫ θ, compactSupNorm K (fun x =>
+              densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x -
+              integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) x)
+            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) := by
+            rw [integral_add (integrable_const _) hDint, integral_const]
+            simp
+        _ ≤ ε / 2 + 2 * W * R :=
+            add_le_add le_rfl
+              (integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec hK hb hγ hM hN)
+        _ ≤ ε + 2 * W * R := by linarith
+
+end UniversalVec
 
 end OperatorRidgelet
