@@ -149,7 +149,8 @@ theorem inner_dirichletDirection (y : UnitOpenInterval) (x : UnitL2) :
 
 /-- The output `b_y` is the class of `t ↦ g(y,t)`. -/
 theorem dirichletOutput_coeFn_ae (y : UnitOpenInterval) :
-    ⇑(dirichletOutput y) =ᵐ[volume] fun t : UnitOpenInterval => ((dirichletKernel y t : ℝ) : ℂ) := by
+    ⇑(dirichletOutput y) =ᵐ[volume]
+      fun t : UnitOpenInterval => ((dirichletKernel y t : ℝ) : ℂ) := by
   unfold dirichletOutput
   have h : dirichletKernelFn y = (memLp_dirichletKernel y).toLp _ := dirichletDirection_eq y
   rw [h]

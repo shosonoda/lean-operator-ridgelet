@@ -534,13 +534,13 @@ attribute [blueprint "ex:convolution-v"
   OperatorRidgelet.Paper.ex_convolution_v
 
 attribute [blueprint "ex:convolution-vi"
-  (statement := /-- $\mathcal F$ commutes with all translations of $\mathbb T^d$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_vi
+  (statement := /-- $\mathcal F$ commutes with all translations of $\mathbb T^d$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_vi
 
 attribute [blueprint "ex:convolution-vii"
   (statement := /-- $\mathcal F$ commutes with every isometric automorphism of $\mathbb T^d$
-    that fixes $k$ and $\psi$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_vii
+    that fixes $k$ and $\psi$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_vii
 
 attribute [blueprint "ex:convolution-viii"
   (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$, then $A$ has infinite rank. -/)

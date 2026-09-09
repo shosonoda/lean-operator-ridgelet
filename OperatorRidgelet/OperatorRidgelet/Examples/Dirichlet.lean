@@ -58,7 +58,8 @@ theorem dirichletKernel_le_sinh_one {y t : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1)
 /-- `|g(y,t)| ≤ sinh 1` on `(0,1)²`. -/
 theorem abs_dirichletKernel_le {y t : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) (ht : t ∈ Ioo (0 : ℝ) 1) :
     |dirichletKernel y t| ≤ Real.sinh 1 :=
-  abs_le.mpr ⟨by linarith [dirichletKernel_nonneg hy ht, Real.sinh_pos_iff.mpr (one_pos : (0:ℝ) < 1)],
+  abs_le.mpr ⟨by
+    linarith [dirichletKernel_nonneg hy ht, Real.sinh_pos_iff.mpr (one_pos : (0:ℝ) < 1)],
     dirichletKernel_le_sinh_one hy ht⟩
 
 /-- The kernel is `2 cosh 1`-Lipschitz in `y`, uniformly in `t ∈ (0,1)`. -/

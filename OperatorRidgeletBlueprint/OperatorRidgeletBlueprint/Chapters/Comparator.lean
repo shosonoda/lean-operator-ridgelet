@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 154.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 156.
 
 :::table +header
 *
@@ -3582,7 +3582,7 @@ Status: *verified by comparator*.
 
 ## Example 7.5 — Periodic convolution layer (`ex:convolution`)
 
-Blueprint node: {bpref "ex:convolution"}[]. Status: *partial 6/13* (6 of 13 Lean theorems verified).
+Blueprint node: {bpref "ex:convolution"}[]. Status: *partial 8/13* (8 of 13 Lean theorems verified).
 
 Formalization note. Concrete torus: Torus d = Fin d → AddCircle (2π), torusHaar d = the product of the normalized Haar measures (a probability measure), H = TorusL2 d = Lp ℝ 2, Y = TorusL2C d = Lp ℂ 2, k ψ : TorusL2 d, a\_y = convDirection k y = k(y - ·) and b\_y = convOutput ψ y = ψ(· - y) through Lp.compMeasurePreserving, τ\_z = torusTranslate d z (a linear isometry), Fourier coefficients torusFourierCoeff with the characters torusCharacter n = ∏ fourier (n j) (t j), (I-Δ)^\{-s\} = besselOperator d s (the bounded operator multiplying the n-th Fourier coefficient by (1+|n|²)^\{-s\}, chosen through Classical.choose). i: ⟨a\_y,x⟩ = (k\*x)(y); ii: ℱ(x) = ψ\*β(k\*x) a.e.; iii: ‖A‖\_∞ = ‖k‖; iv: ∫‖b\_y‖ = ‖ψ‖; v: IsLayerData (so ex:operator-layer applies); vi: translation equivariance ℱ(τ\_z x) = τ\_z ℱ(x); vii: 'every isometry of 𝕋^d fixing k and ψ' is read as an isometric additive automorphism σ that is measure preserving with k ∘ σ = k and ψ ∘ σ = ψ a.e. (translations being claim vi), with ℱ(x ∘ σ) = ℱ(x) ∘ σ; viii: infinitely many nonzero k̂(n) ⇒ A of infinite rank; ix: F\_1 = ψ̂(0) ∫ β((k\*x)(y)) dy with φ ≡ 1 = torusOne d; x: non-cylindricity of F\_1 for β = Φ (the reading given by the proof) when ψ̂(0) ≠ 0 and k̂(n) ≠ 0 for infinitely many n; xi: IsTraceClassCovariance (besselOperator d s) for s > d/2; xii: translation invariance of (I-Δ)^\{-s\}; xiii: R\_ρ\[f ∘ τ\_z\](a,c) = R\_ρ f(τ\_z a, c) for μ = 𝒩(0,(I-Δ)^\{-s\}) (Borel structure on TorusL2 d taken as instance hypotheses) and f ∈ L¹(μ).
 
@@ -3658,7 +3658,7 @@ theorem ex_convolution_vi (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
           (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_vii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L747):
 
@@ -3678,7 +3678,7 @@ theorem ex_convolution_vii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc
               (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_convolution_viii`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L762):
 

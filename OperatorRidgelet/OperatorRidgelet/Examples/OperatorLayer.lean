@@ -181,8 +181,9 @@ theorem IsLayerData.layerObservable_gaussianFun_eq (hL : IsLayerData m a b) (φ 
     layerObservable m a b gaussianFun φ x =
       ∫ y, ((gaussianFun ⟪a y, x⟫ : ℝ) : ℂ) * layerWeight b φ y ∂m := by
   unfold layerObservable operatorLayer layerWeight
-  rw [← integral_inner (hL.integrable_smul (hL.stronglyMeasurable_gaussianFun_inner x).aestronglyMeasurable
-    (C := 1) fun y => by rw [Complex.norm_real]; exact norm_gaussianFun_le_one _) φ]
+  rw [← integral_inner (hL.integrable_smul
+    (hL.stronglyMeasurable_gaussianFun_inner x).aestronglyMeasurable (C := 1) fun y => by
+      rw [Complex.norm_real]; exact norm_gaussianFun_le_one _) φ]
   congr 1
   funext y
   rw [inner_smul_right]
@@ -404,6 +405,39 @@ theorem IsLayerData.continuous_gaussFourierVec_operatorLayer_gaussianFun (hL : I
       continuous_const
 
 end Observable
+
+/-! ### Symmetries of the layer -/
+
+section Symmetry
+
+variable {m : Measure Ω}
+
+/-- A bounded operator commutes with the layer: `T ℱ(x) = ∫ β(⟪a_y, x⟫) T b_y m(dy)`. -/
+theorem IsLayerData.map_operatorLayer {a : Ω → H} {b : Ω → Y} (hL : IsLayerData m a b)
+    {β : ℝ → ℝ} (hβ : Continuous β) {Y' : Type*} [NormedAddCommGroup Y']
+    [InnerProductSpace ℂ Y'] [CompleteSpace Y'] (T : Y →L[ℂ] Y') (x : H) :
+    T (operatorLayer m a b β x) = operatorLayer m a (fun y => T (b y)) β x := by
+  unfold operatorLayer
+  rw [← T.integral_comp_comm (hL.integrable_ofReal_comp_inner_smul hβ x)]
+  simp_rw [map_smul]
+
+omit [CompleteSpace Y] in
+/-- The layer depends on the directions only through the pairings `⟪a_y, x⟫`. -/
+theorem operatorLayer_congr_inner {a a' : Ω → H} {x x' : H} (h : ∀ y, ⟪a y, x⟫ = ⟪a' y, x'⟫)
+    (b : Ω → Y) (β : ℝ → ℝ) : operatorLayer m a b β x = operatorLayer m a' b β x' := by
+  unfold operatorLayer
+  simp_rw [h]
+
+omit [CompleteSpace Y] in
+/-- Reparametrizing the layer by a measure-preserving equivalence of the parameter space. -/
+theorem operatorLayer_comp_measurePreserving {Ω' : Type*} [MeasurableSpace Ω'] {m' : Measure Ω'}
+    {e : Ω' ≃ᵐ Ω} (he : MeasurePreserving e m' m) (a : Ω → H) (b : Ω → Y) (β : ℝ → ℝ)
+    (x : H) :
+    operatorLayer m a b β x = operatorLayer m' (fun y => a (e y)) (fun y => b (e y)) β x := by
+  unfold operatorLayer
+  exact (he.integral_comp' _).symm
+
+end Symmetry
 
 /-! ### The ReLU form of the Gaussian-activation layer -/
 

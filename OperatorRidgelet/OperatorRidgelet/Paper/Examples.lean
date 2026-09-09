@@ -951,6 +951,7 @@ theorem ex_convolution_v (d : ℕ) (k ψ : TorusL2 d) :
     IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) :=
   isLayerData_conv k ψ
 
+set_option linter.unusedVariables false in
 /-- **Example [ex:convolution]** Periodic convolution layer.  `ℱ` commutes with all translations
 of `𝕋^d`: `ℱ(τ_z x) = τ_z ℱ(x)`. -/
 theorem ex_convolution_vi (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc : Continuous β)
@@ -958,9 +959,10 @@ theorem ex_convolution_vi (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc 
     ∀ (z : Torus d) (x : TorusL2 d),
       operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β (torusTranslate d z x) =
         torusTranslateC d z
-          (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
-  sorry
+          (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := fun z x =>
+  operatorLayer_conv_torusTranslate k ψ hβc z x
 
+set_option linter.unusedVariables false in
 /-- **Example [ex:convolution]** Periodic convolution layer.  `ℱ` commutes with every isometry
 `σ` of `𝕋^d` (an isometric automorphism of the group, measure preserving) that fixes `k` and
 `ψ`: `ℱ(x ∘ σ) = ℱ(x) ∘ σ`. -/
@@ -973,8 +975,8 @@ theorem ex_convolution_vii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc
           operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β
               (Lp.compMeasurePreserving σ hσ x) =
             Lp.compMeasurePreserving σ hσ
-              (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
-  sorry
+              (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) :=
+  fun _ hiso hσ hk hψ x => operatorLayer_conv_compMeasurePreserving hiso hσ k ψ hβc hk hψ x
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  If `k̂(n) ≠ 0` for infinitely many
 `n ∈ ℤ^d`, then `A` has infinite rank. -/

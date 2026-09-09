@@ -9,7 +9,8 @@ import OperatorRidgelet.ToMathlib.GaussianRealIntegral
   `e^{-z²/2} 𝒩(0,v)(dz) = (1+v)^{-1/2} 𝒩(0, v/(1+v))(dz)`, as an identity of Bochner integrals;
 * `ProbabilityTheory.map_mul_add_prod_gaussianReal`: the law of `k z + u` under
   `𝒩(0,v₁) ⊗ 𝒩(0,v₂)` is `𝒩(0, k² v₁ + v₂)`;
-* `ProbabilityTheory.integral_comp_add_gaussianReal`: `∫ h(c + t) 𝒩(0,v)(dt) = ∫ h(c - t) 𝒩(0,v)(dt)`.
+* `ProbabilityTheory.integral_comp_add_gaussianReal`:
+  `∫ h(c + t) 𝒩(0,v)(dt) = ∫ h(c - t) 𝒩(0,v)(dt)`.
 -/
 
 open MeasureTheory Real

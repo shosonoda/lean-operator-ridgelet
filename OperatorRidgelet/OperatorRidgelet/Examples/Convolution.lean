@@ -185,4 +185,147 @@ theorem layerObservable_conv_torusOne (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ
   simp only
   rw [inner_torusOne_convOutput, mul_comm]
 
+
+/-! ### Translation equivariance -/
+
+/-- `τ_z x` is the class of `t ↦ x(t - z)`. -/
+theorem torusTranslate_coeFn_ae (z : Torus d) (x : TorusL2 d) :
+    ⇑(torusTranslate d z x) =ᵐ[torusHaar d] fun t => x (t - z) :=
+  Lp.coeFn_compMeasurePreserving x (measurePreserving_sub_right (torusHaar d) z)
+
+/-- `τ_z u` is the class of `t ↦ u(t - z)`. -/
+theorem torusTranslateC_coeFn_ae (z : Torus d) (u : TorusL2C d) :
+    ⇑(torusTranslateC d z u) =ᵐ[torusHaar d] fun t => u (t - z) :=
+  Lp.coeFn_compMeasurePreserving u (measurePreserving_sub_right (torusHaar d) z)
+
+/-- `⟪a_y, τ_z x⟫ = ⟪a_{y-z}, x⟫`. -/
+theorem inner_convDirection_torusTranslate (k x : TorusL2 d) (y z : Torus d) :
+    ⟪convDirection k y, torusTranslate d z x⟫ = ⟪convDirection k (y - z), x⟫ := by
+  rw [inner_convDirection, inner_convDirection]
+  have h1 : ∫ t, k (y - t) * (torusTranslate d z x) t ∂torusHaar d =
+      ∫ t, k (y - t) * x (t - z) ∂torusHaar d := by
+    refine integral_congr_ae ?_
+    filter_upwards [torusTranslate_coeFn_ae z x] with t ht
+    rw [ht]
+  rw [h1, ← integral_add_right_eq_self (fun t => k (y - t) * x (t - z)) z]
+  refine integral_congr_ae (Eventually.of_forall fun t => ?_)
+  simp only [add_sub_cancel_right, sub_add_eq_sub_sub]
+  rw [sub_right_comm]
+
+/-- `τ_z b_y = b_{y+z}`. -/
+theorem torusTranslateC_convOutput (ψ : TorusL2 d) (y z : Torus d) :
+    torusTranslateC d z (convOutput ψ y) = convOutput ψ (y + z) := by
+  refine Lp.ext ?_
+  filter_upwards [torusTranslateC_coeFn_ae z (convOutput ψ y),
+    (measurePreserving_sub_right (torusHaar d) z).quasiMeasurePreserving.ae_eq_comp
+      (convOutput_coeFn_ae ψ y), convOutput_coeFn_ae ψ (y + z)] with t h1 h2 h3
+  simp only [Function.comp_apply] at h2
+  rw [h1, h3, h2, sub_sub, add_comm]
+
+/-- **Example `ex:convolution`**: the layer commutes with translations, `ℱ(τ_z x) = τ_z ℱ(x)`. -/
+theorem operatorLayer_conv_torusTranslate (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ : Continuous β)
+    (z : Torus d) (x : TorusL2 d) :
+    operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β (torusTranslate d z x) =
+      torusTranslateC d z (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
+  have hT := (isLayerData_conv k ψ).map_operatorLayer hβ
+    (torusTranslateC d z).toContinuousLinearMap x
+  rw [LinearIsometry.coe_toContinuousLinearMap] at hT
+  rw [hT]
+  simp_rw [torusTranslateC_convOutput]
+  rw [operatorLayer_comp_measurePreserving (e := MeasurableEquiv.subRight z)
+    (measurePreserving_sub_right (torusHaar d) z) (convDirection k)
+    (fun y => convOutput ψ (y + z))]
+  show _ = operatorLayer (torusHaar d) (fun y => convDirection k (y - z))
+    (fun y => convOutput ψ (y - z + z)) β x
+  simp only [sub_add_cancel]
+  exact operatorLayer_congr_inner (fun y => inner_convDirection_torusTranslate k x y z) _ _
+
+/-! ### Equivariance under isometries -/
+
+/-- An isometric automorphism of the torus as a measurable equivalence. -/
+def torusIsometryEquiv {σ : Torus d ≃+ Torus d} (hiso : Isometry σ) : Torus d ≃ᵐ Torus d where
+  toEquiv := σ.toEquiv
+  measurable_toFun := hiso.continuous.measurable
+  measurable_invFun := (hiso.right_inv σ.apply_symm_apply).continuous.measurable
+
+/-- `torusIsometryEquiv` acts as `σ`. -/
+theorem torusIsometryEquiv_apply {σ : Torus d ≃+ Torus d} (hiso : Isometry σ) (t : Torus d) :
+    torusIsometryEquiv hiso t = σ t :=
+  rfl
+
+/-- The inverse of `torusIsometryEquiv` acts as `σ⁻¹`. -/
+theorem torusIsometryEquiv_symm_apply {σ : Torus d ≃+ Torus d} (hiso : Isometry σ)
+    (t : Torus d) : (torusIsometryEquiv hiso).symm t = σ.symm t :=
+  rfl
+
+/-- `⟪a_y, x ∘ σ⟫ = ⟪a_{σ y}, x⟫` for a measure-preserving isometry `σ` fixing `k`. -/
+theorem inner_convDirection_compMeasurePreserving {σ : Torus d ≃+ Torus d} (hiso : Isometry σ)
+    (hσ : MeasurePreserving σ (torusHaar d) (torusHaar d)) (k x : TorusL2 d)
+    (hk : (fun t => k (σ t)) =ᵐ[torusHaar d] k) (y : Torus d) :
+    ⟪convDirection k y, Lp.compMeasurePreserving σ hσ x⟫ = ⟪convDirection k (σ y), x⟫ := by
+  have he : MeasurePreserving (torusIsometryEquiv hiso) (torusHaar d) (torusHaar d) := hσ
+  rw [inner_convDirection, inner_convDirection]
+  have h1 : ∫ t, k (y - t) * (Lp.compMeasurePreserving σ hσ x) t ∂torusHaar d =
+      ∫ t, k (y - t) * x (σ t) ∂torusHaar d := by
+    refine integral_congr_ae ?_
+    filter_upwards [Lp.coeFn_compMeasurePreserving x hσ] with t ht
+    rw [ht, Function.comp_apply]
+  have h2 : ∫ t, k (y - t) * x (σ t) ∂torusHaar d =
+      ∫ s, k (y - σ.symm s) * x s ∂torusHaar d := by
+    rw [← he.integral_comp' (fun s => k (y - σ.symm s) * x s)]
+    refine integral_congr_ae (Eventually.of_forall fun t => ?_)
+    simp only [torusIsometryEquiv_apply, AddEquiv.symm_apply_apply]
+  rw [h1, h2]
+  have hk' : (fun t => k (σ.symm t)) =ᵐ[torusHaar d] k := by
+    filter_upwards [(he.symm (torusIsometryEquiv hiso)).quasiMeasurePreserving.ae_eq_comp hk]
+      with t ht
+    simp only [Function.comp_apply, torusIsometryEquiv_symm_apply,
+      AddEquiv.apply_symm_apply] at ht
+    exact ht.symm
+  refine integral_congr_ae ?_
+  filter_upwards [(Measure.measurePreserving_sub_left (torusHaar d)
+    (σ y)).quasiMeasurePreserving.ae_eq_comp hk'] with s hs
+  simp only [Function.comp_apply, map_sub, AddEquiv.symm_apply_apply] at hs
+  rw [hs]
+
+/-- `b_y ∘ σ = b_{σ⁻¹ y}` for a measure-preserving isometry `σ` fixing `ψ`. -/
+theorem compMeasurePreserving_convOutput {σ : Torus d ≃+ Torus d}
+    (hσ : MeasurePreserving σ (torusHaar d) (torusHaar d)) (ψ : TorusL2 d)
+    (hψ : (fun t => ψ (σ t)) =ᵐ[torusHaar d] ψ) (y : Torus d) :
+    Lp.compMeasurePreserving σ hσ (convOutput ψ y) = convOutput ψ (σ.symm y) := by
+  refine Lp.ext ?_
+  filter_upwards [Lp.coeFn_compMeasurePreserving (convOutput ψ y) hσ,
+    hσ.quasiMeasurePreserving.ae_eq_comp (convOutput_coeFn_ae ψ y),
+    convOutput_coeFn_ae ψ (σ.symm y),
+    (measurePreserving_sub_right (torusHaar d) (σ.symm y)).quasiMeasurePreserving.ae_eq_comp hψ]
+    with t h1 h2 h3 h4
+  simp only [Function.comp_apply] at h1 h2 h4
+  rw [h1, h2, h3, ← h4, map_sub, AddEquiv.apply_symm_apply]
+
+/-- **Example `ex:convolution`**: the layer commutes with every measure-preserving isometry of
+the torus fixing `k` and `ψ`: `ℱ(x ∘ σ) = ℱ(x) ∘ σ`. -/
+theorem operatorLayer_conv_compMeasurePreserving {σ : Torus d ≃+ Torus d} (hiso : Isometry σ)
+    (hσ : MeasurePreserving σ (torusHaar d) (torusHaar d)) (k ψ : TorusL2 d) {β : ℝ → ℝ}
+    (hβ : Continuous β) (hk : (fun t => k (σ t)) =ᵐ[torusHaar d] k)
+    (hψ : (fun t => ψ (σ t)) =ᵐ[torusHaar d] ψ) (x : TorusL2 d) :
+    operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β
+        (Lp.compMeasurePreserving σ hσ x) =
+      Lp.compMeasurePreserving σ hσ
+        (operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x) := by
+  have hT := (isLayerData_conv k ψ).map_operatorLayer hβ
+    (Lp.compMeasurePreservingₗᵢ ℂ σ hσ).toContinuousLinearMap x
+  rw [LinearIsometry.coe_toContinuousLinearMap] at hT
+  refine Eq.trans ?_ hT.symm
+  have he : MeasurePreserving (torusIsometryEquiv hiso) (torusHaar d) (torusHaar d) := hσ
+  rw [operatorLayer_comp_measurePreserving he (convDirection k)
+    (fun y => (Lp.compMeasurePreservingₗᵢ ℂ σ hσ) (convOutput ψ y))]
+  have hb : ∀ y, (Lp.compMeasurePreservingₗᵢ ℂ σ hσ) (convOutput ψ (torusIsometryEquiv hiso y)) =
+      convOutput ψ y := fun y => by
+    rw [torusIsometryEquiv_apply]
+    change Lp.compMeasurePreserving σ hσ (convOutput ψ (σ y)) = _
+    rw [compMeasurePreserving_convOutput hσ ψ hψ, AddEquiv.symm_apply_apply]
+  simp_rw [hb]
+  exact operatorLayer_congr_inner
+    (fun y => inner_convDirection_compMeasurePreserving hiso hσ k x hk y) _ _
+
 end OperatorRidgelet
