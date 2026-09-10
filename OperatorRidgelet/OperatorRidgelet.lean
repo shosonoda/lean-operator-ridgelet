@@ -51,6 +51,7 @@ import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
+import OperatorRidgelet.ToMathlib.EntirePowerSeries
 import OperatorRidgelet.ToMathlib.FourierDilation
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
