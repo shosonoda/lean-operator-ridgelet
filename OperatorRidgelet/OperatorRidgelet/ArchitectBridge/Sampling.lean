@@ -160,9 +160,11 @@ attribute [blueprint "thm:D"
   OperatorRidgelet.Paper.thm_D
 
 attribute [blueprint "thm:D-dense"
-  (statement := /-- The finite-width networks with activation $\beta$ are dense in $C(H)$ for
-    the compact-open topology. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_D_dense
+  (statement := /-- Under the hypotheses of the theorem, the finite-width networks with
+    activation $\beta$ are dense in $C(H)$ for the compact-open topology: for continuous
+    $f:H\to\mathbb C$, compact $K$, and $\varepsilon>0$ there are a width $N$ and a network
+    $f_N$ with $\|f-f_N\|_{C(K)}<\varepsilon$. -/)]
+  OperatorRidgelet.Paper.thm_D_dense
 
 attribute [blueprint "thm:D-vec"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same

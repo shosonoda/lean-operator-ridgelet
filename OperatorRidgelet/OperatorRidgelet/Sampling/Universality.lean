@@ -785,6 +785,66 @@ theorem spectralTarget_eq_integralNetworkDensity (ν : Measure H) [SigmaFinite �
     (b (⟪a, x⟫ + c) : ℂ) * coefficientFormula ρ G (a, c)
   ring
 
+omit [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
+/-- The compact sup norm of the ridge `x ↦ β(⟪a, x⟫ + c)` of an activation of polynomial
+growth is bounded by a polynomial in the parameter: there are `C ≥ 0` and `m` with
+`‖β(⟪a, ·⟫ + c)‖_{C(K)} ≤ C (1 + ‖a‖ + |c|)^m` for every `(a, c)`. -/
+theorem exists_compactSupNorm_ridge_le {K : Set H} (hK : IsCompact K) {b : ℝ → ℝ}
+    (hb : HasPolynomialGrowth b) :
+    ∃ (C : ℝ) (m : ℕ), 0 ≤ C ∧ ∀ θ : H × ℝ,
+      compactSupNorm K (fun x => ((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ)) ≤
+        C * (1 + ‖θ.1‖ + |θ.2|) ^ m := by
+  obtain ⟨C₀, n, hC₀, hbn⟩ := hb.exists_nat
+  obtain ⟨r, hr⟩ := isBounded_iff_forall_norm_le.mp hK.isBounded
+  have hR0 : (0 : ℝ) ≤ max r 0 := le_max_right _ _
+  refine ⟨C₀ * (1 + max r 0) ^ n, n, by positivity, fun θ => ?_⟩
+  refine compactSupNorm_le (by positivity) fun x hx => ?_
+  have hx' : ‖x‖ ≤ max r 0 := le_max_of_le_left (hr x hx)
+  have h1 : |⟪θ.1, x⟫ + θ.2| ≤ max r 0 * ‖θ.1‖ + |θ.2| := by
+    refine (abs_add_le _ _).trans (add_le_add ?_ le_rfl)
+    calc |⟪θ.1, x⟫| ≤ ‖θ.1‖ * ‖x‖ := abs_real_inner_le_norm _ _
+      _ ≤ ‖θ.1‖ * max r 0 := by gcongr
+      _ = max r 0 * ‖θ.1‖ := mul_comm _ _
+  have h2 : (0 : ℝ) ≤ 1 + |⟪θ.1, x⟫ + θ.2| := by positivity
+  have h3 : 1 + |⟪θ.1, x⟫ + θ.2| ≤ (1 + max r 0) * (1 + ‖θ.1‖ + |θ.2|) := by
+    nlinarith [norm_nonneg θ.1, abs_nonneg θ.2]
+  calc ‖((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ)‖
+      = |b (⟪θ.1, x⟫ + θ.2)| := by rw [Complex.norm_real, Real.norm_eq_abs]
+    _ ≤ C₀ * (1 + |⟪θ.1, x⟫ + θ.2|) ^ n := hbn _
+    _ ≤ C₀ * ((1 + max r 0) * (1 + ‖θ.1‖ + |θ.2|)) ^ n := by gcongr
+    _ = C₀ * (1 + max r 0) ^ n * (1 + ‖θ.1‖ + |θ.2|) ^ n := by rw [mul_pow]; ring
+
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- The hypothesis of Lemma `lem:qualitative-sampling` for a coefficient measure `Γ = γ λ`
+with all parameter moments finite and an activation that is continuous and of polynomial
+growth: the ridge atoms are integrably bounded in `C(K)` against `|Γ|`. -/
+theorem integrable_compactSupNorm_ridge_variation_withDensityᵥ {K : Set H} (hK : IsCompact K)
+    {b : ℝ → ℝ} (hbc : Continuous b) (hbp : HasPolynomialGrowth b) {lam : Measure (H × ℝ)}
+    {γ : H × ℝ → ℂ} (hγ : Integrable γ lam)
+    (hmom : ∀ m : ℕ, Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ m * ‖γ θ‖) lam) :
+    Integrable (fun θ : H × ℝ => compactSupNorm K fun x => ((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ))
+      (lam.withDensityᵥ γ).variation := by
+  obtain ⟨C, m, hC, hCle⟩ := exists_compactSupNorm_ridge_le hK hbp
+  have hbC : Continuous fun t => ((b t : ℝ) : ℂ) := Complex.continuous_ofReal.comp hbc
+  have heq : (fun θ : H × ℝ => compactSupNorm K fun x => ((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ)) =
+      fun θ => ‖ridgeAtom hK hbC θ‖ := funext fun θ => (norm_ridgeAtom hK hbC θ).symm
+  have hcsm : AEStronglyMeasurable
+      (fun θ : H × ℝ => compactSupNorm K fun x => ((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ)) lam := by
+    rw [heq]
+    exact (stronglyMeasurable_ridgeAtom hK hbC).norm.aestronglyMeasurable
+  rw [Measure.variation_withDensityᵥ hγ]
+  refine (integrable_withDensity_iff_integrable_coe_smul₀
+    hγ.aestronglyMeasurable.nnnorm.aemeasurable).mpr ?_
+  simp only [smul_eq_mul, coe_nnnorm]
+  refine ((hmom m).const_mul C).mono' (hγ.aestronglyMeasurable.norm.mul hcsm)
+    (Eventually.of_forall fun θ => ?_)
+  rw [Real.norm_eq_abs,
+    abs_of_nonneg (mul_nonneg (norm_nonneg _) (compactSupNorm_nonneg _ _))]
+  calc ‖γ θ‖ * compactSupNorm K (fun x => ((b (⟪θ.1, x⟫ + θ.2) : ℝ) : ℂ))
+      ≤ ‖γ θ‖ * (C * (1 + ‖θ.1‖ + |θ.2|) ^ m) := by
+        exact mul_le_mul_of_nonneg_left (hCle θ) (norm_nonneg _)
+    _ = C * ((1 + ‖θ.1‖ + |θ.2|) ^ m * ‖γ θ‖) := by ring
+
 /-- **Theorem `thm:D`** for a direction measure that is finite on bounded sets: a constructive
 universal approximation with the rate of Theorem `thm:lipschitz-barron`. -/
 theorem exists_spectralDensity_universal_approx (ν : Measure H) [SigmaFinite ν]

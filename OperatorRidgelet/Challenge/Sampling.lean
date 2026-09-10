@@ -181,11 +181,20 @@ theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
                   (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G))))) := by
   sorry
 
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, the
-finite-width networks with a continuous, polynomially growing, non-polynomial real activation
-`β` are dense in `C(H)` for the compact-open topology. -/
-theorem thm_D_dense (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
-    (hpoly : ¬ IsPolynomialFun b) {f : H → ℂ} (hf : Continuous f) {K : Set H}
+/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, under
+the hypotheses of the theorem, the finite-width networks with the continuous, polynomially
+growing, non-polynomial real activation `β` are dense in `C(H)` for the compact-open topology:
+every continuous `f : H → ℂ` is approximated within `ε` on every compact `K` by a network of
+some finite width `N`.  The manuscript states the sentence inside Theorem `thm:D`, under all
+of its hypotheses, and derives it from (ii) together with Lemma `lem:qualitative-sampling`
+(from (iii) when `β` is in addition globally Lipschitz); the Lean statement therefore carries
+the hypotheses of `thm_D`, including `hfin`. -/
+theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+    (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
+    (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by

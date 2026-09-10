@@ -4,7 +4,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 57 | 39 | 14 |
+| 57 | 57 | 40 | 13 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -36,7 +36,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | 6.3 | `thm:lipschitz-barron` | theorem | Dimension-free compact-open Barron bound | `OperatorRidgelet.Paper.thm_lipschitz_barron_i`<br>`OperatorRidgelet.Paper.thm_lipschitz_barron_ii` | verified |
 | 6.4 | `thm:E` | theorem | Finite variation and moments of the coefficient | `OperatorRidgelet.Paper.thm_E_i`<br>`OperatorRidgelet.Paper.thm_E_ii`<br>`OperatorRidgelet.Paper.thm_E_iii`<br>`OperatorRidgelet.Paper.thm_E_iv` | verified |
 | 6.5 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | `OperatorRidgelet.Paper.lem_ray_regular_examples_a`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii` | partial 4/5 |
-| 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | `OperatorRidgelet.Paper.thm_D`<br>`OperatorRidgelet.Paper.thm_D_dense`<br>`OperatorRidgelet.Paper.thm_D_vec` | partial 2/3 |
+| 6.6 | `thm:D` | theorem | Constructive universal approximation with rates | `OperatorRidgelet.Paper.thm_D`<br>`OperatorRidgelet.Paper.thm_D_dense`<br>`OperatorRidgelet.Paper.thm_D_vec` | verified |
 | 6.7 | `cor:vector-rates` | corollary | Vector-valued rates | `OperatorRidgelet.Paper.cor_vector_rates_i_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_i_b`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_a`<br>`OperatorRidgelet.Paper.cor_vector_rates_ii_b` | stated |
 | 7.1 | `ex:closed-form` | example | Closed-form transform and its filtered network | `OperatorRidgelet.Paper.ex_closed_form_i_a`<br>`OperatorRidgelet.Paper.ex_closed_form_i_b`<br>`OperatorRidgelet.Paper.ex_closed_form_i_c`<br>`OperatorRidgelet.Paper.ex_closed_form_i_d`<br>`OperatorRidgelet.Paper.ex_closed_form_ii_a`<br>`OperatorRidgelet.Paper.ex_closed_form_ii_b`<br>`OperatorRidgelet.Paper.ex_closed_form_ii_c`<br>`OperatorRidgelet.Paper.ex_closed_form_iii_a`<br>`OperatorRidgelet.Paper.ex_closed_form_iii_b`<br>`OperatorRidgelet.Paper.ex_closed_form_iii_c`<br>`OperatorRidgelet.Paper.ex_closed_form_iii_d` | partial 1/11 |
 | 7.2 | `ex:gaussian-parameter` | example | ReLU and Gaussian networks with Gaussian parameters | `OperatorRidgelet.Paper.ex_gaussian_parameter_i`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_ii`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_iii`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_iv`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_v`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_vi_a`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_vi_b`<br>`OperatorRidgelet.Paper.ex_gaussian_parameter_vi_c` | partial 7/8 |

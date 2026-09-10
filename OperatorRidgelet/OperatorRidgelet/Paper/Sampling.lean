@@ -344,35 +344,115 @@ theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
   -- normalization of a radial bump needs `ν (closedBall 0 R) < ⊤`.
   exact exists_spectralDensity_universal_approx ν hfin hν β b hβ ρ hρ hC I hI hf hK hε
 
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, the
-finite-width networks with a continuous, polynomially growing, non-polynomial real activation
-`β` are dense in `C(H)` for the compact-open topology. -/
-theorem thm_D_dense (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
-    (hpoly : ¬ IsPolynomialFun b) {f : H → ℂ} (hf : Continuous f) {K : Set H}
+/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, under
+the hypotheses of the theorem, the finite-width networks with the continuous, polynomially
+growing, non-polynomial real activation `β` are dense in `C(H)` for the compact-open topology:
+every continuous `f : H → ℂ` is approximated within `ε` on every compact `K` by a network of
+some finite width `N`.  The manuscript states the sentence inside Theorem `thm:D`, under all
+of its hypotheses, and derives it from (ii) together with Lemma `lem:qualitative-sampling`
+(from (iii) when `β` is in addition globally Lipschitz); the Lean statement therefore carries
+the hypotheses of `thm_D`, including `hfin`. -/
+theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+    (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
+    (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
-  -- The statement supplies a complete separable Borel `H`, but no direction measure, no
-  -- band-pass filter and no dimension hypothesis, so the route through `thm_D` would have to
-  -- construct them.  The Gaussian construction is available only under hypotheses the
-  -- statement does not carry:
-  -- * `¬ FiniteDimensional ℝ H`, which `IsTraceClassCovariance.gaussianMixture_lt_top_of_isBounded`
-  --   requires for `hfin` (the mixture `ν_α` is finite on bounded sets only in infinite
-  --   dimension); in finite dimension a different `ν` (an additive Haar measure, homogeneous
-  --   of degree `dim H`) would be needed;
-  -- * an injective positive trace-class `P : H →L[ℝ] H` (`IsTraceClassCovariance P`), for
-  --   `exists_isCenteredGaussianLayers` and hence `gaussianMixture`; the project has no
-  --   existence statement for one;
-  -- * `IsRealDistribution β` and `¬ IsPolynomialDistribution β`, which
-  --   `lem_standard_activation_class_exists_filter` needs to produce a band-pass `ρ` with
-  --   `C^{(α)}_{β,ρ} = 1`; the statement gives only `¬ IsPolynomialFun b`, and no bridge from
-  --   `IsTemperedFunction β b` to those two properties exists;
-  -- * a frequency window `I` for that `ρ` (derivable from `IsBandPass ρ` as
-  --   `tsupport (filterFourier ρ) ∪ -tsupport (filterFourier ρ)`, but not yet recorded).
-  -- The alternative, hypothesis-free route is the Leshno--Lin--Pinkus theorem plus the
-  -- finite-dimensional reduction, i.e. `Paper.prop_scalar_universality_i`, which the project
-  -- does not yet prove.
-  sorry
+  -- Theorem `thm:D` with `ε/2` supplies the spectral density `G` and its coefficient measure
+  obtain ⟨G, hGreg, -, hGsupp, hGapp, hgeq, hmom, -⟩ :=
+    thm_D ν hα hν hfin β b hβ hpoly ρ hρ hC I hI hf hK (half_pos hε)
+  have hbC : Continuous fun t => (b t : ℂ) := Complex.continuous_ofReal.comp hβ.continuous
+  -- `G` is bounded and vanishes outside a ball of finite `ν`-mass, so `g_G` is continuous
+  have hGint : Integrable G ν := by
+    obtain ⟨M, hM⟩ := hGreg.bounded
+    obtain ⟨R, hR⟩ := hGsupp
+    refine ⟨hGreg.stronglyMeasurable.aestronglyMeasurable, ?_⟩
+    rw [hasFiniteIntegral_iff_enorm]
+    have hle : ∀ ξ : H, ‖G ξ‖ₑ ≤
+        (Metric.closedBall (0 : H) R).indicator (fun _ => ENNReal.ofReal M) ξ := fun ξ => by
+      by_cases hξ : ξ ∈ Metric.closedBall (0 : H) R
+      · rw [Set.indicator_of_mem hξ, ← ofReal_norm]
+        exact ENNReal.ofReal_le_ofReal (hM ξ)
+      · rw [Set.indicator_of_notMem hξ,
+          hR ξ (by simpa [Metric.mem_closedBall, dist_zero_right] using hξ)]
+        simp
+    calc ∫⁻ ξ, ‖G ξ‖ₑ ∂ν
+        ≤ ∫⁻ ξ, (Metric.closedBall (0 : H) R).indicator (fun _ => ENNReal.ofReal M) ξ ∂ν :=
+          lintegral_mono hle
+      _ = ENNReal.ofReal M * ν (Metric.closedBall (0 : H) R) :=
+          lintegral_indicator_const measurableSet_closedBall _
+      _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hfin R)
+  have hgc : Continuous (spectralTarget ν G) := continuous_spectralTarget ν hGint
+  -- the coefficient measure `Γ = γ_G λ_α` is finite and its integral network is `g_G`
+  have hγ : Integrable (coefficientFormula ρ G) (parameterMeasure ν) :=
+    coefficientFormulaVec_eq_coefficientFormula' ρ G ▸
+      integrable_coefficientFormulaVec hρ hI hGreg
+  haveI : IsFiniteMeasure
+      ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)).variation :=
+    isFiniteMeasure_variation_withDensityᵥ hγ
+  have hΓnet : ∀ x : H, integralNetwork (fun t => (b t : ℂ))
+      ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x = spectralTarget ν G x := by
+    intro x
+    have hint : Integrable (fun θ : H × ℝ =>
+        (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormula ρ G θ) (parameterMeasure ν) := by
+      rw [parameterMeasure]
+      refine (integrable_prod_smul_coefficientFormulaVec hρ hI hGreg hβ.continuous
+        hβ.polynomialGrowth x).congr (Eventually.of_forall fun θ => ?_)
+      show (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G (θ.1, θ.2) =
+        (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormula ρ G θ
+      rw [Prod.mk.eta, coefficientFormulaVec_eq_coefficientFormula]
+    rw [integralNetwork_withDensityᵥ hbC _ hγ hint, ← hgeq]
+  -- Lemma `lem:qualitative-sampling` discretizes `Γ` within `ε/2` in `C(K)`
+  obtain ⟨n, w, θ, hlt⟩ := exists_atomicMeasure_compactSupNorm_integralNetwork_sub_lt hbC
+    ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) hK
+    (integrable_compactSupNorm_ridge_variation_withDensityᵥ hK hβ.continuous
+      hβ.polynomialGrowth hγ hmom) (half_pos hε)
+  refine ⟨n, w, fun j => (θ j).1, fun j => (θ j).2, ?_⟩
+  have hatom : ∀ x : H,
+      finiteNetwork (fun t => (b t : ℂ)) w (fun j => (θ j).1) (fun j => (θ j).2) x =
+        integralNetwork (fun t => (b t : ℂ)) (atomicMeasure w θ) x := fun x =>
+    (integralNetwork_atomicMeasure (fun t => (b t : ℂ)) w θ x).symm
+  have hcontA : Continuous fun x : H =>
+      integralNetwork (fun t => (b t : ℂ)) (atomicMeasure w θ) x := by
+    have hfun : (fun x : H => integralNetwork (fun t => (b t : ℂ)) (atomicMeasure w θ) x) =
+        fun x : H => ∑ j, (b (⟪(θ j).1, x⟫ + (θ j).2) : ℂ) • w j :=
+      funext fun x => integralNetwork_atomicMeasure (fun t => (b t : ℂ)) w θ x
+    rw [hfun]
+    have hbc : Continuous b := hβ.continuous
+    fun_prop
+  have hcontB : Continuous fun x : H => integralNetwork (fun t => (b t : ℂ))
+      ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x := by
+    have hfun : (fun x : H => integralNetwork (fun t => (b t : ℂ))
+        ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x) =
+        spectralTarget ν G := funext hΓnet
+    rw [hfun]
+    exact hgc
+  have hbdd1 : BddAbove ((fun x => ‖f x - spectralTarget ν G x‖) '' K) :=
+    (hK.image (hf.sub hgc).norm).bddAbove
+  have hbdd2 : BddAbove ((fun x => ‖integralNetwork (fun t => (b t : ℂ)) (atomicMeasure w θ) x -
+      integralNetwork (fun t => (b t : ℂ))
+        ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x‖) '' K) :=
+    (hK.image (hcontA.sub hcontB).norm).bddAbove
+  -- the triangle inequality on `K`
+  have key : ∀ x ∈ K, ‖f x - finiteNetwork (fun t => (b t : ℂ)) w (fun j => (θ j).1)
+      (fun j => (θ j).2) x‖ ≤
+      compactSupNorm K (fun x => f x - spectralTarget ν G x) +
+        compactSupNorm K (fun x => integralNetwork (fun t => (b t : ℂ)) (atomicMeasure w θ) x -
+          integralNetwork (fun t => (b t : ℂ))
+            ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x) := by
+    intro x hx
+    rw [hatom x, ← sub_add_sub_cancel (f x) (integralNetwork (fun t => (b t : ℂ))
+      ((parameterMeasure ν).withDensityᵥ (coefficientFormula ρ G)) x)]
+    refine (norm_add_le _ _).trans (add_le_add ?_ ?_)
+    · rw [hΓnet x]
+      exact le_csSup hbdd1 ⟨x, hx, rfl⟩
+    · rw [norm_sub_rev]
+      exact le_csSup hbdd2 ⟨x, hx, rfl⟩
+  exact lt_of_le_of_lt (compactSupNorm_le
+    (add_nonneg (compactSupNorm_nonneg _ _) (compactSupNorm_nonneg _ _)) key) (by linarith)
 
 /-- **Theorem [thm:D]** Constructive universal approximation with rates.  The same statements
 hold for continuous `f : H → Y` with values in a separable complex Hilbert space: there is a
@@ -495,114 +575,8 @@ theorem lem_qualitative_sampling [MeasurableSpace H] [BorelSpace H] {β : ℝ �
     {ε : ℝ} (hε : 0 < ε) :
     ∃ (n : ℕ) (w : Fin n → ℂ) (θ : Fin n → H × ℝ),
       compactSupNorm K
-        (fun x => integralNetwork β (atomicMeasure w θ) x - integralNetwork β Γ x) < ε := by
-  by_cases h0 : totalVariation Γ = 0
-  · refine ⟨0, fun i => i.elim0, fun i => i.elim0, ?_⟩
-    refine lt_of_le_of_lt (compactSupNorm_le le_rfl fun x _ => ?_) hε
-    rw [integralNetwork_atomicMeasure, integralNetwork_eq_zero_of_totalVariation_eq_zero β h0]
-    simp
-  haveI := isProbabilityMeasure_polarLaw Γ h0
-  have hV : 0 < polarWeight Γ := polarWeight_pos Γ h0
-  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
-    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
-  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
-  set h₀ := hh.mk (polarDensity Γ) with hh₀def
-  have hh₀m : StronglyMeasurable h₀ := hh.stronglyMeasurable_mk
-  have hh₀eq : polarDensity Γ =ᵐ[polarLaw Γ] h₀ := hh.ae_eq_mk
-  -- the ridge atoms in `C(K)` and the atoms `h₀ β(⟪a, ·⟫ + c)`
-  have hΨm : StronglyMeasurable (ridgeAtom hK hβ) := stronglyMeasurable_ridgeAtom hK hβ
-  have hΨint : Integrable (ridgeAtom hK hβ) (polarLaw Γ) :=
-    (hint.smul_measure (ENNReal.inv_ne_top.mpr h0)).mono' hΨm.aestronglyMeasurable
-      (Eventually.of_forall fun θ => (norm_ridgeAtom hK hβ θ).le)
-  set Φ₀ : H × ℝ → (K →ᵇ ℂ) := fun θ => h₀ θ • ridgeAtom hK hβ θ with hΦ₀def
-  have hΦ₀m : StronglyMeasurable Φ₀ := hh₀m.smul hΨm
-  have hΦ₀ : Integrable Φ₀ (polarLaw Γ) := by
-    refine hΨint.norm.mono' hΦ₀m.aestronglyMeasurable ?_
-    filter_upwards [hh1, hh₀eq] with θ h1 h2
-    rw [norm_smul, ← h2, h1, one_mul]
-  -- the target is `V ∫ Φ₀` on `K`
-  have hf : ∀ x (hx : x ∈ K),
-      integralNetwork β Γ x = polarWeight Γ • (∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
-    intro x hx
-    have hintx : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) (polarLaw Γ) := by
-      have hΨnorm : Integrable (fun θ => ‖ridgeAtom hK hβ θ‖) (polarLaw Γ) := hΨint.norm
-      refine hΨnorm.mono'
-        (hβ.comp (by fun_prop : Continuous fun θ : H × ℝ => ⟪θ.1, x⟫ + θ.2)).aestronglyMeasurable
-        (Eventually.of_forall fun θ => ?_)
-      exact BoundedContinuousFunction.norm_coe_le_norm (ridgeAtom hK hβ θ) ⟨x, hx⟩
-    rw [integralNetwork_eq_integral_polarLaw β Γ h0 hintx]
-    congr 1
-    change _ = (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K)) (∫ θ, Φ₀ θ ∂polarLaw Γ)
-    rw [← ContinuousLinearMap.integral_comp_comm _ hΦ₀]
-    refine integral_congr_ae ?_
-    filter_upwards [hh₀eq] with θ hθ
-    change β (⟪θ.1, x⟫ + θ.2) • polarDensity Γ θ = (h₀ θ • ridgeAtom hK hβ θ) ⟨x, hx⟩
-    rw [hθ]
-    simp only [BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply]
-    ring
-  -- simple-function approximation of `Φ₀` in the separable space `C(K)`
-  borelize (K →ᵇ ℂ)
-  haveI : SecondCountableTopology (K →ᵇ ℂ) := secondCountableTopology_boundedContinuousFunction hK
-  haveI : TopologicalSpace.SeparableSpace (Set.range Φ₀) :=
-    (TopologicalSpace.IsSeparable.of_separableSpace _).separableSpace
-  have hΦ₀meas : Measurable Φ₀ := hΦ₀m.measurable
-  obtain ⟨θ₁⟩ : Nonempty (H × ℝ) := inferInstance
-  have hy₀ : Φ₀ θ₁ ∈ Set.range Φ₀ := ⟨θ₁, rfl⟩
-  have htend := SimpleFunc.tendsto_approxOn_L1_enorm hΦ₀meas hy₀ (μ := polarLaw Γ)
-    (Eventually.of_forall fun θ => subset_closure ⟨θ, rfl⟩) (hΦ₀.sub (integrable_const _)).2
-  have hεV : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / polarWeight Γ) :=
-    ENNReal.ofReal_pos.mpr (div_pos hε hV)
-  obtain ⟨n, hn⟩ := (htend.eventually (gt_mem_nhds hεV)).exists
-  set φ := SimpleFunc.approxOn Φ₀ hΦ₀meas (Set.range Φ₀) (Φ₀ θ₁) hy₀ n with hφdef
-  have hφint : Integrable φ (polarLaw Γ) :=
-    SimpleFunc.integrable_approxOn hΦ₀meas hΦ₀ hy₀ (integrable_const _) n
-  have hφmem : ∀ y ∈ φ.range, ∃ θ, Φ₀ θ = y := by
-    intro y hy
-    obtain ⟨θ, hθ⟩ := SimpleFunc.mem_range.mp hy
-    obtain ⟨θ', hθ'⟩ := SimpleFunc.approxOn_mem hΦ₀meas hy₀ n θ
-    exact ⟨θ', hθ'.trans hθ⟩
-  choose! θy hθy using hφmem
-  let e : φ.range ≃ Fin φ.range.card := φ.range.equivFin
-  refine ⟨φ.range.card,
-    fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
-      h₀ (θy (e.symm i)),
-    fun i => θy (e.symm i), ?_⟩
-  -- the atomic network is `V ∫ φ` on `K`
-  have hatom : ∀ x (hx : x ∈ K), integralNetwork β (atomicMeasure
-      (fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
-        h₀ (θy (e.symm i))) (fun i => θy (e.symm i))) x =
-      polarWeight Γ • (∫ θ, φ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
-    intro x hx
-    rw [integralNetwork_atomicMeasure, ← SimpleFunc.integral_eq_integral φ hφint,
-      SimpleFunc.integral_eq]
-    change _ = polarWeight Γ • (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K))
-      (∑ y ∈ φ.range, (polarLaw Γ).real (φ ⁻¹' {y}) • y)
-    rw [map_sum, ← Finset.sum_coe_sort φ.range, ← Equiv.sum_comp e.symm, Finset.smul_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    have hy := hθy (e.symm i) (e.symm i).2
-    have hyx : (Φ₀ (θy (e.symm i))) ⟨x, hx⟩ = (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩ := by rw [hy]
-    change _ = polarWeight Γ •
-      ((polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) • (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩)
-    rw [← hyx]
-    simp only [hΦ₀def, BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply,
-      Complex.real_smul, Complex.ofReal_mul]
-    ring
-  have hnorm : ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖ < ε / polarWeight Γ := by
-    rw [← integral_sub hφint hΦ₀]
-    refine (norm_integral_le_integral_norm _).trans_lt ?_
-    rw [integral_norm_eq_lintegral_enorm (f := fun a => φ a - Φ₀ a)
-      (hφint.sub hΦ₀).aestronglyMeasurable]
-    exact ENNReal.toReal_lt_of_lt_ofReal hn
-  refine lt_of_le_of_lt (compactSupNorm_le
-    (a := polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖)
-    (mul_nonneg hV.le (norm_nonneg _)) fun x hx => ?_) ?_
-  · rw [hatom x hx, hf x hx, ← smul_sub, norm_smul, Real.norm_eq_abs, abs_of_pos hV]
-    refine mul_le_mul_of_nonneg_left ?_ hV.le
-    exact BoundedContinuousFunction.norm_coe_le_norm
-      (∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩
-  · calc polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖
-        < polarWeight Γ * (ε / polarWeight Γ) := mul_lt_mul_of_pos_left hnorm hV
-      _ = ε := mul_div_cancel₀ ε hV.ne'
+        (fun x => integralNetwork β (atomicMeasure w θ) x - integralNetwork β Γ x) < ε :=
+  exists_atomicMeasure_compactSupNorm_integralNetwork_sub_lt hβ Γ hK hint hε
 
 /-- **Corollary [cor:sampling-concentration]** Concentration for bounded parameters.  Under the
 hypotheses of Theorem `thm:lipschitz-barron`, if `‖a‖² + |c|² ≤ B²` almost surely for some

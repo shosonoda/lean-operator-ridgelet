@@ -283,6 +283,39 @@ theorem integralNetwork_atomicMeasure [BorelSpace H] {Y : Type*} [NormedAddCommG
     rw [VectorMeasure.variation_dirac]
     exact ((integrable_const _).congr (ae_eq_dirac _).symm).smul_measure enorm_ne_top
 
+omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H] in
+/-- The variation of a coefficient measure `Γ = γ λ` with an integrable density `γ` is a finite
+measure. -/
+theorem isFiniteMeasure_variation_withDensityᵥ {Y : Type*} [NormedAddCommGroup Y]
+    [NormedSpace ℝ Y] [CompleteSpace Y] {lam : Measure Θ} {γ : Θ → Y}
+    (hγ : Integrable γ lam) : IsFiniteMeasure (lam.withDensityᵥ γ).variation := by
+  rw [Measure.variation_withDensityᵥ hγ]
+  refine ⟨?_⟩
+  rw [withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]
+  exact hasFiniteIntegral_iff_enorm.mp hγ.2
+
+/-- The integral network of a coefficient measure `Γ = γ λ` with an integrable density `γ` is
+the integral network `S_β[γ]` of the density, at every point where the ridge integrand is
+integrable. -/
+theorem integralNetwork_withDensityᵥ [BorelSpace H] {Y : Type*} [NormedAddCommGroup Y]
+    [NormedSpace ℂ Y] [CompleteSpace Y] {β : ℝ → ℂ} (hβ : Continuous β) (lam : Measure (H × ℝ))
+    {γ : H × ℝ → Y} (hγ : Integrable γ lam) {x : H}
+    (hint : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2) • γ θ) lam) :
+    integralNetwork β (lam.withDensityᵥ γ) x = integralNetworkDensity β lam γ x := by
+  unfold integralNetwork integralNetworkDensity
+  have hmeas : AEStronglyMeasurable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) lam :=
+    (hβ.comp (by fun_prop : Continuous fun θ : H × ℝ =>
+      (⟪θ.1, x⟫ : ℝ) + θ.2)).aestronglyMeasurable
+  have hf : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2))
+      (lam.withDensity fun θ => ‖γ θ‖ₑ) := by
+    refine (integrable_withDensity_iff_integrable_coe_smul₀
+      hγ.aestronglyMeasurable.nnnorm.aemeasurable).mpr ?_
+    refine hint.norm.mono' (hγ.aestronglyMeasurable.norm.smul hmeas)
+      (Eventually.of_forall fun θ => ?_)
+    rw [norm_smul, norm_smul, coe_nnnorm, Real.norm_eq_abs, abs_norm, mul_comm]
+  rw [VectorMeasure.integral_withDensityᵥ hγ hf]
+  rfl
+
 /-- The sampled network of a measure of zero total variation is the zero network. -/
 theorem polarSampledNetwork_eq_zero (β : ℝ → ℂ) {Y : Type*} [NormedAddCommGroup Y]
     [NormedSpace ℂ Y] {Γ : VectorMeasure (H × ℝ) Y} (h0 : totalVariation Γ = 0) {N : ℕ}
@@ -432,6 +465,137 @@ theorem integrable_smul_ridgeAtom (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ
         nlinarith [sq_nonneg (‖(π ω).1‖ - 1), sq_nonneg (|(π ω).2| - 1)]
 
 end AtomsMeasurable
+
+/-! ### Qualitative finite-atomic approximation -/
+
+section QualitativeSampling
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H]
+
+/-- Qualitative finite-atomic approximation (Lemma `lem:qualitative-sampling`).  For a
+continuous activation `β`, a compact `K`, and a coefficient measure `Γ` whose ridge atoms are
+integrably bounded in `C(K)`, every `ε > 0` admits a finite atomic complex measure
+`Γ_ε = ∑_j w_j δ_{θ_j}` with `‖S_β Γ_ε − S_β Γ‖_{C(K)} < ε`.  The proof approximates the
+Bochner-integrable `C(K)`-valued atom map of the polar decomposition of `Γ` by a simple
+function in `L¹(p; C(K))`. -/
+theorem exists_atomicMeasure_compactSupNorm_integralNetwork_sub_lt {β : ℝ → ℂ}
+    (hβ : Continuous β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation] {K : Set H}
+    (hK : IsCompact K)
+    (hint : Integrable (fun θ : H × ℝ => compactSupNorm K fun x => β (⟪θ.1, x⟫ + θ.2))
+      Γ.variation)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ (n : ℕ) (w : Fin n → ℂ) (θ : Fin n → H × ℝ),
+      compactSupNorm K
+        (fun x => integralNetwork β (atomicMeasure w θ) x - integralNetwork β Γ x) < ε := by
+  by_cases h0 : totalVariation Γ = 0
+  · refine ⟨0, fun i => i.elim0, fun i => i.elim0, ?_⟩
+    refine lt_of_le_of_lt (compactSupNorm_le le_rfl fun x _ => ?_) hε
+    rw [integralNetwork_atomicMeasure, integralNetwork_eq_zero_of_totalVariation_eq_zero β h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hV : 0 < polarWeight Γ := polarWeight_pos Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
+  set h₀ := hh.mk (polarDensity Γ) with hh₀def
+  have hh₀m : StronglyMeasurable h₀ := hh.stronglyMeasurable_mk
+  have hh₀eq : polarDensity Γ =ᵐ[polarLaw Γ] h₀ := hh.ae_eq_mk
+  -- the ridge atoms in `C(K)` and the atoms `h₀ β(⟪a, ·⟫ + c)`
+  have hΨm : StronglyMeasurable (ridgeAtom hK hβ) := stronglyMeasurable_ridgeAtom hK hβ
+  have hΨint : Integrable (ridgeAtom hK hβ) (polarLaw Γ) :=
+    (hint.smul_measure (ENNReal.inv_ne_top.mpr h0)).mono' hΨm.aestronglyMeasurable
+      (Eventually.of_forall fun θ => (norm_ridgeAtom hK hβ θ).le)
+  set Φ₀ : H × ℝ → (K →ᵇ ℂ) := fun θ => h₀ θ • ridgeAtom hK hβ θ with hΦ₀def
+  have hΦ₀m : StronglyMeasurable Φ₀ := hh₀m.smul hΨm
+  have hΦ₀ : Integrable Φ₀ (polarLaw Γ) := by
+    refine hΨint.norm.mono' hΦ₀m.aestronglyMeasurable ?_
+    filter_upwards [hh1, hh₀eq] with θ h1 h2
+    rw [norm_smul, ← h2, h1, one_mul]
+  -- the target is `V ∫ Φ₀` on `K`
+  have hf : ∀ x (hx : x ∈ K),
+      integralNetwork β Γ x = polarWeight Γ • (∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
+    intro x hx
+    have hintx : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) (polarLaw Γ) := by
+      have hΨnorm : Integrable (fun θ => ‖ridgeAtom hK hβ θ‖) (polarLaw Γ) := hΨint.norm
+      refine hΨnorm.mono'
+        (hβ.comp (by fun_prop : Continuous fun θ : H × ℝ => ⟪θ.1, x⟫ + θ.2)).aestronglyMeasurable
+        (Eventually.of_forall fun θ => ?_)
+      exact BoundedContinuousFunction.norm_coe_le_norm (ridgeAtom hK hβ θ) ⟨x, hx⟩
+    rw [integralNetwork_eq_integral_polarLaw β Γ h0 hintx]
+    congr 1
+    change _ = (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K)) (∫ θ, Φ₀ θ ∂polarLaw Γ)
+    rw [← ContinuousLinearMap.integral_comp_comm _ hΦ₀]
+    refine integral_congr_ae ?_
+    filter_upwards [hh₀eq] with θ hθ
+    change β (⟪θ.1, x⟫ + θ.2) • polarDensity Γ θ = (h₀ θ • ridgeAtom hK hβ θ) ⟨x, hx⟩
+    rw [hθ]
+    simp only [BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply]
+    ring
+  -- simple-function approximation of `Φ₀` in the separable space `C(K)`
+  borelize (K →ᵇ ℂ)
+  haveI : SecondCountableTopology (K →ᵇ ℂ) := secondCountableTopology_boundedContinuousFunction hK
+  haveI : TopologicalSpace.SeparableSpace (Set.range Φ₀) :=
+    (TopologicalSpace.IsSeparable.of_separableSpace _).separableSpace
+  have hΦ₀meas : Measurable Φ₀ := hΦ₀m.measurable
+  obtain ⟨θ₁⟩ : Nonempty (H × ℝ) := inferInstance
+  have hy₀ : Φ₀ θ₁ ∈ Set.range Φ₀ := ⟨θ₁, rfl⟩
+  have htend := SimpleFunc.tendsto_approxOn_L1_enorm hΦ₀meas hy₀ (μ := polarLaw Γ)
+    (Eventually.of_forall fun θ => subset_closure ⟨θ, rfl⟩) (hΦ₀.sub (integrable_const _)).2
+  have hεV : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / polarWeight Γ) :=
+    ENNReal.ofReal_pos.mpr (div_pos hε hV)
+  obtain ⟨n, hn⟩ := (htend.eventually (gt_mem_nhds hεV)).exists
+  set φ := SimpleFunc.approxOn Φ₀ hΦ₀meas (Set.range Φ₀) (Φ₀ θ₁) hy₀ n with hφdef
+  have hφint : Integrable φ (polarLaw Γ) :=
+    SimpleFunc.integrable_approxOn hΦ₀meas hΦ₀ hy₀ (integrable_const _) n
+  have hφmem : ∀ y ∈ φ.range, ∃ θ, Φ₀ θ = y := by
+    intro y hy
+    obtain ⟨θ, hθ⟩ := SimpleFunc.mem_range.mp hy
+    obtain ⟨θ', hθ'⟩ := SimpleFunc.approxOn_mem hΦ₀meas hy₀ n θ
+    exact ⟨θ', hθ'.trans hθ⟩
+  choose! θy hθy using hφmem
+  let e : φ.range ≃ Fin φ.range.card := φ.range.equivFin
+  refine ⟨φ.range.card,
+    fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
+      h₀ (θy (e.symm i)),
+    fun i => θy (e.symm i), ?_⟩
+  -- the atomic network is `V ∫ φ` on `K`
+  have hatom : ∀ x (hx : x ∈ K), integralNetwork β (atomicMeasure
+      (fun i => ((polarWeight Γ * (polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) : ℝ) : ℂ) *
+        h₀ (θy (e.symm i))) (fun i => θy (e.symm i))) x =
+      polarWeight Γ • (∫ θ, φ θ ∂polarLaw Γ) ⟨x, hx⟩ := by
+    intro x hx
+    rw [integralNetwork_atomicMeasure, ← SimpleFunc.integral_eq_integral φ hφint,
+      SimpleFunc.integral_eq]
+    change _ = polarWeight Γ • (BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : K))
+      (∑ y ∈ φ.range, (polarLaw Γ).real (φ ⁻¹' {y}) • y)
+    rw [map_sum, ← Finset.sum_coe_sort φ.range, ← Equiv.sum_comp e.symm, Finset.smul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    have hy := hθy (e.symm i) (e.symm i).2
+    have hyx : (Φ₀ (θy (e.symm i))) ⟨x, hx⟩ = (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩ := by rw [hy]
+    change _ = polarWeight Γ •
+      ((polarLaw Γ).real (φ ⁻¹' {(e.symm i : K →ᵇ ℂ)}) • (e.symm i : K →ᵇ ℂ) ⟨x, hx⟩)
+    rw [← hyx]
+    simp only [hΦ₀def, BoundedContinuousFunction.coe_smul, smul_eq_mul, ridgeAtom_apply,
+      Complex.real_smul, Complex.ofReal_mul]
+    ring
+  have hnorm : ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖ < ε / polarWeight Γ := by
+    rw [← integral_sub hφint hΦ₀]
+    refine (norm_integral_le_integral_norm _).trans_lt ?_
+    rw [integral_norm_eq_lintegral_enorm (f := fun a => φ a - Φ₀ a)
+      (hφint.sub hΦ₀).aestronglyMeasurable]
+    exact ENNReal.toReal_lt_of_lt_ofReal hn
+  refine lt_of_le_of_lt (compactSupNorm_le
+    (a := polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖)
+    (mul_nonneg hV.le (norm_nonneg _)) fun x hx => ?_) ?_
+  · rw [hatom x hx, hf x hx, ← smul_sub, norm_smul, Real.norm_eq_abs, abs_of_pos hV]
+    refine mul_le_mul_of_nonneg_left ?_ hV.le
+    exact BoundedContinuousFunction.norm_coe_le_norm
+      (∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ) ⟨x, hx⟩
+  · calc polarWeight Γ * ‖∫ θ, φ θ ∂polarLaw Γ - ∫ θ, Φ₀ θ ∂polarLaw Γ‖
+        < polarWeight Γ * (ε / polarWeight Γ) := mul_lt_mul_of_pos_left hnorm hV
+      _ = ε := mul_div_cancel₀ ε hV.ne'
+end QualitativeSampling
 
 /-! ### The dimension-free Barron bound in `C(K)` -/
 
