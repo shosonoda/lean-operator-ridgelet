@@ -60,6 +60,7 @@ import OperatorRidgelet.ToMathlib.GaussianQuadraticForm
 import OperatorRidgelet.ToMathlib.GaussianRealIntegral
 import OperatorRidgelet.ToMathlib.GaussianTilt
 import OperatorRidgelet.ToMathlib.GiryMonad
+import OperatorRidgelet.ToMathlib.HermiteGaussian
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.IntegralSqrt
 import OperatorRidgelet.ToMathlib.InvOneAddSqLintegral
