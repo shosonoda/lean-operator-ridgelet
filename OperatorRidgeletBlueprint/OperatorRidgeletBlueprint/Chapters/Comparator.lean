@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 234.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 235.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 39
-  * 14
+  * 40
+  * 13
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -2556,9 +2556,9 @@ Status: *statement only (proof pending)*.
 
 ## Theorem 6.6 — Constructive universal approximation with rates (`thm:D`)
 
-Blueprint node: {bpref "thm:D"}[]. Status: *partial 2/3* (2 of 3 Lean theorems verified).
+Blueprint node: {bpref "thm:D"}[]. Status: *verified* (all 3 Lean theorems verified).
 
-Formalization note. thm\_D is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g\_G) < ε, (ii) g\_G = integralNetworkDensity b λ\_α γ\_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ\_G‖) λ\_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^\{(α)\}\_\{β,ρ\} = 1 is temperedAdmissibilityConst α β ρ = 1. thm\_D\_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K, with the same hypotheses on b only. thm\_D\_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the vector-valued compact-open rate ε + 2V 𝔑^Y\_N(K;p,β) of cor:vector-rates(ii) (the manuscript's 'vector-valued rate of subsec:vector-sampling'; the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement). Both thm\_D and thm\_D\_vec carry one hypothesis the manuscript's sentence does not display, hfin : ∀ R, ν (Metric.closedBall 0 R) < ⊤ (the direction measure is finite on bounded sets), placed right after IsHomogeneous α ν: Step 2 of the proof normalizes a radial bump by ν of a ball and needs that mass finite. lem:homogeneous-mixture supplies it for the Gaussian mixture ν\_α in infinite dimension, and the manuscript states thm:D for ν\_α only — thm:general-weights deliberately omits thm:D from the results it extends to abstract weights. The hypothesis is not redundant: σ-finiteness, full support and homogeneity of degree α > 0 do not imply it (on ℝ² the measure carrying r^\{α−1\} dr on every ray of rational angle has all three and gives infinite mass to every nonempty open set, and for it every continuous G regular along rays vanishes, so (i) fails).
+Formalization note. thm\_D is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g\_G) < ε, (ii) g\_G = integralNetworkDensity b λ\_α γ\_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ\_G‖) λ\_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^\{(α)\}\_\{β,ρ\} = 1 is temperedAdmissibilityConst α β ρ = 1. thm\_D\_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K. The density sentence sits inside Theorem 6.6 in the manuscript, under all of its hypotheses, so the Lean statement of thm\_D\_dense carries the full hypothesis list of thm\_D (ν with SigmaFinite, IsOpenPosMeasure, IsHomogeneous α ν for α > 0 and hfin, the tempered activation (β, b) with ¬ IsPolynomialFun b, and the band-pass ρ with temperedAdmissibilityConst α β ρ = 1 and its frequency window I) and is proved from thm\_D(i)-(ii) together with lem:qualitative-sampling, as the manuscript's proof does. thm\_D\_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the vector-valued compact-open rate ε + 2V 𝔑^Y\_N(K;p,β) of cor:vector-rates(ii) (the manuscript's 'vector-valued rate of subsec:vector-sampling'; the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement). Both thm\_D and thm\_D\_vec carry one hypothesis the manuscript's sentence does not display, hfin : ∀ R, ν (Metric.closedBall 0 R) < ⊤ (the direction measure is finite on bounded sets), placed right after IsHomogeneous α ν: Step 2 of the proof normalizes a radial bump by ν of a ball and needs that mass finite. lem:homogeneous-mixture supplies it for the Gaussian mixture ν\_α in infinite dimension, and the manuscript states thm:D for ν\_α only — thm:general-weights deliberately omits thm:D from the results it extends to abstract weights. The hypothesis is not redundant: σ-finiteness, full support and homogeneity of degree α > 0 do not imply it (on ℝ² the measure carrying r^\{α−1\} dr on every ray of rational angle has all three and gives infinite mass to every nonempty open set, and for it every continuous G regular along rays vanishes, so (i) fails).
 
 `OperatorRidgelet.Paper.thm_D`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L134):
 
@@ -2618,19 +2618,28 @@ Status: *verified by comparator*.
 `OperatorRidgelet.Paper.thm_D_dense`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L184):
 
 ```
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, the
-finite-width networks with a continuous, polynomially growing, non-polynomial real activation
-`β` are dense in `C(H)` for the compact-open topology. -/
-theorem thm_D_dense (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
-    (hpoly : ¬ IsPolynomialFun b) {f : H → ℂ} (hf : Continuous f) {K : Set H}
+/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, under
+the hypotheses of the theorem, the finite-width networks with the continuous, polynomially
+growing, non-polynomial real activation `β` are dense in `C(H)` for the compact-open topology:
+every continuous `f : H → ℂ` is approximated within `ε` on every compact `K` by a network of
+some finite width `N`.  The manuscript states the sentence inside Theorem `thm:D`, under all
+of its hypotheses, and derives it from (ii) together with Lemma `lem:qualitative-sampling`
+(from (iii) when `β` is in addition globally Lipschitz); the Lean statement therefore carries
+the hypotheses of `thm_D`, including `hfin`. -/
+theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+    (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
+    (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
     (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_D_vec`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L194):
+`OperatorRidgelet.Paper.thm_D_vec`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L203):
 
 ```
 /-- **Theorem [thm:D]** Constructive universal approximation with rates.  The same statements
@@ -2677,7 +2686,7 @@ Blueprint node: {bpref "cor:vector-rates"}[]. Status: *stated* (formalized, no p
 
 Formalization note. Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i\_a (‖·‖²\_\{L²(ζ;Y)\} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i\_b (explicit bound with ‖β 0‖² and L²); part ii into ii\_a (2V 𝔑^Y\_N bound, with 𝔑^Y\_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii\_b (Tendsto to 0 as N → ∞). N > 0 in i and ii\_a.
 
-`OperatorRidgelet.Paper.cor_vector_rates_i_a`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L239):
+`OperatorRidgelet.Paper.cor_vector_rates_i_a`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L248):
 
 ```
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For globally Lipschitz `β`, a
@@ -2695,7 +2704,7 @@ theorem cor_vector_rates_i_a [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.cor_vector_rates_i_b`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L252):
+`OperatorRidgelet.Paper.cor_vector_rates_i_b`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L261):
 
 ```
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  The `L²(ζ;Y)` rate is explicit:
@@ -2711,7 +2720,7 @@ theorem cor_vector_rates_i_b [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.cor_vector_rates_ii_a`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L263):
+`OperatorRidgelet.Paper.cor_vector_rates_ii_a`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L272):
 
 ```
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
@@ -2728,7 +2737,7 @@ theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.cor_vector_rates_ii_b`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L275):
+`OperatorRidgelet.Paper.cor_vector_rates_ii_b`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L284):
 
 ```
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
@@ -4562,7 +4571,7 @@ Blueprint node: {bpref "lem:qualitative-sampling"}[]. Status: *verified* (its Le
 
 Formalization note. The hypothesis ∫ ‖β(⟨a,·⟩+c)‖\_\{C(K)\} d|Γ| < ∞ is Integrable (θ ↦ compactSupNorm K (β(⟨a,·⟩+c))) Γ.variation; a finite atomic complex measure is atomicMeasure w θ = Σ\_j VectorMeasure.dirac (θ\_j) (w\_j), and its synthesis is integralNetwork β (atomicMeasure w θ).
 
-`OperatorRidgelet.Paper.lem_qualitative_sampling`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L289):
+`OperatorRidgelet.Paper.lem_qualitative_sampling`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L298):
 
 ```
 /-- **Lemma [lem:qualitative-sampling]** Qualitative finite-atomic approximation.  For
@@ -4588,7 +4597,7 @@ Blueprint node: {bpref "cor:sampling-concentration"}[]. Status: *verified* (its 
 
 Formalization note. '‖a‖²+|c|² ≤ B² almost surely' is ∀ᵐ θ ∂(polarLaw Γ), with the bound B ≥ 0 (hB0 : 0 ≤ B; implicit in the manuscript, where B bounds a norm, and needed since the threshold could be negative for B < 0). 'With probability at least 1 − δ' is stated as the (outer) measure under sampleLaw N (polarLaw Γ) of the exceptional set \{θ | bound < ‖f\_N θ − f‖\_\{C(K)\}\} being ≤ ENNReal.ofReal δ, for 0 < δ (this is what the bounded-difference inequality gives and implies the measure of the good set is ≥ 1 − δ). The hypotheses of thm:lipschitz-barron (Lipschitz, second moment) are kept; M\_K = |β 0| + L R\_K B.
 
-`OperatorRidgelet.Paper.cor_sampling_concentration`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L304):
+`OperatorRidgelet.Paper.cor_sampling_concentration`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L313):
 
 ```
 /-- **Corollary [cor:sampling-concentration]** Concentration for bounded parameters.  Under the
@@ -4619,7 +4628,7 @@ Blueprint node: {bpref "lem:hilbert-sampling"}[]. Status: *verified* (all 3 Lean
 
 Formalization note. X is a separable real Hilbert space (a complex Hilbert space is one via InnerProductSpace.complexToReal, and only norms enter); Y ∈ L²(p;X) is MemLp Y 2 p on an abstract probability space (Ω, p); independent copies are the coordinates of sampleLaw N p on Fin N → Ω; f = V • ∫ Y dp and f\_N ω = (V/N) • Σ\_j Y (ω j). Part i the identity, ii the upper bound, iii the deterministic sample; N > 0.
 
-`OperatorRidgelet.Paper.lem_hilbert_sampling_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L329):
+`OperatorRidgelet.Paper.lem_hilbert_sampling_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L338):
 
 ```
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.  For `Y ∈ L²(p; X)` with
@@ -4633,7 +4642,7 @@ theorem lem_hilbert_sampling_i (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_hilbert_sampling_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L338):
+`OperatorRidgelet.Paper.lem_hilbert_sampling_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L347):
 
 ```
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.
@@ -4646,7 +4655,7 @@ theorem lem_hilbert_sampling_ii (p : Measure Ω) [IsProbabilityMeasure p] {Y : �
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_hilbert_sampling_iii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L346):
+`OperatorRidgelet.Paper.lem_hilbert_sampling_iii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L355):
 
 ```
 /-- **Lemma [lem:hilbert-sampling]** Hilbert-valued sampling identity.  A deterministic sample
@@ -4665,7 +4674,7 @@ Blueprint node: {bpref "cor:operator-sampling"}[]. Status: *verified* (all 2 Lea
 
 Formalization note. Γ\_op is a ComplexMeasure on (H →L\[ℝ\] H) × H with finite variation carried by 𝓛₂(H) × H (∀ᵐ q ∂Γ\_op.variation, IsHilbertSchmidt q.1), as in lem:measure-transport; its polar data are polarDensity/polarWeight/polarLaw Γ\_op; M\_op² < ∞ is Integrable (‖A\*ψ‖² + |⟨ψ,b⟩|²) (polarLaw Γ\_op) and M\_op = √(operatorSecondMoment ψ (polarLaw Γ\_op)). The sampled operator network is sampledOperatorNetwork (rankOneActivation β ψ z) ℓ V h ω, an operatorFiniteNetwork with weights (V/N) h(A\_j,b\_j), and S\_op Γ\_op is operatorSynthesis; the readout is normalized by ⟨ℓ,z⟩ = 1 and ψ ≠ 0 is not needed (as in lem:measure-transport), so it is not assumed. Part ii (M\_op² ≤ ‖ψ‖² ∫(‖A‖²\_\{𝓛₂\}+‖b‖²) dp\_op) is stated with lintegrals and hsNormSq (∞ off 𝓛₂), so that no integrability hypothesis is needed.
 
-`OperatorRidgelet.Paper.cor_operator_sampling_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L356):
+`OperatorRidgelet.Paper.cor_operator_sampling_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L365):
 
 ```
 /-- **Corollary [cor:operator-sampling]** Sampling in operator parameters.  For a finite
@@ -4693,7 +4702,7 @@ theorem cor_operator_sampling_i [CompleteSpace H] [SecondCountableTopology H]
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.cor_operator_sampling_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L379):
+`OperatorRidgelet.Paper.cor_operator_sampling_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L388):
 
 ```
 /-- **Corollary [cor:operator-sampling]** Sampling in operator parameters.
@@ -4713,7 +4722,7 @@ Blueprint node: {bpref "cor:two-stage-error"}[]. Status: *verified* (all 2 Lean 
 
 Formalization note. Π\_m is P : ℕ → (H →L\[ℝ\] H) with IsFiniteRankProjection (P m) (IsStarProjection, i.e. self-adjoint idempotent, with finite-dimensional range) and strong convergence ∀ x, Tendsto (P m x) → x. Part i: Tendsto (compactSupNorm K (f − f ∘ P m)) → 0 for continuous f : H → ℂ. Part ii: the truncated network f\_\{m,N\} keeps the samples θ\_j and the weights (V/N) h(θ\_j) of the polar sampled network and projects only the directions inside the activation, f\_\{m,N\}(x) = (V/N) ∑\_j h(θ\_j) β(⟪P m a\_j, x⟫ + c\_j), encoded as finiteNetwork β (fun j => (V/N) • polarDensity Γ (θ j)) (fun j => P m (θ j).1) (fun j => (θ j).2) (the phase h = polarDensity Γ is only specified |Γ|-a.e., so it may not be evaluated at the projected parameters); ∫ ‖a‖ d|Γ| is the Bochner integral against Γ.variation (finite under the hypotheses) and sup\_K ‖x − Π\_m x‖ is compactSupNorm K (x ↦ x − P m x); hypotheses of thm:lipschitz-barron (real Lipschitz β, second moment of polarLaw Γ), N > 0, m arbitrary.
 
-`OperatorRidgelet.Paper.cor_two_stage_error_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L388):
+`OperatorRidgelet.Paper.cor_two_stage_error_i`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L397):
 
 ```
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  For
@@ -4728,7 +4737,7 @@ theorem cor_two_stage_error_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.cor_two_stage_error_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L398):
+`OperatorRidgelet.Paper.cor_two_stage_error_ii`, theorem in [`Challenge/Sampling.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sampling.lean#L407):
 
 ```
 /-- **Corollary [cor:two-stage-error]** Input truncation and sampling are separate errors.  If
