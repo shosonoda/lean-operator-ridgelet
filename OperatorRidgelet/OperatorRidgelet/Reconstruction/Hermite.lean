@@ -144,4 +144,43 @@ theorem tendstoLocallyUniformly_hermiteExtension (hμ : IsCenteredGaussian Q μ)
   refine h.congr fun N z => ?_
   exact Finset.sum_congr rfl fun n _ => by ring
 
+/-- The bound `|G_f(zξ)| ≤ ‖f‖_{L²(μ)} e^{|z|²τ(ξ)²/2}`. -/
+theorem norm_hermiteExtension_le (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) (z : ℂ) :
+    ‖hermiteExtension μ Q f ξ z‖ ≤
+      Real.sqrt (∫ x, ‖f x‖ ^ 2 ∂μ) * Real.exp (‖z‖ ^ 2 * ⟪Q ξ, ξ⟫ / 2) := by
+  have hY := isStdGaussianCoord_inner_div hμ ξ hpos
+  have h := norm_integral_mul_gaussGen_le hY hf
+    (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ)))
+  rw [← hermiteExtension_eq μ f hpos z] at h
+  refine h.trans (le_of_eq ?_)
+  have hnorm : ‖-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))‖ =
+      ‖z‖ * Real.sqrt ⟪Q ξ, ξ⟫ := by
+    rw [norm_neg, norm_mul, norm_mul, Complex.norm_I, one_mul, Complex.norm_real,
+      Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]
+  rw [hnorm, mul_pow, Real.sq_sqrt hpos.le]
+
+/-- The Hermite inversion formula
+`E_μ[f Heₙ(⟪x,ξ⟫/τ(ξ))] = iⁿ τ(ξ)^{-n} (d/dt)ⁿ G_f(tξ)|_{t=0}`. -/
+theorem hermiteCoefficient_eq_iteratedDeriv (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) (n : ℕ) :
+    hermiteCoefficient μ Q f ξ n =
+      Complex.I ^ n / ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ) ^ n *
+        iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
+  have hτ0 : ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr hpos).ne'
+  have h := iteratedDeriv_ofReal_of_hasSum_pow
+    (fun z => hasSum_hermiteExtension_pow hμ hf hpos z) n
+  have key : ∀ A t : ℂ, t ≠ 0 →
+      Complex.I ^ n / t ^ n *
+          ((n.factorial : ℂ) * ((-(Complex.I * t)) ^ n / (n.factorial : ℂ) * A)) = A := by
+    intro A t ht
+    have hfac : ((n.factorial : ℂ)) ≠ 0 := by exact_mod_cast n.factorial_ne_zero
+    have hc : Complex.I ^ n * (-(Complex.I * t)) ^ n = t ^ n := by
+      rw [← mul_pow, show Complex.I * -(Complex.I * t) = t from by
+        linear_combination (-t) * Complex.I_sq]
+    field_simp
+    linear_combination A * hc
+  rw [h, key _ _ hτ0]
+
 end OperatorRidgelet
