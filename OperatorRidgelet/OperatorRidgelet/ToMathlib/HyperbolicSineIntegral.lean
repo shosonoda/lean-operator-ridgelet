@@ -33,14 +33,16 @@ theorem integral_sinh_mul_sin (k a b : ℝ) :
       (cosh b * sin (k * b) - k * sinh b * cos (k * b)) / (1 + k ^ 2) -
       (cosh a * sin (k * a) - k * sinh a * cos (k * a)) / (1 + k ^ 2) :=
   intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hasDerivAt_sinh_sin_primitive k t)
-    ((continuous_sinh.mul (continuous_sin.comp (continuous_const.mul continuous_id))).intervalIntegrable a b)
+    ((continuous_sinh.mul
+        (continuous_sin.comp (continuous_const.mul continuous_id))).intervalIntegrable a b)
 
 /-- Exact definite integral of `sinh(c-t) sin(kt)`. -/
 theorem integral_sinh_sub_mul_sin (c k a b : ℝ) :
     (∫ t in a..b, sinh (c - t) * sin (k * t)) =
       (-cosh (c - b) * sin (k * b) - k * sinh (c - b) * cos (k * b)) / (1 + k ^ 2) -
       (-cosh (c - a) * sin (k * a) - k * sinh (c - a) * cos (k * a)) / (1 + k ^ 2) :=
-  intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hasDerivAt_sinh_sub_sin_primitive c k t)
+  intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun t _ => hasDerivAt_sinh_sub_sin_primitive c k t)
     (((continuous_sinh.comp (continuous_const.sub continuous_id)).mul
       (continuous_sin.comp (continuous_const.mul continuous_id))).intervalIntegrable a b)
 

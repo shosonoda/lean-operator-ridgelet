@@ -220,6 +220,7 @@ def mixtureLayerCovariance (R T : H →L[ℝ] H) (s : ℝ) : H →L[ℝ] H :=
 variable [MeasurableSpace H]
 
 omit [CompleteSpace H] in
+/-- Almost-everywhere equal spectral densities define the same Gaussian Fourier target. -/
 theorem gaussFourier_congr_ae {μ : Measure H} {f g : H → ℂ} (h : f =ᵐ[μ] g) :
     gaussFourier μ f = gaussFourier μ g := by
   funext ξ
@@ -239,12 +240,14 @@ def MemSpectralCoreVec (μ ν : Measure H) (f : H → Y) : Prop :=
   MemLp f 2 μ ∧ MemLp (gaussFourierVec μ f) 2 ν
 
 omit [CompleteSpace H] in
+/-- Passing a square-integrable density to `L²` preserves membership in the spectral core. -/
 theorem toLp_mem_spectralCore_iff {μ ν : Measure H} [IsFiniteMeasure μ] {f : H → ℂ}
     (hf : MemLp f 2 μ) :
     hf.toLp f ∈ spectralCore μ ν ↔ MemLp (gaussFourier μ f) 2 ν := by
   rw [mem_spectralCore_iff, gaussFourier_congr_ae hf.coeFn_toLp]
 
 omit [CompleteSpace H] in
+/-- The function-level spectral core agrees with membership of its `L²` representative. -/
 theorem memSpectralCore_iff {μ ν : Measure H} [IsFiniteMeasure μ] {f : H → ℂ} :
     MemSpectralCore μ ν f ↔ ∃ hf : MemLp f 2 μ, hf.toLp f ∈ spectralCore μ ν := by
   constructor
@@ -372,6 +375,7 @@ end OperatorLayer
 
 section Torus
 
+/-- The torus period `2π` is strictly positive. -/
 instance instFactTwoPiPos : Fact (0 < 2 * Real.pi) :=
   ⟨Real.two_pi_pos⟩
 
@@ -383,16 +387,20 @@ abbrev Torus (d : ℕ) : Type :=
 def torusHaar (d : ℕ) : Measure (Torus d) :=
   Measure.pi fun _ => AddCircle.haarAddCircle
 
+/-- The product torus Haar measure has total mass one. -/
 instance (d : ℕ) : IsProbabilityMeasure (torusHaar d) :=
   Measure.pi.instIsProbabilityMeasure _
 
+/-- The normalized circle Haar measure is regular. -/
 instance instRegularHaarAddCircle : (AddCircle.haarAddCircle (T := 2 * Real.pi)).Regular := by
   unfold AddCircle.haarAddCircle
   infer_instance
 
+/-- The product torus measure is an additive Haar measure. -/
 instance (d : ℕ) : (torusHaar d).IsAddHaarMeasure :=
   Measure.pi.isAddHaarMeasure _
 
+/-- Torus Haar measure is invariant under negation. -/
 instance (d : ℕ) : (torusHaar d).IsNegInvariant :=
   Measure.pi.isNegInvariant _
 
@@ -457,9 +465,11 @@ section Dirichlet
 abbrev UnitOpenInterval : Type :=
   Set.Ioo (0 : ℝ) 1
 
+/-- The unit interval carries the comap of real Lebesgue volume. -/
 instance instMeasureSpaceUnitOpenInterval : MeasureSpace UnitOpenInterval :=
   Measure.Subtype.measureSpace
 
+/-- The open unit interval has Lebesgue volume one. -/
 instance : IsProbabilityMeasure (volume : Measure UnitOpenInterval) := by
   refine ⟨?_⟩
   rw [Measure.Subtype.volume_univ measurableSet_Ioo.nullMeasurableSet, Real.volume_Ioo]

@@ -10,19 +10,23 @@ namespace OperatorRidgelet
 variable {d : ℕ}
 
 
+/-- A Fourier Hilbert-basis vector is almost everywhere its torus character. -/
 theorem torusFourierBasis_coeFn (n : Fin d → ℤ) :
     (torusFourierBasis d n : Torus d → ℂ) =ᵐ[torusHaar d] torusCharacter n := by
   change (AddTorus.mFourierBasis n : Torus d → ℂ) =ᵐ[torusHaar d] _
   rw [AddTorus.coe_mFourierBasis]
   exact AddTorus.coeFn_mFourierLp 2 n
 
+/-- Every torus character is continuous. -/
 theorem continuous_torusCharacter (n : Fin d → ℤ) : Continuous (torusCharacter n) := by
   unfold torusCharacter
   fun_prop
 
+/-- Every torus character has unit complex norm. -/
 theorem norm_torusCharacter (n : Fin d → ℤ) (t : Torus d) : ‖torusCharacter n t‖ = 1 := by
   simp only [torusCharacter, norm_prod, fourier_apply, Circle.norm_coe, Finset.prod_const_one]
 
+/-- Negating the torus argument conjugates the character value. -/
 theorem torusCharacter_neg (n : Fin d → ℤ) (t : Torus d) :
     torusCharacter n (-t) = conj (torusCharacter n t) := by
   simp only [torusCharacter, Pi.neg_apply, fourier_apply, zsmul_neg, AddCircle.toCircle_neg,
@@ -31,6 +35,7 @@ theorem torusCharacter_neg (n : Fin d → ℤ) (t : Torus d) :
   ext j
   simpa only [Circle.coe_inv] using Circle.coe_inv_eq_conj (AddCircle.toCircle (n j • t j))
 
+/-- Convolution against a character factors into a Fourier coefficient and character. -/
 theorem integral_torusCharacter_convolution (k : TorusL2 d) (n : Fin d → ℤ) (y : Torus d) :
     (∫ t, (k (y-t) : ℂ) * torusCharacter n t ∂torusHaar d) =
       torusFourierCoeff (fun t => (k t : ℂ)) n * torusCharacter n y := by
@@ -43,6 +48,7 @@ theorem integral_torusCharacter_convolution (k : TorusL2 d) (n : Fin d → ℤ) 
   funext t
   ring
 
+/-- The convolution layer agrees almost everywhere with its scalar convolution formula. -/
 theorem layerA_conv_coeFn (k x : TorusL2 d) :
     (layerA (torusHaar d) (convDirection k) x : Torus d → ℝ) =ᵐ[torusHaar d]
       fun y => ∫ t, k (y-t) * x t ∂torusHaar d := by
@@ -56,6 +62,7 @@ theorem layerA_conv_coeFn (k x : TorusL2 d) :
     (ha.inner (aestronglyMeasurable_const (b := x)))] with y hy
   rw [hy, inner_convDirection]
 
+/-- A torus character times a translated integrable kernel is integrable. -/
 theorem integrable_character_convolution (k : TorusL2 d) (n : Fin d → ℤ) (y : Torus d) :
     Integrable (fun t => (k (y-t) : ℂ) * torusCharacter n t) (torusHaar d) := by
   have hk : Integrable (fun t => k (y-t)) (torusHaar d) :=
@@ -64,6 +71,7 @@ theorem integrable_character_convolution (k : TorusL2 d) (n : Fin d → ℤ) (y 
   exact hk.ofReal.mul_bdd (c := 1) (continuous_torusCharacter n).aestronglyMeasurable
     (Eventually.of_forall fun t => (norm_torusCharacter n t).le)
 
+/-- Real convolution acts on the real part of a character by the real eigenvalue formula. -/
 theorem convolution_real_character (k : TorusL2 d) (n : Fin d → ℤ) (y : Torus d) :
     (∫ t, k (y-t) * (Complex.reCLM.compLp (torusFourierBasis d n)) t ∂torusHaar d) =
       (torusFourierCoeff (fun t => (k t : ℂ)) n * torusCharacter n y).re := by
@@ -77,6 +85,7 @@ theorem convolution_real_character (k : TorusL2 d) (n : Fin d → ℤ) (y : Toru
   rw [h1, h2]
   simp [Complex.mul_re]
 
+/-- Real convolution acts on the imaginary part of a character by its imaginary formula. -/
 theorem convolution_imag_character (k : TorusL2 d) (n : Fin d → ℤ) (y : Torus d) :
     (∫ t, k (y-t) * (Complex.imCLM.compLp (torusFourierBasis d n)) t ∂torusHaar d) =
       (torusFourierCoeff (fun t => (k t : ℂ)) n * torusCharacter n y).im := by
@@ -90,6 +99,7 @@ theorem convolution_imag_character (k : TorusL2 d) (n : Fin d → ℤ) (y : Toru
   rw [h1, h2]
   simp [Complex.mul_im]
 
+/-- Complexifying real convolution makes every character a Fourier eigenvector. -/
 theorem complexified_layerA_character (k : TorusL2 d) (n : Fin d → ℤ) :
     aeOfReal (torusHaar d) (layerA (torusHaar d) (convDirection k)
       (Complex.reCLM.compLp (torusFourierBasis d n))) +
@@ -121,6 +131,7 @@ theorem complexified_layerA_character (k : TorusL2 d) (n : Fin d → ℤ) :
   simp only [smul_eq_mul]
   rw [mul_comm Complex.I, Complex.re_add_im]
 
+/-- The real linear map combining a pair of real almost-everywhere functions into a complex one. -/
 def aeComplexPair (k : TorusL2 d) :
     (LinearMap.range (layerA (torusHaar d) (convDirection k)) ×
       LinearMap.range (layerA (torusHaar d) (convDirection k))) →ₗ[ℝ]
@@ -132,11 +143,13 @@ def aeComplexPair (k : TorusL2 d) :
     simp only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, map_smul, RingHom.id_apply,
       smul_add, smul_comm c Complex.I]
 
+/-- The injective real linear map forgetting the `L²` bound of a complex torus function. -/
 def torusLpToAE : TorusL2C d →ₗ[ℂ] (Torus d →ₘ[torusHaar d] ℂ) where
   toFun := Subtype.val
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/-- An integrable kernel with infinitely many nonzero Fourier coefficients has infinite rank. -/
 theorem hasInfiniteRank_conv (k : TorusL2 d)
     (hk : Set.Infinite {n : Fin d → ℤ | torusFourierCoeff (fun t => (k t : ℂ)) n ≠ 0}) :
     HasInfiniteRank (layerA (torusHaar d) (convDirection k)) := by
@@ -163,6 +176,7 @@ theorem hasInfiniteRank_conv (k : TorusL2 d)
   haveI : Finite ι := hv.finite
   exact not_finite ι
 
+/-- The Gaussian convolution layer is noncylindrical when the kernel has infinite spectrum. -/
 theorem not_isCylindrical_convolution_gaussian (k ψ : TorusL2 d)
     (hk : Set.Infinite {n : Fin d → ℤ | torusFourierCoeff (fun t => (k t : ℂ)) n ≠ 0})
     (hψ : torusFourierCoeff (fun t => (ψ t : ℂ)) 0 ≠ 0) :

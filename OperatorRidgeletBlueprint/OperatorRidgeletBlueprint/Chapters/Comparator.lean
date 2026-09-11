@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 313.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 316.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 56
-  * 1
+  * 57
+  * 0
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -3787,7 +3787,7 @@ Status: *verified by comparator*.
 
 ## Example 7.6 — Dirichlet solution operator with a pointwise nonlinearity (`ex:dirichlet`)
 
-Blueprint node: {bpref "ex:dirichlet"}[]. Status: *partial 8/11* (8 of 11 Lean theorems verified).
+Blueprint node: {bpref "ex:dirichlet"}[]. Status: *verified* (all 11 Lean theorems verified).
 
 Formalization note. Ω = (0,1) is the subtype UnitOpenInterval with Lebesgue measure volume (a probability measure), H = UnitL2 = Lp ℝ 2 volume, Y = UnitL2C (complex), g = dirichletKernel, 𝖦 = dirichletOperator (the integral operator with kernel g, chosen through its defining property), λ\_n = dirichletEigenvalue, e\_n = dirichletEigenfunction (e\_0 = 0), a\_y = dirichletDirection y = g(y,·), b\_y = dirichletOutput y, 𝖦\_N = dirichletReLUTruncation N (spectralReLUNetwork over n ∈ \[1,N\]). i: (𝖦x)(y) = ∫ g(y,t)x(t)dt a.e.; ii: for continuous x, u = 𝖦x has u(0) = u(1) = 0, is differentiable on (0,1), and u'' = u - x there; iii: eigenpairs for n ≥ 1; iv: IsTraceClassCovariance 𝖦 (injective, positive, self-adjoint, trace class); v: infinite rank; vi: sup\_y ‖g(y,·)‖₂ < ∞ (= ‖A‖\_∞ by definition); vii: IsLayerData (ex:operator-layer applies); viii: ℱ(x) = 𝖦β(𝖦x); ix: the exact ReLU network as a HasSum; x: ‖𝖦x - 𝖦\_N x‖ ≤ λ\_\{N+1\}‖x‖; xi: λ\_\{N+1\} ≤ π⁻²(N+1)⁻² (the O(N^\{-2\}) rate). The remark that with Q = P = 𝖦 the input measure is the law of the solution with white-noise source is not formalized.
 
@@ -3838,7 +3838,7 @@ injective, positive, self-adjoint, and trace class. -/
 theorem ex_dirichlet_iv : IsTraceClassCovariance dirichletOperator := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_v`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L850):
 
@@ -3898,7 +3898,7 @@ theorem ex_dirichlet_ix :
       (dirichletOperator x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_x`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L885):
 
@@ -3910,7 +3910,7 @@ theorem ex_dirichlet_x :
       ‖dirichletOperator x - dirichletReLUTruncation n x‖ ≤ dirichletEigenvalue (n + 1) * ‖x‖ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_dirichlet_xi`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L892):
 

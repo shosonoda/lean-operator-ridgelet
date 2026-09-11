@@ -12,7 +12,7 @@ import OperatorRidgelet.Paper.Reconstruction
 # Statements of Section 6 (finite-width approximation) and Appendix D
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
-`Challenge.Sampling`, proved from the library or left as `sorry`.
+`Challenge.Sampling`, and proved from the library.
 
 The probabilistic setup (the polar decomposition `Γ = h|Γ|`, `V = ‖Γ‖_TV`, `p = |Γ|/V`, the
 product law of `N` independent samples, the Rademacher signs, the sampled network

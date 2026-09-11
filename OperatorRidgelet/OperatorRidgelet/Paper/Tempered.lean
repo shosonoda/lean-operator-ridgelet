@@ -13,7 +13,7 @@ import OperatorRidgelet.Reconstruction.Tempered
 # Statements of Section 5 (tempered synthesis activations and ReLU) and Appendix C
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
-`Challenge.Tempered`, proved from the library or left as `sorry`.
+`Challenge.Tempered`, and proved from the library.
 
 The statements are made for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability measure,
 `ν` σ-finite with full support and homogeneous of degree `α`), of which the Gaussian pair

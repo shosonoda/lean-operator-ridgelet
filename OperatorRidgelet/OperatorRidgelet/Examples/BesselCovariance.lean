@@ -18,13 +18,17 @@ open scoped RealInnerProductSpace ComplexConjugate
 namespace OperatorRidgelet
 variable {d : ℕ}
 
+/-- The real part of a normalized torus Fourier basis vector. -/
 def torusCosine (n : Fin d → ℤ) : TorusL2 d := Complex.reCLM.compLp (torusFourierBasis d n)
+/-- The imaginary part of a normalized torus Fourier basis vector. -/
 def torusSine (n : Fin d → ℤ) : TorusL2 d := Complex.imCLM.compLp (torusFourierBasis d n)
 
+/-- Negating the frequency conjugates a torus character. -/
 theorem torusCharacter_neg_index (n : Fin d → ℤ) (t : Torus d) :
     torusCharacter (-n) t = conj (torusCharacter n t) := by
   simp only [torusCharacter, Pi.neg_apply, fourier_neg, map_prod]
 
+/-- A real cosine embeds as the half-sum of opposite Fourier basis vectors. -/
 theorem ofReal_torusCosine (n : Fin d → ℤ) :
     Complex.ofRealCLM.compLp (torusCosine n) =
       (1/2 : ℂ) • (torusFourierBasis d n + torusFourierBasis d (-n)) := by
@@ -40,6 +44,7 @@ theorem ofReal_torusCosine (n : Fin d → ℤ) :
   rw [Complex.re_eq_add_conj]
   ring
 
+/-- A real sine embeds as the scaled difference of opposite Fourier basis vectors. -/
 theorem ofReal_torusSine (n : Fin d → ℤ) :
     Complex.ofRealCLM.compLp (torusSine n) =
       (1/(2*Complex.I) : ℂ) • (torusFourierBasis d n - torusFourierBasis d (-n)) := by
@@ -55,16 +60,19 @@ theorem ofReal_torusSine (n : Fin d → ℤ) :
   rw [Complex.im_eq_sub_conj]
   ring
 
+/-- A Fourier coefficient of a real torus function, as a continuous real linear map. -/
 def torusCoefficient (m : Fin d → ℤ) : TorusL2 d →L[ℝ] ℂ :=
   ((innerSL ℂ (torusFourierBasis d m)).restrictScalars ℝ).comp
     (Complex.ofRealCLM.compLpL 2 (torusHaar d))
 
+/-- The coefficient map agrees with the integral definition of the Fourier coefficient. -/
 theorem torusCoefficient_apply (m : Fin d → ℤ) (x : TorusL2 d) :
     torusCoefficient m x = torusFourierCoeff (fun t => (x t : ℂ)) m := by
   change inner ℂ (torusFourierBasis d m) (Complex.ofRealCLM.compLp x) = _
   rw [← (torusFourierBasis d).repr_apply_apply, torusFourierBasis_repr,
     torusFourierCoeff_ofReal_compLp]
 
+/-- A cosine has equal half-coefficients at its two opposite frequencies. -/
 theorem torusCoefficient_cosine (n m : Fin d → ℤ) :
     torusCoefficient m (torusCosine n) =
       (1/2 : ℂ) * ((if n = m then 1 else 0) + (if -n = m then 1 else 0)) := by
@@ -73,6 +81,7 @@ theorem torusCoefficient_cosine (n m : Fin d → ℤ) :
   rw [ofReal_torusCosine, inner_smul_right, inner_add_right]
   simp only [orthonormal_iff_ite.mp (torusFourierBasis d).orthonormal, eq_comm]
 
+/-- A sine has opposite imaginary half-coefficients at its two frequencies. -/
 theorem torusCoefficient_sine (n m : Fin d → ℤ) :
     torusCoefficient m (torusSine n) =
       (1/(2*Complex.I) : ℂ) * ((if n = m then 1 else 0) - (if -n = m then 1 else 0)) := by
@@ -81,12 +90,14 @@ theorem torusCoefficient_sine (n m : Fin d → ℤ) :
   rw [ofReal_torusSine, inner_smul_right, inner_sub_right]
   simp only [orthonormal_iff_ite.mp (torusFourierBasis d).orthonormal, eq_comm]
 
+/-- Fourier coefficients of real functions at opposite frequencies are conjugate. -/
 theorem torusCoefficient_neg (n : Fin d → ℤ) (x : TorusL2 d) :
     torusCoefficient (-n) x = conj (torusCoefficient n x) := by
   simp only [torusCoefficient_apply, torusFourierCoeff]
   rw [← integral_conj]
   simp only [torusCharacter_neg_index, map_mul, Complex.conj_ofReal, starRingEnd_self_apply]
 
+/-- The real cosine pairing extracts the real part of the Fourier coefficient. -/
 theorem inner_torusCosine (n : Fin d → ℤ) (x : TorusL2 d) :
     ⟪torusCosine n,x⟫ = (torusCoefficient n x).re := by
   apply Complex.ofReal_injective
@@ -96,6 +107,7 @@ theorem inner_torusCosine (n : Fin d → ℤ) (x : TorusL2 d) :
   simp only [map_div₀, map_one, map_ofNat]
   ring
 
+/-- The real sine pairing extracts the negative imaginary part of the Fourier coefficient. -/
 theorem inner_torusSine (n : Fin d → ℤ) (x : TorusL2 d) :
     ⟪torusSine n,x⟫ = -(torusCoefficient n x).im := by
   apply Complex.ofReal_injective
@@ -105,6 +117,7 @@ theorem inner_torusSine (n : Fin d → ℤ) (x : TorusL2 d) :
   simp only [map_div₀, map_one, map_mul, map_ofNat, Complex.conj_I]
   field_simp
 
+/-- The real part of a normalized Fourier vector has norm at most one. -/
 theorem torusCosine_norm_le_one (n : Fin d → ℤ) : ‖torusCosine n‖ ≤ 1 := by
   have h := Complex.reCLM.norm_compLp_le (torusFourierBasis d n)
   have hle : ‖Complex.reCLM‖ ≤ 1 := by
@@ -115,6 +128,7 @@ theorem torusCosine_norm_le_one (n : Fin d → ℤ) : ‖torusCosine n‖ ≤ 1 
     ‖torusCosine n‖ ≤ ‖Complex.reCLM‖ * ‖torusFourierBasis d n‖ := h
     _ ≤ 1 := by rw [(torusFourierBasis d).orthonormal.1 n, mul_one]; exact hle
 
+/-- The imaginary part of a normalized Fourier vector has norm at most one. -/
 theorem torusSine_norm_le_one (n : Fin d → ℤ) : ‖torusSine n‖ ≤ 1 := by
   have h := Complex.imCLM.norm_compLp_le (torusFourierBasis d n)
   have hle : ‖Complex.imCLM‖ ≤ 1 := by
@@ -125,6 +139,7 @@ theorem torusSine_norm_le_one (n : Fin d → ℤ) : ‖torusSine n‖ ≤ 1 := b
     ‖torusSine n‖ ≤ ‖Complex.imCLM‖ * ‖torusFourierBasis d n‖ := h
     _ ≤ 1 := by rw [(torusFourierBasis d).orthonormal.1 n, mul_one]; exact hle
 
+/-- A cosine and sine rank-one pair selects the two opposite Fourier frequencies. -/
 theorem torusCoefficient_rankPair (n m : Fin d → ℤ) (x : TorusL2 d) :
     torusCoefficient m ((rankOne ℝ (torusCosine n) (torusCosine n) +
       rankOne ℝ (torusSine n) (torusSine n)) x) =
@@ -138,11 +153,13 @@ theorem torusCoefficient_rankPair (n m : Fin d → ℤ) (x : TorusL2 d) :
     simp [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im,
       Complex.normSq_apply] <;> ring
 
+/-- The real Fourier multiplier formed from weighted cosine and sine rank-one pairs. -/
 def torusMultiplier (p : (Fin d → ℤ) → ℝ) : TorusL2 d →L[ℝ] TorusL2 d :=
   (∑' n, p n • rankOne ℝ (torusCosine n) (torusCosine n)) +
     ∑' n, p n • rankOne ℝ (torusSine n) (torusSine n)
 
 
+/-- The weighted rank-one pairs converge to the torus multiplier. -/
 theorem hasSum_torusMultiplier {p : (Fin d → ℤ) → ℝ}
     (hp : ∀ n, 0 ≤ p n) (hs : Summable p) :
     HasSum (fun n => p n • (rankOne ℝ (torusCosine n) (torusCosine n) +
@@ -153,6 +170,7 @@ theorem hasSum_torusMultiplier {p : (Fin d → ℤ) → ℝ}
     (ContinuousLinearMap.summable_weight_norm_sq hp hs torusSine_norm_le_one)
   simpa only [smul_add, torusMultiplier] using hr.hasSum.add hi.hasSum
 
+/-- An even summable weight multiplies each Fourier coefficient by its own weight. -/
 theorem torusMultiplier_coefficient {p : (Fin d → ℤ) → ℝ}
     (hp : ∀ n, 0 ≤ p n) (hs : Summable p) (heven : ∀ n, p (-n) = p n)
     (x : TorusL2 d) (m : Fin d → ℤ) :
@@ -177,6 +195,7 @@ theorem torusMultiplier_coefficient {p : (Fin d → ℤ) → ℝ}
   rw [heq, heven, torusCoefficient_neg, starRingEnd_self_apply]
   ring
 
+/-- A nonnegative summable multiplier is positive, self-adjoint, and trace class. -/
 theorem isPositiveTraceClass_torusMultiplier {p : (Fin d → ℤ) → ℝ}
     (hp : ∀ n, 0 ≤ p n) (hs : Summable p) : IsPositiveTraceClass (torusMultiplier p) := by
   have hr := ContinuousLinearMap.summable_weight_norm_sq hp hs torusCosine_norm_le_one
@@ -195,6 +214,7 @@ theorem isPositiveTraceClass_torusMultiplier {p : (Fin d → ℤ) → ℝ}
       (ContinuousLinearMap.summable_inner_tsum_weighted_rankOne hp hr b).add
         (ContinuousLinearMap.summable_inner_tsum_weighted_rankOne hp hi b)
 
+/-- A strictly positive even summable multiplier is also injective. -/
 theorem isTraceClassCovariance_torusMultiplier {p : (Fin d → ℤ) → ℝ}
     (hp : ∀ n, 0 < p n) (hs : Summable p) (heven : ∀ n, p (-n) = p n) :
     IsTraceClassCovariance (torusMultiplier p) := by
@@ -208,6 +228,7 @@ theorem isTraceClassCovariance_torusMultiplier {p : (Fin d → ℤ) → ℝ}
   simpa only [torusCoefficient_apply] using
     mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (hp m).ne') hc
 
+/-- Above the dimension threshold, the Bessel operator is a trace-class covariance. -/
 theorem isTraceClassCovariance_besselOperator (d : ℕ) (s : ℝ) (hs : (d : ℝ)/2 < s) :
     IsTraceClassCovariance (besselOperator d s) := by
   classical

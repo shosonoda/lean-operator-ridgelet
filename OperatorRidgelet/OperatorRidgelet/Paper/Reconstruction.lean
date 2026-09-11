@@ -16,7 +16,7 @@ import OperatorRidgelet.Paper.Transform
 # Statements of Section 4 (representation and reconstruction) and Appendix B
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
-`Challenge.Reconstruction`, proved from the library or left as `sorry`.
+`Challenge.Reconstruction`, and proved from the library.
 
 Theorems `thm:A` and `thm:C` are stated for the abstract pair `(μ, ν)` of Appendix H (`μ` a
 probability measure, `ν` σ-finite with full support and homogeneous of degree `α`), which is

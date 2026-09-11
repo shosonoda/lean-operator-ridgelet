@@ -50,7 +50,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
 theorem isSelfAdjoint_gaussianTargetResolvent {Q W S : H →L[ℝ] H} (hW : IsSelfAdjoint W)
     (hS : IsPositiveSqrt S Q) : IsSelfAdjoint (gaussianTargetResolvent S W) := by
   have hM : IsSelfAdjoint (S * W * S) := isSelfAdjoint_sqrt_mul_mul hW hS
-  have h1 : IsSelfAdjoint ((1 : H →L[ℝ] H) + S * W * S) := IsSelfAdjoint.add (IsSelfAdjoint.one _) hM
+  have h1 : IsSelfAdjoint ((1 : H →L[ℝ] H) + S * W * S) := IsSelfAdjoint.add
+      (IsSelfAdjoint.one _) hM
   have h2 : IsSelfAdjoint (Ring.inverse ((1 : H →L[ℝ] H) + S * W * S)) := h1.ringInverse
   show star (S * Ring.inverse (1 + S * W * S) * S) = S * Ring.inverse (1 + S * W * S) * S
   rw [star_mul, star_mul, hS.isSelfAdjoint.star_eq, h2.star_eq, ← mul_assoc]
@@ -107,15 +108,18 @@ theorem norm_gaussianTarget_le_one (W : H →L[ℝ] H) (hW0 : ∀ x, 0 ≤ ⟪W 
   rw [Real.exp_le_one_iff]
   linarith [hW0 x]
 
+/-- The Gaussian quadratic target is continuous. -/
 theorem continuous_gaussianTarget (W : H →L[ℝ] H) : Continuous (gaussianTarget W) := by
   unfold gaussianTarget
   fun_prop
 
+/-- A positive Gaussian quadratic target is integrable against every finite measure. -/
 theorem integrable_gaussianTarget (W : H →L[ℝ] H) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (μ : Measure H)
     [IsFiniteMeasure μ] : Integrable (gaussianTarget W) μ :=
   Integrable.of_bound (continuous_gaussianTarget W).aestronglyMeasurable 1
     (Eventually.of_forall (norm_gaussianTarget_le_one W hW0))
 
+/-- A positive Gaussian quadratic target belongs to `L²` for every finite measure. -/
 theorem memLp_two_gaussianTarget (W : H →L[ℝ] H) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (μ : Measure H)
     [IsFiniteMeasure μ] : MemLp (gaussianTarget W) 2 μ :=
   MemLp.of_bound (continuous_gaussianTarget W).aestronglyMeasurable 1

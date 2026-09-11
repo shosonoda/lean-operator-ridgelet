@@ -88,17 +88,16 @@ the index of its statements.
 ## Resuming on another machine
 
 1. Clone this repository, install [elan](https://github.com/leanprover/elan), then in
-   `OperatorRidgelet/` run `lake exe cache get` followed by `lake build`. The only warnings should
-   be `declaration uses 'sorry'` from the statements that are still open, plus one harmless `ring`
-   message from a vendored file.
+   `OperatorRidgelet/` run `lake exe cache get` followed by `lake build`. The library has no
+   admitted proofs. The separate `Challenge` target intentionally uses `sorry` for its statements.
 2. `STATUS.md` says which manuscript items are verified. Regenerate it with
    `python3 scripts/status.py > ../STATUS.md` from `OperatorRidgelet/`.
 3. To re-verify the proofs, build [comparator](https://github.com/leanprover/comparator) and
    [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
    `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
    sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
-4. Unfinished work sits on the branch `lean/wp-v1` (the vector-valued extension of Theorem 4.7).
-   Its last commit is marked `WIP` and may not build; the commit before it does and is already in
-   `main`.
-5. Conventions for adding statements and proofs are above. Style conformance (line length,
-   docstring coverage) has been deferred to a single refactoring pass and is not yet done.
+4. All 57 manuscript items, comprising 316 statements, are verified on `main`. Earlier work
+   branches are historical checkpoints; resume from `main`, not their WIP tips.
+5. The deferred line-length and docstring pass is complete. After `lake build`, run
+   `python3 scripts/check-style.py` to check the 100-character limit and declaration documentation
+   in project-owned modules. Vendored files keep their upstream formatting.

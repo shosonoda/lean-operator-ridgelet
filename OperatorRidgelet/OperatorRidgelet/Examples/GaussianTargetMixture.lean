@@ -35,6 +35,7 @@ theorem isSelfAdjoint_real_smul {A : H →L[ℝ] H} (hA : IsSelfAdjoint A) (c : 
     real_inner_smul_right]
   exact congrArg (fun t : ℝ => c * t) (hA.isSymmetric y z)
 
+/-- Real scaling preserves summability of the trace. -/
 theorem HasSummableTrace.smul {M : H →L[ℝ] H} (h : HasSummableTrace M) (c : ℝ) :
     HasSummableTrace (c • M) := by
   obtain ⟨ι, b, hb⟩ := h
@@ -43,6 +44,7 @@ theorem HasSummableTrace.smul {M : H →L[ℝ] H} (h : HasSummableTrace M) (c : 
     rw [ContinuousLinearMap.smul_apply, real_inner_smul_left]
   exact (hb.mul_left c).congr fun i => (hval i).symm
 
+/-- Nonnegative scaling preserves positive trace-class operators. -/
 theorem IsPositiveTraceClass.smul {P : H →L[ℝ] H} (hP : IsPositiveTraceClass P) {c : ℝ}
     (hc : 0 ≤ c) : IsPositiveTraceClass (c • P) where
   isSelfAdjoint := isSelfAdjoint_real_smul hP.isSelfAdjoint c

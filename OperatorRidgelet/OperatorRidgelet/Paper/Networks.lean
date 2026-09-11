@@ -9,7 +9,7 @@ import OperatorRidgelet.Architecture.Universality
 # Statements of Section 2 (Hilbert-space inputs) and Appendix F (operator-valued parameters)
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
-`Challenge.Networks`, proved from the library or left as `sorry`.
+`Challenge.Networks`, and proved from the library.
 
 The ambient space `H` is a real Hilbert space; the manuscript's separability, Borel structure,
 and the output Hilbert space `Y` enter as explicit instance hypotheses where the statement uses

@@ -37,7 +37,8 @@ densities dominated by an integrable weight `W ∈ L¹(m)`, smooth along rays on
 neighbourhood `U` of `I`, and with ray-derivative bounds of the product form `h(a) W(y)` whose
 `h` is `ν`-integrable against `(1+‖a‖)^{k+2}`, the Bochner integral `ξ ↦ ∫ G y ξ ∂m` is regular
 along rays. -/
-theorem IsRegularAlongRays.integral_weighted_of_measurable_derivatives {ν : Measure H} {I : Set ℝ} {Ω Y : Type*}
+theorem IsRegularAlongRays.integral_weighted_of_measurable_derivatives {ν : Measure H}
+    {I : Set ℝ} {Ω Y : Type*}
     [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
     [MeasurableSpace Y] [BorelSpace Y] [SecondCountableTopology Y]
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] {G : Ω → H → Y}
@@ -255,6 +256,7 @@ def layerDensity (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y) (y :
   layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
     Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ)
 
+/-- The scalar layer density separates into its ray profile and radial exponential factor. -/
 theorem layerDensity_eq (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y) (y : Ω) (ξ : H) :
     layerDensity Q a b φ y ξ = layerDensityConst Q a b φ y *
       ((Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) := by
@@ -360,17 +362,22 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
     exact (contDiff_const_mul_ofReal_exp_inner_map_smul_self
       (layerCovariance Q a y) _ a').contDiffOn
   -- the uniform ray-derivative bound
-  refine ⟨fun a' => ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
-    (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫), fun a' => by positivity, ?_, ?_⟩
+  refine ⟨fun a' => ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+      (1 + ‖a'‖) ^ 2) ^ k *
+    (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) *
+        ⟪Q a', a'⟫), fun a' => by positivity, ?_, ?_⟩
   · -- integrability of the weight
     have hint : Integrable (fun a' : H =>
-        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
-          (2 + ‖a'‖ ^ (2 * (3 * k + 2))) * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) ν := by
+        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+            (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
+          (2 + ‖a'‖ ^ (2 * (3 * k + 2))) *
+              Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) ν := by
       have h0 := hdecay ((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) ht 0
       have hN := hdecay ((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) ht (3 * k + 2)
       simp only [mul_zero, pow_zero, one_mul] at h0
       refine (((h0.const_mul 2).add hN).const_mul
-        ((((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+        ((((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+            (1 + |R + 1|) ^ k) *
           2 ^ (3 * k + 2))).congr (Filter.Eventually.of_forall fun a' => ?_)
       simp only [Pi.add_apply]
       ring
@@ -399,19 +406,28 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
       have hidx : k + 2 + 2 * k = 3 * k + 2 := by ring
       rw [hidx]
       exact one_add_pow_le_two_pow_mul_two_add_pow (3 * k + 2) (norm_nonneg a')
-    calc (1 + ‖a'‖) ^ (k + 2) * (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
-          (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫))
+    calc (1 + ‖a'‖) ^ (k + 2) *
+        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
+          (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) *
+              ⟪Q a', a'⟫))
         ≤ (1 + ‖a'‖) ^ (k + 2) * (((k : ℝ) + 1) *
             (((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + ‖a'‖) ^ (2 * k)) *
-            (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) := by gcongr
-      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+            (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹)
+                * ⟪Q a', a'⟫)) := by gcongr
+      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) *
             ((1 + ‖a'‖) ^ (k + 2) * (1 + ‖a'‖) ^ (2 * k)) *
             Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by ring
-      _ ≤ (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+      _ ≤ (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) *
             (2 ^ (3 * k + 2) * (2 + ‖a'‖ ^ (2 * (3 * k + 2)))) *
-            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by gcongr
-      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
-            (2 + ‖a'‖ ^ (2 * (3 * k + 2))) * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by ring
+            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)
+                := by gcongr
+      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
+            (2 + ‖a'‖ ^ (2 * (3 * k + 2))) *
+                Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)
+                := by ring
   · -- the pointwise bound on the ray derivatives
     intro y a'
     refine iSup_le fun j => iSup₂_le fun ω hω => ?_
@@ -445,7 +461,8 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
       nlinarith [sq_nonneg (r / 2), hQ.inner_nonneg a', div_nonneg (sq_nonneg (r / 2)) two_pos.le]
     have hstep : ‖iteratedDeriv (j : ℕ) (fun ω : ℝ =>
           ((Real.exp (-⟪layerCovariance Q a y (ω • a'), ω • a'⟫ / 2) : ℝ) : ℂ)) ω‖ ≤
-        ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+        ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+            (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
           Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) :=
       hd.trans (by
         refine mul_le_mul (mul_le_mul (mul_le_mul hA1 hA2 (by positivity) (by positivity)) hA3
@@ -454,12 +471,15 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
           ‖iteratedDeriv (j : ℕ) (fun ω : ℝ =>
             ((Real.exp (-⟪layerCovariance Q a y (ω • a'), ω • a'⟫ / 2) : ℝ) : ℂ)) ω‖
         ≤ ‖layerWeight b φ y‖ * (((k : ℝ) + 1) *
-            ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+            ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
+                (1 + |R + 1|) ^ k *
             Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) :=
           mul_le_mul (norm_layerDensityConst_le hQ.inner_nonneg a b φ y) hstep
             (norm_nonneg _) (norm_nonneg _)
-      _ = ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
-            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) * ‖layerWeight b φ y‖ := by ring
+      _ = ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+          (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) *
+                ‖layerWeight b φ y‖ := by ring
 
 /-- The transform of the scalar observable is integrable against every direction measure with
 the Gaussian decay of Lemma `lem:gaussian-decay`(i). -/

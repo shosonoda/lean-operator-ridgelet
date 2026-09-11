@@ -15,7 +15,7 @@ import OperatorRidgelet.Filters.Admissible
 # Statements of Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, G, H, I
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
-`Challenge.Transform`, proved from the library or left as `sorry`.
+`Challenge.Transform`, and proved from the library.
 
 The core theory is stated for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability
 measure, `ν` σ-finite with full support and homogeneous of degree `α`); the Gaussian case

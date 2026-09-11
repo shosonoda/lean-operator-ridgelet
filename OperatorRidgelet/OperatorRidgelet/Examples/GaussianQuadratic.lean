@@ -37,16 +37,20 @@ namespace IsPositiveSqrt
 
 variable {Q R : H →L[ℝ] H}
 
+/-- A positive square root is symmetric as a real linear map. -/
 theorem isSymmetric (hR : IsPositiveSqrt R Q) : (R : H →ₗ[ℝ] H).IsSymmetric :=
   hR.isSelfAdjoint.isSymmetric
 
+/-- Applying a positive square root twice recovers the original operator. -/
 theorem apply_apply (hR : IsPositiveSqrt R Q) (y : H) : R (R y) = Q y := by
   conv_rhs => rw [← hR.mul_self]
   rfl
 
+/-- A positive square root can be moved between the two inner-product arguments. -/
 theorem inner_left (hR : IsPositiveSqrt R Q) (y z : H) : ⟪R y, z⟫ = ⟪y, R z⟫ :=
   hR.isSymmetric y z
 
+/-- The covariance pairing is the inner product of the square-root images. -/
 theorem inner_cov (hR : IsPositiveSqrt R Q) (y z : H) : ⟪Q y, z⟫ = ⟪R y, R z⟫ := by
   rw [← hR.apply_apply y]
   exact hR.inner_left (R y) z
@@ -102,12 +106,14 @@ def unitCoordVec (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → �
 
 variable {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
 
+/-- The sandwich eigenvalue equation gives the pairing of `S R e j` with `R y`. -/
 theorem inner_map_SR (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ)
     (y : H) : ⟪S (R (e j)), R y⟫ = m j * ⟪e j, y⟫ := by
   rw [← hR.inner_left]
   have : R (S (R (e j))) = (R * S * R) (e j) := rfl
   rw [this, hM j, real_inner_smul_left]
 
+/-- Positivity of `S` makes each eigenvalue of `R S R` nonnegative. -/
 theorem eigenvalue_nonneg (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) (j : κ) : 0 ≤ m j := by
   have h := inner_map_SR hR hM j (e j)
@@ -115,29 +121,35 @@ theorem eigenvalue_nonneg (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt
   rw [← h]
   exact hS0 _
 
+/-- The square root maps a nonzero-eigenvalue coordinate vector to its basis vector. -/
 theorem map_unitCoordVec (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) :
     R (unitCoordVec S R e m j) = e j := by
   have h1 : R (S (R (e j))) = (R * S * R) (e j) := rfl
   rw [unitCoordVec, map_smul, h1, hM j, smul_smul, inv_mul_cancel₀ hj, one_smul]
 
+/-- The image `S R e j` is the eigenvalue times the normalized coordinate vector. -/
 theorem map_SR_eq_smul_unit (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) {j : κ}
     (hj : m j ≠ 0) : S (R (e j)) = m j • unitCoordVec S R e m j := by
   rw [unitCoordVec, smul_smul, mul_inv_cancel₀ hj, one_smul]
 
+/-- Pairing a coordinate vector with `R y` extracts the corresponding basis coefficient. -/
 theorem inner_unitCoordVec_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
     {j : κ} (hj : m j ≠ 0) (y : H) : ⟪unitCoordVec S R e m j, R y⟫ = ⟪e j, y⟫ := by
   rw [← hR.inner_left, map_unitCoordVec hM hj]
 
+/-- Each nondegenerate coordinate vector has unit covariance variance. -/
 theorem inner_cov_unitCoordVec_self (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) :
     ⟪Cov (unitCoordVec S R e m j), unitCoordVec S R e m j⟫ = 1 := by
   rw [hR.inner_cov, map_unitCoordVec hM hj, real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow]
 
+/-- Distinct nondegenerate coordinate vectors have zero covariance pairing. -/
 theorem inner_cov_unitCoordVec_ne (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) {i j : κ} (hi : m i ≠ 0) (hj : m j ≠ 0) (hij : i ≠ j) :
     ⟪Cov (unitCoordVec S R e m i), unitCoordVec S R e m j⟫ = 0 := by
   rw [hR.inner_cov, map_unitCoordVec hM hi, map_unitCoordVec hM hj, e.orthonormal.2 hij]
 
+/-- The covariance pairing with a coordinate vector extracts a square-root coordinate. -/
 theorem inner_cov_left_unitCoordVec (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) (x : H) :
     ⟪Cov x, unitCoordVec S R e m j⟫ = ⟪R x, e j⟫ := by
@@ -153,6 +165,7 @@ set_option linter.unusedSectionVars false
 
 variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
 
+/-- A zero eigenvalue gives the zero coordinate vector under the totalized inverse. -/
 theorem unitCoordVec_eq_zero {j : κ} (hj : m j = 0) : unitCoordVec S R e m j = 0 := by
   rw [unitCoordVec, hj, inv_zero, zero_smul]
 
@@ -164,6 +177,7 @@ def coordSum (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) 
 def truncQuad (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (F : Finset κ) (ξ : H) : ℝ :=
   ∑ j ∈ F, m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2
 
+/-- A single coordinate contribution equals its weighted squared coefficient. -/
 theorem inner_map_SR_right (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (j : κ)
     (ξ : H) :
     ⟪unitCoordVec S R e m j, ξ⟫ * ⟪S (R (e j)), ξ⟫ =
@@ -174,6 +188,7 @@ theorem inner_map_SR_right (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m 
   · rw [map_SR_eq_smul_unit S R e m hj, real_inner_smul_left]
     ring
 
+/-- The quadratic form of a coordinate sum equals the truncated quadratic form. -/
 theorem inner_map_coordSum_self (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
     (F : Finset κ) (ξ : H) :
     ⟪S (coordSum S R e m F ξ), coordSum S R e m F ξ⟫ = truncQuad S R e m F ξ := by
@@ -190,12 +205,14 @@ theorem inner_map_coordSum_self (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis 
   · intro h
     exact absurd hj h
 
+/-- Pairing the image of a coordinate sum with the input gives the truncated form. -/
 theorem inner_map_coordSum_right (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ)
     (F : Finset κ) (ξ : H) :
     ⟪S (coordSum S R e m F ξ), ξ⟫ = truncQuad S R e m F ξ := by
   simp only [coordSum, truncQuad, map_sum, map_smul, sum_inner, real_inner_smul_left]
   exact Finset.sum_congr rfl fun j _ => inner_map_SR_right S R e m j ξ
 
+/-- Subtracting the coordinate sum removes exactly the truncated quadratic form. -/
 theorem inner_map_sub_coordSum (hS : IsSelfAdjoint S) (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) (F : Finset κ) (ξ : H) :
     ⟪S (ξ - coordSum S R e m F ξ), ξ - coordSum S R e m F ξ⟫ =
@@ -207,6 +224,7 @@ theorem inner_map_sub_coordSum (hS : IsSelfAdjoint S) (hR : IsPositiveSqrt R Cov
   rw [hsym, inner_map_coordSum_self hR hM, inner_map_coordSum_right S R e m]
   ring
 
+/-- A positive quadratic form bounds every finite coordinate truncation. -/
 theorem truncQuad_le (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) (F : Finset κ) (ξ : H) :
     truncQuad S R e m F ξ ≤ ⟪S ξ, ξ⟫ := by
@@ -224,6 +242,7 @@ set_option linter.unusedSectionVars false
 
 variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
 
+/-- A positive quadratic form of a sum is bounded by twice the two separate forms. -/
 theorem inner_map_add_le_two (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (p q : H) :
     ⟪S (p + q), p + q⟫ ≤ 2 * ⟪S p, p⟫ + 2 * ⟪S q, q⟫ := by
   have h := hS0 (p - q)
@@ -233,15 +252,18 @@ theorem inner_map_add_le_two (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, 
   rw [hc] at h
   linarith
 
+/-- Finite coordinate truncation preserves addition. -/
 theorem coordSum_add (F : Finset κ) (a b : H) :
     coordSum S R e m F (a + b) = coordSum S R e m F a + coordSum S R e m F b := by
   simp only [coordSum, inner_add_right, add_smul]
   exact Finset.sum_add_distrib
 
+/-- The sandwich quadratic form equals the original form on the square-root image. -/
 theorem inner_map_map_eq (hR : IsPositiveSqrt R Cov) (y : H) :
     ⟪(R * S * R) y, y⟫ = ⟪S (R y), R y⟫ :=
   hR.isSymmetric (S (R y)) y
 
+/-- On the square-root range, truncation is the weighted sum of squared basis coefficients. -/
 theorem truncQuad_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
     (F : Finset κ) (y : H) :
     truncQuad S R e m F (R y) = ∑ j ∈ F, m j * ⟪e j, y⟫ ^ 2 := by
@@ -250,6 +272,7 @@ theorem truncQuad_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R
   · rw [hj]; ring
   · rw [inner_unitCoordVec_map hR hM hj]
 
+/-- Finite quadratic truncations converge on the square-root range. -/
 theorem tendsto_truncQuad_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
     (y : H) :
     Filter.Tendsto (fun F : Finset κ => truncQuad S R e m F (R y)) Filter.atTop
@@ -406,12 +429,14 @@ def residCoord (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ
     H :=
   x - ∑ j ∈ G, ⟪R x, e j⟫ • unitCoordVec S R e m j
 
+/-- The residual coordinate and retained coordinates reconstruct the original pairing. -/
 theorem inner_residCoord (G : Finset κ) (x ξ : H) :
     ⟪residCoord S R e m G x, ξ⟫ +
         ∑ j ∈ G, ⟪R x, e j⟫ * ⟪unitCoordVec S R e m j, ξ⟫ = ⟪x, ξ⟫ := by
   simp only [residCoord, inner_sub_left, sum_inner, real_inner_smul_left]
   ring
 
+/-- The residual is covariance-orthogonal to each retained coordinate. -/
 theorem inner_cov_residCoord_unitCoordVec (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) {G : Finset κ} (hG : ∀ j ∈ G, m j ≠ 0) (x : H)
     {j : κ} (hjG : j ∈ G) : ⟪Cov (residCoord S R e m G x), unitCoordVec S R e m j⟫ = 0 := by
@@ -424,6 +449,7 @@ theorem inner_cov_residCoord_unitCoordVec (hR : IsPositiveSqrt R Cov)
   · intro h
     exact absurd hjG h
 
+/-- Pairing against a vector orthogonal to the retained coordinates ignores truncation. -/
 theorem inner_right_residCoord {G : Finset κ} (x : H) {w : H}
     (hw : ∀ j ∈ G, ⟪w, unitCoordVec S R e m j⟫ = 0) :
     ⟪w, residCoord S R e m G x⟫ = ⟪w, x⟫ := by
@@ -431,6 +457,7 @@ theorem inner_right_residCoord {G : Finset κ} (x : H) {w : H}
     rw [real_inner_smul_right, hw j hj, mul_zero]
   rw [residCoord, inner_sub_right, inner_sum, Finset.sum_eq_zero hz, sub_zero]
 
+/-- The residual variance subtracts the retained squared square-root coordinates. -/
 theorem inner_cov_residCoord_self (hCov : IsSelfAdjoint Cov) (hR : IsPositiveSqrt R Cov)
     (hM : HasEigenbasis (R * S * R) e m) {G : Finset κ} (hG : ∀ j ∈ G, m j ≠ 0) (x : H) :
     ⟪Cov (residCoord S R e m G x), residCoord S R e m G x⟫ =
@@ -602,6 +629,7 @@ theorem isUnit_one_add_of_nonneg {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y,
   rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
   simpa using h0
 
+/-- The inverse of `1 + M` acts on an eigenvector by the reciprocal shifted eigenvalue. -/
 theorem inverse_one_add_smul {M : H →L[ℝ] H} (hM : IsUnit (1 + M)) {u : H} {c : ℝ}
     (hc : M u = c • u) (hc1 : (1 : ℝ) + c ≠ 0) :
     Ring.inverse (1 + M) u = (1 + c)⁻¹ • u := by
@@ -648,6 +676,7 @@ section FullIntegral
 
 set_option linter.unusedSectionVars false
 
+/-- Square roots commute with a finite product of nonnegative factors. -/
 theorem sqrt_finset_prod {ι : Type*} (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) (s : Finset ι) :
     Real.sqrt (∏ i ∈ s, f i) = ∏ i ∈ s, Real.sqrt (f i) := by
   classical
@@ -791,6 +820,7 @@ theorem integral_exp_quadratic_eigen {Cov S R : H →L[ℝ] H} {κ : Type} [Coun
   simp_rw [hfin] at hleft'
   exact tendsto_nhds_unique hleft' hrhs
 
+/-- A positive operator with summable trace has summable nonnegative eigenvalues. -/
 theorem summable_eigenvalues {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y, y⟫)
     (hT : HasSummableTrace M) {κ : Type*} {e : HilbertBasis κ ℝ H} {w : κ → ℝ}
     (hw0 : ∀ k, 0 ≤ w k) (hMe : ∀ k, M (e k) = w k • e k) : Summable w := by

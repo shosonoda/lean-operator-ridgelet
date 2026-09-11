@@ -6,6 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 
 open Finset
 namespace Real
+/-- Quadratic decay on the integer line is summable above the half-dimension threshold. -/
 theorem summable_one_add_int_sq_rpow {a : ℝ} (ha : 1 / 2 < a) :
     Summable (fun n : ℤ => (1 + (n : ℝ)^2)^(-a)) := by
   have hs := (summable_abs_int_rpow (b := 2*a) (by linarith)).add
@@ -26,6 +27,7 @@ theorem summable_one_add_int_sq_rpow {a : ℝ} (ha : 1 / 2 < a) :
         congr 1
         ring
 
+/-- A finite product of nonnegative summable sequences is summable over the product index set. -/
 theorem summable_fin_prod {α : Type*} {f : α → ℝ} (hf : Summable f) (hf0 : ∀ n, 0 ≤ f n) (d : ℕ) :
     Summable (fun n : Fin d → α => ∏ j, f (n j)) := by
   induction d with
@@ -41,6 +43,7 @@ theorem summable_fin_prod {α : Type*} {f : α → ℝ} (hf : Summable f) (hf0 :
 end Real
 
 namespace Real
+/-- Quadratic lattice decay is summable when the exponent exceeds half the dimension. -/
 theorem summable_one_add_sum_int_sq_rpow (d : ℕ) (s : ℝ) (hs : (d : ℝ)/2 < s) :
     Summable (fun n : Fin d → ℤ => (1 + (∑ j, (n j : ℝ)^2))^(-s)) := by
   by_cases hd : d = 0

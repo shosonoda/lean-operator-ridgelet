@@ -76,9 +76,11 @@ theorem IsLayerData.polarWeight_layerMeasure_le (hL : IsLayerData m a b) :
     polarWeight (layerMeasure m a b) ≤ ∫ y, ‖b y‖ ∂m := by
   haveI := hL.isFiniteMeasure_layerMeasure_variation
   unfold polarWeight totalVariation
-  have h := VectorMeasure.variation_map_withDensityᵥ_univ_le hL.integrable_b (fun y => (a y, (0 : ℝ)))
+  have h := VectorMeasure.variation_map_withDensityᵥ_univ_le hL.integrable_b
+      (fun y => (a y, (0 : ℝ)))
   have ht := ENNReal.toReal_mono hL.integrable_b.hasFiniteIntegral.ne h
-  simpa only [layerMeasure, ← integral_norm_eq_lintegral_enorm hL.integrable_b.aestronglyMeasurable] using ht
+  simpa only [layerMeasure,
+      ← integral_norm_eq_lintegral_enorm hL.integrable_b.aestronglyMeasurable] using ht
 
 /-- The polar law of a layer has a bounded second parameter moment. -/
 theorem IsLayerData.polarLaw_moment (hL : IsLayerData m a b) :

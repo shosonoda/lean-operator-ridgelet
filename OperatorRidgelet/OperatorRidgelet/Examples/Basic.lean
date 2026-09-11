@@ -26,10 +26,12 @@ theorem integrable_abs_pow_mul_exp_neg_sq_half (j : ℕ) :
   congr 2
   ring
 
+/-- The real ReLU activation is continuous. -/
 theorem continuous_relu : Continuous relu := by
   unfold relu
   fun_prop
 
+/-- The second derivative formula for the Gaussian activation is continuous. -/
 theorem continuous_gaussianActDeriv2 : Continuous gaussianActDeriv2 := by
   unfold gaussianActDeriv2
   fun_prop

@@ -11,6 +11,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
 open scoped RealInnerProductSpace
 open ProbabilityTheory
 
+/-- An isometry commuting with the covariance preserves the centered Gaussian measure. -/
 theorem IsCenteredGaussian.measurePreserving_isometry {Q : H →L[ℝ] H} {μ : Measure H}
     (hμ : IsCenteredGaussian Q μ) (U : H ≃ₗᵢ[ℝ] H)
     (hcomm : ∀ x, Q (U x) = U (Q x)) : MeasurePreserving U μ μ := by
@@ -28,6 +29,7 @@ theorem IsCenteredGaussian.measurePreserving_isometry {Q : H →L[ℝ] H} {μ : 
     rw [← U.inner_map_map, ← hcomm, U.apply_symm_apply]
   rw [he]
 
+/-- The Gaussian ridgelet transform intertwines a covariance-preserving isometry. -/
 theorem ridgelet_comp_isometry (μ : Measure H) (U : H ≃ₗᵢ[ℝ] H)
     (hU : MeasurePreserving U μ μ) (ρ : ℝ → ℝ) (f : H → ℂ) (p : H × ℝ) :
     ridgelet μ ρ (fun x => f (U x)) p = ridgelet μ ρ f (U p.1, p.2) := by
@@ -38,4 +40,3 @@ theorem ridgelet_comp_isometry (μ : Measure H) (U : H ≃ₗᵢ[ℝ] H)
 end Gaussian
 
 end OperatorRidgelet
-

@@ -119,7 +119,7 @@ def limsupIterDeriv (k : ℕ) (f : ℝ → ℂ) : ℝ → ℂ :=
 @[simp]
 theorem limsupIterDeriv_zero (f : ℝ → ℂ) : limsupIterDeriv 0 f = f := rfl
 
-/-- The measurable derivative surrogates satisfy the iteration recurrence. -/
+/-- The successor measurable derivative surrogate is obtained by one more limsup derivative. -/
 theorem limsupIterDeriv_succ (k : ℕ) (f : ℝ → ℂ) :
     limsupIterDeriv (k + 1) f = limsupDerivC (limsupIterDeriv k f) :=
   Function.iterate_succ_apply' _ _ _

@@ -82,7 +82,8 @@ theorem hasDerivAt_dirichletSplitDeriv {x : ℝ → ℝ} (hx : Continuous x) (y 
   convert! ((hc.mul hdA).add ((Real.hasDerivAt_cosh y).mul hdB)).div_const (Real.sinh 1) using 1
   · simp only [dirichletSplit, Pi.sub_apply, Pi.neg_apply, id_eq]
     have hs : Real.sinh 1 ≠ 0 := ne_of_gt (Real.sinh_pos_iff.mpr one_pos)
-    have hadd : Real.sinh (1 - y) * Real.cosh y + Real.cosh (1 - y) * Real.sinh y = Real.sinh 1 := by
+    have hadd : Real.sinh (1 - y) * Real.cosh y + Real.cosh (1 - y) * Real.sinh y = Real.sinh 1
+        := by
       rw [← Real.sinh_add]
       congr 1
       ring
@@ -141,7 +142,8 @@ theorem memLp_dirichletEigenfunction (n : ℕ) :
   rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (Real.sqrt_nonneg _)]
   exact mul_le_of_le_one_right (Real.sqrt_nonneg _) (Real.abs_sin_le_one _)
 
-/-- The representative of a Dirichlet sine eigenfunction agrees almost everywhere with its formula. -/
+/-- The representative of a Dirichlet sine eigenfunction agrees almost everywhere with its formula.
+-/
 theorem dirichletEigenfunction_coeFn_ae (n : ℕ) :
     (dirichletEigenfunction n : UnitOpenInterval → ℝ) =ᵐ[volume]
       fun t => Real.sqrt 2 * Real.sin (n * Real.pi * t) := by
@@ -196,7 +198,8 @@ theorem dirichletEigenfunction_ne_zero {n : ℕ} (hn : 1 ≤ n) :
   exact (ne_of_gt (Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 2))) h
 
 /-- Distinct positive integer frequencies have distinct Dirichlet eigenvalues. -/
-theorem dirichletEigenvalue_succ_injective : Function.Injective (fun n : ℕ => dirichletEigenvalue (n + 1)) := by
+theorem dirichletEigenvalue_succ_injective : Function.Injective
+    (fun n : ℕ => dirichletEigenvalue (n + 1)) := by
   intro m n h
   unfold dirichletEigenvalue at h
   have he := inv_injective h
@@ -208,19 +211,22 @@ theorem dirichletEigenvalue_succ_injective : Function.Injective (fun n : ℕ => 
   exact Nat.succ.inj (Nat.cast_injective he'')
 
 /-- The Dirichlet Green operator has infinitely many independent eigenvectors in its range. -/
-theorem hasInfiniteRank_dirichletOperator : HasInfiniteRank (dirichletOperator : UnitL2 →ₗ[ℝ] UnitL2) := by
+theorem hasInfiniteRank_dirichletOperator : HasInfiniteRank
+    (dirichletOperator : UnitL2 →ₗ[ℝ] UnitL2) := by
   let T : UnitL2 →ₗ[ℝ] UnitL2 := dirichletOperator
   have hEigNonzero (n : ℕ) : dirichletEigenvalue (n + 1) ≠ 0 := by
     unfold dirichletEigenvalue
     positivity
   have hLI : LinearIndependent ℝ (fun n : ℕ => dirichletEigenfunction (n + 1)) :=
     Module.End.eigenvectors_linearIndependent' T _ dirichletEigenvalue_succ_injective _ fun n =>
-      Module.End.hasEigenvector_iff.mpr ⟨Module.End.mem_eigenspace_iff.mpr (dirichletOperator_eigenfunction (n + 1)),
+      Module.End.hasEigenvector_iff.mpr ⟨Module.End.mem_eigenspace_iff.mpr
+          (dirichletOperator_eigenfunction (n + 1)),
         dirichletEigenfunction_ne_zero (by omega)⟩
   let v : ℕ → LinearMap.range T := fun n => ⟨dirichletEigenfunction (n + 1), by
     refine ⟨(dirichletEigenvalue (n + 1))⁻¹ • dirichletEigenfunction (n + 1), ?_⟩
     change dirichletOperator _ = _
-    rw [map_smul, dirichletOperator_eigenfunction, smul_smul, inv_mul_cancel₀ (hEigNonzero n), one_smul]⟩
+    rw [map_smul, dirichletOperator_eigenfunction, smul_smul, inv_mul_cancel₀ (hEigNonzero n),
+        one_smul]⟩
   have hLI' : LinearIndependent ℝ v := LinearIndependent.of_comp (LinearMap.range T).subtype hLI
   intro hfinite
   haveI : FiniteDimensional ℝ (LinearMap.range T) := hfinite
