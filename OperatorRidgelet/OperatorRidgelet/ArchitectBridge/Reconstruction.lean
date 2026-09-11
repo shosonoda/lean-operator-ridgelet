@@ -531,28 +531,28 @@ attribute [blueprint "thm:vector-valued-A-iii-c"
 
 attribute [blueprint "thm:vector-valued-B-i-a"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho f\in L^2(\lambda_\alpha;Y)$ for
-    $f\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_i_a
+    $f\in\mathcal D_\alpha(Y)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_B_i_a
 
 attribute [blueprint "thm:vector-valued-B-i-b"
   (statement := /-- Theorem B for $Y$-valued targets: $\langle
     R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha;Y)}=C^{(\alpha)}_{\rho_1,\rho_2}\langle
-    f,g\rangle_{\mathcal E_\alpha(Y)}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_i_b
+    f,g\rangle_{\mathcal E_\alpha(Y)}$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_B_i_b
 
 attribute [blueprint "thm:vector-valued-B-ii-a"
   (statement := /-- Theorem B for $Y$-valued targets: An $\alpha$-admissible $\rho$ determines a
-    unique bounded extension $R_\rho:\mathcal E_\alpha(Y)\to L^2(\lambda_\alpha;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_ii_a
+    unique bounded extension $R_\rho:\mathcal E_\alpha(Y)\to L^2(\lambda_\alpha;Y)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_B_ii_a
 
 attribute [blueprint "thm:vector-valued-B-ii-b"
   (statement := /-- Theorem B for $Y$-valued targets: $\|R_\rho
-    f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha(Y)}^2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_ii_b
+    f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha(Y)}^2$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_B_ii_b
 
 attribute [blueprint "thm:vector-valued-B-ii-c"
-  (statement := /-- Theorem B for $Y$-valued targets: The range of $R_\rho$ is closed. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_ii_c
+  (statement := /-- Theorem B for $Y$-valued targets: The range of $R_\rho$ is closed. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_B_ii_c
 
 attribute [blueprint "thm:vector-valued-B-ii-d"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho=W_\rho U_\alpha$. -/)
@@ -580,18 +580,18 @@ attribute [blueprint "thm:vector-valued-C-i-c"
 
 attribute [blueprint "thm:vector-valued-C-i-d"
   (statement := /-- Theorem C for $Y$-valued targets: $S_\rho R_\rho f=C^{(\alpha)}_\rho
-    T_\alpha f$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_i_d
+    T_\alpha f$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_C_i_d
 
 attribute [blueprint "thm:vector-valued-C-ii-a"
   (statement := /-- Theorem C for $Y$-valued targets:
-    $f=(C^{(\alpha)}_\rho)^{-1}T_\alpha^{-1}S_\rho R_\rho f$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_ii_a
+    $f=(C^{(\alpha)}_\rho)^{-1}T_\alpha^{-1}S_\rho R_\rho f$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_C_ii_a
 
 attribute [blueprint "thm:vector-valued-C-ii-b"
   (statement := /-- Theorem C for $Y$-valued targets: $g=(C^{(\alpha)}_\rho)^{-1}S_\rho(R_\rho
-    T_\alpha^{-1}g)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_ii_b
+    T_\alpha^{-1}g)$. -/)]
+  OperatorRidgelet.Paper.thm_vector_valued_C_ii_b
 
 attribute [blueprint "thm:vector-valued-C-iii-a"
   (statement := /-- Theorem C for $Y$-valued targets: $T_\alpha f[g]=\int_H\langle g_{\mathcal
