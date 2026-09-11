@@ -17,7 +17,7 @@ are the coordinates of the manuscript's proof: they satisfy `R t_j = m_j^{1/2} u
 `⟪Σ t_i, t_j⟫ = m_i δ_ij` (so their `𝒩(0,Σ)`-laws are independent `𝒩(0, m_j)`) and
 `⟪Σ x, t_j⟫ = m_j^{1/2} ⟪R x, u_j⟫`, and `∑_j ⟪t_j, ξ⟫² = ⟪S ξ, ξ⟫` on the closure of the range
 of `R`, which carries all the mass of `𝒩(0,Σ)`.  This is the content of this file up to
-`ae_hasSum_inner_coordVec_sq`; the Gaussian integral itself is `integral_exp_quadratic_eigen`.
+the Gaussian integral itself is `integral_exp_quadratic_eigen`.
 -/
 
 noncomputable section
@@ -88,12 +88,15 @@ end IsPositiveSqrt
 
 section Coord
 
+set_option linter.unusedSectionVars false
+
 variable {Cov S R : H →L[ℝ] H} {κ : Type*}
 
-/-- The coordinate vector `t_j = m_j^{-1/2} S R u_j` attached to the eigenvector `u_j = e j` of
-`M = R S R` with eigenvalue `m_j`. -/
-def coordVec (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (j : κ) : H :=
-  (Real.sqrt (m j))⁻¹ • S (R (e j))
+/-- The unit coordinate vector `t_j = m_j⁻¹ S R u_j` attached to the eigenvector `u_j = e j` of
+`M = R S R` with eigenvalue `m_j ≠ 0`.  It satisfies `R t_j = u_j`, so that `⟪t_j, ·⟫` is a
+standard normal coordinate of `𝒩(0,Σ)`. -/
+def unitCoordVec (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (j : κ) : H :=
+  (m j)⁻¹ • S (R (e j))
 
 variable {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
 
@@ -110,65 +113,33 @@ theorem eigenvalue_nonneg (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt
   rw [← h]
   exact hS0 _
 
-theorem map_SR_eq_zero (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j = 0) :
-    S (R (e j)) = 0 := by
-  have hd : ⟪S (R (e j)), R (e j)⟫ = 0 := by
-    have h := inner_map_SR hR hM j (e j)
-    rw [real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow, mul_one, hj] at h
-    exact h
-  have hcs := ContinuousLinearMap.inner_map_mul_le hS.isSymmetric hS0 (R (e j)) (S (R (e j)))
-  rw [hd, zero_mul] at hcs
-  have : ⟪S (R (e j)), S (R (e j))⟫ = 0 := by nlinarith [hcs, sq_nonneg ⟪S (R (e j)), S (R (e j))⟫]
-  exact inner_self_eq_zero.1 this
+theorem map_unitCoordVec (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) :
+    R (unitCoordVec S R e m j) = e j := by
+  have h1 : R (S (R (e j))) = (R * S * R) (e j) := rfl
+  rw [unitCoordVec, map_smul, h1, hM j, smul_smul, inv_mul_cancel₀ hj, one_smul]
 
-theorem map_SR_eq_smul (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
-    S (R (e j)) = Real.sqrt (m j) • coordVec S R e m j := by
-  rcases eq_or_ne (m j) 0 with hj | hj
-  · rw [map_SR_eq_zero hS hS0 hR hM hj, hj, Real.sqrt_zero, zero_smul]
-  · have hs : Real.sqrt (m j) ≠ 0 :=
-      Real.sqrt_ne_zero'.2 (lt_of_le_of_ne (eigenvalue_nonneg hS0 hR hM j) (Ne.symm hj))
-    rw [coordVec, smul_smul, mul_inv_cancel₀ hs, one_smul]
+theorem map_SR_eq_smul_unit (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) {j : κ}
+    (hj : m j ≠ 0) : S (R (e j)) = m j • unitCoordVec S R e m j := by
+  rw [unitCoordVec, smul_smul, mul_inv_cancel₀ hj, one_smul]
 
-theorem map_coordVec (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
-    (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
-    R (coordVec S R e m j) = Real.sqrt (m j) • e j := by
-  have hmj := eigenvalue_nonneg hS0 hR hM j
-  have h1 : R (S (R (e j))) = m j • e j := by
-    have : R (S (R (e j))) = (R * S * R) (e j) := rfl
-    rw [this, hM j]
-  rw [coordVec, map_smul, h1, smul_smul]
-  congr 1
-  rcases eq_or_ne (m j) 0 with hj | hj
-  · rw [hj, Real.sqrt_zero, mul_zero]
-  · have hs : Real.sqrt (m j) ≠ 0 := Real.sqrt_ne_zero'.2 (lt_of_le_of_ne hmj (Ne.symm hj))
-    rw [inv_mul_eq_iff_eq_mul₀ hs]
-    exact (Real.mul_self_sqrt hmj).symm
+theorem inner_unitCoordVec_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
+    {j : κ} (hj : m j ≠ 0) (y : H) : ⟪unitCoordVec S R e m j, R y⟫ = ⟪e j, y⟫ := by
+  rw [← hR.inner_left, map_unitCoordVec hM hj]
 
-theorem inner_coordVec_map (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) (y : H) :
-    ⟪coordVec S R e m j, R y⟫ = Real.sqrt (m j) * ⟪e j, y⟫ := by
-  rw [← hR.inner_left, map_coordVec hS hS0 hR hM, real_inner_smul_left]
+theorem inner_cov_unitCoordVec_self (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) :
+    ⟪Cov (unitCoordVec S R e m j), unitCoordVec S R e m j⟫ = 1 := by
+  rw [hR.inner_cov, map_unitCoordVec hM hj, real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow]
 
-theorem inner_cov_coordVec_self (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
-    ⟪Cov (coordVec S R e m j), coordVec S R e m j⟫ = m j := by
-  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, real_inner_smul_left, real_inner_smul_right,
-    real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow, mul_one,
-    Real.mul_self_sqrt (eigenvalue_nonneg hS0 hR hM j)]
+theorem inner_cov_unitCoordVec_ne (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {i j : κ} (hi : m i ≠ 0) (hj : m j ≠ 0) (hij : i ≠ j) :
+    ⟪Cov (unitCoordVec S R e m i), unitCoordVec S R e m j⟫ = 0 := by
+  rw [hR.inner_cov, map_unitCoordVec hM hi, map_unitCoordVec hM hj, e.orthonormal.2 hij]
 
-theorem inner_cov_coordVec_ne (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) {i j : κ} (hij : i ≠ j) :
-    ⟪Cov (coordVec S R e m i), coordVec S R e m j⟫ = 0 := by
-  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, map_coordVec hS hS0 hR hM, real_inner_smul_left,
-    real_inner_smul_right, e.orthonormal.2 hij]
-  ring
-
-theorem inner_cov_left_coordVec (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
-    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (x : H) (j : κ) :
-    ⟪Cov x, coordVec S R e m j⟫ = Real.sqrt (m j) * ⟪R x, e j⟫ := by
-  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, real_inner_smul_right]
+theorem inner_cov_left_unitCoordVec (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j ≠ 0) (x : H) :
+    ⟪Cov x, unitCoordVec S R e m j⟫ = ⟪R x, e j⟫ := by
+  rw [hR.inner_cov, map_unitCoordVec hM hj]
 
 end Coord
 
