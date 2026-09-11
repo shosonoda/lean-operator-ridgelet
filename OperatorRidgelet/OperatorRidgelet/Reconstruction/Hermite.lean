@@ -96,4 +96,24 @@ theorem hermiteExtension_eq {Q : H →L[ℝ] H} (μ : Measure H) (f : H → ℂ)
   rw [hermiteExtension, gaussFourierLine,
     integral_congr_ae (Eventually.of_forall key), integral_const_mul]
 
+/-! ### The master expansion -/
+
+variable {Q : H →L[ℝ] H} {μ : Measure H}
+
+/-- The Hermite expansion of `G_f(zξ)` as a power series in `z`:
+`G_f(zξ) = ∑ₙ (-i τ(ξ))ⁿ/n! E_μ[f Heₙ(⟪x,ξ⟫/τ(ξ))] zⁿ`. -/
+theorem hasSum_hermiteExtension_pow (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) (z : ℂ) :
+    HasSum (fun n : ℕ =>
+        (-(Complex.I * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))) ^ n / (n.factorial : ℂ) *
+          hermiteCoefficient μ Q f ξ n * z ^ n)
+      (hermiteExtension μ Q f ξ z) := by
+  have hY := isStdGaussianCoord_inner_div hμ ξ hpos
+  have h := hasSum_integral_mul_gaussGen hY hf
+    (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ)))
+  rw [← hermiteExtension_eq μ f hpos z] at h
+  refine h.congr_fun fun n => ?_
+  rw [hermiteCoefficient_eq]
+  ring
+
 end OperatorRidgelet
