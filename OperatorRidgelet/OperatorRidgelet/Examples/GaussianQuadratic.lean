@@ -805,6 +805,59 @@ theorem summable_eigenvalues {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y, y�
   refine (NNReal.summable_coe.2 hnn).congr fun k => ?_
   exact Real.coe_toNNReal _ (hw0 k)
 
+/-- `M = Σ^{1/2} S Σ^{1/2}` is self-adjoint. -/
+theorem isSelfAdjoint_sqrt_mul_mul {Cov S R : H →L[ℝ] H} (hS : IsSelfAdjoint S)
+    (hR : IsPositiveSqrt R Cov) : IsSelfAdjoint (R * S * R) := by
+  show star (R * S * R) = R * S * R
+  rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, ← mul_assoc]
+
+/-- `M = Σ^{1/2} S Σ^{1/2}` is positive. -/
+theorem inner_sqrt_mul_mul_nonneg {Cov S R : H →L[ℝ] H} (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫)
+    (hR : IsPositiveSqrt R Cov) (y : H) : 0 ≤ ⟪(R * S * R) y, y⟫ := by
+  rw [inner_map_map_eq hR]; exact hS0 _
+
+/-- A positive `M = Σ^{1/2} S Σ^{1/2}` with summable trace has a countable orthonormal
+eigenbasis. -/
+theorem exists_hasEigenbasis_sqrt_mul_mul {Cov S R : H →L[ℝ] H} (hS : IsSelfAdjoint S)
+    (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫) (hR : IsPositiveSqrt R Cov) (hT : HasSummableTrace (R * S * R)) :
+    ∃ (ι : Type) (b : HilbertBasis ι ℝ H) (w : ι → ℝ), HasEigenbasis (R * S * R) b w := by
+  obtain ⟨ι0, b0, hb0⟩ := hT
+  have hMsa := isSelfAdjoint_sqrt_mul_mul hS hR
+  have hcomp := ContinuousLinearMap.isCompactOperator_of_summable_inner hMsa.isSymmetric
+    (inner_sqrt_mul_mul_nonneg hS0 hR) b0 hb0
+  obtain ⟨κ, _, b, hb⟩ :=
+    ContinuousLinearMap.exists_hilbertBasis_eigenvector_of_isCompactOperator hMsa hcomp
+  exact ⟨κ, b, fun k => ⟪(R * S * R) (b k), b k⟫, hb⟩
+
+/-- The resolvent lower bound `(I+M)^{-1} ≥ (1+‖M‖)^{-1} I` in quadratic form:
+`⟪Σ^{1/2}(I+M)^{-1}Σ^{1/2}x, x⟫ ≥ (1+‖M‖)^{-1} ⟪Σ x, x⟫`. -/
+theorem inner_cov_le_resolventForm {Cov S R : H →L[ℝ] H} (hS : IsSelfAdjoint S)
+    (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫) (hR : IsPositiveSqrt R Cov) (hT : HasSummableTrace (R * S * R))
+    (x : H) :
+    (1 + ‖R * S * R‖)⁻¹ * ⟪Cov x, x⟫ ≤ resolventForm R (R * S * R) x := by
+  obtain ⟨ι, b, w, hw⟩ := exists_hasEigenbasis_sqrt_mul_mul hS hS0 hR hT
+  have hw0 : ∀ k, 0 ≤ w k := eigenvalue_nonneg hS0 hR hw
+  have hwle : ∀ k, w k ≤ ‖R * S * R‖ := by
+    intro k
+    have h1 : ‖(R * S * R) (b k)‖ = w k := by
+      rw [hw k, norm_smul, b.orthonormal.1 k, mul_one, Real.norm_eq_abs, abs_of_nonneg (hw0 k)]
+    have h2 : ‖(R * S * R) (b k)‖ ≤ ‖R * S * R‖ * ‖b k‖ :=
+      ContinuousLinearMap.le_opNorm _ _
+    rw [h1, b.orthonormal.1 k, mul_one] at h2
+    exact h2
+  have hA := hasSum_resolventForm hS0 hR hw hw0 x
+  have hB := (hasSum_inner_cov_self hR b x).mul_left (1 + ‖R * S * R‖)⁻¹
+  refine hasSum_le (fun j => ?_) hB hA
+  have hn : (0 : ℝ) ≤ ‖R * S * R‖ := norm_nonneg _
+  have h1 : (0 : ℝ) < 1 + w j := by linarith [hw0 j]
+  have hpos : (0 : ℝ) < 1 + ‖R * S * R‖ := by positivity
+  have h3 : (1 + ‖R * S * R‖)⁻¹ ≤ (1 + w j)⁻¹ := by
+    first
+    | (rw [inv_le_inv₀ hpos h1]; linarith [hwle j])
+    | (gcongr; linarith [hwle j])
+    | exact one_div_le_one_div_of_le h1 (by linarith [hwle j])
+  exact mul_le_mul_of_nonneg_right h3 (sq_nonneg _)
+
 /-- **Lemma `lem:gaussian-quadratic`(ii)**: the Gaussian integral of a quadratic exponential,
 in the form of the manuscript's `fredholmDet` and `resolventForm`. -/
 theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTraceClass Cov)
@@ -815,19 +868,9 @@ theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTrace
       (((Real.sqrt (fredholmDet (R * S * R)))⁻¹ : ℝ) : ℂ) *
         Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) := by
   classical
-  have hMsa : IsSelfAdjoint (R * S * R) := by
-    show star (R * S * R) = R * S * R
-    rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, ← mul_assoc]
-  have hM0 : ∀ y, 0 ≤ ⟪(R * S * R) y, y⟫ := fun y => by
-    rw [inner_map_map_eq hR]; exact hS0 _
+  have hM0 : ∀ y, 0 ≤ ⟪(R * S * R) y, y⟫ := inner_sqrt_mul_mul_nonneg hS0 hR
   have hex : ∃ (ι : Type) (b : HilbertBasis ι ℝ H) (w : ι → ℝ),
-      HasEigenbasis (R * S * R) b w := by
-    obtain ⟨ι0, b0, hb0⟩ := hT
-    have hcomp := ContinuousLinearMap.isCompactOperator_of_summable_inner hMsa.isSymmetric hM0
-      b0 hb0
-    obtain ⟨κ, _, b, hb⟩ :=
-      ContinuousLinearMap.exists_hilbertBasis_eigenvector_of_isCompactOperator hMsa hcomp
-    exact ⟨κ, b, fun k => ⟪(R * S * R) (b k), b k⟫, hb⟩
+      HasEigenbasis (R * S * R) b w := exists_hasEigenbasis_sqrt_mul_mul hS hS0 hR hT
   obtain ⟨w, hw⟩ := hex.choose_spec.choose_spec
   set e' : HilbertBasis hex.choose ℝ H := hex.choose_spec.choose with he'
   have hw0 : ∀ k, 0 ≤ w k := eigenvalue_nonneg hS0 hR hw
