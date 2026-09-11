@@ -435,31 +435,31 @@ attribute [blueprint "ex:operator-layer-ii-d"
   OperatorRidgelet.Paper.ex_operator_layer_ii_d
 
 attribute [blueprint "ex:operator-layer-ii-e"
-  (statement := /-- $\mathcal G_QF_\varphi$ is regular along rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_e
+  (statement := /-- $\mathcal G_QF_\varphi$ is regular along rays. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_e
 
 attribute [blueprint "ex:operator-layer-ii-f"
   (statement := /-- The reconstruction formulas hold for $F_\varphi$: $T_\alpha F_\varphi$ is
-    represented by $g_{\mathcal G_QF_\varphi}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_f
+    represented by $g_{\mathcal G_QF_\varphi}$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_f
 
 attribute [blueprint "ex:operator-layer-ii-g"
   (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)]
   OperatorRidgelet.Paper.ex_operator_layer_ii_g
 
 attribute [blueprint "ex:operator-layer-ii-h"
-  (statement := /-- $R_\rho F_\varphi$ has finite variation and moments. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_h
+  (statement := /-- $R_\rho F_\varphi$ has finite variation and moments. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_h
 
 attribute [blueprint "ex:operator-layer-ii-i"
   (statement := /-- $R_\rho F_\varphi$ synthesizes, with any real Lipschitz non-polynomial
-    $\beta'$, the target $C^{(\alpha)}_{\beta',\rho}T_\alpha F_\varphi$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_i
+    $\beta'$, the target $C^{(\alpha)}_{\beta',\rho}T_\alpha F_\varphi$. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_i
 
 attribute [blueprint "ex:operator-layer-ii-j"
   (statement := /-- The sampled network of $R_\rho F_\varphi\lambda_\alpha$ converges at the
-    finite-width rate of the spectral Barron bound. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_j
+    finite-width rate of the spectral Barron bound. -/)]
+  OperatorRidgelet.Paper.ex_operator_layer_ii_j
 
 attribute [blueprint "ex:operator-layer-ii-k"
   (statement := /-- $\mathcal F\in\mathcal D_\alpha(Y)$. -/)]

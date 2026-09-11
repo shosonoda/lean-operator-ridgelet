@@ -1,4 +1,6 @@
 import OperatorRidgelet.Examples.OperatorLayer
+import OperatorRidgelet.Examples.GaussianMeasurability
+import OperatorRidgelet.Transform.Plancherel
 import OperatorRidgelet.Reconstruction.Basic
 
 /-!
@@ -442,6 +444,25 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
             (norm_nonneg _) (norm_nonneg _)
       _ = ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
             Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) * ‖layerWeight b φ y‖ := by ring
+
+/-- The transform of the scalar observable is integrable against every direction measure with
+the Gaussian decay of Lemma `lem:gaussian-decay`(i). -/
+theorem IsLayerData.integrable_gaussFourier_layerObservable_gaussianFun {Q : H →L[ℝ] H}
+    (hQ : IsPositiveTraceClass Q) {μ : Measure H} [IsProbabilityMeasure μ]
+    (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y) {ν : Measure H}
+    (hdecay : ∀ t : ℝ, 0 < t → ∀ k : ℕ,
+      Integrable (fun ξ : H => ‖ξ‖ ^ (2 * k) * Real.exp (-t * ⟪Q ξ, ξ⟫)) ν) :
+    Integrable (gaussFourier μ (layerObservable m a b gaussianFun φ)) ν := by
+  have h0 := hdecay ((1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ / 2) (by positivity) 0
+  simp only [mul_zero, pow_zero, one_mul] at h0
+  have hcont : Continuous (gaussFourier μ (layerObservable m a b gaussianFun φ)) :=
+    continuous_gaussFourier μ (hL.integrable_layerObservable_gaussianFun' hμ φ)
+  refine (h0.const_mul (∫ y, ‖layerWeight b φ y‖ ∂m)).mono'
+    hcont.aestronglyMeasurable (Eventually.of_forall fun ξ => ?_)
+  have hb := hL.norm_gaussFourier_layerObservable_gaussianFun_le hQ hμ φ ξ
+  have harg : -(1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫ / 2 =
+      -((1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ / 2) * ⟪Q ξ, ξ⟫ := by ring
+  rwa [harg] at hb
 
 end RayRegular
 
