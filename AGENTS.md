@@ -92,8 +92,8 @@ the index of its statements.
    [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
    `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
    sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
-4. Unfinished work sits on branches: `lean/wp-y1` (the neural-operator layer examples) and
-   `lean/wp-v1` (the vector-valued extension). Their last commit titled `WIP` may not build; the
-   commit before it does. `lean/wp-f2` holds an older unverified batch of Section 7 material.
+4. Unfinished work sits on the branch `lean/wp-v1` (the vector-valued extension of Theorem 4.7).
+   Its last commit is marked `WIP` and may not build; the commit before it does and is already in
+   `main`.
 5. Conventions for adding statements and proofs are above. Style conformance (line length,
    docstring coverage) has been deferred to a single refactoring pass and is not yet done.
