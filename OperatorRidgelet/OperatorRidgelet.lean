@@ -52,6 +52,7 @@ import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
+import OperatorRidgelet.ToMathlib.EntirePowerSeries
 import OperatorRidgelet.ToMathlib.FourierDilation
 import OperatorRidgelet.ToMathlib.FourierEven
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
@@ -61,6 +62,7 @@ import OperatorRidgelet.ToMathlib.GaussianQuadraticForm
 import OperatorRidgelet.ToMathlib.GaussianRealIntegral
 import OperatorRidgelet.ToMathlib.GaussianTilt
 import OperatorRidgelet.ToMathlib.GiryMonad
+import OperatorRidgelet.ToMathlib.HermiteGaussian
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.IntegralSqrt
 import OperatorRidgelet.ToMathlib.InvOneAddSqLintegral

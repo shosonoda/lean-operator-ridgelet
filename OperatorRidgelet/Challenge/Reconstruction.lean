@@ -407,7 +407,8 @@ theorem lem_hermite_totality_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
 
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite coefficients over all `ξ ≠ 0` and `n` determine `f` in `L²(μ_Q)`. -/
-theorem lem_hermite_totality_vi {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_hermite_totality_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ) :
     ∀ g : H → ℂ, MemLp g 2 μ →
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
