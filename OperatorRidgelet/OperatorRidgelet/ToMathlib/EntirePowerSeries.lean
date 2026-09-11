@@ -89,4 +89,18 @@ theorem iteratedDeriv_ofReal_of_hasSum_pow {a : ℕ → ℂ} {F : ℂ → ℂ}
     iteratedDeriv_comp_ofReal n F (differentiable_of_hasSum_pow h) 0]
   simpa using iteratedDeriv_eq_of_hasSum_pow h n
 
+/-- The partial sums of an everywhere convergent scalar power series converge to its sum
+locally uniformly on `ℂ`. -/
+theorem tendstoLocallyUniformly_of_hasSum_pow {a : ℕ → ℂ} {F : ℂ → ℂ}
+    (h : ∀ z : ℂ, HasSum (fun n => a n * z ^ n) (F z)) :
+    TendstoLocallyUniformly
+      (fun N : ℕ => fun z : ℂ => ∑ n ∈ Finset.range N, a n * z ^ n) F atTop := by
+  have hball := hasFPowerSeriesOnBall_ofScalars_of_hasSum h
+  have h1 := hball.tendstoLocallyUniformlyOn'
+  rw [Metric.eball_top] at h1
+  rw [← tendstoLocallyUniformlyOn_univ]
+  refine h1.congr fun N z _ => ?_
+  simp only [FormalMultilinearSeries.partialSum, sub_zero,
+    FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul]
+
 end OperatorRidgelet
