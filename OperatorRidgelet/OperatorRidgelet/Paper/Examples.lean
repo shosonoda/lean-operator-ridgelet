@@ -17,6 +17,7 @@ import OperatorRidgelet.Examples.LayerRidgelet
 import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Paper.Transform
+import OperatorRidgelet.Paper.Sampling
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Network.Defs
@@ -237,7 +238,29 @@ theorem ex_closed_form_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
             (spectralEmbed μ (gaussianMixture N α) g) =
           ∫ x, spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x *
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  intro fW hfW g
+  have hGeq : gaussFourier μ ((fW : Lp ℂ 2 μ) : H → ℂ) = gaussFourier μ (gaussianTarget W) :=
+    gaussFourier_congr_ae hfW
+  have hG : Integrable (gaussFourier μ (gaussianTarget W)) (gaussianMixture N α) :=
+    integrable_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM hμ
+      (lem_gaussian_decay_i hH hP hQ hN hα)
+  have hg : Integrable ((g : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
+  have hf' : (((spectralEmbed μ (gaussianMixture N α) fW :
+      spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ)
+      =ᵐ[gaussianMixture N α] gaussFourier μ fW := MemLp.coeFn_toLp fW.2
+  have hg' : (((spectralEmbed μ (gaussianMixture N α) g :
+      spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ)
+      =ᵐ[gaussianMixture N α] gaussFourier μ g := MemLp.coeFn_toLp g.2
+  rw [integral_spectralTarget_mul_conj μ (gaussianMixture N α) hG hg]
+  show inner ℂ ((spectralEmbed μ (gaussianMixture N α) g :
+    spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α))
+      ((spectralEmbed μ (gaussianMixture N α) fW :
+        spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) = _
+  rw [L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hf', hg'] with ξ hξf hξg
+  rw [RCLike.inner_apply, hξf, hξg, congrFun hGeq ξ]
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  With
 `S_W = Q^{1/2}(I+M)⁻¹Q^{1/2}`, `R = P^{1/2}`, and
@@ -283,7 +306,13 @@ theorem ex_closed_form_iii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     (hWi : Function.Injective W) (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
     Integrable (fun p : H × ℝ => (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgelet μ ρ (gaussianTarget W) p‖)
       (parameterMeasure (gaussianMixture N α)) := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := isRegularAlongRays_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM
+    hμ (gaussianMixture N α) (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_closed_form_iii_a hH hP hQ hN hα μ hμ ρ hρ W S hW hW0 hWi hS hM]
+  exact thm_E_ii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI _ hG
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
 real, globally Lipschitz, non-polynomial `β` (including ReLU), the integral network
@@ -300,7 +329,15 @@ theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
         (ridgelet μ ρ (gaussianTarget W)) =
       fun x => temperedAdmissibilityConst α β ρ *
         spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := isRegularAlongRays_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM
+    hμ (gaussianMixture N α) (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_closed_form_iii_a hH hP hQ hN hα μ hμ ρ hρ W S hW hW0 hWi hS hM]
+  funext x
+  exact (thm_E_iii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
+    β b hβ hb hbp _ hG x).symm
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
 real, globally Lipschitz, non-polynomial `β`, the sampled network `eq:polar-network` of
@@ -328,7 +365,14 @@ theorem ex_closed_form_iii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
         (|b 0| + (L : ℝ) * compactRadius K *
           Real.sqrt (secondMoment (densityLaw (parameterMeasure (gaussianMixture N α))
             (ridgelet μ ρ (gaussianTarget W))))) := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := isRegularAlongRays_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM
+    hμ (gaussianMixture N α) (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_closed_form_iii_a hH hP hQ hN hα μ hμ ρ hρ W S hW hW0 hWi hS hM]
+  exact thm_E_iv (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
+    β b hβ hb hbp _ hG hK hn
 
 /-! ### Example `ex:core-elements`, second and third claims -/
 
