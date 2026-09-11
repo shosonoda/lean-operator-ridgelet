@@ -235,10 +235,10 @@ theorem continuous_hermitePartial (s : Finset ℕ) (z : ℂ) : Continuous (hermi
 
 theorem memLp_two_hermitePartial (s : Finset ℕ) (z : ℂ) :
     MemLp (hermitePartial s z) 2 (gaussianReal 0 1) := by
-  rw [show hermitePartial s z =
-      ∑ n ∈ s, (fun y : ℝ => z ^ n / (n.factorial : ℂ) * hermiteC n y) from
-    funext fun y => by rw [hermitePartial]; exact (Finset.sum_apply _ _ _).symm]
-  exact memLp_finsetSum' s fun n _ => (memLp_two_hermiteC n).const_mul _
+  have hfun : hermitePartial s z =
+      fun y : ℝ => ∑ n ∈ s, z ^ n / (n.factorial : ℂ) * hermiteC n y := rfl
+  rw [hfun]
+  exact memLp_finsetSum s fun n _ => (memLp_two_hermiteC n).const_mul _
 
 theorem conj_hermitePartial (s : Finset ℕ) (z : ℂ) (y : ℝ) :
     conj (hermitePartial s z y) = ∑ n ∈ s, conj (z ^ n / (n.factorial : ℂ)) * hermiteC n y := by
@@ -305,7 +305,7 @@ theorem integral_hermitePartial_mul_conj_hermitePartial (s : Finset ℕ) (z : �
       rw [map_div₀, map_pow, Complex.conj_natCast, Complex.ofReal_div, Complex.ofReal_pow,
         Complex.ofReal_natCast]
       field_simp
-      linear_combination (n.factorial : ℂ) * hz
+      linear_combination hz
     · rw [mul_zero]
   rw [Finset.sum_congr rfl hterm, Finset.sum_ite_eq s n, if_pos hn]
 
@@ -346,8 +346,15 @@ theorem summable_pow_div_sqrt_factorial {r : ℝ} (hr : 0 ≤ r) :
   have hnb : (0 : ℝ) ≤ ((1 : ℝ) / 2) ^ n := by positivity
   have hab : (2 * r ^ 2) ^ n / (n.factorial : ℝ) * ((1 : ℝ) / 2) ^ n
       = (r ^ n / Real.sqrt (n.factorial : ℝ)) ^ 2 := by
-    rw [div_pow, Real.sq_sqrt hfac.le, mul_pow, div_pow, one_pow]
-    field_simp
+    have h1 : Real.sqrt (n.factorial : ℝ) ^ 2 = (n.factorial : ℝ) := Real.sq_sqrt hfac.le
+    have h2 : (r ^ n / Real.sqrt (n.factorial : ℝ)) ^ 2 = (r ^ n) ^ 2 / (n.factorial : ℝ) := by
+      rw [div_pow, h1]
+    have h3 : (2 * r ^ 2) ^ n * ((1 : ℝ) / 2) ^ n = (r ^ 2) ^ n := by
+      rw [← mul_pow]
+      congr 1
+      ring
+    rw [h2, div_mul_eq_mul_div, h3]
+    congr 1
     ring
   have hkey : Real.sqrt ((2 * r ^ 2) ^ n / (n.factorial : ℝ) * ((1 : ℝ) / 2) ^ n) ≤
       ((2 * r ^ 2) ^ n / (n.factorial : ℝ) + ((1 : ℝ) / 2) ^ n) / 2 := by
@@ -379,10 +386,9 @@ theorem IsStdGaussianCoord.integral_comp (hY : IsStdGaussianCoord μ Y) {E : Typ
   rw [← hY.map_eq, integral_map hY.measurable.aemeasurable (by rwa [hY.map_eq])]
 
 theorem IsStdGaussianCoord.memLp_comp (hY : IsStdGaussianCoord μ Y) {g : ℝ → ℂ}
-    (hg : MemLp g 2 (gaussianReal 0 1)) : MemLp (fun x => g (Y x)) 2 μ :=
-  (memLp_map_measure_iff (μ := μ) (p := 2) (f := g) (g := Y)
-    (by rw [hY.map_eq]; exact hg.aestronglyMeasurable) hY.measurable.aemeasurable).mp
-    (by rwa [hY.map_eq])
+    (hg : MemLp g 2 (gaussianReal 0 1)) : MemLp (fun x => g (Y x)) 2 μ := by
+  have h : MemLp g 2 (μ.map Y) := by rwa [hY.map_eq]
+  simpa [Function.comp_def] using h.comp_of_map hY.measurable.aemeasurable
 
 theorem IsStdGaussianCoord.isProbabilityMeasure (hY : IsStdGaussianCoord μ Y) :
     IsProbabilityMeasure μ := by
@@ -417,16 +423,20 @@ theorem norm_integral_mul_gaussGen_sub_le (z : ℂ) (s : Finset ℕ) :
     have h2 : Integrable (fun x => f x * hermitePartial s z (Y x)) μ :=
       memLp_one_iff_integrable.mp
         (MemLp.mul' (r := 1) (hY.memLp_comp (memLp_two_hermitePartial s z)) hf)
-    rw [integral_congr_ae (g := fun x => f x * gaussGen z (Y x) - f x * hermitePartial s z (Y x))
-      (Eventually.of_forall fun x => by ring), integral_sub h1 h2]
-    congr 1
-    rw [show (fun x => f x * hermitePartial s z (Y x)) =
-        fun x => ∑ n ∈ s, z ^ n / (n.factorial : ℂ) * (f x * hermiteC n (Y x)) from
-      funext fun x => by
-        rw [hermitePartial, Finset.mul_sum]
-        exact Finset.sum_congr rfl fun n _ => by ring,
-      integral_finsetSum _ fun n _ => (integrable_mul_hermiteC_comp hY hf n).const_mul _]
-    exact Finset.sum_congr rfl fun n _ => by rw [integral_const_mul]
+    have e1 : ∫ x, f x * (gaussGen z (Y x) - hermitePartial s z (Y x)) ∂μ =
+        (∫ x, f x * gaussGen z (Y x) ∂μ) - ∫ x, f x * hermitePartial s z (Y x) ∂μ := by
+      rw [← integral_sub h1 h2]
+      exact integral_congr_ae (Eventually.of_forall fun x => by ring)
+    have e3 : (fun x => f x * hermitePartial s z (Y x)) =
+        fun x => ∑ n ∈ s, z ^ n / (n.factorial : ℂ) * (f x * hermiteC n (Y x)) := by
+      funext x
+      rw [hermitePartial, Finset.mul_sum]
+      exact Finset.sum_congr rfl fun n _ => by ring
+    have e2 : ∫ x, f x * hermitePartial s z (Y x) ∂μ =
+        ∑ n ∈ s, z ^ n / (n.factorial : ℂ) * ∫ x, f x * hermiteC n (Y x) ∂μ := by
+      rw [e3, integral_finsetSum _ fun n _ => (integrable_mul_hermiteC_comp hY hf n).const_mul _]
+      exact Finset.sum_congr rfl fun n _ => by rw [integral_const_mul]
+    rw [e1, e2]
   rw [hsplit]
   refine (norm_integral_mul_le_sqrt hf hg).trans (le_of_eq ?_)
   congr 1
@@ -456,10 +466,12 @@ theorem hasSum_integral_mul_gaussGen (z : ℂ) :
     have h1 : Tendsto (fun s : Finset ℕ => hermiteSq s z) atTop (𝓝 (Real.exp (‖z‖ ^ 2))) :=
       hasSum_hermiteSq z
     have h2 : Tendsto (fun s : Finset ℕ => Real.exp (‖z‖ ^ 2) - hermiteSq s z) atTop (𝓝 0) := by
-      simpa using tendsto_const_nhds.sub h1
+      have hc : Tendsto (fun _ : Finset ℕ => Real.exp (‖z‖ ^ 2)) atTop
+          (𝓝 (Real.exp (‖z‖ ^ 2))) := tendsto_const_nhds
+      simpa using hc.sub h1
     have h3 : Tendsto (fun s : Finset ℕ =>
         Real.sqrt (Real.exp (‖z‖ ^ 2) - hermiteSq s z)) atTop (𝓝 0) := by
-      simpa using (Real.continuous_sqrt.tendsto 0).comp h2
+      simpa [Function.comp_def] using (Real.continuous_sqrt.tendsto 0).comp h2
     simpa using h3.const_mul (Real.sqrt (∫ x, ‖f x‖ ^ 2 ∂μ))
   exact hmain
 
@@ -474,7 +486,9 @@ theorem norm_integral_mul_gaussGen_le (z : ℂ) :
   congr 1
   have hsq : Real.exp (‖z‖ ^ 2) = Real.exp (‖z‖ ^ 2 / 2) ^ 2 := by
     rw [← Real.exp_nat_mul]
-    norm_num
+    congr 1
+    push_cast
+    ring
   rw [hsq, Real.sqrt_sq (Real.exp_pos _).le]
 
 /-- The bound `|∫ f Heₙ(Y) dμ| ≤ ‖f‖_{L²} √(n!)`. -/
