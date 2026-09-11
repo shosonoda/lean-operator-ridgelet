@@ -1,0 +1,175 @@
+import OperatorRidgelet.Examples.Defs
+import OperatorRidgelet.ToMathlib.PositiveEigenbasis
+import OperatorRidgelet.ToMathlib.GaussianOrthonormalCoordinates
+import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
+import OperatorRidgelet.ToMathlib.GaussianHilbert
+
+/-!
+# The Gaussian integral of a quadratic exponential
+
+Let `Σ` be a positive self-adjoint trace-class operator with positive square root `R = Σ^{1/2}`,
+let `S` be a bounded positive self-adjoint operator and put `M = R S R`.  Along an orthonormal
+eigenbasis `(u_j)` of `M` with eigenvalues `m_j ≥ 0` the vectors
+
+`t_j = m_j^{-1/2} S R u_j`
+
+are the coordinates of the manuscript's proof: they satisfy `R t_j = m_j^{1/2} u_j`, hence
+`⟪Σ t_i, t_j⟫ = m_i δ_ij` (so their `𝒩(0,Σ)`-laws are independent `𝒩(0, m_j)`) and
+`⟪Σ x, t_j⟫ = m_j^{1/2} ⟪R x, u_j⟫`, and `∑_j ⟪t_j, ξ⟫² = ⟪S ξ, ξ⟫` on the closure of the range
+of `R`, which carries all the mass of `𝒩(0,Σ)`.  This is the content of this file up to
+`ae_hasSum_inner_coordVec_sq`; the Gaussian integral itself is `integral_exp_quadratic_eigen`.
+-/
+
+noncomputable section
+
+namespace OperatorRidgelet
+
+open MeasureTheory ProbabilityTheory Complex Filter Topology
+open scoped RealInnerProductSpace ENNReal NNReal
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+
+/-! ### Positive square roots -/
+
+namespace IsPositiveSqrt
+
+variable {Q R : H →L[ℝ] H}
+
+theorem isSymmetric (hR : IsPositiveSqrt R Q) : (R : H →ₗ[ℝ] H).IsSymmetric :=
+  hR.isSelfAdjoint.isSymmetric
+
+theorem apply_apply (hR : IsPositiveSqrt R Q) (y : H) : R (R y) = Q y := by
+  conv_rhs => rw [← hR.mul_self]
+  rfl
+
+theorem inner_left (hR : IsPositiveSqrt R Q) (y z : H) : ⟪R y, z⟫ = ⟪y, R z⟫ :=
+  hR.isSymmetric y z
+
+theorem inner_cov (hR : IsPositiveSqrt R Q) (y z : H) : ⟪Q y, z⟫ = ⟪R y, R z⟫ := by
+  rw [← hR.apply_apply y]
+  exact hR.inner_left (R y) z
+
+/-- A unit eigenvector of `Q` with eigenvalue `p` is an eigenvector of the positive square root
+`R` with eigenvalue `√p`. -/
+theorem apply_eigenvector (hR : IsPositiveSqrt R Q) {b : H} (hb : ‖b‖ = 1) {p : ℝ}
+    (hQb : Q b = p • b) : R b = Real.sqrt p • b := by
+  have hRb : ⟪R b, R b⟫ = p := by
+    rw [← hR.inner_cov, hQb, real_inner_smul_left, real_inner_self_eq_norm_sq, hb]
+    ring
+  have hp0 : 0 ≤ p := hRb ▸ real_inner_self_nonneg
+  have hnorm : ‖R b‖ ^ 2 = p := by rw [← real_inner_self_eq_norm_sq]; exact hRb
+  have hnn : 0 ≤ ⟪R b, b⟫ := hR.inner_nonneg b
+  have hle : ⟪R b, b⟫ ≤ Real.sqrt p := by
+    calc ⟪R b, b⟫ ≤ ‖R b‖ * ‖b‖ := real_inner_le_norm _ _
+      _ = ‖R b‖ := by rw [hb, mul_one]
+      _ = Real.sqrt p := by rw [← hnorm, Real.sqrt_sq (norm_nonneg _)]
+  have hge : Real.sqrt p ≤ ⟪R b, b⟫ := by
+    rcases eq_or_lt_of_le hp0 with h0 | hpos
+    · rw [← h0, Real.sqrt_zero]
+      exact hnn
+    · have hcs := ContinuousLinearMap.inner_map_mul_le hR.isSymmetric hR.inner_nonneg b (R b)
+      have h2 : ⟪R (R b), R b⟫ = p * ⟪R b, b⟫ := by
+        rw [hR.apply_apply, hQb, real_inner_smul_left, real_inner_comm b (R b)]
+      rw [hRb, h2] at hcs
+      have hpc : p ≤ ⟪R b, b⟫ ^ 2 := by nlinarith
+      nlinarith [Real.sq_sqrt hp0, Real.sqrt_nonneg p, sq_nonneg (Real.sqrt p - ⟪R b, b⟫)]
+  have heq : ⟪R b, b⟫ = Real.sqrt p := le_antisymm hle hge
+  have hz : ‖R b - Real.sqrt p • b‖ ^ 2 = 0 := by
+    rw [norm_sub_sq_real, real_inner_smul_right, heq, norm_smul, hb, mul_one,
+      Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg p), hnorm]
+    linarith [Real.sq_sqrt hp0]
+  have := pow_eq_zero_iff (n := 2) (by norm_num) |>.1 hz
+  rwa [norm_eq_zero, sub_eq_zero] at this
+
+end IsPositiveSqrt
+
+
+/-! ### The coordinate vectors of an eigenbasis of `M = R S R` -/
+
+section Coord
+
+variable {Cov S R : H →L[ℝ] H} {κ : Type*}
+
+/-- The coordinate vector `t_j = m_j^{-1/2} S R u_j` attached to the eigenvector `u_j = e j` of
+`M = R S R` with eigenvalue `m_j`. -/
+def coordVec (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (j : κ) : H :=
+  (Real.sqrt (m j))⁻¹ • S (R (e j))
+
+variable {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+
+theorem inner_map_SR (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ)
+    (y : H) : ⟪S (R (e j)), R y⟫ = m j * ⟪e j, y⟫ := by
+  rw [← hR.inner_left]
+  have : R (S (R (e j))) = (R * S * R) (e j) := rfl
+  rw [this, hM j, real_inner_smul_left]
+
+theorem eigenvalue_nonneg (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) (j : κ) : 0 ≤ m j := by
+  have h := inner_map_SR hR hM j (e j)
+  rw [real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow, mul_one] at h
+  rw [← h]
+  exact hS0 _
+
+theorem map_SR_eq_zero (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) {j : κ} (hj : m j = 0) :
+    S (R (e j)) = 0 := by
+  have hd : ⟪S (R (e j)), R (e j)⟫ = 0 := by
+    have h := inner_map_SR hR hM j (e j)
+    rw [real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow, mul_one, hj] at h
+    exact h
+  have hcs := ContinuousLinearMap.inner_map_mul_le hS.isSymmetric hS0 (R (e j)) (S (R (e j)))
+  rw [hd, zero_mul] at hcs
+  have : ⟪S (R (e j)), S (R (e j))⟫ = 0 := by nlinarith [hcs, sq_nonneg ⟪S (R (e j)), S (R (e j))⟫]
+  exact inner_self_eq_zero.1 this
+
+theorem map_SR_eq_smul (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
+    S (R (e j)) = Real.sqrt (m j) • coordVec S R e m j := by
+  rcases eq_or_ne (m j) 0 with hj | hj
+  · rw [map_SR_eq_zero hS hS0 hR hM hj, hj, Real.sqrt_zero, zero_smul]
+  · have hs : Real.sqrt (m j) ≠ 0 :=
+      Real.sqrt_ne_zero'.2 (lt_of_le_of_ne (eigenvalue_nonneg hS0 hR hM j) (Ne.symm hj))
+    rw [coordVec, smul_smul, mul_inv_cancel₀ hs, one_smul]
+
+theorem map_coordVec (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
+    R (coordVec S R e m j) = Real.sqrt (m j) • e j := by
+  have hmj := eigenvalue_nonneg hS0 hR hM j
+  have h1 : R (S (R (e j))) = m j • e j := by
+    have : R (S (R (e j))) = (R * S * R) (e j) := rfl
+    rw [this, hM j]
+  rw [coordVec, map_smul, h1, smul_smul]
+  congr 1
+  rcases eq_or_ne (m j) 0 with hj | hj
+  · rw [hj, Real.sqrt_zero, mul_zero]
+  · have hs : Real.sqrt (m j) ≠ 0 := Real.sqrt_ne_zero'.2 (lt_of_le_of_ne hmj (Ne.symm hj))
+    rw [inv_mul_eq_iff_eq_mul₀ hs]
+    exact (Real.mul_self_sqrt hmj).symm
+
+theorem inner_coordVec_map (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) (y : H) :
+    ⟪coordVec S R e m j, R y⟫ = Real.sqrt (m j) * ⟪e j, y⟫ := by
+  rw [← hR.inner_left, map_coordVec hS hS0 hR hM, real_inner_smul_left]
+
+theorem inner_cov_coordVec_self (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (j : κ) :
+    ⟪Cov (coordVec S R e m j), coordVec S R e m j⟫ = m j := by
+  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, real_inner_smul_left, real_inner_smul_right,
+    real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow, mul_one,
+    Real.mul_self_sqrt (eigenvalue_nonneg hS0 hR hM j)]
+
+theorem inner_cov_coordVec_ne (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) {i j : κ} (hij : i ≠ j) :
+    ⟪Cov (coordVec S R e m i), coordVec S R e m j⟫ = 0 := by
+  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, map_coordVec hS hS0 hR hM, real_inner_smul_left,
+    real_inner_smul_right, e.orthonormal.2 hij]
+  ring
+
+theorem inner_cov_left_coordVec (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (x : H) (j : κ) :
+    ⟪Cov x, coordVec S R e m j⟫ = Real.sqrt (m j) * ⟪R x, e j⟫ := by
+  rw [hR.inner_cov, map_coordVec hS hS0 hR hM, real_inner_smul_right]
+
+end Coord
+
+end OperatorRidgelet
