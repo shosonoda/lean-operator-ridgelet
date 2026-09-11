@@ -20,6 +20,10 @@ the index of its statements.
 - `OperatorRidgelet/LeanRidgelet/` is a verbatim copy of eight files of `shosonoda/lean-ridgelet`
   (revision in `LeanRidgelet.lean`).  Do not edit them; update by diffing against upstream.
 - Never run two `lake build`s in the same project concurrently.
+- `OperatorRidgelet/NeuralNetworkProofs/` vendors the Leshno theorem from
+  `davorrunje/neural-network-proofs`; its pinned revision, license, and compatibility adaptation
+  are recorded in `NeuralNetworkProofs.lean`. Preserve the upstream copyright headers and
+  document any further adaptations. Keep the operator-specific bridge in `Architecture/`.
 
 ## The comparator scheme is the record of formalization
 

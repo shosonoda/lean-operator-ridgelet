@@ -4,7 +4,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 57 | 57 | 47 | 8 |
+| 57 | 57 | 48 | 8 |
 
 `verified` means every Lean statement of the item is listed in `comparator/config.json` and passes `scripts/comparator-check.sh` (statement identical to `Challenge`, no `sorry`, only `propext`, `Quot.sound`, `Classical.choice`).
 
@@ -60,7 +60,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 | E.2 | `lem:gaussian-hinge` | lemma | Absolute hinge representation of the Gaussian | `OperatorRidgelet.Paper.lem_gaussian_hinge_i_a`<br>`OperatorRidgelet.Paper.lem_gaussian_hinge_i_b`<br>`OperatorRidgelet.Paper.lem_gaussian_hinge_ii` | verified |
 | F.1 | `lem:hs-reduction` | lemma | Hilbert--Schmidt reduction | `OperatorRidgelet.Paper.lem_hs_reduction` | verified |
 | F.2 | `lem:rank-one-lift` | lemma | Exact rank-one lift | `OperatorRidgelet.Paper.lem_rank_one_lift_i`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_ii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iii`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_iv`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_v`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vi`<br>`OperatorRidgelet.Paper.lem_rank_one_lift_vii` | verified |
-| F.3 | `prop:scalar-universality` | proposition | Compact-open universality by finite-dimensional reduction | `OperatorRidgelet.Paper.prop_scalar_universality_i`<br>`OperatorRidgelet.Paper.prop_scalar_universality_ii` | stated |
+| F.3 | `prop:scalar-universality` | proposition | Compact-open universality by finite-dimensional reduction | `OperatorRidgelet.Paper.prop_scalar_universality_i`<br>`OperatorRidgelet.Paper.prop_scalar_universality_ii` | verified |
 | F.4 | `lem:measure-transport` | lemma | Bounded synthesis and exact transport of measures | `OperatorRidgelet.Paper.lem_measure_transport_i`<br>`OperatorRidgelet.Paper.lem_measure_transport_ii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iii`<br>`OperatorRidgelet.Paper.lem_measure_transport_iv`<br>`OperatorRidgelet.Paper.lem_measure_transport_v` | verified |
 | G.1 | `cor:finite-backprojection` | corollary | The frame operator in finite dimension | `OperatorRidgelet.Paper.cor_finite_backprojection_i`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_ii`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_iii`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_iv`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_v`<br>`OperatorRidgelet.Paper.cor_finite_backprojection_vi` | stated |
 | G.2 | `prop:dilation-obstruction` | proposition | Dilation obstruction | `OperatorRidgelet.Paper.prop_dilation_obstruction_i_a`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_b`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_c`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_i_d`<br>`OperatorRidgelet.Paper.prop_dilation_obstruction_ii` | partial 4/5 |

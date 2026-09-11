@@ -31,6 +31,7 @@ script after changing the toolchain.
 OperatorRidgelet/            Lake project (Lean 4.32.0, Mathlib v4.32.0)
   OperatorRidgelet/          the library: definitions, lemmas, and the paper statements (Paper/)
   LeanRidgelet/              vendored subset of shosonoda/lean-ridgelet (activation spaces)
+  NeuralNetworkProofs/       vendored Leshno theorem and its dependencies (see provenance below)
   Challenge.lean, Challenge/ comparator challenge: paper statements with `sorry`
   Solution.lean              comparator solution: imports OperatorRidgelet.Paper
   comparator/                config.json (verified theorems), paper.json (manuscript index)
@@ -131,4 +132,8 @@ every push and pull request; it needs no Lean.
 
 Apache License 2.0, see [LICENSE](LICENSE).  The files under `OperatorRidgelet/LeanRidgelet/`
 are copied from [shosonoda/lean-ridgelet](https://github.com/shosonoda/lean-ridgelet), also
-Apache 2.0.
+Apache 2.0. The files under `OperatorRidgelet/NeuralNetworkProofs/` are copied from
+[Davor Runje's neural-network-proofs](https://github.com/davorrunje/neural-network-proofs),
+commit `f90942517be8b66dd34574212ada69b2130a48e5`, also Apache 2.0. Their copyright headers
+and license are preserved. `OperatorRidgelet/NeuralNetworkProofs.lean` records the subset and
+the compatibility adaptation for Mathlib v4.32.0.

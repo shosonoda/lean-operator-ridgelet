@@ -27,6 +27,10 @@ rev = "v4.32.0"
 [[lean_lib]]
 name = "LeanRidgelet"
 
+# Vendored Leshno theorem (see NeuralNetworkProofs.lean).
+[[lean_lib]]
+name = "NeuralNetworkProofs"
+
 [[lean_lib]]
 name = "OperatorRidgelet"
 

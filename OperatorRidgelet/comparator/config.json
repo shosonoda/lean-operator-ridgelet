@@ -2,6 +2,8 @@
     "challenge_module": "Challenge",
     "solution_module": "Solution",
     "theorem_names": [
+        "OperatorRidgelet.Paper.prop_scalar_universality_i",
+        "OperatorRidgelet.Paper.prop_scalar_universality_ii",
         "OperatorRidgelet.Paper.cor_operator_sampling_i",
         "OperatorRidgelet.Paper.cor_operator_sampling_ii",
         "OperatorRidgelet.Paper.cor_relu_admissible_ii",

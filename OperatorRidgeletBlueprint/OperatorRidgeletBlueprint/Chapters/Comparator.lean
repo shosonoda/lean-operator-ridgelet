@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 281.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 283.
 
 :::table +header
 *
@@ -57,7 +57,7 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 47
+  * 48
   * 8
 :::
 
@@ -4965,7 +4965,7 @@ Status: *verified by comparator*.
 
 ## Proposition F.3 — Compact-open universality by finite-dimensional reduction (`prop:scalar-universality`)
 
-Blueprint node: {bpref "prop:scalar-universality"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "prop:scalar-universality"}[]. Status: *verified* (all 2 Lean theorems verified).
 
 Formalization note. 'Not a polynomial' is `¬ IsPolynomialFun β` (β is not the evaluation of any `Polynomial ℝ`); density is `Dense` of the ℝ-span in `C(H, ℝ)` with the compact-open topology; H is assumed second countable (separable) as in the manuscript's standing assumptions.
 
@@ -4980,7 +4980,7 @@ theorem prop_scalar_universality_i [CompleteSpace H] [SecondCountableTopology H]
     Dense (Submodule.span ℝ (ridgeSet (H := H) β) : Set C(H, ℝ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.prop_scalar_universality_ii`, theorem in [`Challenge/Networks.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Networks.lean#L116):
 
@@ -4995,7 +4995,7 @@ theorem prop_scalar_universality_ii [CompleteSpace H] [SecondCountableTopology H
       (operatorNeuronSet (rankOneActivation β ψ z) {A | IsHilbertSchmidt A}) : Set C(H, ℝ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma F.4 — Bounded synthesis and exact transport of measures (`lem:measure-transport`)
 

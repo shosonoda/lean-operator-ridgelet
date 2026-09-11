@@ -141,13 +141,11 @@ attribute [blueprint "lem:rank-one-lift-vii"
 attribute [blueprint "prop:scalar-universality-i"
   (statement := /-- For continuous non-polynomial $\beta:\mathbb R\to\mathbb R$, finite linear
     combinations of $\beta(\langle a,x\rangle+c)$ are dense in $C(H;\mathbb R)$ for uniform
-    convergence on compact sets. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_scalar_universality_i
+    convergence on compact sets. -/)] OperatorRidgelet.Paper.prop_scalar_universality_i
 
 attribute [blueprint "prop:scalar-universality-ii"
   (statement := /-- The same holds for the rank-one operator activation $\sigma_\beta$ with
-    Hilbert--Schmidt parameters. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_scalar_universality_ii
+    Hilbert--Schmidt parameters. -/)] OperatorRidgelet.Paper.prop_scalar_universality_ii
 
 attribute [blueprint "lem:measure-transport-i"
   (statement := /-- For real globally Lipschitz $\beta$, $\psi\ne0$, and a finite complex Borel
