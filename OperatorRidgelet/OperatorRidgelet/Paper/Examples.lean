@@ -4,6 +4,8 @@ import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.Examples.GaussianLaw
+import OperatorRidgelet.Examples.GaussianQuadratic
+import OperatorRidgelet.Examples.GaussianTarget
 import OperatorRidgelet.Examples.NotCylindrical
 import OperatorRidgelet.Examples.OperatorLayer
 import OperatorRidgelet.Examples.HingeMeasure
@@ -90,8 +92,8 @@ theorem lem_gaussian_quadratic_ii {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTr
     (μ : Measure H) [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Cov μ) (x : H) :
     ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) ∂μ =
       (((Real.sqrt (fredholmDet (R * S * R)))⁻¹ : ℝ) : ℂ) *
-        Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) := by
-  sorry
+        Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) :=
+  integral_exp_quadratic hCov hS hS0 hR (lem_gaussian_quadratic_i hCov hS hS0 hR) hμ x
 
 /-! ### Lemma `lem:gaussian-hinge` -/
 
@@ -159,8 +161,8 @@ theorem ex_closed_form_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
     ∀ ξ : H, gaussFourier μ (gaussianTarget W) ξ =
       (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
-        Complex.exp (-((gaussianKappa S W ξ / 2 : ℝ) : ℂ)) := by
-  sorry
+        Complex.exp (-((gaussianKappa S W ξ / 2 : ℝ) : ℂ)) := fun ξ =>
+  gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM hμ ξ
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
 band-pass `ρ`, `R_ρ f_W(a,c) = D^{-1/2} (ρ * φ_{κ_W(a)})(c)`. -/
@@ -184,7 +186,14 @@ theorem ex_closed_form_i_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hWi : Function.Injective W)
     (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
     MemSpectralCore μ (gaussianMixture N α) (gaussianTarget W) := by
-  sorry
+  have hf2 : MemLp (gaussianTarget W) 2 μ := memLp_two_gaussianTarget W hW0 μ
+  refine ⟨hf2, (toLp_mem_spectralCore_iff hf2).1 ?_⟩
+  refine lem_gaussian_decay_ii hH hP hQ hN hα μ hμ (hf2.toLp _)
+    ((Real.sqrt (fredholmDet (S * W * S)))⁻¹ + 1) 0 (1 + ‖S * W * S‖)⁻¹
+    (by positivity) le_rfl (by positivity) fun ξ => ?_
+  rw [gaussFourier_congr_ae hf2.coeFn_toLp, Real.rpow_zero, mul_one]
+  refine (norm_gaussFourier_gaussianTarget_le hQ.toIsPositiveTraceClass hW hW0 hS hM hμ ξ).trans ?_
+  exact mul_le_mul_of_nonneg_right (by linarith) (Real.exp_nonneg _)
 
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  `f_W` is not
@@ -209,8 +218,9 @@ theorem ex_closed_form_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
     (hρ : IsBandPass ρ) (W S : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hWi : Function.Injective W) (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
     ∀ I : Set ℝ, IsFrequencyWindow ρ I →
-      IsRegularAlongRays (gaussianMixture N α) I (gaussFourier μ (gaussianTarget W)) := by
-  sorry
+      IsRegularAlongRays (gaussianMixture N α) I (gaussFourier μ (gaussianTarget W)) :=
+  fun I hI => isRegularAlongRays_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM
+    hμ (gaussianMixture N α) (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The image
 `T_α f_W` is represented by the bounded continuous function `g_G`, `G = 𝒢_Q f_W`:
@@ -257,8 +267,10 @@ theorem ex_closed_form_iii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (W S : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hWi : Function.Injective W) (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
-    ridgelet μ ρ (gaussianTarget W) = coefficientFormula ρ (gaussFourier μ (gaussianTarget W)) := by
-  sorry
+    ridgelet μ ρ (gaussianTarget W) =
+      coefficientFormula ρ (gaussFourier μ (gaussianTarget W)) :=
+  ridgelet_eq_coefficientFormula' μ ρ hμ.aemeasurable_inner
+    (integrable_gaussianTarget W hW0 μ)
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The ridgelet
 coefficient `R_ρ f_W` has finite variation and second moment:
@@ -329,7 +341,14 @@ theorem ex_core_elements_iv (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
     (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hWi : Function.Injective W)
     (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) :
     MemSpectralCore μ (gaussianMixture N α) (gaussianTarget W) := by
-  sorry
+  have hf2 : MemLp (gaussianTarget W) 2 μ := memLp_two_gaussianTarget W hW0 μ
+  refine ⟨hf2, (toLp_mem_spectralCore_iff hf2).1 ?_⟩
+  refine lem_gaussian_decay_ii hH hP hQ hN hα μ hμ (hf2.toLp _)
+    ((Real.sqrt (fredholmDet (S * W * S)))⁻¹ + 1) 0 (1 + ‖S * W * S‖)⁻¹
+    (by positivity) le_rfl (by positivity) fun ξ => ?_
+  rw [gaussFourier_congr_ae hf2.coeFn_toLp, Real.rpow_zero, mul_one]
+  refine (norm_gaussFourier_gaussianTarget_le hQ.toIsPositiveTraceClass hW hW0 hS hM hμ ξ).trans ?_
+  exact mul_le_mul_of_nonneg_right (by linarith) (Real.exp_nonneg _)
 
 /-- **Example [ex:core-elements]** Elements of `𝒟_α`.  The components `F_φ` of the
 neural-operator layers with Gaussian activation of Example `ex:operator-layer` belong to `𝒟_α`
