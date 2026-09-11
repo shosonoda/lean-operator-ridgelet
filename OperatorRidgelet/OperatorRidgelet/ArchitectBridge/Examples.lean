@@ -376,7 +376,7 @@ attribute [blueprint "ex:gaussian-parameter-v"
 attribute [blueprint "ex:gaussian-parameter-vi-a"
   (statement := /-- A Gaussian-activation network with finite coefficient measure is the ReLU
     network with the hinge coefficient measure. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_gaussian_parameter_vi_a
+] OperatorRidgelet.Paper.ex_gaussian_parameter_vi_a
 
 attribute [blueprint "ex:gaussian-parameter-vi-b"
   (statement := /-- The hinge coefficient measure is finite. -/)]
@@ -393,7 +393,7 @@ attribute [blueprint "cor:relu-discretization"
 
 attribute [blueprint "ex:operator-layer-i-a"
   (statement := /-- $\mathcal F=S_\beta[\Gamma]$ with $\Gamma=\iota_\#(b_y\,m(\mathrm dy))$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_a
+] OperatorRidgelet.Paper.ex_operator_layer_i_a
 
 attribute [blueprint "ex:operator-layer-i-b"
   (statement := /-- $\|\Gamma\|_{\mathrm{TV}}\le\int\|b_y\|\,m(\mathrm dy)$. -/)]
@@ -406,13 +406,13 @@ attribute [blueprint "ex:operator-layer-i-c"
 attribute [blueprint "ex:operator-layer-i-d"
   (statement := /-- Width-$N$ networks approximate $\mathcal F$ at the rate $N^{-1/2}$ in
     $L^2(\zeta;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_d
+] OperatorRidgelet.Paper.ex_operator_layer_i_d
 
 attribute [blueprint "ex:operator-layer-i-e"
   (statement := /-- $\mathbb
     E\|F_{\varphi,N}-F_\varphi\|_{C(K)}\le\frac{8\|w_\varphi\|_{L^1(m)}}{\sqrt
     N}(|\beta(0)|+\operatorname{Lip}(\beta)R_K\|A\|_\infty)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_i_e
+] OperatorRidgelet.Paper.ex_operator_layer_i_e
 
 attribute [blueprint "ex:operator-layer-ii-a"
   (statement := /-- $F_\varphi\in\mathcal D_\alpha$ for every $\alpha>0$. -/)]
@@ -472,7 +472,7 @@ attribute [blueprint "ex:operator-layer-ii-l"
 
 attribute [blueprint "ex:operator-layer-ii-m"
   (statement := /-- $\mathcal G_Q\mathcal F$ is regular along rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_m
+] OperatorRidgelet.Paper.ex_operator_layer_ii_m
 
 attribute [blueprint "ex:operator-layer-ii-n"
   (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)]
@@ -480,13 +480,13 @@ attribute [blueprint "ex:operator-layer-ii-n"
 
 attribute [blueprint "ex:operator-layer-ii-o"
   (statement := /-- $R_\rho\mathcal F$ has finite variation and moments. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_o
+] OperatorRidgelet.Paper.ex_operator_layer_ii_o
 
 attribute [blueprint "ex:operator-layer-ii-p"
   (statement := /-- $R_\rho\mathcal F$ synthesizes, with any real Lipschitz non-polynomial
     $\beta'$, the $Y$-valued target $C^{(\alpha)}_{\beta',\rho}g_{\mathcal
     G_Q\mathcal F}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_ii_p
+] OperatorRidgelet.Paper.ex_operator_layer_ii_p
 
 attribute [blueprint "ex:operator-layer-iii-a"
   (statement := /-- $\mathcal F(x)=\int_{\Omega\times\mathbb
@@ -497,7 +497,7 @@ attribute [blueprint "ex:operator-layer-iii-a"
 attribute [blueprint "ex:operator-layer-iii-b"
   (statement := /-- The Gaussian-activation layer is the ReLU network with the hinge coefficient
     measure. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_operator_layer_iii_b
+] OperatorRidgelet.Paper.ex_operator_layer_iii_b
 
 attribute [blueprint "ex:operator-layer-iii-c"
   (statement := /-- The hinge coefficient measure of the layer is finite. -/)]
@@ -575,12 +575,12 @@ attribute [blueprint "ex:dirichlet-i"
 
 attribute [blueprint "ex:dirichlet-ii"
   (statement := /-- $u=\mathsf Gx$ solves $-u''+u=x$, $u(0)=u(1)=0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_ii
+] OperatorRidgelet.Paper.ex_dirichlet_ii
 
 attribute [blueprint "ex:dirichlet-iii"
   (statement := /-- $\mathsf Ge_n=\lambda_ne_n$ with $\lambda_n=(1+\pi^2n^2)^{-1}$,
     $e_n(t)=\sqrt2\sin(n\pi t)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_iii
+] OperatorRidgelet.Paper.ex_dirichlet_iii
 
 attribute [blueprint "ex:dirichlet-iv"
   (statement := /-- $\mathsf G$ is injective, positive, self-adjoint, and trace class. -/)
@@ -588,7 +588,7 @@ attribute [blueprint "ex:dirichlet-iv"
 
 attribute [blueprint "ex:dirichlet-v"
   (statement := /-- $\mathsf G$ has infinite rank. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_v
+] OperatorRidgelet.Paper.ex_dirichlet_v
 
 attribute [blueprint "ex:dirichlet-vi"
   (statement := /-- $\|A\|_\infty\le\sup_y\|g(y,\cdot)\|_2<\infty$. -/)]

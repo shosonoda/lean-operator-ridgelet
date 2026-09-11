@@ -37,11 +37,15 @@ densities dominated by an integrable weight `W ∈ L¹(m)`, smooth along rays on
 neighbourhood `U` of `I`, and with ray-derivative bounds of the product form `h(a) W(y)` whose
 `h` is `ν`-integrable against `(1+‖a‖)^{k+2}`, the Bochner integral `ξ ↦ ∫ G y ξ ∂m` is regular
 along rays. -/
-theorem IsRegularAlongRays.integral_weighted {ν : Measure H} {I : Set ℝ} {Ω : Type*}
-    [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] {G : Ω → H → ℂ}
+theorem IsRegularAlongRays.integral_weighted_of_measurable_derivatives {ν : Measure H} {I : Set ℝ} {Ω Y : Type*}
+    [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+    [MeasurableSpace Y] [BorelSpace Y] [SecondCountableTopology Y]
+    [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] {G : Ω → H → Y}
     (hGm : Measurable (Function.uncurry G)) {W : Ω → ℝ} (hW : Integrable W m)
     (hW0 : ∀ y, 0 ≤ W y) (hGb : ∀ y ξ, ‖G y ξ‖ ≤ W y) {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
     (hsmooth : ∀ y a, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G y (ω • a)) U)
+    (hmeas : ∀ (a : H) (k : ℕ), ∀ t ∈ U,
+      AEStronglyMeasurable (fun y => iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t) m)
     (hunif : ∀ k : ℕ, ∃ h : H → ℝ, (∀ a, 0 ≤ h a) ∧
       (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) ∂ν) < ⊤ ∧
         ∀ y a, rayDerivBound U (G y) k a ≤ ENNReal.ofReal (h a * W y)) :
@@ -50,11 +54,6 @@ theorem IsRegularAlongRays.integral_weighted {ν : Measure H} {I : Set ℝ} {Ω 
     refine ne_top_of_le_ne_top hW.hasFiniteIntegral.ne (lintegral_mono fun y => ?_)
     rw [Real.enorm_eq_ofReal_abs]
     exact ENNReal.ofReal_le_ofReal (le_abs_self _)
-  have hmeas : ∀ (a : H) (k : ℕ), ∀ t ∈ U,
-      AEStronglyMeasurable (fun y => iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t) m :=
-    fun a k t ht => (measurable_iteratedDeriv_of_forall_contDiffOn (f := fun y ω => G y (ω • a))
-      (fun t => hGm.comp (measurable_id.prodMk measurable_const))
-      (fun y => ⟨U, hU, ht, hsmooth y a⟩) k).aestronglyMeasurable
   have hbound : ∀ (a : H) (k : ℕ), ∃ B : Ω → ℝ, Integrable B m ∧
       ∀ y, ∀ t ∈ U, ‖iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t‖ ≤ B y := by
     intro a k
@@ -94,6 +93,23 @@ theorem IsRegularAlongRays.integral_weighted {ν : Measure H} {I : Set ℝ} {Ω 
       _ = (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) ∂ν) *
             ∫⁻ y, ENNReal.ofReal (W y) ∂m := lintegral_mul_const' _ _ hc
       _ < ⊤ := ENNReal.mul_lt_top hint (lt_top_iff_ne_top.mpr hc)
+
+/-- Scalar specialization with automatically measurable ray derivatives. -/
+theorem IsRegularAlongRays.integral_weighted {ν : Measure H} {I : Set ℝ} {Ω : Type*}
+    [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] {G : Ω → H → ℂ}
+    (hGm : Measurable (Function.uncurry G)) {W : Ω → ℝ} (hW : Integrable W m)
+    (hW0 : ∀ y, 0 ≤ W y) (hGb : ∀ y ξ, ‖G y ξ‖ ≤ W y) {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
+    (hsmooth : ∀ y a, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G y (ω • a)) U)
+    (hunif : ∀ k : ℕ, ∃ h : H → ℝ, (∀ a, 0 ≤ h a) ∧
+      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * ENNReal.ofReal (h a) ∂ν) < ⊤ ∧
+        ∀ y a, rayDerivBound U (G y) k a ≤ ENNReal.ofReal (h a * W y)) :
+    IsRegularAlongRays ν I fun ξ => ∫ y, G y ξ ∂m := by
+  have hmeas : ∀ (a : H) (k : ℕ), ∀ t ∈ U,
+      AEStronglyMeasurable (fun y => iteratedDeriv k (fun ω : ℝ => G y (ω • a)) t) m :=
+    fun a k t ht => (measurable_iteratedDeriv_of_forall_contDiffOn (f := fun y ω => G y (ω • a))
+      (fun t => hGm.comp (measurable_id.prodMk measurable_const))
+      (fun y => ⟨U, hU, ht, hsmooth y a⟩) k).aestronglyMeasurable
+  exact integral_weighted_of_measurable_derivatives m hGm hW hW0 hGb hU hIU hsmooth hmeas hunif
 
 end Weighted
 
