@@ -46,7 +46,8 @@ namespace Real
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
-/-- A positive dilation of the argument acts by reciprocal dilation on the inverse Fourier transform. -/
+/-- A positive dilation of the argument acts by reciprocal dilation on the inverse Fourier
+transform. -/
 theorem fourierInv_comp_smul (f : E → ℂ) {t : ℝ} (ht : 0 < t) (x : E) :
     𝓕⁻ (fun y => f (t • y)) x = ((t ^ Module.finrank ℝ E)⁻¹ : ℝ) • 𝓕⁻ f (t⁻¹ • x) := by
   rw [fourierInv_eq, fourierInv_eq]
@@ -108,4 +109,3 @@ theorem integral_norm_fourierInv_pairing_le (φ ψ : SchwartzMap E ℂ) :
   exact integral_norm_convolution_mul_le (𝓕⁻ φ).integrable (𝓕⁻ ψ).integrable
 
 end SchwartzMap
-

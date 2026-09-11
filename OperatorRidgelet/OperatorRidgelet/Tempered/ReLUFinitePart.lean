@@ -14,7 +14,8 @@ open MeasureTheory Complex Filter Topology Set LeanRidgelet LeanRidgelet.Fourier
 open scoped FourierTransform ENNReal
 namespace OperatorRidgelet
 
-/-- Differentiation of the test function becomes coordinate multiplication in the angular Fourier convention. -/
+/-- Differentiation of the test function becomes coordinate multiplication in the angular
+Fourier convention. -/
 theorem angularFourierSchwartz_deriv (φ : SchwartzMap ℝ ℂ) (x : ℝ) :
     angularFourierSchwartz (SchwartzMap.derivCLM ℂ ℂ φ) x =
       I * (x : ℂ) * angularFourierSchwartz φ x := by
@@ -27,7 +28,8 @@ theorem angularFourierSchwartz_deriv (φ : SchwartzMap ℝ ℂ) (x : ℝ) :
   have hpi : (Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
   field_simp
 
-/-- The Fourier distribution of ReLU is its angular Fourier test function paired with the positive half-line coordinate. -/
+/-- The Fourier distribution of ReLU is its angular Fourier test function paired with the
+positive half-line coordinate. -/
 theorem angularFourierDistribution_relu_eq_half (φ : SchwartzMap ℝ ℂ) :
     angularFourierDistribution reluDistribution φ =
       ∫ x in Ioi (0 : ℝ), (x : ℂ) * angularFourierSchwartz φ x := by
@@ -74,7 +76,8 @@ theorem tendsto_damped_relu (φ : SchwartzMap ℝ ℂ) :
           (Real.continuous_exp.continuousAt.tendsto.comp ((ht.neg).mul_const x))
     simpa only [one_mul, ← coordMulSchwartz_apply] using he.mul_const (ψ x)
 
-/-- Exponential damping of the Fourier integral on the positive half-line gives the Cauchy resolvent. -/
+/-- Exponential damping of the Fourier integral on the positive half-line gives the Cauchy
+resolvent. -/
 theorem integral_damped_fourier (ψ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε) :
     (∫ x in Ioi (0 : ℝ), (Real.exp (-ε * x) : ℂ) * angularFourierSchwartz ψ x) =
       ∫ ω : ℝ, ((ε : ℂ) + I * (ω : ℂ))⁻¹ * ψ ω := by
@@ -127,7 +130,8 @@ theorem integral_damped_relu (φ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε
           integral_sub (D.integrable_cauchyOdd hε).neg ((D.integrable_poisson hε).const_mul I)
         _ = _ := by rw [integral_neg, integral_const_mul]
 
-/-- The Fourier transform of ReLU equals minus the Hadamard finite part plus the derivative of the Dirac mass. -/
+/-- The Fourier transform of ReLU equals minus the Hadamard finite part plus the derivative of
+the Dirac mass. -/
 theorem angularFourierDistribution_relu_finitePart (φ : SchwartzMap ℝ ℂ) :
     Tendsto (fun ε : ℝ =>
       (∫ ω in {ω : ℝ | ε < |ω|}, φ ω / (ω : ℂ) ^ 2) - 2 * φ 0 / (ε : ℂ))
@@ -153,4 +157,3 @@ theorem angularFourierDistribution_relu_finitePart (φ : SchwartzMap ℝ ℂ) :
   exact φ.tendsto_finitePart
 
 end OperatorRidgelet
-

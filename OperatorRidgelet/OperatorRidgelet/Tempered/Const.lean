@@ -32,6 +32,7 @@ def temperedTestFilter (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ �
   if h : ∃ φ : SchwartzMap ℝ ℂ, ∀ ω : ℝ, φ ω = filterFourier ρ (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ)
   then h.choose else 0
 
+/-- The tempered test filter has the prescribed weighted Fourier values when they are Schwartz. -/
 theorem temperedTestFilter_apply {α : ℝ} {ρ : SchwartzMap ℝ ℝ}
     (h : ∃ φ : SchwartzMap ℝ ℂ, ∀ ω : ℝ, φ ω = filterFourier ρ (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ))
     (ω : ℝ) :

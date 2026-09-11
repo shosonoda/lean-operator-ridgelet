@@ -49,6 +49,7 @@ namespace TemperedDistribution
 
 /-! ### An iterated mean value bound -/
 
+/-- Points between zero and `x` have absolute value at most `|x|`. -/
 theorem abs_le_abs_of_mem_uIcc_zero {x y : ℝ} (hy : y ∈ Set.uIcc 0 x) : |y| ≤ |x| := by
   rcases Set.mem_uIcc.mp hy with ⟨h1, h2⟩ | ⟨h1, h2⟩
   · rw [abs_of_nonneg h1, abs_of_nonneg (h1.trans h2)]
@@ -106,6 +107,7 @@ def unitBump : ContDiffBump (0 : ℝ) :=
 /-- The rescaled cutoff `θ_ε(x) = θ(x/ε)`. -/
 def cutoff (ε : ℝ) (x : ℝ) : ℝ := unitBump (ε⁻¹ * x)
 
+/-- The rescaled cutoff equals one on the closed ball of radius `ε`. -/
 theorem cutoff_eq_one {ε x : ℝ} (hε : 0 < ε) (hx : |x| ≤ ε) : cutoff ε x = 1 := by
   apply unitBump.one_of_mem_closedBall
   change ε⁻¹ * x ∈ Metric.closedBall (0 : ℝ) 1
@@ -113,22 +115,26 @@ theorem cutoff_eq_one {ε x : ℝ} (hε : 0 < ε) (hx : |x| ≤ ε) : cutoff ε 
     inv_mul_le_iff₀ hε, mul_one]
   exact hx
 
+/-- The rescaled cutoff vanishes outside the open ball of radius `2 * ε`. -/
 theorem cutoff_eq_zero {ε x : ℝ} (hε : 0 < ε) (hx : 2 * ε ≤ |x|) : cutoff ε x = 0 := by
   apply unitBump.zero_of_le_dist
   change (2 : ℝ) ≤ dist (ε⁻¹ * x) 0
   rw [Real.dist_eq, sub_zero, abs_mul, abs_of_pos (inv_pos.mpr hε), le_inv_mul_iff₀ hε]
   linarith
 
+/-- The rescaled cutoff is smooth. -/
 theorem contDiff_cutoff (ε : ℝ) {n : ℕ∞} : ContDiff ℝ n (cutoff ε) := by
   unfold cutoff
   exact unitBump.contDiff.comp (contDiff_const.mul contDiff_id)
 
+/-- The cutoff has compact support for positive scale. -/
 theorem hasCompactSupport_cutoff {ε : ℝ} (hε : 0 < ε) : HasCompactSupport (cutoff ε) :=
   HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) (2 * ε)) fun x hx =>
     cutoff_eq_zero hε (by
       rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, not_le] at hx
       exact hx.le)
 
+/-- The iterated derivatives of the cutoff scale by the corresponding inverse power. -/
 theorem iteratedDeriv_cutoff (ε : ℝ) (j : ℕ) (x : ℝ) :
     iteratedDeriv j (cutoff ε) x = ε⁻¹ ^ j * iteratedDeriv j unitBump (ε⁻¹ * x) :=
   congrFun (iteratedDeriv_comp_const_mul (unitBump.contDiff (n := j)) ε⁻¹) x
@@ -156,16 +162,20 @@ theorem exists_bound_iteratedDeriv_unitBump (N : ℕ) :
 /-- The cutoff as a complex-valued function. -/
 def cutoffC (ε : ℝ) (x : ℝ) : ℂ := (cutoff ε x : ℂ)
 
+/-- The complex-valued cutoff is smooth. -/
 theorem contDiff_cutoffC (ε : ℝ) {n : ℕ∞} : ContDiff ℝ n (cutoffC ε) :=
   Complex.ofRealCLM.contDiff.comp (contDiff_cutoff ε)
 
+/-- The complex-valued cutoff has compact support for positive scale. -/
 theorem hasCompactSupport_cutoffC {ε : ℝ} (hε : 0 < ε) : HasCompactSupport (cutoffC ε) :=
   (hasCompactSupport_cutoff hε).comp_left Complex.ofReal_zero
 
+/-- The complex-valued cutoff has temperate growth for positive scale. -/
 theorem hasTemperateGrowth_cutoffC {ε : ℝ} (hε : 0 < ε) :
     Function.HasTemperateGrowth (cutoffC ε) :=
   (hasCompactSupport_cutoffC hε).hasTemperateGrowth (contDiff_cutoffC ε)
 
+/-- Embedding the cutoff into the complex numbers preserves derivative norms. -/
 theorem norm_iteratedFDeriv_cutoffC (ε : ℝ) (i : ℕ) (x : ℝ) :
     ‖iteratedFDeriv ℝ i (cutoffC ε) x‖ = ‖iteratedDeriv i (cutoff ε) x‖ := by
   rw [← norm_iteratedFDeriv_eq_norm_iteratedDeriv]
@@ -176,14 +186,17 @@ theorem norm_iteratedFDeriv_cutoffC (ε : ℝ) (i : ℕ) (x : ℝ) :
 def cutoffMul (ε : ℝ) (φ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.smulLeftCLM ℂ (cutoffC ε) φ
 
+/-- Multiplication by the cutoff agrees pointwise with ordinary multiplication. -/
 theorem cutoffMul_apply {ε : ℝ} (hε : 0 < ε) (φ : SchwartzMap ℝ ℂ) (x : ℝ) :
     cutoffMul ε φ x = cutoffC ε x * φ x := by
   rw [cutoffMul, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_cutoffC hε), smul_eq_mul]
 
+/-- The underlying function of `cutoffMul` is the product with the cutoff. -/
 theorem coe_cutoffMul {ε : ℝ} (hε : 0 < ε) (φ : SchwartzMap ℝ ℂ) :
     ⇑(cutoffMul ε φ) = fun x => cutoffC ε x * φ x :=
   funext (cutoffMul_apply hε φ)
 
+/-- The support of the cutoff product lies in the closed ball of radius `2 * ε`. -/
 theorem tsupport_cutoffMul_subset {ε : ℝ} (hε : 0 < ε) (φ : SchwartzMap ℝ ℂ) :
     tsupport (cutoffMul ε φ) ⊆ Metric.closedBall 0 (2 * ε) := by
   apply closure_minimal _ Metric.isClosed_closedBall
@@ -337,6 +350,7 @@ theorem apply_eq_zero_of_iteratedDeriv_zero (u : TemperedDistribution ℝ ℂ)
 
 /-! ### The cutoff at infinity -/
 
+/-- Multiplication by the cutoff does not enlarge the support of a Schwartz function. -/
 theorem tsupport_cutoffMul_subset_tsupport {ε : ℝ} (hε : 0 < ε) (φ : SchwartzMap ℝ ℂ) :
     tsupport (cutoffMul ε φ) ⊆ tsupport φ := by
   apply closure_minimal _ (isClosed_tsupport _)
@@ -345,6 +359,7 @@ theorem tsupport_cutoffMul_subset_tsupport {ε : ℝ} (hε : 0 < ε) (φ : Schwa
   apply hx
   rw [cutoffMul_apply hε, image_eq_zero_of_notMem_tsupport hx', mul_zero]
 
+/-- Multiplication by the cutoff produces a compactly supported Schwartz function. -/
 theorem hasCompactSupport_cutoffMul {ε : ℝ} (hε : 0 < ε) (φ : SchwartzMap ℝ ℂ) :
     HasCompactSupport (cutoffMul ε φ) :=
   HasCompactSupport.of_support_subset_isCompact (isCompact_closedBall (0 : ℝ) (2 * ε))
@@ -486,6 +501,7 @@ theorem coe_pow_derivCLM (n : ℕ) (φ : SchwartzMap ℝ ℂ) :
       iteratedDeriv (n + 1) φ x
     rw [SchwartzMap.derivCLM_apply, ih, iteratedDeriv_succ]
 
+/-- The finite jet map records the corresponding derivative at zero. -/
 theorem derivsAtZero_apply (N : ℕ) (φ : SchwartzMap ℝ ℂ) (k : Fin (N + 1)) :
     derivsAtZero N φ k = iteratedDeriv k φ 0 := by
   change TemperedDistribution.delta (0 : ℝ) (((SchwartzMap.derivCLM ℂ ℂ) ^ (k : ℕ)) φ) = _

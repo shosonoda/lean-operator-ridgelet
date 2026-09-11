@@ -62,6 +62,7 @@ theorem angularFourierSchwartz_injective : Function.Injective angularFourierSchw
 def reflectSchwartz (φ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (ContinuousLinearEquiv.neg ℝ) φ
 
+/-- The reflected Schwartz function has value `φ (-x)`. -/
 theorem reflectSchwartz_apply (φ : SchwartzMap ℝ ℂ) (x : ℝ) : reflectSchwartz φ x = φ (-x) := by
   rw [reflectSchwartz, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply]
   rfl

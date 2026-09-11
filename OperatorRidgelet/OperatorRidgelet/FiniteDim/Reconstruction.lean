@@ -59,7 +59,8 @@ theorem fourier_fracLaplacian {m : ℕ} {β : ℝ} (hβ : 0 < β)
   have hnorm : fracLaplacian (β / 2) φ =
       (((2 * Real.pi) ^ m)⁻¹ : ℂ) • (fun x => 𝓕⁻ B ((2 * Real.pi)⁻¹ • x)) := by
     funext x
-    simpa only [Pi.smul_apply, smul_eq_mul, Complex.ofReal_inv, Complex.ofReal_pow, Complex.ofReal_mul,
+    simpa only [Pi.smul_apply, smul_eq_mul, Complex.ofReal_inv, Complex.ofReal_pow,
+      Complex.ofReal_mul,
       Complex.ofReal_ofNat] using fracLaplacian_eq_fourierInv β φ x
   rw [fourier, LeanRidgelet.Fourier.angularFourierIntegralInner_eq_mathlib, hnorm]
   have hs := VectorFourier.fourierIntegral_const_smul Real.fourierChar volume
@@ -115,7 +116,8 @@ theorem integral_fourier_mul_neg {m : ℕ} (g φ : SchwartzMap (Euclid m) ℂ) :
   simp_rw [frameRepresentative_volume, mul_assoc]
   rw [integral_const_mul]
 
-/-- The positive fractional Laplacian cancels the reciprocal frame multiplier in the distributional pairing. -/
+/-- The positive fractional Laplacian cancels the reciprocal frame multiplier in the
+distributional pairing. -/
 theorem integral_frameRepresentative_fracLaplacian {m : ℕ} {α : ℝ}
     (hα : 0 < α) (hαm : α < m) (g φ : SchwartzMap (Euclid m) ℂ) :
     (∫ x, frameRepresentative (directionMeasure m α) g x * fracLaplacian ((m - α) / 2) φ x) =
@@ -147,7 +149,8 @@ theorem integral_frameRepresentative_fracLaplacian {m : ℕ} {α : ℝ}
   simp only [frameConst, Complex.ofReal_mul]
   ring
 
-/-- Distributional reconstruction from the finite-dimensional frame representative against a positive pivot density. -/
+/-- Distributional reconstruction from the finite-dimensional frame representative against a
+positive pivot density. -/
 theorem finite_backprojection_reconstruction {m : ℕ} {α : ℝ}
     (hα : 0 < α) (hαm : α < m) (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
     (hpc : Continuous p) (f : Euclid m → ℂ) (g : SchwartzMap (Euclid m) ℂ)
@@ -176,4 +179,3 @@ theorem finite_backprojection_reconstruction {m : ℕ} {α : ℝ}
   field_simp
 
 end OperatorRidgelet.FiniteDim
-

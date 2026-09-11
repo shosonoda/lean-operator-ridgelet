@@ -146,9 +146,11 @@ theorem not_isPolynomialFun_relu : ¬ IsPolynomialFun relu := by
 theorem lipschitzWith_relu : LipschitzWith 1 relu :=
   LipschitzWith.id.max_const 0
 
+/-- The absolute value of `tanh` is bounded by one. -/
 theorem abs_tanh_le_one (x : ℝ) : |Real.tanh x| ≤ 1 :=
   (Real.abs_tanh_lt_one x).le
 
+/-- The values of `tanh` at zero and one differ. -/
 theorem tanh_zero_ne_tanh_one : Real.tanh 0 ≠ Real.tanh 1 := by
   intro h
   have := Real.tanh_injective h
@@ -175,22 +177,27 @@ theorem lipschitzWith_tanh : LipschitzWith 1 Real.tanh := by
 
 /-! ### The Gaussian -/
 
+/-- The Gaussian activation is strictly positive. -/
 theorem gaussianFun_pos (u : ℝ) : 0 < gaussianFun u :=
   Real.exp_pos _
 
+/-- The absolute value of the Gaussian activation is bounded by one. -/
 theorem abs_gaussianFun_le_one (u : ℝ) : |gaussianFun u| ≤ 1 := by
   rw [gaussianFun, abs_of_pos (Real.exp_pos _)]
   exact Real.exp_le_one_iff.mpr (by nlinarith [sq_nonneg u])
 
+/-- The Gaussian activation takes different values at zero and one. -/
 theorem gaussianFun_zero_ne_gaussianFun_one : gaussianFun 0 ≠ gaussianFun 1 := by
   intro h
   have := Real.exp_injective h
   norm_num at this
 
+/-- The Gaussian activation is continuous. -/
 theorem continuous_gaussianFun : Continuous gaussianFun := by
   unfold gaussianFun
   fun_prop
 
+/-- The derivative of the Gaussian activation is `-u * gaussianFun u`. -/
 theorem hasDerivAt_gaussianFun (u : ℝ) : HasDerivAt gaussianFun (-u * gaussianFun u) u := by
   have h : HasDerivAt (fun u : ℝ => -u ^ 2 / 2) (-u) u := by
     have := ((hasDerivAt_pow 2 u).neg).div_const 2
@@ -216,18 +223,22 @@ theorem lipschitzWith_gaussianFun : LipschitzWith 1 gaussianFun := by
 
 /-! ### The Gaussian distribution function -/
 
+/-- The Gaussian distribution function is nonnegative. -/
 theorem gaussianCdf_nonneg (u : ℝ) : 0 ≤ gaussianCdf u :=
   setIntegral_nonneg measurableSet_Iic fun x _ => ProbabilityTheory.gaussianPDFReal_nonneg 0 1 x
 
+/-- The Gaussian distribution function is bounded above by one. -/
 theorem gaussianCdf_le_one (u : ℝ) : gaussianCdf u ≤ 1 := by
   unfold gaussianCdf
   rw [← ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero]
   exact setIntegral_le_integral (ProbabilityTheory.integrable_gaussianPDFReal 0 1)
     (Filter.Eventually.of_forall fun x => ProbabilityTheory.gaussianPDFReal_nonneg 0 1 x)
 
+/-- The absolute value of the Gaussian distribution function is bounded by one. -/
 theorem abs_gaussianCdf_le_one (u : ℝ) : |gaussianCdf u| ≤ 1 :=
   abs_le.mpr ⟨by linarith [gaussianCdf_nonneg u], gaussianCdf_le_one u⟩
 
+/-- The Gaussian distribution function is monotone. -/
 theorem monotone_gaussianCdf : Monotone gaussianCdf := by
   intro a b hab
   unfold gaussianCdf
@@ -235,6 +246,7 @@ theorem monotone_gaussianCdf : Monotone gaussianCdf := by
     (Filter.Eventually.of_forall fun x => ProbabilityTheory.gaussianPDFReal_nonneg 0 1 x)
     (Filter.Eventually.of_forall (Set.Iic_subset_Iic.mpr hab))
 
+/-- The Gaussian distribution function is measurable. -/
 theorem measurable_gaussianCdf : Measurable gaussianCdf :=
   monotone_gaussianCdf.measurable
 
@@ -245,6 +257,7 @@ theorem gaussianCdf_sub_gaussianCdf (x y : ℝ) :
     (ProbabilityTheory.integrable_gaussianPDFReal 0 1).integrableOn
     (ProbabilityTheory.integrable_gaussianPDFReal 0 1).integrableOn
 
+/-- The Gaussian distribution function increases strictly between zero and one. -/
 theorem gaussianCdf_zero_lt_gaussianCdf_one : gaussianCdf 0 < gaussianCdf 1 := by
   have hpos : 0 < ∫ v in (0 : ℝ)..1, ProbabilityTheory.gaussianPDFReal 0 1 v :=
     intervalIntegral.intervalIntegral_pos_of_pos_on
@@ -287,6 +300,7 @@ def bumpApproximateIdentity (ε : ℝ) (x : ℝ) : ℝ :=
       ContDiffBump (0 : ℝ)).normed volume x
   else 0
 
+/-- For a positive scale, the mollifier is the normalized smooth bump. -/
 theorem bumpApproximateIdentity_of_pos {ε : ℝ} (hε : 0 < ε) :
     bumpApproximateIdentity ε =
       ({ rIn := ε / 2, rOut := ε, rIn_pos := by positivity, rIn_lt_rOut := by linarith } :
@@ -420,6 +434,7 @@ def filterFourierNegSchwartz (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ ℂ :=
     (realDilationCLE (-(2 * Real.pi)⁻¹) (neg_ne_zero.mpr (inv_ne_zero two_mul_pi_ne_zero)))
     (𝓕 (SchwartzMap.ofReal ρ))
 
+/-- The reflected Fourier test function evaluates to `ρ̂(-ω)`. -/
 theorem filterFourierNegSchwartz_apply (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     filterFourierNegSchwartz ρ ω = filterFourier ρ (-ω) := by
   rw [filterFourier_eq_fourier_ofReal, filterFourierNegSchwartz,

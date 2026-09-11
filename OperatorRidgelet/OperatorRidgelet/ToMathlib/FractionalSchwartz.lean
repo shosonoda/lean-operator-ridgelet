@@ -38,7 +38,8 @@ theorem contDiff_annularRpowFun (b : ContDiffBump (0 : E)) (β : ℝ) :
   · subst x
     have hnear : annularRpowFun b β =ᶠ[𝓝 (0 : E)] (fun _ => 0) := by
       have hb : (fun x : E => b ((2 : ℝ) • x)) =ᶠ[𝓝 (0 : E)] (fun _ => 1) := by
-        exact b.eventuallyEq_one.comp_tendsto (by simpa using (continuous_const_smul (2 : ℝ)).tendsto (0 : E))
+        exact b.eventuallyEq_one.comp_tendsto
+          (by simpa using (continuous_const_smul (2 : ℝ)).tendsto (0 : E))
       filter_upwards [b.eventuallyEq_one, hb] with x hx hx'
       simp [annularRpowFun, hx, hx']
     exact contDiffAt_const.congr_of_eventuallyEq hnear
@@ -165,7 +166,8 @@ theorem summable_integral_norm_fourierInv_annularProduct (b : ContDiffBump (0 : 
       integral_norm_fourierInv_pairing_le _ _
     _ = _ := by rw [integral_norm_fourierInv_annularTerm]; ring
 
-/-- The inverse Fourier transform of the cutoff multiplier equals the sum of the annular transforms. -/
+/-- The inverse Fourier transform of the cutoff multiplier equals the sum of the annular
+transforms. -/
 theorem fourierInv_norm_rpow_cutoff_mul_eq_tsum (b : ContDiffBump (0 : E))
     {β : ℝ} (hβ : 0 < β) (φ : SchwartzMap E ℂ) (x : E) :
     𝓕⁻ (fun y : E => ((‖y‖ ^ β : ℝ) : ℂ) * (b y : ℂ) * φ y) x =
@@ -188,7 +190,8 @@ theorem fourierInv_norm_rpow_cutoff_mul_eq_tsum (b : ContDiffBump (0 : E))
         (((‖y‖ ^ β : ℝ) : ℂ) * (b y : ℂ) * φ y)) := by
     refine hasSum_integral_of_dominated_convergence (fun j y => r ^ j * C * ‖φ y‖)
       (fun j => by fun_prop) (fun j => Eventually.of_forall fun y => ?_)
-      (Eventually.of_forall fun y => ((summable_geometric_of_abs_lt_one hr).mul_right C).mul_right ‖φ y‖)
+      (Eventually.of_forall fun y =>
+        ((summable_geometric_of_abs_lt_one hr).mul_right C).mul_right ‖φ y‖)
       ?_ (Eventually.of_forall fun y => ?_)
     · simpa using hb j y
     · simp_rw [tsum_mul_right]
@@ -202,10 +205,12 @@ theorem integrable_fourierInv_norm_rpow_cutoff_mul (b : ContDiffBump (0 : E))
     {β : ℝ} (hβ : 0 < β) (φ : SchwartzMap E ℂ) :
     Integrable (𝓕⁻ (fun y : E => ((‖y‖ ^ β : ℝ) : ℂ) * (b y : ℂ) * φ y)) := by
   have hi := integrable_tsum_of_summable_integral_norm
-    (fun j : ℕ => (𝓕⁻ (pairing (ContinuousLinearMap.mul ℂ ℂ) (annularTerm b β j) φ)).continuous.measurable)
+    (fun j : ℕ =>
+      (𝓕⁻ (pairing (ContinuousLinearMap.mul ℂ ℂ) (annularTerm b β j) φ)).continuous.measurable)
     (fun j : ℕ => (𝓕⁻ (pairing (ContinuousLinearMap.mul ℂ ℂ) (annularTerm b β j) φ)).integrable)
     (summable_integral_norm_fourierInv_annularProduct b hβ φ)
-  exact hi.congr (Eventually.of_forall fun x => (fourierInv_norm_rpow_cutoff_mul_eq_tsum b hβ φ x).symm)
+  exact hi.congr (Eventually.of_forall fun x =>
+    (fourierInv_norm_rpow_cutoff_mul_eq_tsum b hβ φ x).symm)
 
 omit [MeasurableSpace E] [BorelSpace E] in
 /-- Away from a smooth cutoff, multiplying a Schwartz function by a norm power remains Schwartz. -/
@@ -215,8 +220,10 @@ theorem exists_far_norm_rpow_schwartz (β : ℝ) (φ : SchwartzMap E ℂ) :
   let b : ContDiffBump (0 : E) := ⟨2, 3, by norm_num, by norm_num⟩
   let c : ContDiffBump (0 : E) := ⟨1, 2, by norm_num, by norm_num⟩
   let q : E → ℝ := fun x => ‖x‖ ^ 2 + c x
-  have hc : (fun x : E => c x).HasTemperateGrowth := c.hasCompactSupport.hasTemperateGrowth c.contDiff
-  have hb : (fun x : E => b x).HasTemperateGrowth := b.hasCompactSupport.hasTemperateGrowth b.contDiff
+  have hc : (fun x : E => c x).HasTemperateGrowth :=
+    c.hasCompactSupport.hasTemperateGrowth c.contDiff
+  have hb : (fun x : E => b x).HasTemperateGrowth :=
+    b.hasCompactSupport.hasTemperateGrowth b.contDiff
   have hq : q.HasTemperateGrowth := (Function.hasTemperateGrowth_norm_sq E).add hc
   have hq1 : ∀ x : E, 1 ≤ q x := by
     intro x
@@ -238,7 +245,8 @@ theorem exists_far_norm_rpow_schwartz (β : ℝ) (φ : SchwartzMap E ℂ) :
   have hnorm : 2 < ‖x‖ := by
     by_contra h
     apply hx
-    exact b.one_of_mem_closedBall (by simpa [b, Metric.mem_closedBall, dist_zero_right] using (not_lt.mp h))
+    exact b.one_of_mem_closedBall
+      (by simpa [b, Metric.mem_closedBall, dist_zero_right] using (not_lt.mp h))
   have hcx : c x = 0 := c.zero_of_le_dist (by simpa [c, dist_zero_right] using hnorm.le)
   have heq : q x ^ (β / 2) = ‖x‖ ^ β := by
     dsimp only [q]
@@ -255,7 +263,8 @@ theorem integrable_norm_rpow_mul {β : ℝ} (hβ : 0 ≤ β) (φ : SchwartzMap E
   apply (φ.integrable.norm.add (φ.integrable_pow_mul volume n)).mono'
     (by fun_prop)
   filter_upwards with y
-  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]
+  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]
   change ‖y‖ ^ β * ‖φ y‖ ≤ ‖φ y‖ + ‖y‖ ^ n * ‖φ y‖
   have hb : ‖y‖ ^ β ≤ 1 + ‖y‖ ^ n := by
     by_cases hy : ‖y‖ ≤ 1
@@ -265,7 +274,8 @@ theorem integrable_norm_rpow_mul {β : ℝ} (hβ : 0 ≤ β) (φ : SchwartzMap E
       exact h.trans (le_add_of_nonneg_left zero_le_one)
   nlinarith [mul_le_mul_of_nonneg_right hb (norm_nonneg (φ y))]
 
-/-- A positive fractional norm multiplier of a Schwartz function has integrable inverse Fourier transform. -/
+/-- A positive fractional norm multiplier of a Schwartz function has integrable inverse Fourier
+transform. -/
 theorem integrable_fourierInv_norm_rpow_mul {β : ℝ} (hβ : 0 < β) (φ : SchwartzMap E ℂ) :
     Integrable (𝓕⁻ (fun y : E => ((‖y‖ ^ β : ℝ) : ℂ) * φ y)) := by
   obtain ⟨b, ψ, hψ⟩ := exists_far_norm_rpow_schwartz β φ
@@ -289,16 +299,18 @@ theorem integrable_fourierInv_norm_rpow_mul {β : ℝ} (hβ : 0 < β) (φ : Schw
     ext x
     simp only [Real.fourierInv_eq, Pi.add_apply, smul_add]
     apply integral_add
-    · simpa only [inner_neg_right, neg_neg] using (Real.fourierIntegral_convergent_iff (-x)).mpr hnear
-    · simpa only [inner_neg_right, neg_neg] using (Real.fourierIntegral_convergent_iff (-x)).mpr ψ.integrable
+    · simpa only [inner_neg_right, neg_neg] using
+        (Real.fourierIntegral_convergent_iff (-x)).mpr hnear
+    · simpa only [inner_neg_right, neg_neg] using
+        (Real.fourierIntegral_convergent_iff (-x)).mpr ψ.integrable
   rw [ha]
   exact hi.add (by simpa only [← fourierInv_coe] using (𝓕⁻ ψ).integrable)
 
-/-- A positive fractional norm multiplier of a Schwartz function has integrable Fourier transform. -/
+/-- A positive fractional norm multiplier of a Schwartz function has integrable Fourier
+transform. -/
 theorem integrable_fourier_norm_rpow_mul {β : ℝ} (hβ : 0 < β) (φ : SchwartzMap E ℂ) :
     Integrable (𝓕 (fun y : E => ((‖y‖ ^ β : ℝ) : ℂ) * φ y)) := by
   have h := (integrable_fourierInv_norm_rpow_mul hβ φ).comp_neg
   simpa only [Real.fourierInv_eq_fourier_neg, neg_neg] using h
 
 end SchwartzMap
-

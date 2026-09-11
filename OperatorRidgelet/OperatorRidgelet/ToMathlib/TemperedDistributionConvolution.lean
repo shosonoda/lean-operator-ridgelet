@@ -33,6 +33,7 @@ local notation "mulL" => ContinuousLinearMap.mul ℝ ℂ
 
 /-! ### Convolutions with a smooth compactly supported factor -/
 
+/-- Convolution using complex multiplication is the usual convolution integral. -/
 theorem convolution_mulL_apply (f g : ℝ → ℂ) (x : ℝ) : (f ⋆[mulL] g) x = ∫ t, f t * g (x - t) :=
   rfl
 
@@ -56,14 +57,17 @@ def convolutionSchwartz (f g : ℝ → ℂ) (hf : LocallyIntegrable f) (hcf : Ha
   HasCompactSupport.toSchwartzMap (f := f ⋆[mulL] g) (hcf.convolution (L := mulL) hcg)
     (hcg.contDiff_convolution_right mulL hf hg)
 
+/-- The underlying function of `convolutionSchwartz` is the convolution. -/
 theorem coe_convolutionSchwartz {f g : ℝ → ℂ} (hf : LocallyIntegrable f)
     (hcf : HasCompactSupport f) (hg : ContDiff ℝ ∞ g) (hcg : HasCompactSupport g) :
     ⇑(convolutionSchwartz f g hf hcf hg hcg) = f ⋆[mulL] g :=
   rfl
 
+/-- Reflection preserves smoothness. -/
 theorem contDiff_reflect {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) : ContDiff ℝ ∞ fun t => η (-t) :=
   hη.comp contDiff_neg
 
+/-- Reflection preserves compact support. -/
 theorem hasCompactSupport_reflect {η : ℝ → ℂ} (hcη : HasCompactSupport η) :
     HasCompactSupport fun t => η (-t) :=
   hcη.comp_homeomorph (Homeomorph.neg ℝ)
@@ -113,10 +117,12 @@ section CutConv
 
 variable {η T : ℝ → ℂ}
 
+/-- Restricting a smooth function to a closed half-line preserves local integrability. -/
 theorem locallyIntegrable_indicator_Iic (hT : ContDiff ℝ ∞ T) (y : ℝ) :
     LocallyIntegrable ((Iic y).indicator T) :=
   hT.continuous.locallyIntegrable.indicator measurableSet_Iic
 
+/-- Restricting a compactly supported function to a half-line preserves compact support. -/
 theorem hasCompactSupport_indicator_Iic (hcT : HasCompactSupport T) (y : ℝ) :
     HasCompactSupport ((Iic y).indicator T) :=
   hcT.mono (by
@@ -150,6 +156,7 @@ def cutDiff (hη : ContDiff ℝ ∞ η) (hcη : HasCompactSupport η) (hT : Cont
     (hcT : HasCompactSupport T) (y h : ℝ) : SchwartzMap ℝ ℂ :=
   cutConv hη hcη hT hcT (y + h) - cutConv hη hcη hT hcT y - ((h : ℂ) * T y) • translate η y
 
+/-- The derivative of the convolution remainder is the integral of its derivative difference. -/
 theorem iteratedDeriv_cutDiff (hη : ContDiff ℝ ∞ η) (hcη : HasCompactSupport η)
     (hT : ContDiff ℝ ∞ T) (hcT : HasCompactSupport T) (y h : ℝ) (n : ℕ) (x : ℝ) :
     iteratedDeriv n (cutDiff hη hcη hT hcT y h) x = (-1 : ℂ) ^ n *

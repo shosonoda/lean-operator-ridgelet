@@ -34,10 +34,12 @@ theorem schwartzOfFun_eq {f : ℝ → ℂ} (φ : SchwartzMap ℝ ℂ) (h : ⇑φ
   rw [schwartzOfFun, dif_pos hex]
   exact SchwartzMap.ext fun x => (congrFun hex.choose_spec x).trans (congrFun h x).symm
 
+/-- Embedding a smooth real function into the complex numbers preserves smoothness. -/
 theorem contDiff_ofReal_comp {η : ℝ → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η) :
     ContDiff ℝ (⊤ : ℕ∞) fun x => (η x : ℂ) :=
   Complex.ofRealCLM.contDiff.comp hη
 
+/-- Embedding a real function into the complex numbers preserves compact support. -/
 theorem hasCompactSupport_ofReal_comp {η : ℝ → ℝ} (hc : HasCompactSupport η) :
     HasCompactSupport fun x => (η x : ℂ) :=
   hc.comp_left Complex.ofReal_zero

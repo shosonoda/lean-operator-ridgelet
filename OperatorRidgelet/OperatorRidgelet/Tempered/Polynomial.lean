@@ -41,6 +41,7 @@ def angularFourierInvSchwartz (g : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   (2 * (Real.pi : ℂ))⁻¹ • SchwartzMap.compCLMOfContinuousLinearEquiv ℂ
     (realDilationCLE (2 * Real.pi)⁻¹ (inv_ne_zero two_mul_pi_ne_zero)) (𝓕⁻ g)
 
+/-- The inverse angular Fourier transform is given by its defining integral. -/
 theorem angularFourierInvSchwartz_apply (g : SchwartzMap ℝ ℂ) (t : ℝ) :
     angularFourierInvSchwartz g t =
       (2 * (Real.pi : ℂ))⁻¹ * ∫ ω : ℝ, g ω * Complex.exp (Complex.I * (ω * t)) := by
@@ -79,6 +80,7 @@ theorem conj_angularFourierInvSchwartz (g : SchwartzMap ℝ ℂ) (hg : ∀ ω : 
 def realFilterOfHermitian (g : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
   SchwartzMap.postcompCLM (𝕜 := ℝ) Complex.reCLM (angularFourierInvSchwartz g)
 
+/-- For Hermitian Fourier data, the real filter agrees with the complex inverse transform. -/
 theorem coe_realFilterOfHermitian (g : SchwartzMap ℝ ℂ) (hg : ∀ ω : ℝ, conj (g (-ω)) = g ω)
     (t : ℝ) : ((realFilterOfHermitian g t : ℝ) : ℂ) = angularFourierInvSchwartz g t := by
   rw [realFilterOfHermitian, SchwartzMap.postcompCLM_apply, Complex.reCLM_apply]

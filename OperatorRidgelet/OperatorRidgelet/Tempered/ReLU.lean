@@ -66,6 +66,7 @@ theorem angularFourierSchwartz_eq_neg_iteratedDeriv_two {ψ φ : SchwartzMap ℝ
 def coordMulSchwartz (φ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.smulLeftCLM ℂ (fun x : ℝ => (x : ℂ)) φ
 
+/-- Multiplication by the coordinate has value `x * φ x`. -/
 theorem coordMulSchwartz_apply (φ : SchwartzMap ℝ ℂ) (x : ℝ) :
     coordMulSchwartz φ x = (x : ℂ) * φ x := by
   have hg : Function.HasTemperateGrowth fun x : ℝ => (x : ℂ) :=
@@ -310,13 +311,16 @@ theorem isBandPass_bandPass : IsBandPass bandPass := by
       intro h
       linarith
 
+/-- The Fourier transform of the selected band-pass filter is real. -/
 theorem filterFourier_bandPass_im (ω : ℝ) : (filterFourier bandPass ω).im = 0 := by
   rw [filterFourier_bandPass, Complex.ofReal_im]
 
+/-- The Fourier transform of the selected band-pass filter is even. -/
 theorem filterFourier_bandPass_neg (ω : ℝ) :
     filterFourier bandPass (-ω) = filterFourier bandPass ω := by
   rw [filterFourier_bandPass, filterFourier_bandPass, bandPassHat_neg]
 
+/-- The Fourier transform of the selected band-pass filter is nonpositive. -/
 theorem filterFourier_bandPass_re_nonpos (ω : ℝ) : (filterFourier bandPass ω).re ≤ 0 := by
   rw [filterFourier_bandPass, Complex.ofReal_re]
   exact bandPassHat_nonpos ω
