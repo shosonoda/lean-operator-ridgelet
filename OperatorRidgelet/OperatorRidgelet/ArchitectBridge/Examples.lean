@@ -557,8 +557,8 @@ attribute [blueprint "ex:convolution-x"
 
 attribute [blueprint "ex:convolution-xi"
   (statement := /-- $(I-\Delta)^{-s}$ is injective, positive, self-adjoint, and trace class for
-    $s>d/2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xi
+    $s>d/2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_xi
 
 attribute [blueprint "ex:convolution-xii"
   (statement := /-- $(I-\Delta)^{-s}$ is translation invariant. -/)]

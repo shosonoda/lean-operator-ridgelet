@@ -13,6 +13,7 @@ import OperatorRidgelet.Examples.HingeMeasure
 import OperatorRidgelet.Examples.Convolution
 import OperatorRidgelet.Examples.ConvolutionFourier
 import OperatorRidgelet.Examples.ConvolutionSpectrum
+import OperatorRidgelet.Examples.BesselCovariance
 import OperatorRidgelet.Transform.Isometry
 import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
@@ -1266,7 +1267,7 @@ theorem ex_convolution_x (d : ℕ) (k ψ : TorusL2 d)
 `(I - Δ)^{-s}` is injective, positive, self-adjoint, and trace class. -/
 theorem ex_convolution_xi (d : ℕ) (s : ℝ) (hs : (d : ℝ) / 2 < s) :
     IsTraceClassCovariance (besselOperator d s) := by
-  sorry
+  exact isTraceClassCovariance_besselOperator d s hs
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `(I - Δ)^{-s}` is translation
 invariant: `(I - Δ)^{-s} τ_z = τ_z (I - Δ)^{-s}`. -/
