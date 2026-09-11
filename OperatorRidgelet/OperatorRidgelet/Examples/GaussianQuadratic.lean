@@ -580,4 +580,65 @@ theorem integral_exp_truncQuad {Cov S R : H →L[ℝ] H} {κ : Type} {e : Hilber
 
 end FiniteIntegral
 
+/-! ### The resolvent quadratic form -/
+
+section Resolvent
+
+set_option linter.unusedSectionVars false
+
+variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+
+/-- `I + M` is invertible for a positive `M`. -/
+theorem isUnit_one_add_of_nonneg {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y, y⟫) :
+    IsUnit (1 + M) := by
+  refine ContinuousLinearMap.isUnit_of_forall_le_norm_inner_map (1 + M) (c := 1) one_pos
+    fun y => ?_
+  have hy : ⟪(1 + M) y, y⟫ = ‖y‖ ^ 2 + ⟪M y, y⟫ := by
+    rw [ContinuousLinearMap.add_apply, ContinuousLinearMap.one_apply, inner_add_left,
+      real_inner_self_eq_norm_sq]
+  rw [hy]
+  have h0 := hM0 y
+  rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+  simpa using h0
+
+theorem inverse_one_add_smul {M : H →L[ℝ] H} (hM : IsUnit (1 + M)) {u : H} {c : ℝ}
+    (hc : M u = c • u) (hc1 : (1 : ℝ) + c ≠ 0) :
+    Ring.inverse (1 + M) u = (1 + c)⁻¹ • u := by
+  have h1 : (1 + M) u = (1 + c) • u := by
+    rw [ContinuousLinearMap.add_apply, ContinuousLinearMap.one_apply, hc, add_smul, one_smul]
+  have h2 : Ring.inverse (1 + M) ((1 + M) u) = u := by
+    have h3 := Ring.inverse_mul_cancel (1 + M) hM
+    calc Ring.inverse (1 + M) ((1 + M) u) = (Ring.inverse (1 + M) * (1 + M)) u := rfl
+      _ = (1 : H →L[ℝ] H) u := by rw [h3]
+      _ = u := rfl
+  rw [h1, map_smul] at h2
+  have h4 := congrArg (fun z : H => (1 + c)⁻¹ • z) h2
+  simpa [smul_smul, inv_mul_cancel₀ hc1] using h4
+
+/-- The resolvent quadratic form `⟪R (I+M)⁻¹ R x, x⟫` expands as `∑_j (1+m_j)⁻¹ ⟪u_j, R x⟫²`. -/
+theorem hasSum_resolventForm (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) (hm0 : ∀ k, 0 ≤ m k) (x : H) :
+    HasSum (fun j => (1 + m j)⁻¹ * ⟪e j, R x⟫ ^ 2) (resolventForm R (R * S * R) x) := by
+  have hMpos : ∀ y, 0 ≤ ⟪(R * S * R) y, y⟫ := by
+    intro y
+    rw [inner_map_map_eq hR]
+    exact hS0 _
+  have hunit := isUnit_one_add_of_nonneg hMpos
+  have hNe : ∀ k, Ring.inverse (1 + R * S * R) (e k) = (1 + m k)⁻¹ • e k := fun k =>
+    inverse_one_add_smul hunit (hM k) (by linarith [hm0 k])
+  have hform : resolventForm R (R * S * R) x =
+      ⟪Ring.inverse (1 + R * S * R) (R x), R x⟫ := by
+    rw [resolventForm]
+    exact hR.isSymmetric _ x
+  rw [hform]
+  exact ContinuousLinearMap.hasSum_inner_map_self_of_eigen e (fun k => (1 + m k)⁻¹) hNe (R x)
+
+/-- Parseval for the coordinates `x_j = ⟪R x, u_j⟫`: `∑_j x_j² = ⟪Σ x, x⟫`. -/
+theorem hasSum_inner_cov_self (hR : IsPositiveSqrt R Cov) (e : HilbertBasis κ ℝ H) (x : H) :
+    HasSum (fun j => ⟪e j, R x⟫ ^ 2) ⟪Cov x, x⟫ := by
+  have h := e.hasSum_inner_sq (R x)
+  rwa [← real_inner_self_eq_norm_sq, ← hR.inner_cov] at h
+
+end Resolvent
+
 end OperatorRidgelet
