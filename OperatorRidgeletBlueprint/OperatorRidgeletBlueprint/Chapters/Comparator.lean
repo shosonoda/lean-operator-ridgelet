@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 243.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 255.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 42
-  * 12
+  * 45
+  * 9
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -523,7 +523,7 @@ Status: *verified by comparator*.
 
 ## Example 3.10 — Elements of \\(\\cD\_\\alpha\\) (`ex:core-elements`)
 
-Blueprint node: {bpref "ex:core-elements"}[]. Status: *partial 4/5* (4 of 5 Lean theorems verified).
+Blueprint node: {bpref "ex:core-elements"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. Claims i–iii (in Paper.Transform) are the first sentence: 𝒢\_Q 1, 1 ∈ 𝒟\_α, 𝓔\_α ≠ \{0\}. Claims iv (f\_W ∈ 𝒟\_α, with the hypotheses of ex:closed-form: W positive injective self-adjoint, S = Q^\{1/2\} as data with IsPositiveSqrt S Q, M = S W S with a summable trace) and v (the observables F\_φ = ⟨ℱ(·),φ⟩ of the Gaussian-activation operator layers, under IsLayerData) are in Paper.Examples; membership of a function in 𝒟\_α is MemSpectralCore μ ν f (f ∈ L²(μ) and 𝒢\_μ f ∈ L²(ν)), related to the submodule spectralCore by memSpectralCore\_iff.
 
@@ -581,7 +581,7 @@ theorem ex_core_elements_iv (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
     MemSpectralCore μ (gaussianMixture N α) (gaussianTarget W) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_core_elements_v`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L248):
 
@@ -2756,7 +2756,7 @@ Status: *statement only (proof pending)*.
 
 ## Example 7.1 — Closed-form transform and its filtered network (`ex:closed-form`)
 
-Blueprint node: {bpref "ex:closed-form"}[]. Status: *partial 1/11* (1 of 11 Lean theorems verified).
+Blueprint node: {bpref "ex:closed-form"}[]. Status: *verified* (all 11 Lean theorems verified).
 
 Formalization note. Standing hypotheses: W self-adjoint, ⟨Wx,x⟩ ≥ 0, injective; Q^\{1/2\} is data S with IsPositiveSqrt S Q; M = S \* W \* S with HasSummableTrace; f\_W = gaussianTarget W, D = fredholmDet (S\*W\*S), κ\_W = gaussianKappa S W = ⟨S (I+M)⁻¹ S ξ, ξ⟩ with Ring.inverse. i\_a: 𝒢\_Q f\_W = D^\{-1/2\} e^\{-κ\_W/2\}; i\_b: R\_ρ f\_W(a,c) = D^\{-1/2\}(ρ\*φ\_\{κ\_W(a)\})(c) with gaussianSmooth (convolution with Mathlib's gaussianReal 0 v, δ\_0 for v = 0), stated for every (a,c); i\_c: f\_W ∈ 𝒟\_α (MemSpectralCore); i\_d: non-cylindricity for W of infinite rank (IsCylindrical allows any linear finite-rank L, so the claim is slightly stronger than the manuscript's). ii\_a: G = 𝒢\_Q f\_W regular along rays for every frequency window of ρ; ii\_b: T\_α f\_W is represented by g\_G (frame-operator identity of thm:C(iii), for the element of 𝒟\_α equal a.e. to f\_W); ii\_c: eq:filtered-gaussian-target with P^\{1/2\} as data R, S\_W = gaussianTargetResolvent S W, Σ\_s = mixtureLayerCovariance R S\_W s, det(I + 2s P^\{1/2\} S\_W P^\{1/2\}) = fredholmDet ((2s) • (R S\_W R)), the s-integral over Ioi 0. iii: β is a tempered distribution that is a Lipschitz non-polynomial function b (IsTemperedFunction, LipschitzWith L b, ¬IsPolynomialFun b); iii\_a: R\_ρ f\_W = γ\_G pointwise; iii\_b: ∫ (1+‖a‖²+|c|²)|R\_ρ f\_W| dλ\_α < ∞ (finite variation and second moment); iii\_c: S\_β\[R\_ρ f\_W λ\_α\] = C\_\{β,ρ\} g\_G (integralNetworkDensity, temperedAdmissibilityConst); iii\_d: the rate eq:spectral-barron in the conventions of Section 6, exactly as thm\_E\_iv with γ = R\_ρ f\_W: the Bochner expectation over sampleLaw n (densityLaw λ\_α γ) of ‖densitySampledNetwork β λ\_α γ θ − C g\_G‖\_\{C(K)\} (compactSupNorm) is at most 8V/√n (|β(0)| + Lip(β) R\_K M₂) with V = densityWeight λ\_α γ, R\_K = compactRadius K, M₂² = secondMoment (densityLaw λ\_α γ), n ≥ 1 (the earlier local Examples.polarSample/normalizedLaw/supNormOn/compactRadius/secondMoment and the lower-integral form were replaced by the Sampling/Defs objects).
 
@@ -2777,7 +2777,7 @@ theorem ex_closed_form_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
         Complex.exp (-((gaussianKappa S W ξ / 2 : ℝ) : ℂ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_i_b`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L85):
 
@@ -2795,7 +2795,7 @@ theorem ex_closed_form_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
         ℝ) : ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_i_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L98):
 
@@ -2811,7 +2811,7 @@ theorem ex_closed_form_i_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     MemSpectralCore μ (gaussianMixture N α) (gaussianTarget W) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_i_d`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L109):
 
@@ -2841,7 +2841,7 @@ theorem ex_closed_form_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
       IsRegularAlongRays (gaussianMixture N α) I (gaussFourier μ (gaussianTarget W)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_ii_b`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L129):
 
@@ -2863,7 +2863,7 @@ theorem ex_closed_form_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_ii_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L146):
 
@@ -2887,7 +2887,7 @@ theorem ex_closed_form_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
             s ^ (α / 2 - 1) : ℝ) : ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_iii_a`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L165):
 
@@ -2904,7 +2904,7 @@ theorem ex_closed_form_iii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     ridgelet μ ρ (gaussianTarget W) = coefficientFormula ρ (gaussFourier μ (gaussianTarget W)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_iii_b`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L177):
 
@@ -2922,7 +2922,7 @@ theorem ex_closed_form_iii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
       (parameterMeasure (gaussianMixture N α)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_iii_c`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L190):
 
@@ -2944,7 +2944,7 @@ theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
         spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_closed_form_iii_d`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L207):
 
@@ -2977,7 +2977,7 @@ theorem ex_closed_form_iii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
             (ridgelet μ ρ (gaussianTarget W))))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Example 7.2 — ReLU and Gaussian networks with Gaussian parameters (`ex:gaussian-parameter`)
 
@@ -4770,7 +4770,7 @@ Status: *verified by comparator*.
 
 ## Lemma E.1 — Gaussian integral of a quadratic exponential (`lem:gaussian-quadratic`)
 
-Blueprint node: {bpref "lem:gaussian-quadratic"}[]. Status: *partial 1/2* (1 of 2 Lean theorems verified).
+Blueprint node: {bpref "lem:gaussian-quadratic"}[]. Status: *verified* (all 2 Lean theorems verified).
 
 Formalization note. Σ (named Cov) is IsPositiveTraceClass (positive, self-adjoint, summable trace HasSummableTrace along a Hilbert basis; no injectivity; defined in Transform/Defs as the parent structure of IsTraceClassCovariance, which adds injectivity), S is self-adjoint with ⟨Sx,x⟩ ≥ 0, Σ^\{1/2\} is data R with IsPositiveSqrt R Σ, 𝒩(0,Σ) is IsCenteredGaussian Cov μ. Part i: M = R S R is trace class (the manuscript's 'which is trace class'); part ii: the integral identity with det(I+M) = fredholmDet (R \* S \* R) (the product ∏(1+m\_i) along an orthonormal eigenbasis chosen through Classical.choose, basis independence being a separate proof obligation), det^\{-1/2\} = (√det)⁻¹, and ⟨Σ^\{1/2\}(I+M)⁻¹Σ^\{1/2\}x,x⟩ = resolventForm R (R\*S\*R) x with (I+M)⁻¹ = Ring.inverse (1 + M).
 
@@ -4802,7 +4802,7 @@ theorem lem_gaussian_quadratic_ii {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTr
         Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Lemma E.2 — Absolute hinge representation of the Gaussian (`lem:gaussian-hinge`)
 
