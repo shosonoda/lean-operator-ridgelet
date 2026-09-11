@@ -805,12 +805,14 @@ theorem summable_eigenvalues {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y, y�
   refine (NNReal.summable_coe.2 hnn).congr fun k => ?_
   exact Real.coe_toNNReal _ (hw0 k)
 
+omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
 /-- `M = Σ^{1/2} S Σ^{1/2}` is self-adjoint. -/
 theorem isSelfAdjoint_sqrt_mul_mul {Cov S R : H →L[ℝ] H} (hS : IsSelfAdjoint S)
     (hR : IsPositiveSqrt R Cov) : IsSelfAdjoint (R * S * R) := by
   show star (R * S * R) = R * S * R
   rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, ← mul_assoc]
 
+omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
 /-- `M = Σ^{1/2} S Σ^{1/2}` is positive. -/
 theorem inner_sqrt_mul_mul_nonneg {Cov S R : H →L[ℝ] H} (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫)
     (hR : IsPositiveSqrt R Cov) (y : H) : 0 ≤ ⟪(R * S * R) y, y⟫ := by
