@@ -254,9 +254,17 @@
         "OperatorRidgelet.Paper.thm_vector_valued_A_iii_a",
         "OperatorRidgelet.Paper.thm_vector_valued_A_iii_b",
         "OperatorRidgelet.Paper.thm_vector_valued_A_iii_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_i_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_i_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_b",
+        "OperatorRidgelet.Paper.thm_vector_valued_B_ii_c",
         "OperatorRidgelet.Paper.thm_vector_valued_C_i_a",
         "OperatorRidgelet.Paper.thm_vector_valued_C_i_b",
-        "OperatorRidgelet.Paper.thm_vector_valued_C_i_c"
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_c",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_i_d",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_a",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_b"
     ],
     "permitted_axioms": [
         "propext",

@@ -4,6 +4,7 @@ import OperatorRidgelet.Reconstruction.Hermite
 import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Reconstruction.Backprojection
 import OperatorRidgelet.Reconstruction.Tempered
+import OperatorRidgelet.Reconstruction.VectorValued
 import OperatorRidgelet.Paper.Transform
 
 /-!
@@ -914,7 +915,8 @@ theorem thm_vector_valued_B_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : Lp Y 2 μ) (hf : f ∈ spectralCoreVec Y μ ν) :
     MemLp (ridgeletVec μ ρ f) 2 (parameterMeasure ν) := by
-  sorry
+  exact memLp_ridgeletVec μ hν hρ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f)
+    ((mem_spectralCoreVec_iff μ ν f).mp hf)
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(i) for `Y`-valued
 targets: the Plancherel identity
@@ -925,7 +927,9 @@ theorem thm_vector_valued_B_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     (f g : Lp Y 2 μ) (hf : f ∈ spectralCoreVec Y μ ν) (hg : g ∈ spectralCoreVec Y μ ν) :
     ∫ p, inner ℂ (ridgeletVec μ ρ₂ g p) (ridgeletVec μ ρ₁ f p) ∂parameterMeasure ν =
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInnerVec μ ν f g := by
-  sorry
+  exact integral_inner_ridgeletVec μ hν hρ₁ hρ₂ ((Lp.memLp f).integrable one_le_two)
+    (Lp.memLp f) ((Lp.memLp g).integrable one_le_two) (Lp.memLp g)
+    ((mem_spectralCoreVec_iff μ ν f).mp hf) ((mem_spectralCoreVec_iff μ ν g).mp hg)
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
 `Y`-valued targets: an `α`-admissible `ρ` determines a unique bounded extension
@@ -936,7 +940,7 @@ theorem thm_vector_valued_B_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
     ∃! R : spectralRangeVec Y μ ν →L[ℂ] Lp Y 2 (parameterMeasure ν),
       ∀ f : spectralCoreVec Y μ ν,
         (R (spectralEmbedVec μ ν f) : H × ℝ → Y) =ᵐ[parameterMeasure ν] ridgeletVec μ ρ f := by
-  sorry
+  exact existsUnique_ridgeletExtensionVecCLM hν hρ
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
 `Y`-valued targets: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_α(Y)}`. -/
@@ -945,7 +949,9 @@ theorem thm_vector_valued_B_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
       ‖ridgeletExtensionVec Y μ ν ρ G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
-  sorry
+  intro G
+  rw [ridgeletExtensionVec_eq hν hρ]
+  exact norm_ridgeletExtensionVecCLM_sq hν hρ G
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
 `Y`-valued targets: the range of `R_ρ` is closed. -/
@@ -953,7 +959,8 @@ theorem thm_vector_valued_B_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     IsClosed (Set.range (ridgeletExtensionVec Y μ ν ρ)) := by
-  sorry
+  rw [ridgeletExtensionVec_eq hν hρ]
+  exact isClosed_range_ridgeletExtensionVecCLM hν hρ
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
 `Y`-valued targets: `R_ρ = W_ρ U_α`. -/
@@ -1014,7 +1021,8 @@ theorem thm_vector_valued_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     ∀ f : spectralRangeVec Y μ ν,
       synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperatorVec μ ν f := by
-  sorry
+  intro f
+  exact synthesisVec_ridgeletExtensionVec hν (def_admissible_filter ρ hρ α hα) f
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(ii) for
 `Y`-valued targets: `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f`. -/
@@ -1024,7 +1032,12 @@ theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
     ∀ f : spectralRangeVec Y μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInvVec μ ν (synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f)) := by
-  sorry
+  intro f
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  rw [synthesisVec_ridgeletExtensionVec hν hρ' f, thm_vector_valued_C_i_a μ ν hα hν ρ hρ f,
+    ← map_smul, rieszInvVec_rieszMapVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC,
+    one_smul]
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(ii) for
 `Y`-valued targets: `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α(Y)'`. -/
@@ -1034,7 +1047,11 @@ theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
     ∀ g : SpectralAntiDualVec Y μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν g)) := by
-  sorry
+  intro g
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  rw [synthesisVec_ridgeletExtensionVec hν hρ', thm_vector_valued_C_i_a μ ν hα hν ρ hρ,
+    rieszMapVec_rieszInvVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
 `Y`-valued targets: for `f ∈ 𝒟_α(Y)` with `𝒢_Q f ∈ L¹(ν_α; Y)`, `T_α f` is represented by
