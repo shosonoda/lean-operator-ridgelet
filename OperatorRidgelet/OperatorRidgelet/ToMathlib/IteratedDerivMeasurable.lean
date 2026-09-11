@@ -133,7 +133,8 @@ theorem measurable_limsupIterDeriv {α : Type*} [MeasurableSpace α] {f : α →
     exact measurable_limsupDerivC (f := fun a => limsupIterDeriv k (f a)) ih x
 
 /-- On an open set of smoothness, the iterated derivatives are smooth. -/
-theorem ContDiffOn.iteratedDeriv_of_isOpen {f : ℝ → ℂ} {U : Set ℝ} (hU : IsOpen U)
+theorem ContDiffOn.iteratedDeriv_of_isOpen {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℝ Y]
+    {f : ℝ → Y} {U : Set ℝ} (hU : IsOpen U)
     (hf : ContDiffOn ℝ (⊤ : ℕ∞) f U) (k : ℕ) :
     ContDiffOn ℝ (⊤ : ℕ∞) (iteratedDeriv k f) U := by
   induction k with
