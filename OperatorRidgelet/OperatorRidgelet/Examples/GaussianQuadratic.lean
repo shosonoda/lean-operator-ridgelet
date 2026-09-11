@@ -444,4 +444,140 @@ theorem inner_cov_residCoord_self (hCov : IsSelfAdjoint Cov) (hR : IsPositiveSqr
 
 end Residual
 
+/-! ### The Gaussian integral over a finite set of coordinates -/
+
+section FiniteIntegral
+
+set_option linter.unusedSectionVars false
+
+variable [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+
+/-- The Gaussian integral of `e^{i⟪x,ξ⟫ - q_G(ξ)/2}` for the truncated quadratic form `q_G`
+along a finite set `G` of eigenvectors with nonzero eigenvalues. -/
+theorem integral_exp_truncQuad {Cov S R : H →L[ℝ] H} {κ : Type} {e : HilbertBasis κ ℝ H}
+    {m : κ → ℝ} (hCovsa : IsSelfAdjoint Cov) (hm0 : ∀ k, 0 ≤ m k) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {μ : Measure H} [IsProbabilityMeasure μ]
+    (hμ : IsCenteredGaussian Cov μ) (x : H) (G : Finset κ) (hG : ∀ j ∈ G, m j ≠ 0) :
+    ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((truncQuad S R e m G ξ / 2 : ℝ) : ℂ)) ∂μ =
+      ((∏ j ∈ G, (Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-(((⟪Cov x, x⟫ -
+          ∑ j ∈ G, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 : ℝ) : ℂ)) := by
+  classical
+  set w : H := residCoord S R e m G x with hw
+  set s0 : ℝ := ⟪Cov x, x⟫ - ∑ j ∈ G, ⟪R x, e j⟫ ^ 2 with hs0
+  have hws : ⟪Cov w, w⟫ = s0 := inner_cov_residCoord_self hCovsa hR hM hG x
+  have hs0nonneg : 0 ≤ s0 := by
+    rw [← hws, hR.inner_cov]
+    exact real_inner_self_nonneg
+  set v : Option {j : κ // j ∈ G} → H := fun i => i.elim w fun j => unitCoordVec S R e m j.1
+    with hvdef
+  set sg : Option {j : κ // j ∈ G} → ℝ := fun i => i.elim s0 fun _ => 1 with hsgdef
+  set g : Option {j : κ // j ∈ G} → ℝ → ℂ := fun i =>
+    i.elim (fun t : ℝ => Complex.exp ((t : ℂ) * Complex.I))
+      fun j t => Complex.exp (((⟪R x, e j.1⟫ * t : ℝ) : ℂ) * Complex.I -
+        ((m j.1 * t ^ 2 / 2 : ℝ) : ℂ)) with hgdef
+  have hsg : ∀ i, 0 ≤ sg i := by
+    rintro (_ | j)
+    · exact hs0nonneg
+    · exact zero_le_one
+  have hvv : ∀ i j, ⟪Cov (v i), v j⟫ = if i = j then sg i else 0 := by
+    rintro (_ | i) (_ | j)
+    · rw [if_pos rfl]
+      exact hws
+    · rw [if_neg (by simp)]
+      exact inner_cov_residCoord_unitCoordVec hR hM hG x j.2
+    · rw [if_neg (by simp)]
+      show ⟪Cov (unitCoordVec S R e m i.1), w⟫ = 0
+      rw [ContinuousLinearMap.inner_map_comm hCovsa.isSymmetric]
+      exact inner_cov_residCoord_unitCoordVec hR hM hG x i.2
+    · by_cases hij : i = j
+      · subst hij
+        rw [if_pos rfl]
+        exact inner_cov_unitCoordVec_self hR hM (hG i.1 i.2)
+      · rw [if_neg (by simpa using hij)]
+        exact inner_cov_unitCoordVec_ne hR hM (hG i.1 i.2) (hG j.1 j.2)
+          fun h => hij (Subtype.ext h)
+  have hg : ∀ i, Continuous (g i) := by
+    rintro (_ | j)
+    · exact Complex.continuous_exp.comp (by fun_prop)
+    · exact Complex.continuous_exp.comp (by fun_prop)
+  have hprod : ∀ ξ : H, ∏ i, g i ⟪v i, ξ⟫ =
+      Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((truncQuad S R e m G ξ / 2 : ℝ) : ℂ)) := by
+    intro ξ
+    have h1 : (∏ j : {j : κ // j ∈ G}, g (some j) ⟪v (some j), ξ⟫) =
+        ∏ j ∈ G, Complex.exp (((⟪R x, e j⟫ * ⟪unitCoordVec S R e m j, ξ⟫ : ℝ) : ℂ) *
+          Complex.I - ((m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2 / 2 : ℝ) : ℂ)) :=
+      Finset.prod_coe_sort G fun j : κ =>
+        Complex.exp (((⟪R x, e j⟫ * ⟪unitCoordVec S R e m j, ξ⟫ : ℝ) : ℂ) * Complex.I -
+          ((m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2 / 2 : ℝ) : ℂ))
+    have hA := inner_residCoord (S := S) (R := R) (e := e) (m := m) G x ξ
+    have hB : truncQuad S R e m G ξ = ∑ j ∈ G, m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2 := rfl
+    have hgn : g none ⟪v none, ξ⟫ = Complex.exp ((⟪w, ξ⟫ : ℝ) * Complex.I) := rfl
+    rw [Fintype.prod_option, h1, ← Complex.exp_sum, hgn, ← Complex.exp_add]
+    rw [hB, ← hA, hw, Finset.sum_sub_distrib, ← Finset.sum_mul, ← Complex.ofReal_sum,
+      ← Complex.ofReal_sum, ← Finset.sum_div]
+    push_cast
+    ring
+  have hnone : ∫ t : ℝ, Complex.exp ((t : ℂ) * Complex.I) ∂gaussianReal 0 s0.toNNReal =
+      Complex.exp (-((s0 / 2 : ℝ) : ℂ)) := by
+    have h1 : charFun (gaussianReal 0 s0.toNNReal) (1 : ℝ) =
+        ∫ t : ℝ, Complex.exp ((t : ℂ) * Complex.I) ∂gaussianReal 0 s0.toNNReal := by
+      rw [charFun_apply_real]
+      simp
+    rw [← h1, charFun_gaussianReal, Real.coe_toNNReal _ hs0nonneg]
+    push_cast
+    ring_nf
+  have hsome : ∀ j : κ, m j ≠ 0 →
+      (∫ t : ℝ, Complex.exp (((⟪R x, e j⟫ * t : ℝ) : ℂ) * Complex.I -
+          ((m j * t ^ 2 / 2 : ℝ) : ℂ)) ∂gaussianReal 0 (1 : ℝ).toNNReal) =
+        (((Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+          Complex.exp (-((⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) : ℝ) : ℂ)) := by
+    intro j _
+    rw [show (1 : ℝ).toNNReal = 1 from by simp]
+    exact ProbabilityTheory.integral_exp_mul_I_sub_sq_gaussianReal_one (hm0 j) _
+  calc ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I -
+          ((truncQuad S R e m G ξ / 2 : ℝ) : ℂ)) ∂μ
+      = ∫ ξ, ∏ i, g i ⟪v i, ξ⟫ ∂μ :=
+        integral_congr_ae (Filter.Eventually.of_forall fun ξ => (hprod ξ).symm)
+    _ = ∏ i, ∫ t, g i t ∂gaussianReal 0 (sg i).toNNReal :=
+        MeasureTheory.integral_prod_comp_inner hμ.charFun_eq v sg hsg hvv g hg
+    _ = (∫ t, g none t ∂gaussianReal 0 (sg none).toNNReal) *
+          ∏ j : {j : κ // j ∈ G}, ∫ t, g (some j) t ∂gaussianReal 0 (sg (some j)).toNNReal :=
+        Fintype.prod_option _
+    _ = Complex.exp (-((s0 / 2 : ℝ) : ℂ)) *
+          ∏ j ∈ G, ((((Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+            Complex.exp (-((⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) : ℝ) : ℂ))) := by
+        rw [show (∫ t, g none t ∂gaussianReal 0 (sg none).toNNReal) =
+          ∫ t : ℝ, Complex.exp ((t : ℂ) * Complex.I) ∂gaussianReal 0 s0.toNNReal from rfl, hnone]
+        congr 1
+        rw [← Finset.prod_coe_sort G fun j => ((((Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+          Complex.exp (-((⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) : ℝ) : ℂ)))]
+        exact Finset.prod_congr rfl fun j _ => hsome j.1 (hG j.1 j.2)
+    _ = ((∏ j ∈ G, (Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+          Complex.exp (-(((⟪Cov x, x⟫ -
+            ∑ j ∈ G, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 : ℝ) : ℂ)) := by
+        rw [Finset.prod_mul_distrib, ← Complex.exp_sum, Complex.ofReal_prod]
+        rw [mul_comm (Complex.exp (-((s0 / 2 : ℝ) : ℂ))), mul_assoc, ← Complex.exp_add]
+        congr 1
+        have hsum : ∑ j ∈ G, (-((⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) : ℝ) : ℂ)) =
+            -((∑ j ∈ G, ⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) : ℝ) : ℂ) := by
+          rw [Complex.ofReal_sum, Finset.sum_neg_distrib]
+        have hreal : ∑ j ∈ G, ⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) + s0 / 2 =
+            (⟪Cov x, x⟫ - ∑ j ∈ G, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 := by
+          have hterm : ∀ j ∈ G, ⟪R x, e j⟫ ^ 2 / (2 * (1 + m j)) =
+              (⟪R x, e j⟫ ^ 2 - (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 := by
+            intro j _
+            have h1 : (0 : ℝ) < 1 + m j := by linarith [hm0 j]
+            field_simp
+            ring
+          rw [Finset.sum_congr rfl hterm, ← Finset.sum_div, Finset.sum_sub_distrib, hs0]
+          ring
+        rw [hsum]
+        congr 1
+        rw [← hreal]
+        push_cast
+        ring
+
+end FiniteIntegral
+
 end OperatorRidgelet
