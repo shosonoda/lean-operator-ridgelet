@@ -14,6 +14,8 @@ import OperatorRidgelet.Examples.Convolution
 import OperatorRidgelet.Examples.ConvolutionFourier
 import OperatorRidgelet.Examples.ConvolutionSpectrum
 import OperatorRidgelet.Examples.BesselCovariance
+import OperatorRidgelet.Examples.DirichletSineBasis
+import OperatorRidgelet.Examples.DirichletSpectral
 import OperatorRidgelet.Transform.Isometry
 import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
@@ -1325,7 +1327,8 @@ theorem ex_dirichlet_iii :
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  `𝖦` is
 injective, positive, self-adjoint, and trace class. -/
 theorem ex_dirichlet_iv : IsTraceClassCovariance dirichletOperator := by
-  sorry
+  exact isTraceClassCovariance_dirichletOperator_of_basis
+    dirichletSineBasis dirichletSineBasis_apply
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  `𝖦` has
 infinite rank. -/
@@ -1361,14 +1364,14 @@ theorem ex_dirichlet_ix :
         (relu ⟪dirichletEigenfunction n, x⟫ - relu (-⟪dirichletEigenfunction n, x⟫))) •
           dirichletEigenfunction n)
       (dirichletOperator x) := by
-  sorry
+  exact hasSum_dirichletReLU_of_basis dirichletSineBasis dirichletSineBasis_apply
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  The
 `2N`-neuron truncation has error `‖𝖦x - 𝖦_N x‖ ≤ λ_{N+1} ‖x‖`, uniformly on bounded sets. -/
 theorem ex_dirichlet_x :
     ∀ (n : ℕ) (x : UnitL2),
       ‖dirichletOperator x - dirichletReLUTruncation n x‖ ≤ dirichletEigenvalue (n + 1) * ‖x‖ := by
-  sorry
+  exact norm_dirichletReLUTruncation_error_of_basis dirichletSineBasis dirichletSineBasis_apply
 
 /-- **Example [ex:dirichlet]** Dirichlet solution operator with a pointwise nonlinearity.  The
 truncation error is `O(N^{-2})`: `λ_{N+1} ≤ π⁻² (N+1)⁻²`. -/

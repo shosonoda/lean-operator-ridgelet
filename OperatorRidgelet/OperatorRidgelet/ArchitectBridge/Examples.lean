@@ -584,7 +584,7 @@ attribute [blueprint "ex:dirichlet-iii"
 
 attribute [blueprint "ex:dirichlet-iv"
   (statement := /-- $\mathsf G$ is injective, positive, self-adjoint, and trace class. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_iv
+  ] OperatorRidgelet.Paper.ex_dirichlet_iv
 
 attribute [blueprint "ex:dirichlet-v"
   (statement := /-- $\mathsf G$ has infinite rank. -/)
@@ -605,11 +605,11 @@ attribute [blueprint "ex:dirichlet-viii"
 attribute [blueprint "ex:dirichlet-ix"
   (statement := /-- $\mathsf Gx=\sum_n\lambda_ne_n[\operatorname{ReLU}(\langle
     e_n,x\rangle)-\operatorname{ReLU}(-\langle e_n,x\rangle)]$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_ix
+  ] OperatorRidgelet.Paper.ex_dirichlet_ix
 
 attribute [blueprint "ex:dirichlet-x"
   (statement := /-- The $2N$-neuron truncation has error at most $\lambda_{N+1}\|x\|$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_dirichlet_x
+  ] OperatorRidgelet.Paper.ex_dirichlet_x
 
 attribute [blueprint "ex:dirichlet-xi"
   (statement := /-- $\lambda_{N+1}\le\pi^{-2}(N+1)^{-2}=O(N^{-2})$. -/)]
