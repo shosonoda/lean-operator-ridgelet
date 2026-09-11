@@ -143,4 +143,75 @@ theorem inner_cov_left_unitCoordVec (hR : IsPositiveSqrt R Cov)
 
 end Coord
 
+/-! ### The truncated quadratic form -/
+
+section Truncation
+
+set_option linter.unusedSectionVars false
+
+variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+
+theorem unitCoordVec_eq_zero {j : κ} (hj : m j = 0) : unitCoordVec S R e m j = 0 := by
+  rw [unitCoordVec, hj, inv_zero, zero_smul]
+
+/-- The `F`-section `∑_{j ∈ F} ⟪t_j, ξ⟫ R u_j` of the expansion of `ξ`. -/
+def coordSum (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (F : Finset κ) (ξ : H) : H :=
+  ∑ j ∈ F, ⟪unitCoordVec S R e m j, ξ⟫ • R (e j)
+
+/-- The truncated quadratic form `∑_{j ∈ F} m_j ⟪t_j, ξ⟫²`. -/
+def truncQuad (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (F : Finset κ) (ξ : H) : ℝ :=
+  ∑ j ∈ F, m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2
+
+theorem inner_map_SR_right (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (j : κ)
+    (ξ : H) :
+    ⟪unitCoordVec S R e m j, ξ⟫ * ⟪S (R (e j)), ξ⟫ =
+      m j * ⟪unitCoordVec S R e m j, ξ⟫ ^ 2 := by
+  rcases eq_or_ne (m j) 0 with hj | hj
+  · rw [unitCoordVec_eq_zero hj, inner_zero_left, hj]
+    ring
+  · rw [map_SR_eq_smul_unit S R e m hj, real_inner_smul_left]
+    ring
+
+theorem inner_map_coordSum_self (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
+    (F : Finset κ) (ξ : H) :
+    ⟪S (coordSum S R e m F ξ), coordSum S R e m F ξ⟫ = truncQuad S R e m F ξ := by
+  simp only [coordSum, truncQuad, map_sum, map_smul, sum_inner, inner_sum, real_inner_smul_left,
+    real_inner_smul_right]
+  refine Finset.sum_congr rfl fun j hj => ?_
+  rw [Finset.sum_eq_single j]
+  · rw [inner_map_SR hR hM j (e j), real_inner_self_eq_norm_sq, e.orthonormal.1 j, one_pow,
+      mul_one]
+    ring
+  · intro i _ hij
+    rw [inner_map_SR hR hM i (e j), e.orthonormal.2 hij]
+    ring
+  · intro h
+    exact absurd hj h
+
+theorem inner_map_coordSum_right (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ)
+    (F : Finset κ) (ξ : H) :
+    ⟪S (coordSum S R e m F ξ), ξ⟫ = truncQuad S R e m F ξ := by
+  simp only [coordSum, truncQuad, map_sum, map_smul, sum_inner, real_inner_smul_left]
+  exact Finset.sum_congr rfl fun j _ => inner_map_SR_right S R e m j ξ
+
+theorem inner_map_sub_coordSum (hS : IsSelfAdjoint S) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) (F : Finset κ) (ξ : H) :
+    ⟪S (ξ - coordSum S R e m F ξ), ξ - coordSum S R e m F ξ⟫ =
+      ⟪S ξ, ξ⟫ - truncQuad S R e m F ξ := by
+  have hsym : ⟪S ξ, coordSum S R e m F ξ⟫ = ⟪S (coordSum S R e m F ξ), ξ⟫ :=
+    (hS.isSymmetric _ _).trans (real_inner_comm _ _)
+  rw [map_sub]
+  simp only [inner_sub_left, inner_sub_right]
+  rw [hsym, inner_map_coordSum_self hR hM, inner_map_coordSum_right S R e m]
+  ring
+
+theorem truncQuad_le (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) (F : Finset κ) (ξ : H) :
+    truncQuad S R e m F ξ ≤ ⟪S ξ, ξ⟫ := by
+  have h := hS0 (ξ - coordSum S R e m F ξ)
+  rw [inner_map_sub_coordSum hS hR hM] at h
+  linarith
+
+end Truncation
+
 end OperatorRidgelet
