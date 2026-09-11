@@ -562,6 +562,10 @@ theorem lem_hermite_totality_vi {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
     ∀ g : H → ℂ, MemLp g 2 μ →
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
         f =ᵐ[μ] g := by
+  -- `OperatorRidgelet.ae_eq_of_hermiteCoefficient_eq` proves this under the extra hypothesis
+  -- `Nontrivial H`, which is needed: on a trivial `H` there is no `ξ ≠ 0`, the hypothesis is
+  -- empty, and the conclusion fails.  (Theorem `thm:C`(iv)(e) is unaffected: there the
+  -- homogeneity of `ν` of degree `α > 0` rules out a trivial `H`.)
   sorry
 
 /-! ### Proposition `prop:coefficient-projection` -/
