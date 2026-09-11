@@ -817,8 +817,7 @@ theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTrace
   classical
   have hMsa : IsSelfAdjoint (R * S * R) := by
     show star (R * S * R) = R * S * R
-    rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, hR.isSelfAdjoint.star_eq,
-      ← mul_assoc]
+    rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, ← mul_assoc]
   have hM0 : ∀ y, 0 ≤ ⟪(R * S * R) y, y⟫ := fun y => by
     rw [inner_map_map_eq hR]; exact hS0 _
   have hex : ∃ (ι : Type) (b : HilbertBasis ι ℝ H) (w : ι → ℝ),
@@ -842,7 +841,7 @@ theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTrace
     exact Countable.of_equiv _ (Equiv.ofInjective _ hinj).symm
   have hdet : fredholmDet (R * S * R) = ∏' i, (1 + w i) := by
     rw [fredholmDet, dif_pos hex, fredholmDetAlong]
-    refine tsum_congr fun i => ?_
+    refine tprod_congr fun i => ?_
     rw [show hex.choose_spec.choose = e' from rfl, hw i, real_inner_smul_left,
       real_inner_self_eq_norm_sq, e'.orthonormal.1 i, one_pow, mul_one]
   rw [hdet]
