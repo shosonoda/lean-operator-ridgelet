@@ -5,6 +5,7 @@ import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Sampling.Spectral
 import OperatorRidgelet.Sampling.Universality
+import OperatorRidgelet.Sampling.VectorRates
 import OperatorRidgelet.Paper.Reconstruction
 
 /-!
@@ -514,17 +515,15 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
 `Y`-valued `Γ` whose law `p = |Γ|/V` has finite second moment, and every Borel probability
 measure `ζ` on `H` with `∫ ‖x‖² dζ < ∞`,
 `𝔼‖f_N − f‖²_{L²(ζ;Y)} ≤ (V²/N) ∫ ‖β(⟪a,·⟫ + c)‖²_{L²(ζ)} dp`. -/
-theorem cor_vector_rates_i_a [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℂ} {L : ℝ≥0}
+theorem cor_vector_rates_i_a [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
+    {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) (ζ : Measure H)
     [IsProbabilityMeasure ζ] (hζ : Integrable (fun x : H => ‖x‖ ^ 2) ζ) {N : ℕ} (hN : 0 < N) :
     ∫ θ, (∫ x, ‖polarSampledNetwork β Γ θ x - integralNetwork β Γ x‖ ^ 2 ∂ζ)
         ∂sampleLaw N (polarLaw Γ) ≤
       polarWeight Γ ^ 2 / N * ∫ θ, (∫ x, ‖β (⟪θ.1, x⟫ + θ.2)‖ ^ 2 ∂ζ) ∂polarLaw Γ := by
-  -- Requires the polar decomposition `Γ = h|Γ|` of a `Y`-valued measure, i.e. the
-  -- Radon–Nikodym theorem for Hilbert-space-valued measures, which Mathlib only provides for
-  -- signed and complex measures (`polarDensity Γ` is the junk value `0` otherwise).
-  sorry
+  exact integral_polarSampledNetwork_sq_le hβ Γ hM ζ hζ hN
 
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  The `L²(ζ;Y)` rate is explicit:
 `(V²/N) ∫ ‖β(⟪a,·⟫ + c)‖²_{L²(ζ)} dp ≤ (2V²/N)(|β(0)|² + Lip(β)² (1 + ∫ ‖x‖² dζ) M₂²)`. -/
@@ -535,7 +534,13 @@ theorem cor_vector_rates_i_b [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
     polarWeight Γ ^ 2 / N * ∫ θ, (∫ x, ‖β (⟪θ.1, x⟫ + θ.2)‖ ^ 2 ∂ζ) ∂polarLaw Γ ≤
       2 * polarWeight Γ ^ 2 / N *
         (‖β 0‖ ^ 2 + (L : ℝ) ^ 2 * (1 + ∫ x, ‖x‖ ^ 2 ∂ζ) * secondMoment (polarLaw Γ)) := by
-  sorry
+  by_cases h0 : totalVariation Γ = 0
+  · simp [polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+  · letI := isProbabilityMeasure_polarLaw Γ h0
+    have h := mul_le_mul_of_nonneg_left
+      (integral_integral_norm_ridge_sq_le hβ (polarLaw Γ) hM ζ hζ)
+      (show 0 ≤ polarWeight Γ ^ 2 / (N : ℝ) by positivity)
+    exact h.trans_eq (by ring)
 
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
 `𝔼‖f_N − f‖_{C(K;Y)} ≤ 2V 𝔑^Y_N(K; p, β)`, where `𝔑^Y_N` is the Rademacher complexity with the

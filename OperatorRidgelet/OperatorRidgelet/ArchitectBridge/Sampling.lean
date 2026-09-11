@@ -179,14 +179,14 @@ attribute [blueprint "cor:vector-rates-i-a"
   (statement := /-- For every Borel probability measure $\zeta$ on $H$ with
     $\int\|x\|^2\,\mathrm d\zeta<\infty$,
     $\mathbb E\|f_N-f\|^2_{L^2(\zeta;Y)}\le\frac{V^2}N\int
-    \|\beta(\langle a,\cdot\rangle+c)\|^2_{L^2(\zeta)}\,\mathrm dp$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_vector_rates_i_a
+    \|\beta(\langle a,\cdot\rangle+c)\|^2_{L^2(\zeta)}\,\mathrm dp$. -/)]
+  OperatorRidgelet.Paper.cor_vector_rates_i_a
 
 attribute [blueprint "cor:vector-rates-i-b"
   (statement := /-- $\frac{V^2}N\int\|\beta(\langle a,\cdot\rangle+c)\|^2_{L^2(\zeta)}\,
     \mathrm dp\le\frac{2V^2}N\bigl(|\beta(0)|^2+\operatorname{Lip}(\beta)^2
-    (1+\int\|x\|^2\,\mathrm d\zeta)M_2^2\bigr)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_vector_rates_i_b
+    (1+\int\|x\|^2\,\mathrm d\zeta)M_2^2\bigr)$. -/)]
+  OperatorRidgelet.Paper.cor_vector_rates_i_b
 
 attribute [blueprint "cor:vector-rates-ii-a"
   (statement := /-- For every compact $K$,

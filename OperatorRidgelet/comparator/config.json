@@ -269,7 +269,9 @@
         "OperatorRidgelet.Paper.thm_vector_valued_C_i_c",
         "OperatorRidgelet.Paper.thm_vector_valued_C_i_d",
         "OperatorRidgelet.Paper.thm_vector_valued_C_ii_a",
-        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_b"
+        "OperatorRidgelet.Paper.thm_vector_valued_C_ii_b",
+        "OperatorRidgelet.Paper.cor_vector_rates_i_a",
+        "OperatorRidgelet.Paper.cor_vector_rates_i_b"
     ],
     "permitted_axioms": [
         "propext",
