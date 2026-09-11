@@ -2,6 +2,7 @@ import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.ToMathlib.MeasurePi
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
+import OperatorRidgelet.ToMathlib.VectorMeasureRadonNikodym
 import OperatorRidgelet.ToMathlib.Symmetrization
 import OperatorRidgelet.ToMathlib.IntegralSqrt
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
@@ -121,27 +122,29 @@ theorem ae_sampleLaw_forall {Θ : Type*} [MeasurableSpace Θ] {N : ℕ} {p : Mea
 section Polar
 
 variable {Θ : Type*} [MeasurableSpace Θ]
+variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z]
 
 /-- The specification of `polarDensity`: for a complex measure of finite variation the polar
 decomposition exists, so `‖h‖ = 1` `|Γ|`-almost everywhere and `Γ = |Γ|.withDensityᵥ h`. -/
-theorem polarDensity_spec (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation] :
+theorem polarDensity_spec (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     (∀ᵐ θ ∂Γ.variation, ‖polarDensity Γ θ‖ = 1) ∧
       Γ = Γ.variation.withDensityᵥ (polarDensity Γ) := by
-  have h := ComplexMeasure.exists_withDensityᵥ_variation_eq Γ
+  letI := InnerProductSpace.rclikeToReal ℂ Z
+  have h := VectorMeasure.exists_withDensityᵥ_variation_eq Γ
   unfold polarDensity
   rw [dif_pos h]
   exact h.choose_spec
 
-theorem ae_norm_polarDensity_eq_one (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation] :
+theorem ae_norm_polarDensity_eq_one (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     ∀ᵐ θ ∂Γ.variation, ‖polarDensity Γ θ‖ = 1 :=
   (polarDensity_spec Γ).1
 
-theorem withDensityᵥ_polarDensity (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation] :
+theorem withDensityᵥ_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     Γ.variation.withDensityᵥ (polarDensity Γ) = Γ :=
   (polarDensity_spec Γ).2.symm
 
 /-- The phase of a nonzero complex measure is integrable against the variation. -/
-theorem integrable_polarDensity (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation]
+theorem integrable_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation]
     (hΓ : Γ ≠ 0) : Integrable (polarDensity Γ) Γ.variation := by
   by_contra h
   apply hΓ
@@ -211,16 +214,16 @@ theorem variation_eq_smul_polarLaw (Γ : VectorMeasure Θ Y) [IsFiniteMeasure Γ
 theorem polarLaw_absolutelyContinuous (Γ : VectorMeasure Θ Y) : polarLaw Γ ≪ Γ.variation :=
   Measure.smul_absolutelyContinuous
 
-theorem ae_polarLaw_norm_polarDensity_eq_one (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation] :
+theorem ae_polarLaw_norm_polarDensity_eq_one (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 :=
   Measure.ae_smul_measure (ae_norm_polarDensity_eq_one Γ) _
 
-theorem aestronglyMeasurable_polarDensity (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation]
+theorem aestronglyMeasurable_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation]
     (hΓ : Γ ≠ 0) : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
   (integrable_polarDensity Γ hΓ).aestronglyMeasurable.mono_ac (polarLaw_absolutelyContinuous Γ)
 
 /-- The variation measure with the density `‖h‖ₑ = 1` is the variation itself. -/
-theorem withDensity_enorm_polarDensity (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation] :
+theorem withDensity_enorm_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     (Γ.variation.withDensity fun θ => ‖polarDensity Γ θ‖ₑ) = Γ.variation := by
   rw [withDensity_congr_ae (g := 1) ?_, withDensity_one]
   filter_upwards [ae_norm_polarDensity_eq_one Γ] with θ hθ
@@ -233,10 +236,11 @@ end Polar
 section IntegralNetwork
 
 variable {Θ : Type*} [MeasurableSpace Θ]
+variable {Z : Type*} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] [CompleteSpace Z]
 
 /-- `∫ f dΓ = V ∫ f h dp` for a nonzero complex measure `Γ = h |Γ|` and `f` integrable
 against `p = |Γ|/V`. -/
-theorem vectorIntegral_eq_integral_polarLaw (Γ : ComplexMeasure Θ) [IsFiniteMeasure Γ.variation]
+theorem vectorIntegral_eq_integral_polarLaw (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation]
     (h0 : totalVariation Γ ≠ 0) {f : Θ → ℂ} (hint : Integrable f (polarLaw Γ)) :
     ∫ᵛ θ, f θ ∂[ContinuousLinearMap.lsmul ℝ ℂ; Γ] =
       polarWeight Γ • ∫ θ, f θ • polarDensity Γ θ ∂polarLaw Γ := by
@@ -252,7 +256,7 @@ theorem vectorIntegral_eq_integral_polarLaw (Γ : ComplexMeasure Θ) [IsFiniteMe
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
 /-- `S_β[Γ](x) = V ∫ β(⟪a, x⟫ + c) h(θ) p(dθ)` for a nonzero complex measure `Γ = h |Γ|`. -/
-theorem integralNetwork_eq_integral_polarLaw (β : ℝ → ℂ) (Γ : ComplexMeasure (H × ℝ))
+theorem integralNetwork_eq_integral_polarLaw (β : ℝ → ℂ) (Γ : VectorMeasure (H × ℝ) Z)
     [IsFiniteMeasure Γ.variation] (h0 : totalVariation Γ ≠ 0) {x : H}
     (hint : Integrable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) (polarLaw Γ)) :
     integralNetwork β Γ x =
