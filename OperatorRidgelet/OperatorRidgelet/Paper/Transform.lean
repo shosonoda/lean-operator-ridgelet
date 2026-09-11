@@ -1,6 +1,7 @@
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.FiniteDim.Defs
 import OperatorRidgelet.FiniteDim.Basic
+import OperatorRidgelet.FiniteDim.Reconstruction
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Transform.Basic
 import OperatorRidgelet.Transform.Mixture
@@ -945,7 +946,7 @@ theorem cor_finite_backprojection_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
         ((frameConst m α * admissibilityConst α ρ)⁻¹ : ℝ) *
           ∫ x, (admissibilityConst α ρ * frameRepresentative (directionMeasure m α) g x) *
             fracLaplacian ((m - α) / 2) φ x := by
-  sorry
+  exact finite_backprojection_reconstruction hα hαm p hp hpc f g hg ρ hρ
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, the multiplier is one and `k = (2π)^m`:
