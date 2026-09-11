@@ -176,7 +176,17 @@ theorem ex_closed_form_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
     ∀ p : H × ℝ, ridgelet μ ρ (gaussianTarget W) p =
       (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ * gaussianSmooth ρ (gaussianKappa S W p.1) p.2 :
         ℝ) : ℂ) := by
-  sorry
+  intro p
+  have hG : gaussFourier μ (gaussianTarget W) =
+      fun ξ => (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-((⟪gaussianTargetResolvent S W ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
+    funext ξ
+    exact gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM hμ ξ
+  rw [ridgelet_eq_coefficientFormula' μ ρ hμ.aemeasurable_inner
+      (integrable_gaussianTarget W hW0 μ), hG,
+    coefficientFormula_gaussianQuadratic ρ (gaussianTargetResolvent S W)
+      (inner_gaussianTargetResolvent_nonneg hQ.inner_nonneg hW hW0 hS hM) _ p]
+  rfl
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  In particular
 `f_W ∈ 𝒟_α` for every `α > 0`. -/

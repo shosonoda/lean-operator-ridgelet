@@ -1,6 +1,7 @@
 import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Reconstruction.Basic
+import OperatorRidgelet.ToMathlib.GaussianTilt
 
 /-!
 # The Gaussian target `f_W` of Example `ex:closed-form`
@@ -66,6 +67,14 @@ theorem inner_gaussianTargetResolvent_ge {Q W S : H →L[ℝ] H} (hW : IsSelfAdj
     (ξ : H) :
     (1 + ‖S * W * S‖)⁻¹ * ⟪Q ξ, ξ⟫ ≤ ⟪gaussianTargetResolvent S W ξ, ξ⟫ :=
   inner_cov_le_resolventForm hW hW0 hS hM ξ
+
+/-- `S_W` is a positive operator. -/
+theorem inner_gaussianTargetResolvent_nonneg {Q W S : H →L[ℝ] H} (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫)
+    (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hS : IsPositiveSqrt S Q)
+    (hM : HasSummableTrace (S * W * S)) (ξ : H) :
+    0 ≤ ⟪gaussianTargetResolvent S W ξ, ξ⟫ :=
+  le_trans (mul_nonneg (by positivity) (hQ0 ξ))
+    (inner_gaussianTargetResolvent_ge hW hW0 hS hM ξ)
 
 /-- **Example `ex:closed-form`(i)**: `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}`. -/
 theorem gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q)
@@ -176,5 +185,101 @@ theorem isRegularAlongRays_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H}
   exact isRegularAlongRays_of_gaussian_decay ν hQ.inner_nonneg hdecay
     (gaussianTargetResolvent S W) (θ := (1 + ‖S * W * S‖)⁻¹) (by positivity)
     (inner_gaussianTargetResolvent_ge hW hW0 hS hM) ℓ (fun i => i.elim0) q hI hI0
+
+/-! ### The coefficient formula of a Gaussian spectral density -/
+
+section OneDimensional
+
+open ProbabilityTheory
+
+omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] [CompleteSpace H]
+
+/-- The inverse Fourier transform of `ρ̂(ω) e^{-vω²/2}` is the Gaussian smoothing `ρ * φ_v`:
+the one-dimensional slice-as-coefficient identity for the law `𝒩(0,v)`. -/
+theorem twoPi_inv_integral_filterFourier_mul_gaussian (ρ : SchwartzMap ℝ ℝ) {v : ℝ}
+    (hv : 0 ≤ v) (c : ℝ) :
+    ((2 * Real.pi)⁻¹ : ℝ) *
+        ∫ ω : ℝ, filterFourier ρ ω * ((Real.exp (-(v * ω ^ 2) / 2) : ℝ) : ℂ) *
+          Complex.exp ((ω * c : ℝ) * Complex.I) =
+      ((gaussianSmooth ρ v c : ℝ) : ℂ) := by
+  classical
+  have hvv : ((v.toNNReal : ℝ≥0) : ℝ) = v := Real.coe_toNNReal v hv
+  have hinner : ∀ x a : ℝ, ⟪x, a⟫ = x * a := fun x a => by
+    first
+    | rfl
+    | simp [RCLike.inner_apply, mul_comm]
+  have hcoord : ∀ a : ℝ, AEMeasurable (fun x : ℝ => ⟪x, a⟫)
+      (gaussianReal 0 v.toNNReal) := by
+    intro a
+    have h : (fun x : ℝ => ⟪x, a⟫) = fun x : ℝ => x * a := by
+      funext x; exact hinner x a
+    rw [h]
+    exact (measurable_id.mul_const a).aemeasurable
+  have hkey := congrFun (ridgelet_eq_coefficientFormula' (gaussianReal 0 v.toNNReal) ρ hcoord
+    (f := fun _ : ℝ => (1 : ℂ)) (integrable_const 1)) (1, c)
+  -- the left-hand side is the Gaussian smoothing
+  have hL : ridgelet (gaussianReal 0 v.toNNReal) ρ (fun _ : ℝ => (1 : ℂ)) (1, c) =
+      ((gaussianSmooth ρ v c : ℝ) : ℂ) := by
+    have h1 : ridgelet (gaussianReal 0 v.toNNReal) ρ (fun _ : ℝ => (1 : ℂ)) (1, c) =
+        ((∫ x : ℝ, ρ (c + x) ∂gaussianReal 0 v.toNNReal : ℝ) : ℂ) := by
+      rw [← integral_complex_ofReal]
+      refine integral_congr_ae (Eventually.of_forall fun x => ?_)
+      show (1 : ℂ) * (ρ (⟪(1 : ℝ), x⟫ + c) : ℂ) = ((ρ (c + x) : ℝ) : ℂ)
+      rw [one_mul, hinner, one_mul, add_comm]
+    rw [h1, integral_comp_add_gaussianReal _ ρ.continuous c]
+    rfl
+  -- the right-hand side is the Fourier integral
+  have hc : ∀ ω : ℝ, gaussFourier (gaussianReal 0 v.toNNReal) (fun _ : ℝ => (1 : ℂ)) (-ω) =
+      ((Real.exp (-(v * ω ^ 2) / 2) : ℝ) : ℂ) := by
+    intro ω
+    rw [gaussFourier_one, neg_neg, charFun_gaussianReal, hvv, Complex.ofReal_exp]
+    congr 1
+    push_cast
+    ring
+  have hR : coefficientFormula ρ (gaussFourier (gaussianReal 0 v.toNNReal)
+      (fun _ : ℝ => (1 : ℂ))) (1, c) =
+      ((2 * Real.pi)⁻¹ : ℝ) *
+        ∫ ω : ℝ, filterFourier ρ ω * ((Real.exp (-(v * ω ^ 2) / 2) : ℝ) : ℂ) *
+          Complex.exp ((ω * c : ℝ) * Complex.I) := by
+    rw [coefficientFormula]
+    congr 1
+    refine integral_congr_ae (Eventually.of_forall fun ω => ?_)
+    show filterFourier ρ ω *
+        gaussFourier (gaussianReal 0 v.toNNReal) (fun _ : ℝ => (1 : ℂ)) (-(ω • (1 : ℝ))) *
+        Complex.exp ((ω * c : ℝ) * Complex.I) =
+      filterFourier ρ ω * ((Real.exp (-(v * ω ^ 2) / 2) : ℝ) : ℂ) *
+        Complex.exp ((ω * c : ℝ) * Complex.I)
+    rw [show -(ω • (1 : ℝ)) = -ω by simp, hc ω]
+  rw [hR] at hkey
+  rw [← hkey, hL]
+
+end OneDimensional
+
+/-- The coefficient formula of a Gaussian spectral density `d e^{-⟪Tξ,ξ⟫/2}` is
+`d (ρ * φ_{⟪Ta,a⟫})(c)`. -/
+theorem coefficientFormula_gaussianQuadratic (ρ : SchwartzMap ℝ ℝ) (T : H →L[ℝ] H)
+    (hT0 : ∀ ξ, 0 ≤ ⟪T ξ, ξ⟫) (d : ℝ) (p : H × ℝ) :
+    coefficientFormula ρ (fun ξ => ((d : ℝ) : ℂ) *
+        Complex.exp (-((⟪T ξ, ξ⟫ / 2 : ℝ) : ℂ))) p =
+      ((d * gaussianSmooth ρ ⟪T p.1, p.1⟫ p.2 : ℝ) : ℂ) := by
+  obtain ⟨a, c⟩ := p
+  have hq : ∀ ω : ℝ, ⟪T (-(ω • a)), -(ω • a)⟫ = ⟪T a, a⟫ * ω ^ 2 := by
+    intro ω
+    rw [map_neg, map_smul, inner_neg_neg, real_inner_smul_left, real_inner_smul_right]
+    ring
+  have hrw : ∀ ω : ℝ, filterFourier ρ ω *
+      (((d : ℝ) : ℂ) * Complex.exp (-((⟪T (-(ω • a)), -(ω • a)⟫ / 2 : ℝ) : ℂ))) *
+      Complex.exp ((ω * c : ℝ) * Complex.I) =
+      ((d : ℝ) : ℂ) * (filterFourier ρ ω *
+        ((Real.exp (-(⟪T a, a⟫ * ω ^ 2) / 2) : ℝ) : ℂ) *
+        Complex.exp ((ω * c : ℝ) * Complex.I)) := by
+    intro ω
+    rw [hq ω, Complex.ofReal_exp]
+    push_cast
+    ring
+  rw [coefficientFormula]
+  simp only [hrw]
+  rw [integral_const_mul, ← mul_assoc, mul_comm (((2 * Real.pi)⁻¹ : ℝ) : ℂ) ((d : ℝ) : ℂ),
+    mul_assoc, twoPi_inv_integral_filterFourier_mul_gaussian ρ (hT0 a) c, ← Complex.ofReal_mul]
 
 end OperatorRidgelet
