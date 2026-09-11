@@ -148,4 +148,24 @@ theorem integral_abs_rpow_mul_exp_neg_sq {s : ℝ} (hs : -1 < s) :
   rw [e1, e2, Real.rpow_two]
   field_simp
 
+/-- An absolute Gaussian moment is integrable exactly when its exponent exceeds `-1`. -/
+theorem integrable_abs_rpow_mul_exp_neg_sq_iff (s : ℝ) :
+    Integrable (fun x : ℝ => |x| ^ s * Real.exp (-x ^ 2)) ↔ -1 < s := by
+  constructor
+  · intro h
+    apply (intervalIntegral.integrableOn_Ioo_rpow_iff (s := s) zero_lt_one).mp
+    apply (h.integrableOn.const_mul (Real.exp 1)).mono'
+      (measurable_id.pow_const s).aestronglyMeasurable
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with x hx
+    simp only [id_eq]
+    rw [Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hx.1 s), abs_of_pos hx.1]
+    have he : 1 ≤ Real.exp 1 * Real.exp (-x ^ 2) := by
+      rw [← Real.exp_add, Real.one_le_exp_iff]
+      nlinarith [hx.1, hx.2]
+    nlinarith [Real.rpow_pos_of_pos hx.1 s]
+  · intro hs
+    apply Integrable.of_integral_ne_zero
+    rw [integral_abs_rpow_mul_exp_neg_sq hs]
+    exact (Real.Gamma_pos_of_pos (by linarith)).ne'
+
 end Real

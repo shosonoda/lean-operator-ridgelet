@@ -230,8 +230,8 @@ attribute [blueprint "cor:relu-admissible-i"
     tested against $\varphi$, the finite part
     $\lim_{\varepsilon\downarrow0}\bigl(\int_{|\omega|>\varepsilon}\varphi(\omega)\omega^{-2}\,
     \mathrm d\omega-2\varphi(0)/\varepsilon\bigr)$ equals
-    $-\langle\widehat{\operatorname{ReLU}},\varphi\rangle-i\pi\varphi'(0)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_relu_admissible_i
+    $-\langle\widehat{\operatorname{ReLU}},\varphi\rangle-i\pi\varphi'(0)$. -/)]
+  OperatorRidgelet.Paper.cor_relu_admissible_i
 
 attribute [blueprint "cor:relu-admissible-ii"
   (statement := /-- $\widehat{\operatorname{ReLU}}=-\omega^{-2}$ away from the origin. -/)]

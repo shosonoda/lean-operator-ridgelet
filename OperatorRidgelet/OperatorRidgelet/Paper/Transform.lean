@@ -1,5 +1,6 @@
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.FiniteDim.Defs
+import OperatorRidgelet.FiniteDim.Basic
 import OperatorRidgelet.Filters.Defs
 import OperatorRidgelet.Transform.Basic
 import OperatorRidgelet.Transform.Mixture
@@ -7,6 +8,7 @@ import OperatorRidgelet.Transform.Plancherel
 import OperatorRidgelet.Transform.Gaussian
 import OperatorRidgelet.ToMathlib.Logic
 import OperatorRidgelet.ToMathlib.GaussianFourier
+import OperatorRidgelet.Filters.Admissible
 
 /-!
 # Statements of Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, G, H, I
@@ -863,6 +865,8 @@ theorem lem_mixture_character_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[�
 
 section FiniteDim
 
+set_option linter.unusedVariables false
+
 open OperatorRidgelet.FiniteDim
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  If
@@ -874,7 +878,15 @@ theorem cor_finite_backprojection_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : 
     (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
     (hg : ∀ x, g x = f x * p x) :
     hf.toLp f ∈ spectralCore (densityMeasure p) (directionMeasure m α) := by
-  sorry
+  have hG : gaussFourier (densityMeasure p) (hf.toLp f) = gaussFourier (densityMeasure p) f := by
+    funext ξ
+    unfold gaussFourier
+    apply integral_congr_ae
+    filter_upwards [hf.coeFn_toLp] with x hx
+    rw [hx]
+  have hgf : (fun x => f x * (p x : ℂ)) = g := funext fun x => (hg x).symm
+  rw [mem_spectralCore_iff, hG, gaussFourier_densityMeasure p (fun x => (hp x).le) hpc, hgf]
+  exact memLp_fourier_directionMeasure hα hαm g
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  The
 representative of the frame operator against the pivot measure is the Riesz potential
@@ -887,7 +899,7 @@ theorem cor_finite_backprojection_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
     (hg : ∀ x, g x = f x * p x) :
     ∀ x, frameRepresentative (directionMeasure m α) g x =
       frameConst m α * fracLaplacian (-((m - α) / 2)) g x := by
-  sorry
+  exact frameRepresentative_eq_fracLaplacian hαm g
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  For a
 band-pass `ρ`, the synthesis `S_ρ R_ρ f`, i.e. the functional `h ↦ ⟨R_ρ f, R_ρ h⟩_{L²(λ_α)}` on
@@ -904,7 +916,19 @@ theorem cor_finite_backprojection_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm 
         admissibilityConst α ρ *
           ∫ x, frameRepresentative (directionMeasure m α) g x * (starRingEnd ℂ) (h x)
             ∂densityMeasure p := by
-  sorry
+  intro h hh
+  have hgf : (fun x => f x * (p x : ℂ)) = g := funext fun x => (hg x).symm
+  have hG : gaussFourier (densityMeasure p) f = fourier g := by
+    rw [gaussFourier_densityMeasure p (fun x => (hp x).le) hpc, hgf]
+  have hGf : MemLp (gaussFourier (densityMeasure p) f) 2 (directionMeasure m α) := by
+    rw [hG]
+    exact memLp_fourier_directionMeasure hα hαm g
+  rw [integral_ridgelet_mul_conj (densityMeasure p) (isHomogeneous_directionMeasure m α)
+    (hρ.isAdmissible α) (hρ.isAdmissible α) (hf.integrable one_le_two) hf
+    ((Lp.memLp h).integrable one_le_two) (Lp.memLp h) hGf hh,
+    crossAdmissibilityConst_self, integral_frameRepresentative_mul_conj _ _
+      (integrable_fourier_directionMeasure hα hαm g) ((Lp.memLp h).integrable one_le_two)]
+  simp only [spectralInner, hG]
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  The
 distributional reconstruction `f = p^{-1} (k_{m,α} C^{(α)}_ρ)^{-1} (-Δ)^{(m-α)/2} S_ρ R_ρ f`,
@@ -932,7 +956,8 @@ theorem cor_finite_backprojection_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x
     (f : Euclid m → ℂ) (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
     (hg : ∀ x, g x = f x * p x) :
     ∀ x, frameRepresentative volume g x = ((2 * Real.pi) ^ m : ℝ) * (f x * p x) := by
-  sorry
+  intro x
+  rw [frameRepresentative_volume, hg]
 
 /-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, `S_ρ R_ρ f` is represented against the pivot measure by
@@ -947,7 +972,30 @@ theorem cor_finite_backprojection_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ 
           ∂parameterMeasure (volume : Measure (Euclid m)) =
         ∫ x, (((2 * Real.pi) ^ m * admissibilityConst m ρ : ℝ) : ℂ) * (f x * p x) *
           (starRingEnd ℂ) (h x) ∂densityMeasure p := by
-  sorry
+  intro h hh
+  have hgf : (fun x => f x * (p x : ℂ)) = g := funext fun x => (hg x).symm
+  have hG : gaussFourier (densityMeasure p) f = fourier g := by
+    rw [gaussFourier_densityMeasure p (fun x => (hp x).le) hpc, hgf]
+  have hfun : (fourierSchwartz g : Euclid m → ℂ) = fourier g :=
+    funext (fourierSchwartz_apply g)
+  have hGf : MemLp (gaussFourier (densityMeasure p) f) 2 volume := by
+    rw [hG, ← hfun]
+    exact (fourierSchwartz g).memLp 2
+  have hGint : Integrable (fourier g) volume := by
+    rw [← hfun]
+    exact (fourierSchwartz g).integrable
+  rw [integral_ridgelet_mul_conj (densityMeasure p) (isHomogeneous_volume m)
+    (hρ.isAdmissible m) (hρ.isAdmissible m) (hf.integrable one_le_two) hf
+    ((Lp.memLp h).integrable one_le_two) (Lp.memLp h) hGf hh,
+    crossAdmissibilityConst_self]
+  simp only [spectralInner, hG]
+  rw [← integral_frameRepresentative_mul_conj _ _ hGint ((Lp.memLp h).integrable one_le_two),
+    ← integral_const_mul]
+  apply integral_congr_ae
+  filter_upwards with x
+  rw [frameRepresentative_volume, hg]
+  push_cast
+  ring
 
 end FiniteDim
 
@@ -1084,6 +1132,7 @@ theorem prop_dilation_obstruction_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H �
   rw [prop_dilation_obstruction_i_c hH hW e w hw hWe γ hγ t ht] at h1
   exact one_ne_zero h1
 
+set_option linter.unusedVariables false in
 /-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  For a bounded Borel `r`
 with `{r ≠ 0}` of positive Lebesgue measure, no finite complex Borel measure `Γ = h m` on
 `H × ℝ` (a finite measure `m` with an integrable density `h`) has bias slices
@@ -1097,7 +1146,75 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
       ∀ᵐ ω ∂(volume : Measure ℝ), ω ≠ 0 → ∀ E : Set H, MeasurableSet E →
         ∫ q in E ×ˢ Set.univ, Complex.exp ((ω * q.2 : ℝ) * Complex.I) * h q ∂m =
           (r ω : ℂ) * (((γW.map fun a => ω⁻¹ • a) E).toReal : ℂ) := by
-  sorry
+  rintro ⟨m, hm, h, hh, hslices⟩
+  letI := hm
+  letI := hγW.isProbabilityMeasure
+  let ν : Measure H := m.map Prod.fst
+  have hν : IsFiniteMeasure ν := Measure.isFiniteMeasure_map m Prod.fst
+  let γ : ℝ → Measure H := fun t => γW.map fun a => Real.sqrt t • a
+  have hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t) := by
+    intro t ht
+    have hg := hγW.map_smul_sqrt (s := t / 2) (by positivity)
+    convert hg using 1 <;> congr 2 <;> ring
+  let S : Set ℝ := {t | 0 < ν (strongLawSet e w t)}
+  have hS : S.Countable :=
+    Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
+      (prop_dilation_obstruction_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_dilation_obstruction_i_b hH hW e w hw hWe t t' htt')
+  let B : Set ℝ := (fun t => (Real.sqrt t)⁻¹) '' S ∪
+    (fun t => -(Real.sqrt t)⁻¹) '' S
+  have hB : B.Countable := (hS.image _).union (hS.image _)
+  have hB0 : volume B = 0 := hB.measure_zero volume
+  have hzero : ∀ᵐ ω : ℝ ∂volume, ω ≠ 0 := by
+    rw [ae_iff]
+    simp
+  have hrzero : ∀ᵐ ω : ℝ ∂volume, r ω = 0 := by
+    have hnotB : ∀ᵐ ω : ℝ ∂volume, ω ∉ B := by
+      rw [ae_iff]
+      simpa using hB0
+    filter_upwards [hslices, hzero, hnotB] with ω hω hω0 hωB
+    by_contra hrω
+    have ht : 0 < (ω⁻¹) ^ 2 := sq_pos_of_ne_zero (inv_ne_zero hω0)
+    have heq : γW.map (fun a => ω⁻¹ • a) = γ ((ω⁻¹) ^ 2) := by
+      haveI : IsProbabilityMeasure (γW.map fun a => ω⁻¹ • a) :=
+        Measure.isProbabilityMeasure_map (by fun_prop)
+      haveI := (hγ _ ht).isProbabilityMeasure
+      apply Measure.ext_of_charFun
+      funext ξ
+      rw [charFun_map_smul, hγW.charFun_eq, (hγ _ ht).charFun_eq]
+      congr 3
+      simp only [map_smul, real_inner_smul_left, real_inner_smul_right,
+        smul_apply]
+      ring
+    have hE := prop_dilation_obstruction_i_a hH hW e w hw hWe ((ω⁻¹) ^ 2)
+    have hmass : (γW.map fun a => ω⁻¹ • a) (strongLawSet e w ((ω⁻¹) ^ 2)) = 1 := by
+      rw [heq]
+      exact prop_dilation_obstruction_i_c hH hW e w hw hWe γ hγ _ ht
+    have hmem : (ω⁻¹) ^ 2 ∈ S := by
+      change 0 < ν (strongLawSet e w ((ω⁻¹) ^ 2))
+      by_contra hn
+      have hn0 := nonpos_iff_eq_zero.mp (not_lt.mp hn)
+      change m.map Prod.fst (strongLawSet e w ((ω⁻¹) ^ 2)) = 0 at hn0
+      rw [Measure.map_apply measurable_fst hE] at hn0
+      have hprod : m (strongLawSet e w ((ω⁻¹) ^ 2) ×ˢ Set.univ) = 0 := by
+        convert hn0 using 2
+        ext q
+        simp
+      have hs := hω hω0 _ hE
+      rw [setIntegral_measure_zero _ hprod, hmass] at hs
+      simp only [ENNReal.toReal_one, Complex.ofReal_one, mul_one] at hs
+      exact hrω (Complex.ofReal_eq_zero.mp hs.symm)
+    apply hωB
+    by_cases hωpos : 0 ≤ ω
+    · apply Set.mem_union_left
+      refine ⟨(ω⁻¹) ^ 2, hmem, ?_⟩
+      simp [Real.sqrt_sq_eq_abs, abs_of_nonneg hωpos]
+    · apply Set.mem_union_right
+      refine ⟨(ω⁻¹) ^ 2, hmem, ?_⟩
+      simp [Real.sqrt_sq_eq_abs, abs_of_neg (lt_of_not_ge hωpos)]
+  have hrnull : volume {ω : ℝ | r ω ≠ 0} = 0 := ae_iff.mp hrzero
+  rw [hrnull] at hr0
+  exact lt_irrefl _ hr0
 
 /-! ### Theorem `thm:general-weights` -/
 
@@ -1345,11 +1462,6 @@ theorem ex_mexican_hat_ii :
     field_simp
   rw [h2π]
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
-`α`-admissible exactly for `α < 5`. -/
-theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
-  sorry
-
 /-- **Example [ex:mexican-hat]** Mexican hat.  For `0 < α < 5`,
 `C^{(α)}_{ρ_MH} = Γ((5-α)/2)`. -/
 theorem ex_mexican_hat_iv :
@@ -1382,6 +1494,40 @@ theorem ex_mexican_hat_iv :
   have h5 : (4 - α + 1) / 2 = (5 - α) / 2 := by ring
   rw [h5]
   field_simp
+
+/-- **Example [ex:mexican-hat]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
+`α`-admissible exactly for `α < 5`. -/
+theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
+  intro α hα
+  have h0 : ∀ᵐ ω : ℝ ∂volume, ω ≠ 0 := by
+    rw [ae_iff]
+    simp
+  have hae : (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) =ᵐ[volume]
+      fun ω => (2 * Real.pi) * (|ω| ^ (4 - α) * Real.exp (-ω ^ 2)) := by
+    filter_upwards [h0] with ω hω
+    rw [ex_mexican_hat_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
+      abs_of_nonneg (Real.sqrt_nonneg _), abs_of_pos (Real.exp_pos _), abs_pow, mul_pow, mul_pow,
+      Real.sq_sqrt (by positivity), ← pow_mul, ← Real.exp_nat_mul]
+    have e1 : (|ω| ^ (2 * 2) : ℝ) = |ω| ^ (4 : ℝ) := by
+      rw [← Real.rpow_natCast]
+      norm_num
+    have e2 : |ω| ^ (4 : ℝ) * |ω| ^ (-α) = |ω| ^ (4 - α) := by
+      rw [← Real.rpow_add (abs_pos.mpr hω)]
+      ring_nf
+    have e3 : Real.exp (((2 : ℕ) : ℝ) * (-ω ^ 2 / 2)) = Real.exp (-ω ^ 2) := by
+      congr 1
+      push_cast
+      ring
+    rw [e1, e3, ← e2]
+    ring
+  have hint : Integrable (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) ↔
+      α < 5 := by
+    rw [integrable_congr hae, integrable_const_mul_iff (isUnit_iff_ne_zero.mpr
+      (by positivity : (2 * Real.pi) ≠ 0)),
+      Real.integrable_abs_rpow_mul_exp_neg_sq_iff]
+    constructor <;> intro h <;> linarith
+  exact ⟨fun h => hint.mp h.integrable, fun h =>
+    ⟨hint.mpr h, by rw [ex_mexican_hat_iv α hα h]; exact Real.Gamma_pos_of_pos (by linarith)⟩⟩
 
 /-- **Example [ex:mexican-hat]** Mexican hat.  In particular `C^{(1)}_{ρ_MH} = 1`. -/
 theorem ex_mexican_hat_v : admissibilityConst 1 mexicanHat = 1 := by
