@@ -391,4 +391,57 @@ theorem IsCenteredGaussian.ae_mem_closure_range {Cov R : H →L[ℝ] H}
 
 end Support
 
+/-! ### The residual coordinate -/
+
+section Residual
+
+set_option linter.unusedSectionVars false
+
+variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+
+/-- The residual coordinate `x - ∑_{j ∈ G} ⟪R x, u_j⟫ t_j`; it is `Cov`-orthogonal to every
+`t_j` with `j ∈ G`. -/
+def residCoord (S R : H →L[ℝ] H) (e : HilbertBasis κ ℝ H) (m : κ → ℝ) (G : Finset κ) (x : H) :
+    H :=
+  x - ∑ j ∈ G, ⟪R x, e j⟫ • unitCoordVec S R e m j
+
+theorem inner_residCoord (G : Finset κ) (x ξ : H) :
+    ⟪residCoord S R e m G x, ξ⟫ +
+        ∑ j ∈ G, ⟪R x, e j⟫ * ⟪unitCoordVec S R e m j, ξ⟫ = ⟪x, ξ⟫ := by
+  simp only [residCoord, inner_sub_left, sum_inner, real_inner_smul_left]
+  ring
+
+theorem inner_cov_residCoord_unitCoordVec (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {G : Finset κ} (hG : ∀ j ∈ G, m j ≠ 0) (x : H)
+    {j : κ} (hjG : j ∈ G) : ⟪Cov (residCoord S R e m G x), unitCoordVec S R e m j⟫ = 0 := by
+  simp only [residCoord, map_sub, inner_sub_left, map_sum, map_smul, sum_inner,
+    real_inner_smul_left]
+  rw [inner_cov_left_unitCoordVec hR hM (hG j hjG) x, Finset.sum_eq_single j]
+  · rw [inner_cov_unitCoordVec_self hR hM (hG j hjG), mul_one, sub_self]
+  · intro i hi hij
+    rw [inner_cov_unitCoordVec_ne hR hM (hG i hi) (hG j hjG) hij, mul_zero]
+  · intro h
+    exact absurd hjG h
+
+theorem inner_right_residCoord {G : Finset κ} (x : H) {w : H}
+    (hw : ∀ j ∈ G, ⟪w, unitCoordVec S R e m j⟫ = 0) :
+    ⟪w, residCoord S R e m G x⟫ = ⟪w, x⟫ := by
+  have hz : ∀ j ∈ G, ⟪w, (⟪R x, e j⟫ : ℝ) • unitCoordVec S R e m j⟫ = 0 := fun j hj => by
+    rw [real_inner_smul_right, hw j hj, mul_zero]
+  rw [residCoord, inner_sub_right, inner_sum, Finset.sum_eq_zero hz, sub_zero]
+
+theorem inner_cov_residCoord_self (hCov : IsSelfAdjoint Cov) (hR : IsPositiveSqrt R Cov)
+    (hM : HasEigenbasis (R * S * R) e m) {G : Finset κ} (hG : ∀ j ∈ G, m j ≠ 0) (x : H) :
+    ⟪Cov (residCoord S R e m G x), residCoord S R e m G x⟫ =
+      ⟪Cov x, x⟫ - ∑ j ∈ G, ⟪R x, e j⟫ ^ 2 := by
+  rw [inner_right_residCoord x
+    (fun j hj => inner_cov_residCoord_unitCoordVec hR hM hG x hj),
+    ContinuousLinearMap.inner_map_comm hCov.isSymmetric _ x, residCoord, inner_sub_right,
+    inner_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun j hj => ?_
+  rw [real_inner_smul_right, inner_cov_left_unitCoordVec hR hM (hG j hj) x, sq]
+
+end Residual
+
 end OperatorRidgelet
