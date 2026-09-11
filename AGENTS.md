@@ -79,3 +79,21 @@ the index of its statements.
 - Every new statement is added to `paper.json` (`lean` list), `Challenge`, `Paper`, and
   `ArchitectBridge.lean` in the same change.
 - Commit messages describe the manuscript items touched (e.g. `Prove lem:fourier-slice`).
+
+## Resuming on another machine
+
+1. Clone this repository, install [elan](https://github.com/leanprover/elan), then in
+   `OperatorRidgelet/` run `lake exe cache get` followed by `lake build`. The only warnings should
+   be `declaration uses 'sorry'` from the statements that are still open, plus one harmless `ring`
+   message from a vendored file.
+2. `STATUS.md` says which manuscript items are verified. Regenerate it with
+   `python3 scripts/status.py > ../STATUS.md` from `OperatorRidgelet/`.
+3. To re-verify the proofs, build [comparator](https://github.com/leanprover/comparator) and
+   [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
+   `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
+   sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
+4. Unfinished work sits on branches: `lean/wp-y1` (the neural-operator layer examples) and
+   `lean/wp-v1` (the vector-valued extension). Their last commit titled `WIP` may not build; the
+   commit before it does. `lean/wp-f2` holds an older unverified batch of Section 7 material.
+5. Conventions for adding statements and proofs are above. Style conformance (line length,
+   docstring coverage) has been deferred to a single refactoring pass and is not yet done.
