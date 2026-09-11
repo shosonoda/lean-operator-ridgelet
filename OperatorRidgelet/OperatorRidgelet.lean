@@ -49,6 +49,7 @@ import OperatorRidgelet.Examples.DirichletOperator
 import OperatorRidgelet.Examples.LayerRidgelet
 import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
+import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
 import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
 import OperatorRidgelet.ToMathlib.FourierDilation
