@@ -52,4 +52,48 @@ theorem isStdGaussianCoord_inner_div {Q : H →L[ℝ] H} {μ : Measure H}
   rw [← hτ2]
   field_simp
 
+omit [OpensMeasurableSpace H] in
+/-- The Hermite coefficient `E_μ[f Heₙ(⟪x,ξ⟫/τ(ξ))]` is the coefficient of the
+one-dimensional expansion at the standard Gaussian coordinate `⟪x,ξ⟫/τ(ξ)`. -/
+theorem hermiteCoefficient_eq {Q : H →L[ℝ] H} (μ : Measure H) (f : H → ℂ) (ξ : H) (n : ℕ) :
+    hermiteCoefficient μ Q f ξ n =
+      ∫ x, f x * hermiteC n (⟪x, ξ⟫ / Real.sqrt ⟪Q ξ, ξ⟫) ∂μ := by
+  simp only [hermiteCoefficient, hermiteC, Polynomial.aeval_hermite_eq_eval_hermiteR]
+
+omit [OpensMeasurableSpace H] in
+/-- The entire extension `G_f(zξ)` is the pairing of `f` with the Gaussian generating function
+at the parameter `-i z τ(ξ)`. -/
+theorem hermiteExtension_eq {Q : H →L[ℝ] H} (μ : Measure H) (f : H → ℂ) {ξ : H}
+    (hpos : 0 < ⟪Q ξ, ξ⟫) (z : ℂ) :
+    hermiteExtension μ Q f ξ z =
+      ∫ x, f x * gaussGen (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ)))
+        (⟪x, ξ⟫ / Real.sqrt ⟪Q ξ, ξ⟫) ∂μ := by
+  set τ := Real.sqrt ⟪Q ξ, ξ⟫ with hτ
+  have hτpos : 0 < τ := Real.sqrt_pos.mpr hpos
+  have hτ0 : ((τ : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hτpos.ne'
+  have hτ2 : ((τ : ℝ) : ℂ) ^ 2 = ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) := by
+    rw [← Complex.ofReal_pow, hτ, Real.sq_sqrt hpos.le]
+  have key : ∀ x : H,
+      f x * gaussGen (-(Complex.I * z * ((τ : ℝ) : ℂ))) (⟪x, ξ⟫ / τ) =
+        Complex.exp (z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2) *
+          (f x * Complex.exp (-(z * ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I))) := by
+    intro x
+    have hw1 : -(Complex.I * z * ((τ : ℝ) : ℂ)) * (((⟪x, ξ⟫ : ℝ) : ℂ) / ((τ : ℝ) : ℂ)) =
+        -(z * ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) := by
+      rw [← mul_div_assoc, show -(Complex.I * z * ((τ : ℝ) : ℂ)) * ((⟪x, ξ⟫ : ℝ) : ℂ) =
+        -(z * ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) * ((τ : ℝ) : ℂ) from by ring,
+        mul_div_cancel_right₀ _ hτ0]
+    have hw2 : (-(Complex.I * z * ((τ : ℝ) : ℂ))) ^ 2 = -(z ^ 2 * ((τ : ℝ) : ℂ) ^ 2) := by
+      rw [show (-(Complex.I * z * ((τ : ℝ) : ℂ))) ^ 2 =
+        Complex.I ^ 2 * (z ^ 2 * ((τ : ℝ) : ℂ) ^ 2) from by ring, Complex.I_sq]
+      ring
+    have hexp : -(z * ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) -
+          -(z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ)) / 2 =
+        z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2 + -(z * ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I) := by
+      ring
+    rw [gaussGen, Complex.ofReal_div, hw1, hw2, hτ2, hexp, Complex.exp_add]
+    ring
+  rw [hermiteExtension, gaussFourierLine,
+    integral_congr_ae (Eventually.of_forall key), integral_const_mul]
+
 end OperatorRidgelet
