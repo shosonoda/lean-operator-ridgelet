@@ -6,6 +6,7 @@ import OperatorRidgelet.Examples.Basic
 import OperatorRidgelet.Examples.GaussianLaw
 import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.Examples.GaussianTarget
+import OperatorRidgelet.Examples.GaussianTargetMixture
 import OperatorRidgelet.Examples.NotCylindrical
 import OperatorRidgelet.Examples.OperatorLayer
 import OperatorRidgelet.Examples.HingeMeasure
@@ -289,7 +290,61 @@ theorem ex_closed_form_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
           (((Real.sqrt (fredholmDet ((2 * s) • (R * gaussianTargetResolvent S W * R))))⁻¹ *
             Real.exp (-⟪mixtureLayerCovariance R (gaussianTargetResolvent S W) s x, x⟫ / 2) *
             s ^ (α / 2 - 1) : ℝ) : ℂ) := by
-  sorry
+  intro x
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  have hT0 := inner_gaussianTargetResolvent_nonneg hQ.inner_nonneg hW hW0 hS hM
+  have hTsa := isSelfAdjoint_gaussianTargetResolvent hW hS
+  have hTr : HasSummableTrace (R * gaussianTargetResolvent S W * R) :=
+    lem_gaussian_quadratic_i hP.toIsPositiveTraceClass hTsa hT0 hR
+  have hG : gaussFourier μ (gaussianTarget W) =
+      fun ξ => (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-((⟪gaussianTargetResolvent S W ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
+    funext ξ
+    exact gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM hμ ξ
+  have hGint : Integrable (gaussFourier μ (gaussianTarget W)) (gaussianMixture N α) :=
+    integrable_gaussFourier_gaussianTarget hQ.toIsPositiveTraceClass hW hW0 hS hM hμ
+      (lem_gaussian_decay_i hH hP hQ hN hα)
+  have hcont : Continuous (gaussFourier μ (gaussianTarget W)) :=
+    continuous_gaussFourier μ (integrable_gaussianTarget W hW0 μ)
+  have hF : Integrable (fun ξ : H => Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) *
+      gaussFourier μ (gaussianTarget W) ξ) (gaussianMixture N α) := by
+    have hm : Continuous fun ξ : H => Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) *
+        gaussFourier μ (gaussianTarget W) ξ :=
+      (Complex.continuous_exp.comp
+        ((Complex.continuous_ofReal.comp (continuous_const.inner continuous_id)).mul
+          continuous_const)).mul hcont
+    refine hGint.norm.mono' hm.aestronglyMeasurable (Eventually.of_forall fun ξ => ?_)
+    rw [norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul]
+  have hsplit := hN.integral_gaussianMixtureOn α measurableSet_Ioi subset_rfl
+    (F := fun ξ : H => Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) *
+      gaussFourier μ (gaussianTarget W) ξ) hF
+  have hinner : ∀ s ∈ Set.Ioi (0 : ℝ),
+      (∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) *
+          gaussFourier μ (gaussianTarget W) ξ ∂N s) * ((s ^ (α / 2 - 1) : ℝ) : ℂ) =
+      (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
+        (((Real.sqrt (fredholmDet ((2 * s) • (R * gaussianTargetResolvent S W * R))))⁻¹ *
+          Real.exp (-⟪mixtureLayerCovariance R (gaussianTargetResolvent S W) s x, x⟫ / 2) *
+          s ^ (α / 2 - 1) : ℝ) : ℂ) := by
+    intro s hs
+    have hs0 : (0 : ℝ) < s := hs
+    haveI : IsProbabilityMeasure (N s) := (hN s hs0).isProbabilityMeasure
+    have hsimp : ∀ ξ : H, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) *
+        ((((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
+          Complex.exp (-((⟪gaussianTargetResolvent S W ξ, ξ⟫ / 2 : ℝ) : ℂ))) =
+        (((Real.sqrt (fredholmDet (S * W * S)))⁻¹ : ℝ) : ℂ) *
+          Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I -
+            ((⟪gaussianTargetResolvent S W ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
+      intro ξ
+      rw [sub_eq_add_neg, Complex.exp_add]
+      ring
+    simp_rw [hG, hsimp]
+    rw [integral_const_mul,
+      integral_layer_exp_quadratic hP.toIsPositiveTraceClass hTsa hT0 hR hTr hs0 (hN s hs0) x]
+    push_cast [Complex.ofReal_exp]
+    ring_nf
+  show ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * gaussFourier μ (gaussianTarget W) ξ
+      ∂gaussianMixtureOn N α (Set.Ioi 0) = _
+  rw [hsplit, setIntegral_congr_fun measurableSet_Ioi hinner, integral_const_mul]
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The ridgelet
 coefficient of `f_W` is the coefficient `γ_G` of its density `G = 𝒢_Q f_W`:
