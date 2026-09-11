@@ -516,6 +516,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
 variable (μ ν : Measure H) [IsFiniteMeasure μ]
 
+/-- The L²-valued vector Fourier transform preserves addition on the spectral core. -/
 theorem gaussFourierLpVec_add (f g : spectralCoreVec Y μ ν) :
     gaussFourierLpVec μ ν (f + g) = gaussFourierLpVec μ ν f + gaussFourierLpVec μ ν g := by
   unfold gaussFourierLpVec
@@ -524,6 +525,7 @@ theorem gaussFourierLpVec_add (f g : spectralCoreVec Y μ ν) :
   show gaussFourierVec μ ((f + g : Lp Y 2 μ) : H → Y) ξ = _
   rw [gaussFourierVec_add]
 
+/-- The L²-valued vector Fourier transform sends zero to zero. -/
 theorem gaussFourierLpVec_zero : gaussFourierLpVec μ ν (0 : spectralCoreVec Y μ ν) = 0 := by
   unfold gaussFourierLpVec
   rw [← MemLp.toLp_zero (MemLp.zero : MemLp (0 : H → Y) 2 ν)]
@@ -531,6 +533,7 @@ theorem gaussFourierLpVec_zero : gaussFourierLpVec μ ν (0 : spectralCoreVec Y 
   show gaussFourierVec μ ((0 : Lp Y 2 μ) : H → Y) ξ = _
   rw [gaussFourierVec_zero']
 
+/-- The L²-valued vector Fourier transform preserves complex scalar multiplication. -/
 theorem gaussFourierLpVec_smul (c : ℂ) (f : spectralCoreVec Y μ ν) :
     gaussFourierLpVec μ ν (c • f) = c • gaussFourierLpVec μ ν f := by
   unfold gaussFourierLpVec
@@ -551,6 +554,7 @@ def gaussFourierRangeVec : Submodule ℂ (Lp Y 2 ν) where
     rintro c _ ⟨f, rfl⟩
     exact ⟨c • f, gaussFourierLpVec_smul μ ν c f⟩
 
+/-- The vector Fourier range is the range of the bundled L² transform. -/
 theorem coe_gaussFourierRangeVec :
     (gaussFourierRangeVec Y μ ν : Set (Lp Y 2 ν)) = Set.range (gaussFourierLpVec μ ν) := rfl
 
@@ -567,6 +571,7 @@ def spectralEmbedVecₗ : spectralCoreVec Y μ ν →ₗ[ℂ] spectralRangeVec Y
   map_add' f g := Subtype.ext (gaussFourierLpVec_add μ ν f g)
   map_smul' c f := Subtype.ext (gaussFourierLpVec_smul μ ν c f)
 
+/-- The linear spectral embedding evaluates as the original spectral embedding. -/
 @[simp]
 theorem spectralEmbedVecₗ_apply (f : spectralCoreVec Y μ ν) :
     spectralEmbedVecₗ μ ν f = spectralEmbedVec μ ν f := rfl

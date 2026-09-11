@@ -59,6 +59,7 @@ lake exe cache get          # first time only: Mathlib cache
 lake build                  # library; the only warnings are the intentional `sorry`s
 lake build Challenge Solution
 lake build OperatorRidgelet:blueprintJson   # LeanArchitect metadata (library name required)
+python3 scripts/check-style.py             # line lengths and declaration docstrings
 ```
 
 ## Verify the paper statements with comparator

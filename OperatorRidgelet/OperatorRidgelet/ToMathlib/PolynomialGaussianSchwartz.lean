@@ -33,9 +33,11 @@ noncomputable def gaussianDerivPoly (p : ℝ[X]) : ℕ → ℝ[X]
   | 0 => p
   | n + 1 => Polynomial.derivative (gaussianDerivPoly p n) - Polynomial.X * gaussianDerivPoly p n
 
+/-- The zeroth Gaussian derivative polynomial is the original polynomial. -/
 @[simp]
 theorem gaussianDerivPoly_zero (p : ℝ[X]) : gaussianDerivPoly p 0 = p := rfl
 
+/-- Differentiation of a polynomial times a Gaussian gives this derivative-polynomial recurrence. -/
 theorem gaussianDerivPoly_succ (p : ℝ[X]) (n : ℕ) :
     gaussianDerivPoly p (n + 1) =
       Polynomial.derivative (gaussianDerivPoly p n) - Polynomial.X * gaussianDerivPoly p n := rfl
@@ -102,6 +104,7 @@ noncomputable def polynomialGaussianSchwartz (p : ℝ[X]) : SchwartzMap ℝ ℝ 
       _ ≤ C * (2 ^ (k + d) * (1 + 2 ^ (k + d) * ((k + d).factorial : ℝ))) :=
           mul_le_mul_of_nonneg_left hgauss hC
 
+/-- Evaluation of the Schwartz function represented by a polynomial times a Gaussian. -/
 @[simp]
 theorem polynomialGaussianSchwartz_apply (p : ℝ[X]) (z : ℝ) :
     polynomialGaussianSchwartz p z = p.eval z * Real.exp (-z ^ 2 / 2) := rfl

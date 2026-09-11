@@ -1,8 +1,9 @@
 # Uniformity needed for the integral clause of Lemma 6.5
 
-The current statement `lem_ray_regular_examples_c_ii` is false. Its moment majorants
-are allowed to be infinite on a set of direction measure zero, whereas the conclusion
-requires smoothness along every ray on an open neighbourhood of the frequency window.
+The corrected, verified statement `lem_ray_regular_examples_c_ii` requires a common smooth
+open neighbourhood and finite-valued derivative majorants. The earlier statement allowed
+infinite majorants on a set of direction measure zero, which was insufficient for its
+pointwise smoothness conclusion. The counterexample below records why the correction is needed.
 
 Take `H = ℝ`, `ν = 0`, `I = {1}`, and the probability measure on `ℕ` with masses
 `m({n}) = 2^(-n-1)`. Set
@@ -15,7 +16,7 @@ View these real values in `ℂ`. The family is jointly measurable and bounded by
 Every member is globally smooth, hence satisfies `IsRegularAlongRays ν I`:
 its ray moments are all zero. For every derivative order the proposed uniform
 majorant can be `h(a) = ∞`; its weighted integral against `ν = 0` is zero.
-Thus every hypothesis of the current Lean statement holds.
+Thus every hypothesis of the earlier Lean statement holds.
 
 The integral is the uniformly convergent series
 
@@ -36,8 +37,8 @@ direction `a = 1` therefore fails the required conclusion. The same counterexamp
 works with any compact window containing one, including a symmetric window away
 from zero.
 
-A sufficient repair must add differentiation hypotheses separate from moment
-integrability. For each direction `a`, require a common open neighbourhood `U_a`
+A sufficient repair adds differentiation hypotheses separate from moment
+integrability. For each direction `a`, one can require a common open neighbourhood `U_a`
 of `I` on which all functions `ω ↦ G(y, ω a)` are smooth, and, locally on `U_a`,
 integrable bounds in `y` for every derivative order. For example, for every compact
 `K ⊆ U_a` and every `k`, require an `m`-integrable function `B_{a,K,k}(y)` bounding

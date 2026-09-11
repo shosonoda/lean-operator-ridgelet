@@ -168,6 +168,7 @@ noncomputable def gaussianSeriesSection (F : Finset ι) : ({i // i ∈ F} → �
   ∑ k : {i // i ∈ F}, (LinearMap.proj k : ({i // i ∈ F} → ℝ) →ₗ[ℝ] ℝ).smulRight (√(p k) • b k)
 
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] [Countable ι] in
+/-- The finite-coordinate Gaussian section is its weighted basis sum. -/
 theorem gaussianSeriesSection_apply (F : Finset ι) (z : {i // i ∈ F} → ℝ) :
     gaussianSeriesSection b p F z = ∑ k : {i // i ∈ F}, (√(p k) * z k) • b k := by
   simp only [gaussianSeriesSection, LinearMap.coe_sum, Finset.sum_apply,

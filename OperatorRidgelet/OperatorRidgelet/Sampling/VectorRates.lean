@@ -49,7 +49,8 @@ theorem integral_integral_norm_ridge_sq_le [MeasurableSpace H] {β : ℝ → ℂ
       _ ≤ ∫ x, 2 * (‖β 0‖ ^ 2 + (L : ℝ) ^ 2 *
           (1 + ‖x‖ ^ 2) * (‖θ.1‖ ^ 2 + |θ.2| ^ 2)) ∂ζ :=
         integral_mono_of_nonneg (Eventually.of_forall fun _ => sq_nonneg _)
-          (((integrable_const _).add (((integrable_const _).add hζ).const_mul _ |>.mul_const _)).const_mul _)
+          (((integrable_const _).add
+            (((integrable_const _).add hζ).const_mul _ |>.mul_const _)).const_mul _)
           (Eventually.of_forall fun x => norm_ridge_sq_le hβ θ.1 x θ.2)
       _ = _ := by
         rw [integral_const_mul]
@@ -79,7 +80,8 @@ theorem memLp_ridge_complex {β : ℝ → ℂ} {L : ℝ≥0} (hβ : LipschitzWit
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p) (x : H) :
     MemLp (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) 2 p := by
   have hm : AEStronglyMeasurable (fun θ : H × ℝ => β (⟪θ.1, x⟫ + θ.2)) p :=
-    (hβ.continuous.comp ((continuous_fst.inner continuous_const).add continuous_snd)).aestronglyMeasurable
+    (hβ.continuous.comp
+      ((continuous_fst.inner continuous_const).add continuous_snd)).aestronglyMeasurable
   apply (memLp_two_iff_integrable_sq_norm hm).mpr
   have hi : Integrable (fun θ : H × ℝ =>
       2 * (‖β 0‖ ^ 2 + (L : ℝ) ^ 2 * (1 + ‖x‖ ^ 2) * (‖θ.1‖ ^ 2 + |θ.2| ^ 2))) p :=
@@ -91,7 +93,8 @@ theorem memLp_ridge_complex {β : ℝ → ℂ} {L : ℝ≥0} (hβ : LipschitzWit
 
 /-- A Lipschitz ridge family is jointly square-integrable under second moments in both
 the input and parameter variables. -/
-theorem memLp_ridge_complex_prod [SecondCountableTopology H] {β : ℝ → ℂ} {L : ℝ≥0} (hβ : LipschitzWith L β)
+theorem memLp_ridge_complex_prod [SecondCountableTopology H] {β : ℝ → ℂ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β)
     (p : Measure (H × ℝ)) [IsProbabilityMeasure p]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p)
     (ζ : Measure H) [IsProbabilityMeasure ζ] (hζ : Integrable (fun x : H => ‖x‖ ^ 2) ζ) :

@@ -27,10 +27,12 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 def spanFirst (u : ℕ → H) (n : ℕ) : Submodule ℝ H :=
   Submodule.span ℝ (u '' Set.Iio n)
 
+/-- The span of finitely many vectors is finite-dimensional. -/
 instance instFiniteDimensionalSpanFirst (u : ℕ → H) (n : ℕ) :
     FiniteDimensional ℝ (spanFirst u n) :=
   FiniteDimensional.span_of_finite ℝ ((Set.finite_Iio n).image u)
 
+/-- Each finite-dimensional approximation subspace is complete. -/
 instance instCompleteSpaceSpanFirst (u : ℕ → H) (n : ℕ) : CompleteSpace (spanFirst u n) :=
   FiniteDimensional.complete ℝ _
 

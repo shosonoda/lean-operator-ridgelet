@@ -35,7 +35,10 @@ def main() -> int:
     def is_definition(n: str) -> bool:
         d = library.get(n)
         return d is not None and d.kind not in ("theorem", "lemma")
-    bridge = strip_comments((ROOT / "OperatorRidgelet" / "ArchitectBridge.lean").read_text())
+    bridge_root = ROOT / "OperatorRidgelet"
+    bridge_files = [bridge_root / "ArchitectBridge.lean"]
+    bridge_files.extend(sorted((bridge_root / "ArchitectBridge").rglob("*.lean")))
+    bridge = "\n".join(strip_comments(path.read_text()) for path in bridge_files)
     not_ready = {m.group("name") for m in NOTREADY_RE.finditer(bridge) if "notReady := true" in m.group("opts")}
     tagged = {m.group("name") for m in NOTREADY_RE.finditer(bridge)}
 

@@ -83,7 +83,8 @@ Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 For a complex Hilbert space `Y` the `Y`-valued versions of the Section 3 and Section 4 objects
 carry the suffix `Vec` (`gaussFourierVec`, `ridgeletVec`, `coefficientFormulaVec`,
-`biasFourierVec`, `HasBiasFourierVec`, `spectralCoefficientVec`, `spectralInnerVec`, `spectralCoreVec`,
+`biasFourierVec`, `HasBiasFourierVec`, `spectralCoefficientVec`, `spectralInnerVec`,
+`spectralCoreVec`,
 `spectralRangeVec`, `spectralEmbedVec`, `ridgeletExtensionVec`, `SpectralAntiDualVec`,
 `rieszMapVec`, `rieszInvVec`, `transposeEmbedVec`, `frameOperatorVec`, `synthesisVec`,
 `backprojectionOfVec`, `backprojectionVec`, `coefficientProjectionVec`, `gaussFourierLineVec`,
@@ -177,6 +178,7 @@ def antiDualConj (F : E →L⋆[ℂ] ℂ) : E →L[ℂ] ℂ where
   map_smul' c g := by simp
   cont := Complex.continuous_conj.comp F.continuous
 
+/-- Conjugating an anti-dual functional acts pointwise by complex conjugation. -/
 @[simp]
 theorem antiDualConj_apply (F : E →L⋆[ℂ] ℂ) (g : E) :
     antiDualConj F g = (starRingEnd ℂ) (F g) :=
@@ -404,6 +406,7 @@ open Classical in
 def backprojectionLpVec (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → Y) : Lp Y 2 ν :=
   if h : MemLp (backprojectionVec α ν ρ γ) 2 ν then h.toLp _ else 0
 
+/-- The vector-valued Gaussian Fourier integral preserves complex scalar multiplication. -/
 theorem gaussFourierVec_smul (μ : Measure H) (c : ℂ) (f : Lp Y 2 μ) :
     gaussFourierVec μ ((c • f : Lp Y 2 μ) : H → Y) = c • gaussFourierVec μ f := by
   funext ξ
@@ -413,6 +416,7 @@ theorem gaussFourierVec_smul (μ : Measure H) (c : ℂ) (f : Lp Y 2 μ) :
   filter_upwards [Lp.coeFn_smul c f] with x hx
   rw [hx, Pi.smul_apply, smul_comm]
 
+/-- The vector-valued Gaussian Fourier integral sends the zero L² class to zero. -/
 theorem gaussFourierVec_zero' (μ : Measure H) :
     gaussFourierVec μ ((0 : Lp Y 2 μ) : H → Y) = 0 := by
   funext ξ
@@ -424,6 +428,7 @@ theorem gaussFourierVec_zero' (μ : Measure H) :
 
 variable [OpensMeasurableSpace H]
 
+/-- A character times an L² vector-valued function is integrable for a finite measure. -/
 theorem integrable_character_smul (μ : Measure H) [IsFiniteMeasure μ] (f : Lp Y 2 μ) (ξ : H) :
     Integrable (fun x => character ξ x • (f : H → Y) x) μ := by
   have hf : Integrable (f : H → Y) μ := (Lp.memLp f).integrable one_le_two
@@ -432,6 +437,7 @@ theorem integrable_character_smul (μ : Measure H) [IsFiniteMeasure μ] (f : Lp 
       (Filter.Eventually.of_forall fun x => (norm_character ξ x).le)
   exact hf.smul_of_top_right hc
 
+/-- The vector-valued Gaussian Fourier integral is additive on L² classes. -/
 theorem gaussFourierVec_add (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp Y 2 μ) :
     gaussFourierVec μ ((f + g : Lp Y 2 μ) : H → Y) =
       gaussFourierVec μ f + gaussFourierVec μ g := by
@@ -459,6 +465,7 @@ def spectralCoreVec (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp
     rw [gaussFourierVec_smul]
     exact MemLp.const_smul hf c
 
+/-- The vector spectral core consists of functions with a square-integrable transform. -/
 theorem mem_spectralCoreVec_iff (μ ν : Measure H) [IsFiniteMeasure μ] (f : Lp Y 2 μ) :
     f ∈ spectralCoreVec Y μ ν ↔ MemLp (gaussFourierVec μ f) 2 ν :=
   Iff.rfl

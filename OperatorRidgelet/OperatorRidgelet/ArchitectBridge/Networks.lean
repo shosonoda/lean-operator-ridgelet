@@ -2,9 +2,10 @@ import Architect
 import OperatorRidgelet.Paper.Networks
 
 /-!
-# LeanArchitect metadata for Section 2 (networks with Hilbert-space inputs) and Appendix F (operator-valued parameters)
+# LeanArchitect metadata for Section 2 and Appendix F
 
-`attribute [blueprint ...]` commands for the declarations of `OperatorRidgelet.Paper.Networks` and the
+`attribute [blueprint ...]` commands for the declarations of `OperatorRidgelet.Paper.Networks`
+and the
 definitions it uses.  Statements whose proof is still `sorry` carry `(notReady := true)`.
 -/
 

@@ -44,8 +44,9 @@ the index of its statements.
 
 ## LeanArchitect and Verso Blueprint
 
-- LeanArchitect and Verso Blueprint both define an attribute named `blueprint`.  All LeanArchitect
-  annotations are `attribute [blueprint ...]` commands in `OperatorRidgelet/ArchitectBridge.lean`;
+- LeanArchitect and Verso Blueprint both define an attribute named `blueprint`. All LeanArchitect
+  annotations are `attribute [blueprint ...]` commands in `OperatorRidgelet/ArchitectBridge.lean`
+  and its `ArchitectBridge/` modules;
   no other module imports `Architect`, and no blueprint chapter imports `ArchitectBridge`.
 - Tag a statement whose proof is `sorry` with `(notReady := true)`; remove the flag when the proof
   is done.  `scripts/status.py` checks that the flag agrees with `theorem_names`.

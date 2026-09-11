@@ -33,6 +33,7 @@ theorem integral_eval_pi {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
   conv_rhs => rw [← hmp.map_eq]
   rw [integral_map (measurable_pi_apply i).aemeasurable (by rw [hmp.map_eq]; exact hg)]
 
+/-- A coordinate pullback preserves Lᵖ membership under a product probability measure. -/
 theorem memLp_eval_pi {E : Type*} [NormedAddCommGroup E] {g : Ω → E} {q : ℝ≥0∞}
     (hg : MemLp g q p) (i : ι) : MemLp (fun ω => g (ω i)) q (Measure.pi fun _ : ι => p) :=
   hg.comp_measurePreserving (measurePreserving_eval (fun _ : ι => p) i)

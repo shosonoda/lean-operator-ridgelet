@@ -28,6 +28,7 @@ section LayersBasic
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   {P : H →L[ℝ] H} {N : ℝ → Measure H}
 
+/-- A Gaussian layer has the characteristic function of its scaled covariance. -/
 theorem IsCenteredGaussianLayers.charFun_eq (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) (ξ : H) :
     charFun (N s) ξ = Complex.exp (-((s * ⟪P ξ, ξ⟫ : ℝ) : ℂ)) := by
@@ -37,6 +38,7 @@ theorem IsCenteredGaussianLayers.charFun_eq (hN : IsCenteredGaussianLayers P N) 
   rw [real_inner_smul_left]
   ring
 
+/-- Every positive-scale Gaussian layer is a probability measure. -/
 theorem IsCenteredGaussianLayers.isProbabilityMeasure (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) : IsProbabilityMeasure (N s) :=
   (hN s hs).isProbabilityMeasure
@@ -70,11 +72,13 @@ theorem IsCenteredGaussianLayers.map_smul (hN : IsCenteredGaussianLayers P N) {s
   rw [P.map_smul, real_inner_smul_left, real_inner_smul_right]
   ring
 
+/-- A positive-scale Gaussian layer is the pushforward of the unit layer by square-root scaling. -/
 theorem IsCenteredGaussianLayers.eq_scaledLayer (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) : N s = scaledLayer N s := by
   unfold scaledLayer
   rw [hN.map_smul one_pos (Real.sqrt_pos.mpr hs).ne', Real.sq_sqrt hs.le, mul_one]
 
+/-- Symmetry of the centred Gaussian law makes scaling depend only on the absolute scale. -/
 theorem IsCenteredGaussianLayers.scaledLayer_eq_scaledLayer_abs (hN : IsCenteredGaussianLayers P N)
     (c : ℝ) : (N 1).map (fun x => c • x) = (N 1).map fun x => |c| • x := by
   haveI := hN.isProbabilityMeasure one_pos
@@ -106,6 +110,7 @@ theorem IsCenteredGaussianLayers.measurable_scaledLayer (hN : IsCenteredGaussian
     ((by fun_prop : Measurable fun p : ℝ × H => Real.sqrt p.1 • p.2) hE)
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- Every pushforward-scaled layer is a probability measure. -/
 theorem IsCenteredGaussianLayers.isProbabilityMeasure_scaledLayer
     (hN : IsCenteredGaussianLayers P N) (s : ℝ) : IsProbabilityMeasure (scaledLayer N s) :=
   haveI := hN.isProbabilityMeasure one_pos
@@ -138,10 +143,12 @@ theorem measurable_mixtureDensity (α : ℝ) :
     Measurable fun s : ℝ => ENNReal.ofReal (s ^ (α / 2 - 1)) := by
   fun_prop
 
+/-- The restricted power-law mixing weight is an s-finite measure. -/
 instance instSFiniteMixtureWeight (α : ℝ) (S : Set ℝ) : SFinite (mixtureWeight α S) := by
   unfold mixtureWeight
   infer_instance
 
+/-- A restricted Gaussian mixture is the bind of its mixing weight and scaled layers. -/
 theorem IsCenteredGaussianLayers.gaussianMixtureOn_eq_bind (hN : IsCenteredGaussianLayers P N)
     (α : ℝ) {S : Set ℝ} (hS : MeasurableSet S) (hS' : S ⊆ Set.Ioi 0) :
     gaussianMixtureOn N α S = (mixtureWeight α S).bind (scaledLayer N) := by
@@ -150,6 +157,7 @@ theorem IsCenteredGaussianLayers.gaussianMixtureOn_eq_bind (hN : IsCenteredGauss
   refine (withDensity_absolutelyContinuous _ _).ae_eq ?_
   exact ae_restrict_of_forall_mem hS fun s hs => hN.eq_scaledLayer (hS' hs)
 
+/-- Evaluation of a Gaussian mixture integrates the corresponding layer measures. -/
 theorem IsCenteredGaussianLayers.gaussianMixtureOn_apply (hN : IsCenteredGaussianLayers P N)
     (α : ℝ) {S : Set ℝ} (hS : MeasurableSet S) (hS' : S ⊆ Set.Ioi 0) {E : Set H}
     (hE : MeasurableSet E) :
@@ -163,6 +171,7 @@ theorem IsCenteredGaussianLayers.gaussianMixtureOn_apply (hN : IsCenteredGaussia
   refine setLIntegral_congr_fun hS fun s hs => ?_
   rw [Pi.mul_apply, mul_comm, hN.eq_scaledLayer (hS' hs)]
 
+/-- Nonnegative integration against a Gaussian mixture decomposes into layer integrals. -/
 theorem IsCenteredGaussianLayers.lintegral_gaussianMixtureOn (hN : IsCenteredGaussianLayers P N)
     (α : ℝ) {S : Set ℝ} (hS : MeasurableSet S) (hS' : S ⊆ Set.Ioi 0) {F : H → ℝ≥0∞}
     (hF : Measurable F) :
@@ -177,6 +186,7 @@ theorem IsCenteredGaussianLayers.lintegral_gaussianMixtureOn (hN : IsCenteredGau
   refine setLIntegral_congr_fun hS fun s hs => ?_
   rw [Pi.mul_apply, mul_comm, hN.eq_scaledLayer (hS' hs)]
 
+/-- Bochner integration against a Gaussian mixture decomposes into layer integrals. -/
 theorem IsCenteredGaussianLayers.integral_gaussianMixtureOn (hN : IsCenteredGaussianLayers P N)
     (α : ℝ) {S : Set ℝ} (hS : MeasurableSet S) (hS' : S ⊆ Set.Ioi 0) {F : H → ℂ}
     (hF : Integrable F (gaussianMixtureOn N α S)) :
@@ -262,6 +272,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 variable {P : H →L[ℝ] H} {N : ℝ → Measure H}
 
+/-- The homogeneous Gaussian mixture has infinite total mass. -/
 theorem IsCenteredGaussianLayers.gaussianMixture_univ (hN : IsCenteredGaussianLayers P N)
     (α : ℝ) : gaussianMixture N α Set.univ = ⊤ := by
   rw [gaussianMixture, hN.gaussianMixtureOn_univ α measurableSet_Ioi le_rfl]

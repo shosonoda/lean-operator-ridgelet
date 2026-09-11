@@ -61,11 +61,13 @@ theorem integral_integral_norm_sq_sampleMean_le (p : Measure Ω) [IsProbabilityM
     ((memLp_two_iff_integrable_sq_norm hΦ.1).mp hΦ).integral_prod_left.const_mul _
   calc
     _ ≤ ∫ x, V ^ 2 / N * ∫ θ, ‖Φ x θ‖ ^ 2 ∂p ∂ζ := by
-      apply integral_mono_of_nonneg (Eventually.of_forall fun _ => integral_nonneg fun _ => sq_nonneg _)
+      apply integral_mono_of_nonneg
+        (Eventually.of_forall fun _ => integral_nonneg fun _ => sq_nonneg _)
         hbound
       exact Eventually.of_forall fun x => by
         dsimp only
         rw [integral_norm_sq_sampleMean p (hs x) V hN]
         exact mul_le_mul_of_nonneg_left (sub_le_self _ (sq_nonneg _)) (by positivity)
     _ = _ := by
-      rw [integral_const_mul, integral_integral_swap ((memLp_two_iff_integrable_sq_norm hΦ.1).mp hΦ)]
+      rw [integral_const_mul,
+        integral_integral_swap ((memLp_two_iff_integrable_sq_norm hΦ.1).mp hΦ)]

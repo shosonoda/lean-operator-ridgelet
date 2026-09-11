@@ -70,20 +70,24 @@ def charOn (K : Set H) (ξ : H) : C(K, ℂ) :=
     refine Complex.continuous_exp.comp (Continuous.mul ?_ continuous_const)
     exact Complex.continuous_ofReal.comp (continuous_subtype_val.inner continuous_const)⟩
 
+/-- Evaluation of the continuous character restricted to a compact set. -/
 @[simp]
 theorem charOn_apply (K : Set H) (ξ : H) (x : K) :
     charOn K ξ x = Complex.exp ((⟪(x : H), ξ⟫ : ℝ) * Complex.I) := rfl
 
+/-- Multiplying restricted characters adds their frequencies. -/
 theorem charOn_mul (K : Set H) (ξ ζ : H) : charOn K ξ * charOn K ζ = charOn K (ξ + ζ) := by
   ext x
   simp only [ContinuousMap.mul_apply, charOn_apply, ← Complex.exp_add, inner_add_right]
   push_cast
   ring_nf
 
+/-- The zero-frequency character is the constant one function. -/
 theorem charOn_zero (K : Set H) : charOn K (0 : H) = 1 := by
   ext x
   simp
 
+/-- Conjugating a character negates its frequency. -/
 theorem star_charOn (K : Set H) (ξ : H) : star (charOn K ξ) = charOn K (-ξ) := by
   ext x
   simp only [ContinuousMap.star_apply, charOn_apply, inner_neg_right, RCLike.star_def,
@@ -94,15 +98,18 @@ theorem star_charOn (K : Set H) (ξ : H) : star (charOn K ξ) = charOn K (-ξ) :
 /-- The set of characters of `K`. -/
 def charSet (K : Set H) : Set C(K, ℂ) := Set.range (charOn K)
 
+/-- The family of restricted characters is closed under multiplication. -/
 theorem charSet_mul_subset (K : Set H) : charSet K * charSet K ⊆ charSet K := by
   refine Set.mul_subset_iff.2 ?_
   rintro _ ⟨ξ, rfl⟩ _ ⟨ζ, rfl⟩
   exact ⟨ξ + ζ, (charOn_mul K ξ ζ).symm⟩
 
+/-- The constant one function belongs to the character span. -/
 theorem one_mem_span_charSet (K : Set H) :
     (1 : C(K, ℂ)) ∈ Submodule.span ℂ (charSet K) :=
   Submodule.subset_span ⟨0, charOn_zero K⟩
 
+/-- The character span is closed under multiplication. -/
 theorem mul_mem_span_charSet (K : Set H) {x y : C(K, ℂ)}
     (hx : x ∈ Submodule.span ℂ (charSet K)) (hy : y ∈ Submodule.span ℂ (charSet K)) :
     x * y ∈ Submodule.span ℂ (charSet K) := by
@@ -110,6 +117,7 @@ theorem mul_mem_span_charSet (K : Set H) {x y : C(K, ℂ)}
   rw [Submodule.span_mul_span] at h
   exact Submodule.span_mono (charSet_mul_subset K) h
 
+/-- The character span is closed under conjugation. -/
 theorem star_mem_span_charSet (K : Set H) {x : C(K, ℂ)}
     (hx : x ∈ Submodule.span ℂ (charSet K)) : star x ∈ Submodule.span ℂ (charSet K) := by
   induction hx using Submodule.span_induction with
@@ -127,6 +135,7 @@ def charAlgebra (K : Set H) : StarSubalgebra ℂ C(K, ℂ) where
       fun _ _ hx hy => mul_mem_span_charSet K hx hy
   star_mem' := fun hx => star_mem_span_charSet K hx
 
+/-- Continuous characters separate distinct points of the compact set. -/
 theorem charAlgebra_separatesPoints (K : Set H) : (charAlgebra K).SeparatesPoints := by
   rintro x y hxy
   have hne : (x : H) - (y : H) ≠ 0 := sub_ne_zero.2 fun h => hxy (Subtype.ext h)
@@ -328,16 +337,21 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 /-- The fixed profile: a smooth bump on `ℝ`, nonnegative, positive exactly on `(-1, 1)`. -/
 def bumpProfile : ContDiffBump (0 : ℝ) := ⟨1 / 2, 1, by norm_num, by norm_num⟩
 
+/-- The fixed bump profile has outer support radius one. -/
 @[simp] theorem bumpProfile_rOut : bumpProfile.rOut = 1 := rfl
 
+/-- The fixed smooth bump profile is nonnegative. -/
 theorem bumpProfile_nonneg (t : ℝ) : 0 ≤ bumpProfile t := bumpProfile.nonneg' t
 
+/-- The fixed smooth bump profile is bounded above by one. -/
 theorem bumpProfile_le_one (t : ℝ) : bumpProfile t ≤ 1 := bumpProfile.le_one
 
+/-- The bump profile is strictly positive inside the unit interval. -/
 theorem bumpProfile_pos_of_abs_lt_one {t : ℝ} (ht : |t| < 1) : 0 < bumpProfile t := by
   refine bumpProfile.pos_of_mem_ball ?_
   simpa [Real.dist_eq, bumpProfile_rOut] using ht
 
+/-- The bump profile vanishes outside the open unit interval. -/
 theorem bumpProfile_eq_zero_of_one_le_abs {t : ℝ} (ht : 1 ≤ |t|) : bumpProfile t = 0 := by
   refine bumpProfile.zero_of_le_dist ?_
   simpa [Real.dist_eq, bumpProfile_rOut] using ht
@@ -345,6 +359,7 @@ theorem bumpProfile_eq_zero_of_one_le_abs {t : ℝ} (ht : 1 ≤ |t|) : bumpProfi
 /-- The scaled and normalized profile `t ↦ φ(t/δ²)/Z`, as a complex-valued function. -/
 def bumpProfileScaled (Z δ t : ℝ) : ℂ := ((Z⁻¹ : ℝ) : ℂ) * ((bumpProfile (t / δ ^ 2) : ℝ) : ℂ)
 
+/-- Scaling the argument and amplitude preserves smoothness of the bump profile. -/
 theorem contDiff_bumpProfileScaled (Z δ : ℝ) :
     ContDiff ℝ (⊤ : ℕ∞) (bumpProfileScaled Z δ) := by
   have h1 : ContDiff ℝ (⊤ : ℕ∞) fun t : ℝ => bumpProfile (t / δ ^ 2) :=
@@ -353,6 +368,7 @@ theorem contDiff_bumpProfileScaled (Z δ : ℝ) :
     Complex.ofRealCLM.contDiff.comp h1
   exact ContDiff.mul contDiff_const h2
 
+/-- A positively scaled bump profile has compact support. -/
 theorem hasCompactSupport_bumpProfileScaled (Z : ℝ) {δ : ℝ} (hδ : 0 < δ) :
     HasCompactSupport (bumpProfileScaled Z δ) := by
   refine HasCompactSupport.intro (isCompact_Icc (a := -(δ ^ 2)) (b := δ ^ 2)) fun t ht => ?_
@@ -368,30 +384,37 @@ theorem hasCompactSupport_bumpProfileScaled (Z : ℝ) {δ : ℝ} (hδ : 0 < δ) 
 /-- The unnormalized radial bump `ξ ↦ φ(‖ξ - ξ₀‖²/δ²)`. -/
 def radialBump (ξ₀ : H) (δ : ℝ) (ξ : H) : ℝ := bumpProfile (‖ξ - ξ₀‖ ^ 2 / δ ^ 2)
 
+/-- The radial bump is nonnegative. -/
 theorem radialBump_nonneg (ξ₀ : H) (δ : ℝ) (ξ : H) : 0 ≤ radialBump ξ₀ δ ξ :=
   bumpProfile_nonneg _
 
+/-- The radial bump is bounded above by one. -/
 theorem radialBump_le_one (ξ₀ : H) (δ : ℝ) (ξ : H) : radialBump ξ₀ δ ξ ≤ 1 :=
   bumpProfile_le_one _
 
+/-- Continuity of `radialBump`. -/
 theorem continuous_radialBump (ξ₀ : H) (δ : ℝ) : Continuous (radialBump ξ₀ δ) :=
   bumpProfile.continuous.comp (by fun_prop)
 
+/-- The radial bump vanishes outside its defining open ball. -/
 theorem radialBump_eq_zero_of_le {ξ₀ : H} {δ : ℝ} (hδ : 0 < δ) {ξ : H} (hξ : δ ≤ ‖ξ - ξ₀‖) :
     radialBump ξ₀ δ ξ = 0 := by
   refine bumpProfile_eq_zero_of_one_le_abs ?_
   rw [abs_of_nonneg (by positivity), le_div_iff₀ (by positivity), one_mul]
   nlinarith [norm_nonneg (ξ - ξ₀)]
 
+/-- A nonzero radial bump value forces the input inside its defining ball. -/
 theorem norm_sub_lt_of_radialBump_ne_zero {ξ₀ : H} {δ : ℝ} (hδ : 0 < δ) {ξ : H}
     (hξ : radialBump ξ₀ δ ξ ≠ 0) : ‖ξ - ξ₀‖ < δ := by
   by_contra hcon
   exact hξ (radialBump_eq_zero_of_le hδ (not_lt.1 hcon))
 
+/-- A radial bump of positive radius is positive at its centre. -/
 theorem radialBump_self_pos (ξ₀ : H) (δ : ℝ) : 0 < radialBump ξ₀ δ ξ₀ := by
   refine bumpProfile_pos_of_abs_lt_one ?_
   simp
 
+/-- The radial bump is integrable under the stated finite-measure hypothesis. -/
 theorem integrable_radialBump (ν : Measure H) (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤)
     (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) : Integrable (radialBump ξ₀ δ) ν := by
   refine Integrable.mono'
@@ -413,6 +436,7 @@ theorem integrable_radialBump (ν : Measure H) (hfin : ∀ R : ℝ, ν (closedBa
 /-- The normalizing constant `Z = ∫ φ(‖ξ - ξ₀‖²/δ²) dν(ξ)`. -/
 def bumpWeight (ν : Measure H) (ξ₀ : H) (δ : ℝ) : ℝ := ∫ ξ, radialBump ξ₀ δ ξ ∂ν
 
+/-- The radial bump has strictly positive normalization weight under the support hypothesis. -/
 theorem bumpWeight_pos (ν : Measure H) [ν.IsOpenPosMeasure]
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) :
     0 < bumpWeight ν ξ₀ δ :=
@@ -424,10 +448,12 @@ theorem bumpWeight_pos (ν : Measure H) [ν.IsOpenPosMeasure]
 def bumpDensity (ν : Measure H) (ξ₀ : H) (δ : ℝ) (ξ : H) : ℂ :=
   bumpProfileScaled (bumpWeight ν ξ₀ δ) δ (‖ξ - ξ₀‖ ^ 2)
 
+/-- The normalized bump density is the radial bump divided by its weight. -/
 theorem bumpDensity_eq (ν : Measure H) (ξ₀ : H) (δ : ℝ) (ξ : H) :
     bumpDensity ν ξ₀ δ ξ = (((bumpWeight ν ξ₀ δ)⁻¹ : ℝ) : ℂ) * ((radialBump ξ₀ δ ξ : ℝ) : ℂ) :=
   rfl
 
+/-- The norm of the nonnegative bump density equals its real normalization formula. -/
 theorem norm_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) (ξ : H) :
     ‖bumpDensity ν ξ₀ δ ξ‖ = (bumpWeight ν ξ₀ δ)⁻¹ * radialBump ξ₀ δ ξ := by
@@ -435,11 +461,13 @@ theorem norm_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
   rw [bumpDensity_eq, norm_mul, Complex.norm_real, Complex.norm_real,
     Real.norm_of_nonneg (inv_pos.2 hZ).le, Real.norm_of_nonneg (radialBump_nonneg _ _ _)]
 
+/-- The normalized bump density is smooth. -/
 theorem contDiff_bumpDensity (ν : Measure H) (ξ₀ : H) (δ : ℝ) :
     ContDiff ℝ (⊤ : ℕ∞) (bumpDensity ν ξ₀ δ) :=
   (contDiff_bumpProfileScaled _ _).comp
     ((contDiff_norm_sq ℝ).comp (contDiff_id.sub contDiff_const))
 
+/-- The bump density vanishes away from its supporting ball. -/
 theorem bumpDensity_eq_zero_of_lt (ν : Measure H) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) {ξ : H}
     (hξ : ‖ξ₀‖ + δ < ‖ξ‖) : bumpDensity ν ξ₀ δ ξ = 0 := by
   have hd : δ ≤ ‖ξ - ξ₀‖ := by
@@ -448,11 +476,13 @@ theorem bumpDensity_eq_zero_of_lt (ν : Measure H) (ξ₀ : H) {δ : ℝ} (hδ :
   rw [bumpDensity_eq, radialBump_eq_zero_of_le hδ hd]
   simp
 
+/-- The normalized bump density is integrable. -/
 theorem integrable_bumpDensity (ν : Measure H)
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) :
     Integrable (bumpDensity ν ξ₀ δ) ν :=
   ((integrable_radialBump ν hfin ξ₀ hδ).ofReal).const_mul _
 
+/-- The normalized bump density has integral one. -/
 theorem integral_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) :
     ∫ ξ, bumpDensity ν ξ₀ δ ξ ∂ν = 1 := by
@@ -462,6 +492,7 @@ theorem integral_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
     inv_mul_cancel₀ hZ.ne']
   norm_num
 
+/-- The normalized bump density has L¹ norm one. -/
 theorem integral_norm_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) :
     ∫ ξ, ‖bumpDensity ν ξ₀ δ ξ‖ ∂ν = 1 := by
@@ -471,6 +502,7 @@ theorem integral_norm_bumpDensity (ν : Measure H) [ν.IsOpenPosMeasure]
   rw [integral_congr_ae (Eventually.of_forall hcongr), integral_const_mul, ← bumpWeight,
     inv_mul_cancel₀ hZ.ne']
 
+/-- The normalized smooth bump density satisfies regularity along rays. -/
 theorem isRegularAlongRays_bumpDensity (ν : Measure H)
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) {I : Set ℝ}
     (hI : IsCompact I) (hI0 : (0 : ℝ) ∉ I) : IsRegularAlongRays ν I (bumpDensity ν ξ₀ δ) :=
@@ -486,14 +518,17 @@ section SpectralTargetAux
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
+/-- Continuity of `expInner`. -/
 theorem continuous_expInner (x : H) :
     Continuous fun ξ : H => Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) :=
   Complex.continuous_exp.comp
     ((Complex.continuous_ofReal.comp (continuous_const.inner continuous_id)).mul continuous_const)
 
+/-- A scalar spectral target is its character-weighted density integral. -/
 theorem spectralTarget_eq_integral_mul (ν : Measure H) (G : H → ℂ) (x : H) :
     spectralTarget ν G x = ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * G ξ ∂ν := rfl
 
+/-- The character-weighted spectral density is integrable. -/
 theorem integrable_expInner_mul {ν : Measure H} {g : H → ℂ} (hg : Integrable g ν) (x : H) :
     Integrable (fun ξ : H => Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) * g ξ) ν := by
   refine Integrable.mono' hg.norm
@@ -501,6 +536,7 @@ theorem integrable_expInner_mul {ν : Measure H} {g : H → ℂ} (hg : Integrabl
     (Eventually.of_forall fun ξ => ?_)
   simp [Complex.norm_exp_ofReal_mul_I]
 
+/-- Finite linear combinations commute with the spectral-target integral. -/
 theorem spectralTarget_finset_sum (ν : Measure H) {ι : Type*} (s : Finset ι) (c : ι → ℂ)
     (G : ι → H → ℂ) (hG : ∀ i ∈ s, Integrable (G i) ν) (x : H) :
     spectralTarget ν (fun ξ => ∑ i ∈ s, c i * G i ξ) x =
@@ -1020,6 +1056,7 @@ def ridgeAtomVec (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β) (q 
   BoundedContinuousFunction.mkOfCompact
     ⟨fun x : K => β (⟪q.1.1, (x : H)⟫ + q.1.2) • q.2, by fun_prop⟩
 
+/-- Evaluation of a vector-valued ridge atom is the coefficient-scaled activation. -/
 theorem ridgeAtomVec_apply (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β)
     (q : (H × ℝ) × Y) (x : K) :
     ridgeAtomVec hK hβ q x = β (⟪q.1.1, (x : H)⟫ + q.1.2) • q.2 :=

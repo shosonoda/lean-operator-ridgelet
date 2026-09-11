@@ -13,6 +13,7 @@ namespace OperatorRidgelet
 
 open LeanRidgelet
 
+/-- The difference of the two signed ReLU neurons is the identity. -/
 theorem relu_sub_relu_neg (x : ℝ) : relu x - relu (-x) = x := by
   simp only [relu]
   rcases le_total 0 x with hx | hx
@@ -27,6 +28,7 @@ noncomputable def spectralReLUNetwork {ι E : Type*} [DecidableEq ι]
     (basis : ι → E) : E :=
   ∑ i ∈ s, (coeff i * (relu (coordinate i) - relu (-coordinate i))) • basis i
 
+/-- Each signed ReLU pair reduces the spectral network to its linear spectral sum. -/
 theorem spectralReLUNetwork_eq {ι E : Type*} [DecidableEq ι]
     [AddCommMonoid E] [Module ℝ E] (s : Finset ι) (coeff coordinate : ι → ℝ)
     (basis : ι → E) :

@@ -216,13 +216,13 @@ Blueprint node: {bpref "def:admissible-filter"}[]. Status: *verified* (its Lean 
 
 Formalization note. ρ : SchwartzMap ℝ ℝ; 0 < C < ∞ is integrability plus positivity. IsBandPass includes ρ ≠ 0 (a band-pass filter is admissible, hence nonzero), which the claim 'admissible for every α > 0' (def\_admissible\_filter) needs.
 
-`OperatorRidgelet.IsAdmissible`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L241)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.IsAdmissible`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L247)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.admissibilityConst`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L236)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.admissibilityConst`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L242)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.IsBandPass`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L250)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.IsBandPass`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L256)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.crossAdmissibilityConst`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L230)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.crossAdmissibilityConst`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L236)); see the Lean panel of the Blueprint node above.
 
 `OperatorRidgelet.Paper.def_admissible_filter`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L74):
 
@@ -241,11 +241,11 @@ Blueprint node: {bpref "def:ridgelet-analysis"}[]. Status: *defined* (definition
 
 Formalization note. Defined for a general input measure μ (μ\_Q is the instance IsCenteredGaussian Q μ); 𝒢\_μ f is gaussFourier.
 
-`OperatorRidgelet.ridgelet`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L267)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.ridgelet`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L273)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.parameterMeasure`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L276)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.parameterMeasure`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L283)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.gaussFourier`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L131)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.gaussFourier`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L136)); see the Lean panel of the Blueprint node above.
 
 ## Lemma 3.4 — Fourier-slice identity (`lem:fourier-slice`)
 
@@ -323,11 +323,11 @@ Blueprint node: {bpref "def:spectral-coefficient"}[]. Status: *verified* (its Le
 
 Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula).
 
-`OperatorRidgelet.HasBiasFourier`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L305)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.HasBiasFourier`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L312)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.spectralCoefficient`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L316)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralCoefficient`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L323)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.coefficientFormula`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L286)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.coefficientFormula`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L293)); see the Lean panel of the Blueprint node above.
 
 `OperatorRidgelet.Paper.def_spectral_coefficient`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L123):
 
@@ -426,15 +426,15 @@ Blueprint node: {bpref "def:spectral-space"}[]. Status: *defined* (definitions o
 
 Formalization note. 𝓔\_α is represented by 𝒦\_α = spectralRange (the closure of 𝒢\_μ(𝒟) in L²(ν)) rather than by an abstract completion, since the positivity of the spectral form (Lemma 3.8) cannot enter a definition; U\_α is spectralEmbed, the identity of 𝒦\_α on the completion.
 
-`OperatorRidgelet.spectralCore`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L373)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralCore`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L384)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.spectralInner`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L351)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralInner`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L360)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.spectralRange`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L398)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralRange`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L410)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.gaussFourierLp`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L393)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.gaussFourierLp`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L405)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.spectralEmbed`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L403)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralEmbed`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L415)); see the Lean panel of the Blueprint node above.
 
 ## Lemma 3.8 — Positivity and the unitary extension (`lem:spectral-unitary`)
 
@@ -746,15 +746,15 @@ Blueprint node: {bpref "def:ray-regular"}[]. Status: *verified* (its Lean theore
 
 Formalization note. The compact symmetric set I ⊆ ℝ∖\{0\} containing supp ρ̂ fixed before the definition is the predicate IsFrequencyWindow ρ I; the ray-derivative bound max\_\{k≤m\} sup\_\{ω∈I\} |∂^k\_ω G(ωa)| and the moment M\_m(G) are taken in ℝ≥0∞ so that 'M\_m(G) < ∞' is literally rayMoment ν I G m < ⊤; IsRegularAlongRays bundles boundedness, Borel measurability (StronglyMeasurable), smoothness of ω ↦ G(ωa) on an open neighbourhood of I, and finiteness of every M\_m(G); it is polymorphic in the target space (the Y-valued version with ‖·‖\_Y is the same predicate). The target g\_G with spectral density G is spectralTarget ν G (stated for the abstract direction measure ν), and the coefficient γ\_G is coefficientFormula ρ G of Section 3. The remark after the definition (regular along rays ⇒ G ∈ L¹(ν\_α) ∩ L²(ν\_α)) is def\_ray\_regular.
 
-`OperatorRidgelet.IsFrequencyWindow`: definition in the library (structure in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L117)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.IsFrequencyWindow`: definition in the library (structure in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L118)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.rayDerivBound`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L129)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.rayDerivBound`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L130)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.rayMoment`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L134)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.rayMoment`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L135)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.IsRegularAlongRays`: definition in the library (structure in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L141)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.IsRegularAlongRays`: definition in the library (structure in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L142)); see the Lean panel of the Blueprint node above.
 
-`OperatorRidgelet.spectralTarget`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L112)); see the Lean panel of the Blueprint node above.
+`OperatorRidgelet.spectralTarget`: definition in the library (def in [`OperatorRidgelet/Reconstruction/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Reconstruction/Defs.lean#L113)); see the Lean panel of the Blueprint node above.
 
 `OperatorRidgelet.Paper.def_ray_regular`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L22):
 

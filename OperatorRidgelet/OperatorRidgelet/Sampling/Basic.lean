@@ -59,23 +59,28 @@ section SupNorm
 
 variable {X : Type*} {Y : Type*} [NormedAddCommGroup Y]
 
+/-- The supremum norm on a compact set is nonnegative. -/
 theorem compactSupNorm_nonneg (K : Set X) (f : X → Y) : 0 ≤ compactSupNorm K f :=
   Real.sSup_nonneg fun _ ⟨_, _, h⟩ => h ▸ norm_nonneg _
 
+/-- A uniform pointwise norm bound controls the compact supremum norm. -/
 theorem compactSupNorm_le {K : Set X} {f : X → Y} {a : ℝ} (ha : 0 ≤ a)
     (h : ∀ x ∈ K, ‖f x‖ ≤ a) : compactSupNorm K f ≤ a :=
   Real.sSup_le (fun _ ⟨x, hx, hfx⟩ => hfx ▸ h x hx) ha
 
+/-- Pointwise equality of norms on the compact set preserves the supremum norm. -/
 theorem compactSupNorm_congr_norm {K : Set X} {f g : X → Y} (h : ∀ x ∈ K, ‖f x‖ = ‖g x‖) :
     compactSupNorm K f = compactSupNorm K g := by
   unfold compactSupNorm
   congr 1
   exact Set.image_congr h
 
+/-- Pointwise equality on the compact set preserves the supremum norm. -/
 theorem compactSupNorm_congr {K : Set X} {f g : X → Y} (h : ∀ x ∈ K, f x = g x) :
     compactSupNorm K f = compactSupNorm K g :=
   compactSupNorm_congr_norm fun x hx => by rw [h x hx]
 
+/-- The compact supremum norm of a difference is symmetric. -/
 theorem compactSupNorm_sub_comm {K : Set X} (f g : X → Y) :
     compactSupNorm K (fun x => f x - g x) = compactSupNorm K (fun x => g x - f x) :=
   compactSupNorm_congr_norm fun _ _ => norm_sub_rev _ _
@@ -98,6 +103,7 @@ end Projection
 
 /-! ### The product law is a probability measure -/
 
+/-- The finite product sampling law has total mass one. -/
 instance instIsProbabilityMeasureSampleLaw {Θ : Type*} [MeasurableSpace Θ] (N : ℕ)
     (p : Measure Θ) [IsProbabilityMeasure p] : IsProbabilityMeasure (sampleLaw N p) := by
   unfold sampleLaw
@@ -135,10 +141,12 @@ theorem polarDensity_spec (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variatio
   rw [dif_pos h]
   exact h.choose_spec
 
+/-- The polar density has norm one almost everywhere for the variation measure. -/
 theorem ae_norm_polarDensity_eq_one (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     ∀ᵐ θ ∂Γ.variation, ‖polarDensity Γ θ‖ = 1 :=
   (polarDensity_spec Γ).1
 
+/-- Integrating the polar density against the variation recovers the vector measure. -/
 theorem withDensityᵥ_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     Γ.variation.withDensityᵥ (polarDensity Γ) = Γ :=
   (polarDensity_spec Γ).2.symm
@@ -152,34 +160,42 @@ theorem integrable_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.va
 
 variable {Y : Type*} [NormedAddCommGroup Y]
 
+/-- Finite variation gives a finite total variation value. -/
 theorem totalVariation_ne_top (Γ : VectorMeasure Θ Y) [IsFiniteMeasure Γ.variation] :
     totalVariation Γ ≠ ⊤ :=
   measure_ne_top _ _
 
+/-- The real total-variation weight is nonnegative. -/
 theorem polarWeight_nonneg (Γ : VectorMeasure Θ Y) : 0 ≤ polarWeight Γ :=
   ENNReal.toReal_nonneg
 
+/-- A nonzero finite vector measure has strictly positive polar weight. -/
 theorem polarWeight_pos (Γ : VectorMeasure Θ Y) [IsFiniteMeasure Γ.variation]
     (h : totalVariation Γ ≠ 0) : 0 < polarWeight Γ :=
   ENNReal.toReal_pos h (totalVariation_ne_top Γ)
 
+/-- Zero total variation forces the variation measure to vanish. -/
 theorem variation_eq_zero_of_totalVariation_eq_zero {Γ : VectorMeasure Θ Y}
     (h : totalVariation Γ = 0) : Γ.variation = 0 :=
   Measure.measure_univ_eq_zero.mp h
 
+/-- Zero total variation gives zero real polar weight. -/
 theorem polarWeight_eq_zero_of_totalVariation_eq_zero {Γ : VectorMeasure Θ Y}
     (h : totalVariation Γ = 0) : polarWeight Γ = 0 := by
   rw [polarWeight, h, ENNReal.toReal_zero]
 
+/-- The normalized polar law vanishes when total variation is zero. -/
 theorem polarLaw_eq_zero_of_totalVariation_eq_zero {Γ : VectorMeasure Θ Y}
     (h : totalVariation Γ = 0) : polarLaw Γ = 0 := by
   rw [polarLaw, variation_eq_zero_of_totalVariation_eq_zero h, smul_zero]
 
+/-- The zero vector measure has zero total variation. -/
 theorem totalVariation_eq_zero_of_eq_zero {Γ : VectorMeasure Θ Y} (h : Γ = 0) :
     totalVariation Γ = 0 := by
   rw [h, totalVariation, VectorMeasure.variation_zero]
   rfl
 
+/-- Nonzero total variation implies a nonzero vector measure. -/
 theorem ne_zero_of_totalVariation_ne_zero {Γ : VectorMeasure Θ Y} (h : totalVariation Γ ≠ 0) :
     Γ ≠ 0 :=
   fun h0 => h (totalVariation_eq_zero_of_eq_zero h0)
@@ -211,13 +227,16 @@ theorem variation_eq_smul_polarLaw (Γ : VectorMeasure Θ Y) [IsFiniteMeasure Γ
   rw [polarWeight, ENNReal.ofReal_toReal (totalVariation_ne_top Γ), polarLaw, smul_smul,
     ENNReal.mul_inv_cancel h (totalVariation_ne_top Γ), one_smul]
 
+/-- The normalized polar law is absolutely continuous with respect to variation. -/
 theorem polarLaw_absolutelyContinuous (Γ : VectorMeasure Θ Y) : polarLaw Γ ≪ Γ.variation :=
   Measure.smul_absolutelyContinuous
 
+/-- The polar density has norm one almost everywhere for the normalized sampling law. -/
 theorem ae_polarLaw_norm_polarDensity_eq_one (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation] :
     ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 :=
   Measure.ae_smul_measure (ae_norm_polarDensity_eq_one Γ) _
 
+/-- The polar density is almost everywhere strongly measurable for the sampling law. -/
 theorem aestronglyMeasurable_polarDensity (Γ : VectorMeasure Θ Z) [IsFiniteMeasure Γ.variation]
     (hΓ : Γ ≠ 0) : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
   (integrable_polarDensity Γ hΓ).aestronglyMeasurable.mono_ac (polarLaw_absolutelyContinuous Γ)
@@ -268,6 +287,7 @@ theorem integralNetwork_zero (β : ℝ → ℂ) {Y : Type*} [NormedAddCommGroup 
     (x : H) : integralNetwork β (0 : VectorMeasure (H × ℝ) Y) x = 0 :=
   VectorMeasure.integral_zero_vectorMeasure
 
+/-- Coefficients of zero total variation synthesize the zero network. -/
 theorem integralNetwork_eq_zero_of_totalVariation_eq_zero (β : ℝ → ℂ) {Y : Type*}
     [NormedAddCommGroup Y] [NormedSpace ℂ Y] {Γ : VectorMeasure (H × ℝ) Y}
     (h0 : totalVariation Γ = 0) (x : H) : integralNetwork β Γ x = 0 := by
@@ -384,6 +404,7 @@ def ridgeAtom (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β) (θ : 
   haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
   BoundedContinuousFunction.mkOfCompact ⟨fun x : K => β (⟪θ.1, (x : H)⟫ + θ.2), by fun_prop⟩
 
+/-- Evaluation of the continuous ridge atom is the activation of its affine preactivation. -/
 theorem ridgeAtom_apply (hK : IsCompact K) {β : ℝ → ℂ} (hβ : Continuous β) (θ : H × ℝ)
     (x : K) : ridgeAtom hK hβ θ x = β (⟪θ.1, (x : H)⟫ + θ.2) :=
   rfl
@@ -657,12 +678,14 @@ theorem abs_inner_add_le_sqrt (A x : H) (C : ℝ) :
   nlinarith [sq_nonneg (‖A‖ - |C| * ‖x‖), sq_abs C, norm_nonneg A, norm_nonneg x, abs_nonneg C]
 
 omit [InnerProductSpace ℝ H] in
+/-- The compact radius bounds every augmented input norm on the compact set. -/
 theorem le_compactRadius (hK : IsCompact K) {x : H} (hx : x ∈ K) :
     Real.sqrt (‖x‖ ^ 2 + 1) ≤ compactRadius K :=
   le_csSup (hK.image (by fun_prop : Continuous fun x : H => Real.sqrt (‖x‖ ^ 2 + 1))).bddAbove
     ⟨x, hx, rfl⟩
 
 omit [InnerProductSpace ℝ H] in
+/-- The augmented compact radius is nonnegative. -/
 theorem compactRadius_nonneg (K : Set H) : 0 ≤ compactRadius K :=
   Real.sSup_nonneg fun _ ⟨_, _, h⟩ => h ▸ Real.sqrt_nonneg _
 
@@ -1222,20 +1245,24 @@ end Truncation
 
 section RademacherComplexity
 
+/-- The finite product Rademacher law is a probability measure. -/
 instance instIsProbabilityMeasureRademacherMeasure (N : ℕ) :
     IsProbabilityMeasure (rademacherMeasure N) :=
   show IsProbabilityMeasure (Measure.pi fun _ : Fin N => rademacherSign) from inferInstance
 
+/-- The finite Rademacher law is the product of its one-sign laws. -/
 theorem rademacherMeasure_eq (N : ℕ) :
     rademacherMeasure N = Measure.pi fun _ : Fin N => rademacherSign :=
   rfl
 
+/-- A Rademacher sign is almost surely either one or minus one. -/
 theorem ae_rademacherSign : ∀ᵐ t ∂rademacherSign, t = 1 ∨ t = -1 := by
   rw [rademacherSign]
   refine Measure.ae_smul_measure ?_ _
   rw [ae_add_measure_iff, ae_dirac_eq, ae_dirac_eq]
   exact ⟨Filter.eventually_pure.mpr (Or.inr rfl), Filter.eventually_pure.mpr (Or.inl rfl)⟩
 
+/-- Every coordinate of a sampled Rademacher vector is almost surely a sign. -/
 theorem ae_rademacherMeasure_forall (N : ℕ) :
     ∀ᵐ ε ∂rademacherMeasure N, ∀ j, ε j = 1 ∨ ε j = -1 := by
   rw [rademacherMeasure_eq]
