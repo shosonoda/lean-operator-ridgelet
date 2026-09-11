@@ -418,7 +418,8 @@ theorem thm_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
       hermiteCoefficient μ Q f ξ n =
         Complex.I ^ n / ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ) ^ n *
           iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
-  sorry
+  exact fun ξ hξ n =>
+    hermiteCoefficient_eq_iteratedDeriv hμ (Lp.memLp (f : Lp ℂ 2 μ)) (hQ.inner_pos hξ) n
 
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  The Hermite coefficients over all
 `ξ ≠ 0` and `n` determine `f ∈ 𝒟_α` in `L²(μ_Q)`. -/

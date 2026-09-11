@@ -373,7 +373,7 @@ attribute [blueprint "thm:C-iv-d"
     x,\xi\rangle/\tau(\xi))]=\frac{i^n}{\tau(\xi)^n}\frac{\mathrm d^n}{\mathrm
     dt^n}(e^{t^2\tau(\xi)^2/2}\mathcal G_Qf(t\xi))|_{t=0}$ for $f\in\mathcal D_\alpha$,
     $\xi\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_d
+  ] OperatorRidgelet.Paper.thm_C_iv_d
 
 attribute [blueprint "thm:C-iv-e"
   (statement := /-- The Hermite coefficients over all $\xi\ne0$ and $n$ determine $f\in\mathcal
