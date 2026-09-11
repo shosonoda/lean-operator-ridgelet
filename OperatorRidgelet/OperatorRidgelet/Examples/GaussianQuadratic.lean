@@ -1,4 +1,5 @@
 import OperatorRidgelet.Examples.Defs
+import OperatorRidgelet.Transform.Gaussian
 import OperatorRidgelet.ToMathlib.PositiveEigenbasis
 import OperatorRidgelet.ToMathlib.GaussianOrthonormalCoordinates
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
@@ -335,5 +336,59 @@ theorem tendsto_truncQuad (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x�
   simpa using hfin
 
 end Convergence
+
+/-! ### The support of a centred Gaussian measure -/
+
+section Support
+
+variable [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+
+omit [MeasurableSpace H] [BorelSpace H] in
+/-- A positive self-adjoint trace-class operator has a countable orthonormal eigenbasis with
+nonnegative summable eigenvalues (injectivity is *not* assumed, so `0` may be an eigenvalue). -/
+theorem IsPositiveTraceClass.exists_eigenbasis' {Cov : H →L[ℝ] H}
+    (hCov : IsPositiveTraceClass Cov) :
+    ∃ (κ : Type) (_ : Countable κ) (b : HilbertBasis κ ℝ H) (p : κ → ℝ),
+      (∀ k, 0 ≤ p k) ∧ Summable p ∧ ∀ k, Cov (b k) = p k • b k := by
+  obtain ⟨ι, b0, hb0⟩ := hCov.hasSummableTrace
+  have hcomp := ContinuousLinearMap.isCompactOperator_of_summable_inner
+    hCov.isSelfAdjoint.isSymmetric hCov.inner_nonneg b0 hb0
+  obtain ⟨κ, hκ, b, hb⟩ :=
+    ContinuousLinearMap.exists_hilbertBasis_eigenvector_of_isCompactOperator
+      hCov.isSelfAdjoint hcomp
+  refine ⟨κ, hκ, b, fun k => ⟪Cov (b k), b k⟫, fun k => hCov.inner_nonneg _, ?_, hb⟩
+  have hkey := ContinuousLinearMap.tsum_ofReal_inner_map_eq_of_eigen b0 b
+    (fun k => ⟪Cov (b k), b k⟫) (fun k => hCov.inner_nonneg _) hb
+  have hlhs : ∑' i, ENNReal.ofReal ⟪Cov (b0 i), b0 i⟫ ≠ ⊤ := by
+    rw [← ENNReal.ofReal_tsum_of_nonneg (fun i => hCov.inner_nonneg _) hb0]
+    exact ENNReal.ofReal_ne_top
+  rw [hkey] at hlhs
+  have hnn : Summable fun k => (⟪Cov (b k), b k⟫).toNNReal :=
+    ENNReal.tsum_coe_ne_top_iff_summable.1 (by simpa [ENNReal.ofReal] using hlhs)
+  refine (NNReal.summable_coe.2 hnn).congr fun k => ?_
+  exact Real.coe_toNNReal _ (hCov.inner_nonneg _)
+
+/-- A centred Gaussian measure with covariance `Σ = R²` is carried by the closure of the range
+of `R`: its Karhunen–Loève series has all its partial sums there. -/
+theorem IsCenteredGaussian.ae_mem_closure_range {Cov R : H →L[ℝ] H}
+    (hCov : IsPositiveTraceClass Cov) (hR : IsPositiveSqrt R Cov) {μ : Measure H}
+    (hμ : IsCenteredGaussian Cov μ) :
+    ∀ᵐ ξ ∂μ, ξ ∈ closure (Set.range (R : H → H)) := by
+  obtain ⟨κ, hκ, b, p, hp, hs, hPe⟩ := hCov.exists_eigenbasis'
+  have hμ' : μ = gaussianSeries b p :=
+    hμ.unique (isCenteredGaussian_gaussianSeries b p hp hs hPe)
+  have hbase : ∀ᵐ z ∂stdGaussianPi κ,
+      gaussianSeriesMap b p z ∈ closure (Set.range (R : H → H)) := by
+    filter_upwards [ae_hasSum_gaussianSeriesMap b p hp hs] with z hz
+    refine mem_closure_of_tendsto hz (Filter.Eventually.of_forall fun F => ?_)
+    refine ⟨∑ i ∈ F, z i • b i, ?_⟩
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [map_smul, hR.apply_eigenvector (b.orthonormal.1 i) (hPe i), smul_smul, mul_comm]
+  rw [hμ', gaussianSeries]
+  exact (MeasureTheory.ae_map_iff (measurable_gaussianSeriesMap b p).aemeasurable
+    (isClosed_closure (s := Set.range (R : H → H))).measurableSet).2 hbase
+
+end Support
 
 end OperatorRidgelet
