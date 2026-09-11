@@ -11,6 +11,10 @@ import OperatorRidgelet.Examples.NotCylindrical
 import OperatorRidgelet.Examples.OperatorLayer
 import OperatorRidgelet.Examples.HingeMeasure
 import OperatorRidgelet.Examples.Convolution
+import OperatorRidgelet.Examples.ConvolutionFourier
+import OperatorRidgelet.Examples.ConvolutionSpectrum
+import OperatorRidgelet.Examples.BesselCovariance
+import OperatorRidgelet.Transform.Isometry
 import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
 import OperatorRidgelet.Examples.DirichletOperator
@@ -1235,7 +1239,7 @@ theorem ex_convolution_vii (d : ℕ) (k ψ : TorusL2 d) (β : ℝ → ℝ) (hβc
 theorem ex_convolution_viii (d : ℕ) (k : TorusL2 d)
     (hk : Set.Infinite {n : Fin d → ℤ | torusFourierCoeff (fun t => (k t : ℂ)) n ≠ 0}) :
     HasInfiniteRank (layerA (torusHaar d) (convDirection k)) := by
-  sorry
+  exact hasInfiniteRank_conv k hk
 
 set_option linter.unusedVariables false in
 /-- **Example [ex:convolution]** Periodic convolution layer.  With `φ ≡ 1` the observable is
@@ -1257,20 +1261,20 @@ theorem ex_convolution_x (d : ℕ) (k ψ : TorusL2 d)
     ¬ IsCylindrical
       (layerObservable (torusHaar d) (convDirection k) (convOutput ψ) gaussianFun
         (torusOne d)) := by
-  sorry
+  exact not_isCylindrical_convolution_gaussian k ψ hk hψ
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  For `s > d/2`, the operator
 `(I - Δ)^{-s}` is injective, positive, self-adjoint, and trace class. -/
 theorem ex_convolution_xi (d : ℕ) (s : ℝ) (hs : (d : ℝ) / 2 < s) :
     IsTraceClassCovariance (besselOperator d s) := by
-  sorry
+  exact isTraceClassCovariance_besselOperator d s hs
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  `(I - Δ)^{-s}` is translation
 invariant: `(I - Δ)^{-s} τ_z = τ_z (I - Δ)^{-s}`. -/
 theorem ex_convolution_xii (d : ℕ) (s : ℝ) (hs : (d : ℝ) / 2 < s) :
     ∀ (z : Torus d) (x : TorusL2 d),
       besselOperator d s (torusTranslate d z x) = torusTranslate d z (besselOperator d s x) := by
-  sorry
+  exact fun z x => besselOperator_commutes_translate s z x
 
 /-- **Example [ex:convolution]** Periodic convolution layer.  With `Q = P = (I - Δ)^{-s}`,
 `s > d/2`, the transform is equivariant: `R_ρ[f ∘ τ_z](a,c) = R_ρ f(τ_z a, c)` for every
@@ -1282,7 +1286,10 @@ theorem ex_convolution_xiii (d : ℕ) (s : ℝ) (hs : (d : ℝ) / 2 < s)
     ∀ (z : Torus d) (p : TorusL2 d × ℝ),
       ridgelet μ ρ (fun x => f (torusTranslate d z x)) p =
         ridgelet μ ρ f (torusTranslate d z p.1, p.2) := by
-  sorry
+  intro z p
+  exact ridgelet_comp_isometry μ (torusTranslateEquiv d z)
+    (hμ.measurePreserving_isometry (torusTranslateEquiv d z)
+      (besselOperator_commutes_translate s z)) ρ f p
 
 end Convolution
 

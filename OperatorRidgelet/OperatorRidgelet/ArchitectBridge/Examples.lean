@@ -543,8 +543,8 @@ attribute [blueprint "ex:convolution-vii"
   OperatorRidgelet.Paper.ex_convolution_vii
 
 attribute [blueprint "ex:convolution-viii"
-  (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$, then $A$ has infinite rank. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_viii
+  (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$, then $A$ has infinite rank. -/)]
+  OperatorRidgelet.Paper.ex_convolution_viii
 
 attribute [blueprint "ex:convolution-ix"
   (statement := /-- $F_1(x)=\widehat\psi(0)\int_{\mathbb T^d}\beta((k*x)(y))\,\mathrm dy$. -/)]
@@ -552,22 +552,22 @@ attribute [blueprint "ex:convolution-ix"
 
 attribute [blueprint "ex:convolution-x"
   (statement := /-- If $\widehat k(n)\ne0$ for infinitely many $n$ and $\widehat\psi(0)\ne0$,
-    then $F_1$ is not cylindrical. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_x
+    then $F_1$ is not cylindrical. -/)]
+  OperatorRidgelet.Paper.ex_convolution_x
 
 attribute [blueprint "ex:convolution-xi"
   (statement := /-- $(I-\Delta)^{-s}$ is injective, positive, self-adjoint, and trace class for
-    $s>d/2$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xi
+    $s>d/2$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_xi
 
 attribute [blueprint "ex:convolution-xii"
-  (statement := /-- $(I-\Delta)^{-s}$ is translation invariant. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xii
+  (statement := /-- $(I-\Delta)^{-s}$ is translation invariant. -/)]
+  OperatorRidgelet.Paper.ex_convolution_xii
 
 attribute [blueprint "ex:convolution-xiii"
   (statement := /-- $R_\rho[f\circ\tau_z](a,c)=R_\rho f(\tau_za,c)$ for every translation
-    $\tau_z$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_convolution_xiii
+    $\tau_z$. -/)]
+  OperatorRidgelet.Paper.ex_convolution_xiii
 
 attribute [blueprint "ex:dirichlet-i"
   (statement := /-- $(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt$. -/)]

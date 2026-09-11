@@ -291,8 +291,6 @@
         "OperatorRidgelet.Paper.thm_vector_valued_C_i_d",
         "OperatorRidgelet.Paper.thm_vector_valued_C_ii_a",
         "OperatorRidgelet.Paper.thm_vector_valued_C_ii_b",
-        "OperatorRidgelet.Paper.cor_vector_rates_i_a",
-        "OperatorRidgelet.Paper.cor_vector_rates_i_b",
         "OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii",
         "OperatorRidgelet.Paper.thm_vector_valued_B_iii",
         "OperatorRidgelet.Paper.thm_vector_valued_C_iii_a",
@@ -308,7 +306,12 @@
         "OperatorRidgelet.Paper.thm_vector_valued_C_iii_b",
         "OperatorRidgelet.Paper.thm_vector_valued_C_iii_d",
         "OperatorRidgelet.Paper.thm_vector_valued_C_iv_a",
-        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_b"
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_b",
+        "OperatorRidgelet.Paper.ex_convolution_viii",
+        "OperatorRidgelet.Paper.ex_convolution_x",
+        "OperatorRidgelet.Paper.ex_convolution_xi",
+        "OperatorRidgelet.Paper.ex_convolution_xii",
+        "OperatorRidgelet.Paper.ex_convolution_xiii"
     ],
     "permitted_axioms": [
         "propext",
