@@ -214,4 +214,126 @@ theorem truncQuad_le (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (h
 
 end Truncation
 
+/-! ### Convergence of the truncated quadratic form on the closure of the range of `R` -/
+
+section Convergence
+
+set_option linter.unusedSectionVars false
+
+variable {Cov S R : H →L[ℝ] H} {κ : Type*} {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+
+theorem inner_map_add_le_two (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫) (p q : H) :
+    ⟪S (p + q), p + q⟫ ≤ 2 * ⟪S p, p⟫ + 2 * ⟪S q, q⟫ := by
+  have h := hS0 (p - q)
+  have hc := ContinuousLinearMap.inner_map_comm hS.isSymmetric p q
+  simp only [map_add, map_sub, inner_add_left, inner_add_right, inner_sub_left,
+    inner_sub_right] at h ⊢
+  rw [hc] at h
+  linarith
+
+theorem coordSum_add (F : Finset κ) (a b : H) :
+    coordSum S R e m F (a + b) = coordSum S R e m F a + coordSum S R e m F b := by
+  simp only [coordSum, inner_add_right, add_smul]
+  exact Finset.sum_add_distrib
+
+theorem inner_map_map_eq (hR : IsPositiveSqrt R Cov) (y : H) :
+    ⟪(R * S * R) y, y⟫ = ⟪S (R y), R y⟫ :=
+  hR.isSymmetric (S (R y)) y
+
+theorem truncQuad_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
+    (F : Finset κ) (y : H) :
+    truncQuad S R e m F (R y) = ∑ j ∈ F, m j * ⟪e j, y⟫ ^ 2 := by
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rcases eq_or_ne (m j) 0 with hj | hj
+  · rw [hj]; ring
+  · rw [inner_unitCoordVec_map hR hM hj]
+
+theorem tendsto_truncQuad_map (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m)
+    (y : H) :
+    Filter.Tendsto (fun F : Finset κ => truncQuad S R e m F (R y)) Filter.atTop
+      (nhds ⟪S (R y), R y⟫) := by
+  have h := ContinuousLinearMap.hasSum_inner_map_self_of_eigen e m hM y
+  rw [inner_map_map_eq hR] at h
+  have h2 : Filter.Tendsto (fun F : Finset κ => ∑ j ∈ F, m j * ⟪e j, y⟫ ^ 2) Filter.atTop
+      (nhds ⟪S (R y), R y⟫) := h
+  rw [show (fun F : Finset κ => truncQuad S R e m F (R y)) =
+      fun F : Finset κ => ∑ j ∈ F, m j * ⟪e j, y⟫ ^ 2 from
+    funext fun F => truncQuad_map hR hM F y]
+  exact h2
+
+/-- On the closure of the range of `R` the truncated quadratic forms converge to `⟪S ξ, ξ⟫`. -/
+theorem tendsto_truncQuad (hS : IsSelfAdjoint S) (hS0 : ∀ x, 0 ≤ ⟪S x, x⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) {ξ : H}
+    (hξ : ξ ∈ closure (Set.range (R : H → H))) :
+    Filter.Tendsto (fun F : Finset κ => truncQuad S R e m F ξ) Filter.atTop
+      (nhds ⟪S ξ, ξ⟫) := by
+  have key : Filter.Tendsto (fun F : Finset κ => ⟪S ξ, ξ⟫ - truncQuad S R e m F ξ)
+      Filter.atTop (nhds 0) := by
+    refine NormedAddGroup.tendsto_nhds_zero.2 fun ε hε => ?_
+    have hpos8 : (0 : ℝ) < ε / (8 * (‖S‖ + 1)) := by positivity
+    obtain ⟨u, ⟨y, rfl⟩, hu⟩ := Metric.mem_closure_iff.1 hξ _ (Real.sqrt_pos.2 hpos8)
+    set w : H := ξ - R y with hw
+    have hwn : ⟪S w, w⟫ ≤ ε / 8 := by
+      have h1 : ⟪S w, w⟫ ≤ ‖S‖ * ‖w‖ ^ 2 := by
+        calc ⟪S w, w⟫ ≤ ‖S w‖ * ‖w‖ := real_inner_le_norm _ _
+          _ ≤ ‖S‖ * ‖w‖ * ‖w‖ := by
+              gcongr
+              exact S.le_opNorm _
+          _ = ‖S‖ * ‖w‖ ^ 2 := by ring
+      have hd : ‖w‖ < Real.sqrt (ε / (8 * (‖S‖ + 1))) := by
+        rw [hw, ← dist_eq_norm]; exact hu
+      have h2 : ‖w‖ ^ 2 ≤ ε / (8 * (‖S‖ + 1)) := by
+        nlinarith [norm_nonneg w, Real.sq_sqrt hpos8.le,
+          Real.sqrt_nonneg (ε / (8 * (‖S‖ + 1)))]
+      have h3 : ‖S‖ * (ε / (8 * (‖S‖ + 1))) ≤ ε / 8 := by
+        rw [mul_div_assoc', div_le_iff₀ (by positivity : (0 : ℝ) < 8 * (‖S‖ + 1))]
+        nlinarith [norm_nonneg S, hε.le]
+      calc ⟪S w, w⟫ ≤ ‖S‖ * ‖w‖ ^ 2 := h1
+        _ ≤ ‖S‖ * (ε / (8 * (‖S‖ + 1))) := by gcongr
+        _ ≤ ε / 8 := h3
+    have hlim := tendsto_truncQuad_map hR hM (S := S) (e := e) (m := m) y
+    have hz : Filter.Tendsto (fun F : Finset κ => ⟪S (R y), R y⟫ - truncQuad S R e m F (R y))
+        Filter.atTop (nhds 0) := by
+      have hc : Filter.Tendsto (fun _ : Finset κ => ⟪S (R y), R y⟫) Filter.atTop
+          (nhds ⟪S (R y), R y⟫) := tendsto_const_nhds
+      simpa using hc.sub hlim
+    have hev : ∀ᶠ F : Finset κ in Filter.atTop,
+        ⟪S (R y), R y⟫ - truncQuad S R e m F (R y) < ε / 4 := by
+      filter_upwards [NormedAddGroup.tendsto_nhds_zero.1 hz (ε / 4) (by positivity)] with F hF
+      calc ⟪S (R y), R y⟫ - truncQuad S R e m F (R y)
+          ≤ ‖⟪S (R y), R y⟫ - truncQuad S R e m F (R y)‖ := le_abs_self _
+        _ < ε / 4 := hF
+    filter_upwards [hev] with F hF
+    have hsplit : ξ = R y + w := by rw [hw]; abel
+    have hdec : ⟪S ξ, ξ⟫ - truncQuad S R e m F ξ =
+        ⟪S (ξ - coordSum S R e m F ξ), ξ - coordSum S R e m F ξ⟫ :=
+      (inner_map_sub_coordSum hS hR hM F ξ).symm
+    have hlin : ξ - coordSum S R e m F ξ =
+        (R y - coordSum S R e m F (R y)) + (w - coordSum S R e m F w) := by
+      rw [show ξ - coordSum S R e m F ξ = ξ - coordSum S R e m F (R y + w) by rw [← hsplit],
+        coordSum_add]
+      rw [hsplit]
+      abel
+    have hb := inner_map_add_le_two hS hS0 (R y - coordSum S R e m F (R y))
+      (w - coordSum S R e m F w)
+    rw [inner_map_sub_coordSum hS hR hM F (R y), inner_map_sub_coordSum hS hR hM F w] at hb
+    have h0 : 0 ≤ truncQuad S R e m F w := by
+      rw [← inner_map_coordSum_self hR hM F w]; exact hS0 _
+    have hnonneg : 0 ≤ ⟪S ξ, ξ⟫ - truncQuad S R e m F ξ := by
+      have := truncQuad_le hS hS0 hR hM F ξ; linarith
+    rw [Real.norm_eq_abs, abs_of_nonneg hnonneg, hdec, hlin]
+    calc ⟪S ((R y - coordSum S R e m F (R y)) + (w - coordSum S R e m F w)),
+            (R y - coordSum S R e m F (R y)) + (w - coordSum S R e m F w)⟫
+        ≤ 2 * (⟪S (R y), R y⟫ - truncQuad S R e m F (R y)) +
+            2 * (⟪S w, w⟫ - truncQuad S R e m F w) := hb
+      _ < ε := by linarith
+  have hfin : Filter.Tendsto
+      (fun F : Finset κ => ⟪S ξ, ξ⟫ - (⟪S ξ, ξ⟫ - truncQuad S R e m F ξ)) Filter.atTop
+      (nhds (⟪S ξ, ξ⟫ - 0)) :=
+    (tendsto_const_nhds : Filter.Tendsto (fun _ : Finset κ => ⟪S ξ, ξ⟫) Filter.atTop
+      (nhds ⟪S ξ, ξ⟫)).sub key
+  simpa using hfin
+
+end Convergence
+
 end OperatorRidgelet
