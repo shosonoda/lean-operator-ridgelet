@@ -399,24 +399,24 @@ attribute [blueprint "lem:weak-equals-strong-ii"
 
 attribute [blueprint "lem:hermite-totality-i"
   (statement := /-- $z\mapsto G_f(z\xi)$ is entire. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_i
+  ] OperatorRidgelet.Paper.lem_hermite_totality_i
 
 attribute [blueprint "lem:hermite-totality-ii"
   (statement := /-- $G_f(z\xi)=\sum_n\frac{(-iz\tau(\xi))^n}{n!}\mathbb
     E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_ii
+  ] OperatorRidgelet.Paper.lem_hermite_totality_ii
 
 attribute [blueprint "lem:hermite-totality-iii"
   (statement := /-- The Hermite series converges locally uniformly. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_iii
+  ] OperatorRidgelet.Paper.lem_hermite_totality_iii
 
 attribute [blueprint "lem:hermite-totality-iv"
   (statement := /-- $|G_f(z\xi)|\le\|f\|_{L^2(\mu_Q)}e^{|z|^2\tau(\xi)^2/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_iv
+  ] OperatorRidgelet.Paper.lem_hermite_totality_iv
 
 attribute [blueprint "lem:hermite-totality-v"
   (statement := /-- The Hermite inversion formula holds for $f\in L^2(\mu_Q)$ and $\xi\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_v
+  ] OperatorRidgelet.Paper.lem_hermite_totality_v
 
 attribute [blueprint "lem:hermite-totality-vi"
   (statement := /-- The Hermite coefficients over all $\xi\ne0$ and $n$ determine $f$ in

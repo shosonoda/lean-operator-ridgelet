@@ -1,5 +1,6 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.Basic
+import OperatorRidgelet.Reconstruction.Hermite
 import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Reconstruction.Backprojection
 import OperatorRidgelet.Reconstruction.Tempered
@@ -491,14 +492,16 @@ theorem lem_weak_equals_strong_ii (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 /-! ### Lemma `lem:hermite-totality` -/
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 For `f ∈ L²(μ_Q)` and `ξ ≠ 0`, `z ↦ G_f(zξ) = e^{z²τ(ξ)²/2} 𝒢_Q f(zξ)` is entire. -/
 theorem lem_hermite_totality_i {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     Differentiable ℂ (hermiteExtension μ Q f ξ) := by
-  sorry
+  exact differentiable_hermiteExtension hμ hf (hQ.inner_pos hξ)
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite series `G_f(zξ) = ∑ₙ (-izτ(ξ))^n/n! E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))]` converges for every
 `z`. -/
@@ -510,8 +513,9 @@ theorem lem_hermite_totality_ii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
         (fun n : ℕ => (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))) ^ n / (n.factorial : ℂ) *
           hermiteCoefficient μ Q f ξ n)
         (hermiteExtension μ Q f ξ z) := by
-  sorry
+  exact fun z => hasSum_hermiteExtension hμ hf (hQ.inner_pos hξ) z
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite series converges locally uniformly in `z`. -/
 theorem lem_hermite_totality_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
@@ -522,8 +526,9 @@ theorem lem_hermite_totality_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovarianc
         (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))) ^ n / (n.factorial : ℂ) *
           hermiteCoefficient μ Q f ξ n)
       (hermiteExtension μ Q f ξ) atTop := by
-  sorry
+  exact tendstoLocallyUniformly_hermiteExtension hμ hf (hQ.inner_pos hξ)
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The bound `|G_f(zξ)| ≤ ‖f‖_{L²(μ_Q)} e^{|z|²τ(ξ)²/2}`. -/
 theorem lem_hermite_totality_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
@@ -532,8 +537,9 @@ theorem lem_hermite_totality_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
     ∀ z : ℂ,
       ‖hermiteExtension μ Q f ξ z‖ ≤
         Real.sqrt (∫ x, ‖f x‖ ^ 2 ∂μ) * Real.exp (‖z‖ ^ 2 * ⟪Q ξ, ξ⟫ / 2) := by
-  sorry
+  exact fun z => norm_hermiteExtension_le hμ hf (hQ.inner_pos hξ) z
 
+set_option linter.unusedSectionVars false in
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite inversion formula `eq:hermite-inversion` holds for `f ∈ L²(μ_Q)` and `ξ ≠ 0`. -/
 theorem lem_hermite_totality_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
@@ -543,7 +549,7 @@ theorem lem_hermite_totality_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
       hermiteCoefficient μ Q f ξ n =
         Complex.I ^ n / ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ) ^ n *
           iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
-  sorry
+  exact fun n => hermiteCoefficient_eq_iteratedDeriv hμ hf (hQ.inner_pos hξ) n
 
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite coefficients over all `ξ ≠ 0` and `n` determine `f` in `L²(μ_Q)`. -/
