@@ -556,7 +556,7 @@ attribute [blueprint "thm:vector-valued-B-ii-c"
 
 attribute [blueprint "thm:vector-valued-B-ii-d"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho=W_\rho U_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_ii_d
+  ] OperatorRidgelet.Paper.thm_vector_valued_B_ii_d
 
 attribute [blueprint "thm:vector-valued-B-iii"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho f=0$ $\lambda_\alpha$-a.e. implies
@@ -602,7 +602,7 @@ attribute [blueprint "thm:vector-valued-C-iii-a"
 attribute [blueprint "thm:vector-valued-C-iii-b"
   (statement := /-- Theorem C for $Y$-valued targets: $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$
     for $G\in\mathcal K_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iii_b
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iii_b
 
 attribute [blueprint "thm:vector-valued-C-iii-c"
   (statement := /-- Theorem C for $Y$-valued targets: For $G\in\mathcal K_\alpha(Y)\cap
@@ -612,7 +612,7 @@ attribute [blueprint "thm:vector-valued-C-iii-c"
 attribute [blueprint "thm:vector-valued-C-iii-d"
   (statement := /-- Theorem C for $Y$-valued targets: $U_\alpha'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
     W_\rho G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iii_d
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iii_d
 
 attribute [blueprint "thm:vector-valued-C-iii-e"
   (statement := /-- Theorem C for $Y$-valued targets: The second reconstruction formula for
@@ -622,12 +622,12 @@ attribute [blueprint "thm:vector-valued-C-iii-e"
 attribute [blueprint "thm:vector-valued-C-iv-a"
   (statement := /-- Theorem C for $Y$-valued targets: $\Lambda_\rho$ is a bounded operator
     $L^2(\lambda_\alpha;Y)\to L^2(\nu_\alpha;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_a
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_a
 
 attribute [blueprint "thm:vector-valued-C-iv-b"
   (statement := /-- Theorem C for $Y$-valued targets: $\Lambda_\rho
     W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$ on $L^2(\nu_\alpha;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_b
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_b
 
 attribute [blueprint "thm:vector-valued-C-iv-c"
   (statement := /-- Theorem C for $Y$-valued targets: $\Lambda_\rho R_\rho

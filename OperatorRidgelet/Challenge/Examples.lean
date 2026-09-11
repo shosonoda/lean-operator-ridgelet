@@ -301,7 +301,7 @@ theorem ex_gaussian_parameter_v {Q : H →L[ℝ] H} (e : HilbertBasis ℕ ℝ H)
     ¬ IsCylindrical (gaussianParameterGauss μ) := by
   sorry
 
-omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
+omit [CompleteSpace H] [SecondCountableTopology H] in
 /-- **Example [ex:gaussian-parameter]** ReLU and Gaussian networks with Gaussian parameters.  A
 Gaussian-activation network with finite coefficient measure `γ λ` (with all parameter moments
 finite) is the ReLU network with the coefficient measure `Γ' = (a,c,b) ↦ (a, c-b)`-pushforward
@@ -361,7 +361,7 @@ section OperatorLayer
 variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
   [SecondCountableTopology Y] {Ω : Type*} [MeasurableSpace Ω]
 
-omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
+omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Network
 structure: `ℱ = S_β[Γ]` with the `Y`-valued measure `Γ = ι_#(b_y m(dy))`, `ι(y) = (a_y, 0)`. -/
 theorem ex_operator_layer_i_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
@@ -386,7 +386,7 @@ theorem ex_operator_layer_i_c (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
       ENNReal.ofReal (layerSupNorm a ^ 2) * totalVariation (layerMeasure m a b) := by
   sorry
 
-omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
+omit [CompleteSpace H] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Hence
 Corollary `cor:vector-rates` gives width-`n` networks approximating `ℱ` at the rate `n^{-1/2}` in
 `L²(ζ;Y)`: for globally Lipschitz `β`, the polar sampled network of `Γ` (samples from
@@ -402,7 +402,7 @@ theorem ex_operator_layer_i_d (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
         (|β 0| ^ 2 + (L : ℝ) ^ 2 * (1 + ∫ x, ‖x‖ ^ 2 ∂ζ) * layerSupNorm a ^ 2) := by
   sorry
 
-omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
+omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  For each
 `φ ∈ Y` and globally Lipschitz `β`, Theorem `thm:lipschitz-barron` applied to
 `F_φ = S_β[Γ_φ]`, `Γ_φ = ι_#(w_φ m)`, gives for the polar sampled network `F_{φ,n}` of `Γ_φ`
@@ -656,7 +656,7 @@ theorem ex_operator_layer_iii_a (m : Measure Ω) [IsFiniteMeasure m] (a : Ω →
         ∂(m.prod volume) := by
   sorry
 
-omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
+omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] in
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  ReLU form:
 the Gaussian-activation layer is the ReLU network with the coefficient measure
 `(y,b) ↦ (a_y, -b)`-pushforward of `φ''(b) b_y m(dy) db`. -/
