@@ -791,6 +791,63 @@ theorem integral_exp_quadratic_eigen {Cov S R : H →L[ℝ] H} {κ : Type} [Coun
   simp_rw [hfin] at hleft'
   exact tendsto_nhds_unique hleft' hrhs
 
+theorem summable_eigenvalues {M : H →L[ℝ] H} (hM0 : ∀ y, 0 ≤ ⟪M y, y⟫)
+    (hT : HasSummableTrace M) {κ : Type*} {e : HilbertBasis κ ℝ H} {w : κ → ℝ}
+    (hw0 : ∀ k, 0 ≤ w k) (hMe : ∀ k, M (e k) = w k • e k) : Summable w := by
+  obtain ⟨ι, b0, hb0⟩ := hT
+  have hkey := ContinuousLinearMap.tsum_ofReal_inner_map_eq_of_eigen b0 e w hw0 hMe
+  have hlhs : ∑' i, ENNReal.ofReal ⟪M (b0 i), b0 i⟫ ≠ ⊤ := by
+    rw [← ENNReal.ofReal_tsum_of_nonneg (fun i => hM0 _) hb0]
+    exact ENNReal.ofReal_ne_top
+  rw [hkey] at hlhs
+  have hnn : Summable fun k => (w k).toNNReal :=
+    ENNReal.tsum_coe_ne_top_iff_summable.1 (by simpa [ENNReal.ofReal] using hlhs)
+  refine (NNReal.summable_coe.2 hnn).congr fun k => ?_
+  exact Real.coe_toNNReal _ (hw0 k)
+
+/-- **Lemma `lem:gaussian-quadratic`(ii)**: the Gaussian integral of a quadratic exponential,
+in the form of the manuscript's `fredholmDet` and `resolventForm`. -/
+theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTraceClass Cov)
+    (hS : IsSelfAdjoint S) (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫) (hR : IsPositiveSqrt R Cov)
+    (hT : HasSummableTrace (R * S * R)) {μ : Measure H} [IsProbabilityMeasure μ]
+    (hμ : IsCenteredGaussian Cov μ) (x : H) :
+    ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) ∂μ =
+      (((Real.sqrt (fredholmDet (R * S * R)))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) := by
+  classical
+  have hMsa : IsSelfAdjoint (R * S * R) := by
+    show star (R * S * R) = R * S * R
+    rw [star_mul, star_mul, hR.isSelfAdjoint.star_eq, hS.star_eq, hR.isSelfAdjoint.star_eq,
+      ← mul_assoc]
+  have hM0 : ∀ y, 0 ≤ ⟪(R * S * R) y, y⟫ := fun y => by
+    rw [inner_map_map_eq hR]; exact hS0 _
+  have hex : ∃ (ι : Type) (b : HilbertBasis ι ℝ H) (w : ι → ℝ),
+      HasEigenbasis (R * S * R) b w := by
+    obtain ⟨ι0, b0, hb0⟩ := hT
+    have hcomp := ContinuousLinearMap.isCompactOperator_of_summable_inner hMsa.isSymmetric hM0
+      b0 hb0
+    obtain ⟨κ, _, b, hb⟩ :=
+      ContinuousLinearMap.exists_hilbertBasis_eigenvector_of_isCompactOperator hMsa hcomp
+    exact ⟨κ, b, fun k => ⟪(R * S * R) (b k), b k⟫, hb⟩
+  obtain ⟨w, hw⟩ := hex.choose_spec.choose_spec
+  set e' : HilbertBasis hex.choose ℝ H := hex.choose_spec.choose with he'
+  have hw0 : ∀ k, 0 ≤ w k := eigenvalue_nonneg hS0 hR hw
+  have hws : Summable w := summable_eigenvalues hM0 hT hw0 hw
+  haveI : Countable hex.choose := by
+    have hinj : Function.Injective (e' : hex.choose → H) :=
+      e'.orthonormal.linearIndependent.injective
+    have hc : (Set.range (e' : hex.choose → H)).Countable :=
+      e'.orthonormal.toSubtypeRange.countable_of_separableSpace
+    haveI : Countable (Set.range (e' : hex.choose → H)) := hc.to_subtype
+    exact Countable.of_equiv _ (Equiv.ofInjective _ hinj).symm
+  have hdet : fredholmDet (R * S * R) = ∏' i, (1 + w i) := by
+    rw [fredholmDet, dif_pos hex, fredholmDetAlong]
+    refine tsum_congr fun i => ?_
+    rw [show hex.choose_spec.choose = e' from rfl, hw i, real_inner_smul_left,
+      real_inner_self_eq_norm_sq, e'.orthonormal.1 i, one_pow, mul_one]
+  rw [hdet]
+  exact integral_exp_quadratic_eigen hCov hS hS0 hR hw hws hμ x
+
 end FullIntegral
 
 end OperatorRidgelet
