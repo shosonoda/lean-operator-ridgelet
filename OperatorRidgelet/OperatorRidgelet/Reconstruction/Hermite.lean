@@ -116,4 +116,32 @@ theorem hasSum_hermiteExtension_pow (hμ : IsCenteredGaussian Q μ) {f : H → �
   rw [hermiteCoefficient_eq]
   ring
 
+/-- `z ↦ G_f(zξ)` is entire. -/
+theorem differentiable_hermiteExtension (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) :
+    Differentiable ℂ (hermiteExtension μ Q f ξ) :=
+  differentiable_of_hasSum_pow fun z => hasSum_hermiteExtension_pow hμ hf hpos z
+
+/-- The Hermite series of `G_f(zξ)` in the form of Lemma `lem:hermite-totality`(ii). -/
+theorem hasSum_hermiteExtension (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) (z : ℂ) :
+    HasSum (fun n : ℕ =>
+        (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))) ^ n / (n.factorial : ℂ) *
+          hermiteCoefficient μ Q f ξ n)
+      (hermiteExtension μ Q f ξ z) :=
+  (hasSum_hermiteExtension_pow hμ hf hpos z).congr_fun fun n => by ring
+
+/-- The Hermite series converges locally uniformly in `z`. -/
+theorem tendstoLocallyUniformly_hermiteExtension (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
+    (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) :
+    TendstoLocallyUniformly
+      (fun N : ℕ => fun z : ℂ => ∑ n ∈ Finset.range N,
+        (-(Complex.I * z * ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ))) ^ n / (n.factorial : ℂ) *
+          hermiteCoefficient μ Q f ξ n)
+      (hermiteExtension μ Q f ξ) atTop := by
+  have h := tendstoLocallyUniformly_of_hasSum_pow
+    (fun z => hasSum_hermiteExtension_pow hμ hf hpos z)
+  refine h.congr fun N z => ?_
+  exact Finset.sum_congr rfl fun n _ => by ring
+
 end OperatorRidgelet
