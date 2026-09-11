@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 235.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 243.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 40
-  * 13
+  * 42
+  * 12
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -933,7 +933,7 @@ Status: *verified by comparator*.
 
 ## Theorem 4.3 — Reconstruction and the frame operator (`thm:C`)
 
-Blueprint node: {bpref "thm:C"}[]. Status: *partial 15/17* (15 of 17 Lean theorems verified).
+Blueprint node: {bpref "thm:C"}[]. Status: *verified* (all 17 Lean theorems verified).
 
 Formalization note. Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv\_d–iv\_f add μ = 𝒩(0,Q). 𝓔\_α is represented by 𝒦\_α = spectralRange μ ν with U\_α the inclusion; the continuous anti-dual 𝓔\_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆\[ℂ\] ℂ), so that J\_α = rieszMap = innerSLFlip ℂ, U\_α' = transposeEmbed, T\_α = frameOperator = U\_α' U\_α, S\_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R\_ρ on 𝓔\_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T\_α⁻¹ is rieszInv = J\_α⁻¹ (part i\_a says T\_α = J\_α, proved by rfl; i\_b/i\_c: J\_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii\_a is the representation of T\_α f by g\_\{𝒢f\}, iii\_b the converse identity R\_ρ T\_α⁻¹ U\_α' G = W\_ρ G, iii\_c the representation of U\_α' G by g\_G for G ∈ L¹, iii\_d the second reconstruction formula for U\_α' G, and iii\_e its concrete form (U\_α' G paired with g ∈ 𝒟\_α equals C⁻¹ ∫ S\_ρ\[γ\_G λ\_α\] conj g dμ, the spectral synthesis identity) when γ\_G ∈ L¹(λ\_α). Part iv: Λ\_ρ = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the ray average of a given representative); boundedness iv\_a is square integrability with a norm bound (linearity of Λ\_ρ on L²(λ\_α) is a consequence of prop\_coefficient\_projection\_iv); iv\_b is Λ\_ρ W\_ρ = C Id; iv\_c is the pointwise identity Λ\_ρ R\_ρ f = C 𝒢f using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv\_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^\{t²τ²/2\} 𝒢f(tξ)); iv\_e is totality on 𝒟\_α; iv\_f is f = Δ\_Q\[C⁻¹ Λ\_ρ R\_ρ f\] with Δ\_Q = gaussFourierInv the inverse of 𝒢 on its range on 𝒟\_α (chosen by uniqueness).
 
@@ -1174,7 +1174,7 @@ theorem thm_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
           iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_C_iv_e`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L304):
 
@@ -1190,7 +1190,7 @@ theorem thm_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
         f = g := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_C_iv_f`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L315):
 
@@ -1216,7 +1216,7 @@ Blueprint node: {bpref "thm:vector-valued"}[]. Status: *partial 12/33* (12 of 33
 
 Formalization note. One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y (\[InnerProductSpace ℂ Y\] \[CompleteSpace Y\] \[SecondCountableTopology Y\]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩\_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L587):
+`OperatorRidgelet.Paper.thm_vector_valued_A_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L588):
 
 ```
 set_option linter.unusedVariables false in
@@ -1231,7 +1231,7 @@ theorem thm_vector_valued_A_i_a (ν : Measure H) (G : H → Y) (hG : StronglyMea
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L597):
+`OperatorRidgelet.Paper.thm_vector_valued_A_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L598):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(i) for `Y`-valued
@@ -1243,7 +1243,7 @@ theorem thm_vector_valued_A_i_b (ν : Measure H) (G : H → Y) (hG : StronglyMea
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_i_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L604):
+`OperatorRidgelet.Paper.thm_vector_valued_A_i_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L605):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(i) for `Y`-valued
@@ -1255,7 +1255,7 @@ theorem thm_vector_valued_A_i_c (ν : Measure H) (G : H → Y) (hG : StronglyMea
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L611):
+`OperatorRidgelet.Paper.thm_vector_valued_A_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L612):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
@@ -1272,7 +1272,7 @@ theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L623):
+`OperatorRidgelet.Paper.thm_vector_valued_A_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L624):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
@@ -1287,7 +1287,7 @@ theorem thm_vector_valued_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_ii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L633):
+`OperatorRidgelet.Paper.thm_vector_valued_A_ii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L634):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
@@ -1305,7 +1305,7 @@ theorem thm_vector_valued_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_iii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L646):
+`OperatorRidgelet.Paper.thm_vector_valued_A_iii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L647):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
@@ -1322,7 +1322,7 @@ theorem thm_vector_valued_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L658):
+`OperatorRidgelet.Paper.thm_vector_valued_A_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L659):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
@@ -1339,7 +1339,7 @@ theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_A_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L670):
+`OperatorRidgelet.Paper.thm_vector_valued_A_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L671):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(iii) for
@@ -1357,7 +1357,7 @@ theorem thm_vector_valued_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L683):
+`OperatorRidgelet.Paper.thm_vector_valued_B_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L684):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(i) for `Y`-valued
@@ -1370,7 +1370,7 @@ theorem thm_vector_valued_B_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L691):
+`OperatorRidgelet.Paper.thm_vector_valued_B_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L692):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(i) for `Y`-valued
@@ -1386,7 +1386,7 @@ theorem thm_vector_valued_B_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L702):
+`OperatorRidgelet.Paper.thm_vector_valued_B_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L703):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
@@ -1402,7 +1402,7 @@ theorem thm_vector_valued_B_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L713):
+`OperatorRidgelet.Paper.thm_vector_valued_B_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L714):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
@@ -1416,7 +1416,7 @@ theorem thm_vector_valued_B_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_ii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L722):
+`OperatorRidgelet.Paper.thm_vector_valued_B_ii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L723):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
@@ -1429,7 +1429,7 @@ theorem thm_vector_valued_B_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_ii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L730):
+`OperatorRidgelet.Paper.thm_vector_valued_B_ii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L731):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(ii) for
@@ -1443,7 +1443,7 @@ theorem thm_vector_valued_B_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_B_iii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L739):
+`OperatorRidgelet.Paper.thm_vector_valued_B_iii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L740):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(iii) for
@@ -1457,7 +1457,7 @@ theorem thm_vector_valued_B_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L748):
+`OperatorRidgelet.Paper.thm_vector_valued_C_i_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L749):
 
 ```
 set_option linter.unusedVariables false in
@@ -1473,7 +1473,7 @@ theorem thm_vector_valued_C_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L759):
+`OperatorRidgelet.Paper.thm_vector_valued_C_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L760):
 
 ```
 set_option linter.unusedVariables false in
@@ -1489,7 +1489,7 @@ theorem thm_vector_valued_C_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_i_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L770):
+`OperatorRidgelet.Paper.thm_vector_valued_C_i_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L771):
 
 ```
 set_option linter.unusedVariables false in
@@ -1504,7 +1504,7 @@ theorem thm_vector_valued_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_i_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L780):
+`OperatorRidgelet.Paper.thm_vector_valued_C_i_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L781):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(i) for `Y`-valued
@@ -1519,7 +1519,7 @@ theorem thm_vector_valued_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L790):
+`OperatorRidgelet.Paper.thm_vector_valued_C_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L791):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(ii) for
@@ -1534,7 +1534,7 @@ theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L800):
+`OperatorRidgelet.Paper.thm_vector_valued_C_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L801):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(ii) for
@@ -1549,7 +1549,7 @@ theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L810):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L811):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
@@ -1567,7 +1567,7 @@ theorem thm_vector_valued_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L823):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L824):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
@@ -1582,7 +1582,7 @@ theorem thm_vector_valued_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L833):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L834):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
@@ -1598,7 +1598,7 @@ theorem thm_vector_valued_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L844):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L845):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
@@ -1613,7 +1613,7 @@ theorem thm_vector_valued_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iii_e`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L854):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iii_e`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L855):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
@@ -1635,7 +1635,7 @@ theorem thm_vector_valued_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L871):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L872):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -1650,7 +1650,7 @@ theorem thm_vector_valued_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L881):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L882):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -1664,7 +1664,7 @@ theorem thm_vector_valued_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L890):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L891):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -1680,7 +1680,7 @@ theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L901):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L902):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -1699,7 +1699,7 @@ theorem thm_vector_valued_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_e`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L915):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_e`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L916):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -1718,7 +1718,7 @@ theorem thm_vector_valued_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *statement only (proof pending)*.
 
-`OperatorRidgelet.Paper.thm_vector_valued_C_iv_f`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L929):
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_f`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L930):
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
@@ -2464,7 +2464,7 @@ Blueprint node: {bpref "lem:ray-regular-examples"}[]. Status: *partial 4/5* (4 o
 
 Formalization note. 'For every band-pass ρ' is quantified together with every frequency window I of ρ (IsFrequencyWindow ρ I). Part a (Gaussian type) needs the Gaussian mixture ν\_α and Q and is stated with S : H →L\[ℝ\] H self-adjoint with θ⟨Qξ,ξ⟩ ≤ ⟨Sξ,ξ⟩ (positivity follows), and q an MvPolynomial with complex coefficients in k bounded linear functionals ℓ\_i and in κ(ξ) = ⟨Sξ,ξ⟩ (variable index Option (Fin k), none ↦ κ); each ℓ\_i is dominated by the quadratic form, (ℓ\_i ξ)² ≤ C\_i ⟨Sξ,ξ⟩ (hypothesis hℓ), without which q e^\{-κ/2\} need not be bounded. The proof is the reduction lemma isRegularAlongRays\_of\_gaussian\_decay (boundedness, measurability, smoothness along rays, and the pointwise derivative bound sup\_\{ω∈I\}|∂\_ω^k G(ωa)| ≤ C\_k (1+‖a‖)^\{p\_k\} e^\{-r²θ⟨Qa,a⟩/2\} are proved outright) applied to the Gaussian-decay integrability of lem:gaussian-decay (i). Part b\_i: φ ∈ C\_c^∞(ℝ) is ContDiff ℝ ⊤ φ with compact support (complex valued); b\_ii: 'C^∞ along rays' is read as in def:ray-regular (smooth on an open neighbourhood of I for every direction), 'vanishes outside a bounded set' as G ξ = 0 for ‖ξ‖ > R₀, and the derivative bounds are sup over ω ∈ I ≤ C\_k (1+‖a‖)^\{p\_k\}; both b parts use ν\_α (finite on bounded sets). Part c\_i (finite linear combinations) and c\_ii (Bochner integrals ∫ G\_y m(dy)) are stated for a general ν; in c\_ii the measurable family is Measurable (uncurry G), and 'bounds uniform in y' is read as a uniform sup bound on G\_y together with, for each order k, a y-independent majorant h of the ray-derivative bounds whose weighted integral ∫ (1+‖a‖)^\{k+2\} h dν is finite.
 
-`OperatorRidgelet.Paper.lem_ray_regular_examples_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L515):
+`OperatorRidgelet.Paper.lem_ray_regular_examples_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L516):
 
 ```
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Gaussian-type
@@ -2487,7 +2487,7 @@ theorem lem_ray_regular_examples_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H �
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L533):
+`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L534):
 
 ```
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Radial bumps
@@ -2502,7 +2502,7 @@ theorem lem_ray_regular_examples_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H �
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L543):
+`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L544):
 
 ```
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  More generally,
@@ -2523,7 +2523,7 @@ theorem lem_ray_regular_examples_b_ii (hH : ¬ FiniteDimensional ℝ H) {P : H �
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L559):
+`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L560):
 
 ```
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Finite linear
@@ -2535,7 +2535,7 @@ theorem lem_ray_regular_examples_c_i (ν : Measure H) (I : Set ℝ) {ι : Type*}
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L566):
+`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L567):
 
 ```
 /-- **Lemma [lem:ray-regular-examples]** Densities that are regular along rays.  Bochner
@@ -4084,9 +4084,9 @@ Status: *verified by comparator*.
 
 ## Lemma B.2 — Entire extension and totality of the Hermite coefficients (`lem:hermite-totality`)
 
-Blueprint node: {bpref "lem:hermite-totality"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "lem:hermite-totality"}[]. Status: *verified* (all 6 Lean theorems verified).
 
-Formalization note. 𝒢\_Q f(zξ) for complex z is the analytic continuation gaussFourierLine μ f ξ z = ∫ f(x) e^\{-iz⟨x,ξ⟩\} dμ, and G\_f(zξ) = hermiteExtension μ Q f ξ z = e^\{z²⟨Qξ,ξ⟩/2\} 𝒢\_Q f(zξ); He\_n is Mathlib's Polynomial.hermite (probabilists' normalization, He\_\{n+1\} = X He\_n − He\_n'), evaluated at ⟨x,ξ⟩/√⟨Qξ,ξ⟩ through Polynomial.aeval; the coefficients E\_\{μ\_Q\}\[f He\_n(⟨x,ξ⟩/τ)\] are hermiteCoefficient μ Q f ξ n. Parts: i entire (Differentiable ℂ), ii the series (HasSum for every z), iii locally uniform convergence of the partial sums (TendstoLocallyUniformly), iv the bound with ‖f‖\_\{L²\} = √∫|f|², v the Hermite inversion formula (real-variable iterated derivative at 0), vi totality (the coefficients over all ξ ≠ 0 and n determine f in L²(μ\_Q), as injectivity). μ = 𝒩(0,Q) with Q a trace-class covariance.
+Formalization note. 𝒢\_Q f(zξ) for complex z is the analytic continuation gaussFourierLine μ f ξ z = ∫ f(x) e^\{-iz⟨x,ξ⟩\} dμ, and G\_f(zξ) = hermiteExtension μ Q f ξ z = e^\{z²⟨Qξ,ξ⟩/2\} 𝒢\_Q f(zξ); He\_n is Mathlib's Polynomial.hermite (probabilists' normalization, He\_\{n+1\} = X He\_n − He\_n'), evaluated at ⟨x,ξ⟩/√⟨Qξ,ξ⟩ through Polynomial.aeval; the coefficients E\_\{μ\_Q\}\[f He\_n(⟨x,ξ⟩/τ)\] are hermiteCoefficient μ Q f ξ n. Parts: i entire (Differentiable ℂ), ii the series (HasSum for every z), iii locally uniform convergence of the partial sums (TendstoLocallyUniformly), iv the bound with ‖f‖\_\{L²\} = √∫|f|², v the Hermite inversion formula (real-variable iterated derivative at 0), vi totality (the coefficients over all ξ ≠ 0 and n determine f in L²(μ\_Q), as injectivity). μ = 𝒩(0,Q) with Q a trace-class covariance. Part (vi) carries `[Nontrivial H]`: on a trivial space no `ξ ≠ 0` exists, the hypothesis is vacuous and the conclusion fails. The manuscript is unaffected, since `H` is infinite-dimensional throughout.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L354):
 
@@ -4099,7 +4099,7 @@ theorem lem_hermite_totality_i {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
     Differentiable ℂ (hermiteExtension μ Q f ξ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L362):
 
@@ -4117,7 +4117,7 @@ theorem lem_hermite_totality_ii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
         (hermiteExtension μ Q f ξ z) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_iii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L375):
 
@@ -4134,7 +4134,7 @@ theorem lem_hermite_totality_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovarianc
       (hermiteExtension μ Q f ξ) atTop := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_iv`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L387):
 
@@ -4149,7 +4149,7 @@ theorem lem_hermite_totality_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance
         Real.sqrt (∫ x, ‖f x‖ ^ 2 ∂μ) * Real.exp (‖z‖ ^ 2 * ⟪Q ξ, ξ⟫ / 2) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_v`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L397):
 
@@ -4165,21 +4165,22 @@ theorem lem_hermite_totality_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
           iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.lem_hermite_totality_vi`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L408):
 
 ```
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite coefficients over all `ξ ≠ 0` and `n` determine `f` in `L²(μ_Q)`. -/
-theorem lem_hermite_totality_vi {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_hermite_totality_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ) :
     ∀ g : H → ℂ, MemLp g 2 μ →
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
         f =ᵐ[μ] g := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Proposition B.3 — Bounded backprojection and orthogonal range projection (`prop:coefficient-projection`)
 
@@ -4187,7 +4188,7 @@ Blueprint node: {bpref "prop:coefficient-projection"}[]. Status: *verified* (all
 
 Formalization note. 𝒴 = L²(λ\_α) with its usual norm (the norm through the partial bias Fourier transform equals the L²(λ\_α)-norm by Plancherel). Λ\_ρ = backprojection α ν ρ γ is the ray average eq:ray-average of a jointly measurable bias-Fourier representative of γ chosen through HasBiasFourier; backprojectionOf α ρ Φ is the ray average of a given representative Φ. Parts: i absolute convergence ν\_α-a.e. for every jointly measurable representative, ii independence of the representative (a.e. equality of the ray averages of two representatives), iii square integrability with ∫|Λ\_ρ γ|² ≤ C ‖γ‖² (the bound ‖Λ\_ρ γ‖ ≤ √C ‖γ‖\_𝒴 squared), iv the Hilbert-adjoint identity ⟨γ, W\_ρ F⟩\_\{L²(λ\_α)\} = ⟨Λ\_ρ γ, F⟩\_\{L²(ν\_α)\} in the manuscript's convention (linear in the first argument), v Λ\_ρ W\_ρ = C Id a.e., vi Π\_ρ = coefficientProjection = C⁻¹ W\_ρ P\_\{𝒦\_α\} Λ\_ρ (with Mathlib's starProjection onto spectralRange, which is complete) is the orthogonal projection onto Ran R\_ρ = ridgeletRange, encoded as Π\_ρ γ ∈ Ran R\_ρ and γ − Π\_ρ γ ∈ (Ran R\_ρ)ᗮ, vii the minimum-norm solution C⁻¹ R\_ρ J\_α⁻¹ F of S\_ρ γ = F (it solves the equation and has the least norm among solutions), viii the solution set is the minimum-norm solution plus (Ran R\_ρ)ᗮ. ρ is α-admissible as in the manuscript; parts vi–viii involve μ through 𝒦\_α and R\_ρ.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L419):
+`OperatorRidgelet.Paper.prop_coefficient_projection_i`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L420):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4205,7 +4206,7 @@ theorem prop_coefficient_projection_i (ν : Measure H) [SigmaFinite ν] [ν.IsOp
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L432):
+`OperatorRidgelet.Paper.prop_coefficient_projection_ii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L433):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4221,7 +4222,7 @@ theorem prop_coefficient_projection_ii (ν : Measure H) [SigmaFinite ν] [ν.IsO
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_iii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L443):
+`OperatorRidgelet.Paper.prop_coefficient_projection_iii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L444):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4236,7 +4237,7 @@ theorem prop_coefficient_projection_iii (ν : Measure H) [SigmaFinite ν] [ν.Is
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_iv`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L453):
+`OperatorRidgelet.Paper.prop_coefficient_projection_iv`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L454):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4253,7 +4254,7 @@ theorem prop_coefficient_projection_iv (ν : Measure H) [SigmaFinite ν] [ν.IsO
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_v`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L465):
+`OperatorRidgelet.Paper.prop_coefficient_projection_v`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L466):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4268,7 +4269,7 @@ theorem prop_coefficient_projection_v (ν : Measure H) [SigmaFinite ν] [ν.IsOp
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_vi`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L475):
+`OperatorRidgelet.Paper.prop_coefficient_projection_vi`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L476):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4284,7 +4285,7 @@ theorem prop_coefficient_projection_vi (μ ν : Measure H) [IsProbabilityMeasure
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_vii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L486):
+`OperatorRidgelet.Paper.prop_coefficient_projection_vii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L487):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
@@ -4304,7 +4305,7 @@ theorem prop_coefficient_projection_vii (μ ν : Measure H) [IsProbabilityMeasur
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.prop_coefficient_projection_viii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L501):
+`OperatorRidgelet.Paper.prop_coefficient_projection_viii`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L502):
 
 ```
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range

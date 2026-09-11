@@ -420,8 +420,7 @@ attribute [blueprint "lem:hermite-totality-v"
 
 attribute [blueprint "lem:hermite-totality-vi"
   (statement := /-- The Hermite coefficients over all $\xi\ne0$ and $n$ determine $f$ in
-    $L^2(\mu_Q)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_hermite_totality_vi
+    $L^2(\mu_Q)$. -/)] OperatorRidgelet.Paper.lem_hermite_totality_vi
 
 attribute [blueprint "prop:coefficient-projection-i"
   (statement := /-- The ray-average integral converges absolutely for $\nu_\alpha$-a.e. $\xi$. -/)]

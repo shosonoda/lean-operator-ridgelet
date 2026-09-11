@@ -557,16 +557,13 @@ theorem lem_hermite_totality_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
 
 /-- **Lemma [lem:hermite-totality]** Entire extension and totality of the Hermite coefficients.
 The Hermite coefficients over all `ξ ≠ 0` and `n` determine `f` in `L²(μ_Q)`. -/
-theorem lem_hermite_totality_vi {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_hermite_totality_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ) :
     ∀ g : H → ℂ, MemLp g 2 μ →
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
         f =ᵐ[μ] g := by
-  -- `OperatorRidgelet.ae_eq_of_hermiteCoefficient_eq` proves this under the extra hypothesis
-  -- `Nontrivial H`, which is needed: on a trivial `H` there is no `ξ ≠ 0`, the hypothesis is
-  -- empty, and the conclusion fails.  (Theorem `thm:C`(iv)(e) is unaffected: there the
-  -- homogeneity of `ν` of degree `α > 0` rules out a trivial `H`.)
-  sorry
+  exact fun g hg h => ae_eq_of_hermiteCoefficient_eq hQ hμ hf hg h
 
 /-! ### Proposition `prop:coefficient-projection` -/
 
