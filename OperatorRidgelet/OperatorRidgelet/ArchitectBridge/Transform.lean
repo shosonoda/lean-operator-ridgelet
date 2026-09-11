@@ -418,18 +418,18 @@ attribute [blueprint "lem:mixture-character-iv"
 
 attribute [blueprint "cor:finite-backprojection-i"
   (statement := /-- If $f\in L^2(p\,\mathrm dx)$ with $g=fp\in\mathcal S(\mathbb R^m)$, then
-    $f\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_i
+    $f\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_i
 
 attribute [blueprint "cor:finite-backprojection-ii"
   (statement := /-- $t_f=\int e^{i\langle x,\xi\rangle}\widehat g(\xi)\,\nu_\alpha(\mathrm
-    d\xi)=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_ii
+    d\xi)=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_ii
 
 attribute [blueprint "cor:finite-backprojection-iii"
   (statement := /-- For band-pass $\rho$, $S_\rho R_\rho f$ is represented against $p\,\mathrm
-    dx$ by $C^{(\alpha)}_\rho t_f$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_iii
+    dx$ by $C^{(\alpha)}_\rho t_f$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_iii
 
 attribute [blueprint "cor:finite-backprojection-iv"
   (statement := /-- Distributionally,
@@ -438,13 +438,13 @@ attribute [blueprint "cor:finite-backprojection-iv"
   (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_iv
 
 attribute [blueprint "cor:finite-backprojection-v"
-  (statement := /-- With Lebesgue direction measure and $\alpha=m$, $t_f=(2\pi)^mg$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_v
+  (statement := /-- With Lebesgue direction measure and $\alpha=m$, $t_f=(2\pi)^mg$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_v
 
 attribute [blueprint "cor:finite-backprojection-vi"
   (statement := /-- With Lebesgue direction measure and $\alpha=m$,
-    $f=(2\pi)^{-m}(C^{(m)}_\rho)^{-1}p^{-1}S_\rho R_\rho f$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_vi
+    $f=(2\pi)^{-m}(C^{(m)}_\rho)^{-1}p^{-1}S_\rho R_\rho f$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_vi
 
 attribute [blueprint "prop:dilation-obstruction-i-a"
   (statement := /-- The sets $E_t$ are Borel. -/)]
@@ -465,8 +465,8 @@ attribute [blueprint "prop:dilation-obstruction-i-d"
 
 attribute [blueprint "prop:dilation-obstruction-ii"
   (statement := /-- No finite complex Borel measure on $H\times\mathbb R$ has bias slices
-    $r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)$ for almost every $\omega\ne0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.prop_dilation_obstruction_ii
+    $r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)$ for almost every $\omega\ne0$. -/)]
+  OperatorRidgelet.Paper.prop_dilation_obstruction_ii
 
 attribute [blueprint "thm:general-weights-plancherel-memLp"
   (statement := /-- For the abstract pair $(\mu,\nu)$, $R_\rho f\in L^2(\lambda)$ for
@@ -558,8 +558,8 @@ attribute [blueprint "ex:mexican-hat-ii"
   OperatorRidgelet.Paper.ex_mexican_hat_ii
 
 attribute [blueprint "ex:mexican-hat-iii"
-  (statement := /-- For $\alpha>0$, $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly when $\alpha<5$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_mexican_hat_iii
+  (statement := /-- For $\alpha>0$, $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly when $\alpha<5$. -/)]
+  OperatorRidgelet.Paper.ex_mexican_hat_iii
 
 attribute [blueprint "ex:mexican-hat-iv"
   (statement := /-- $C^{(\alpha)}_{\rho_{\mathrm{MH}}}=\Gamma((5-\alpha)/2)$ for $0<\alpha<5$. -/)]

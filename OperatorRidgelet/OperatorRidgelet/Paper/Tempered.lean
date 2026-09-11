@@ -2,6 +2,7 @@ import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Tempered.Basic
 import OperatorRidgelet.Tempered.ReLU
+import OperatorRidgelet.Tempered.ReLUFinitePart
 import OperatorRidgelet.Tempered.WeightedDuality
 import OperatorRidgelet.Tempered.Polynomial
 import OperatorRidgelet.Tempered.Regularized
@@ -202,8 +203,8 @@ theorem cor_relu_admissible_i :
       Tendsto (fun ε : ℝ => (∫ ω in {ω : ℝ | ε < |ω|}, φ ω / (ω : ℂ) ^ 2) - 2 * φ 0 / (ε : ℂ))
         (𝓝[>] 0)
         (𝓝 (-(angularFourierDistribution reluDistribution φ) -
-          (Real.pi : ℂ) * Complex.I * deriv φ 0)) := by
-  sorry
+          (Real.pi : ℂ) * Complex.I * deriv φ 0)) :=
+  angularFourierDistribution_relu_finitePart
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  Away from the origin `ReLU^` equals
 `-ω^{-2}`: `⟨ReLU^, φ⟩ = ∫ (-ω^{-2}) φ(ω) dω` for every Schwartz `φ` supported away from `0`. -/

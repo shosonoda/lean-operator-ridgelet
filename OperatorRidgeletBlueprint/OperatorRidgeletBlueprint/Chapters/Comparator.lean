@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 297.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 305.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 50
-  * 5
+  * 53
+  * 3
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -1953,7 +1953,7 @@ Status: *verified by comparator*.
 
 ## Corollary 5.3 — ReLU is admissible (`cor:relu-admissible`)
 
-Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *partial 7/8* (7 of 8 Lean theorems verified).
+Blueprint node: {bpref "cor:relu-admissible"}[]. Status: *verified* (all 8 Lean theorems verified).
 
 Formalization note. ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^\{-2\}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim\_\{ε↓0\}(∫\_\{|ω|>ε\} φ ω^\{-2\} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^\{-2\} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^\{-α-2\} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm\_A\_iii\_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖\{0\} containing supp ρ̂, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g\_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed.
 
@@ -1978,7 +1978,7 @@ theorem cor_relu_admissible_i :
           (Real.pi : ℂ) * Complex.I * deriv φ 0)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_relu_admissible_ii`, theorem in [`Challenge/Tempered.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Tempered.lean#L164):
 
@@ -5087,7 +5087,7 @@ Status: *verified by comparator*.
 
 ## Corollary G.1 — The frame operator in finite dimension (`cor:finite-backprojection`)
 
-Blueprint node: {bpref "cor:finite-backprojection"}[]. Status: *stated* (formalized, no part verified yet).
+Blueprint node: {bpref "cor:finite-backprojection"}[]. Status: *partial 5/6* (5 of 6 Lean theorems verified).
 
 Formalization note. On EuclideanSpace ℝ (Fin m) with ν\_α = c\_\{m,α\}‖a‖^\{α-m\} da (directionMeasure); the nondegenerate Gaussian density p is IsCenteredGaussian Q (p dx) with Q a trace-class covariance and p continuous, positive; (-Δ)^s is the Fourier multiplier ‖ξ‖^\{2s\} (fracLaplacian); S\_ρ R\_ρ f is encoded through its defining pairing h ↦ ⟨R\_ρ f, R\_ρ h⟩\_\{L²(λ)\} on 𝒟\_α (the synthesis operator itself belongs to the reconstruction work package); the distributional formula is tested against Schwartz functions.
 
@@ -5105,7 +5105,7 @@ theorem cor_finite_backprojection_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : 
     hf.toLp f ∈ spectralCore (densityMeasure p) (directionMeasure m α) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_finite_backprojection_ii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L435):
 
@@ -5123,7 +5123,7 @@ theorem cor_finite_backprojection_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
       frameConst m α * fracLaplacian (-((m - α) / 2)) g x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_finite_backprojection_iii`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L448):
 
@@ -5145,7 +5145,7 @@ theorem cor_finite_backprojection_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm 
             ∂densityMeasure p := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_finite_backprojection_iv`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L465):
 
@@ -5183,7 +5183,7 @@ theorem cor_finite_backprojection_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x
     ∀ x, frameRepresentative volume g x = ((2 * Real.pi) ^ m : ℝ) * (f x * p x) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_finite_backprojection_vi`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L493):
 
@@ -5203,11 +5203,11 @@ theorem cor_finite_backprojection_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ 
           (starRingEnd ℂ) (h x) ∂densityMeasure p := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 ## Proposition G.2 — Dilation obstruction (`prop:dilation-obstruction`)
 
-Blueprint node: {bpref "prop:dilation-obstruction"}[]. Status: *partial 4/5* (4 of 5 Lean theorems verified).
+Blueprint node: {bpref "prop:dilation-obstruction"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. The eigen-decomposition of W is a hypothesis (HilbertBasis ℕ ℝ H of eigenvectors with eigenvalues w\_j > 0); 𝒩(0,tW) is a family γ t with IsCenteredGaussian (t • W); a finite complex Borel measure Γ is represented as h · m with m finite and h integrable. Part i\_c is Mathlib's strong law of large numbers (ProbabilityTheory.strong\_law\_ae) for the coordinates ⟨x,e\_j⟩²/w\_j, which are i.i.d. with mean t under γ t: the law of ⟨x,e\_j⟩/√w\_j is 𝒩(0,t) and distinct coordinates are independent, both read off the characteristic functional (IsCenteredGaussian.map\_inner\_eq\_gaussianReal, IsCenteredGaussian.indepFun\_inner); part i\_d combines i\_a–i\_c with the fact that a σ-finite measure charges at most countably many pairwise disjoint sets (Measure.countable\_meas\_pos\_of\_disjoint\_iUnion).
 
@@ -5284,7 +5284,7 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
           (r ω : ℂ) * (((γW.map fun a => ω⁻¹ • a) E).toReal : ℂ) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 # Appendix H
 
@@ -5524,7 +5524,7 @@ Status: *verified by comparator*.
 
 ## Example I.2 — Mexican hat (`ex:mexican-hat`)
 
-Blueprint node: {bpref "ex:mexican-hat"}[]. Status: *partial 5/6* (5 of 6 Lean theorems verified).
+Blueprint node: {bpref "ex:mexican-hat"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. ρ\_MH is obtained by choice as the Schwartz map equal to (1-t²)e^\{-t²/2\} (mexicanHat); admissibility exactly for 0 < α < 5 with C = Γ((5-α)/2), C^\{(1)\} = 1, not band pass. Part (iii) is stated under the manuscript's standing assumption α > 0 (for α ≤ 0 the admissibility integral also converges, so 'exactly for 0 < α < 5' is only true given α > 0).
 
@@ -5557,7 +5557,7 @@ Status: *verified by comparator*.
 theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_mexican_hat_iv`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L718):
 
