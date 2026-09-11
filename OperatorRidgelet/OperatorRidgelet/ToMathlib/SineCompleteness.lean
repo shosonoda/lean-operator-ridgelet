@@ -13,41 +13,57 @@ open scoped RealInnerProductSpace ENNReal ComplexConjugate
 
 namespace MeasureTheory
 attribute [local instance] Measure.Subtype.measureSpace
+/-- The real `L²` space of the open unit interval with restricted Lebesgue volume. -/
 abbrev UnitIntervalL2 : Type := Lp ℝ 2 (volume : Measure (Ioo (0 : ℝ) 1))
+/-- Lebesgue volume on the open unit interval is finite. -/
 local instance : IsFiniteMeasure (volume : Measure (Ioo (0 : ℝ) 1)) :=
   ⟨by rw [Measure.Subtype.volume_univ measurableSet_Ioo.nullMeasurableSet]; simp⟩
+/-- The period of the odd-extension circle is strictly positive. -/
 local instance : Fact (0 < (2 : ℝ)) := ⟨by norm_num⟩
 
+/-- Extension of a unit-interval `L²` representative by zero to the real line. -/
 def intervalZeroExtend (x : UnitIntervalL2) : ℝ → ℝ := subtypeZeroExtend (Ioo 0 1) x
-def intervalOddExtend (x : UnitIntervalL2) (t : ℝ) : ℝ := intervalZeroExtend x t - intervalZeroExtend x (-t)
+/-- The odd extension formed from the zero extension and its reflection. -/
+def intervalOddExtend (x : UnitIntervalL2) (t : ℝ) : ℝ :=
+    intervalZeroExtend x t - intervalZeroExtend x (-t)
 
+/-- Zero extension preserves square integrability. -/
 theorem memLp_intervalZeroExtend (x : UnitIntervalL2) : MemLp (intervalZeroExtend x) 2 volume :=
   (memLp_subtypeZeroExtend_iff measurableSet_Ioo x 2 volume).mpr (Lp.memLp x)
 
-theorem integrable_intervalZeroExtend (x : UnitIntervalL2) : Integrable (intervalZeroExtend x) volume := by
+/-- The zero extension is integrable because the original interval has finite volume. -/
+theorem integrable_intervalZeroExtend (x : UnitIntervalL2) : Integrable
+    (intervalZeroExtend x) volume := by
   rw [← memLp_one_iff_integrable]
   exact (memLp_subtypeZeroExtend_iff measurableSet_Ioo x 1 volume).mpr
     ((Lp.memLp x).mono_exponent one_le_two)
 
+/-- Reflection and subtraction preserve square integrability of the odd extension. -/
 theorem memLp_intervalOddExtend (x : UnitIntervalL2) : MemLp (intervalOddExtend x) 2 volume :=
   (memLp_intervalZeroExtend x).sub ((memLp_intervalZeroExtend x).comp_measurePreserving
     (Measure.measurePreserving_neg volume))
 
-theorem integrable_intervalOddExtend (x : UnitIntervalL2) : Integrable (intervalOddExtend x) volume :=
-  (integrable_intervalZeroExtend x).sub ((Measure.measurePreserving_neg volume).integrable_comp_of_integrable
+/-- The odd extension is integrable on the real line. -/
+theorem integrable_intervalOddExtend (x : UnitIntervalL2) : Integrable
+    (intervalOddExtend x) volume :=
+  (integrable_intervalZeroExtend x).sub
+      ((Measure.measurePreserving_neg volume).integrable_comp_of_integrable
     (integrable_intervalZeroExtend x))
 
+/-- The odd extension agrees with the original representative on the positive unit interval. -/
 theorem intervalOddExtend_coe (x : UnitIntervalL2) (t : (Ioo (0 : ℝ) 1)) :
     intervalOddExtend x t = x t := by
   rw [intervalOddExtend, intervalZeroExtend, subtypeZeroExtend_coe]
   have hn : -(t : ℝ) ∉ Ioo (0 : ℝ) 1 := by intro h; linarith [t.property.1, h.1]
   rw [subtypeZeroExtend_of_not_mem _ _ hn, sub_zero]
 
+/-- Reflection negates the odd extension. -/
 theorem intervalOddExtend_neg (x : UnitIntervalL2) (t : ℝ) :
     intervalOddExtend x (-t) = -intervalOddExtend x t := by
   simp only [intervalOddExtend, neg_neg]
   ring
 
+/-- The odd extension vanishes outside the interval from `-1` to `1`. -/
 theorem intervalOddExtend_of_not_mem (x : UnitIntervalL2) {t : ℝ} (ht : t ∉ Ioc (-1 : ℝ) 1) :
     intervalOddExtend x t = 0 := by
   have h1 : t ∉ Ioo (0 : ℝ) 1 := by simp only [mem_Ioc, not_and_or, not_lt, not_le] at ht; grind
@@ -55,14 +71,17 @@ theorem intervalOddExtend_of_not_mem (x : UnitIntervalL2) {t : ℝ} (ht : t ∉ 
   simp only [intervalOddExtend, intervalZeroExtend, subtypeZeroExtend_of_not_mem _ _ h1,
     subtypeZeroExtend_of_not_mem _ _ h2, sub_self]
 
+/-- The period-two Fourier character pulled back to the real line. -/
 def intervalCharacter (n : ℤ) (t : ℝ) : ℂ := fourier n (t : AddCircle (2 : ℝ))
 
+/-- Reflecting the argument negates the frequency of an interval character. -/
 theorem intervalCharacter_neg_arg (n : ℤ) (t : ℝ) :
     intervalCharacter n (-t) = intervalCharacter (-n) t := by
   simp only [intervalCharacter, fourier_coe_apply, Int.cast_neg, Complex.ofReal_neg]
   congr 1
   ring
 
+/-- The period-two character has the usual cosine-plus-imaginary-sine formula. -/
 theorem intervalCharacter_eq (n : ℤ) (t : ℝ) :
     intervalCharacter n t = (Real.cos (n * Real.pi * t) : ℂ) +
       (Real.sin (n * Real.pi * t) : ℂ) * Complex.I := by
@@ -72,6 +91,7 @@ theorem intervalCharacter_eq (n : ℤ) (t : ℝ) :
   push_cast
   ring
 
+/-- Multiplication by an interval character preserves integrability. -/
 theorem integrable_intervalCharacter_mul (n : ℤ) {g : ℝ → ℝ} (hg : Integrable g) :
     Integrable (fun t => intervalCharacter n t * (g t : ℂ)) := by
   have h := hg.ofReal.mul_bdd (c := 1)
@@ -85,6 +105,7 @@ theorem integrable_intervalCharacter_mul (n : ℤ) {g : ℝ → ℝ} (hg : Integ
   simp only [intervalCharacter, Function.comp_def, QuotientAddGroup.mk'_apply, mul_comm]
   rfl
 
+/-- The Fourier integral of an odd extension reduces to its sine integral. -/
 theorem integral_intervalCharacter_odd (x : UnitIntervalL2) (n : ℤ) :
     (∫ t, intervalCharacter (-n) t * (intervalOddExtend x t : ℂ)) =
       (-2 * Complex.I) * ∫ t, (Real.sin (n * Real.pi * t) : ℂ) * (intervalZeroExtend x t : ℂ) := by
@@ -96,7 +117,8 @@ theorem integral_intervalCharacter_odd (x : UnitIntervalL2) (n : ℤ) :
     (integrable_intervalCharacter_mul (-n) hgn)]
   have hn : (∫ t, intervalCharacter (-n) t * (intervalZeroExtend x (-t) : ℂ)) =
       ∫ t, intervalCharacter n t * (intervalZeroExtend x t : ℂ) := by
-    rw [← integral_neg_eq_self (fun t => intervalCharacter (-n) t * (intervalZeroExtend x (-t) : ℂ))]
+    rw [← integral_neg_eq_self (fun t => intervalCharacter (-n) t *
+        (intervalZeroExtend x (-t) : ℂ))]
     simp only [intervalCharacter_neg_arg, neg_neg]
   rw [hn, ← integral_sub (integrable_intervalCharacter_mul (-n) hg)
     (integrable_intervalCharacter_mul n hg), ← integral_const_mul]
@@ -106,6 +128,7 @@ theorem integral_intervalCharacter_odd (x : UnitIntervalL2) (n : ℤ) :
     Complex.ofReal_neg]
   ring
 
+/-- Each interval Fourier coefficient of the odd extension is its scaled sine integral. -/
 theorem fourierCoeffOn_intervalOddExtend (x : UnitIntervalL2) (n : ℤ) :
     fourierCoeffOn (by norm_num : (-1 : ℝ) < 1) (fun t => (intervalOddExtend x t : ℂ)) n =
       -Complex.I * ∫ t, (Real.sin (n * Real.pi * t) : ℂ) * (intervalZeroExtend x t : ℂ) := by
@@ -129,6 +152,7 @@ theorem fourierCoeffOn_intervalOddExtend (x : UnitIntervalL2) (n : ℤ) :
   push_cast
   ring
 
+/-- The sine integral of the zero extension equals the integral on the original interval. -/
 theorem integral_sin_zeroExtend (x : UnitIntervalL2) (n : ℤ) :
     (∫ t, Real.sin (n * Real.pi * t) * intervalZeroExtend x t) =
       ∫ t : (Ioo (0 : ℝ) 1), Real.sin (n * Real.pi * t) * x t := by
@@ -146,6 +170,7 @@ theorem integral_sin_zeroExtend (x : UnitIntervalL2) (n : ℤ) :
   rw [hf, integral_subtypeZeroExtend measurableSet_Ioo]
   rfl
 
+/-- Vanishing nonnegative-frequency sine integrals also gives vanishing integer frequencies. -/
 theorem integral_sin_int_eq_zero {x : UnitIntervalL2}
     (hx : ∀ n : ℕ, (∫ t : (Ioo (0 : ℝ) 1), Real.sin (n * Real.pi * t) * x t) = 0) (n : ℤ) :
     (∫ t : (Ioo (0 : ℝ) 1), Real.sin (n * Real.pi * t) * x t) = 0 := by
@@ -156,6 +181,7 @@ theorem integral_sin_int_eq_zero {x : UnitIntervalL2}
     simpa only [Nat.cast_add, Nat.cast_one, neg_mul, integral_neg, neg_zero] using
       congrArg Neg.neg (hx (n+1))
 
+/-- Vanishing sine integrals force every Fourier coefficient of the odd extension to vanish. -/
 theorem fourierCoeffOn_intervalOddExtend_eq_zero {x : UnitIntervalL2}
     (hx : ∀ n : ℕ, (∫ t : (Ioo (0 : ℝ) 1), Real.sin (n * Real.pi * t) * x t) = 0) (n : ℤ) :
     fourierCoeffOn (by norm_num : (-1 : ℝ) < 1) (fun t => (intervalOddExtend x t : ℂ)) n = 0 := by
@@ -164,6 +190,7 @@ theorem fourierCoeffOn_intervalOddExtend_eq_zero {x : UnitIntervalL2}
   rw [integral_complex_ofReal, integral_sin_zeroExtend, integral_sin_int_eq_zero hx]
   simp
 
+/-- A square-integrable unit-interval function with all sine integrals zero is zero in `L²`. -/
 theorem eq_zero_of_integral_sin {x : UnitIntervalL2}
     (hx : ∀ n : ℕ, (∫ t : (Ioo (0 : ℝ) 1), Real.sin (n * Real.pi * t) * x t) = 0) : x = 0 := by
   have hL2 : MemLp (fun t => (intervalOddExtend x t : ℂ)) 2

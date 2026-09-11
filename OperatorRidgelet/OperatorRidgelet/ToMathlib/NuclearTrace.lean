@@ -10,12 +10,14 @@ open InnerProductSpace
 namespace ContinuousLinearMap
 variable {H ι κ : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
+/-- Summable weighted squared vector norms give a summable series of rank-one operators. -/
 theorem summable_weighted_rankOne {p : ι → ℝ} {v : ι → H}
     (hp : ∀ i, 0 ≤ p i) (hs : Summable fun i => p i * ‖v i‖^2) :
     Summable (fun i => p i • rankOne ℝ (v i) (v i)) := by
   apply Summable.of_norm
   simpa only [norm_smul, Real.norm_eq_abs, abs_of_nonneg (hp _), norm_rankOne, pow_two] using hs
 
+/-- A rank-one operator series may be evaluated inside an inner product. -/
 theorem hasSum_inner_weighted_rankOne {p : ι → ℝ} {v : ι → H}
     (hp : ∀ i, 0 ≤ p i) (hs : Summable fun i => p i * ‖v i‖^2) (x y : H) :
     HasSum (fun i => p i * ⟪v i,x⟫ * ⟪v i,y⟫)
@@ -25,6 +27,7 @@ theorem hasSum_inner_weighted_rankOne {p : ι → ℝ} {v : ι → H}
   simpa only [ContinuousLinearMap.apply_apply, innerSL_apply_apply, smul_apply,
     rankOne_apply, real_inner_smul_right, real_inner_comm, mul_assoc] using h
 
+/-- A convergent real weighted rank-one series is self-adjoint. -/
 theorem isSelfAdjoint_tsum_weighted_rankOne {p : ι → ℝ} {v : ι → H}
     (hp : ∀ i, 0 ≤ p i) (hs : Summable fun i => p i * ‖v i‖^2) :
     IsSelfAdjoint (∑' i, p i • rankOne ℝ (v i) (v i)) := by
@@ -36,6 +39,7 @@ theorem isSelfAdjoint_tsum_weighted_rankOne {p : ι → ℝ} {v : ι → H}
   ext i
   ring
 
+/-- A rank-one series with nonnegative weights defines a positive quadratic form. -/
 theorem inner_tsum_weighted_rankOne_nonneg {p : ι → ℝ} {v : ι → H}
     (hp : ∀ i, 0 ≤ p i) (hs : Summable fun i => p i * ‖v i‖^2) (x : H) :
     0 ≤ ⟪(∑' i, p i • rankOne ℝ (v i) (v i)) x,x⟫ := by
@@ -44,6 +48,7 @@ theorem inner_tsum_weighted_rankOne_nonneg {p : ι → ℝ} {v : ι → H}
   intro i
   nlinarith [hp i, sq_nonneg ⟪v i,x⟫, mul_nonneg (hp i) (sq_nonneg ⟪v i,x⟫)]
 
+/-- A positive summable rank-one series has a summable diagonal in every Hilbert basis. -/
 theorem summable_inner_tsum_weighted_rankOne {p : ι → ℝ} {v : ι → H}
     (hp : ∀ i, 0 ≤ p i) (hs : Summable fun i => p i * ‖v i‖^2)
     (b : HilbertBasis κ ℝ H) :
@@ -66,6 +71,7 @@ end ContinuousLinearMap
 
 namespace ContinuousLinearMap
 
+/-- Summable nonnegative weights remain summable after multiplying by bounded squared norms. -/
 theorem summable_weight_norm_sq {ι H : Type*} [NormedAddCommGroup H]
     {p : ι → ℝ} {v : ι → H} (hp : ∀ i, 0 ≤ p i) (hs : Summable p)
     (hv : ∀ i, ‖v i‖ ≤ 1) : Summable (fun i => p i * ‖v i‖^2) := by

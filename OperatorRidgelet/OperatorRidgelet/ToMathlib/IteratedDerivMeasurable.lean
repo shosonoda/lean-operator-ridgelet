@@ -115,9 +115,11 @@ theorem measurable_limsupDerivC {α : Type*} [MeasurableSpace α] {f : α → �
 def limsupIterDeriv (k : ℕ) (f : ℝ → ℂ) : ℝ → ℂ :=
   limsupDerivC^[k] f
 
+/-- The zeroth measurable derivative surrogate is the original function. -/
 @[simp]
 theorem limsupIterDeriv_zero (f : ℝ → ℂ) : limsupIterDeriv 0 f = f := rfl
 
+/-- The successor measurable derivative surrogate is obtained by one more limsup derivative. -/
 theorem limsupIterDeriv_succ (k : ℕ) (f : ℝ → ℂ) :
     limsupIterDeriv (k + 1) f = limsupDerivC (limsupIterDeriv k f) :=
   Function.iterate_succ_apply' _ _ _

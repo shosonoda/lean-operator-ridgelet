@@ -41,6 +41,7 @@ theorem orthonormal_dirichletEigenfunction :
   simp
 
 
+/-- Orthogonality to every positive sine eigenfunction makes all sine integrals vanish. -/
 theorem integral_sin_nat_eq_zero {x : UnitL2}
     (hx : ∀ n : ℕ, ⟪dirichletEigenfunction (n+1),x⟫ = 0) (n : ℕ) :
     (∫ t : UnitOpenInterval, Real.sin (n * Real.pi * t) * x t) = 0 := by

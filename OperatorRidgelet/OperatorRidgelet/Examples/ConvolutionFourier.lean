@@ -11,17 +11,21 @@ namespace OperatorRidgelet
 open MeasureTheory
 variable {d : ℕ}
 
+/-- The real torus `L²` space has a countable topological basis. -/
 instance (d : ℕ) : SecondCountableTopology (TorusL2 d) := by
   letI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
   infer_instance
 
+/-- The complex torus `L²` space has a countable topological basis. -/
 instance (d : ℕ) : SecondCountableTopology (TorusL2C d) := by
   letI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
   infer_instance
 
+/-- The normalized complex Fourier Hilbert basis on the torus of period `2π`. -/
 def torusFourierBasis (d : ℕ) : HilbertBasis (Fin d → ℤ) ℂ (TorusL2C d) :=
   AddTorus.mFourierBasis
 
+/-- The Fourier Hilbert-basis coordinates agree with the integral Fourier coefficients. -/
 theorem torusFourierBasis_repr (f : TorusL2C d) (n : Fin d → ℤ) :
     (torusFourierBasis d).repr f n = torusFourierCoeff f n := by
   change (AddTorus.mFourierBasis (T := 2 * Real.pi)).repr f n = _
@@ -31,12 +35,14 @@ theorem torusFourierBasis_repr (f : TorusL2C d) (n : Fin d → ℤ) :
     ContinuousMap.coe_mk, smul_eq_mul, torusFourierCoeff, torusCharacter, torusHaar]
   rfl
 
+/-- Equality of all Fourier coefficients determines a complex torus `L²` function. -/
 theorem torusFourierCoeff_ext {f g : TorusL2C d}
     (h : ∀ n, torusFourierCoeff f n = torusFourierCoeff g n) : f = g := by
   apply (torusFourierBasis d).repr.injective
   ext n
   simpa only [torusFourierBasis_repr] using h n
 
+/-- Embedding a real `L²` function into the complex space preserves its coefficients. -/
 theorem torusFourierCoeff_ofReal_compLp (f : TorusL2 d) (n : Fin d → ℤ) :
     torusFourierCoeff (Complex.ofRealCLM.compLp f) n =
       torusFourierCoeff (fun t => (f t : ℂ)) n := by
@@ -44,6 +50,7 @@ theorem torusFourierCoeff_ofReal_compLp (f : TorusL2 d) (n : Fin d → ℤ) :
   filter_upwards [Complex.ofRealCLM.coeFn_compLp' f] with t ht
   rw [ht, Complex.ofRealCLM_apply]
 
+/-- Equality of all complex Fourier coefficients determines a real torus function. -/
 theorem torusFourierCoeff_real_ext {f g : TorusL2 d}
     (h : ∀ n, torusFourierCoeff (fun t => (f t : ℂ)) n =
       torusFourierCoeff (fun t => (g t : ℂ)) n) : f = g := by
@@ -56,11 +63,13 @@ theorem torusFourierCoeff_real_ext {f g : TorusL2 d}
   rw [hf, hg, Complex.ofRealCLM_apply, Complex.ofRealCLM_apply] at ht
   exact Complex.ofReal_injective ht
 
+/-- A torus character sends addition to multiplication. -/
 theorem torusCharacter_add (n : Fin d → ℤ) (x y : Torus d) :
     torusCharacter n (x + y) = torusCharacter n x * torusCharacter n y := by
   simp only [torusCharacter, Pi.add_apply, fourier_apply, zsmul_add,
     AddCircle.toCircle_add, Circle.coe_mul, Finset.prod_mul_distrib]
 
+/-- Translation multiplies each Fourier coefficient by the corresponding character. -/
 theorem torusFourierCoeff_torusTranslate (f : TorusL2 d) (z : Torus d) (n : Fin d → ℤ) :
     torusFourierCoeff (fun t => (torusTranslate d z f t : ℂ)) n =
       conj (torusCharacter n z) * torusFourierCoeff (fun t => (f t : ℂ)) n := by
@@ -84,6 +93,7 @@ theorem torusFourierCoeff_torusTranslate (f : TorusL2 d) (z : Torus d) (n : Fin 
       funext t
       ring
 
+/-- The Bessel Fourier multiplier commutes with torus translations. -/
 theorem besselOperator_commutes_translate (s : ℝ) (z : Torus d) (x : TorusL2 d) :
     besselOperator d s (torusTranslate d z x) =
       torusTranslate d z (besselOperator d s x) := by
@@ -96,6 +106,7 @@ theorem besselOperator_commutes_translate (s : ℝ) (z : Torus d) (x : TorusL2 d
     ring
   · simp
 
+/-- Translation by the negative parameter cancels translation. -/
 theorem torusTranslate_neg_cancel (z : Torus d) (x : TorusL2 d) :
     torusTranslate d (-z) (torusTranslate d z x) = x := by
   apply Lp.ext
@@ -104,6 +115,7 @@ theorem torusTranslate_neg_cancel (z : Torus d) (x : TorusL2 d) :
       (torusTranslate_coeFn_ae z x)] with t h1 h2
   simpa only [Function.comp_apply, h1, sub_neg_eq_add, add_sub_cancel_right] using h2
 
+/-- Translation on the torus as a real linear isometric equivalence of `L²`. -/
 def torusTranslateEquiv (d : ℕ) (z : Torus d) : TorusL2 d ≃ₗᵢ[ℝ] TorusL2 d :=
   { torusTranslate d z with
     invFun := torusTranslate d (-z)

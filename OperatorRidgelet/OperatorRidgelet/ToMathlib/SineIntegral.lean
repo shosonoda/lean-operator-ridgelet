@@ -28,8 +28,10 @@ theorem integral_normalized_sin_mul (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
     nlinarith [congrArg (fun r : ℝ => r * sin (m * Real.pi * t) * sin (n * Real.pi * t)) hs]
   simp_rw [hproduct]
   rw [intervalIntegral.integral_sub
-    ((by fun_prop : Continuous fun t : ℝ => cos (((m : ℝ) - n) * Real.pi * t)).intervalIntegrable 0 1)
-    ((by fun_prop : Continuous fun t : ℝ => cos (((m : ℝ) + n) * Real.pi * t)).intervalIntegrable 0 1)]
+    ((by fun_prop : Continuous fun t : ℝ => cos
+        (((m : ℝ) - n) * Real.pi * t)).intervalIntegrable 0 1)
+    ((by fun_prop : Continuous fun t : ℝ => cos
+        (((m : ℝ) + n) * Real.pi * t)).intervalIntegrable 0 1)]
   have hsum : ((m : ℝ) + n) * Real.pi ≠ 0 := by
     have hmR : (0 : ℝ) < m := by exact_mod_cast hm
     have hnR : (0 : ℝ) < n := by exact_mod_cast hn
@@ -48,4 +50,3 @@ theorem integral_normalized_sin_mul (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
       simp
 
 end Real
-

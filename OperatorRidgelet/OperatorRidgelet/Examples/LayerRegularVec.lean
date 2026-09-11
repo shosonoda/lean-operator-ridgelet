@@ -15,7 +15,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
   [SecondCountableTopology Y] {Ω : Type*} [MeasurableSpace Ω]
   {m : Measure Ω} {a : Ω → H} {b : Ω → Y}
 
+/-- Use the Borel measurable structure on the vector output space. -/
 local instance : MeasurableSpace Y := borel Y
+/-- The chosen measurable structure is the Borel structure. -/
 local instance : BorelSpace Y := ⟨rfl⟩
 
 /-- The constant vector in the Gaussian spectral density of a layer. -/
@@ -27,12 +29,14 @@ def layerDensityVec (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (y : Ω) (
   (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
     Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • b y
 
+/-- The vector layer density separates into its ray profile and radial exponential factor. -/
 theorem layerDensityVec_eq (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (y : Ω) (ξ : H) :
     layerDensityVec Q a b y ξ =
       ((Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ) • layerDensityConstVec Q a b y := by
   simp only [layerDensityVec, layerDensityConstVec, Complex.ofReal_mul, smul_smul]
   rw [mul_comm]
 
+/-- The vector ray profile has norm bounded by the output vector's norm. -/
 theorem norm_layerDensityConstVec_le {Q : H →L[ℝ] H} (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫)
     (a : Ω → H) (b : Ω → Y) (y : Ω) : ‖layerDensityConstVec Q a b y‖ ≤ ‖b y‖ := by
   rw [layerDensityConstVec, norm_smul, Complex.norm_real, Real.norm_eq_abs,
@@ -40,6 +44,7 @@ theorem norm_layerDensityConstVec_le {Q : H →L[ℝ] H} (hQ0 : ∀ x, 0 ≤ ⟪
   refine mul_le_of_le_one_left (norm_nonneg _) (inv_le_one_of_one_le₀ ?_)
   exact Real.one_le_sqrt.mpr (by linarith [hQ0 (a y)])
 
+/-- Positivity of the covariance bounds the full density by the output vector's norm. -/
 theorem norm_layerDensityVec_le {Q : H →L[ℝ] H} (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫)
     (a : Ω → H) (b : Ω → Y) (y : Ω) {ξ : H} (hS0 : 0 ≤ ⟪layerCovariance Q a y ξ, ξ⟫) :
     ‖layerDensityVec Q a b y ξ‖ ≤ ‖b y‖ := by
@@ -49,6 +54,7 @@ theorem norm_layerDensityVec_le {Q : H →L[ℝ] H} (hQ0 : ∀ x, 0 ≤ ⟪Q x, 
     (norm_layerDensityConstVec_le hQ0 a b y)
   exact Real.exp_le_one_iff.mpr (by linarith)
 
+/-- The vector layer density is jointly measurable in its spatial and frequency parameters. -/
 theorem IsLayerData.measurable_uncurry_layerDensityVec {Q : H →L[ℝ] H}
     (hL : IsLayerData m a b) : Measurable (Function.uncurry (layerDensityVec Q a b)) := by
   have hA : StronglyMeasurable fun p : Ω × H => a p.1 :=
@@ -65,9 +71,12 @@ theorem IsLayerData.measurable_uncurry_layerDensityVec {Q : H →L[ℝ] H}
       funext fun p => inner_layerCovariance Q a p.1 p.2
     rw [heq]
     exact h2.sub ((h1.pow_const 2).div (measurable_const.add h3))
-  have hconst : Measurable fun p : Ω × H => (((Real.sqrt (1 + ⟪Q (a p.1), a p.1⟫))⁻¹ : ℝ) : ℂ) := Complex.measurable_ofReal.comp
+  have hconst : Measurable fun p : Ω × H => (((Real.sqrt (1 + ⟪Q (a p.1), a p.1⟫))⁻¹ : ℝ) : ℂ)
+      := Complex.measurable_ofReal.comp
     ((Real.continuous_sqrt.measurable.comp (measurable_const.add h3)).inv)
-  have hexp : Measurable fun p : Ω × H => ((Real.exp (-⟪layerCovariance Q a p.1 p.2, p.2⟫ / 2) : ℝ) : ℂ) := Complex.measurable_ofReal.comp (Real.measurable_exp.comp (hκ.neg.div_const 2))
+  have hexp : Measurable fun p : Ω × H =>
+      ((Real.exp (-⟪layerCovariance Q a p.1 p.2, p.2⟫ / 2) : ℝ) : ℂ) :=
+      Complex.measurable_ofReal.comp (Real.measurable_exp.comp (hκ.neg.div_const 2))
   have heq : Function.uncurry (layerDensityVec Q a b) = fun p : Ω × H =>
       ((((Real.sqrt (1 + ⟪Q (a p.1), a p.1⟫))⁻¹ : ℝ) : ℂ) *
         ((Real.exp (-⟪layerCovariance Q a p.1 p.2, p.2⟫ / 2) : ℝ) : ℂ)) • b p.1 := by
@@ -76,6 +85,7 @@ theorem IsLayerData.measurable_uncurry_layerDensityVec {Q : H →L[ℝ] H}
   rw [heq]
   exact (hconst.mul hexp).smul (hL.stronglyMeasurable_b.measurable.comp measurable_fst)
 
+/-- The complex embedding of the radial exponential factor is smooth. -/
 theorem contDiff_ofReal_exp_layer (S : H →L[ℝ] H) (a : H) {n : WithTop ℕ∞} :
     ContDiff ℝ n fun ω : ℝ => ((Real.exp (-⟪S (ω • a), ω • a⟫ / 2) : ℝ) : ℂ) := by
   simpa using contDiff_const_mul_ofReal_exp_inner_map_smul_self S 1 a
@@ -115,7 +125,8 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
   have hIU : I ⊆ {ω : ℝ | r / 2 < |ω|} ∩ {ω : ℝ | |ω| < R + 1} := fun ω hω =>
     ⟨by have := (hrR ω hω).1; simp only [Set.mem_setOf_eq]; linarith,
      by have := (hrR ω hω).2; simp only [Set.mem_setOf_eq]; linarith⟩
-  refine IsRegularAlongRays.integral_weighted_of_measurable_derivatives m (hL.measurable_uncurry_layerDensityVec (Q := Q))
+  refine IsRegularAlongRays.integral_weighted_of_measurable_derivatives m
+      (hL.measurable_uncurry_layerDensityVec (Q := Q))
     (W := fun y => ‖b y‖) hL.integrable_b.norm
     (fun y => norm_nonneg _)
     (fun y ξ => norm_layerDensityVec_le hQ.inner_nonneg a b y (hS0 y ξ)) hU hIU
@@ -149,17 +160,22 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
     rw [heq]
     exact hm.aestronglyMeasurable.smul hL.stronglyMeasurable_b.aestronglyMeasurable
   -- the uniform ray-derivative bound
-  refine ⟨fun a' => ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
-    (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫), fun a' => by positivity, ?_, ?_⟩
+  refine ⟨fun a' => ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+      (1 + ‖a'‖) ^ 2) ^ k *
+    (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) *
+        ⟪Q a', a'⟫), fun a' => by positivity, ?_, ?_⟩
   · -- integrability of the weight
     have hint : Integrable (fun a' : H =>
-        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
-          (2 + ‖a'‖ ^ (2 * (3 * k + 2))) * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) ν := by
+        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+            (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
+          (2 + ‖a'‖ ^ (2 * (3 * k + 2))) *
+              Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) ν := by
       have h0 := hdecay ((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) ht 0
       have hN := hdecay ((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) ht (3 * k + 2)
       simp only [mul_zero, pow_zero, one_mul] at h0
       refine (((h0.const_mul 2).add hN).const_mul
-        ((((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+        ((((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+            (1 + |R + 1|) ^ k) *
           2 ^ (3 * k + 2))).congr (Filter.Eventually.of_forall fun a' => ?_)
       simp only [Pi.add_apply]
       ring
@@ -188,19 +204,28 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
       have hidx : k + 2 + 2 * k = 3 * k + 2 := by ring
       rw [hidx]
       exact one_add_pow_le_two_pow_mul_two_add_pow (3 * k + 2) (norm_nonneg a')
-    calc (1 + ‖a'‖) ^ (k + 2) * (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
-          (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫))
+    calc (1 + ‖a'‖) ^ (k + 2) *
+        (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
+          (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) *
+              ⟪Q a', a'⟫))
         ≤ (1 + ‖a'‖) ^ (k + 2) * (((k : ℝ) + 1) *
             (((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + ‖a'‖) ^ (2 * k)) *
-            (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) := by gcongr
-      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+            (1 + |R + 1|) ^ k * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹)
+                * ⟪Q a', a'⟫)) := by gcongr
+      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) *
             ((1 + ‖a'‖) ^ (k + 2) * (1 + ‖a'‖) ^ (2 * k)) *
             Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by ring
-      _ ≤ (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) *
+      _ ≤ (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) *
             (2 ^ (3 * k + 2) * (2 + ‖a'‖ ^ (2 * (3 * k + 2)))) *
-            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by gcongr
-      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k * (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
-            (2 + ‖a'‖ ^ (2 * (3 * k + 2))) * Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) := by ring
+            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)
+                := by gcongr
+      _ = (((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2)) ^ k *
+          (1 + |R + 1|) ^ k) * 2 ^ (3 * k + 2) *
+            (2 + ‖a'‖ ^ (2 * (3 * k + 2))) *
+                Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)
+                := by ring
   · -- the pointwise bound on the ray derivatives
     intro y a'
     refine iSup_le fun j => iSup₂_le fun ω hω => ?_
@@ -214,7 +239,8 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
       funext fun ω => layerDensityVec_eq Q a b y (ω • a')
     rw [← ofReal_norm, hfun]
     refine ENNReal.ofReal_le_ofReal ?_
-    rw [iteratedDeriv_smul_const (contDiff_ofReal_exp_layer (layerCovariance Q a y) a').contDiffAt, norm_smul, mul_comm]
+    rw [iteratedDeriv_smul_const
+        (contDiff_ofReal_exp_layer (layerCovariance Q a y) a').contDiffAt, norm_smul, mul_comm]
     have hd := norm_iteratedDeriv_ofReal_exp_inner_map_smul_self_le (hS0 y) (hSB y)
       (r := r / 2) (by positivity) (R := R + 1) (j : ℕ) a' hωr hωR
     have hA1 : ((j : ℕ) : ℝ) + 1 ≤ (k : ℝ) + 1 := by linarith
@@ -234,7 +260,8 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
       nlinarith [sq_nonneg (r / 2), hQ.inner_nonneg a', div_nonneg (sq_nonneg (r / 2)) two_pos.le]
     have hstep : ‖iteratedDeriv (j : ℕ) (fun ω : ℝ =>
           ((Real.exp (-⟪layerCovariance Q a y (ω • a'), ω • a'⟫ / 2) : ℝ) : ℂ)) ω‖ ≤
-        ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+        ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+            (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
           Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) :=
       hd.trans (by
         refine mul_le_mul (mul_le_mul (mul_le_mul hA1 hA2 (by positivity) (by positivity)) hA3
@@ -243,12 +270,15 @@ theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
           ‖iteratedDeriv (j : ℕ) (fun ω : ℝ =>
             ((Real.exp (-⟪layerCovariance Q a y (ω • a'), ω • a'⟫ / 2) : ℝ) : ℂ)) ω‖
         ≤ ‖b y‖ * (((k : ℝ) + 1) *
-            ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+            ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k *
+                (1 + |R + 1|) ^ k *
             Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫)) :=
           mul_le_mul (norm_layerDensityConstVec_le hQ.inner_nonneg a b y) hstep
             (norm_nonneg _) (norm_nonneg _)
-      _ = ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) * (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
-            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) * ‖b y‖ := by ring
+      _ = ((k : ℝ) + 1) * ((k : ℝ) + 1 + (‖Q‖ + ‖Q‖ ^ 2 * layerSupNorm a ^ 2) *
+          (1 + ‖a'‖) ^ 2) ^ k * (1 + |R + 1|) ^ k *
+            Real.exp (-((r / 2) ^ 2 / 2 * (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹) * ⟪Q a', a'⟫) *
+                ‖b y‖ := by ring
 
 
 end OperatorRidgelet
