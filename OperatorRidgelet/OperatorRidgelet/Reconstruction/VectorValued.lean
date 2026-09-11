@@ -885,4 +885,138 @@ theorem rieszInvVec_transposeEmbedVec_coe (G : spectralRangeVec Y μ ν) :
 
 end SynthesisAlgebraVec
 
+/-! ### Fourier uniqueness and injectivity for `Y`-valued targets -/
+
+section InjectivityVec
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+  [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
+  [SecondCountableTopology Y]
+
+omit [SecondCountableTopology H] in
+/-- `𝒢_μ f` is the target with spectral density `f` at the reflected point. -/
+theorem gaussFourierVec_eq_spectralTarget (μ : Measure H) (f : H → Y) (ξ : H) :
+    gaussFourierVec μ f ξ = spectralTarget μ f (-ξ) := by
+  unfold gaussFourierVec spectralTarget character
+  refine integral_congr_ae (Eventually.of_forall fun x => ?_)
+  have hx : (⟪-ξ, x⟫ : ℝ) = -⟪x, ξ⟫ := by
+    rw [inner_neg_left, real_inner_comm]
+  beta_reduce
+  rw [hx]
+  congr 2
+  push_cast
+  ring
+
+/-- Fourier uniqueness for `Y`-valued targets: `𝒢_μ f = 0` forces `f = 0` `μ`-almost
+everywhere. -/
+theorem ae_eq_zero_of_gaussFourierVec_eq_zero (μ : Measure H) [IsFiniteMeasure μ] {f : H → Y}
+    (hf : Integrable f μ) (h : ∀ ξ, gaussFourierVec μ f ξ = 0) : f =ᵐ[μ] 0 := by
+  refine ae_eq_zero_of_spectralTarget_eq_zero_vec μ hf ?_
+  funext x
+  rw [Pi.zero_apply, ← neg_neg x, ← gaussFourierVec_eq_spectralTarget, h]
+
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- `𝒢_μ` is additive on differences of `L²(μ; Y)` classes. -/
+theorem gaussFourierVec_coe_sub (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp Y 2 μ) :
+    gaussFourierVec μ ((f - g : Lp Y 2 μ) : H → Y) =
+      gaussFourierVec μ f - gaussFourierVec μ g := by
+  funext ξ
+  simp only [gaussFourierVec, Pi.sub_apply]
+  rw [← integral_sub (integrable_character_smul μ f ξ) (integrable_character_smul μ g ξ)]
+  apply integral_congr_ae
+  filter_upwards [Lp.coeFn_sub f g] with x hx
+  rw [hx, Pi.sub_apply, smul_sub]
+
+/-- `𝒢_μ` is injective on `L²(μ; Y)`. -/
+theorem Lp.eq_of_gaussFourierVec_eq (μ : Measure H) [IsFiniteMeasure μ] {f g : Lp Y 2 μ}
+    (h : gaussFourierVec μ f = gaussFourierVec μ g) : f = g := by
+  have hint : Integrable ((f - g : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
+  have hzero : ∀ ξ, gaussFourierVec μ ((f - g : Lp Y 2 μ) : H → Y) ξ = 0 := by
+    intro ξ
+    rw [gaussFourierVec_coe_sub, Pi.sub_apply, h, sub_self]
+  have hae := ae_eq_zero_of_gaussFourierVec_eq_zero μ hint hzero
+  rw [← sub_eq_zero]
+  exact Lp.ext (hae.trans (Lp.coeFn_zero Y 2 μ).symm)
+
+/-- `Δ_Q (𝒢_μ f) = f` for `f ∈ 𝒟(Y)`. -/
+theorem gaussFourierInvVec_gaussFourierVec (μ ν : Measure H) [IsFiniteMeasure μ]
+    (f : spectralCoreVec Y μ ν) :
+    gaussFourierInvVec μ ν (gaussFourierVec μ (f : Lp Y 2 μ)) = (f : Lp Y 2 μ) := by
+  have hex : ∃ f' : Lp Y 2 μ, f' ∈ spectralCoreVec Y μ ν ∧
+      gaussFourierVec μ f' = gaussFourierVec μ (f : Lp Y 2 μ) := ⟨f, f.2, rfl⟩
+  unfold gaussFourierInvVec
+  rw [dif_pos hex]
+  exact Lp.eq_of_gaussFourierVec_eq μ hex.choose_spec.2
+
+/-- **Injectivity** of the `Y`-valued transform: if `R_ρ f = 0` `λ`-almost everywhere for
+`f ∈ L¹(μ; Y)`, then `f = 0` `μ`-almost everywhere. -/
+theorem ae_eq_zero_of_ridgeletVec_ae_eq_zero (μ : Measure H) [IsProbabilityMeasure μ]
+    {ν : Measure H} [SFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+    (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) {f : H → Y}
+    (hf : Integrable f μ) (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) : f =ᵐ[μ] 0 := by
+  obtain ⟨ω₀, hω₀, hρω₀⟩ := hρ.exists_ne_zero_filterFourier_ne_zero hα
+  have hslice : ∀ᵐ a ∂ν, gaussFourierVec μ f ((-ω₀) • a) = 0 := by
+    filter_upwards [Measure.ae_ae_of_ae_prod h] with a ha
+    have hb : biasFourierVec (ridgeletVec μ ρ f) a ω₀ = 0 := by
+      unfold biasFourierVec
+      refine integral_eq_zero_of_ae ?_
+      filter_upwards [ha] with c hc
+      simp only [hc, Pi.zero_apply, smul_zero]
+    rw [biasFourierVec_ridgeletVec μ ρ hf, smul_eq_zero] at hb
+    rw [neg_smul]
+    exact hb.resolve_left hρω₀
+  have hs : MeasurableSet {ξ : H | gaussFourierVec μ f ξ = 0} :=
+    (isClosed_singleton.preimage (continuous_gaussFourierVec μ hf)).measurableSet
+  have hmap : ∀ᵐ ξ ∂(ν.map fun a => (-ω₀) • a), gaussFourierVec μ f ξ = 0 :=
+    (ae_map_iff (measurable_const_smul (-ω₀)).aemeasurable hs).mpr hslice
+  rw [hν (-ω₀) (neg_ne_zero.mpr hω₀)] at hmap
+  have hc : ENNReal.ofReal (|(-ω₀)| ^ (-α)) ≠ 0 :=
+    (ENNReal.ofReal_pos.mpr (Real.rpow_pos_of_pos (abs_pos.mpr (neg_ne_zero.mpr hω₀)) _)).ne'
+  have hmap' : ∀ᵐ ξ ∂ν, gaussFourierVec μ f ξ = 0 := by
+    rw [ae_iff] at hmap ⊢
+    rw [Measure.smul_apply, smul_eq_mul, mul_eq_zero] at hmap
+    exact hmap.resolve_left hc
+  have hzero : gaussFourierVec μ f = 0 :=
+    ((continuous_gaussFourierVec μ hf).ae_eq_iff_eq ν continuous_const).mp hmap'
+  exact ae_eq_zero_of_gaussFourierVec_eq_zero μ hf fun ξ => congrFun hzero ξ
+
+end InjectivityVec
+
+/-! ### Backprojection of the `Y`-valued Fourier-slice representative -/
+
+section BackprojectionVec
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [OpensMeasurableSpace H]
+variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+
+/-- `Λ_ρ` applied to the continuous Fourier-slice representative `(a, ω) ↦ ρ̂(ω) • 𝒢_μ f(-ωa)`
+of `R_ρ f` gives `C^{(α)}_ρ • 𝒢_μ f(ξ)` pointwise. -/
+theorem backprojectionOfVec_biasFourierVec_ridgeletVec (μ : Measure H) [IsProbabilityMeasure μ]
+    (α : ℝ) (ρ : SchwartzMap ℝ ℝ) {f : H → Y} (hf : Integrable f μ) (ξ : H) :
+    backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ f)) ξ =
+      (admissibilityConst α ρ : ℂ) • gaussFourierVec μ f ξ := by
+  have h0 : ∀ᵐ ω : ℝ ∂volume, ω ≠ 0 := by
+    rw [ae_iff]
+    simp
+  have key : ∀ᵐ ω : ℝ ∂volume,
+      ((starRingEnd ℂ) (filterFourier ρ ω) * ((|ω| ^ (-α) : ℝ) : ℂ)) •
+          biasFourierVec (ridgeletVec μ ρ f) (-(ω⁻¹ • ξ)) ω =
+        ((‖filterFourier ρ ω‖ ^ 2 * |ω| ^ (-α) : ℝ) : ℂ) • gaussFourierVec μ f ξ := by
+    filter_upwards [h0] with ω hω
+    rw [biasFourierVec_ridgeletVec μ ρ hf]
+    have hξ : -(ω • -(ω⁻¹ • ξ)) = ξ := by
+      rw [smul_neg, neg_neg, smul_smul, mul_inv_cancel₀ hω, one_smul]
+    rw [hξ, smul_smul]
+    congr 1
+    push_cast
+    rw [← Complex.conj_mul']
+    ring
+  unfold backprojectionOfVec admissibilityConst
+  rw [integral_congr_ae key, integral_smul_const, integral_complex_ofReal, ← smul_assoc,
+    Complex.real_smul, ← Complex.ofReal_mul]
+
+end BackprojectionVec
+
 end OperatorRidgelet

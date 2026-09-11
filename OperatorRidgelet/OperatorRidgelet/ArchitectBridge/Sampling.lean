@@ -190,12 +190,12 @@ attribute [blueprint "cor:vector-rates-i-b"
 
 attribute [blueprint "cor:vector-rates-ii-a"
   (statement := /-- For every compact $K$,
-    $\mathbb E\|f_N-f\|_{C(K;Y)}\le2V\,\mathfrak R^Y_N(K;p,\beta)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_vector_rates_ii_a
+    $\mathbb E\|f_N-f\|_{C(K;Y)}\le2V\,\mathfrak R^Y_N(K;p,\beta)$. -/)]
+  OperatorRidgelet.Paper.cor_vector_rates_ii_a
 
 attribute [blueprint "cor:vector-rates-ii-b"
-  (statement := /-- $\mathfrak R^Y_N(K;p,\beta)\to0$ as $N\to\infty$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_vector_rates_ii_b
+  (statement := /-- $\mathfrak R^Y_N(K;p,\beta)\to0$ as $N\to\infty$. -/)]
+  OperatorRidgelet.Paper.cor_vector_rates_ii_b
 
 /-! ## Appendix D: supplementary sampling results -/
 

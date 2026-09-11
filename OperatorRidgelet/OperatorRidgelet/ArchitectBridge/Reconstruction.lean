@@ -483,8 +483,8 @@ attribute [blueprint "lem:ray-regular-examples-c-i"
 
 attribute [blueprint "lem:ray-regular-examples-c-ii"
   (statement := /-- Bochner integrals $\int G_y\,m(\mathrm dy)$ of a measurable family with
-    uniform bounds over a finite measure are regular along rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii
+    finite derivative bounds on a common open neighbourhood over a finite measure are regular
+    along rays. -/)] OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii
 
 attribute [blueprint "thm:vector-valued-A-i-a"
   (statement := /-- Theorem A for $Y$-valued targets:
@@ -561,7 +561,7 @@ attribute [blueprint "thm:vector-valued-B-ii-d"
 attribute [blueprint "thm:vector-valued-B-iii"
   (statement := /-- Theorem B for $Y$-valued targets: $R_\rho f=0$ $\lambda_\alpha$-a.e. implies
     $f=0$ $\mu_Q$-a.e. for $f\in L^2(\mu_Q;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_B_iii
+  ] OperatorRidgelet.Paper.thm_vector_valued_B_iii
 
 attribute [blueprint "thm:vector-valued-C-i-a"
   (statement := /-- Theorem C for $Y$-valued targets: $T_\alpha=J_\alpha$ on $\mathcal
@@ -597,7 +597,7 @@ attribute [blueprint "thm:vector-valued-C-iii-a"
   (statement := /-- Theorem C for $Y$-valued targets: $T_\alpha f[g]=\int_H\langle g_{\mathcal
     G_Qf}(x),g(x)\rangle_Y\,\mu_Q(\mathrm dx)$ for $f\in\mathcal D_\alpha(Y)$ with $\mathcal
     G_Qf\in L^1(\nu_\alpha;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iii_a
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iii_a
 
 attribute [blueprint "thm:vector-valued-C-iii-b"
   (statement := /-- Theorem C for $Y$-valued targets: $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$
@@ -607,7 +607,7 @@ attribute [blueprint "thm:vector-valued-C-iii-b"
 attribute [blueprint "thm:vector-valued-C-iii-c"
   (statement := /-- Theorem C for $Y$-valued targets: For $G\in\mathcal K_\alpha(Y)\cap
     L^1(\nu_\alpha;Y)$, $U_\alpha'G$ is represented by $g_G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iii_c
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iii_c
 
 attribute [blueprint "thm:vector-valued-C-iii-d"
   (statement := /-- Theorem C for $Y$-valued targets: $U_\alpha'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
@@ -617,7 +617,7 @@ attribute [blueprint "thm:vector-valued-C-iii-d"
 attribute [blueprint "thm:vector-valued-C-iii-e"
   (statement := /-- Theorem C for $Y$-valued targets: The second reconstruction formula for
     $U_\alpha'G$ is the spectral synthesis identity paired with $g\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iii_e
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iii_e
 
 attribute [blueprint "thm:vector-valued-C-iv-a"
   (statement := /-- Theorem C for $Y$-valued targets: $\Lambda_\rho$ is a bounded operator
@@ -632,19 +632,19 @@ attribute [blueprint "thm:vector-valued-C-iv-b"
 attribute [blueprint "thm:vector-valued-C-iv-c"
   (statement := /-- Theorem C for $Y$-valued targets: $\Lambda_\rho R_\rho
     f=C^{(\alpha)}_\rho\mathcal G_Qf$ pointwise for $f\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_c
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_c
 
 attribute [blueprint "thm:vector-valued-C-iv-d"
   (statement := /-- Theorem C for $Y$-valued targets: The Hermite inversion formula holds
     componentwise for $f\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_d
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_d
 
 attribute [blueprint "thm:vector-valued-C-iv-e"
   (statement := /-- Theorem C for $Y$-valued targets: The Hermite coefficients determine
     $f\in\mathcal D_\alpha(Y)$ in $L^2(\mu_Q;Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_e
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_e
 
 attribute [blueprint "thm:vector-valued-C-iv-f"
   (statement := /-- Theorem C for $Y$-valued targets:
     $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}\Lambda_\rho R_\rho f]$ for $f\in\mathcal D_\alpha(Y)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_vector_valued_C_iv_f
+  ] OperatorRidgelet.Paper.thm_vector_valued_C_iv_f

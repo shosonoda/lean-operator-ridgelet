@@ -23,7 +23,8 @@ open Filter Topology
 
 namespace MeasureTheory
 
-variable {X : Type*} [MeasurableSpace X] {μ : Measure X} {f : X → ℝ → ℂ} {U : Set ℝ}
+variable {X Y : Type*} [MeasurableSpace X] [NormedAddCommGroup Y] [NormedSpace ℝ Y]
+  [CompleteSpace Y] {μ : Measure X} {f : X → ℝ → Y} {U : Set ℝ}
 
 /-- **Differentiation under the integral sign**, one order at a time: at every point of the
 open set `U`, `t ↦ ∫ ∂ᵏ_t f x t ∂μ` has derivative `∫ ∂ᵏ⁺¹_t f x t ∂μ`. -/

@@ -5,7 +5,7 @@ import OperatorRidgelet.Tempered.Const
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Sampling.Spectral
 import OperatorRidgelet.Sampling.Universality
-import OperatorRidgelet.Sampling.VectorRates
+import OperatorRidgelet.Sampling.VectorConvergence
 import OperatorRidgelet.Paper.Reconstruction
 
 /-!
@@ -545,24 +545,26 @@ theorem cor_vector_rates_i_b [MeasurableSpace H] [BorelSpace H] {β : ℝ → �
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
 `𝔼‖f_N − f‖_{C(K;Y)} ≤ 2V 𝔑^Y_N(K; p, β)`, where `𝔑^Y_N` is the Rademacher complexity with the
 absolute value replaced by the norm of `Y`. -/
-theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℂ} {L : ℝ≥0}
+theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
+    {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
         ∂sampleLaw N (polarLaw Γ) ≤
       2 * polarWeight Γ * rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ) := by
-  sorry
+  exact integral_polarSampledNetwork_compact_le hβ Γ hM hK hN
 
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
 `𝔑^Y_N(K; p, β) → 0` as `N → ∞`. -/
-theorem cor_vector_rates_ii_b [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℂ} {L : ℝ≥0}
+theorem cor_vector_rates_ii_b [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
+    {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) :
     Tendsto (fun N : ℕ => rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ)) atTop
       (𝓝 0) := by
-  sorry
+  exact tendsto_rademacherComplexity_vector hβ Γ hM hK
 
 end VectorValued
 

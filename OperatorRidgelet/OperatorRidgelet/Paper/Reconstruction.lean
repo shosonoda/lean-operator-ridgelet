@@ -5,6 +5,9 @@ import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Reconstruction.Backprojection
 import OperatorRidgelet.Reconstruction.Tempered
 import OperatorRidgelet.Reconstruction.VectorValued
+import OperatorRidgelet.Reconstruction.VectorFrame
+import OperatorRidgelet.Reconstruction.VectorHermite
+import OperatorRidgelet.Reconstruction.RayIntegral
 import OperatorRidgelet.Paper.Transform
 
 /-!
@@ -773,11 +776,13 @@ theorem lem_ray_regular_examples_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] (G : Ω → H → ℂ)
     (hGm : Measurable (Function.uncurry G)) (hG : ∀ y, IsRegularAlongRays ν I (G y))
     (hGb : ∃ M : ℝ, ∀ y ξ, ‖G y ξ‖ ≤ M)
-    (hunif : ∀ k : ℕ, ∃ h : H → ℝ≥0∞,
-      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * h a ∂ν) < ⊤ ∧
-        ∀ y a, rayDerivBound I (G y) k a ≤ h a) :
+    (U : Set ℝ) (hU : IsOpen U) (hIU : I ⊆ U)
+    (hsmooth : ∀ y a, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G y (ω • a)) U)
+    (hunif : ∀ k : ℕ, ∃ h : H → NNReal,
+      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * (h a : ℝ≥0∞) ∂ν) < ⊤ ∧
+        ∀ y a, rayDerivBound U (G y) k a ≤ h a) :
     IsRegularAlongRays ν I fun ξ => ∫ y, G y ξ ∂m := by
-  sorry
+  exact isRegularAlongRays_integral ν I U m G hGm hGb hU hIU hsmooth hunif
 
 /-! ### Theorem `thm:vector-valued` -/
 
@@ -978,7 +983,7 @@ theorem thm_vector_valued_B_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     (hρ : IsAdmissible α ρ) (f : H → Y) (hf : MemLp f 2 μ)
     (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) :
     f =ᵐ[μ] 0 := by
-  sorry
+  exact ae_eq_zero_of_ridgeletVec_ae_eq_zero μ hα hν hρ (hf.integrable one_le_two) h
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
@@ -1064,7 +1069,15 @@ theorem thm_vector_valued_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] 
       frameOperatorVec μ ν (spectralEmbedVec μ ν f) (spectralEmbedVec μ ν g) =
         ∫ x, inner ℂ ((g : Lp Y 2 μ) x)
           (spectralTarget ν (gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y)) x) ∂μ := by
-  sorry
+  intro g
+  rw [integral_inner_spectralTarget μ ν hG ((Lp.memLp _).integrable one_le_two)]
+  change inner ℂ (gaussFourierLpVec μ ν g) (gaussFourierLpVec μ ν f) = _
+  rw [L2.inner_def]
+  apply integral_congr_ae
+  filter_upwards [g.2.coeFn_toLp, f.2.coeFn_toLp] with ξ hξg hξf
+  change inner ℂ (gaussFourierLpVec μ ν g ξ) (gaussFourierLpVec μ ν f ξ) = _
+  rw [show gaussFourierLpVec μ ν g ξ = gaussFourierVec μ (g : Lp Y 2 μ) ξ from hξg,
+    show gaussFourierLpVec μ ν f ξ = gaussFourierVec μ (f : Lp Y 2 μ) ξ from hξf]
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
 `Y`-valued targets: `R_ρ T_α⁻¹ U_α' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
@@ -1085,7 +1098,8 @@ theorem thm_vector_valued_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] 
       ∀ g : spectralCoreVec Y μ ν,
         transposeEmbedVec μ ν G (spectralEmbedVec μ ν g) =
           ∫ x, inner ℂ ((g : Lp Y 2 μ) x) (spectralTarget ν ((G : Lp Y 2 ν) : H → Y) x) ∂μ := by
-  sorry
+  intro G hG g
+  exact transposeEmbedVec_apply_eq_integral μ ν G hG g
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iii) for
 `Y`-valued targets: `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
@@ -1112,7 +1126,20 @@ theorem thm_vector_valued_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] 
             ∫ x, inner ℂ ((g : Lp Y 2 μ) x)
               (integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν)
                 (coefficientFormulaVec ρ ((G : Lp Y 2 ν) : H → Y)) x) ∂μ := by
-  sorry
+  intro G hG hγ g
+  rw [transposeEmbedVec_apply_eq_integral μ ν G hG g]
+  have hnet : ∀ x, integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν)
+      (coefficientFormulaVec ρ ((G : Lp Y 2 ν) : H → Y)) x =
+      (admissibilityConst α ρ : ℂ) • spectralTarget ν ((G : Lp Y 2 ν) : H → Y) x := by
+    intro x
+    rw [← integral_integral_coefficientFormulaVec_eq_integralNetworkDensity hγ x]
+    exact thm_vector_valued_A_ii_b ν hα hν ρ hρ _
+      (Lp.stronglyMeasurable _) hG (Lp.memLp _) x
+  simp_rw [hnet, inner_smul_right]
+  rw [integral_const_mul, ← mul_assoc, Complex.ofReal_inv]
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (def_admissible_filter ρ hρ α hα).pos.ne'
+  rw [inv_mul_cancel₀ hC, one_mul]
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: the backprojection `Λ_ρ` is a bounded operator
@@ -1142,7 +1169,9 @@ theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
     ∀ ξ : H,
       backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ =
         (admissibilityConst α ρ : ℂ) • gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) ξ := by
-  sorry
+  intro ξ
+  exact backprojectionOfVec_biasFourierVec_ridgeletVec μ α ρ
+    ((Lp.memLp (f : Lp Y 2 μ)).integrable one_le_two) ξ
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: the Hermite inversion formula, applied componentwise, for `f ∈ 𝒟_α(Y)` and
@@ -1156,7 +1185,8 @@ theorem thm_vector_valued_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [
         (Complex.I ^ n / ((Real.sqrt ⟪Q ξ, ξ⟫ : ℝ) : ℂ) ^ n) •
           iteratedDeriv n
             (fun t : ℝ => hermiteExtensionVec μ Q ((f : Lp Y 2 μ) : H → Y) ξ t) 0 := by
-  sorry
+  intro ξ hξ n
+  exact hermiteCoefficientVec_eq_iteratedDeriv μ hμ (f : Lp Y 2 μ) (hQ.inner_pos hξ) n
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: the Hermite coefficients over all `ξ ≠ 0` and `n` determine
@@ -1170,7 +1200,10 @@ theorem thm_vector_valued_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [
         hermiteCoefficientVec μ Q ((f : Lp Y 2 μ) : H → Y) ξ n =
           hermiteCoefficientVec μ Q ((g : Lp Y 2 μ) : H → Y) ξ n) →
         f = g := by
-  sorry
+  intro f g hcoeff
+  haveI := nontrivial_of_isHomogeneous ν hα hν
+  apply Subtype.ext
+  exact Lp.ext (ae_eq_of_hermiteCoefficientVec_eq hQ hμ (Lp.memLp _) (Lp.memLp _) hcoeff)
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
@@ -1182,7 +1215,17 @@ theorem thm_vector_valued_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
           backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
       (f : Lp Y 2 μ) := by
-  sorry
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  have hf : Integrable ((f : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
+  have hfun : (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
+      backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
+      gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) := by
+    funext ξ
+    rw [backprojectionOfVec_biasFourierVec_ridgeletVec μ α ρ hf ξ, smul_smul,
+      Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
+  rw [hfun]
+  exact gaussFourierInvVec_gaussFourierVec μ ν f
 
 end VectorValued
 

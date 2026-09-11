@@ -572,9 +572,11 @@ theorem lem_ray_regular_examples_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] (G : Ω → H → ℂ)
     (hGm : Measurable (Function.uncurry G)) (hG : ∀ y, IsRegularAlongRays ν I (G y))
     (hGb : ∃ M : ℝ, ∀ y ξ, ‖G y ξ‖ ≤ M)
-    (hunif : ∀ k : ℕ, ∃ h : H → ℝ≥0∞,
-      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * h a ∂ν) < ⊤ ∧
-        ∀ y a, rayDerivBound I (G y) k a ≤ h a) :
+    (U : Set ℝ) (hU : IsOpen U) (hIU : I ⊆ U)
+    (hsmooth : ∀ y a, ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G y (ω • a)) U)
+    (hunif : ∀ k : ℕ, ∃ h : H → NNReal,
+      (∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (k + 2)) * (h a : ℝ≥0∞) ∂ν) < ⊤ ∧
+        ∀ y a, rayDerivBound U (G y) k a ≤ h a) :
     IsRegularAlongRays ν I fun ξ => ∫ y, G y ξ ∂m := by
   sorry
 
