@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 255.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 268.
 
 :::table +header
 *
@@ -1212,7 +1212,7 @@ Status: *verified by comparator*.
 
 ## Theorem 4.7 — Vector-valued extension (`thm:vector-valued`)
 
-Blueprint node: {bpref "thm:vector-valued"}[]. Status: *partial 12/33* (12 of 33 Lean theorems verified).
+Blueprint node: {bpref "thm:vector-valued"}[]. Status: *partial 20/33* (20 of 33 Lean theorems verified).
 
 Formalization note. One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y (\[InnerProductSpace ℂ Y\] \[CompleteSpace Y\] \[SecondCountableTopology Y\]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩\_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique.
 
@@ -1368,7 +1368,7 @@ theorem thm_vector_valued_B_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     MemLp (ridgeletVec μ ρ f) 2 (parameterMeasure ν) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_i_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L692):
 
@@ -1384,7 +1384,7 @@ theorem thm_vector_valued_B_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [S
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInnerVec μ ν f g := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L703):
 
@@ -1400,7 +1400,7 @@ theorem thm_vector_valued_B_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
         (R (spectralEmbedVec μ ν f) : H × ℝ → Y) =ᵐ[parameterMeasure ν] ridgeletVec μ ρ f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L714):
 
@@ -1414,7 +1414,7 @@ theorem thm_vector_valued_B_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
       ‖ridgeletExtensionVec Y μ ν ρ G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_ii_c`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L723):
 
@@ -1427,7 +1427,7 @@ theorem thm_vector_valued_B_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
     IsClosed (Set.range (ridgeletExtensionVec Y μ ν ρ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_B_ii_d`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L731):
 
@@ -1517,7 +1517,7 @@ theorem thm_vector_valued_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [S
         (admissibilityConst α ρ : ℂ) • frameOperatorVec μ ν f := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_C_ii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L791):
 
@@ -1532,7 +1532,7 @@ theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
         rieszInvVec μ ν (synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_C_ii_b`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L801):
 
@@ -1547,7 +1547,7 @@ theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
         synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν g)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.thm_vector_valued_C_iii_a`, theorem in [`Challenge/Reconstruction.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Reconstruction.lean#L811):
 
@@ -3130,7 +3130,7 @@ Status: *verified by comparator*.
 
 ## Example 7.4 — Neural-operator layer as an integral network (`ex:operator-layer`)
 
-Blueprint node: {bpref "ex:operator-layer"}[]. Status: *partial 14/26* (14 of 26 Lean theorems verified).
+Blueprint node: {bpref "ex:operator-layer"}[]. Status: *partial 19/26* (19 of 26 Lean theorems verified).
 
 Formalization note. Setting: (Ω,m) a finite measure space, a : Ω → H, b : Ω → Y with IsLayerData m a b (Borel, ‖a\_y‖ bounded, ∫‖b\_y‖ < ∞), β continuous of polynomial growth (HasPolynomialGrowth), ℱ = operatorLayer m a b β, F\_φ = layerObservable = ⟨ℱ(·),φ⟩\_Y = inner ℂ φ (ℱ x), w\_φ = layerWeight, ‖A‖\_∞ = layerSupNorm a, A = layerA m a : H →ₗ (Ω →ₘ\[m\] ℝ), Γ = layerMeasure m a b (VectorMeasure map of withDensityᵥ), S\_y = layerCovariance Q a y. i\_a: ℱ = integralNetwork β Γ; i\_b: ‖Γ‖\_TV ≤ ∫⁻‖b\_y‖; i\_c: ∫(‖a‖²+c²)d|Γ| ≤ ‖A‖²\_∞ ‖Γ‖\_TV (second parameter moment ≤ ‖A‖²\_∞); i\_d: the L²(ζ;Y) rate of cor:vector-rates for the polar sampled network polarSampledNetwork β Γ of Γ = layerMeasure m a b with samples from polarLaw Γ (Sampling/Defs, exactly the objects of cor:vector-rates), as a Bochner expectation over sampleLaw n, with the manuscript's constant 2(∫‖b\_y‖ dm)²/n(|β(0)|²+Lip(β)²(1+∫‖x‖²dζ)‖A‖²\_∞) (which dominates the constant of cor:vector-rates by i\_b and i\_c); i\_e: the C(K) bound of thm:lipschitz-barron for the polar sampled network of the scalar measure Γ\_φ = layerMeasure m a w\_φ = ι\_#(w\_φ m) with samples from polarLaw Γ\_φ, with the constant 8‖w\_φ‖\_\{L¹(m)\}/√n(|β(0)|+Lip(β)R\_K‖A‖\_∞), n ≥ 1 (the earlier local Examples.layerSampleVec/layerSampleScalar, which sampled y ∈ Ω from normalizedLaw, and the lower-integral form were replaced by the Sampling/Defs objects the manuscript's proof invokes). ii (β = Φ = gaussianFun): ii\_a F\_φ ∈ 𝒟\_α; ii\_b, ii\_c the two formulas of eq:operator-layer-transform (with gaussianSmooth); ii\_d S\_y ≥ (1+‖Q‖‖A‖²\_∞)⁻¹Q; ii\_e regularity along rays; ii\_f the frame-operator representation of thm:C(iii); ii\_g R\_ρ F\_φ = γ\_G; ii\_h finite variation and moments; ii\_i the synthesis identity with any Lipschitz non-polynomial β'; ii\_j the rate of eq:spectral-barron in the conventions of Section 6, as thm\_E\_iv with γ = R\_ρ F\_φ (densitySampledNetwork, densityLaw, densityWeight, secondMoment, compactSupNorm, compactRadius); ii\_k–ii\_p the same for ℱ as a Y-valued target (membership in 𝒟\_α(Y), 𝒢\_Q ℱ, regularity, R\_ρ ℱ = γ, moments, synthesis). iii\_a: the ReLU double integral over m ⊗ db; iii\_b: ℱ = integralNetwork ReLU of layerHingeMeasure; iii\_c, iii\_d: finiteness and moments of that measure. iv: A of infinite rank (HasInfiniteRank (layerA m a)), w\_φ > 0 a.e. (real positive: 0 < re, im = 0) ⇒ F\_φ not cylindrical.
 
@@ -3298,7 +3298,7 @@ theorem ex_operator_layer_ii_e (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
         (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_f`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L480):
 
@@ -3322,7 +3322,7 @@ theorem ex_operator_layer_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_g`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L499):
 
@@ -3357,7 +3357,7 @@ theorem ex_operator_layer_ii_h (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
       (parameterMeasure (gaussianMixture N α)) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_i`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L524):
 
@@ -3380,7 +3380,7 @@ theorem ex_operator_layer_ii_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
           (gaussFourier μ (layerObservable m a b gaussianFun φ)) x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_j`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L542):
 
@@ -3413,7 +3413,7 @@ theorem ex_operator_layer_ii_j (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
             (ridgelet μ ρ (layerObservable m a b gaussianFun φ))))) := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.ex_operator_layer_ii_k`, theorem in [`Challenge/Examples.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Examples.lean#L570):
 
