@@ -4,6 +4,7 @@ import OperatorRidgelet.ToMathlib.PositiveEigenbasis
 import OperatorRidgelet.ToMathlib.GaussianOrthonormalCoordinates
 import OperatorRidgelet.ToMathlib.GaussianCoordinateLaw
 import OperatorRidgelet.ToMathlib.GaussianHilbert
+import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 /-!
 # The Gaussian integral of a quadratic exponential
@@ -640,5 +641,156 @@ theorem hasSum_inner_cov_self (hR : IsPositiveSqrt R Cov) (e : HilbertBasis κ �
   rwa [← real_inner_self_eq_norm_sq, ← hR.inner_cov] at h
 
 end Resolvent
+
+/-! ### The Gaussian integral of a quadratic exponential -/
+
+section FullIntegral
+
+set_option linter.unusedSectionVars false
+
+theorem sqrt_finset_prod {ι : Type*} (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) (s : Finset ι) :
+    Real.sqrt (∏ i ∈ s, f i) = ∏ i ∈ s, Real.sqrt (f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih =>
+    rw [Finset.prod_insert ha, Finset.prod_insert ha, Real.sqrt_mul (hf a), ih]
+
+variable [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+
+/-- **Lemma `lem:gaussian-quadratic`(ii)** along a given eigenbasis of `M = Σ^{1/2} S Σ^{1/2}`. -/
+theorem integral_exp_quadratic_eigen {Cov S R : H →L[ℝ] H} {κ : Type} [Countable κ]
+    {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
+    (hCov : IsPositiveTraceClass Cov) (hS : IsSelfAdjoint S) (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫)
+    (hR : IsPositiveSqrt R Cov) (hM : HasEigenbasis (R * S * R) e m) (hms : Summable m)
+    {μ : Measure H} [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Cov μ) (x : H) :
+    ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) ∂μ =
+      (((Real.sqrt (∏' j, (1 + m j)))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)) := by
+  classical
+  have hm0 : ∀ k, 0 ≤ m k := eigenvalue_nonneg hS0 hR hM
+  have hm1 : ∀ k, (0 : ℝ) < 1 + m k := fun k => by linarith [hm0 k]
+  -- the finite-coordinate formula along an arbitrary finite set
+  have hfin : ∀ F : Finset κ,
+      ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I -
+          ((truncQuad S R e m F ξ / 2 : ℝ) : ℂ)) ∂μ =
+        ((∏ j ∈ F, (Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+          Complex.exp (-(((⟪Cov x, x⟫ -
+            ∑ j ∈ F, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 : ℝ) : ℂ)) := by
+    intro F
+    have hsub : F.filter (fun j => m j ≠ 0) ⊆ F := Finset.filter_subset _ _
+    have h1 : truncQuad S R e m (F.filter fun j => m j ≠ 0) = truncQuad S R e m F := by
+      funext ξ
+      refine Finset.sum_subset hsub fun j hj hj' => ?_
+      have : m j = 0 := by
+        by_contra hne
+        exact hj' (Finset.mem_filter.2 ⟨hj, hne⟩)
+      rw [this, zero_mul]
+    have h2 : (∏ j ∈ F.filter fun j => m j ≠ 0, (Real.sqrt (1 + m j))⁻¹) =
+        ∏ j ∈ F, (Real.sqrt (1 + m j))⁻¹ := by
+      refine Finset.prod_subset hsub fun j hj hj' => ?_
+      have : m j = 0 := by
+        by_contra hne
+        exact hj' (Finset.mem_filter.2 ⟨hj, hne⟩)
+      rw [this]
+      norm_num
+    have h3 : (∑ j ∈ F.filter fun j => m j ≠ 0, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) =
+        ∑ j ∈ F, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2 := by
+      refine Finset.sum_subset hsub fun j hj hj' => ?_
+      have : m j = 0 := by
+        by_contra hne
+        exact hj' (Finset.mem_filter.2 ⟨hj, hne⟩)
+      rw [this]
+      norm_num
+    have hkey := integral_exp_truncQuad hCov.isSelfAdjoint hm0 hR hM hμ x
+      (F.filter fun j => m j ≠ 0) fun j hj => (Finset.mem_filter.1 hj).2
+    rw [h1, h2, h3] at hkey
+    exact hkey
+  -- dominated convergence on the left
+  have hqnn : ∀ (F : Finset κ) (ξ : H), 0 ≤ truncQuad S R e m F ξ := by
+    intro F ξ
+    rw [← inner_map_coordSum_self hR hM F ξ]
+    exact hS0 _
+  have hleft : Filter.Tendsto (fun F : Finset κ => ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I -
+      ((truncQuad S R e m F ξ / 2 : ℝ) : ℂ)) ∂μ) Filter.atTop
+      (nhds (∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I - ((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) ∂μ)) := by
+    refine MeasureTheory.tendsto_integral_filter_of_dominated_convergence (fun _ => 1) ?_ ?_
+      (integrable_const 1) ?_
+    · refine Filter.Eventually.of_forall fun F => ?_
+      have hcont : Continuous fun ξ : H => truncQuad S R e m F ξ :=
+        continuous_finset_sum F fun j _ =>
+          continuous_const.mul ((continuous_const.inner continuous_id).pow 2)
+      have hc1 : Continuous fun ξ : H => ((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I :=
+        (Complex.continuous_ofReal.comp (continuous_const.inner continuous_id)).mul
+          continuous_const
+      have hc2 : Continuous fun ξ : H => ((truncQuad S R e m F ξ / 2 : ℝ) : ℂ) :=
+        Complex.continuous_ofReal.comp (hcont.div_const 2)
+      exact (Complex.continuous_exp.comp (hc1.sub hc2)).aestronglyMeasurable
+    · refine Filter.Eventually.of_forall fun F => Filter.Eventually.of_forall fun ξ => ?_
+      rw [Complex.norm_exp]
+      have hre : (((⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I -
+          ((truncQuad S R e m F ξ / 2 : ℝ) : ℂ)).re = -(truncQuad S R e m F ξ / 2) := by
+        simp
+      rw [hre, Real.exp_le_one_iff]
+      linarith [hqnn F ξ]
+    · filter_upwards [hμ.ae_mem_closure_range hCov hR] with ξ hξ
+      have h := tendsto_truncQuad hS hS0 hR hM hξ
+      have hq : Filter.Tendsto (fun F : Finset κ => ((truncQuad S R e m F ξ / 2 : ℝ) : ℂ))
+          Filter.atTop (nhds (((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ))) :=
+        (Complex.continuous_ofReal.tendsto _).comp (h.div_const 2)
+      exact (Filter.Tendsto.sub tendsto_const_nhds hq).cexp
+  -- the limit of the right-hand sides
+  have hmult : Multipliable fun j => 1 + m j := Real.multipliable_one_add_of_summable hms
+  have hP : Filter.Tendsto (fun F : Finset κ => ∏ j ∈ F, (1 + m j)) Filter.atTop
+      (nhds (∏' j, (1 + m j))) := hmult.hasProd
+  have hge1 : (1 : ℝ) ≤ ∏' j, (1 + m j) :=
+    ge_of_tendsto hP (Filter.Eventually.of_forall fun F =>
+      Finset.one_le_prod fun j _ => by linarith [hm0 j])
+  have hprodlim : Filter.Tendsto
+      (fun F : Finset κ => ((∏ j ∈ F, (Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ)) Filter.atTop
+      (nhds (((Real.sqrt (∏' j, (1 + m j)))⁻¹ : ℝ) : ℂ)) := by
+    have hrw : ∀ F : Finset κ, (∏ j ∈ F, (Real.sqrt (1 + m j))⁻¹) =
+        (Real.sqrt (∏ j ∈ F, (1 + m j)))⁻¹ := by
+      intro F
+      rw [sqrt_finset_prod (fun j => 1 + m j) (fun j => (hm1 j).le) F,
+        ← Finset.prod_inv_distrib]
+    simp_rw [hrw]
+    refine (Complex.continuous_ofReal.tendsto _).comp ?_
+    exact (hP.sqrt).inv₀ (by positivity)
+  have hsumlim : HasSum (fun j => (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2)
+      (⟪Cov x, x⟫ - resolventForm R (R * S * R) x) := by
+    have hA := hasSum_inner_cov_self hR e x
+    have hB := hasSum_resolventForm hS0 hR hM hm0 x
+    have heq : (fun j => ⟪e j, R x⟫ ^ 2 - (1 + m j)⁻¹ * ⟪e j, R x⟫ ^ 2) =
+        fun j => (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2 := by
+      funext j
+      have h1 : (1 : ℝ) + m j ≠ 0 := (hm1 j).ne'
+      rw [real_inner_comm (R x) (e j)]
+      field_simp
+      ring
+    rw [← heq]
+    exact hA.sub hB
+  have hrhs : Filter.Tendsto (fun F : Finset κ =>
+      ((∏ j ∈ F, (Real.sqrt (1 + m j))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-(((⟪Cov x, x⟫ -
+          ∑ j ∈ F, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) / 2 : ℝ) : ℂ))) Filter.atTop
+      (nhds ((((Real.sqrt (∏' j, (1 + m j)))⁻¹ : ℝ) : ℂ) *
+        Complex.exp (-((resolventForm R (R * S * R) x / 2 : ℝ) : ℂ)))) := by
+    refine hprodlim.mul ?_
+    have hs : Filter.Tendsto (fun F : Finset κ =>
+        ∑ j ∈ F, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2) Filter.atTop
+        (nhds (⟪Cov x, x⟫ - resolventForm R (R * S * R) x)) := hsumlim
+    have hd : Filter.Tendsto (fun F : Finset κ =>
+        (⟪Cov x, x⟫ - ∑ j ∈ F, (m j / (1 + m j)) * ⟪R x, e j⟫ ^ 2)) Filter.atTop
+        (nhds (resolventForm R (R * S * R) x)) := by
+      have hc : Filter.Tendsto (fun _ : Finset κ => (⟪Cov x, x⟫ : ℝ)) Filter.atTop
+          (nhds ⟪Cov x, x⟫) := tendsto_const_nhds
+      simpa using hc.sub hs
+    exact (((Complex.continuous_ofReal.tendsto _).comp (hd.div_const 2)).neg).cexp
+  have hleft' := hleft
+  simp_rw [hfin] at hleft'
+  exact tendsto_nhds_unique hleft' hrhs
+
+end FullIntegral
 
 end OperatorRidgelet
