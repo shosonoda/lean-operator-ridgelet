@@ -247,6 +247,38 @@ theorem ae_eq_of_hermiteCoefficient_eq [Nontrivial H] (hQ : IsTraceClassCovarian
   filter_upwards [hae] with x hx
   exact sub_eq_zero.mp hx
 
+omit [OpensMeasurableSpace H] [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
+/-- A σ-finite measure with full support that is homogeneous of positive degree can only live
+on a nontrivial space: on a trivial space every dilation is the identity, so homogeneity would
+force `ν = |ω|^{-α} ν` with `0 < ν(H) < ∞`. -/
+theorem nontrivial_of_isHomogeneous (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+    {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) : Nontrivial H := by
+  by_contra hcon
+  rw [not_nontrivial_iff_subsingleton] at hcon
+  have hmap : ν.map (fun a : H => (2 : ℝ) • a) = ν := by
+    rw [show (fun a : H => (2 : ℝ) • a) = id from funext fun a => Subsingleton.elim _ _,
+      Measure.map_id]
+  have h2 := hν 2 two_ne_zero
+  rw [hmap] at h2
+  have hm0 : ν Set.univ ≠ 0 := (isOpen_univ.measure_pos ν Set.univ_nonempty).ne'
+  have hmtop : ν Set.univ ≠ ⊤ := by
+    have h0 : (0 : H) ∈ ⋃ n, spanningSets ν n := by
+      rw [iUnion_spanningSets]
+      trivial
+    obtain ⟨n, hn⟩ := Set.mem_iUnion.mp h0
+    have hsubset : (Set.univ : Set H) ⊆ spanningSets ν n := fun x _ => by
+      rwa [Subsingleton.elim x (0 : H)]
+    exact ((measure_mono hsubset).trans_lt (measure_spanningSets_lt_top ν n)).ne
+  have hc1 : ENNReal.ofReal (|(2 : ℝ)| ^ (-α)) < 1 := by
+    rw [ENNReal.ofReal_lt_one, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2)]
+    exact Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (neg_neg_iff_pos.mpr hα)
+  have huniv := congrArg (fun m : Measure H => m Set.univ) h2
+  simp only [Measure.smul_apply, smul_eq_mul] at huniv
+  have hlt : ENNReal.ofReal (|(2 : ℝ)| ^ (-α)) * ν Set.univ < 1 * ν Set.univ :=
+    ENNReal.mul_lt_mul_left hm0 hmtop hc1
+  rw [one_mul, ← huniv] at hlt
+  exact lt_irrefl _ hlt
+
 end Totality
 
 end OperatorRidgelet
