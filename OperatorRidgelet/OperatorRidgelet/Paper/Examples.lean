@@ -15,6 +15,7 @@ import OperatorRidgelet.Examples.GaussianMeasurability
 import OperatorRidgelet.Examples.Dirichlet
 import OperatorRidgelet.Examples.DirichletOperator
 import OperatorRidgelet.Examples.LayerRidgelet
+import OperatorRidgelet.Examples.LayerRegular
 import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Paper.Transform
@@ -790,8 +791,10 @@ theorem ex_operator_layer_ii_e (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (hL : IsLayerData m a b) (φ : Y) :
     ∀ I : Set ℝ, IsFrequencyWindow ρ I →
       IsRegularAlongRays (gaussianMixture N α) I
-        (gaussFourier μ (layerObservable m a b gaussianFun φ)) := by
-  sorry
+        (gaussFourier μ (layerObservable m a b gaussianFun φ)) :=
+  fun I hI => hL.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
+    hQ.toIsPositiveTraceClass hμ φ (gaussianMixture N α)
+    (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the reconstruction formulas of Theorem `thm:C` hold for `F_φ`; in particular
@@ -810,7 +813,30 @@ theorem ex_operator_layer_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
           ∫ x, spectralTarget (gaussianMixture N α)
               (gaussFourier μ (layerObservable m a b gaussianFun φ)) x *
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  intro F hF g
+  have hGeq : gaussFourier μ ((F : Lp ℂ 2 μ) : H → ℂ) =
+      gaussFourier μ (layerObservable m a b gaussianFun φ) := gaussFourier_congr_ae hF
+  have hG : Integrable (gaussFourier μ (layerObservable m a b gaussianFun φ))
+      (gaussianMixture N α) :=
+    hL.integrable_gaussFourier_layerObservable_gaussianFun hQ.toIsPositiveTraceClass hμ φ
+      (lem_gaussian_decay_i hH hP hQ hN hα)
+  have hg : Integrable ((g : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
+  have hf' : (((spectralEmbed μ (gaussianMixture N α) F :
+      spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ)
+      =ᵐ[gaussianMixture N α] gaussFourier μ F := MemLp.coeFn_toLp F.2
+  have hg' : (((spectralEmbed μ (gaussianMixture N α) g :
+      spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) : H → ℂ)
+      =ᵐ[gaussianMixture N α] gaussFourier μ g := MemLp.coeFn_toLp g.2
+  rw [integral_spectralTarget_mul_conj μ (gaussianMixture N α) hG hg]
+  show inner ℂ ((spectralEmbed μ (gaussianMixture N α) g :
+    spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α))
+      ((spectralEmbed μ (gaussianMixture N α) F :
+        spectralRange μ (gaussianMixture N α)) : Lp ℂ 2 (gaussianMixture N α)) = _
+  rw [L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hf', hg'] with ξ hξf hξg
+  rw [RCLike.inner_apply, hξf, hξg, congrFun hGeq ξ]
 
 set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
@@ -837,7 +863,14 @@ theorem ex_operator_layer_ii_h (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     Integrable (fun p : H × ℝ =>
         (1 + ‖p.1‖ ^ 2 + |p.2| ^ 2) * ‖ridgelet μ ρ (layerObservable m a b gaussianFun φ) p‖)
       (parameterMeasure (gaussianMixture N α)) := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := hL.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
+    hQ.toIsPositiveTraceClass hμ φ (gaussianMixture N α)
+    (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_operator_layer_ii_g hQ μ hμ ρ hρ m a b hL φ]
+  exact thm_E_ii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI _ hG
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the ridgelet coefficient `R_ρ F_φ` synthesizes, with any real Lipschitz
@@ -855,7 +888,16 @@ theorem ex_operator_layer_ii_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
       fun x => temperedAdmissibilityConst α β' ρ *
         spectralTarget (gaussianMixture N α)
           (gaussFourier μ (layerObservable m a b gaussianFun φ)) x := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := hL.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
+    hQ.toIsPositiveTraceClass hμ φ (gaussianMixture N α)
+    (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_operator_layer_ii_g hQ μ hμ ρ hρ m a b hL φ]
+  funext x
+  exact (thm_E_iii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
+    β' b' hβ' hb' hb'p _ hG x).symm
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the sampled network `eq:polar-network` of `R_ρ F_φ λ_α` with a real Lipschitz
@@ -883,7 +925,15 @@ theorem ex_operator_layer_ii_j (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
         (|b' 0| + (L : ℝ) * compactRadius K *
           Real.sqrt (secondMoment (densityLaw (parameterMeasure (gaussianMixture N α))
             (ridgelet μ ρ (layerObservable m a b gaussianFun φ))))) := by
-  sorry
+  haveI := lem_homogeneous_mixture_i hH hP hN hα
+  haveI := lem_homogeneous_mixture_iv hH hP hN hα
+  obtain ⟨I, hI⟩ := hρ.exists_isFrequencyWindow
+  have hG := hL.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
+    hQ.toIsPositiveTraceClass hμ φ (gaussianMixture N α)
+    (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
+  rw [ex_operator_layer_ii_g hQ μ hμ ρ hρ m a b hL φ]
+  exact thm_E_iv (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
+    β' b' hβ' hb' hb'p _ hG hK hn
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `ℱ ∈ 𝒟_α(Y)` for every `α > 0`. -/
