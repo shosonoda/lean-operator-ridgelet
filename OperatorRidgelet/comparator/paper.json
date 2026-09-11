@@ -480,7 +480,7 @@
         "OperatorRidgelet.Paper.cor_vector_rates_ii_a",
         "OperatorRidgelet.Paper.cor_vector_rates_ii_b"
       ],
-      "note": "Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i_a (‖·‖²_{L²(ζ;Y)} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i_b (explicit bound with ‖β 0‖² and L²); part ii into ii_a (2V 𝔑^Y_N bound, with 𝔑^Y_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii_b (Tendsto to 0 as N → ∞). N > 0 in i and ii_a."
+      "note": "Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i_a (‖·‖²_{L²(ζ;Y)} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i_b (explicit bound with ‖β 0‖² and L²); part ii into ii_a (2V 𝔑^Y_N bound, with 𝔑^Y_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii_b (Tendsto to 0 as N → ∞). N > 0 in i and ii_a. Part i_a explicitly carries SecondCountableTopology H, the standing separability hypothesis, to ensure joint measurability of the input/parameter inner product. The Hilbert-valued polar decomposition is proved from the Riesz representation theorem on L² of the variation measure."
     },
     {
       "label": "ex:closed-form",
