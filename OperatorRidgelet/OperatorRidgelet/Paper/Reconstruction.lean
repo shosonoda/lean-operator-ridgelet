@@ -430,7 +430,10 @@ theorem thm_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
     ∀ f g : spectralCore μ ν,
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
         f = g := by
-  sorry
+  haveI := nontrivial_of_isHomogeneous ν hα hν
+  intro f g hcoeff
+  exact Subtype.ext (Lp.ext (ae_eq_of_hermiteCoefficient_eq hQ hμ
+    (Lp.memLp (f : Lp ℂ 2 μ)) (Lp.memLp (g : Lp ℂ 2 μ)) hcoeff))
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in

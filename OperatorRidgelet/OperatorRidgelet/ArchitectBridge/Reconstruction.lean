@@ -378,7 +378,7 @@ attribute [blueprint "thm:C-iv-d"
 attribute [blueprint "thm:C-iv-e"
   (statement := /-- The Hermite coefficients over all $\xi\ne0$ and $n$ determine $f\in\mathcal
     D_\alpha$ in $L^2(\mu_Q)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.thm_C_iv_e
+  ] OperatorRidgelet.Paper.thm_C_iv_e
 
 attribute [blueprint "thm:C-iv-f"
   (statement := /-- $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}\Lambda_\rho R_\rho f]$ for
