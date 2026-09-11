@@ -1,5 +1,6 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Transform.Basic
+import OperatorRidgelet.Transform.Plancherel
 import OperatorRidgelet.ToMathlib.HermiteExpansion
 import OperatorRidgelet.ToMathlib.EntirePowerSeries
 
@@ -182,5 +183,70 @@ theorem hermiteCoefficient_eq_iteratedDeriv (hμ : IsCenteredGaussian Q μ) {f :
     field_simp
     linear_combination A * hc
   rw [h, key _ _ hτ0]
+
+/-! ### Totality -/
+
+section Totality
+
+variable [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H]
+
+/-- **Totality of the Hermite coefficients.**  On a nontrivial `H`, the coefficients
+`E_μ[f Heₙ(⟪x,ξ⟫/τ(ξ))]`, `ξ ≠ 0`, `n ∈ ℕ`, determine `f ∈ L²(μ_Q)`.  (Some `ξ ≠ 0` must
+exist: on a trivial `H` the hypothesis is empty and the conclusion fails.) -/
+theorem ae_eq_of_hermiteCoefficient_eq [Nontrivial H] (hQ : IsTraceClassCovariance Q)
+    (hμ : IsCenteredGaussian Q μ) {f g : H → ℂ} (hf : MemLp f 2 μ) (hg : MemLp g 2 μ)
+    (hcoeff : ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
+      hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) :
+    f =ᵐ[μ] g := by
+  haveI := hμ.isProbabilityMeasure
+  set d := fun x => f x - g x with hd
+  have hdm : MemLp d 2 μ := hf.sub hg
+  have hdi : Integrable d μ := hdm.integrable one_le_two
+  -- the Hermite coefficients of `d` vanish for every `ξ ≠ 0`
+  have hsub : ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q d ξ n = 0 := by
+    intro ξ hξ n
+    have hpos := hQ.inner_pos hξ
+    have hY := isStdGaussianCoord_inner_div hμ ξ hpos
+    rw [hermiteCoefficient_eq, ← sub_eq_zero.mpr (hcoeff ξ hξ n), hermiteCoefficient_eq,
+      hermiteCoefficient_eq,
+      ← integral_sub (integrable_mul_hermiteC_comp hY hf n)
+        (integrable_mul_hermiteC_comp hY hg n)]
+    exact integral_congr_ae (Eventually.of_forall fun x => by rw [hd]; ring)
+  -- hence the weighted Fourier transform of `d` vanishes
+  have hzero : ∀ ξ : H, gaussFourier μ d ξ = 0 := by
+    have hone : ∀ ξ : H, ξ ≠ 0 → gaussFourier μ d ξ = 0 := by
+      intro ξ hξ
+      have hpos := hQ.inner_pos hξ
+      have hsum := hasSum_hermiteExtension hμ hdm hpos 1
+      have hzs : HasSum (fun _ : ℕ => (0 : ℂ)) 0 := hasSum_zero
+      have hz : hermiteExtension μ Q d ξ 1 = 0 := by
+        refine HasSum.unique (hsum.congr_fun fun n => ?_) hzs
+        simp [hsub ξ hξ n]
+      rw [hermiteExtension] at hz
+      have hexp : Complex.exp ((1 : ℂ) ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2) ≠ 0 :=
+        Complex.exp_ne_zero _
+      have hline : gaussFourierLine μ d ξ 1 = 0 := by
+        rcases mul_eq_zero.mp hz with h | h
+        · exact absurd h hexp
+        · exact h
+      rw [gaussFourier, ← hline, gaussFourierLine]
+      refine integral_congr_ae (Eventually.of_forall fun x => ?_)
+      unfold character
+      simp only [one_mul]
+    intro ξ
+    by_cases hξ : ξ = 0
+    · obtain ⟨ξ₀, hξ₀⟩ := exists_ne (0 : H)
+      have h0 := hsub ξ₀ hξ₀ 0
+      rw [hermiteCoefficient_eq] at h0
+      simp only [hermiteC, Polynomial.hermiteR_zero, Polynomial.eval_one, Complex.ofReal_one,
+        mul_one] at h0
+      rw [hξ, gaussFourier]
+      simpa using h0
+    · exact hone ξ hξ
+  have hae := ae_eq_zero_of_gaussFourier_eq_zero μ hdi hzero
+  filter_upwards [hae] with x hx
+  exact sub_eq_zero.mp hx
+
+end Totality
 
 end OperatorRidgelet
