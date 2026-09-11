@@ -978,7 +978,7 @@ theorem thm_vector_valued_B_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
     (hρ : IsAdmissible α ρ) (f : H → Y) (hf : MemLp f 2 μ)
     (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) :
     f =ᵐ[μ] 0 := by
-  sorry
+  exact ae_eq_zero_of_ridgeletVec_ae_eq_zero μ hα hν hρ (hf.integrable one_le_two) h
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
@@ -1142,7 +1142,9 @@ theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
     ∀ ξ : H,
       backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ =
         (admissibilityConst α ρ : ℂ) • gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) ξ := by
-  sorry
+  intro ξ
+  exact backprojectionOfVec_biasFourierVec_ridgeletVec μ α ρ
+    ((Lp.memLp (f : Lp Y 2 μ)).integrable one_le_two) ξ
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: the Hermite inversion formula, applied componentwise, for `f ∈ 𝒟_α(Y)` and
@@ -1182,7 +1184,17 @@ theorem thm_vector_valued_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
           backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
       (f : Lp Y 2 μ) := by
-  sorry
+  have hρ' := def_admissible_filter ρ hρ α hα
+  have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
+  have hf : Integrable ((f : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
+  have hfun : (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
+      backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
+      gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) := by
+    funext ξ
+    rw [backprojectionOfVec_biasFourierVec_ridgeletVec μ α ρ hf ξ, smul_smul,
+      Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
+  rw [hfun]
+  exact gaussFourierInvVec_gaussFourierVec μ ν f
 
 end VectorValued
 
