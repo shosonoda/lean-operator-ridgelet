@@ -434,8 +434,8 @@ attribute [blueprint "cor:finite-backprojection-iii"
 attribute [blueprint "cor:finite-backprojection-iv"
   (statement := /-- Distributionally,
     $f=\frac{p^{-1}}{k_{m,\alpha}C^{(\alpha)}_\rho}(-\Delta)^{(m-\alpha)/2}S_\rho
-    R_\rho f$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.cor_finite_backprojection_iv
+    R_\rho f$. -/)]
+  OperatorRidgelet.Paper.cor_finite_backprojection_iv
 
 attribute [blueprint "cor:finite-backprojection-v"
   (statement := /-- With Lebesgue direction measure and $\alpha=m$, $t_f=(2\pi)^mg$. -/)]

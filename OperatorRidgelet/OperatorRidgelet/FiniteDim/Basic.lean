@@ -14,8 +14,10 @@ open scoped ENNReal RealInnerProductSpace FourierTransform
 /-- The angular-frequency Fourier transform as a Schwartz function. -/
 def fourierSchwartz {m : ℕ} (g : SchwartzMap (Euclid m) ℂ) : SchwartzMap (Euclid m) ℂ :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ
-    (LinearEquiv.smulOfNeZero ℝ (Euclid m) ((2 * Real.pi)⁻¹) (by positivity)).toContinuousLinearEquiv (𝓕 g)
+    (LinearEquiv.smulOfNeZero ℝ (Euclid m) ((2 * Real.pi)⁻¹)
+      (by positivity)).toContinuousLinearEquiv (𝓕 g)
 
+/-- Pointwise agreement of the Schwartz and integral angular Fourier transforms. -/
 @[simp]
 theorem fourierSchwartz_apply {m : ℕ} (g : SchwartzMap (Euclid m) ℂ) (ξ : Euclid m) :
     fourierSchwartz g ξ = fourier g ξ := by
@@ -23,6 +25,8 @@ theorem fourierSchwartz_apply {m : ℕ} (g : SchwartzMap (Euclid m) ℂ) (ξ : E
   change 𝓕 g ((2 * Real.pi)⁻¹ • ξ) = 𝓕 (g : Euclid m → ℂ) ((2 * Real.pi)⁻¹ • ξ)
   rw [SchwartzMap.fourier_coe]
 
+/-- The Gaussian Fourier pairing against a density is the ordinary transform of the weighted
+function. -/
 theorem gaussFourier_densityMeasure {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 ≤ p x)
     (hpc : Continuous p) (f : Euclid m → ℂ) :
     gaussFourier (densityMeasure p) f = fourier (fun x => f x * p x) := by
@@ -37,21 +41,25 @@ theorem gaussFourier_densityMeasure {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x
   rw [he]
   ring
 
+/-- The radial mixture constant is positive below the ambient dimension. -/
 theorem mixtureConst_pos {m : ℕ} {α : ℝ} (hαm : α < m) : 0 < mixtureConst m α := by
   unfold mixtureConst
   exact mul_pos (mul_pos (Real.rpow_pos_of_pos (by norm_num) _)
     (Real.rpow_pos_of_pos Real.pi_pos _)) (Real.Gamma_pos_of_pos (by linarith))
 
+/-- The radial direction measure is s-finite. -/
 instance directionMeasure_sfinite (m : ℕ) (α : ℝ) : SFinite (directionMeasure m α) := by
   unfold directionMeasure
   infer_instance
 
+/-- Lebesgue measure is homogeneous with exponent equal to the dimension. -/
 theorem isHomogeneous_volume (m : ℕ) : IsHomogeneous m (volume : Measure (Euclid m)) := by
   intro ω hω
   rw [Measure.map_addHaar_smul volume hω]
   simp only [finrank_euclideanSpace_fin, abs_inv, abs_pow]
   rw [← Real.rpow_natCast, Real.rpow_neg (abs_nonneg ω)]
 
+/-- The radial direction measure has its prescribed homogeneity exponent. -/
 theorem isHomogeneous_directionMeasure (m : ℕ) (α : ℝ) :
     IsHomogeneous α (directionMeasure m α) := by
   intro ω hω
@@ -81,6 +89,7 @@ theorem isHomogeneous_directionMeasure (m : ℕ) (α : ℝ) :
         (mixtureConst m α * ‖x‖ ^ (α - m)) := by ring
     _ = _ := by rw [he]
 
+/-- A Schwartz Fourier transform belongs to the radial direction L² space. -/
 theorem memLp_fourier_directionMeasure {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (g : SchwartzMap (Euclid m) ℂ) : MemLp (fourier g) 2 (directionMeasure m α) := by
   have hfun : fourier g = fun ξ => fourierSchwartz g ξ := by ext ξ; simp
@@ -104,6 +113,7 @@ theorem memLp_fourier_directionMeasure {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm
     linarith
   · linarith
 
+/-- A Schwartz Fourier transform is integrable against the radial direction measure. -/
 theorem integrable_fourier_directionMeasure {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (g : SchwartzMap (Euclid m) ℂ) : Integrable (fourier g) (directionMeasure m α) := by
   unfold directionMeasure
@@ -118,6 +128,7 @@ theorem integrable_fourier_directionMeasure {m : ℕ} {α : ℝ} (hα : 0 < α) 
     ((fourierSchwartz g).norm_le_seminorm ℝ)
     (by simp only [finrank_euclideanSpace_fin]; linarith) (by linarith)
 
+/-- Fubini pairs the frame representative against a pivot-measure test function. -/
 theorem integral_frameRepresentative_mul_conj {m : ℕ} (μ ν : Measure (Euclid m))
     [SFinite μ] [SFinite ν] {g : Euclid m → ℂ} (hg : Integrable (fourier g) ν)
     {h : Euclid m → ℂ} (hh : Integrable h μ) :
@@ -126,6 +137,7 @@ theorem integral_frameRepresentative_mul_conj {m : ℕ} (μ ν : Measure (Euclid
   simpa only [frameRepresentative, spectralTarget, smul_eq_mul] using
     integral_spectralTarget_mul_conj μ ν hg hh
 
+/-- The frame representative is a Riesz potential with the angular normalization. -/
 theorem frameRepresentative_eq_fracLaplacian {m : ℕ} {α : ℝ} (hαm : α < m)
     (g : Euclid m → ℂ) (x : Euclid m) :
     frameRepresentative (directionMeasure m α) g x =
@@ -144,6 +156,7 @@ theorem frameRepresentative_eq_fracLaplacian {m : ℕ} {α : ℝ} (hαm : α < m
     field_simp
   · exact Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top
 
+/-- Lebesgue directions recover a Schwartz function with the angular Fourier constant. -/
 theorem frameRepresentative_volume {m : ℕ} (g : SchwartzMap (Euclid m) ℂ) (x : Euclid m) :
     frameRepresentative volume g x = ((2 * Real.pi) ^ m : ℝ) * g x := by
   unfold frameRepresentative fourier

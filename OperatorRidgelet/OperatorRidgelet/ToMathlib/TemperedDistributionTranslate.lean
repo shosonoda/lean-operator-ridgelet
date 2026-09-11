@@ -53,11 +53,13 @@ theorem tsupport_iteratedDeriv_subset {f : ℝ → ℂ} (n : ℕ) :
 theorem contDiff_deriv_of_contDiff {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) : ContDiff ℝ ∞ (deriv η) :=
   (contDiff_infty_iff_deriv.mp hη).2
 
+/-- Every iterated derivative of a smooth function is smooth. -/
 theorem contDiff_iteratedDeriv_of_contDiff {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) (n : ℕ) :
     ContDiff ℝ ∞ (iteratedDeriv n η) := by
   rw [iteratedDeriv_eq_iterate]
   exact hη.iterate_deriv n
 
+/-- Every iterated derivative of a compactly supported function has compact support. -/
 theorem hasCompactSupport_iteratedDeriv {η : ℝ → ℂ} (hc : HasCompactSupport η) (n : ℕ) :
     HasCompactSupport (iteratedDeriv n η) := by
   induction n with
@@ -150,11 +152,13 @@ def translate (η : ℝ → ℂ) (w : ℝ) : SchwartzMap ℝ ℂ :=
       (h.1.comp (contDiff_const.sub contDiff_id))
   else 0
 
+/-- The translated Schwartz function evaluates to `η (w - x)`. -/
 theorem translate_apply {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) (hc : HasCompactSupport η) (w x : ℝ) :
     translate η w x = η (w - x) := by
   rw [translate, dif_pos ⟨hη, hc⟩]
   rfl
 
+/-- The underlying function of the Schwartz translate is `x ↦ η (w - x)`. -/
 theorem coe_translate {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) (hc : HasCompactSupport η) (w : ℝ) :
     ⇑(translate η w) = fun x => η (w - x) :=
   funext (translate_apply hη hc w)
@@ -163,6 +167,7 @@ theorem coe_translate {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) (hc : HasCo
 def translateDiff (η : ℝ → ℂ) (w h : ℝ) : SchwartzMap ℝ ℂ :=
   translate η (w + h) - translate η w - (h : ℂ) • translate (deriv η) w
 
+/-- The underlying function of the translation remainder is its pointwise difference. -/
 theorem coe_translateDiff {η : ℝ → ℂ} (hη : ContDiff ℝ ∞ η) (hc : HasCompactSupport η) (w h : ℝ) :
     ⇑(translateDiff η w h) =
       (fun x => η (w + h - x)) - (fun x => η (w - x)) - fun x => (h : ℂ) • deriv η (w - x) := by

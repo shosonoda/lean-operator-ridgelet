@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 310.
+Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 311.
 
 :::table +header
 *
@@ -57,8 +57,8 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
 *
   * 57
   * 57
-  * 54
-  * 2
+  * 55
+  * 1
 :::
 
 The status of an item is that of `STATUS.md`: *verified* when every Lean theorem of the item is
@@ -5087,7 +5087,7 @@ Status: *verified by comparator*.
 
 ## Corollary G.1 — The frame operator in finite dimension (`cor:finite-backprojection`)
 
-Blueprint node: {bpref "cor:finite-backprojection"}[]. Status: *partial 5/6* (5 of 6 Lean theorems verified).
+Blueprint node: {bpref "cor:finite-backprojection"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. On EuclideanSpace ℝ (Fin m) with ν\_α = c\_\{m,α\}‖a‖^\{α-m\} da (directionMeasure); the nondegenerate Gaussian density p is IsCenteredGaussian Q (p dx) with Q a trace-class covariance and p continuous, positive; (-Δ)^s is the Fourier multiplier ‖ξ‖^\{2s\} (fracLaplacian); S\_ρ R\_ρ f is encoded through its defining pairing h ↦ ⟨R\_ρ f, R\_ρ h⟩\_\{L²(λ)\} on 𝒟\_α (the synthesis operator itself belongs to the reconstruction work package); the distributional formula is tested against Schwartz functions.
 
@@ -5167,7 +5167,7 @@ theorem cor_finite_backprojection_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
             fracLaplacian ((m - α) / 2) φ x := by
 ```
 
-Status: *statement only (proof pending)*.
+Status: *verified by comparator*.
 
 `OperatorRidgelet.Paper.cor_finite_backprojection_v`, theorem in [`Challenge/Transform.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Transform.lean#L482):
 

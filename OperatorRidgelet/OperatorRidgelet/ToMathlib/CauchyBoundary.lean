@@ -38,7 +38,8 @@ theorem integrableOn_div_pow_abs {f : ℝ → ℂ} (hf : Integrable f) {ε : ℝ
     exact hf.aestronglyMeasurable.mul
       ((Complex.measurable_ofReal.pow_const n).inv.aestronglyMeasurable)
   apply (hf.norm.div_const (ε ^ n)).integrableOn.mono' hm.restrict
-  filter_upwards [ae_restrict_mem (measurableSet_lt measurable_const continuous_abs.measurable)] with x hx
+  filter_upwards [ae_restrict_mem
+    (measurableSet_lt measurable_const continuous_abs.measurable)] with x hx
   change ε < |x| at hx
   rw [norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs]
   apply div_le_div_of_nonneg_left (norm_nonneg _) (pow_pos hε n)
@@ -80,7 +81,8 @@ theorem integral_truncated_eq_symmetric (φ : SchwartzMap ℝ ℂ) {ε : ℝ} (h
   intro x hx
   ring
 
-/-- Reflection changes integration over the negative half-line into integration over the positive half-line. -/
+/-- Reflection changes integration over the negative half-line into integration over the
+positive half-line. -/
 theorem integral_negative_half (f : ℝ → ℂ) :
     (∫ x in Iio (0 : ℝ), f x) = ∫ x in Ioi (0 : ℝ), f (-x) := by
   rw [← integral_indicator measurableSet_Iio, ← integral_indicator measurableSet_Ioi,
@@ -154,7 +156,8 @@ theorem integrableOn_symmetricSlope (φ : SchwartzMap ℝ ℂ) :
 theorem integrable_cauchyOdd (φ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε) :
     Integrable (fun x : ℝ => ((x / (ε ^ 2 + x ^ 2) : ℝ) : ℂ) * φ x) := by
   apply φ.integrable.bdd_mul (c := ε⁻¹)
-    ((measurable_id.div (measurable_const.add (measurable_id.pow_const 2))).complex_ofReal.aestronglyMeasurable)
+    ((measurable_id.div (measurable_const.add
+      (measurable_id.pow_const 2))).complex_ofReal.aestronglyMeasurable)
   filter_upwards with x
   simp only [Pi.div_apply, Pi.add_apply, id_eq]
   rw [Complex.norm_real, Real.norm_eq_abs, abs_div,
@@ -207,7 +210,8 @@ theorem tendsto_integral_cauchyOdd (φ : SchwartzMap ℝ ℂ) :
 theorem integrable_poisson (φ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε) :
     Integrable (fun x : ℝ => ((ε / (ε ^ 2 + x ^ 2) : ℝ) : ℂ) * φ x) := by
   apply φ.integrable.bdd_mul (c := ε⁻¹)
-    ((measurable_const.div (measurable_const.add (measurable_id.pow_const 2))).complex_ofReal.aestronglyMeasurable)
+    ((measurable_const.div (measurable_const.add
+      (measurable_id.pow_const 2))).complex_ofReal.aestronglyMeasurable)
   filter_upwards with x
   simp only [Pi.div_apply, Pi.add_apply, id_eq]
   rw [Complex.norm_real, Real.norm_eq_abs, abs_div, abs_of_pos hε,
@@ -260,7 +264,8 @@ theorem tendsto_integral_poisson (φ : SchwartzMap ℝ ℂ) :
   filter_upwards [self_mem_nhdsWithin] with ε hε
   exact (integral_poisson_eq_scaled φ hε).symm
 
-/-- Integration by parts relates the inverse-square truncation to the symmetric slope of the derivative. -/
+/-- Integration by parts relates the inverse-square truncation to the symmetric slope of the
+derivative. -/
 theorem integral_truncated_parts (φ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε) :
     (∫ x in {x : ℝ | ε < |x|}, φ x / (x : ℂ) ^ 2) =
       (∫ x in Ioi ε, symmetricSlope (derivCLM ℂ ℂ φ) x) +
@@ -319,9 +324,11 @@ theorem tendsto_finitePart (φ : SchwartzMap ℝ ℂ) :
   rw [integral_truncated_parts φ hε]
   ring
 
-/-- Exponential damping of the Fourier integral on the positive half-line gives the Cauchy resolvent. -/
+/-- Exponential damping of the Fourier integral on the positive half-line gives the Cauchy
+resolvent. -/
 theorem integral_damped_fourier (ψ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 < ε) :
-    (∫ x in Ioi (0 : ℝ), (Real.exp (-ε * x) : ℂ) * (∫ ω : ℝ, exp (-I * ((ω : ℂ) * (x : ℂ))) * ψ ω)) =
+    (∫ x in Ioi (0 : ℝ), (Real.exp (-ε * x) : ℂ) *
+      (∫ ω : ℝ, exp (-I * ((ω : ℂ) * (x : ℂ))) * ψ ω)) =
       ∫ ω : ℝ, ((ε : ℂ) + I * (ω : ℂ))⁻¹ * ψ ω := by
   let f := fun x ω : ℝ => exp (-((ε : ℂ) + I * (ω : ℂ)) * (x : ℂ)) * ψ ω
   have hnorm (x ω : ℝ) : ‖f x ω‖ = Real.exp (-ε * x) * ‖ψ ω‖ := by
@@ -351,4 +358,3 @@ theorem integral_damped_fourier (ψ : SchwartzMap ℝ ℂ) {ε : ℝ} (hε : 0 <
   simp only [Complex.ofReal_zero, mul_zero, exp_zero, neg_div_neg_eq, one_div]
 
 end SchwartzMap
-
