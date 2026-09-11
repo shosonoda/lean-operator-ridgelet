@@ -25,6 +25,7 @@ def sampledRidgePreactivation (K : Set E) (a : H → E) (b : H → ℝ) :
     H → K → ℝ :=
   fun h x ↦ inner ℝ (a h) x - b h
 
+/-- Lipschitz activation controls the empirical complexity of sampled affine ridge features. -/
 theorem empiricalRademacherComplexity_sampledRidge_activation_contraction_finite
     [Fintype H] [Nonempty H]
     (K : Set E) (n : ℕ) (a : H → E) (b : H → ℝ) (σ : ℝ → ℝ)
@@ -37,6 +38,7 @@ theorem empiricalRademacherComplexity_sampledRidge_activation_contraction_finite
   exact empiricalRademacherComplexity_activation_contraction_finite
     n (sampledRidgePreactivation K a b) σ S hL hσ_zero hσ
 
+/-- ReLU contracts the empirical complexity of sampled affine ridge features. -/
 theorem empiricalRademacherComplexity_sampledRidge_relu_contraction_finite
     [Fintype H] [Nonempty H]
     (K : Set E) (n : ℕ) (a : H → E) (b : H → ℝ) (S : Fin n → K) :

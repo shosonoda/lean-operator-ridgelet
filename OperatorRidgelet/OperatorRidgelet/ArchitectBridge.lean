@@ -19,7 +19,8 @@ import OperatorRidgelet.ArchitectBridge.Examples
 LeanArchitect and VersoBlueprint both provide an attribute named `blueprint`.  Importing their
 attribute implementations into one module is therefore invalid.  The mathematical modules remain
 independent of either documentation frontend; this module attaches LeanArchitect metadata after
-the declarations have been compiled, while the separate `OperatorRidgeletBlueprint` project links the same declarations
+the declarations have been compiled, while the separate `OperatorRidgeletBlueprint` project links
+the same declarations
 from native Verso chapters.
 -/
 
@@ -161,7 +162,8 @@ attribute [blueprint "operator-ridgelet:sampled-ridge-preactivation"
 
 attribute [blueprint "operator-ridgelet:sampled-ridge-activation-contraction"
   (statement := /-- On every finite sample from $K$, applying an $L$-Lipschitz activation
-    vanishing at zero costs at most the factor $2L$ in absolute empirical Rademacher complexity. -/)]
+    vanishing at zero costs at most the factor $2L$ in absolute empirical Rademacher
+    complexity. -/)]
   OperatorRidgelet.empiricalRademacherComplexity_sampledRidge_activation_contraction_finite
 
 attribute [blueprint "operator-ridgelet:sampled-ridge-relu-contraction"

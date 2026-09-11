@@ -20,10 +20,12 @@ open LeanRidgelet
 
 variable {H : Type u} {𝒳 : Type v}
 
+/-- ReLU is one-Lipschitz on the real line. -/
 theorem abs_relu_sub_relu_le (u v : ℝ) : |relu u - relu v| ≤ |u - v| := by
   simp only [relu]
   exact abs_max_sub_max_le_abs u v 0
 
+/-- Lipschitz activation contracts the empirical Rademacher complexity of a finite class. -/
 theorem empiricalRademacherComplexity_activation_contraction_finite
     [Fintype H] [Nonempty H]
     (n : ℕ) (F : H → 𝒳 → ℝ) (σ : ℝ → ℝ) (S : Fin n → 𝒳)
@@ -34,6 +36,7 @@ theorem empiricalRademacherComplexity_activation_contraction_finite
   exact empiricalRademacherComplexity_contraction_finite
     n F (fun _ u ↦ σ u) S hL (fun _ ↦ hσ_zero) (fun _ ↦ hσ)
 
+/-- ReLU does not increase the empirical Rademacher complexity of a finite class. -/
 theorem empiricalRademacherComplexity_relu_contraction_finite
     [Fintype H] [Nonempty H]
     (n : ℕ) (F : H → 𝒳 → ℝ) (S : Fin n → 𝒳) :

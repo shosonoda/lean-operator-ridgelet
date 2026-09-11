@@ -432,7 +432,8 @@ attribute [blueprint "prop:coefficient-projection-ii"
   OperatorRidgelet.Paper.prop_coefficient_projection_ii
 
 attribute [blueprint "prop:coefficient-projection-iii"
-  (statement := /-- $\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}$. -/)]
+  (statement := /-- $\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}
+    \le\sqrt C\|\gamma\|_{\mathcal Y}$. -/)]
   OperatorRidgelet.Paper.prop_coefficient_projection_iii
 
 attribute [blueprint "prop:coefficient-projection-iv"

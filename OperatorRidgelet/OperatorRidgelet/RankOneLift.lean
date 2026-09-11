@@ -19,6 +19,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
 def rankOneLift (ψ a : H) : H →L[ℝ] H :=
   (‖ψ‖ ^ 2)⁻¹ • InnerProductSpace.rankOne ℝ ψ a
 
+/-- The adjoint of the rank-one lift sends the readout direction to the prescribed direction. -/
 theorem adjoint_rankOneLift_apply (ψ a : H) (hψ : ψ ≠ 0) :
     ContinuousLinearMap.adjoint (rankOneLift ψ a) ψ = a := by
   rw [rankOneLift, map_smul, InnerProductSpace.adjoint_rankOne]

@@ -58,6 +58,7 @@ noncomputable def swapSample (s : Fin N → ℝ) :
       if s j = 1 then MeasurableEquiv.refl (Ω × Ω) else MeasurableEquiv.prodComm).trans
       (MeasurableEquiv.arrowProdEquivProdArrow Ω Ω (Fin N)))
 
+/-- The sign-dependent swap exchanges exactly the coordinates assigned the negative sign. -/
 theorem swapSample_apply (s : Fin N → ℝ) (z : (Fin N → Ω) × (Fin N → Ω)) :
     swapSample s z = (fun j => if s j = 1 then z.1 j else z.2 j,
       fun j => if s j = 1 then z.2 j else z.1 j) := by

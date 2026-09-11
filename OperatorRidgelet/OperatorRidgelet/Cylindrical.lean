@@ -13,6 +13,7 @@ namespace OperatorRidgelet
 def FactorsThrough {E Y Z : Type*} (F : E → Y) (P : E → Z) : Prop :=
   ∃ G : Z → Y, F = G ∘ P
 
+/-- A function separating two points of one fibre cannot factor through the observation map. -/
 theorem not_factorsThrough_of_fibre_separation {E Y Z : Type*} {F : E → Y} {P : E → Z}
     {x y : E} (hP : P x = P y) (hF : F x ≠ F y) : ¬FactorsThrough F P := by
   rintro ⟨G, hG⟩
@@ -20,6 +21,7 @@ theorem not_factorsThrough_of_fibre_separation {E Y Z : Type*} {F : E → Y} {P 
   rw [hG]
   exact congrArg G hP
 
+/-- Separating zero from a kernel vector obstructs factorization through a linear map. -/
 theorem not_factorsThrough_linear_of_kernel_separation
     {𝕜 E Y Z : Type*} [Semiring 𝕜] [AddCommMonoid E] [Module 𝕜 E]
     [AddCommMonoid Z] [Module 𝕜 Z] {F : E → Y} (P : E →ₗ[𝕜] Z) {x : E}

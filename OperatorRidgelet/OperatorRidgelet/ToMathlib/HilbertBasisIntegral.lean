@@ -35,7 +35,8 @@ theorem HilbertBasis.tsum_enorm_inner_sq (b : HilbertBasis ι 𝕜 E) (x : E) :
     ∑' i, ‖inner 𝕜 (b i) x‖ₑ ^ 2 = ‖x‖ₑ ^ 2 := by
   have hs : HasSum (fun i => ‖inner 𝕜 (b i) x‖ ^ 2) (‖x‖ ^ 2) := by
     simpa only [ENNReal.toReal_ofNat, Real.rpow_two, b.repr.norm_map,
-      b.repr_apply_apply] using lp.hasSum_norm (by norm_num : (0 : ℝ) < (2 : ℝ≥0∞).toReal) (b.repr x)
+      b.repr_apply_apply] using
+        lp.hasSum_norm (by norm_num : (0 : ℝ) < (2 : ℝ≥0∞).toReal) (b.repr x)
   simp_rw [← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]
   rw [← ENNReal.ofReal_tsum_of_nonneg (fun _ => sq_nonneg _) hs.summable, hs.tsum_eq]
 

@@ -279,9 +279,11 @@ namespace Filters
 
 open scoped FourierTransform
 
+/-- The chosen frequency-side band-pass profile is even. -/
 theorem bandPassHat_neg (ω : ℝ) : bandPassHat (-ω) = bandPassHat ω := by
   simp [bandPassHat]
 
+/-- The band-pass frequency profile vanishes beyond frequency magnitude two. -/
 theorem bandPassHat_eq_zero_of_two_lt {ω : ℝ} (h : 2 < |ω|) : bandPassHat ω = 0 := by
   simp only [bandPassHat, bump]
   rw [if_neg]
@@ -291,6 +293,7 @@ theorem bandPassHat_eq_zero_of_two_lt {ω : ℝ} (h : 2 < |ω|) : bandPassHat ω
     intro h1
     linarith
 
+/-- The chosen band-pass frequency profile has compact support. -/
 theorem hasCompactSupport_bandPassHat : HasCompactSupport bandPassHat :=
   HasCompactSupport.intro isCompact_Icc fun ω hω =>
     bandPassHat_eq_zero_of_two_lt (by
@@ -308,6 +311,7 @@ theorem hasCompactSupport_bandPassHat_ofReal_comp :
       exact hu (abs_le.mp (not_lt.mp h))
     nlinarith [Real.two_le_pi]
 
+/-- The angular-frequency rescaling of the band-pass profile is smooth. -/
 theorem contDiff_bandPassHat_ofReal_comp :
     ContDiff ℝ (⊤ : ℕ∞) fun u : ℝ => (bandPassHat (2 * Real.pi * u) : ℂ) :=
   Complex.ofRealCLM.contDiff.comp (contDiff_bandPassHat.comp (contDiff_const.mul contDiff_id))
@@ -316,9 +320,11 @@ theorem contDiff_bandPassHat_ofReal_comp :
 def bandPassHatSchwartz : SchwartzMap ℝ ℂ :=
   hasCompactSupport_bandPassHat_ofReal_comp.toSchwartzMap contDiff_bandPassHat_ofReal_comp
 
+/-- The Schwartz band-pass profile evaluates by the angular-frequency rescaling. -/
 theorem bandPassHatSchwartz_apply (u : ℝ) :
     bandPassHatSchwartz u = (bandPassHat (2 * Real.pi * u) : ℂ) := rfl
 
+/-- The Schwartz band-pass profile is even. -/
 theorem bandPassHatSchwartz_even (u : ℝ) : bandPassHatSchwartz (-u) = bandPassHatSchwartz u := by
   rw [bandPassHatSchwartz_apply, bandPassHatSchwartz_apply, mul_neg, bandPassHat_neg]
 
@@ -334,6 +340,7 @@ theorem conj_fourierInv_bandPassHatSchwartz (t : ℝ) :
   exact Real.conj_fourierInv_ofReal_of_even (f := fun u => bandPassHat (2 * Real.pi * u))
     (fun u => by rw [mul_neg, bandPassHat_neg]) t
 
+/-- The real band-pass filter complexifies to the inverse Fourier transform of its profile. -/
 theorem ofReal_bandPassSchwartz_apply (t : ℝ) :
     (bandPassSchwartz t : ℂ) = 𝓕⁻ bandPassHatSchwartz t :=
   Complex.conj_eq_iff_re.mp (conj_fourierInv_bandPassHatSchwartz t)
@@ -356,9 +363,11 @@ theorem bandPassSchwartz_apply (t : ℝ) : bandPassSchwartz t = bandPassFun t :=
   push_cast
   ring
 
+/-- The chosen band-pass function has a real Schwartz representative. -/
 theorem exists_schwartz_eq_bandPassFun : ∃ ρ : SchwartzMap ℝ ℝ, ⇑ρ = bandPassFun :=
   ⟨bandPassSchwartz, funext bandPassSchwartz_apply⟩
 
+/-- The chosen Schwartz band-pass filter agrees with its defining function. -/
 theorem coe_bandPass : ⇑bandPass = bandPassFun := by
   unfold bandPass
   rw [dif_pos exists_schwartz_eq_bandPassFun]
@@ -383,6 +392,7 @@ section Range
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
+/-- The L²-valued Gaussian Fourier transform preserves addition on the spectral core. -/
 theorem gaussFourierLp_add (μ ν : Measure H) [IsFiniteMeasure μ] (f g : spectralCore μ ν) :
     gaussFourierLp μ ν (f + g) = gaussFourierLp μ ν f + gaussFourierLp μ ν g := by
   unfold gaussFourierLp
@@ -391,6 +401,7 @@ theorem gaussFourierLp_add (μ ν : Measure H) [IsFiniteMeasure μ] (f g : spect
   show gaussFourier μ ((f + g : Lp ℂ 2 μ) : H → ℂ) ξ = _
   rw [gaussFourier_add]
 
+/-- The L²-valued Gaussian Fourier transform sends zero to zero. -/
 theorem gaussFourierLp_zero (μ ν : Measure H) [IsFiniteMeasure μ] :
     gaussFourierLp μ ν 0 = 0 := by
   unfold gaussFourierLp
@@ -399,6 +410,7 @@ theorem gaussFourierLp_zero (μ ν : Measure H) [IsFiniteMeasure μ] :
   show gaussFourier μ ((0 : Lp ℂ 2 μ) : H → ℂ) ξ = _
   rw [gaussFourier_zero']
 
+/-- The L²-valued Gaussian Fourier transform preserves complex scalar multiplication. -/
 theorem gaussFourierLp_smul (μ ν : Measure H) [IsFiniteMeasure μ] (c : ℂ)
     (f : spectralCore μ ν) :
     gaussFourierLp μ ν (c • f) = c • gaussFourierLp μ ν f := by
@@ -420,6 +432,7 @@ def gaussFourierRange (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (
     rintro c _ ⟨f, rfl⟩
     exact ⟨c • f, gaussFourierLp_smul μ ν c f⟩
 
+/-- The Gaussian Fourier range is the range of the bundled L² transform. -/
 theorem coe_gaussFourierRange (μ ν : Measure H) [IsFiniteMeasure μ] :
     (gaussFourierRange μ ν : Set (Lp ℂ 2 ν)) = Set.range (gaussFourierLp μ ν) := rfl
 
@@ -435,6 +448,7 @@ end Range
 
 section Scaling
 
+/-- Real scaling of a filter scales its Fourier transform by the same scalar. -/
 theorem filterFourier_smul (c : ℝ) (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     filterFourier (c • ρ) ω = (c : ℂ) * filterFourier ρ ω := by
   simp only [filterFourier, lineFourier, LeanRidgelet.Fourier.angularFourierIntegralInner,
@@ -444,6 +458,7 @@ theorem filterFourier_smul (c : ℝ) (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
   funext t
   ring
 
+/-- Scaling a filter multiplies its admissibility constant by the squared scale. -/
 theorem admissibilityConst_smul (α c : ℝ) (ρ : SchwartzMap ℝ ℝ) :
     admissibilityConst α (c • ρ) = c ^ 2 * admissibilityConst α ρ := by
   simp only [admissibilityConst, filterFourier_smul, norm_mul, Complex.norm_real,

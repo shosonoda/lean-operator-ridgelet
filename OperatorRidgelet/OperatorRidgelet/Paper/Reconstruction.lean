@@ -1,5 +1,6 @@
 import OperatorRidgelet.Reconstruction.Defs
 import OperatorRidgelet.Reconstruction.VectorBackprojection
+import OperatorRidgelet.Reconstruction.VectorBiasFourier
 import OperatorRidgelet.Reconstruction.Basic
 import OperatorRidgelet.Reconstruction.Hermite
 import OperatorRidgelet.Reconstruction.Representation

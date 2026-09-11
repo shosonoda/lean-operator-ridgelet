@@ -3,9 +3,10 @@ import OperatorRidgelet.Architecture.Defs
 import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.Architecture.Reduction
+import OperatorRidgelet.Architecture.Universality
 
 /-!
-# Statements of Section 2 (networks with Hilbert-space inputs) and Appendix F (operator-valued parameters)
+# Statements of Section 2 (Hilbert-space inputs) and Appendix F (operator-valued parameters)
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
 `Challenge.Networks`, proved from the library or left as `sorry`.
@@ -138,7 +139,7 @@ reduction.  For continuous non-polynomial `β : ℝ → ℝ`, finite linear comb
 theorem prop_scalar_universality_i [CompleteSpace H] [SecondCountableTopology H] {β : ℝ → ℝ}
     (hβ : Continuous β) (hpoly : ¬ IsPolynomialFun β) :
     Dense (Submodule.span ℝ (ridgeSet (H := H) β) : Set C(H, ℝ)) := by
-  sorry
+  exact dense_ridgeSpan hβ hpoly
 
 /-- **Proposition [prop:scalar-universality]** Compact-open universality by finite-dimensional
 reduction.  For continuous non-polynomial `β : ℝ → ℝ` and nonzero `ψ, z`, finite linear
@@ -148,7 +149,7 @@ theorem prop_scalar_universality_ii [CompleteSpace H] [SecondCountableTopology H
     (hβ : Continuous β) (hpoly : ¬ IsPolynomialFun β) {ψ z : H} (hψ : ψ ≠ 0) (hz : z ≠ 0) :
     Dense (Submodule.span ℝ
       (operatorNeuronSet (rankOneActivation β ψ z) {A | IsHilbertSchmidt A}) : Set C(H, ℝ)) := by
-  sorry
+  exact dense_operatorNeuronSpan hβ hpoly hψ hz
 
 /-! ## Appendix F: bounded synthesis and exact transport of measures -/
 

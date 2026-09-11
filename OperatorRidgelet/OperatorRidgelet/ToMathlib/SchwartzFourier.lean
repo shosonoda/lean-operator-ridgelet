@@ -16,6 +16,7 @@ namespace SchwartzMap
 noncomputable def ofReal (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.postcompCLM Complex.ofRealCLM ρ
 
+/-- The complexification of a real Schwartz function evaluates by the scalar inclusion. -/
 @[simp]
 theorem ofReal_apply (ρ : SchwartzMap ℝ ℝ) (t : ℝ) : ofReal ρ t = (ρ t : ℂ) := rfl
 

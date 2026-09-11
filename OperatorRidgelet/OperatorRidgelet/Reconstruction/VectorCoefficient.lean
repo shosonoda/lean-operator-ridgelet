@@ -113,12 +113,14 @@ theorem ae_memLp_ray_vec (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ)
   apply ae_memLp_slice_vec (γ := fun p : H × ℝ => filterFourier ρ p.2 • G (-(p.2 • p.1)))
   refine memLp_two_of_lintegral_enorm_sq_lt_top ?_ ?_
   · exact (((continuous_filterFourier ρ).measurable.comp measurable_snd).stronglyMeasurable.smul
-      (hG.comp_measurable (by fun_prop : Continuous fun p : H × ℝ => -(p.2 • p.1)).measurable)).aestronglyMeasurable
+      (hG.comp_measurable (by fun_prop : Continuous fun p : H × ℝ =>
+        -(p.2 • p.1)).measurable)).aestronglyMeasurable
   · simp only [enorm_smul, mul_pow]
     exact hρ.lintegral_prod_enorm_sq_vec_lt_top hν hG.enorm hG₂
 
 /-- Plancherel's identity along a vector-valued spectral ray. -/
-theorem lintegral_coefficientFormulaVec_slice_sq (ρ : SchwartzMap ℝ ℝ) (hG : StronglyMeasurable G) {a : H}
+theorem lintegral_coefficientFormulaVec_slice_sq (ρ : SchwartzMap ℝ ℝ)
+    (hG : StronglyMeasurable G) {a : H}
     (ha₁ : Integrable fun ω : ℝ => filterFourier ρ ω • G (-(ω • a)))
     (ha₂ : MemLp (fun ω : ℝ => filterFourier ρ ω • G (-(ω • a))) 2 volume) :
     ∫⁻ c, ‖coefficientFormulaVec ρ G (a, c)‖ₑ ^ 2 =
@@ -170,7 +172,8 @@ theorem lintegral_coefficientFormulaVec_sq (hα : 0 < α) (hν : IsHomogeneous �
   have key : ∀ᵐ a ∂ν, ∫⁻ c, ‖coefficientFormulaVec ρ G (a, c)‖ₑ ^ 2 =
       ENNReal.ofReal (2 * Real.pi)⁻¹ *
         ∫⁻ ω, ‖filterFourier ρ ω‖ₑ ^ 2 * ‖G (-(ω • a))‖ₑ ^ 2 := by
-    filter_upwards [ae_integrable_ray_vec hα hν hρ hG hG₂, ae_memLp_ray_vec hν hρ hG hG₂] with a ha₁ ha₂
+    filter_upwards [ae_integrable_ray_vec hα hν hρ hG hG₂,
+      ae_memLp_ray_vec hν hρ hG hG₂] with a ha₁ ha₂
     exact lintegral_coefficientFormulaVec_slice_sq ρ hG ha₁ ha₂
   rw [lintegral_congr_ae key, lintegral_const_mul _ hmeas'.lintegral_prod_right',
     ← lintegral_prod _ hmeas'.aemeasurable, hρ.lintegral_prod_enorm_sq_vec hν hG.enorm, ← mul_assoc,
@@ -330,7 +333,8 @@ theorem coefficientFormulaVec_sub_ae {G₁ G₂ : H → Y} (hG₁ : StronglyMeas
       Complex.exp ((ω * p.2 : ℝ) * Complex.I) • F ω := by
     intro F hF
     refine hF.norm.mono'
-      ((by fun_prop : Continuous fun ω : ℝ => Complex.exp ((ω * p.2 : ℝ) * Complex.I)).aestronglyMeasurable.smul
+      ((by fun_prop : Continuous fun ω : ℝ =>
+        Complex.exp ((ω * p.2 : ℝ) * Complex.I)).aestronglyMeasurable.smul
         hF.aestronglyMeasurable) ?_
     filter_upwards with ω
     simp only [norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]
@@ -383,13 +387,15 @@ theorem ridgeletExtensionVecCLM_eq_spectralCoefficientVec (μ : Measure H) [IsPr
     ridgeletExtensionVecCLM hν hρ G = spectralCoefficientVec ν ρ ((G : Lp Y 2 ν) : H → Y) := by
   refine (denseRange_spectralEmbedVecₗ (Y := Y) μ ν).induction_on G ?_ fun f => ?_
   · exact isClosed_eq (ridgeletExtensionVecCLM hν hρ).continuous
-      ((lipschitzWith_spectralCoefficientVec (Y := Y) hν hα hρ).continuous.comp continuous_subtype_val)
+      ((lipschitzWith_spectralCoefficientVec (Y := Y) hν hα hρ).continuous.comp
+        continuous_subtype_val)
   · have hf : Integrable ((f : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
     have hcoe : ((spectralEmbedVec μ ν f : Lp Y 2 ν) : H → Y) =ᵐ[ν] gaussFourierVec μ f :=
       MemLp.coeFn_toLp f.2
     rw [spectralEmbedVecₗ_apply, ridgeletExtensionVecCLM_embed,
       spectralCoefficientVec_congr_ae hν ρ hcoe,
-      spectralCoefficientVec_eq_toLp hν hα hρ (continuous_gaussFourierVec μ hf).stronglyMeasurable f.2,
+      spectralCoefficientVec_eq_toLp hν hα hρ
+        (continuous_gaussFourierVec μ hf).stronglyMeasurable f.2,
       ridgeletCoreVecₗ_apply]
     refine MemLp.toLp_congr _ _ (Eventually.of_forall fun p => ?_)
     exact congrFun (ridgeletVec_eq_coefficientFormulaVec' μ ρ

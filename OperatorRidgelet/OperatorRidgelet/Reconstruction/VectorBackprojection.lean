@@ -237,7 +237,8 @@ theorem stronglyMeasurable_coefficient_representative_vec {ρ : SchwartzMap ℝ 
   ((continuous_filterFourier ρ).measurable.comp measurable_snd).stronglyMeasurable.smul
     (hF.comp_measurable (by fun_prop : Continuous fun p : H × ℝ => -(p.2 • p.1)).measurable)
 
-/-- The vector-valued ray average depends only on the Fourier representative's almost-everywhere class. -/
+/-- The vector-valued ray average depends only on the Fourier representative's
+almost-everywhere class. -/
 theorem IsHomogeneous.backprojectionOfVec_ae_eq (ρ : ℝ → ℝ) {γ : H × ℝ → Y}
     {Φ Φ' : H → ℝ → Y} (hΦ : StronglyMeasurable (Function.uncurry Φ))
     (hΦ' : StronglyMeasurable (Function.uncurry Φ'))

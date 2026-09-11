@@ -83,18 +83,22 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 def character (ξ x : H) : ℂ :=
   Complex.exp (-((⟪x, ξ⟫ : ℝ) * Complex.I))
 
+/-- The zero-frequency Fourier character is one. -/
 @[simp]
 theorem character_zero_right (x : H) : character (0 : H) x = 1 := by
   simp [character]
 
+/-- Every Fourier character takes the value one at the origin. -/
 @[simp]
 theorem character_zero_left (ξ : H) : character ξ (0 : H) = 1 := by
   simp [character]
 
+/-- Continuity of `character`. -/
 theorem continuous_character (ξ : H) : Continuous (character ξ) := by
   unfold character
   fun_prop
 
+/-- Every Fourier character has norm one. -/
 theorem norm_character (ξ x : H) : ‖character ξ x‖ = 1 := by
   have : -((⟪x, ξ⟫ : ℝ) * Complex.I) = ((-⟪x, ξ⟫ : ℝ) : ℂ) * Complex.I := by
     push_cast
@@ -110,6 +114,7 @@ def lineFourier (h : ℝ → ℂ) (ω : ℝ) : ℂ :=
 def filterFourier (ρ : ℝ → ℝ) (ω : ℝ) : ℂ :=
   lineFourier (fun t => (ρ t : ℂ)) ω
 
+/-- The Fourier transform of the zero filter is zero. -/
 @[simp]
 theorem filterFourier_zero (ω : ℝ) : filterFourier 0 ω = 0 := by
   simp [filterFourier, lineFourier, LeanRidgelet.Fourier.angularFourierIntegralInner]
@@ -131,6 +136,7 @@ transform of the finite complex measure `f μ`; for `μ = μ_Q` this is the manu
 def gaussFourier (μ : Measure H) (f : H → ℂ) (ξ : H) : ℂ :=
   ∫ x, f x * character ξ x ∂μ
 
+/-- The Gaussian Fourier transform of the zero function is zero. -/
 @[simp]
 theorem gaussFourier_zero (μ : Measure H) : gaussFourier μ 0 = 0 := by
   funext ξ
@@ -267,6 +273,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 def ridgelet (μ : Measure H) (ρ : ℝ → ℝ) (f : H → ℂ) (p : H × ℝ) : ℂ :=
   ∫ x, f x * (ρ (⟪p.1, x⟫ + p.2) : ℂ) ∂μ
 
+/-- The ridgelet transform of the zero function is zero. -/
 @[simp]
 theorem ridgelet_zero (μ : Measure H) (ρ : ℝ → ℝ) : ridgelet μ ρ 0 = 0 := by
   funext p
@@ -328,6 +335,7 @@ section SpectralSpace
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
+/-- The Gaussian Fourier integral preserves complex scalar multiplication on L² classes. -/
 theorem gaussFourier_smul (μ : Measure H) (c : ℂ) (f : Lp ℂ 2 μ) :
     gaussFourier μ ((c • f : Lp ℂ 2 μ) : H → ℂ) = c • gaussFourier μ f := by
   funext ξ
@@ -337,6 +345,7 @@ theorem gaussFourier_smul (μ : Measure H) (c : ℂ) (f : Lp ℂ 2 μ) :
   filter_upwards [Lp.coeFn_smul c f] with x hx
   rw [hx, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/-- The Gaussian Fourier integral sends the zero L² class to zero. -/
 theorem gaussFourier_zero' (μ : Measure H) :
     gaussFourier μ ((0 : Lp ℂ 2 μ) : H → ℂ) = 0 := by
   funext ξ
@@ -353,12 +362,14 @@ def spectralInner (μ ν : Measure H) (f g : H → ℂ) : ℂ :=
 
 variable [OpensMeasurableSpace H]
 
+/-- A character times an L² function is integrable for a finite measure. -/
 theorem integrable_mul_character (μ : Measure H) [IsFiniteMeasure μ] (f : Lp ℂ 2 μ) (ξ : H) :
     Integrable (fun x => (f : H → ℂ) x * character ξ x) μ :=
   ((Lp.memLp f).integrable one_le_two).mul_unimodular
     (continuous_character ξ).aestronglyMeasurable
     (Filter.Eventually.of_forall fun x => (norm_character ξ x).le)
 
+/-- The Gaussian Fourier integral is additive on L² classes. -/
 theorem gaussFourier_add (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp ℂ 2 μ) :
     gaussFourier μ ((f + g : Lp ℂ 2 μ) : H → ℂ) = gaussFourier μ f + gaussFourier μ g := by
   funext ξ
@@ -385,6 +396,7 @@ def spectralCore (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp �
     rw [gaussFourier_smul]
     exact MemLp.const_smul hf c
 
+/-- The spectral core consists of functions with a square-integrable Gaussian transform. -/
 theorem mem_spectralCore_iff (μ ν : Measure H) [IsFiniteMeasure μ] (f : Lp ℂ 2 μ) :
     f ∈ spectralCore μ ν ↔ MemLp (gaussFourier μ f) 2 ν :=
   Iff.rfl

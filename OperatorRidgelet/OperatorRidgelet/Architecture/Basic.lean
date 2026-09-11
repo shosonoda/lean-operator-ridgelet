@@ -49,19 +49,23 @@ theorem integralNetwork_eq_scalarComplexRidgeSynthesis [MeasurableSpace H] (β :
 
 /-! ## Norms of the lifts -/
 
+/-- The rank-one lift preserves differences of input directions. -/
 theorem rankOneLift_sub (ψ a a' : H) :
     rankOneLift ψ (a - a') = rankOneLift ψ a - rankOneLift ψ a' := by
   simp only [rankOneLift, map_sub, smul_sub]
 
+/-- The bias lift preserves differences of scalar biases. -/
 theorem biasLift_sub (ψ : H) (c c' : ℝ) :
     biasLift ψ (c - c') = biasLift ψ c - biasLift ψ c' := by
   simp only [biasLift, sub_mul, sub_smul]
 
+/-- The bias-lift norm is the absolute bias divided by the readout norm. -/
 theorem norm_biasLift {ψ : H} (hψ : ψ ≠ 0) (c : ℝ) : ‖biasLift ψ c‖ = |c| / ‖ψ‖ := by
   have hn : ‖ψ‖ ≠ 0 := norm_ne_zero_iff.mpr hψ
   rw [biasLift, norm_smul, Real.norm_eq_abs, abs_mul, abs_inv, abs_pow, abs_norm]
   field_simp
 
+/-- The rank-one lift has the stated pointwise norm in terms of the scalar inner product. -/
 theorem norm_rankOneLift_apply (ψ a e : H) :
     ‖rankOneLift ψ a e‖ = |inner ℝ a e| / ‖ψ‖ := by
   rcases eq_or_ne ψ 0 with rfl | hψ
@@ -110,22 +114,26 @@ theorem operatorFiniteNetwork_section [CompleteSpace H] {Y : Type*} [NormedAddCo
 
 /-! ## The Hilbert–Schmidt norm -/
 
+/-- Each finite orthonormal energy sum is bounded by the squared Hilbert–Schmidt norm. -/
 theorem sum_enorm_sq_le_hsNormSq (A : H →L[ℝ] H) (s : Finset H)
     (hs : Orthonormal ℝ ((↑) : s → H)) : ∑ e ∈ s, ‖A e‖ₑ ^ 2 ≤ hsNormSq A :=
   le_iSup₂ (f := fun (s : Finset H) (_ : Orthonormal ℝ ((↑) : s → H)) => ∑ e ∈ s, ‖A e‖ₑ ^ 2)
     s hs
 
+/-- A common bound for all finite orthonormal energy sums bounds the Hilbert–Schmidt norm. -/
 theorem hsNormSq_le {A : H →L[ℝ] H} {C : ℝ≥0∞}
     (h : ∀ s : Finset H, Orthonormal ℝ ((↑) : s → H) → ∑ e ∈ s, ‖A e‖ₑ ^ 2 ≤ C) :
     hsNormSq A ≤ C :=
   iSup₂_le h
 
+/-- Finite extended-norm energy sums are the embedded real squared-norm sums. -/
 theorem sum_enorm_sq_eq_ofReal (A : H →L[ℝ] H) (s : Finset H) :
     ∑ e ∈ s, ‖A e‖ₑ ^ 2 = ENNReal.ofReal (∑ e ∈ s, ‖A e‖ ^ 2) := by
   rw [ENNReal.ofReal_sum_of_nonneg (fun e _ => sq_nonneg _)]
   refine Finset.sum_congr rfl fun e _ => ?_
   rw [← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _)]
 
+/-- A singleton containing a unit vector is an orthonormal family. -/
 theorem orthonormal_finset_singleton {u : H} (hu : ‖u‖ = 1) :
     Orthonormal ℝ ((↑) : ({u} : Finset H) → H) := by
   rw [orthonormal_iff_ite]
@@ -150,6 +158,7 @@ theorem sum_sq_norm_rankOneLift_le (ψ a : H) (s : Finset H)
         rw [norm_rankOneLift_apply, div_pow, Real.norm_eq_abs]
     _ ≤ ‖a‖ ^ 2 / ‖ψ‖ ^ 2 := by gcongr
 
+/-- The squared Hilbert–Schmidt norm of a rank-one lift satisfies the upper bound. -/
 theorem hsNormSq_rankOneLift_le (ψ a : H) :
     hsNormSq (rankOneLift ψ a) ≤ ENNReal.ofReal (‖a‖ ^ 2 / ‖ψ‖ ^ 2) :=
   hsNormSq_le fun s hs => by
@@ -160,6 +169,7 @@ theorem hsNormSq_rankOneLift_le (ψ a : H) :
 theorem isHilbertSchmidt_rankOneLift (ψ a : H) : IsHilbertSchmidt (rankOneLift ψ a) :=
   ne_top_of_le_ne_top ENNReal.ofReal_ne_top (hsNormSq_rankOneLift_le ψ a)
 
+/-- For a nonzero readout, the rank-one Hilbert–Schmidt upper bound is attained. -/
 theorem le_hsNormSq_rankOneLift {ψ : H} (hψ : ψ ≠ 0) (a : H) :
     ENNReal.ofReal (‖a‖ ^ 2 / ‖ψ‖ ^ 2) ≤ hsNormSq (rankOneLift ψ a) := by
   rcases eq_or_ne a 0 with rfl | ha
@@ -187,6 +197,7 @@ theorem hsNorm_rankOneLift {ψ : H} (hψ : ψ ≠ 0) (a : H) :
   rw [hsNorm, hsNormSq_rankOneLift hψ, ENNReal.toReal_ofReal (by positivity), ← div_pow,
     Real.sqrt_sq (by positivity)]
 
+/-- The Hilbert–Schmidt norm bounds the image norm of every unit vector. -/
 theorem norm_apply_le_hsNorm {A : H →L[ℝ] H} (hA : IsHilbertSchmidt A) {u : H}
     (hu : ‖u‖ = 1) : ‖A u‖ ≤ hsNorm A := by
   have h := sum_enorm_sq_le_hsNormSq A {u} (orthonormal_finset_singleton hu)
@@ -207,6 +218,7 @@ theorem opNorm_le_hsNorm {A : H →L[ℝ] H} (hA : IsHilbertSchmidt A) : ‖A‖
     _ ≤ ‖x‖ * hsNorm A := by gcongr
     _ = hsNorm A * ‖x‖ := mul_comm _ _
 
+/-- The Hilbert–Schmidt norm is nonnegative. -/
 theorem hsNorm_nonneg (A : H →L[ℝ] H) : 0 ≤ hsNorm A :=
   Real.sqrt_nonneg _
 
@@ -238,14 +250,17 @@ theorem lowerSemicontinuous_hsNormSq :
   exact continuous_finsetSum _ fun e _ =>
     (ENNReal.continuous_pow 2).comp (ContinuousLinearMap.apply ℝ H e).continuous.enorm
 
+/-- Measurability of `hsNormSq`. -/
 theorem measurable_hsNormSq : Measurable (hsNormSq : (H →L[ℝ] H) → ℝ≥0∞) :=
   lowerSemicontinuous_hsNormSq.measurable
 
+/-- Measurability of `hsNorm`. -/
 theorem measurable_hsNorm : Measurable (hsNorm : (H →L[ℝ] H) → ℝ) :=
   measurable_hsNormSq.ennreal_toReal.sqrt
 
 /-! ## Lipschitz estimates -/
 
+/-- A globally Lipschitz function has a linear growth envelope based at zero. -/
 theorem norm_le_of_lipschitzWith {E : Type*} [NormedAddCommGroup E] {β : ℝ → E} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (t : ℝ) : ‖β t‖ ≤ ‖β 0‖ + L * |t| := by
   have h := hβ.dist_le_mul t 0

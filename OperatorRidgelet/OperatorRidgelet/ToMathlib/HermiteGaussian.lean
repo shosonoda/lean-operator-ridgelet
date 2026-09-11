@@ -30,17 +30,21 @@ namespace Polynomial
 /-- The probabilists' Hermite polynomials with real coefficients. -/
 def hermiteR (n : ℕ) : ℝ[X] := (hermite n).map (Int.castRingHom ℝ)
 
+/-- The real Hermite polynomial of degree zero is one. -/
 @[simp]
 theorem hermiteR_zero : hermiteR 0 = 1 := by
   simp [hermiteR]
 
+/-- The real Hermite polynomials satisfy their differentiation recurrence. -/
 theorem hermiteR_succ (n : ℕ) :
     hermiteR (n + 1) = X * hermiteR n - derivative (hermiteR n) := by
   simp [hermiteR, Polynomial.map_mul, Polynomial.map_sub, derivative_map]
 
+/-- Every real Hermite polynomial is monic. -/
 theorem monic_hermiteR (n : ℕ) : (hermiteR n).Monic :=
   (hermite_monic n).map _
 
+/-- The degree of the nth real Hermite polynomial is n. -/
 @[simp]
 theorem natDegree_hermiteR (n : ℕ) : (hermiteR n).natDegree = n := by
   rw [hermiteR, (hermite_monic n).natDegree_map, natDegree_hermite]
@@ -145,6 +149,7 @@ theorem integrable_gaussianReal_eval_mul_cexp (P : ℝ[X]) (z : ℂ) :
 
 /-! ### Gaussian integration by parts -/
 
+/-- Complexification of a real polynomial commutes with evaluation at real inputs. -/
 theorem eval_map_ofReal (P : ℝ[X]) (y : ℝ) :
     (P.map (algebraMap ℝ ℂ)).eval (y : ℂ) = ((P.eval y : ℝ) : ℂ) := by
   induction P using Polynomial.induction_on' with
@@ -258,12 +263,14 @@ theorem integrable_gaussianReal_eval (P : ℝ[X]) :
   simp only [zero_mul, Complex.exp_zero, mul_one] at h
   simpa using h.re
 
+/-- Gaussian integration preserves differences of polynomial evaluations. -/
 theorem integral_gaussianReal_eval_sub (Q R : ℝ[X]) :
     ∫ y, ((Q - R).eval y) ∂gaussianReal 0 1 =
       (∫ y, (Q.eval y) ∂gaussianReal 0 1) - ∫ y, (R.eval y) ∂gaussianReal 0 1 := by
   rw [← integral_sub (integrable_gaussianReal_eval Q) (integrable_gaussianReal_eval R)]
   simp only [eval_sub]
 
+/-- Gaussian integration preserves sums of polynomial evaluations. -/
 theorem integral_gaussianReal_eval_add (Q R : ℝ[X]) :
     ∫ y, ((Q + R).eval y) ∂gaussianReal 0 1 =
       (∫ y, (Q.eval y) ∂gaussianReal 0 1) + ∫ y, (R.eval y) ∂gaussianReal 0 1 := by
@@ -317,6 +324,7 @@ theorem integral_gaussianReal_hermiteR_mul_hermiteR (m n : ℕ) :
 
 /-! ### The real exponential moment -/
 
+/-- The complex exponential of a product of real scalars is the embedded real exponential. -/
 theorem cexp_ofReal_mul (s y : ℝ) :
     Complex.exp ((s : ℂ) * (y : ℂ)) = ((Real.exp (s * y) : ℝ) : ℂ) := by
   rw [← Complex.ofReal_mul, ← Complex.ofReal_exp]

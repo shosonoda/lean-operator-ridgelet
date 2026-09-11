@@ -20,6 +20,10 @@ the index of its statements.
 - `OperatorRidgelet/LeanRidgelet/` is a verbatim copy of eight files of `shosonoda/lean-ridgelet`
   (revision in `LeanRidgelet.lean`).  Do not edit them; update by diffing against upstream.
 - Never run two `lake build`s in the same project concurrently.
+- `OperatorRidgelet/NeuralNetworkProofs/` vendors the Leshno theorem from
+  `davorrunje/neural-network-proofs`; its pinned revision, license, and compatibility adaptation
+  are recorded in `NeuralNetworkProofs.lean`. Preserve the upstream copyright headers and
+  document any further adaptations. Keep the operator-specific bridge in `Architecture/`.
 
 ## The comparator scheme is the record of formalization
 
@@ -40,8 +44,9 @@ the index of its statements.
 
 ## LeanArchitect and Verso Blueprint
 
-- LeanArchitect and Verso Blueprint both define an attribute named `blueprint`.  All LeanArchitect
-  annotations are `attribute [blueprint ...]` commands in `OperatorRidgelet/ArchitectBridge.lean`;
+- LeanArchitect and Verso Blueprint both define an attribute named `blueprint`. All LeanArchitect
+  annotations are `attribute [blueprint ...]` commands in `OperatorRidgelet/ArchitectBridge.lean`
+  and its `ArchitectBridge/` modules;
   no other module imports `Architect`, and no blueprint chapter imports `ArchitectBridge`.
 - Tag a statement whose proof is `sorry` with `(notReady := true)`; remove the flag when the proof
   is done.  `scripts/status.py` checks that the flag agrees with `theorem_names`.

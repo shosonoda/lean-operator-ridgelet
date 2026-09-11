@@ -15,6 +15,7 @@ open MeasureTheory
 
 variable {Ω : Type*} [MeasurableSpace Ω]
 
+/-- An integrable error on a probability space has a realization no larger than its mean. -/
 theorem exists_realization_le_mean (μ : Measure Ω) [IsProbabilityMeasure μ]
     (error : Ω → ℝ) (herror : Integrable error μ) :
     ∃ ω, error ω ≤ ∫ x, error x ∂μ := by

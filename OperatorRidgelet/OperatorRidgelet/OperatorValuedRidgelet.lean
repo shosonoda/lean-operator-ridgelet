@@ -51,11 +51,13 @@ def operatorRidgeletSection (ψ : H) :
   fun p => (rankOneLift ψ p.1, biasLift ψ p.2)
 
 omit [CompleteSpace H] in
+/-- Reading out a lifted bias recovers its scalar value. -/
 theorem inner_biasLift (ψ : H) (c : ℝ) (hψ : ψ ≠ 0) :
     inner ℝ ψ (biasLift ψ c) = c := by
   rw [biasLift, inner_smul_right, real_inner_self_eq_norm_sq]
   rw [mul_assoc, inv_mul_cancel₀ (pow_ne_zero 2 (norm_ne_zero_iff.mpr hψ)), mul_one]
 
+/-- The parameter reduction is a left inverse of the rank-one section. -/
 theorem operatorParameterMap_section (ψ : H) (hψ : ψ ≠ 0) :
     Function.LeftInverse (operatorParameterMap ψ) (operatorRidgeletSection ψ) := by
   intro p
@@ -63,12 +65,14 @@ theorem operatorParameterMap_section (ψ : H) (hψ : ψ ≠ 0) :
   · exact adjoint_rankOneLift_apply ψ p.1 hψ
   · exact inner_biasLift ψ p.2 hψ
 
+/-- Continuity of `operatorParameterMap`. -/
 theorem continuous_operatorParameterMap (ψ : H) :
     Continuous (operatorParameterMap ψ) := by
   unfold operatorParameterMap
   fun_prop
 
 omit [CompleteSpace H] in
+/-- Continuity of `operatorRidgeletSection`. -/
 theorem continuous_operatorRidgeletSection (ψ : H) :
     Continuous (operatorRidgeletSection ψ) := by
   unfold operatorRidgeletSection rankOneLift biasLift
@@ -83,6 +87,7 @@ def operatorRidgeFeature (ψ : H) (β : ℝ → ℂ)
     (p : OperatorRidgeParameter H) (x : H) : ℂ :=
   β (inner ℝ (ContinuousLinearMap.adjoint p.1 ψ) x + inner ℝ ψ p.2)
 
+/-- Along the rank-one section, the operator feature equals the scalar ridge feature. -/
 theorem operatorRidgeFeature_section (ψ : H) (hψ : ψ ≠ 0) (β : ℝ → ℂ)
     (p : ScalarRidgeParameter H) (x : H) :
     operatorRidgeFeature ψ β (operatorRidgeletSection ψ p) x =
@@ -94,12 +99,14 @@ section Measures
 
 variable [MeasurableSpace H] [BorelSpace H]
 
+/-- Measurability of `operatorParameterMap`. -/
 theorem measurable_operatorParameterMap (ψ : H) :
     Measurable (operatorParameterMap ψ) := by
   unfold operatorParameterMap
   fun_prop
 
 omit [CompleteSpace H] in
+/-- Measurability of `operatorRidgeletSection`. -/
 theorem measurable_operatorRidgeletSection (ψ : H) :
     Measurable (operatorRidgeletSection ψ) := by
   unfold operatorRidgeletSection rankOneLift biasLift
@@ -117,6 +124,7 @@ def operatorComplexRidgeSynthesis (ψ : H) (β : ℝ → ℂ)
   VectorMeasure.integral Γ (fun p => operatorRidgeFeature ψ β p x)
     (ContinuousLinearMap.lsmul ℝ ℂ)
 
+/-- Pushing coefficients along the section preserves the scalar synthesis integral. -/
 theorem operatorComplexRidgeSynthesis_map_section (ψ : H) (hψ : ψ ≠ 0)
     (β : ℝ → ℂ) (μ : ComplexMeasure (ScalarRidgeParameter H)) (x : H)
     (hstrong : AEStronglyMeasurable (fun q => operatorRidgeFeature ψ β q x)
@@ -155,6 +163,7 @@ def operatorValuedSynthesis {F : Type*} (ψ : H)
     (Γ : ComplexMeasure (OperatorRidgeParameter H)) : F :=
   S (Γ.map (operatorParameterMap ψ))
 
+/-- Reducing the lifted coefficient measure recovers the scalar ridgelet coefficients. -/
 theorem operatorValuedRidgeletTransform_pushforward {F : Type*}
     (ψ : H) (hψ : ψ ≠ 0) (R : F → ComplexMeasure (ScalarRidgeParameter H)) (f : F) :
     (operatorValuedRidgeletTransform ψ R f).map (operatorParameterMap ψ) = R f := by
@@ -166,6 +175,7 @@ theorem operatorValuedRidgeletTransform_pushforward {F : Type*}
     exact operatorParameterMap_section ψ hψ p
   rw [hcomp, VectorMeasure.map_id]
 
+/-- Scalar reconstruction transfers to the lifted operator-valued architecture. -/
 theorem operatorValuedRidgelet_reconstruction {F : Type*}
     (ψ : H) (hψ : ψ ≠ 0)
     (R : F → ComplexMeasure (ScalarRidgeParameter H))
@@ -177,6 +187,7 @@ theorem operatorValuedRidgelet_reconstruction {F : Type*}
   exact hrec f
 
 omit [BorelSpace H] in
+/-- Coefficient measures with the same reduced pushforward have the same synthesis. -/
 theorem operatorValuedSynthesis_eq_of_map_eq {F : Type*} (ψ : H)
     (S : ComplexMeasure (ScalarRidgeParameter H) → F)
     (Γ₁ Γ₂ : ComplexMeasure (OperatorRidgeParameter H))

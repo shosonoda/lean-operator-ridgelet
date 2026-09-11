@@ -36,9 +36,11 @@ section L2
 
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
+/-- The squared complex norm is the product with the complex conjugate. -/
 theorem ofReal_norm_sq (w : ℂ) : ((‖w‖ ^ 2 : ℝ) : ℂ) = w * conj w := by
   rw [Complex.sq_norm, Complex.mul_conj]
 
+/-- The product of two square-integrable functions, with one conjugated, is integrable. -/
 theorem integrable_mul_conj_of_memLp {u v : α → ℂ} (hu : MemLp u 2 μ) (hv : MemLp v 2 μ) :
     Integrable (fun x => u x * conj (v x)) μ := by
   have hv' : MemLp (fun x => conj (v x)) 2 μ :=
@@ -46,6 +48,7 @@ theorem integrable_mul_conj_of_memLp {u v : α → ℂ} (hu : MemLp u 2 μ) (hv 
       (Eventually.of_forall fun x => by simp)
   exact memLp_one_iff_integrable.mp (MemLp.mul' (r := 1) hv' hu)
 
+/-- The integral of the product with its conjugate is the real squared-norm integral. -/
 theorem integral_mul_conj_self {u : α → ℂ} :
     ∫ x, u x * conj (u x) ∂μ = ((∫ x, ‖u x‖ ^ 2 ∂μ : ℝ) : ℂ) := by
   rw [← integral_complex_ofReal]
@@ -94,25 +97,32 @@ def gaussGen (z : ℂ) (y : ℝ) : ℂ := Complex.exp (z * y - z ^ 2 / 2)
 /-- The probabilists' Hermite polynomial `Heₙ` as a complex-valued function on `ℝ`. -/
 def hermiteC (n : ℕ) (y : ℝ) : ℂ := (((hermiteR n).eval y : ℝ) : ℂ)
 
+/-- Continuity of `gaussGen`. -/
 theorem continuous_gaussGen (z : ℂ) : Continuous (gaussGen z) := by
   unfold gaussGen; fun_prop
 
+/-- Continuity of `hermiteC`. -/
 theorem continuous_hermiteC (n : ℕ) : Continuous (hermiteC n) := by
   unfold hermiteC; fun_prop
 
+/-- Hermite polynomials evaluated on the real line are fixed by complex conjugation. -/
 theorem conj_hermiteC (n : ℕ) (y : ℝ) : conj (hermiteC n y) = hermiteC n y :=
   Complex.conj_ofReal _
 
+/-- The Gaussian generating function factors into a constant and an exponential linear in the input.
+-/
 theorem gaussGen_eq (z : ℂ) (y : ℝ) :
     gaussGen z y = Complex.exp (-(z ^ 2 / 2)) * Complex.exp (z * y) := by
   rw [gaussGen, ← Complex.exp_add]
   ring_nf
 
+/-- Conjugating the Gaussian generating function conjugates its parameter. -/
 theorem conj_gaussGen (z : ℂ) (y : ℝ) : conj (gaussGen z y) = gaussGen (conj z) y := by
   rw [gaussGen, gaussGen, ← Complex.exp_conj]
   congr 1
   simp [map_sub, map_mul, map_div₀, map_pow, Complex.conj_ofReal, map_ofNat]
 
+/-- The product of two Gaussian generating functions has the combined linear exponent. -/
 theorem gaussGen_mul_gaussGen (z w : ℂ) (y : ℝ) :
     gaussGen z y * gaussGen w y =
       Complex.exp (-((z ^ 2 + w ^ 2) / 2)) * Complex.exp ((z + w) * y) := by
@@ -134,6 +144,7 @@ theorem integrable_eval_mul_gaussGen (P : ℝ[X]) (z : ℂ) :
   rw [gaussGen_eq]
   ring
 
+/-- Two Gaussian generating functions have an integrable product under the standard Gaussian. -/
 theorem integrable_gaussGen_mul_gaussGen (z w : ℂ) :
     Integrable (fun y : ℝ => gaussGen z y * gaussGen w y) (gaussianReal 0 1) := by
   refine ((integrable_gaussianReal_eval_mul_cexp 1 (z + w)).const_mul
@@ -142,6 +153,7 @@ theorem integrable_gaussGen_mul_gaussGen (z w : ℂ) :
   rw [gaussGen_mul_gaussGen]
   simp
 
+/-- The Gaussian generating function has integrable squared norm. -/
 theorem integrable_norm_gaussGen_sq (z : ℂ) :
     Integrable (fun y : ℝ => ‖gaussGen z y‖ ^ 2) (gaussianReal 0 1) := by
   have h : Integrable (fun y : ℝ => gaussGen z y * conj (gaussGen z y)) (gaussianReal 0 1) := by
@@ -154,14 +166,17 @@ theorem integrable_norm_gaussGen_sq (z : ℂ) :
   rw [← ofReal_norm_sq]
   exact Complex.ofReal_re _
 
+/-- The Gaussian generating function belongs to Gaussian L². -/
 theorem memLp_two_gaussGen (z : ℂ) : MemLp (gaussGen z) 2 (gaussianReal 0 1) :=
   (memLp_two_iff_integrable_sq_norm (continuous_gaussGen z).aestronglyMeasurable).mpr
     (integrable_norm_gaussGen_sq z)
 
+/-- The squared norm of a real Hermite polynomial equals the square of its evaluation. -/
 theorem norm_hermiteC_sq (n : ℕ) (y : ℝ) :
     ‖hermiteC n y‖ ^ 2 = (hermiteR n).eval y * (hermiteR n).eval y := by
   rw [hermiteC, Complex.norm_real, Real.norm_eq_abs, sq_abs, sq]
 
+/-- Every Hermite polynomial belongs to Gaussian L². -/
 theorem memLp_two_hermiteC (n : ℕ) : MemLp (hermiteC n) 2 (gaussianReal 0 1) := by
   refine (memLp_two_iff_integrable_sq_norm (continuous_hermiteC n).aestronglyMeasurable).mpr ?_
   refine (integrable_gaussianReal_eval (hermiteR n * hermiteR n)).congr
@@ -209,10 +224,12 @@ theorem integral_hermiteC_mul_hermiteC (m n : ℕ) :
     (Eventually.of_forall fun y => by simp [hermiteC]), integral_complex_ofReal, h]
   split <;> simp
 
+/-- A Hermite polynomial times a Gaussian generating function is Gaussian-integrable. -/
 theorem integrable_hermiteC_mul_gaussGen (n : ℕ) (z : ℂ) :
     Integrable (fun y : ℝ => hermiteC n y * gaussGen z y) (gaussianReal 0 1) :=
   integrable_eval_mul_gaussGen (hermiteR n) z
 
+/-- Products of Hermite polynomials are Gaussian-integrable. -/
 theorem integrable_hermiteC_mul_hermiteC (m n : ℕ) :
     Integrable (fun y : ℝ => hermiteC m y * hermiteC n y) (gaussianReal 0 1) := by
   refine (integrable_gaussianReal_eval (hermiteR m * hermiteR n)).ofReal.congr
@@ -230,9 +247,11 @@ def hermitePartial (s : Finset ℕ) (z : ℂ) (y : ℝ) : ℂ :=
 def hermiteSq (s : Finset ℕ) (z : ℂ) : ℝ :=
   ∑ n ∈ s, (‖z‖ ^ 2) ^ n / (n.factorial : ℝ)
 
+/-- Continuity of `hermitePartial`. -/
 theorem continuous_hermitePartial (s : Finset ℕ) (z : ℂ) : Continuous (hermitePartial s z) :=
   continuous_finsetSum _ fun n _ => continuous_const.mul (continuous_hermiteC n)
 
+/-- Finite Hermite expansions belong to Gaussian L². -/
 theorem memLp_two_hermitePartial (s : Finset ℕ) (z : ℂ) :
     MemLp (hermitePartial s z) 2 (gaussianReal 0 1) := by
   have hfun : hermitePartial s z =
@@ -240,11 +259,14 @@ theorem memLp_two_hermitePartial (s : Finset ℕ) (z : ℂ) :
   rw [hfun]
   exact memLp_finsetSum s fun n _ => (memLp_two_hermiteC n).const_mul _
 
+/-- Conjugation acts on the coefficients of the finite Hermite expansion. -/
 theorem conj_hermitePartial (s : Finset ℕ) (z : ℂ) (y : ℝ) :
     conj (hermitePartial s z y) = ∑ n ∈ s, conj (z ^ n / (n.factorial : ℂ)) * hermiteC n y := by
   rw [hermitePartial, map_sum]
   exact Finset.sum_congr rfl fun n _ => by rw [map_mul, conj_hermiteC]
 
+/-- Pairing the generating function with a finite Hermite expansion gives its squared coefficient
+sum. -/
 theorem integral_gaussGen_mul_conj_hermitePartial (s : Finset ℕ) (z : ℂ) :
     ∫ y, gaussGen z y * conj (hermitePartial s z y) ∂(gaussianReal 0 1) =
       ((hermiteSq s z : ℝ) : ℂ) := by
@@ -261,6 +283,7 @@ theorem integral_gaussGen_mul_conj_hermitePartial (s : Finset ℕ) (z : ℂ) :
   push_cast
   ring
 
+/-- The reversed Hermite pairing gives the same real squared coefficient sum. -/
 theorem integral_hermitePartial_mul_conj_gaussGen (s : Finset ℕ) (z : ℂ) :
     ∫ y, hermitePartial s z y * conj (gaussGen z y) ∂(gaussianReal 0 1) =
       ((hermiteSq s z : ℝ) : ℂ) := by
@@ -277,6 +300,7 @@ theorem integral_hermitePartial_mul_conj_gaussGen (s : Finset ℕ) (z : ℂ) :
   push_cast
   ring
 
+/-- The Gaussian squared norm of a finite Hermite expansion is its squared coefficient sum. -/
 theorem integral_hermitePartial_mul_conj_hermitePartial (s : Finset ℕ) (z : ℂ) :
     ∫ y, hermitePartial s z y * conj (hermitePartial s z y) ∂(gaussianReal 0 1) =
       ((hermiteSq s z : ℝ) : ℂ) := by
@@ -379,17 +403,20 @@ structure IsStdGaussianCoord (μ : Measure Ω) (Y : Ω → ℝ) : Prop where
   /-- The law of `Y` is `𝒩(0,1)`. -/
   map_eq : μ.map Y = gaussianReal 0 1
 
+/-- Integration along a standard Gaussian coordinate reduces to its one-dimensional Gaussian law. -/
 theorem IsStdGaussianCoord.integral_comp (hY : IsStdGaussianCoord μ Y) {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (g : ℝ → E)
     (hg : AEStronglyMeasurable g (gaussianReal 0 1)) :
     ∫ x, g (Y x) ∂μ = ∫ y, g y ∂(gaussianReal 0 1) := by
   rw [← hY.map_eq, integral_map hY.measurable.aemeasurable (by rwa [hY.map_eq])]
 
+/-- Composition with a standard Gaussian coordinate preserves Gaussian L² membership. -/
 theorem IsStdGaussianCoord.memLp_comp (hY : IsStdGaussianCoord μ Y) {g : ℝ → ℂ}
     (hg : MemLp g 2 (gaussianReal 0 1)) : MemLp (fun x => g (Y x)) 2 μ := by
   have h : MemLp g 2 (μ.map Y) := by rwa [hY.map_eq]
   simpa [Function.comp_def] using h.comp_of_map hY.measurable.aemeasurable
 
+/-- A measure carrying a standard Gaussian coordinate has total mass one. -/
 theorem IsStdGaussianCoord.isProbabilityMeasure (hY : IsStdGaussianCoord μ Y) :
     IsProbabilityMeasure μ := by
   constructor
@@ -399,11 +426,13 @@ theorem IsStdGaussianCoord.isProbabilityMeasure (hY : IsStdGaussianCoord μ Y) :
 variable (hY : IsStdGaussianCoord μ Y) {f : Ω → ℂ} (hf : MemLp f 2 μ)
 include hY hf
 
+/-- An L² function times a Hermite polynomial of a Gaussian coordinate is integrable. -/
 theorem integrable_mul_hermiteC_comp (n : ℕ) :
     Integrable (fun x => f x * hermiteC n (Y x)) μ :=
   memLp_one_iff_integrable.mp
     (MemLp.mul' (r := 1) (hY.memLp_comp (memLp_two_hermiteC n)) hf)
 
+/-- An L² function times a generating function of a Gaussian coordinate is integrable. -/
 theorem integrable_mul_gaussGen_comp (z : ℂ) :
     Integrable (fun x => f x * gaussGen z (Y x)) μ :=
   memLp_one_iff_integrable.mp

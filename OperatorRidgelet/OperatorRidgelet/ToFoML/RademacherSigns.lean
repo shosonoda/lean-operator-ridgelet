@@ -37,9 +37,11 @@ open scoped ENNReal
 /-- The real sign vector `(σ_1, …, σ_N) ∈ {-1, 1}^N ⊂ ℝ^N` of `σ : Signs N`. -/
 def signVector {N : ℕ} (σ : Signs N) : Fin N → ℝ := fun j => ((σ j : ℤ) : ℝ)
 
+/-- A real sign vector evaluates by coercing the corresponding integer sign. -/
 theorem signVector_apply {N : ℕ} (σ : Signs N) (j : Fin N) :
     signVector σ j = ((σ j : ℤ) : ℝ) := rfl
 
+/-- Every coordinate of a real sign vector is one or minus one. -/
 theorem signVector_eq_one_or_neg_one {N : ℕ} (σ : Signs N) (j : Fin N) :
     signVector σ j = 1 ∨ signVector σ j = -1 := by
   have h := (σ j).property
@@ -48,12 +50,15 @@ theorem signVector_eq_one_or_neg_one {N : ℕ} (σ : Signs N) (j : Fin N) :
   · exact Or.inr (by simp [signVector, h])
   · exact Or.inl (by simp [signVector, h])
 
+/-- Every coordinate of a real sign vector has absolute value one. -/
 theorem abs_signVector {N : ℕ} (σ : Signs N) (j : Fin N) : |signVector σ j| = 1 := by
   rcases signVector_eq_one_or_neg_one σ j with h | h <;> simp [h]
 
+/-- Every coordinate of a real sign vector has square one. -/
 theorem sq_signVector {N : ℕ} (σ : Signs N) (j : Fin N) : signVector σ j ^ 2 = 1 := by
   rcases signVector_eq_one_or_neg_one σ j with h | h <;> simp [h]
 
+/-- The all-positive sign vector witnesses nonemptiness of the sign space. -/
 instance instNonemptySigns (N : ℕ) : Nonempty (Signs N) := ⟨fun _ => ⟨1, by simp⟩⟩
 
 /-! ### The law of the signs as a product measure -/
@@ -61,6 +66,7 @@ instance instNonemptySigns (N : ℕ) : Nonempty (Signs N) := ⟨fun _ => ⟨1, b
 /-- The law `(δ₋₁ + δ₁)/2` of one Rademacher sign, as a measure on `ℝ`. -/
 def rademacherSign : Measure ℝ := (2⁻¹ : ℝ≥0∞) • (Measure.dirac (-1) + Measure.dirac 1)
 
+/-- The symmetric two-point sign law has total mass one. -/
 instance instIsProbabilityMeasureRademacherSign : IsProbabilityMeasure rademacherSign := by
   refine ⟨?_⟩
   rw [rademacherSign, Measure.smul_apply, Measure.add_apply,

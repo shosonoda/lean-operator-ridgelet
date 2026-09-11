@@ -62,6 +62,7 @@ theorem isOpenPosMeasure_gaussianReal (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) :
 noncomputable def stdGaussianPi (ι : Type*) : Measure (ι → ℝ) :=
   Measure.infinitePi fun _ : ι => gaussianReal 0 1
 
+/-- The product of standard Gaussian laws is a probability measure. -/
 instance instIsProbabilityMeasureStdGaussianPi (ι : Type*) :
     IsProbabilityMeasure (stdGaussianPi ι) := by
   unfold stdGaussianPi
@@ -105,6 +106,7 @@ noncomputable def gaussianSeriesPartial (F : Finset ι) (x : ι → ℝ) : H :=
   ∑ i ∈ F, (√(p i) * x i) • b i
 
 omit [Countable ι] in
+/-- Measurability of `gaussianSeriesPartial`. -/
 theorem measurable_gaussianSeriesPartial (F : Finset ι) :
     Measurable (gaussianSeriesPartial b p F) :=
   Finset.measurable_sum _ fun i _ => ((measurable_pi_apply i).const_mul _).smul_const _
@@ -185,12 +187,14 @@ noncomputable def gaussianSeriesMap : (ι → ℝ) → H :=
   if h : (∀ i, 0 ≤ p i) ∧ Summable p then (exists_measurable_ae_hasSum b p h.1 h.2).choose
   else 0
 
+/-- Measurability of `gaussianSeriesMap`. -/
 theorem measurable_gaussianSeriesMap : Measurable (gaussianSeriesMap b p) := by
   unfold gaussianSeriesMap
   split_ifs with h
   · exact (exists_measurable_ae_hasSum b p h.1 h.2).choose_spec.1
   · exact measurable_const
 
+/-- The weighted Gaussian series converges almost surely to its measurable sum. -/
 theorem ae_hasSum_gaussianSeriesMap (hp : ∀ i, 0 ≤ p i) (hs : Summable p) :
     ∀ᵐ x ∂stdGaussianPi ι,
       HasSum (fun i => (√(p i) * x i) • b i) (gaussianSeriesMap b p x) := by
@@ -204,6 +208,7 @@ standard Gaussians `Z_i`. -/
 noncomputable def gaussianSeries : Measure H :=
   (stdGaussianPi ι).map (gaussianSeriesMap b p)
 
+/-- The pushforward law of the Gaussian series is a probability measure. -/
 instance instIsProbabilityMeasureGaussianSeries : IsProbabilityMeasure (gaussianSeries b p) :=
   Measure.isProbabilityMeasure_map (measurable_gaussianSeriesMap b p).aemeasurable
 
@@ -385,6 +390,7 @@ theorem _root_.HilbertBasis.hasSum_inner_sq (y : H) :
   MeasurableSpace.comap (fun x => x i) inferInstance
 
 omit [Countable ι] in
+/-- The sigma-algebra of one coordinate is contained in the product sigma-algebra. -/
 theorem coordinateSigma_le (i : ι) :
     coordinateSigma ι i ≤ (inferInstance : MeasurableSpace (ι → ℝ)) :=
   (measurable_pi_apply i).comap_le
