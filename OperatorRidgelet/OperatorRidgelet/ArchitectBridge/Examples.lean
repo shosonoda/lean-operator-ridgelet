@@ -279,8 +279,8 @@ attribute [blueprint "lem:gaussian-quadratic-i"
 attribute [blueprint "lem:gaussian-quadratic-ii"
   (statement := /-- $\int_He^{i\langle x,\xi\rangle-\langle S\xi,\xi\rangle/2}\,\mathcal
     N(0,\Sigma)(\mathrm
-    d\xi)=\det(I+M)^{-1/2}\exp(-\tfrac12\langle\Sigma^{1/2}(I+M)^{-1}\Sigma^{1/2}x,x\rangle)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.lem_gaussian_quadratic_ii
+    d\xi)=\det(I+M)^{-1/2}\exp(-\tfrac12\langle\Sigma^{1/2}(I+M)^{-1}\Sigma^{1/2}x,x\rangle)$. -/)]
+  OperatorRidgelet.Paper.lem_gaussian_quadratic_ii
 
 attribute [blueprint "lem:gaussian-hinge-i-a"
   (statement := /-- $\int_{\mathbb R}(u-b)_+\varphi''(b)\,\mathrm db$ converges absolutely for
@@ -297,55 +297,55 @@ attribute [blueprint "lem:gaussian-hinge-ii"
   OperatorRidgelet.Paper.lem_gaussian_hinge_ii
 
 attribute [blueprint "ex:closed-form-i-a"
-  (statement := /-- $\mathcal G_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_i_a
+  (statement := /-- $\mathcal G_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_i_a
 
 attribute [blueprint "ex:closed-form-i-b"
-  (statement := /-- $R_\rho f_W(a,c)=D^{-1/2}(\rho*\phi_{\kappa_W(a)})(c)$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_i_b
+  (statement := /-- $R_\rho f_W(a,c)=D^{-1/2}(\rho*\phi_{\kappa_W(a)})(c)$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_i_b
 
 attribute [blueprint "ex:closed-form-i-c"
-  (statement := /-- $f_W\in\mathcal D_\alpha$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_i_c
+  (statement := /-- $f_W\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_i_c
 
 attribute [blueprint "ex:closed-form-i-d"
   (statement := /-- $f_W$ is not cylindrical when $W$ has infinite rank. -/)]
   OperatorRidgelet.Paper.ex_closed_form_i_d
 
 attribute [blueprint "ex:closed-form-ii-a"
-  (statement := /-- $G=\mathcal G_Qf_W$ is regular along rays. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_ii_a
+  (statement := /-- $G=\mathcal G_Qf_W$ is regular along rays. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_ii_a
 
 attribute [blueprint "ex:closed-form-ii-b"
-  (statement := /-- $T_\alpha f_W$ is represented by $g_G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_ii_b
+  (statement := /-- $T_\alpha f_W$ is represented by $g_G$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_ii_b
 
 attribute [blueprint "ex:closed-form-ii-c"
   (statement := /-- $g_G(x)=D^{-1/2}\int_0^\infty\det(I+2sP^{1/2}S_WP^{1/2})^{-1/2}
-    \exp(-\tfrac12\langle\Sigma_sx,x\rangle)\,s^{\alpha/2-1}\,\mathrm ds$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_ii_c
+    \exp(-\tfrac12\langle\Sigma_sx,x\rangle)\,s^{\alpha/2-1}\,\mathrm ds$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_ii_c
 
 attribute [blueprint "ex:closed-form-iii-a"
-  (statement := /-- $R_\rho f_W=\gamma_G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_iii_a
+  (statement := /-- $R_\rho f_W=\gamma_G$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_iii_a
 
 attribute [blueprint "ex:closed-form-iii-b"
-  (statement := /-- $R_\rho f_W$ has finite variation and second moment. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_iii_b
+  (statement := /-- $R_\rho f_W$ has finite variation and second moment. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_iii_b
 
 attribute [blueprint "ex:closed-form-iii-c"
   (statement := /-- For real, globally Lipschitz, non-polynomial $\beta$, $S_\beta[R_\rho
-    f_W\lambda_\alpha]=C^{(\alpha)}_{\beta,\rho}g_G$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_iii_c
+    f_W\lambda_\alpha]=C^{(\alpha)}_{\beta,\rho}g_G$. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_iii_c
 
 attribute [blueprint "ex:closed-form-iii-d"
   (statement := /-- The sampled network of $R_\rho f_W\lambda_\alpha$ converges at the rate
-    $N^{-1/2}$ in $C(K)$ as in the spectral Barron bound. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_closed_form_iii_d
+    $N^{-1/2}$ in $C(K)$ as in the spectral Barron bound. -/)]
+  OperatorRidgelet.Paper.ex_closed_form_iii_d
 
 attribute [blueprint "ex:core-elements-iv"
-  (statement := /-- $f_W\in\mathcal D_\alpha$ for every $\alpha>0$. -/)
-  (notReady := true)] OperatorRidgelet.Paper.ex_core_elements_iv
+  (statement := /-- $f_W\in\mathcal D_\alpha$ for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.ex_core_elements_iv
 
 attribute [blueprint "ex:core-elements-v"
   (statement := /-- The components $F_\varphi$ of the Gaussian-activation operator layers belong
