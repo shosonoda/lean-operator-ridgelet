@@ -3,6 +3,8 @@ import VersoManual
 import VersoBlueprint
 import OperatorRidgelet.Paper.Sampling
 import OperatorRidgelet.Paper.Reconstruction
+import OperatorRidgelet.Paper.Revision
+import OperatorRidgelet.Paper.SamplingRevision
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -51,17 +53,33 @@ with $`M_{\mathrm{op}}^2=\int(\|A^*\psi\|^2+|\langle\psi,b\rangle|^2)\,\mathrm d
 and finite-rank orthogonal projections.
 :::
 
-:::theorem "thm:general-rademacher" (lean := "OperatorRidgelet.Paper.thm_general_rademacher") (uses := "def:rademacher-complexity, def:integral-network, roadmap:polar-decomposition")
-Whenever the atoms $`x\mapsto h(\theta)\beta(\langle a,x\rangle+c)` are measurable and
-integrably bounded in $`C(K)`, the sampled network satisfies
+:::lemma_ "lem:banach-rademacher-vanishing" (lean := "OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_i, OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_ii") (uses := "def:rademacher-complexity")
+Let $`X` be a separable Banach space, $`p` a probability measure, and $`\Phi\in L^1(p;X)`.
+For independent samples $`\theta_j\sim p` and independent Rademacher signs $`\varepsilon_j`,
+$`\mathbb E\|N^{-1}\sum_{j=1}^N\varepsilon_j\Phi(\theta_j)\|_X\to0`.
+Moreover, for $`N\ge1` and $`m=\int\Phi\,\mathrm dp`,
+$`\mathbb E\|N^{-1}\sum_{j=1}^N\Phi(\theta_j)-m\|_X\le2\mathbb E\|N^{-1}\sum_{j=1}^N\varepsilon_j\Phi(\theta_j)\|_X`.
+:::
+
+:::proof "lem:banach-rademacher-vanishing"
+Approximate $`\Phi` in $`L^1` by a simple function
+$`\Psi=\sum_{k=1}^Jx_k\mathbf1_{E_k}`. The signed-average error has expected norm at most
+$`\|\Phi-\Psi\|_{L^1}`. For $`\Psi`, the scalar second-moment identity and Cauchy–Schwarz
+bound the expected norm by $`\sum_k\|x_k\|\sqrt{p(E_k)/N}`, which tends to zero.
+For symmetrization, introduce a ghost sample, apply Jensen, and insert independent signs
+using exchangeability of each pair. The triangle inequality gives the factor two.
+Bochner integrability justifies every expectation.
+:::
+
+:::theorem "thm:general-rademacher" (lean := "OperatorRidgelet.Paper.thm_general_rademacher") (uses := "def:rademacher-complexity, def:integral-network, roadmap:polar-decomposition, lem:banach-rademacher-vanishing")
+Whenever the atoms $`x\mapsto h(\theta)\beta(\langle a,x\rangle+c)` are strongly measurable
+and integrable as $`C(K)`-valued functions, the sampled network satisfies
 $`\mathbb E\|f_N-f\|_{C(K)}\le2V\,\mathfrak R_N(K;p,\beta)`.
 :::
 
 :::proof "thm:general-rademacher"
-Introduce an independent ghost sample, apply Jensen's inequality, and symmetrize the
-difference of the two empirical means by independent Rademacher signs; the triangle inequality
-for the two symmetrized sums gives the factor two. The argument is valid in any separable
-Banach space.
+Apply {bpref "lem:banach-rademacher-vanishing"}[] in $`C(K)` and multiply by $`V`.
+The same lemma gives convergence to zero. This step needs only Bochner integrability.
 :::
 
 :::theorem "thm:lipschitz-barron" (lean := "OperatorRidgelet.Paper.thm_lipschitz_barron_i, OperatorRidgelet.Paper.thm_lipschitz_barron_ii") (uses := "thm:general-rademacher, aux:sampling-data, roadmap:contraction-principle")
@@ -156,46 +174,58 @@ moment.
 
 # Finite variation from the spectral density
 
-:::theorem "thm:E" (lean := "OperatorRidgelet.Paper.thm_E_i, OperatorRidgelet.Paper.thm_E_ii, OperatorRidgelet.Paper.thm_E_iii, OperatorRidgelet.Paper.thm_E_iv") (uses := "def:ray-regular, def:spectral-coefficient, aux:tempered-activation, aux:sampling-data, thm:A, thm:lipschitz-barron, lem:homogeneous-mixture")
-Let $`\rho` be a band-pass filter and let $`G` be regular along rays. There is a constant
-$`c_\rho`, depending only on $`\rho` and $`\alpha`, such that
-$`\int_{H\times\mathbb R}(1+\|a\|^2+|c|^2)\,|\gamma_G(a,c)|\,\lambda_\alpha(\mathrm da,\mathrm dc)\le c_\rho\,M_4(G)`
-(i), which is finite (ii). Consequently, for every real $`\beta` that is globally Lipschitz
-and not a polynomial, the target $`C_{\beta,\rho}^{(\alpha)}g_G` is the integral network
-$`S_\beta[\gamma_G\lambda_\alpha]` (iii), and its sampled network satisfies, with
-$`V=\|\gamma_G\|_{L^1(\lambda_\alpha)}` and $`M_2` the second moment of
-$`|\gamma_G|\lambda_\alpha/V`,
+:::theorem "thm:E" (lean := "OperatorRidgelet.Paper.thm_E_i, OperatorRidgelet.Paper.thm_E_ii, OperatorRidgelet.Paper.thm_E_iii, OperatorRidgelet.Paper.thm_E_iv, OperatorRidgelet.Paper.thm_E_moments") (uses := "def:ray-regular, def:spectral-coefficient, lem:coefficient-finite-order, aux:tempered-activation, aux:sampling-data, thm:A, thm:lipschitz-barron, lem:homogeneous-mixture")
+Let $`\rho` be a band-pass filter with frequency window $`I`, and let $`G` be regular along
+rays. For every integer $`r\ge0` there is a finite constant $`c_{\rho,r}` such that
+$`\int_{H\times\mathbb R}(1+\|a\|+|c|)^r\|\gamma_G(a,c)\|\,\mathrm d\lambda_\alpha\le c_{\rho,r}M_{r+2}(G)<\infty`.
+The same constant works for every Hilbert output space $`Y`; it depends only on the filter
+and the order. In particular,
+$`\int(1+\|a\|^2+|c|^2)|\gamma_G(a,c)|\,\mathrm d\lambda_\alpha\le c_{\rho,2}M_4(G)<\infty`.
+For every real globally Lipschitz $`\beta`, the target $`C_{\beta,\rho}^{(\alpha)}g_G` is
+the integral network $`S_\beta[\gamma_G\lambda_\alpha]`. Its sampled network satisfies
 $`\mathbb E\|f_N-C_{\beta,\rho}^{(\alpha)}g_G\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)`
-for every compact $`K\subset H` (iv).
+for every compact $`K`, where $`V=\|\gamma_G\|_{L^1}` and $`M_2` is computed under
+$`|\gamma_G|\lambda_\alpha/V`. If $`V=0`, use the zero network.
 :::
 
 :::proof "thm:E"
-The bias Fourier transform of $`\gamma_G(a,\cdot)` is $`\widehat\rho(\omega)G(-\omega a)`,
-supported in $`I`; four $`\omega`-derivatives control $`(1+c^2)^2\gamma_G(a,\cdot)` in
-$`L^2(\mathrm dc)`, hence $`(1+c^2)\gamma_G(a,\cdot)` in $`L^1(\mathrm dc)` by Cauchy–Schwarz,
-and the supremum over $`I` of these derivatives is integrable against
-$`(1+\|a\|^2)\nu_\alpha(\mathrm da)` by regularity along rays. The second statement combines
-{bpref "thm:A"}[] (iii) with {bpref "thm:lipschitz-barron"}[].
+Apply {bpref "lem:coefficient-finite-order"}[] and $`A_{r+2,r}(G)\le M_{r+2}(G)`.
+The coefficient decays as $`(1+|c|)^{-r-2}`; two powers give an integrable bias weight and
+the other $`r` powers control the parameter moment. The scalar constant is independent of $`Y`.
+Use $`1+\|a\|^2+|c|^2\le(1+\|a\|+|c|)^2` for the second moment, then
+{bpref "thm:A"}[] (iii) and {bpref "thm:lipschitz-barron"}[] for synthesis and sampling.
 :::
 
 :::lemma_ "lem:ray-regular-examples" (lean := "OperatorRidgelet.Paper.lem_ray_regular_examples_a, OperatorRidgelet.Paper.lem_ray_regular_examples_b_i, OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii, OperatorRidgelet.Paper.lem_ray_regular_examples_c_i, OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii") (uses := "def:ray-regular, lem:gaussian-decay, lem:homogeneous-mixture")
-The following functions are regular along rays for every band-pass $`\rho`. (a)
-$`G(\xi)=q(\xi)e^{-\kappa(\xi)/2}` with $`\kappa(\xi)=\langle S\xi,\xi\rangle` for a bounded
-positive $`S\ge\theta Q`, $`\theta>0`, and $`q` a polynomial in finitely many bounded linear
-functionals of $`\xi` and in $`\kappa(\xi)`. (b) $`G(\xi)=\varphi(\|\xi-\xi_0\|^2)` with
-$`\varphi\in C_c^\infty(\mathbb R)`, and more generally any bounded $`G` that is $`C^\infty`
-along rays, vanishes outside a bounded set, and has
-$`\sup_{\omega\in I}|\partial_\omega^kG(\omega a)|\le C_k(1+\|a\|)^{p_k}`. (c) Finite linear
-combinations of functions regular along rays, and Bochner integrals $`\int G_y\,m(\mathrm dy)`
-of a measurable family of such functions over a finite measure with bounds uniform in $`y`.
+The following functions are regular along rays for every band-pass $`\rho`.
+(a) $`G(\xi)=q(\xi)e^{-\kappa(\xi)/2}`, where $`\kappa(\xi)=\langle S\xi,\xi\rangle`,
+$`S` is bounded and positive, $`S\ge\theta Q` for some $`\theta>0`, and $`q` is a
+polynomial in $`\kappa` and finitely many bounded linear functionals $`\ell_i` satisfying
+$`|\ell_i(\xi)|^2\le C_i\kappa(\xi)` for every $`\xi`. Equivalently,
+$`\ell_i=\langle S^{1/2}v_i,\cdot\rangle` for some $`v_i\in H`. A polynomial in
+$`\kappa` alone requires no further condition.
+(b) $`G(\xi)=\varphi(\|\xi-\xi_0\|^2)` for $`\varphi\in C_c^\infty(\mathbb R)`;
+more generally, bounded densities smooth along rays, with bounded support and
+$`\sup_{\omega\in I}|\partial_\omega^kG(\omega a)|\le C_k(1+\|a\|)^{p_k}` for every $`k`.
+(c) Finite linear combinations, and Bochner integrals $`G=\int_\Omega G_y\,m(\mathrm dy)`
+of uniformly bounded measurable families over a finite measure, subject to these
+neighbourhood bounds: there is an open $`U\supset I` where every ray of every $`G_y` is
+smooth, and finite-valued Borel $`h_k:H\to[0,\infty)` such that
+$`\sup_{\omega\in U}|\partial_\omega^kG_y(\omega a)|\le h_k(a)` for every $`y,a,k`, and
+$`\int_H(1+\|a\|)^{m+2}\max_{k\le m}h_k(a)\,\nu_\alpha(\mathrm da)<\infty` for every $`m`.
+The bounds hold on the open neighbourhood and for every direction.
 :::
 
 :::proof "lem:ray-regular-examples"
-For (a) the ray derivatives are polynomials times $`e^{-\omega^2\kappa(a)/2}`, bounded on
-$`I` by $`C_k(1+\|a\|)^{p_k}e^{-r^2\theta\langle Qa,a\rangle/2}`, which
-{bpref "lem:gaussian-decay"}[] integrates; for (b) the derivatives vanish unless
-$`\|a\|\le R_0/r` and $`\nu_\alpha` is finite on bounded sets; (c) is the triangle inequality
-and Tonelli.
+For (a), domination of the linear functionals gives $`|q(\xi)|\le C(1+\kappa(\xi))^p`,
+so $`G` is bounded. Ray derivatives are polynomials times $`e^{-\omega^2\kappa(a)/2}`;
+on $`I\subset\{r\le|\omega|\le R\}` their bound is
+$`C_k(1+\|a\|)^{p_k}e^{-r^2\theta\langle Qa,a\rangle/2}`. Apply
+{bpref "lem:gaussian-decay"}[]. For (b), derivatives vanish outside a bounded set of
+directions, on which $`\nu_\alpha` is finite. For (c), the finite neighbourhood bounds
+justify differentiation under the Bochner integral for each direction. The triangle
+inequality and Tonelli give
+$`M_m(G)\le m(\Omega)\int_H(1+\|a\|)^{m+2}\max_{k\le m}h_k(a)\,\nu_\alpha(\mathrm da)<\infty`.
 :::
 
 # Constructive universal approximation
@@ -203,7 +233,9 @@ and Tonelli.
 :::theorem "thm:D" (lean := "OperatorRidgelet.Paper.thm_D, OperatorRidgelet.Paper.thm_D_dense, OperatorRidgelet.Paper.thm_D_vec") (uses := "def:finite-network, def:ray-regular, aux:tempered-activation, thm:tempered-reconstruction, lem:ray-regular-examples, thm:A, thm:E, thm:lipschitz-barron, lem:qualitative-sampling, cor:vector-rates, thm:vector-valued")
 Let $`\beta:\mathbb R\to\mathbb R` be continuous, of polynomial growth, and not a polynomial,
 let $`\rho` be a band-pass filter with $`C_{\beta,\rho}^{(\alpha)}=1`, let $`f:H\to\mathbb C`
-be continuous, $`K\subset H` compact, and $`\varepsilon>0`. Then there is a spectral density
+be continuous, $`K\subset H` compact, and $`\varepsilon>0`. The direction measure has full
+support and is finite on bounded sets; these properties hold for $`\nu_\alpha` and are
+required in the abstract-weight version. Then there is a spectral density
 $`G`, regular along rays, smooth, and vanishing outside a bounded set, such that (i)
 $`\|f-g_G\|_{C(K)}<\varepsilon`; (ii) $`g_G=S_\beta[\gamma_G\lambda_\alpha]` is an integral
 network whose coefficient measure is finite with finite moments of all orders; (iii) if
@@ -220,8 +252,8 @@ of {bpref "cor:vector-rates"}[] (ii) in (iii).
 Finite sums of characters $`e^{i\langle x,\xi\rangle}` form a self-conjugate algebra
 containing the constants and separating points, so Stone–Weierstrass gives a trigonometric
 approximant on $`K`; each character is within $`r_K\delta` of $`g_{G_j}` for a normalized
-smooth bump $`G_j` supported in the ball of radius $`\delta` around $`\xi_j`, which uses only
-the full support of $`\nu_\alpha`. The sum $`G=\sum_jw_jG_j` is regular along rays by
+smooth bump $`G_j` supported in the ball of radius $`\delta` around $`\xi_j`. Full support
+makes its normalizing integral positive, and finiteness on bounded sets makes it finite. The sum $`G=\sum_jw_jG_j` is regular along rays by
 {bpref "lem:ray-regular-examples"}[], and {bpref "thm:A"}[] (iii), {bpref "thm:E"}[], and
 {bpref "thm:lipschitz-barron"}[] give (ii) and (iii); the vector-valued case uses a partition
 of unity and {bpref "thm:vector-valued"}[].
@@ -229,21 +261,27 @@ of unity and {bpref "thm:vector-valued"}[].
 
 # Vector-valued sampling
 
-:::corollary "cor:vector-rates" (lean := "OperatorRidgelet.Paper.cor_vector_rates_i_a, OperatorRidgelet.Paper.cor_vector_rates_i_b, OperatorRidgelet.Paper.cor_vector_rates_ii_a, OperatorRidgelet.Paper.cor_vector_rates_ii_b") (uses := "def:rademacher-complexity, aux:sampling-data, lem:hilbert-sampling, thm:general-rademacher")
+:::corollary "cor:vector-rates" (lean := "OperatorRidgelet.Paper.cor_vector_rates_i_a, OperatorRidgelet.Paper.cor_vector_rates_i_b, OperatorRidgelet.Paper.cor_vector_rates_ii_a, OperatorRidgelet.Paper.cor_vector_rates_ii_b, OperatorRidgelet.Paper.cor_vector_rates_i_exact") (uses := "def:rademacher-complexity, aux:sampling-data, lem:hilbert-sampling, thm:general-rademacher, lem:banach-rademacher-vanishing")
 Let $`\Gamma` be a $`Y`-valued measure of bounded variation with polar decomposition
-$`\Gamma=h|\Gamma|`, let $`\beta` be globally Lipschitz, and let $`p=|\Gamma|/V` have finite
-second moment. (i) For every Borel probability measure $`\zeta` on $`H` with
-$`\int\|x\|^2\zeta(\mathrm dx)<\infty`,
-$`\mathbb E\|f_N-f\|_{L^2(\zeta;Y)}^2\le\frac{V^2}N\int\|\beta(\langle a,\cdot\rangle+c)\|_{L^2(\zeta)}^2\,p(\mathrm da,\mathrm dc)\le\frac{2V^2}N\bigl(|\beta(0)|^2+\operatorname{Lip}(\beta)^2(1+\int\|x\|^2\mathrm d\zeta)M_2^2\bigr)`.
-(ii) For every compact $`K\subset H`,
-$`\mathbb E\|f_N-f\|_{C(K;Y)}\le2V\,\mathfrak R_N^Y(K;p,\beta)`, and
-$`\mathfrak R_N^Y(K;p,\beta)\to0` as $`N\to\infty`.
+$`\Gamma=h|\Gamma|`, let $`\beta` be real and globally Lipschitz, and let $`N\ge1`.
+If $`V=0`, use the zero network; otherwise let $`p=|\Gamma|/V`.
+(i) Assume the parameter second moment is finite. For every Borel probability measure
+$`\zeta` with $`\int\|x\|^2\,\mathrm d\zeta<\infty`,
+$`\mathbb E\|f_N-f\|_{L^2(\zeta;Y)}^2=\frac1N\left(V^2\int\|\beta(\langle a,\cdot\rangle+c)\|_{L^2(\zeta)}^2\,\mathrm dp-\|f\|_{L^2(\zeta;Y)}^2\right)`.
+Consequently this is at most
+$`\frac{V^2}N\int\|\beta(\langle a,\cdot\rangle+c)\|_{L^2(\zeta)}^2\,\mathrm dp\le\frac{2V^2}N\left(|\beta(0)|^2+\operatorname{Lip}(\beta)^2(1+\int\|x\|^2\,\mathrm d\zeta)M_2^2\right)`.
+(ii) Only the first moment $`\int(\|a\|+|c|)\,\mathrm dp<\infty` is needed for
+$`\mathbb E\|f_N-f\|_{C(K;Y)}\le2V\,\mathfrak R_N^Y(K;p,\beta)` on compact $`K`,
+and for $`\mathfrak R_N^Y(K;p,\beta)\to0`.
 :::
 
 :::proof "cor:vector-rates"
-Part (i) is {bpref "lem:hilbert-sampling"}[] in $`X=L^2(\zeta;Y)` followed by
+Apply {bpref "lem:hilbert-sampling"}[] in $`L^2(\zeta;Y)` to obtain the exact variance.
+The polar phase has norm one almost everywhere. The elementary bounds
 $`|\beta(u)|^2\le2|\beta(0)|^2+2\operatorname{Lip}(\beta)^2u^2` and
-$`u^2\le(\|a\|^2+c^2)(\|x\|^2+1)`; part (ii) is {bpref "thm:general-rademacher"}[] in the
-Banach space $`C(K;Y)`, and the convergence to zero is the law of large numbers for integrably
-bounded atoms.
+$`u^2\le(\|a\|^2+c^2)(\|x\|^2+1)` give the second-moment estimate.
+For (ii), the compact atom map is continuous before composition with the measurable polar
+phase, hence strongly measurable. Its norm is bounded by
+$`|\beta(0)|+\operatorname{Lip}(\beta)R_K\sqrt{\|a\|^2+c^2}`, which is integrable under
+the first-moment hypothesis. Apply {bpref "lem:banach-rademacher-vanishing"}[] in $`C(K;Y)`.
 :::

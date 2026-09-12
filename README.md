@@ -19,7 +19,7 @@ lemma, corollary, and example of the manuscript is stated in `OperatorRidgelet/C
 `OperatorRidgelet/comparator/config.json` once comparator verifies the proof against the statement
 with only the axioms `propext`, `Quot.sound`, and `Classical.choice`.
 
-All 57 manuscript items are fully verified, comprising 316 Lean statements.
+All 63 manuscript items are fully verified, comprising 345 Lean statements.
 
 The human-readable Verso Blueprint is published at
 <https://shosonoda.github.io/lean-operator-ridgelet/> by the `Blueprint pages` workflow on every

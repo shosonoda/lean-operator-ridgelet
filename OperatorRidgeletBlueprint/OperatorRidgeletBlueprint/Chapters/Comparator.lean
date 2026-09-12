@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). Verified declarations in `theorem_names`: 316.
+Manuscript `main.tex`, version 2026-09-12 revision (numbers synced 2026-09-12). Verified declarations in `theorem_names`: 345.
 
 :::table +header
 *
@@ -55,9 +55,9 @@ Manuscript `main.tex`, version 2026-09-08 revision (numbers synced 2026-09-08). 
   * Verified by comparator (or pure definition)
   * Partially verified
 *
-  * 57
-  * 57
-  * 57
+  * 63
+  * 63
+  * 63
   * 0
 :::
 
@@ -317,11 +317,47 @@ theorem lem_fourier_slice_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sch
 
 Status: *verified by comparator*.
 
-## Definition 3.5 — The coefficient operator (`def:spectral-coefficient`)
+## Lemma 3.5 — Partial Fourier transform of a square-integrable coefficient (`lem:partial-fourier-l2`)
+
+Blueprint node: {bpref "lem:partial-fourier-l2"}[]. Status: *verified* (all 2 Lean theorems verified).
+
+`OperatorRidgelet.Paper.lem_partial_fourier_l2`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L134):
+
+```
+omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+  [SecondCountableTopology H] [BorelSpace H] in
+/-- **Lemma [lem:partial-fourier-l2]** Bias Fourier transformation is a genuine unitary
+with jointly measurable representatives and the angular normalization. -/
+theorem lem_partial_fourier_l2 (ν : Measure H) [SigmaFinite ν] :
+    ∃ U : Lp Y 2 (parameterMeasure ν) ≃ₗᵢ[ℂ]
+      Lp Y 2 (ν.prod (ENNReal.ofReal (2 * Real.pi)⁻¹ • (volume : Measure ℝ))),
+      ∀ γ : Lp Y 2 (parameterMeasure ν),
+        ∃ Φ : H → ℝ → Y, StronglyMeasurable (Function.uncurry Φ) ∧
+          HasBiasFourierVec ν γ Φ ∧
+          Function.uncurry Φ =ᵐ[ν.prod (ENNReal.ofReal (2 * Real.pi)⁻¹ • volume)] ⇑(U γ) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_partial_fourier_l2_uniqueness`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L221):
+
+```
+omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+  [SecondCountableTopology H] [BorelSpace H] in
+/-- **Lemma [lem:partial-fourier-l2]** The Fourier representatives agree on almost every section. -/
+theorem lem_partial_fourier_l2_uniqueness (ν : Measure H) [SigmaFinite ν]
+    (γ : H × ℝ → Y) (Φ Φ' : H → ℝ → Y) (hΦ : HasBiasFourierVec ν γ Φ)
+    (hΦ' : HasBiasFourierVec ν γ Φ') :
+    ∀ᵐ a ∂ν, Φ a =ᵐ[volume] Φ' a := by
+```
+
+Status: *verified by comparator*.
+
+## Definition 3.6 — The coefficient operator (`def:spectral-coefficient`)
 
 Blueprint node: {bpref "def:spectral-coefficient"}[]. Status: *verified* (its Lean theorem is verified).
 
-Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula).
+Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def\_spectral\_coefficient is the L² formula claim (λ-a.e. equality with coefficientFormula).
 
 `OperatorRidgelet.HasBiasFourier`: definition in the library (structure in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L312)); see the Lean panel of the Blueprint node above.
 
@@ -333,19 +369,19 @@ Formalization note. W\_ρ G is the element of L²(λ) whose partial bias Fourier
 
 ```
 /-- **Definition [def:spectral-coefficient]** The coefficient operator.  For
-`G ∈ L¹(ν) ∩ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
+`G ∈ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
 `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
 theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
-    (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
+    (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
 ```
 
 Status: *verified by comparator*.
 
-## Lemma 3.6 — The coefficient operator is a scaled isometry (`lem:coefficient-isometry`)
+## Lemma 3.7 — The coefficient operator is a scaled isometry (`lem:coefficient-isometry`)
 
-Blueprint node: {bpref "lem:coefficient-isometry"}[]. Status: *verified* (all 5 Lean theorems verified).
+Blueprint node: {bpref "lem:coefficient-isometry"}[]. Status: *verified* (all 6 Lean theorems verified).
 
 Formalization note. Stated for an abstract σ-finite homogeneous ν; the formula claim is def\_spectral\_coefficient (shared with def:spectral-coefficient).
 
@@ -410,17 +446,86 @@ Status: *verified by comparator*.
 
 ```
 /-- **Definition [def:spectral-coefficient]** The coefficient operator.  For
-`G ∈ L¹(ν) ∩ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
+`G ∈ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
 `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
 theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
-    (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
+    (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
 ```
 
 Status: *verified by comparator*.
 
-## Definition 3.7 — The Hilbert space \\(\\cE\_\\alpha\\) (`def:spectral-space`)
+`OperatorRidgelet.Paper.lem_coefficient_isometry_v`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L211):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Lemma [lem:coefficient-isometry]** The L² inverse formula is absolutely integrable
+on almost every ray, for every bias value. -/
+theorem lem_coefficient_isometry_v {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
+    (G : H → ℂ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
+    ∀ᵐ a ∂ν, ∀ c : ℝ, Integrable (fun ω : ℝ =>
+      filterFourier ρ ω * G (-(ω • a)) * Complex.exp ((ω * c : ℝ) * Complex.I)) := by
+```
+
+Status: *verified by comparator*.
+
+## Lemma 3.8 — The backprojection is the adjoint coefficient operator (`lem:coefficient-adjoint`)
+
+Blueprint node: {bpref "lem:coefficient-adjoint"}[]. Status: *verified* (all 3 Lean theorems verified).
+
+`OperatorRidgelet.Paper.lem_coefficient_adjoint_i`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L248):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Lemma [lem:coefficient-adjoint]** The coefficient operator has the bounded ray-average
+adjoint and the scaled left-inverse identity. -/
+theorem lem_coefficient_adjoint_i (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) :
+    ∃ W : Lp Y 2 ν →L[ℂ] Lp Y 2 (parameterMeasure ν),
+      (∀ F, W F = spectralCoefficientVec ν ρ F) ∧
+      (∀ γ, W.adjoint γ = backprojectionLpVec α ν ρ γ) ∧
+      ‖W‖ ≤ Real.sqrt (admissibilityConst α ρ) ∧
+      (∀ γ : Lp Y 2 (parameterMeasure ν), ‖backprojectionLpVec α ν ρ γ‖ ≤
+        Real.sqrt (admissibilityConst α ρ) * ‖γ‖) ∧
+      ∀ F, W.adjoint (W F) = (admissibilityConst α ρ : ℂ) • F := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_adjoint_ii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L263):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Lemma [lem:coefficient-adjoint]** The ray-average integral is absolutely convergent a.e. -/
+theorem lem_coefficient_adjoint_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
+    (γ : Lp Y 2 (parameterMeasure ν)) (Φ : H → ℝ → Y)
+    (hΦ : StronglyMeasurable (Function.uncurry Φ)) (hB : HasBiasFourierVec ν γ Φ) :
+    ∀ᵐ ξ ∂ν, Integrable fun ω : ℝ =>
+      ((starRingEnd ℂ) (filterFourier ρ ω) * ((|ω| ^ (-α) : ℝ) : ℂ)) •
+        Φ (-(ω⁻¹ • ξ)) ω := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_adjoint_iii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L274):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Lemma [lem:coefficient-adjoint]** Every measurable Fourier representative gives Λ. -/
+theorem lem_coefficient_adjoint_iii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (γ : Lp Y 2 (parameterMeasure ν)) (Φ : H → ℝ → Y)
+    (hΦ : StronglyMeasurable (Function.uncurry Φ)) (hB : HasBiasFourierVec ν γ Φ) :
+    backprojectionVec α ν ρ γ =ᵐ[ν] backprojectionOfVec α ρ Φ := by
+```
+
+Status: *verified by comparator*.
+
+## Definition 3.9 — The Hilbert space \\(\\cE\_\\alpha\\) (`def:spectral-space`)
 
 Blueprint node: {bpref "def:spectral-space"}[]. Status: *defined* (definitions only, nothing for comparator to check).
 
@@ -436,7 +541,7 @@ Formalization note. 𝓔\_α is represented by 𝒦\_α = spectralRange (the clo
 
 `OperatorRidgelet.spectralEmbed`: definition in the library (def in [`OperatorRidgelet/Transform/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean#L415)); see the Lean panel of the Blueprint node above.
 
-## Lemma 3.8 — Positivity and the unitary extension (`lem:spectral-unitary`)
+## Lemma 3.10 — Positivity and the unitary extension (`lem:spectral-unitary`)
 
 Blueprint node: {bpref "lem:spectral-unitary"}[]. Status: *verified* (all 3 Lean theorems verified).
 
@@ -483,7 +588,7 @@ theorem lem_spectral_unitary_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [
 
 Status: *verified by comparator*.
 
-## Lemma 3.9 — Gaussian decay with polynomial weights (`lem:gaussian-decay`)
+## Lemma 3.11 — Gaussian decay with polynomial weights (`lem:gaussian-decay`)
 
 Blueprint node: {bpref "lem:gaussian-decay"}[]. Status: *verified* (all 2 Lean theorems verified).
 
@@ -521,7 +626,7 @@ theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
 
 Status: *verified by comparator*.
 
-## Example 3.10 — Elements of \\(\\cD\_\\alpha\\) (`ex:core-elements`)
+## Example 3.12 — Elements of \\(\\cD\_\\alpha\\) (`ex:core-elements`)
 
 Blueprint node: {bpref "ex:core-elements"}[]. Status: *verified* (all 5 Lean theorems verified).
 
@@ -601,7 +706,7 @@ theorem ex_core_elements_v (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
 
 Status: *verified by comparator*.
 
-## Theorem 3.12 — Plancherel identity and injectivity (`thm:B`)
+## Theorem 3.14 — Plancherel identity and injectivity (`thm:B`)
 
 Blueprint node: {bpref "thm:B"}[]. Status: *verified* (all 7 Lean theorems verified).
 
@@ -725,13 +830,13 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
-`α`-admissible and `f ∈ L²(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
+`α`-admissible and `f ∈ L¹(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
 `μ_Q`-almost everywhere. -/
 theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
+    (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : Integrable f μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure (gaussianMixture N α)] 0) :
     f =ᵐ[μ] 0 := by
 ```
@@ -740,7 +845,45 @@ Status: *verified by comparator*.
 
 # Manuscript Section 4
 
-## Definition 4.1 — Regularity along rays (`def:ray-regular`)
+## Lemma 4.1 — An integrable spectral density defines a unique continuous target (`lem:spectral-target-basic`)
+
+Blueprint node: {bpref "lem:spectral-target-basic"}[]. Status: *verified* (all 3 Lean theorems verified).
+
+`OperatorRidgelet.Paper.lem_spectral_target_basic_i`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L19):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Lemma [lem:spectral-target-basic]** The spectral target has the uniform L¹ norm bound. -/
+theorem lem_spectral_target_basic_i (ν : Measure H) (G : H → Y) (_hG : Integrable G ν) :
+    ∀ x : H, ‖spectralTarget ν G x‖ ≤ ∫ ξ, ‖G ξ‖ ∂ν := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_spectral_target_basic_ii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L26):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Lemma [lem:spectral-target-basic]** An integrable spectral density has a continuous target. -/
+theorem lem_spectral_target_basic_ii (ν : Measure H) (G : H → Y) (hG : Integrable G ν) :
+    Continuous (spectralTarget ν G) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_spectral_target_basic_iii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L33):
+
+```
+/-- **Lemma [lem:spectral-target-basic]** A spectral density is determined by its target. -/
+theorem lem_spectral_target_basic_iii (ν : Measure H) (G : H → Y) (hG : Integrable G ν)
+    (hzero : spectralTarget ν G = 0) : G =ᵐ[ν] 0 := by
+```
+
+Status: *verified by comparator*.
+
+## Definition 4.2 — Regularity along rays (`def:ray-regular`)
 
 Blueprint node: {bpref "def:ray-regular"}[]. Status: *verified* (its Lean theorem is verified).
 
@@ -769,9 +912,9 @@ theorem def_ray_regular (ν : Measure H) [SigmaFinite ν] {α : ℝ} (hα : 0 < 
 
 Status: *verified by comparator*.
 
-## Theorem 4.2 — Integral representation of targets with a spectral density (`thm:A`)
+## Theorem 4.3 — Integral representation of targets with a spectral density (`thm:A`)
 
-Blueprint node: {bpref "thm:A"}[]. Status: *verified* (all 10 Lean theorems verified).
+Blueprint node: {bpref "thm:A"}[]. Status: *verified* (all 11 Lean theorems verified).
 
 Formalization note. Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α), as the manuscript notes after the proof; the Gaussian case is ν = gaussianMixture N α. Part i (bound, continuity, uniqueness) involves neither ρ nor homogeneity and is stated for G ∈ L¹(ν) alone. Part ii: absolute convergence is the a.e. integrability of the inner integrand plus the ν-integrability of the inner integral (ii\_a), the identity with C^\{(α)\}\_ρ (ii\_b), and the integral-network form integralNetworkDensity when γ\_G ∈ L¹(λ\_α) (ii\_c); it is stated with the band-pass hypothesis of the theorem although, as the manuscript remarks, only admissibility is used. Part iii: a tempered β that is a continuous function of polynomial growth is the pair (β : TemperedDistribution ℝ ℂ, b : ℝ → ℝ) with IsTemperedFunction β b (b continuous, |b| ≤ C(1+|t|)^p, β = integration against b); 'not a polynomial' is ¬ IsPolynomialFun b; the constant is temperedAdmissibilityConst α β ρ of Tempered/Const; iii\_a, iii\_b are the two absolute convergences, iii\_c the identity, iii\_d the existence of a band-pass ρ with C^\{(α)\}\_\{β,ρ\} ≠ 0 for every such non-polynomial β. The remark that the constant is a pairing with a test function supported in -supp ρ̂ is the definition of temperedTestFilter and is not restated.
 
@@ -819,7 +962,7 @@ Status: *verified by comparator*.
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da)` converges absolutely: the inner integral converges
 absolutely for `ν_α`-almost every `a`, and the outer integrand is `ν_α`-integrable. -/
 theorem thm_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       (∀ᵐ a ∂ν, Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∧
@@ -836,7 +979,7 @@ Status: *verified by comparator*.
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` the spectral synthesis identity
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_ρ g_G(x)` holds for every `x`. -/
 theorem thm_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∂ν =
@@ -852,7 +995,7 @@ Status: *verified by comparator*.
 `γ_G ∈ L¹(λ_α)`, the left side of the spectral synthesis identity is the integral network
 `S_ρ[γ_G λ_α](x)`. -/
 theorem thm_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormula ρ G) (parameterMeasure ν)) :
     ∀ x : H,
@@ -867,13 +1010,13 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the inner integral `∫ γ_G(a,c) β(⟨a,x⟩+c) dc` converges absolutely for
 `ν_α`-almost every `a`. -/
 theorem thm_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
       Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) := by
@@ -885,12 +1028,12 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the `ν_α`-integral of the inner integral converges absolutely. -/
 theorem thm_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
@@ -903,13 +1046,13 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the tempered spectral synthesis identity
 `∫ [∫ γ_G(a,c) β(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_{β,ρ} g_G(x)` holds. -/
 theorem thm_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ∂ν =
@@ -931,9 +1074,24 @@ theorem thm_A_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ
 
 Status: *verified by comparator*.
 
-## Theorem 4.3 — Reconstruction and the frame operator (`thm:C`)
+`OperatorRidgelet.Paper.thm_A_iii_e`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L113):
 
-Blueprint node: {bpref "thm:C"}[]. Status: *verified* (all 17 Lean theorems verified).
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Theorem [thm:A]** Tempered synthesis is jointly absolutely integrable. -/
+theorem thm_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) (x : H) :
+    Integrable (fun θ : H × ℝ => coefficientFormula ρ G θ *
+      (b (⟪θ.1, x⟫ + θ.2) : ℂ)) (parameterMeasure ν) := by
+```
+
+Status: *verified by comparator*.
+
+## Theorem 4.4 — Reconstruction and the frame operator (`thm:C`)
+
+Blueprint node: {bpref "thm:C"}[]. Status: *verified* (all 18 Lean theorems verified).
 
 Formalization note. Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv\_d–iv\_f add μ = 𝒩(0,Q). 𝓔\_α is represented by 𝒦\_α = spectralRange μ ν with U\_α the inclusion; the continuous anti-dual 𝓔\_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆\[ℂ\] ℂ), so that J\_α = rieszMap = innerSLFlip ℂ, U\_α' = transposeEmbed, T\_α = frameOperator = U\_α' U\_α, S\_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R\_ρ on 𝓔\_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T\_α⁻¹ is rieszInv = J\_α⁻¹ (part i\_a says T\_α = J\_α, proved by rfl; i\_b/i\_c: J\_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii\_a is the representation of T\_α f by g\_\{𝒢f\}, iii\_b the converse identity R\_ρ T\_α⁻¹ U\_α' G = W\_ρ G, iii\_c the representation of U\_α' G by g\_G for G ∈ L¹, iii\_d the second reconstruction formula for U\_α' G, and iii\_e its concrete form (U\_α' G paired with g ∈ 𝒟\_α equals C⁻¹ ∫ S\_ρ\[γ\_G λ\_α\] conj g dμ, the spectral synthesis identity) when γ\_G ∈ L¹(λ\_α). Part iv: Λ\_ρ = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the ray average of a given representative); boundedness iv\_a is square integrability with a norm bound (linearity of Λ\_ρ on L²(λ\_α) is a consequence of prop\_coefficient\_projection\_iv); iv\_b is Λ\_ρ W\_ρ = C Id; iv\_c is the pointwise identity Λ\_ρ R\_ρ f = C 𝒢f using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv\_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^\{t²τ²/2\} 𝒢f(tξ)); iv\_e is totality on 𝒟\_α; iv\_f is f = Δ\_Q\[C⁻¹ Λ\_ρ R\_ρ f\] with Δ\_Q = gaussFourierInv the inverse of 𝒢 on its range on 𝒟\_α (chosen by uniqueness).
 
@@ -946,7 +1104,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 `T_α = U_α' U_α` equals the Riesz map `J_α`. -/
 theorem thm_C_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν, frameOperator μ ν f = rieszMap μ ν f := by
 ```
 
@@ -961,7 +1119,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 frame operator) is an isometry `𝓔_α → 𝓔_α'`. -/
 theorem thm_C_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Isometry (rieszMap μ ν) := by
 ```
 
@@ -976,7 +1134,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 frame operator) is a bijection `𝓔_α → 𝓔_α'`. -/
 theorem thm_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMap μ ν) := by
 ```
 
@@ -989,7 +1147,7 @@ Status: *verified by comparator*.
 `S_ρ R_ρ f = C^{(α)}_ρ T_α f` for `f ∈ 𝓔_α`. -/
 theorem thm_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
       synthesis μ ν ρ (ridgeletExtension μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperator μ ν f := by
@@ -1004,7 +1162,7 @@ Status: *verified by comparator*.
 formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α` (`T_α⁻¹ = J_α⁻¹` by part (i)). -/
 theorem thm_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInv μ ν (synthesis μ ν ρ (ridgeletExtension μ ν ρ f)) := by
@@ -1019,7 +1177,7 @@ Status: *verified by comparator*.
 formula `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
 theorem thm_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDual μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
@@ -1035,7 +1193,7 @@ Status: *verified by comparator*.
 `g_{𝒢_Q f}`: `T_α f [g] = ∫ g_{𝒢_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
 theorem thm_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
     ∀ g : spectralCore μ ν,
       frameOperator μ ν (spectralEmbed μ ν f) (spectralEmbed μ ν g) =
         ∫ x, spectralTarget ν (gaussFourier μ f) x * (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
@@ -1050,7 +1208,7 @@ Status: *verified by comparator*.
 functional `U_α' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ U_α' G = W_ρ G`. -/
 theorem thm_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
       ridgeletExtension μ ν ρ (rieszInv μ ν (transposeEmbed μ ν G)) =
         spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
@@ -1066,7 +1224,7 @@ functional `U_α' G` is represented by `g_G`: `U_α' G [g] = ∫ g_G(x) conj(g(x
 `g ∈ 𝒟_α`. -/
 theorem thm_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
       ∀ g : spectralCore μ ν,
         transposeEmbed μ ν G (spectralEmbed μ ν g) =
@@ -1083,7 +1241,7 @@ Status: *verified by comparator*.
 reconstruction formula applied to `U_α' G` reads `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
 theorem thm_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
       transposeEmbed μ ν G = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ)) := by
@@ -1100,7 +1258,7 @@ identity: paired with `g ∈ 𝒟_α`, `U_α' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_�
 (Lemma `lem:weak-equals-strong`). -/
 theorem thm_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
       Integrable (coefficientFormula ρ ((G : Lp ℂ 2 ν) : H → ℂ)) (parameterMeasure ν) →
       ∀ g : spectralCore μ ν,
@@ -1120,7 +1278,7 @@ Status: *verified by comparator*.
 bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
 `‖Λ_ρ γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
 theorem thm_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       MemLp (backprojection α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
@@ -1134,7 +1292,7 @@ Status: *verified by comparator*.
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  `Λ_ρ W_ρ = C^{(α)}_ρ Id` on
 `L²(ν_α)`. -/
 theorem thm_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
       backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
         fun ξ => admissibilityConst α ρ * F ξ := by
@@ -1150,7 +1308,7 @@ Status: *verified by comparator*.
 Fourier-slice representative `(a,ω) ↦ \widehat{R_ρ f}(a,ω)` of the transform. -/
 theorem thm_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCore μ ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) :
     ∀ ξ : H,
       backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ =
         admissibilityConst α ρ * gaussFourier μ f ξ := by
@@ -1166,7 +1324,7 @@ Status: *verified by comparator*.
 `τ(ξ) = ⟨Qξ,ξ⟩^{1/2}`, for `f ∈ 𝒟_α` and `ξ ≠ 0`. -/
 theorem thm_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
     ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
       hermiteCoefficient μ Q f ξ n =
@@ -1183,7 +1341,7 @@ Status: *verified by comparator*.
 `ξ ≠ 0` and `n` determine `f ∈ 𝒟_α` in `L²(μ_Q)`. -/
 theorem thm_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
     ∀ f g : spectralCore μ ν,
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
@@ -1200,7 +1358,7 @@ backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α`,
 `𝒢_Q` on its range on `𝒟_α`. -/
 theorem thm_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
     gaussFourierInv μ ν
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) *
@@ -1210,9 +1368,80 @@ theorem thm_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
 
 Status: *verified by comparator*.
 
-## Theorem 4.7 — Vector-valued extension (`thm:vector-valued`)
+`OperatorRidgelet.Paper.thm_C_iv_completion`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L180):
 
-Blueprint node: {bpref "thm:vector-valued"}[]. Status: *verified* (all 33 Lean theorems verified).
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Theorem [thm:C]** Backprojection after analysis recovers the completed spectral density. -/
+theorem thm_C_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+    {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
+    backprojection α ν ρ (ridgeletExtension μ ν ρ f) =ᵐ[ν]
+      fun ξ => admissibilityConst α ρ * (f : Lp ℂ 2 ν) ξ := by
+```
+
+Status: *verified by comparator*.
+
+## Corollary 4.5 — Stability under coefficient perturbations (`cor:coefficient-stability`)
+
+Blueprint node: {bpref "cor:coefficient-stability"}[]. Status: *verified* (all 4 Lean theorems verified).
+
+`OperatorRidgelet.Paper.cor_coefficient_stability_i`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L147):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Corollary [cor:coefficient-stability]** The decoder is C⁻¹ T⁻¹ S. -/
+theorem cor_coefficient_stability_i (α : ℝ) (μ ν : Measure H) [IsProbabilityMeasure μ]
+    (ρ : ℝ → ℝ) (γ : Lp ℂ 2 (parameterMeasure ν)) :
+    coefficientDecoder α μ ν ρ γ =
+      ((admissibilityConst α ρ : ℂ)⁻¹) • rieszInv μ ν (synthesis μ ν ρ γ) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.cor_coefficient_stability_ii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L155):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Corollary [cor:coefficient-stability]** The bounded decoder is a left inverse. -/
+theorem cor_coefficient_stability_ii (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
+    coefficientDecoder α μ ν ρ (ridgeletExtension μ ν ρ f) = f := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.cor_coefficient_stability_iii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L163):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Corollary [cor:coefficient-stability]** The decoder norm is at most 1/√C. -/
+theorem cor_coefficient_stability_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) :
+    ‖coefficientDecoder α μ ν ρ‖ ≤ (Real.sqrt (admissibilityConst α ρ))⁻¹ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.cor_coefficient_stability_iv`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L171):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Corollary [cor:coefficient-stability]** Coefficient error δ gives spectral error δ/√C. -/
+theorem cor_coefficient_stability_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) (γ : Lp ℂ 2 (parameterMeasure ν))
+    {δ : ℝ} (hδ : ‖γ - ridgeletExtension μ ν ρ f‖ ≤ δ) :
+    ‖coefficientDecoder α μ ν ρ γ - f‖ ≤ δ / Real.sqrt (admissibilityConst α ρ) := by
+```
+
+Status: *verified by comparator*.
+
+## Theorem 4.9 — Vector-valued extension (`thm:vector-valued`)
+
+Blueprint node: {bpref "thm:vector-valued"}[]. Status: *verified* (all 35 Lean theorems verified).
 
 Formalization note. One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y (\[InnerProductSpace ℂ Y\] \[CompleteSpace Y\] \[SecondCountableTopology Y\]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩\_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique.
 
@@ -1261,7 +1490,7 @@ Status: *verified by comparator*.
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the iterated integral `∫ [∫ ρ(⟨a,x⟩+c) γ_G(a,c) dc] ν_α(da)` converges absolutely. -/
 theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       (∀ᵐ a ∂ν, Integrable fun c : ℝ =>
@@ -1278,7 +1507,7 @@ Status: *verified by comparator*.
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the spectral synthesis identity with the same constant `C^{(α)}_ρ`. -/
 theorem thm_vector_valued_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
@@ -1294,7 +1523,7 @@ Status: *verified by comparator*.
 densities: if `γ_G ∈ L¹(λ_α; Y)`, the left side is the `Y`-valued integral network
 `S_ρ[γ_G λ_α](x)`. -/
 theorem thm_vector_valued_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormulaVec ρ G) (parameterMeasure ν)) :
     ∀ x : H,
@@ -1314,7 +1543,7 @@ inner integral converges absolutely for `ν_α`-almost every `a`. -/
 theorem thm_vector_valued_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
       Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := by
@@ -1330,7 +1559,7 @@ Status: *verified by comparator*.
 theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
@@ -1348,7 +1577,7 @@ same constant `C^{(α)}_{β,ρ}`. -/
 theorem thm_vector_valued_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
@@ -1447,10 +1676,10 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(iii) for
-`Y`-valued targets: `R_ρ f = 0` `λ_α`-a.e. implies `f = 0` `μ_Q`-a.e. for `f ∈ L²(μ_Q; Y)`. -/
+`Y`-valued targets: `R_ρ f = 0` `λ_α`-a.e. implies `f = 0` `μ_Q`-a.e. for `f ∈ L¹(μ_Q; Y)`. -/
 theorem thm_vector_valued_B_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsAdmissible α ρ) (f : H → Y) (hf : MemLp f 2 μ)
+    (hρ : IsAdmissible α ρ) (f : H → Y) (hf : Integrable f μ)
     (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) :
     f =ᵐ[μ] 0 := by
 ```
@@ -1467,7 +1696,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCoun
 targets: the frame operator `T_α = U_α' U_α` equals the Riesz map `J_α` of `𝓔_α(Y)`. -/
 theorem thm_vector_valued_C_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν, frameOperatorVec μ ν f = rieszMapVec Y μ ν f := by
 ```
 
@@ -1483,7 +1712,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCoun
 targets: the Riesz map of `𝓔_α(Y)` is an isometry. -/
 theorem thm_vector_valued_C_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Isometry (rieszMapVec Y μ ν) := by
 ```
 
@@ -1498,7 +1727,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] i
 targets: the Riesz map of `𝓔_α(Y)` is a bijection onto `𝓔_α(Y)'`. -/
 theorem thm_vector_valued_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMapVec Y μ ν) := by
 ```
 
@@ -1511,7 +1740,7 @@ Status: *verified by comparator*.
 targets: the frame identity `S_ρ R_ρ f = C^{(α)}_ρ T_α f`. -/
 theorem thm_vector_valued_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
       synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperatorVec μ ν f := by
@@ -1526,7 +1755,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f`. -/
 theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInvVec μ ν (synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f)) := by
@@ -1541,7 +1770,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α(Y)'`. -/
 theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDualVec Y μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν g)) := by
@@ -1557,7 +1786,7 @@ Status: *verified by comparator*.
 `g_{𝒢_Q f}`: `T_α f [g] = ∫ ⟨g_{𝒢_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
 theorem thm_vector_valued_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCoreVec Y μ ν)
+    (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν)
     (hG : Integrable (gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y)) ν) :
     ∀ g : spectralCoreVec Y μ ν,
       frameOperatorVec μ ν (spectralEmbedVec μ ν f) (spectralEmbedVec μ ν g) =
@@ -1574,7 +1803,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: `R_ρ T_α⁻¹ U_α' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_vector_valued_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
       ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν (transposeEmbedVec μ ν G)) =
         spectralCoefficientVec ν ρ ((G : Lp Y 2 ν) : H → Y) := by
@@ -1589,7 +1818,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `U_α' G` is represented by `g_G`. -/
 theorem thm_vector_valued_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
       ∀ g : spectralCoreVec Y μ ν,
         transposeEmbedVec μ ν G (spectralEmbedVec μ ν g) =
@@ -1605,7 +1834,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_vector_valued_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
       transposeEmbedVec μ ν G = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesisVec μ ν ρ (spectralCoefficientVec ν ρ ((G : Lp Y 2 ν) : H → Y)) := by
@@ -1622,7 +1851,7 @@ reconstruction formula for `U_α' G` is the spectral synthesis identity paired w
 `g ∈ 𝒟_α(Y)`. -/
 theorem thm_vector_valued_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
       Integrable (coefficientFormulaVec ρ ((G : Lp Y 2 ν) : H → Y)) (parameterMeasure ν) →
       ∀ g : spectralCoreVec Y μ ν,
@@ -1642,7 +1871,7 @@ Status: *verified by comparator*.
 `Y`-valued targets: the backprojection `Λ_ρ` is a bounded operator
 `L²(λ_α; Y) → L²(ν_α; Y)`. -/
 theorem thm_vector_valued_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp Y 2 (parameterMeasure ν),
       MemLp (backprojectionVec α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojectionVec α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
@@ -1656,7 +1885,7 @@ Status: *verified by comparator*.
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: `Λ_ρ W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
 theorem thm_vector_valued_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → Y, StronglyMeasurable F → MemLp F 2 ν →
       backprojectionVec α ν ρ (spectralCoefficientVec ν ρ F) =ᵐ[ν]
         fun ξ => (admissibilityConst α ρ : ℂ) • F ξ := by
@@ -1672,7 +1901,7 @@ Status: *verified by comparator*.
 computed from the Fourier-slice representative of `R_ρ f`. -/
 theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCoreVec Y μ ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν) :
     ∀ ξ : H,
       backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ =
         (admissibilityConst α ρ : ℂ) • gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) ξ := by
@@ -1688,7 +1917,7 @@ Status: *verified by comparator*.
 `ξ ≠ 0`. -/
 theorem thm_vector_valued_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :
     ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
       hermiteCoefficientVec μ Q ((f : Lp Y 2 μ) : H → Y) ξ n =
@@ -1707,7 +1936,7 @@ Status: *verified by comparator*.
 `f ∈ 𝒟_α(Y)` in `L²(μ_Q; Y)`. -/
 theorem thm_vector_valued_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
     ∀ f g : spectralCoreVec Y μ ν,
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
@@ -1725,12 +1954,42 @@ Status: *verified by comparator*.
 `Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
 theorem thm_vector_valued_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :
     gaussFourierInvVec μ ν
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
           backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
       (f : Lp Y 2 μ) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.thm_vector_valued_A_iii_e`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L123):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Theorem [thm:vector-valued]** Tempered synthesis is Bochner integrable on the product. -/
+theorem thm_vector_valued_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
+    (G : H → Y) (hG : IsRegularAlongRays ν I G) (x : H) :
+    Integrable (fun θ : H × ℝ => (b (⟪θ.1, x⟫ + θ.2) : ℂ) •
+      coefficientFormulaVec ρ G θ) (parameterMeasure ν) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.thm_vector_valued_C_iv_completion`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L189):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Theorem [thm:vector-valued]** The completed vector spectral density is recovered in L². -/
+theorem thm_vector_valued_C_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : spectralRangeVec Y μ ν) :
+    backprojectionVec α ν ρ (ridgeletExtensionVec Y μ ν ρ f) =ᵐ[ν]
+      fun ξ => (admissibilityConst α ρ : ℂ) • (f : Lp Y 2 ν) ξ := by
 ```
 
 Status: *verified by comparator*.
@@ -2281,7 +2540,46 @@ Status: *verified by comparator*.
 
 # Manuscript Section 6
 
-## Definition 6.1 — Activation-dependent Rademacher complexity (`def:rademacher-complexity`)
+## Lemma 6.1 — Qualitative sampling of integrable Banach-valued atoms (`lem:banach-rademacher-vanishing`)
+
+Blueprint node: {bpref "lem:banach-rademacher-vanishing"}[]. Status: *verified* (all 2 Lean theorems verified).
+
+`OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_i`, theorem in [`Challenge/SamplingRevision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/SamplingRevision.lean#L10):
+
+```
+/-- **Lemma [lem:banach-rademacher-vanishing](i).** The signed empirical mean of a
+Bochner-integrable separable Banach-valued atom tends to zero in expected norm. -/
+theorem lem_banach_rademacher_vanishing_i {Ω E : Type*} [MeasurableSpace Ω]
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
+    (p : Measure Ω) [IsProbabilityMeasure p] {Φ : Ω → E} (hint : Integrable Φ p) :
+    Tendsto (fun N : ℕ => ∫ z : (Fin N → Ω) × (Fin N → ℝ),
+      ‖(N : ℝ)⁻¹ • ∑ j, z.2 j • Φ (z.1 j)‖
+        ∂((Measure.pi fun _ : Fin N => p).prod (rademacherMeasure N))) atTop (𝓝 0) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_ii`, theorem in [`Challenge/SamplingRevision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/SamplingRevision.lean#L21):
+
+```
+/-- **Lemma [lem:banach-rademacher-vanishing](ii).** Symmetrization of the empirical mean.
+The finite sum averages over the uniform Boolean sign vectors; the inverse width outside
+the norm is the equivalent normalization of the manuscript's empirical averages. -/
+theorem lem_banach_rademacher_vanishing_ii {Ω E : Type*} [MeasurableSpace Ω]
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (p : Measure Ω) [IsProbabilityMeasure p] {Φ : Ω → E} (hint : Integrable Φ p) (N : ℕ) :
+    (N : ℝ)⁻¹ *
+        (∫ ω, ‖∑ j : Fin N, Φ (ω j) - (N : ℝ) • ∫ x, Φ x ∂p‖
+          ∂(Measure.pi fun _ : Fin N => p)) ≤
+      2 * (N : ℝ)⁻¹ * ∑ σ : Fin N → Bool, (2 ^ N : ℝ)⁻¹ *
+        (∫ ω, ‖∑ j : Fin N, (if σ j then (1 : ℝ) else -1) • Φ (ω j)‖
+          ∂(Measure.pi fun _ : Fin N => p)) := by
+```
+
+Status: *verified by comparator*.
+
+## Definition 6.2 — Activation-dependent Rademacher complexity (`def:rademacher-complexity`)
 
 Blueprint node: {bpref "def:rademacher-complexity"}[]. Status: *defined* (definitions only, nothing for comparator to check).
 
@@ -2303,7 +2601,7 @@ Formalization note. The sample space of N i.i.d. parameters is Fin N → H × �
 
 `OperatorRidgelet.rademacherComplexity`: definition in the library (def in [`OperatorRidgelet/Sampling/Defs.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/OperatorRidgelet/Sampling/Defs.lean#L172)); see the Lean panel of the Blueprint node above.
 
-## Theorem 6.2 — General compact-open sampling bound (`thm:general-rademacher`)
+## Theorem 6.3 — General compact-open sampling bound (`thm:general-rademacher`)
 
 Blueprint node: {bpref "thm:general-rademacher"}[]. Status: *verified* (its Lean theorem is verified).
 
@@ -2328,7 +2626,7 @@ theorem thm_general_rademacher [MeasurableSpace H] [BorelSpace H] (β : ℝ → 
 
 Status: *verified by comparator*.
 
-## Theorem 6.3 — Dimension-free compact-open Barron bound (`thm:lipschitz-barron`)
+## Theorem 6.4 — Dimension-free compact-open Barron bound (`thm:lipschitz-barron`)
 
 Blueprint node: {bpref "thm:lipschitz-barron"}[]. Status: *verified* (all 2 Lean theorems verified).
 
@@ -2375,9 +2673,9 @@ theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ →
 
 Status: *verified by comparator*.
 
-## Theorem 6.4 — Finite variation and moments of the coefficient (`thm:E`)
+## Theorem 6.5 — Finite variation and moments of the coefficient (`thm:E`)
 
-Blueprint node: {bpref "thm:E"}[]. Status: *verified* (all 4 Lean theorems verified).
+Blueprint node: {bpref "thm:E"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α) with an explicit frequency window I of ρ (IsFrequencyWindow ρ I), as thm:A. Part i: ∃ c < ∞ (depending on ρ, α, I) such that for all G regular along rays the lintegral ∫⁻ (1+‖a‖²+|c|²) ‖γ\_G‖ₑ dλ\_α ≤ c · rayMoment ν I G 4, with γ\_G = coefficientFormula ρ G; part ii the finiteness '< ∞' as Bochner integrability. Parts iii and iv take the tempered β as the pair (β, b) with IsTemperedFunction β b, LipschitzWith L b, ¬IsPolynomialFun b: iii is C^\{(α)\}\_\{β,ρ\} g\_G = integralNetworkDensity b λ\_α γ\_G pointwise, iv the 8V/√N bound with V = densityWeight λ\_α γ\_G = ‖γ\_G‖\_\{L¹\}, p = densityLaw λ\_α γ\_G = |γ\_G|λ\_α/V, h = densityPhase γ\_G = γ\_G/|γ\_G|, for every compact K and N > 0.
 
@@ -2418,13 +2716,13 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  Consequently, for every
-real `β` that is globally Lipschitz and not a polynomial (a tempered activation that is the
+real `β` that is globally Lipschitz (a tempered activation that is the
 function `b`), the target `C^{(α)}_{β,ρ} g_G` is the integral network `S_β[γ_G λ_α]`. -/
 theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) {L : ℝ≥0} (hb : LipschitzWith L b)
-    (hpoly : ¬ IsPolynomialFun b) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, temperedAdmissibilityConst α β ρ * spectralTarget ν G x =
       integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν) (coefficientFormula ρ G)
         x := by
@@ -2436,7 +2734,7 @@ Status: *verified by comparator*.
 
 ```
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For real globally
-Lipschitz non-polynomial `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
+Lipschitz `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
 `V = ‖γ_G‖_{L¹(λ_α)}` and `M₂` the second moment of `p = |γ_G| λ_α / V`, satisfies
 `𝔼‖f_N − C^{(α)}_{β,ρ} g_G‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)` for every compact
 `K`. -/
@@ -2444,7 +2742,7 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) {L : ℝ≥0} (hb : LipschitzWith L b)
-    (hpoly : ¬ IsPolynomialFun b) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) {K : Set H}
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x =>
           densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
@@ -2458,7 +2756,23 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
 
 Status: *verified by comparator*.
 
-## Lemma 6.5 — Densities that are regular along rays (`lem:ray-regular-examples`)
+`OperatorRidgelet.Paper.thm_E_moments`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L102):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Theorem [thm:E]** All parameter moments are bounded, also for vector-valued densities. -/
+theorem thm_E_moments (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (r : ℕ) :
+    finiteCoefficientMomentConstant ρ r ≠ ⊤ ∧ ∀ G : H → Y, IsRegularAlongRays ν I G →
+      ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ r) *
+          ‖coefficientFormulaVec ρ G θ‖ₑ ∂parameterMeasure ν ≤
+        finiteCoefficientMomentConstant ρ r * rayMoment ν I G (r + 2) := by
+```
+
+Status: *verified by comparator*.
+
+## Lemma 6.6 — Densities that are regular along rays (`lem:ray-regular-examples`)
 
 Blueprint node: {bpref "lem:ray-regular-examples"}[]. Status: *verified* (all 5 Lean theorems verified).
 
@@ -2556,7 +2870,7 @@ theorem lem_ray_regular_examples_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*
 
 Status: *verified by comparator*.
 
-## Theorem 6.6 — Constructive universal approximation with rates (`thm:D`)
+## Theorem 6.7 — Constructive universal approximation with rates (`thm:D`)
 
 Blueprint node: {bpref "thm:D"}[]. Status: *verified* (all 3 Lean theorems verified).
 
@@ -2682,9 +2996,9 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
 
 Status: *verified by comparator*.
 
-## Corollary 6.7 — Vector-valued rates (`cor:vector-rates`)
+## Corollary 6.8 — Vector-valued rates (`cor:vector-rates`)
 
-Blueprint node: {bpref "cor:vector-rates"}[]. Status: *verified* (all 4 Lean theorems verified).
+Blueprint node: {bpref "cor:vector-rates"}[]. Status: *verified* (all 5 Lean theorems verified).
 
 Formalization note. Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i\_a (‖·‖²\_\{L²(ζ;Y)\} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i\_b (explicit bound with ‖β 0‖² and L²); part ii into ii\_a (2V 𝔑^Y\_N bound, with 𝔑^Y\_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii\_b (Tendsto to 0 as N → ∞). N > 0 in i and ii\_a. Parts i\_a, ii\_a and ii\_b explicitly carry SecondCountableTopology H, the standing separability hypothesis, for joint measurability and the compact atom map. The Hilbert-valued polar decomposition is proved from the Riesz representation theorem on L² of the variation measure. The compact bound uses Banach-valued symmetrization; convergence follows from the L¹ law of large numbers for the signed compact atom map, without a dimension-free Banach-space rate.
 
@@ -2732,7 +3046,7 @@ absolute value replaced by the norm of `Y`. -/
 theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
         ∂sampleLaw N (polarLaw Γ) ≤
@@ -2749,10 +3063,32 @@ Status: *verified by comparator*.
 theorem cor_vector_rates_ii_b [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) :
     Tendsto (fun N : ℕ => rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ)) atTop
       (𝓝 0) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.cor_vector_rates_i_exact`, theorem in [`Challenge/SamplingRevision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/SamplingRevision.lean#L35):
+
+```
+/-- **Corollary [cor:vector-rates](i).** The exact integrated variance of the sampled network,
+including the subtracted squared norm of its target and the zero-variation case. -/
+theorem cor_vector_rates_i_exact {H Y : Type*}
+    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] {β : ℝ → ℂ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ))
+    (ζ : Measure H) [IsProbabilityMeasure ζ] (hζ : Integrable (fun x : H => ‖x‖ ^ 2) ζ)
+    {N : ℕ} (hN : 0 < N) :
+    ∫ θ, (∫ x, ‖polarSampledNetwork β Γ θ x - integralNetwork β Γ x‖ ^ 2 ∂ζ)
+        ∂sampleLaw N (polarLaw Γ) =
+      (N : ℝ)⁻¹ * (polarWeight Γ ^ 2 *
+        (∫ θ, (∫ x, ‖β (⟪θ.1, x⟫ + θ.2)‖ ^ 2 ∂ζ) ∂polarLaw Γ) -
+          ∫ x, ‖integralNetwork β Γ x‖ ^ 2 ∂ζ) := by
 ```
 
 Status: *verified by comparator*.
@@ -4049,7 +4385,102 @@ Status: *verified by comparator*.
 
 # Appendix B
 
-## Lemma B.1 — Synthesis of an integrable coefficient is the integral network (`lem:weak-equals-strong`)
+## Lemma B.1 — Finite-order coefficient decay and moments (`lem:coefficient-finite-order`)
+
+Blueprint node: {bpref "lem:coefficient-finite-order"}[]. Status: *verified* (all 5 Lean theorems verified).
+
+Formalization note. Finite C^(r+2) ray regularity gives A\_(r+2,r) moments; decay and moment constants are explicit definitions depending only on the filter and order, independent of the output space.
+
+`OperatorRidgelet.Paper.lem_coefficient_finite_order_i`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L38):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Lemma [lem:coefficient-finite-order]** A bounded density with a finite ray moment is L¹∩L². -/
+theorem lem_coefficient_finite_order_i (ν : Measure H) {α : ℝ}
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+    (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (G : H → Y) (hG : StronglyMeasurable G)
+    (hbound : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M) (r : ℕ)
+    (hM : finiteRayMoment ν I G (r + 2) r < ⊤) :
+    Integrable G ν ∧ MemLp G 2 ν := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_finite_order_ii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L49):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Lemma [lem:coefficient-finite-order]** The inverse integral represents the coefficient. -/
+theorem lem_coefficient_finite_order_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+    (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (G : H → Y) (hG : StronglyMeasurable G)
+    (hbound : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M) (r : ℕ)
+    (hM : finiteRayMoment ν I G (r + 2) r < ⊤) :
+    StronglyMeasurable (coefficientFormulaVec ρ G) ∧
+      (spectralCoefficientVec ν ρ G : H × ℝ → Y) =ᵐ[parameterMeasure ν]
+        coefficientFormulaVec ρ G := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_finite_order_iii`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L61):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
+  [CompleteSpace Y] [SecondCountableTopology Y] in
+/-- **Lemma [lem:coefficient-finite-order]** Finitely many ray derivatives give pointwise decay. -/
+theorem lem_coefficient_finite_order_iii (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+    (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (r : ℕ) :
+    0 < finiteCoefficientDecayConstant ρ (r + 2) ∧
+      finiteCoefficientDecayConstant ρ (r + 2) < ⊤ ∧ ∀ G : H → Y,
+      (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+        ContDiffOn ℝ (r + 2 : ℕ) (fun ω : ℝ => G (ω • a)) U) →
+      ∀ (a : H) (c : ℝ),
+        ENNReal.ofReal ((1 + |c|) ^ (r + 2)) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
+          finiteCoefficientDecayConstant ρ (r + 2) * rayDerivBound I G (r + 2) a := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_finite_order_iv`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L75):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Lemma [lem:coefficient-finite-order]** The parameter moment is bounded by A_{r+2,r}. -/
+theorem lem_coefficient_finite_order_iv (ν : Measure H) [SigmaFinite ν]
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    (r : ℕ) :
+    finiteCoefficientMomentConstant ρ r ≠ ⊤ ∧ ∀ G : H → Y, StronglyMeasurable G →
+      (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+        ContDiffOn ℝ (r + 2 : ℕ) (fun ω : ℝ => G (ω • a)) U) →
+      ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ r) *
+          ‖coefficientFormulaVec ρ G θ‖ₑ ∂parameterMeasure ν ≤
+        finiteCoefficientMomentConstant ρ r * finiteRayMoment ν I G (r + 2) r := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_coefficient_finite_order_v`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L89):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
+  [SecondCountableTopology Y] in
+/-- **Lemma [lem:coefficient-finite-order]** Finite ray data imply a finite parameter moment. -/
+theorem lem_coefficient_finite_order_v (ν : Measure H) [SigmaFinite ν]
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
+    (G : H → Y) (hG : StronglyMeasurable G) (r : ℕ)
+    (hGs : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+      ContDiffOn ℝ (r + 2 : ℕ) (fun ω : ℝ => G (ω • a)) U)
+    (hM : finiteRayMoment ν I G (r + 2) r < ⊤) :
+    Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ r *
+      ‖coefficientFormulaVec ρ G θ‖) (parameterMeasure ν) := by
+```
+
+Status: *verified by comparator*.
+
+## Lemma B.2 — Synthesis of an integrable coefficient is the integral network (`lem:weak-equals-strong`)
 
 Blueprint node: {bpref "lem:weak-equals-strong"}[]. Status: *verified* (all 2 Lean theorems verified).
 
@@ -4087,7 +4518,7 @@ theorem lem_weak_equals_strong_ii (μ ν : Measure H) [IsProbabilityMeasure μ] 
 
 Status: *verified by comparator*.
 
-## Lemma B.2 — Entire extension and totality of the Hermite coefficients (`lem:hermite-totality`)
+## Lemma B.3 — Entire extension and totality of the Hermite coefficients (`lem:hermite-totality`)
 
 Blueprint node: {bpref "lem:hermite-totality"}[]. Status: *verified* (all 6 Lean theorems verified).
 
@@ -4187,7 +4618,7 @@ theorem lem_hermite_totality_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTrace
 
 Status: *verified by comparator*.
 
-## Proposition B.3 — Bounded backprojection and orthogonal range projection (`prop:coefficient-projection`)
+## Proposition B.4 — Bounded backprojection and orthogonal range projection (`prop:coefficient-projection`)
 
 Blueprint node: {bpref "prop:coefficient-projection"}[]. Status: *verified* (all 8 Lean theorems verified).
 
@@ -5290,7 +5721,7 @@ Status: *verified by comparator*.
 
 ## Theorem H.1 — Abstract-weight extension (`thm:general-weights`)
 
-Blueprint node: {bpref "thm:general-weights"}[]. Status: *verified* (all 8 Lean theorems verified).
+Blueprint node: {bpref "thm:general-weights"}[]. Status: *verified* (all 11 Lean theorems verified).
 
 Formalization note. The Fourier-slice identity is already stated for general μ (lem\_fourier\_slice\_v); thm:B for the abstract pair is the eight parts here; the abstract-weight versions of thm:A and thm:C(i)-(iii) belong to the reconstruction work package.
 
@@ -5409,6 +5840,52 @@ theorem thm_general_weights_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasur
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) :
     MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ ν ↔
       Integrable (fun ξ : H => ‖charFun μ ξ‖ ^ 2) ν := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.thm_general_weights_dense`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L198):
+
+```
+/-- **Theorem [thm:general-weights]** Bounded-set finite direction weights retain universality. -/
+theorem thm_general_weights_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+    {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
+    (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
+    (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+    (hβ : IsTemperedFunction β b) (hpoly : ¬ IsPolynomialFun b) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsBandPass ρ) (hC : temperedAdmissibilityConst α β ρ = 1) (I : Set ℝ)
+    (hI : IsFrequencyWindow ρ I) {f : H → ℂ} (hf : Continuous f) {K : Set H}
+    (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
+    ∃ (N : ℕ) (v : Fin N → ℂ) (a : Fin N → H) (c : Fin N → ℝ),
+      compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.thm_general_weights_backprojection`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L230):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Theorem [thm:general-weights]** Abstract input weights retain completed backprojection. -/
+theorem thm_general_weights_backprojection (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
+    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
+    backprojection α ν ρ (ridgeletExtension μ ν ρ f) =ᵐ[ν]
+      fun ξ => admissibilityConst α ρ * (f : Lp ℂ 2 ν) ξ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.thm_general_weights_stability`, theorem in [`Challenge/Revision.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Revision.lean#L239):
+
+```
+omit [CompleteSpace H] [SecondCountableTopology H] in
+/-- **Theorem [thm:general-weights]** Stability holds for an arbitrary probability input weight. -/
+theorem thm_general_weights_stability (μ ν : Measure H) [IsProbabilityMeasure μ]
+    [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
+    (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) (γ : Lp ℂ 2 (parameterMeasure ν))
+    {δ : ℝ} (hδ : ‖γ - ridgeletExtension μ ν ρ f‖ ≤ δ) :
+    ‖coefficientDecoder α μ ν ρ γ - f‖ ≤ δ / Real.sqrt (admissibilityConst α ρ) := by
 ```
 
 Status: *verified by comparator*.

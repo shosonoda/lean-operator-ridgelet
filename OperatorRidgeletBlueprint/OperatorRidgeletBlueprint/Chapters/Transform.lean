@@ -2,6 +2,7 @@ import Verso
 import VersoManual
 import VersoBlueprint
 import OperatorRidgelet.Paper.Transform
+import OperatorRidgelet.Paper.Revision
 import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Transform.Infra
 
@@ -144,19 +145,20 @@ identity.
 Let $`\rho` be $`\alpha`-admissible and $`G\in L^2(\nu_\alpha)` Borel. The coefficient
 $`W_\rho G\in L^2(\lambda_\alpha)` is the function whose partial Fourier transform in the bias
 is $`\widehat{W_\rho G}(a,\omega)=\widehat\rho(\omega)\,G(-\omega a)`, characterized through
-Parseval's identity against Schwartz test functions in the bias. If
-$`G\in L^1(\nu_\alpha)\cap L^2(\nu_\alpha)`, then for $`\nu_\alpha`-almost every $`a`,
+Parseval's identity against Schwartz test functions in the bias. For every such
+$`G\in L^2(\nu_\alpha)` and $`\nu_\alpha`-almost every $`a`,
 $`\gamma_G(a,c)=W_\rho G(a,c)=\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega`;
-this formula is the theorem part of the definition.
+the integral converges absolutely for every $`c`. This formula is the theorem part of the definition.
 :::
 
-:::lemma_ "lem:coefficient-isometry" (lean := "OperatorRidgelet.Paper.lem_coefficient_isometry_i, OperatorRidgelet.Paper.lem_coefficient_isometry_ii, OperatorRidgelet.Paper.lem_coefficient_isometry_iii, OperatorRidgelet.Paper.lem_coefficient_isometry_iv, OperatorRidgelet.Paper.def_spectral_coefficient") (uses := "def:spectral-coefficient, lem:homogeneous-mixture")
+:::lemma_ "lem:coefficient-isometry" (lean := "OperatorRidgelet.Paper.lem_coefficient_isometry_i, OperatorRidgelet.Paper.lem_coefficient_isometry_ii, OperatorRidgelet.Paper.lem_coefficient_isometry_iii, OperatorRidgelet.Paper.lem_coefficient_isometry_iv, OperatorRidgelet.Paper.def_spectral_coefficient, OperatorRidgelet.Paper.lem_coefficient_isometry_v") (uses := "def:spectral-coefficient, lem:homogeneous-mixture")
 $`W_\rho:L^2(\nu_\alpha)\to L^2(\lambda_\alpha)` is well defined (i), independent of the Borel
 representative of $`G` (ii), and
 $`\|W_\rho G\|_{L^2(\lambda_\alpha)}^2=C_\rho^{(\alpha)}\|G\|_{L^2(\nu_\alpha)}^2` (iii). If
 $`G\in L^1(\nu_\alpha)`, then $`\omega\mapsto G(-\omega a)` is integrable on compact subsets of
 $`\mathbb R\setminus\{0\}` for $`\nu_\alpha`-almost every $`a` (iv), and the explicit formula
-for $`\gamma_G` holds. In this notation the Fourier-slice identity reads
+for $`\gamma_G` holds already for $`G\in L^2(\nu_\alpha)`, with absolute convergence on
+almost every ray for every bias. In this notation the Fourier-slice identity reads
 $`R_\rho f=W_\rho\,\mathcal G_Qf`.
 :::
 
@@ -166,6 +168,37 @@ Tonelli gives
 $`\frac1{2\pi}\int\int|\widehat\rho(\omega)|^2|G(-\omega a)|^2\,\nu_\alpha(\mathrm da)\,\mathrm d\omega=C_\rho^{(\alpha)}\|G\|^2_{L^2(\nu_\alpha)}`;
 the same computation with $`|G|` on a compact set gives local integrability, and the inverse
 Fourier transform in $`\omega` for almost every $`a` gives the formula.
+:::
+
+:::lemma_ "lem:partial-fourier-l2" (lean := "OperatorRidgelet.Paper.lem_partial_fourier_l2, OperatorRidgelet.Paper.lem_partial_fourier_l2_uniqueness") (uses := "aux:conventions")
+For a separable complex Hilbert space $`Y`, partial Fourier transformation in the bias is a
+unitary map from $`L^2(\nu\otimes\mathrm dc;Y)` onto
+$`L^2(\nu\otimes\mathrm d\omega/(2\pi);Y)`. Each transform admits a jointly strongly
+measurable representative agreeing with the one-dimensional Plancherel transform on almost
+every ray. Such representatives agree almost everywhere.
+:::
+
+:::proof "lem:partial-fourier-l2"
+Apply the one-dimensional Fourier unitary to the fibers of the product $`L^2` space. Its
+inverse on the fibers proves surjectivity; the product $`L^2` identification supplies joint
+measurability. Fiberwise uniqueness and Fubini prove independence of the representative.
+:::
+
+:::lemma_ "lem:coefficient-adjoint" (lean := "OperatorRidgelet.Paper.lem_coefficient_adjoint_i, OperatorRidgelet.Paper.lem_coefficient_adjoint_ii, OperatorRidgelet.Paper.lem_coefficient_adjoint_iii") (uses := "lem:partial-fourier-l2, lem:coefficient-isometry")
+For an admissible Schwartz filter and a sigma-finite homogeneous direction measure,
+the backprojection is $`\Lambda_\rho=W_\rho^*`. It satisfies
+$`\Lambda_\rho W_\rho=C_\rho^{(\alpha)}\mathrm{Id}` and
+$`\|\Lambda_\rho\gamma\|_2\le\sqrt{C_\rho^{(\alpha)}}\|\gamma\|_2`.
+Its ray formula is
+$`\Lambda_\rho\gamma(\xi)=(2\pi)^{-1}\int\overline{\widehat\rho(\omega)}\widehat\gamma(-\xi/\omega,\omega)|\omega|^{-\alpha}\,\mathrm d\omega`;
+this integral is absolutely convergent for almost every $`\xi` and is independent of the
+jointly measurable Fourier representative.
+:::
+
+:::proof "lem:coefficient-adjoint"
+Plancherel in the bias and the substitution $`\xi=-\omega a` identify the inner product
+with the ray formula. Weighted Cauchy–Schwarz and Tonelli give its absolute convergence and
+norm bound; polarization of the coefficient isometry gives the left inverse identity.
 :::
 
 # The Hilbert space
@@ -228,18 +261,23 @@ the examples, using only the decay lemma and the Fourier-slice identity.
 The formalization proves the Plancherel theory first for the abstract pair $`(\mu,\nu)`
 (Appendix H) and then specializes to the Gaussian pair.
 
-:::theorem "thm:general-weights" (lean := "OperatorRidgelet.Paper.thm_general_weights_plancherel_memLp, OperatorRidgelet.Paper.thm_general_weights_plancherel, OperatorRidgelet.Paper.thm_general_weights_extension, OperatorRidgelet.Paper.thm_general_weights_extension_norm, OperatorRidgelet.Paper.thm_general_weights_extension_closed_range, OperatorRidgelet.Paper.thm_general_weights_extension_coefficient, OperatorRidgelet.Paper.thm_general_weights_injective, OperatorRidgelet.Paper.thm_general_weights_one_mem_iff") (uses := "aux:conventions, def:admissible-filter, def:ridgelet-analysis, lem:fourier-slice, lem:coefficient-isometry, def:spectral-space, lem:spectral-unitary")
+:::theorem "thm:general-weights" (lean := "OperatorRidgelet.Paper.thm_general_weights_plancherel_memLp, OperatorRidgelet.Paper.thm_general_weights_plancherel, OperatorRidgelet.Paper.thm_general_weights_extension, OperatorRidgelet.Paper.thm_general_weights_extension_norm, OperatorRidgelet.Paper.thm_general_weights_extension_closed_range, OperatorRidgelet.Paper.thm_general_weights_extension_coefficient, OperatorRidgelet.Paper.thm_general_weights_injective, OperatorRidgelet.Paper.thm_general_weights_one_mem_iff, OperatorRidgelet.Paper.thm_general_weights_dense, OperatorRidgelet.Paper.thm_general_weights_backprojection, OperatorRidgelet.Paper.thm_general_weights_stability") (uses := "aux:conventions, def:admissible-filter, def:ridgelet-analysis, lem:fourier-slice, lem:coefficient-isometry, def:spectral-space, lem:spectral-unitary")
 Let $`\mu` be a Borel probability measure on $`H` and $`\nu` a $`\sigma`-finite Borel measure
 with full support and $`(D_\omega)_\#\nu=|\omega|^{-\alpha}\nu` for $`\omega\ne0`; define
 $`\mathcal G_\mu`, $`\mathcal D_{\mu,\nu}`, and the completion $`\mathcal E_{\mu,\nu}` as in
 the Gaussian case. Then the Fourier-slice identity, {bpref "thm:A"}[], {bpref "thm:B"}[], and
 {bpref "thm:C"}[] (i)–(iii) remain valid with $`(\mu_Q,\nu_\alpha)` replaced by
 $`(\mu,\nu)`: for $`f\in\mathcal D_{\mu,\nu}` the transform lies in $`L^2(\lambda)` and
-satisfies the Plancherel identity, $`R_\rho` has a unique bounded extension of norm
-$`(C^{(\alpha)}_\rho)^{1/2}` with closed range and $`R_\rho=W_\rho U`, and
+satisfies the Plancherel identity, $`R_\rho` has a unique bounded extension of norm at most
+$`(C^{(\alpha)}_\rho)^{1/2}` (with equality when the core is nonzero), with closed range and
+$`R_\rho=W_\rho U`, and
 $`R_\rho f=0` implies $`f=0`. Moreover $`1\in\mathcal D_{\mu,\nu}` if and only if
 $`\int_H|\widehat\mu(\xi)|^2\nu(\mathrm d\xi)<\infty`. The abstract-weight versions of
 {bpref "thm:A"}[] and {bpref "thm:C"}[] are the Lean statements of those theorems themselves.
+The backprojection and coefficient stability results also hold. If, in addition, $`\nu` is
+finite on bounded sets, the spectral-density construction gives compact-open universality.
+Full support alone does not imply this local finiteness assumption. Gaussian decay and
+Hermite inversion retain their Gaussian hypotheses.
 :::
 
 :::proof "thm:general-weights"
@@ -259,7 +297,7 @@ $`\langle R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=C_{\rho_1,\rho_2}
 $`R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)` with
 $`\|R_\rho f\|^2=C_\rho^{(\alpha)}\|f\|_{\mathcal E_\alpha}^2`; its range is closed, and
 $`R_\rho=W_\rho U_\alpha`. (iii) If $`\rho` is $`\alpha`-admissible and
-$`f\in L^2(H,\mu_Q)`, then $`R_\rho f=0` $`\lambda_\alpha`-almost everywhere implies $`f=0`
+$`f\in L^1(H,\mu_Q)`, then $`R_\rho f=0` $`\lambda_\alpha`-almost everywhere implies $`f=0`
 $`\mu_Q`-almost everywhere.
 :::
 

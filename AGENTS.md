@@ -96,8 +96,12 @@ the index of its statements.
    [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
    `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
    sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
-4. All 57 manuscript items, comprising 316 statements, are verified on `main`. Earlier work
+4. All 63 manuscript items, comprising 345 statements, are verified on `main`. Earlier work
    branches are historical checkpoints; resume from `main`, not their WIP tips.
 5. The deferred line-length and docstring pass is complete. After `lake build`, run
    `python3 scripts/check-style.py` to check the 100-character limit and declaration documentation
    in project-owned modules. Vendored files keep their upstream formatting.
+6. The 2026-09-12 revision includes the unitary partial Fourier transform, coefficient
+   adjoint and stability, finite-order ray estimates with output-independent constants,
+   exact sampling variance, and qualitative vector sampling under a first moment.
+   Full build, Comparator, LeanArchitect, Blueprint build/check, and style checks pass.
