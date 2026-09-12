@@ -1,7 +1,9 @@
 # Synchronizing with the 2026-09-13 Constructive Approximation revision
 
-Manuscript: `-draft-operator-ridgelet`, branch `lean/operator-ridgelet`, commit `3e312d5`
-("Revise manuscript for Constructive Approximation readers").  The previous synchronization point
+Manuscript: `-draft-operator-ridgelet`, branch `main`, commit `3e312d5`
+("Revise manuscript for Constructive Approximation readers"; the former working branch
+`lean/operator-ridgelet` was merged into `main` on 2026-09-13, and the manuscript develops on
+`main` from now on).  The previous synchronization point
 was `fb56ba6` (recorded in `paper.json` as the "2026-09-12 revision").  The revision plan is
 `00note/plan20260913-ca-ja.md` of the manuscript repository; its Section 6 is the symbol table.
 
