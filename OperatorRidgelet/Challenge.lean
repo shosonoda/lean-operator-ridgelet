@@ -4,6 +4,7 @@ import Challenge.Reconstruction
 import Challenge.Tempered
 import Challenge.Sampling
 import Challenge.Examples
+import Challenge.Revision
 
 /-!
 # comparator challenge

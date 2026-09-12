@@ -12,6 +12,7 @@ import OperatorRidgelet.ArchitectBridge.Reconstruction
 import OperatorRidgelet.ArchitectBridge.Tempered
 import OperatorRidgelet.ArchitectBridge.Sampling
 import OperatorRidgelet.ArchitectBridge.Examples
+import OperatorRidgelet.ArchitectBridge.Revision
 
 /-!
 # LeanArchitect metadata bridge
