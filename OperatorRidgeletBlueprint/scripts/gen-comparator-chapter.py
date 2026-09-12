@@ -240,7 +240,7 @@ def generate() -> str:
 
     # Summary counts, exactly as in status.py.
     rows = []
-    n_stated = n_proved = n_partial = 0
+    n_stated = n_proved = n_partial = n_new = n_restated = 0
     for it in paper["items"]:
         names = it.get("lean", [])
         stated = bool(names) and all(is_stated(n) for n in names)
@@ -256,6 +256,13 @@ def generate() -> str:
                   "verified" if names and stated and proved_n == len(thm_names) else
                   f"partial {proved_n}/{len(thm_names)}" if proved_n else
                   "stated" if stated else "—")
+        revision = it.get("revision")
+        if revision == "new":
+            n_new += 1
+            status = "not formalized" if not names else status
+        elif revision == "restated":
+            n_restated += 1
+            status = f"{status}, manuscript restated"
         rows.append((it, names, thm_names, proved_n, status))
     total = len(paper["items"])
     ms = paper.get("manuscript", {})
@@ -297,6 +304,17 @@ def generate() -> str:
     w(f"  * {n_partial}")
     w(":::")
     w("")
+    if n_new or n_restated:
+        w(f"Of these, {n_new} item(s) are new in this manuscript revision and not yet formalized, "
+          f"and {n_restated} item(s) whose Lean statements are verified were restated in the "
+          "manuscript after those statements were written, so their status refers to the earlier "
+          "statement.  Both are marked in the status line of the item and explained in its "
+          "formalization note.")
+        w("")
+    conventions = ms.get("conventions")
+    if conventions:
+        w(f"Conventions. {esc(str(conventions))}")
+        w("")
     w(STATUS_LEGEND.format(github=GITHUB_BLOB))
 
     current_section = None
@@ -314,17 +332,22 @@ def generate() -> str:
             node_ref = f"Blueprint node: {{bpref \"{label}\"}}[]."
         else:
             node_ref = "Blueprint node: none yet."
-        if status == "verified":
+        base_status = status.removesuffix(", manuscript restated")
+        if status == "not formalized":
+            detail = "new in this manuscript revision, no Lean statement yet"
+        elif base_status == "verified":
             detail = (f"all {len(thm_names)} Lean theorems verified" if len(thm_names) != 1
                       else "its Lean theorem is verified")
-        elif status.startswith("partial"):
+        elif base_status.startswith("partial"):
             detail = f"{proved_n} of {len(thm_names)} Lean theorems verified"
-        elif status == "stated":
+        elif base_status == "stated":
             detail = "formalized, no part verified yet"
-        elif status == "defined":
+        elif base_status == "defined":
             detail = "definitions only, nothing for comparator to check"
         else:
             detail = "not every Lean name is stated yet"
+        if status.endswith(", manuscript restated"):
+            detail += "; the manuscript statement changed after the Lean statement was written"
         w(f"{node_ref} Status: *{esc(status)}* ({detail}).")
         w("")
         if it.get("note"):
