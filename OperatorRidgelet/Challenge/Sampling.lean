@@ -276,7 +276,7 @@ absolute value replaced by the norm of `Y`. -/
 theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
         ∂sampleLaw N (polarLaw Γ) ≤
@@ -288,7 +288,7 @@ theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] [SecondCountabl
 theorem cor_vector_rates_ii_b [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) :
     Tendsto (fun N : ℕ => rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ)) atTop
       (𝓝 0) := by

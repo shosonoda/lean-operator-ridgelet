@@ -6,6 +6,7 @@ import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Sampling.Spectral
 import OperatorRidgelet.Sampling.Universality
 import OperatorRidgelet.Sampling.VectorConvergence
+import OperatorRidgelet.Sampling.FirstMoment
 import OperatorRidgelet.Paper.Reconstruction
 
 /-!
@@ -548,23 +549,23 @@ absolute value replaced by the norm of `Y`. -/
 theorem cor_vector_rates_ii_a [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x)
         ∂sampleLaw N (polarLaw Γ) ≤
       2 * polarWeight Γ * rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ) := by
-  exact integral_polarSampledNetwork_compact_le hβ Γ hM hK hN
+  exact integral_polarSampledNetwork_compact_le_firstMoment hβ Γ hM hK hN
 
 /-- **Corollary [cor:vector-rates]** Vector-valued rates.  For every compact `K`,
 `𝔑^Y_N(K; p, β) → 0` as `N → ∞`. -/
 theorem cor_vector_rates_ii_b [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) :
     Tendsto (fun N : ℕ => rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ)) atTop
       (𝓝 0) := by
-  exact tendsto_rademacherComplexity_vector hβ Γ hM hK
+  exact tendsto_rademacherComplexity_vector_firstMoment hβ Γ hM hK
 
 end VectorValued
 
