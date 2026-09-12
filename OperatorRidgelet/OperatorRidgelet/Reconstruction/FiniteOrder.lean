@@ -138,15 +138,22 @@ theorem norm_coefficientFormulaVec_le_of_finite_bounds {ρ : SchwartzMap ℝ ℝ
 constant, depending only on `ρ`, `I` and `N`, with
 `(1 + |c|)^N ‖γ_G(a,c)‖ₑ ≤ K max_{k ≤ N} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ₑ` for every direction `a`
 and every density `G` that is smooth along rays near the window. -/
-theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : SchwartzMap ℝ ℝ}
+theorem finiteCoefficientDecayConstant_spec {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (N : ℕ) :
-    ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧ ∀ G : H → Y,
+    0 < finiteCoefficientDecayConstant ρ N ∧ finiteCoefficientDecayConstant ρ N < ⊤ ∧
+      ∀ G : H → Y,
       (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
         ContDiffOn ℝ N (fun ω : ℝ => G (ω • a)) U) →
       ∀ (a : H) (c : ℝ),
         ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
-          K * rayDerivBound I G N a := by
-  obtain ⟨B, hB0, hBb⟩ := exists_bound_iteratedDeriv_filterFourier hρ N
+          finiteCoefficientDecayConstant ρ N * rayDerivBound I G N a := by
+  have hex := exists_bound_iteratedDeriv_filterFourier hρ N
+  have hspec : 0 ≤ finiteFilterDerivativeBound ρ N ∧
+      ∀ j ≤ N, ∀ ω : ℝ,
+        ‖iteratedDeriv j (filterFourier ρ) ω‖ ≤ finiteFilterDerivativeBound ρ N := by
+    simpa only [finiteFilterDerivativeBound, dif_pos hex] using hex.choose_spec
+  set B := finiteFilterDerivativeBound ρ N
+  obtain ⟨hB0, hBb⟩ := hspec
   set V : ℝ := (volume (tsupport (filterFourier ρ))).toReal with hVdef
   have hV0 : (0 : ℝ) ≤ V := ENNReal.toReal_nonneg
   have hE0 : (0 : ℝ) ≤ (2 * Real.pi)⁻¹ * (V * B) :=
@@ -156,8 +163,11 @@ theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : Sch
     have : (0 : ℝ) ≤ 2 ^ N * (1 + 2 ^ N) * ((2 * Real.pi)⁻¹ * (V * B)) := by
       exact mul_nonneg (by positivity) hE0
     linarith
-  refine ⟨ENNReal.ofReal Kr, ENNReal.ofReal_pos.mpr hKr0, ENNReal.ofReal_lt_top,
+  change 0 < ENNReal.ofReal Kr ∧ ENNReal.ofReal Kr < ⊤ ∧ _
+  refine ⟨ENNReal.ofReal_pos.mpr hKr0, ENNReal.ofReal_lt_top,
     fun G hGs a c => ?_⟩
+  change ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
+    ENNReal.ofReal Kr * rayDerivBound I G N a
   by_cases hRtop : rayDerivBound I G N a = ⊤
   · rw [hRtop, ENNReal.mul_top (ENNReal.ofReal_pos.mpr hKr0).ne']
     exact le_top
@@ -211,26 +221,39 @@ theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : Sch
   exact ENNReal.ofReal_le_ofReal key
 
 
+/-- The explicit dimension-independent decay constant also yields an existential bound. -/
+theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : SchwartzMap ℝ ℝ}
+    (hρ : IsBandPass ρ) {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (N : ℕ) :
+    ∃ K : ℝ≥0∞, 0 < K ∧ K < ⊤ ∧ ∀ G : H → Y,
+      (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+        ContDiffOn ℝ N (fun ω : ℝ => G (ω • a)) U) →
+      ∀ (a : H) (c : ℝ),
+        ENNReal.ofReal ((1 + |c|) ^ N) * ‖coefficientFormulaVec ρ G (a, c)‖ₑ ≤
+          K * rayDerivBound I G N a :=
+  ⟨finiteCoefficientDecayConstant ρ N, finiteCoefficientDecayConstant_spec hρ hI N⟩
+
 variable [MeasurableSpace H] [BorelSpace H]
 
 /-- **The moment bound of Theorem `thm:E`.**  There is a constant, depending only on `ρ`, `I`
 and `m`, with `∫ (1 + ‖a‖ + |c|)^m ‖γ_G‖ dλ_α ≤ c M_{m+2}(G)` for every density `G` regular
 along rays. -/
-theorem exists_const_lintegral_moment_enorm_coefficientFormulaVec_le_of_contDiff
+theorem finiteCoefficientMomentConstant_spec
     {ν : Measure H} [SFinite ν]
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (m : ℕ) :
-    ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ ∀ G : H → Y, StronglyMeasurable G →
+    finiteCoefficientMomentConstant ρ m ≠ ⊤ ∧ ∀ G : H → Y, StronglyMeasurable G →
       (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
         ContDiffOn ℝ (m + 2 : ℕ) (fun ω : ℝ => G (ω • a)) U) →
       ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ m) *
           ‖coefficientFormulaVec ρ G θ‖ₑ ∂parameterMeasure ν ≤
-        c * finiteRayMoment ν I G (m + 2) m := by
-  obtain ⟨K, _, hKtop, hK⟩ :=
-    exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff (H := H) (Y := Y) hρ hI (m + 2)
+        finiteCoefficientMomentConstant ρ m * finiteRayMoment ν I G (m + 2) m := by
+  obtain ⟨_, hKtop, hK⟩ :=
+    finiteCoefficientDecayConstant_spec (H := H) (Y := Y) hρ hI (m + 2)
+  set K := finiteCoefficientDecayConstant ρ (m + 2)
   set Cw : ℝ≥0∞ := ∫⁻ c : ℝ, ENNReal.ofReal ((1 + c ^ 2)⁻¹) with hCwdef
   have hCwtop : Cw < ⊤ := lintegral_ofReal_inv_one_add_sq_lt_top
   have hne : K * Cw ≠ ⊤ := (ENNReal.mul_lt_top hKtop hCwtop).ne
-  refine ⟨K * Cw, hne, fun G hG hGs => ?_⟩
+  change K * Cw ≠ ⊤ ∧ _
+  refine ⟨hne, fun G hG hGs => ?_⟩
   have hKG := hK G hGs
   have hmeas : Measurable fun θ : H × ℝ => ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ m) *
       ‖coefficientFormulaVec ρ G θ‖ₑ := by
@@ -278,6 +301,18 @@ theorem exists_const_lintegral_moment_enorm_coefficientFormulaVec_le_of_contDiff
           (ENNReal.ofReal ((1 + ‖a‖) ^ m) * rayDerivBound I G (m + 2) a) ∂ν :=
         lintegral_mono hinner
     _ = K * Cw * finiteRayMoment ν I G (m + 2) m := lintegral_const_mul' _ _ hne
+
+/-- The explicit dimension-independent moment constant also yields an existential bound. -/
+theorem exists_const_lintegral_moment_enorm_coefficientFormulaVec_le_of_contDiff
+    {ν : Measure H} [SFinite ν]
+    {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {I : Set ℝ} (hI : IsFrequencyWindow ρ I) (m : ℕ) :
+    ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ ∀ G : H → Y, StronglyMeasurable G →
+      (∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
+        ContDiffOn ℝ (m + 2 : ℕ) (fun ω : ℝ => G (ω • a)) U) →
+      ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ m) *
+          ‖coefficientFormulaVec ρ G θ‖ₑ ∂parameterMeasure ν ≤
+        c * finiteRayMoment ν I G (m + 2) m :=
+  ⟨finiteCoefficientMomentConstant ρ m, finiteCoefficientMomentConstant_spec hρ hI m⟩
 
 /-- **Finite moments of all orders.**  For a density regular along rays, the coefficient measure
 `γ_G λ_α` has a finite moment of every order. -/
