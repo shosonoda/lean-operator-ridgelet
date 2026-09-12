@@ -1,12 +1,13 @@
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Sampling.FirstMoment
+import OperatorRidgelet.Sampling.Variance
 
 /-! # Integrable Banach-valued sampling: manuscript statements -/
 
 noncomputable section
 namespace OperatorRidgelet.Paper
 open MeasureTheory Filter Topology
-open scoped ENNReal
+open scoped ENNReal NNReal RealInnerProductSpace
 
 /-- **Lemma [lem:banach-rademacher-vanishing](i).** The signed empirical mean of a
 Bochner-integrable separable Banach-valued atom tends to zero in expected norm. -/
@@ -44,5 +45,22 @@ theorem lem_banach_rademacher_vanishing_ii {Ω E : Type*} [MeasurableSpace Ω]
           ∂(Measure.pi fun _ : Fin N => p))) :=
       mul_le_mul_of_nonneg_left hs (by positivity)
     _ = _ := by ring
+
+/-- **Corollary [cor:vector-rates](i).** The exact integrated variance of the sampled network,
+including the subtracted squared norm of its target and the zero-variation case. -/
+theorem cor_vector_rates_i_exact {H Y : Type*}
+    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] {β : ℝ → ℂ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ))
+    (ζ : Measure H) [IsProbabilityMeasure ζ] (hζ : Integrable (fun x : H => ‖x‖ ^ 2) ζ)
+    {N : ℕ} (hN : 0 < N) :
+    ∫ θ, (∫ x, ‖polarSampledNetwork β Γ θ x - integralNetwork β Γ x‖ ^ 2 ∂ζ)
+        ∂sampleLaw N (polarLaw Γ) =
+      (N : ℝ)⁻¹ * (polarWeight Γ ^ 2 *
+        (∫ θ, (∫ x, ‖β (⟪θ.1, x⟫ + θ.2)‖ ^ 2 ∂ζ) ∂polarLaw Γ) -
+          ∫ x, ‖integralNetwork β Γ x‖ ^ 2 ∂ζ) := by
+  exact integral_polarSampledNetwork_sq_eq hβ Γ hM ζ hζ hN
 
 end OperatorRidgelet.Paper

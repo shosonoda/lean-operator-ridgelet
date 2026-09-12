@@ -71,3 +71,35 @@ theorem integral_integral_norm_sq_sampleMean_le (p : Measure Ω) [IsProbabilityM
     _ = _ := by
       rw [integral_const_mul,
         integral_integral_swap ((memLp_two_iff_integrable_sq_norm hΦ.1).mp hΦ)]
+
+/-- The expected integrated squared error of an empirical mean is its
+integrated variance divided by the number of samples. -/
+theorem integral_integral_norm_sq_sampleMean (p : Measure Ω) [IsProbabilityMeasure p]
+    (ζ : Measure X) [IsProbabilityMeasure ζ] {Φ : X → Ω → Y}
+    (hΦ : MemLp (Function.uncurry Φ) 2 (ζ.prod p))
+    (hs : ∀ x, MemLp (Φ x) 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
+    ∫ ω, (∫ x, ‖(V / N : ℝ) • ∑ j, Φ x (ω j) - V • ∫ θ, Φ x θ ∂p‖ ^ 2 ∂ζ)
+        ∂Measure.pi (fun _ : Fin N => p) =
+      V ^ 2 / N * ((∫ θ, (∫ x, ‖Φ x θ‖ ^ 2 ∂ζ) ∂p) -
+        ∫ x, ‖∫ θ, Φ x θ ∂p‖ ^ 2 ∂ζ) := by
+  let q := Measure.pi (fun _ : Fin N => p)
+  have hj (j : Fin N) : MemLp (fun z : (Fin N → Ω) × X => Φ z.2 (z.1 j)) 2 (q.prod ζ) := by
+    exact hΦ.comp_measurePreserving
+      (((MeasurePreserving.id ζ).prod (measurePreserving_eval (fun _ : Fin N => p) j)).comp
+        Measure.measurePreserving_swap)
+  have hm := memLp_integral_family p ζ hΦ hs
+  have hmp : MemLp (fun z : (Fin N → Ω) × X => ∫ θ, Φ z.2 θ ∂p) 2 (q.prod ζ) :=
+    hm.comp_measurePreserving ⟨measurable_snd, Measure.snd_prod⟩
+  have herr : MemLp (fun z : (Fin N → Ω) × X =>
+      (V / N : ℝ) • ∑ j, Φ z.2 (z.1 j) - V • ∫ θ, Φ z.2 θ ∂p) 2 (q.prod ζ) :=
+    ((memLp_finsetSum Finset.univ fun j _ => hj j).const_smul (V / N)).sub (hmp.const_smul V)
+  have hi := (memLp_two_iff_integrable_sq_norm herr.1).mp herr
+  rw [integral_integral_swap hi]
+  simp_rw [integral_norm_sq_sampleMean p (hs _) V hN]
+  have hsquare : Integrable (fun z : X × Ω => ‖Φ z.1 z.2‖ ^ 2) (ζ.prod p) :=
+    (memLp_two_iff_integrable_sq_norm hΦ.1).mp hΦ
+  have hleft : Integrable (fun x => ∫ θ, ‖Φ x θ‖ ^ 2 ∂p) ζ :=
+    hsquare.integral_prod_left
+  have hmean : Integrable (fun x => ‖∫ θ, Φ x θ ∂p‖ ^ 2) ζ :=
+    (memLp_two_iff_integrable_sq_norm hm.1).mp hm
+  rw [integral_const_mul, integral_sub hleft hmean, integral_integral_swap hsquare]
