@@ -375,7 +375,7 @@ attribute [blueprint "thm:B-ii-d"
   OperatorRidgelet.Paper.thm_B_ii_d
 
 attribute [blueprint "thm:B-iii"
-  (statement := /-- If $\rho$ is $\alpha$-admissible and $f\in L^2(\mu_Q)$, then $R_\rho f=0$
+  (statement := /-- If $\rho$ is $\alpha$-admissible and $f\in L^1(\mu_Q)$, then $R_\rho f=0$
     $\lambda_\alpha$-a.e. implies $f=0$ $\mu_Q$-a.e. -/)] OperatorRidgelet.Paper.thm_B_iii
 
 attribute [blueprint "lem:mixture-integration-i"

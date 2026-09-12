@@ -282,7 +282,7 @@ attribute [blueprint "thm:A-ii-c"
   OperatorRidgelet.Paper.thm_A_ii_c
 
 attribute [blueprint "thm:A-iii-a"
-  (statement := /-- For tempered $\beta$ that is a continuous non-polynomial function of
+  (statement := /-- For tempered $\beta$ that is a continuous function of
     polynomial growth and $G$ regular along rays, $\int_{\mathbb R}\gamma_G(a,c)\beta(\langle
     a,x\rangle+c)\,\mathrm dc$ converges absolutely for $\nu_\alpha$-a.e. $a$. -/)]
   OperatorRidgelet.Paper.thm_A_iii_a

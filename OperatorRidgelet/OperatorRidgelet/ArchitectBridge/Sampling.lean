@@ -131,7 +131,7 @@ attribute [blueprint "thm:E-ii"
   OperatorRidgelet.Paper.thm_E_ii
 
 attribute [blueprint "thm:E-iii"
-  (statement := /-- For every real globally Lipschitz non-polynomial $\beta$,
+  (statement := /-- For every real globally Lipschitz $\beta$,
     $C^{(\alpha)}_{\beta,\rho}g_G=S_\beta[\gamma_G\lambda_\alpha]$. -/)]
   OperatorRidgelet.Paper.thm_E_iii
 

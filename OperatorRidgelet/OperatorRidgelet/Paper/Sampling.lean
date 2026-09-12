@@ -221,13 +221,13 @@ theorem thm_E_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
   nlinarith [norm_nonneg θ.1, abs_nonneg θ.2]
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  Consequently, for every
-real `β` that is globally Lipschitz and not a polynomial (a tempered activation that is the
+real `β` that is globally Lipschitz (a tempered activation that is the
 function `b`), the target `C^{(α)}_{β,ρ} g_G` is the integral network `S_β[γ_G λ_α]`. -/
 theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) {L : ℝ≥0} (hb : LipschitzWith L b)
-    (hpoly : ¬ IsPolynomialFun b) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, temperedAdmissibilityConst α β ρ * spectralTarget ν G x =
       integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν) (coefficientFormula ρ G)
         x := by
@@ -239,7 +239,7 @@ theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : 
     show (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormulaVec ρ G (θ.1, θ.2) =
       (b (⟪θ.1, x⟫ + θ.2) : ℂ) • coefficientFormula ρ G θ
     rw [Prod.mk.eta, coefficientFormulaVec_eq_coefficientFormula]
-  rw [← thm_A_iii_c ν hα hν ρ hρ I hI β b hβ hpoly G hG x, integralNetworkDensity,
+  rw [← thm_A_iii_c ν hα hν ρ hρ I hI β b hβ G hG x, integralNetworkDensity,
     parameterMeasure, integral_prod _ hint]
   refine integral_congr_ae (Eventually.of_forall fun a => ?_)
   refine integral_congr_ae (Eventually.of_forall fun c => ?_)
@@ -248,7 +248,7 @@ theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : 
   ring
 
 /-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For real globally
-Lipschitz non-polynomial `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
+Lipschitz `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
 `V = ‖γ_G‖_{L¹(λ_α)}` and `M₂` the second moment of `p = |γ_G| λ_α / V`, satisfies
 `𝔼‖f_N − C^{(α)}_{β,ρ} g_G‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)` for every compact
 `K`. -/
@@ -256,7 +256,7 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) {L : ℝ≥0} (hb : LipschitzWith L b)
-    (hpoly : ¬ IsPolynomialFun b) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) {K : Set H}
+    (G : H → ℂ) (hG : IsRegularAlongRays ν I G) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x =>
           densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
@@ -284,7 +284,7 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
             integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
               (coefficientFormula ρ G) x) := fun θ =>
     compactSupNorm_congr fun x _ => by
-      rw [thm_E_iii ν hα hν ρ hρ I hI β b hβ hb hpoly G hG x]
+      rw [thm_E_iii ν hα hν ρ hρ I hI β b hβ hb G hG x]
   rw [integral_congr_ae (Eventually.of_forall hcongr)]
   exact integral_compactSupNorm_densitySampledNetwork_sub_le hK hb hγ hM hN
 

@@ -92,14 +92,14 @@ set_option linter.unusedSectionVars false in
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da)` converges absolutely: the inner integral converges
 absolutely for `ν_α`-almost every `a`, and the outer integrand is `ν_α`-integrable. -/
 theorem thm_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       (∀ᵐ a ∂ν, Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∧
         Integrable
           (fun a : H => ∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ν := by
   intro x
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   exact ⟨ae_integrable_coefficientFormula_mul_ridge hα hν hρ' hG hG₂ x,
     integrable_integral_coefficientFormula_mul_ridge hα hν hρ' hG hG₁ hG₂ x⟩
 
@@ -109,13 +109,13 @@ set_option linter.unusedSectionVars false in
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` the spectral synthesis identity
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_ρ g_G(x)` holds for every `x`. -/
 theorem thm_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ)) ∂ν =
         admissibilityConst α ρ * spectralTarget ν G x := by
   intro x
-  exact integral_integral_coefficientFormula_mul_ridge hα hν (def_admissible_filter ρ hρ α hα)
+  exact integral_integral_coefficientFormula_mul_ridge hα hν hρ
     hG hG₁ hG₂ x
 
 set_option linter.unusedVariables false in
@@ -124,7 +124,7 @@ set_option linter.unusedSectionVars false in
 `γ_G ∈ L¹(λ_α)`, the left side of the spectral synthesis identity is the integral network
 `S_ρ[γ_G λ_α](x)`. -/
 theorem thm_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → ℂ)
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormula ρ G) (parameterMeasure ν)) :
     ∀ x : H,
@@ -137,13 +137,13 @@ theorem thm_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the inner integral `∫ γ_G(a,c) β(⟨a,x⟩+c) dc` converges absolutely for
 `ν_α`-almost every `a`. -/
 theorem thm_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
       Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ) := fun x =>
@@ -152,12 +152,12 @@ theorem thm_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the `ν_α`-integral of the inner integral converges absolutely. -/
 theorem thm_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
@@ -168,13 +168,13 @@ theorem thm_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:A]** Integral representation of targets with a spectral density.  For a
-tempered `β` that is a continuous function `b` of polynomial growth and not a polynomial, and
+tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the tempered spectral synthesis identity
 `∫ [∫ γ_G(a,c) β(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_{β,ρ} g_G(x)` holds. -/
 theorem thm_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → ℂ)
+    (hβ : IsTemperedFunction β b) (G : H → ℂ)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, coefficientFormula ρ G (a, c) * (b (⟪a, x⟫ + c) : ℂ)) ∂ν =
@@ -200,7 +200,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 `T_α = U_α' U_α` equals the Riesz map `J_α`. -/
 theorem thm_C_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν, frameOperator μ ν f = rieszMap μ ν f := by
   intro f
   rfl
@@ -211,7 +211,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 frame operator) is an isometry `𝓔_α → 𝓔_α'`. -/
 theorem thm_C_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Isometry (rieszMap μ ν) := by
   exact AddMonoidHomClass.isometry_of_norm (rieszMap μ ν) fun f => norm_innerSLFlip f
 
@@ -221,7 +221,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] in
 frame operator) is a bijection `𝓔_α → 𝓔_α'`. -/
 theorem thm_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMap μ ν) := by
   exact ⟨innerSLFlip_injective, fun F => ⟨rieszInv μ ν F, rieszMap_rieszInv μ ν F⟩⟩
 
@@ -231,12 +231,12 @@ set_option linter.unusedSectionVars false in
 `S_ρ R_ρ f = C^{(α)}_ρ T_α f` for `f ∈ 𝓔_α`. -/
 theorem thm_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
       synthesis μ ν ρ (ridgeletExtension μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperator μ ν f := by
   intro f
-  exact synthesis_ridgeletExtension hν (def_admissible_filter ρ hρ α hα) f
+  exact synthesis_ridgeletExtension hν hρ f
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -244,12 +244,12 @@ set_option linter.unusedSectionVars false in
 formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α` (`T_α⁻¹ = J_α⁻¹` by part (i)). -/
 theorem thm_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInv μ ν (synthesis μ ν ρ (ridgeletExtension μ ν ρ f)) := by
   intro f
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [synthesis_ridgeletExtension hν hρ' f, thm_C_i_a μ ν hα hν ρ hρ f, ← map_smul,
     rieszInv_rieszMap, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
@@ -260,12 +260,12 @@ set_option linter.unusedSectionVars false in
 formula `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
 theorem thm_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDual μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
   intro g
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [synthesis_ridgeletExtension hν hρ', thm_C_i_a μ ν hα hν ρ hρ, rieszMap_rieszInv, smul_smul,
     Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
@@ -277,7 +277,7 @@ set_option linter.unusedSectionVars false in
 `g_{𝒢_Q f}`: `T_α f [g] = ∫ g_{𝒢_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
 theorem thm_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
     ∀ g : spectralCore μ ν,
       frameOperator μ ν (spectralEmbed μ ν f) (spectralEmbed μ ν g) =
         ∫ x, spectralTarget ν (gaussFourier μ f) x * (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
@@ -301,12 +301,12 @@ set_option linter.unusedSectionVars false in
 functional `U_α' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ U_α' G = W_ρ G`. -/
 theorem thm_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
       ridgeletExtension μ ν ρ (rieszInv μ ν (transposeEmbed μ ν G)) =
         spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
   intro G
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   rw [rieszInv_transposeEmbed_coe, ridgeletExtension_eq hν hρ']
   exact ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ' μ G
 
@@ -317,7 +317,7 @@ functional `U_α' G` is represented by `g_G`: `U_α' G [g] = ∫ g_G(x) conj(g(x
 `g ∈ 𝒟_α`. -/
 theorem thm_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
       ∀ g : spectralCore μ ν,
         transposeEmbed μ ν G (spectralEmbed μ ν g) =
@@ -340,12 +340,12 @@ set_option linter.unusedSectionVars false in
 reconstruction formula applied to `U_α' G` reads `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
 theorem thm_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
       transposeEmbed μ ν G = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesis μ ν ρ (spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ)) := by
   intro G
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [← ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ' μ G, ← ridgeletExtension_eq hν hρ',
     synthesis_ridgeletExtension hν hρ' G, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC,
@@ -360,7 +360,7 @@ identity: paired with `g ∈ 𝒟_α`, `U_α' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_�
 (Lemma `lem:weak-equals-strong`). -/
 theorem thm_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
       Integrable (coefficientFormula ρ ((G : Lp ℂ 2 ν) : H → ℂ)) (parameterMeasure ν) →
       ∀ g : spectralCore μ ν,
@@ -371,7 +371,7 @@ theorem thm_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
               (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
   intro G hG hγ g
   exact transposeEmbed_apply_eq_integral_integralNetworkDensity hν
-    (def_admissible_filter ρ hρ α hα) hα G hγ g
+    hρ hα G hγ g
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -379,24 +379,24 @@ set_option linter.unusedSectionVars false in
 bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
 `‖Λ_ρ γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
 theorem thm_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       MemLp (backprojection α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
   exact ⟨admissibilityConst α ρ,
-    fun γ => hν.memLp_backprojection (def_admissible_filter ρ hρ α hα) γ⟩
+    fun γ => hν.memLp_backprojection hρ γ⟩
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:C]** Reconstruction and the frame operator.  `Λ_ρ W_ρ = C^{(α)}_ρ Id` on
 `L²(ν_α)`. -/
 theorem thm_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
-    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
       backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
         fun ξ => admissibilityConst α ρ * F ξ := by
   exact fun F hF hF₂ =>
-    hν.backprojection_spectralCoefficient hα (def_admissible_filter ρ hρ α hα) hF hF₂
+    hν.backprojection_spectralCoefficient hα hρ hF hF₂
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -405,7 +405,7 @@ set_option linter.unusedSectionVars false in
 Fourier-slice representative `(a,ω) ↦ \widehat{R_ρ f}(a,ω)` of the transform. -/
 theorem thm_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCore μ ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) :
     ∀ ξ : H,
       backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ =
         admissibilityConst α ρ * gaussFourier μ f ξ := by
@@ -418,7 +418,7 @@ theorem thm_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
 `τ(ξ) = ⟨Qξ,ξ⟩^{1/2}`, for `f ∈ 𝒟_α` and `ξ ≠ 0`. -/
 theorem thm_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
     ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
       hermiteCoefficient μ Q f ξ n =
@@ -431,7 +431,7 @@ theorem thm_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
 `ξ ≠ 0` and `n` determine `f ∈ 𝒟_α` in `L²(μ_Q)`. -/
 theorem thm_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
     ∀ f g : spectralCore μ ν,
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ, hermiteCoefficient μ Q f ξ n = hermiteCoefficient μ Q g ξ n) →
@@ -448,13 +448,13 @@ backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α`,
 `𝒢_Q` on its range on `𝒟_α`. -/
 theorem thm_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
     gaussFourierInv μ ν
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) *
           backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ) =
       (f : Lp ℂ 2 μ) := by
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   have hf : Integrable ((f : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
   have hfun : (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) *
@@ -829,7 +829,7 @@ set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the iterated integral `∫ [∫ ρ(⟨a,x⟩+c) γ_G(a,c) dc] ν_α(da)` converges absolutely. -/
 theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       (∀ᵐ a ∂ν, Integrable fun c : ℝ =>
@@ -837,7 +837,7 @@ theorem thm_vector_valued_A_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPos
         Integrable
           (fun a : H => ∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ν := by
   intro x
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   exact ⟨ae_integrable_smul_coefficientFormulaVec_ridge hα hν hρ' hG hG₂ x,
     integrable_integral_smul_coefficientFormulaVec_ridge hα hν hρ' hG hG₁ hG₂ x⟩
 
@@ -846,13 +846,13 @@ set_option linter.unusedSectionVars false in
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:A`(ii) for `Y`-valued
 densities: the spectral synthesis identity with the same constant `C^{(α)}_ρ`. -/
 theorem thm_vector_valued_A_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
         (admissibilityConst α ρ : ℂ) • spectralTarget ν G x := by
   intro x
-  exact integral_integral_smul_coefficientFormulaVec_ridge hα hν (def_admissible_filter ρ hρ α hα)
+  exact integral_integral_smul_coefficientFormulaVec_ridge hα hν hρ
     hG hG₁ hG₂ x
 
 set_option linter.unusedVariables false in
@@ -861,7 +861,7 @@ set_option linter.unusedSectionVars false in
 densities: if `γ_G ∈ L¹(λ_α; Y)`, the left side is the `Y`-valued integral network
 `S_ρ[γ_G λ_α](x)`. -/
 theorem thm_vector_valued_A_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (G : H → Y)
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormulaVec ρ G) (parameterMeasure ν)) :
     ∀ x : H,
@@ -879,7 +879,7 @@ inner integral converges absolutely for `ν_α`-almost every `a`. -/
 theorem thm_vector_valued_A_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H, ∀ᵐ a ∂ν,
       Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := fun x =>
@@ -893,7 +893,7 @@ set_option linter.unusedSectionVars false in
 theorem thm_vector_valued_A_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       Integrable
@@ -909,7 +909,7 @@ same constant `C^{(α)}_{β,ρ}`. -/
 theorem thm_vector_valued_A_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
-    (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) (G : H → Y)
+    (hβ : IsTemperedFunction β b) (G : H → Y)
     (hG : IsRegularAlongRays ν I G) :
     ∀ x : H,
       ∫ a, (∫ c : ℝ, (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c)) ∂ν =
@@ -981,13 +981,13 @@ theorem thm_vector_valued_B_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [
   exact ridgeletExtensionVecCLM_eq_spectralCoefficientVec hν hα hρ μ G
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:B`(iii) for
-`Y`-valued targets: `R_ρ f = 0` `λ_α`-a.e. implies `f = 0` `μ_Q`-a.e. for `f ∈ L²(μ_Q; Y)`. -/
+`Y`-valued targets: `R_ρ f = 0` `λ_α`-a.e. implies `f = 0` `μ_Q`-a.e. for `f ∈ L¹(μ_Q; Y)`. -/
 theorem thm_vector_valued_B_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsAdmissible α ρ) (f : H → Y) (hf : MemLp f 2 μ)
+    (hρ : IsAdmissible α ρ) (f : H → Y) (hf : Integrable f μ)
     (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) :
     f =ᵐ[μ] 0 := by
-  exact ae_eq_zero_of_ridgeletVec_ae_eq_zero μ hα hν hρ (hf.integrable one_le_two) h
+  exact ae_eq_zero_of_ridgeletVec_ae_eq_zero μ hα hν hρ hf h
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
@@ -996,7 +996,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCoun
 targets: the frame operator `T_α = U_α' U_α` equals the Riesz map `J_α` of `𝓔_α(Y)`. -/
 theorem thm_vector_valued_C_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν, frameOperatorVec μ ν f = rieszMapVec Y μ ν f := by
   intro f
   rfl
@@ -1008,7 +1008,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCoun
 targets: the Riesz map of `𝓔_α(Y)` is an isometry. -/
 theorem thm_vector_valued_C_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Isometry (rieszMapVec Y μ ν) := by
   exact AddMonoidHomClass.isometry_of_norm (rieszMapVec Y μ ν) fun f => norm_innerSLFlip f
 
@@ -1018,7 +1018,7 @@ omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] i
 targets: the Riesz map of `𝓔_α(Y)` is a bijection onto `𝓔_α(Y)'`. -/
 theorem thm_vector_valued_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMapVec Y μ ν) := by
   exact ⟨innerSLFlip_injective, fun F => ⟨rieszInvVec μ ν F, rieszMapVec_rieszInvVec μ ν F⟩⟩
 
@@ -1026,23 +1026,23 @@ theorem thm_vector_valued_C_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [S
 targets: the frame identity `S_ρ R_ρ f = C^{(α)}_ρ T_α f`. -/
 theorem thm_vector_valued_C_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
       synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f) =
         (admissibilityConst α ρ : ℂ) • frameOperatorVec μ ν f := by
   intro f
-  exact synthesisVec_ridgeletExtensionVec hν (def_admissible_filter ρ hρ α hα) f
+  exact synthesisVec_ridgeletExtensionVec hν hρ f
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(ii) for
 `Y`-valued targets: `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f`. -/
 theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
       f = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         rieszInvVec μ ν (synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ f)) := by
   intro f
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [synthesisVec_ridgeletExtensionVec hν hρ' f, thm_vector_valued_C_i_a μ ν hα hν ρ hρ f,
     ← map_smul, rieszInvVec_rieszMapVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC,
@@ -1052,12 +1052,12 @@ theorem thm_vector_valued_C_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [
 `Y`-valued targets: `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α(Y)'`. -/
 theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDualVec Y μ ν,
       g = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesisVec μ ν ρ (ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν g)) := by
   intro g
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [synthesisVec_ridgeletExtensionVec hν hρ', thm_vector_valued_C_i_a μ ν hα hν ρ hρ,
     rieszMapVec_rieszInvVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
@@ -1067,7 +1067,7 @@ theorem thm_vector_valued_C_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [
 `g_{𝒢_Q f}`: `T_α f [g] = ∫ ⟨g_{𝒢_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
 theorem thm_vector_valued_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCoreVec Y μ ν)
+    (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν)
     (hG : Integrable (gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y)) ν) :
     ∀ g : spectralCoreVec Y μ ν,
       frameOperatorVec μ ν (spectralEmbedVec μ ν f) (spectralEmbedVec μ ν g) =
@@ -1087,12 +1087,12 @@ theorem thm_vector_valued_C_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] 
 `Y`-valued targets: `R_ρ T_α⁻¹ U_α' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_vector_valued_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
       ridgeletExtensionVec Y μ ν ρ (rieszInvVec μ ν (transposeEmbedVec μ ν G)) =
         spectralCoefficientVec ν ρ ((G : Lp Y 2 ν) : H → Y) := by
   intro G
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   rw [rieszInvVec_transposeEmbedVec_coe, ridgeletExtensionVec_eq hν hρ']
   exact ridgeletExtensionVecCLM_eq_spectralCoefficientVec hν hα hρ' μ G
 
@@ -1100,7 +1100,7 @@ theorem thm_vector_valued_C_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] 
 `Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `U_α' G` is represented by `g_G`. -/
 theorem thm_vector_valued_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
       ∀ g : spectralCoreVec Y μ ν,
         transposeEmbedVec μ ν G (spectralEmbedVec μ ν g) =
@@ -1112,12 +1112,12 @@ theorem thm_vector_valued_C_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] 
 `Y`-valued targets: `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_vector_valued_C_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
       transposeEmbedVec μ ν G = (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
         synthesisVec μ ν ρ (spectralCoefficientVec ν ρ ((G : Lp Y 2 ν) : H → Y)) := by
   intro G
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   rw [← ridgeletExtensionVecCLM_eq_spectralCoefficientVec hν hα hρ' μ G,
     ← ridgeletExtensionVec_eq hν hρ', synthesisVec_ridgeletExtensionVec hν hρ' G,
@@ -1130,7 +1130,7 @@ reconstruction formula for `U_α' G` is the spectral synthesis identity paired w
 `g ∈ 𝒟_α(Y)`. -/
 theorem thm_vector_valued_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) :
+    (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
       Integrable (coefficientFormulaVec ρ ((G : Lp Y 2 ν) : H → Y)) (parameterMeasure ν) →
       ∀ g : spectralCoreVec Y μ ν,
@@ -1151,37 +1151,37 @@ theorem thm_vector_valued_C_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] 
   simp_rw [hnet, inner_smul_right]
   rw [integral_const_mul, ← mul_assoc, Complex.ofReal_inv]
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 :=
-    Complex.ofReal_ne_zero.mpr (def_admissible_filter ρ hρ α hα).pos.ne'
+    Complex.ofReal_ne_zero.mpr hρ.pos.ne'
   rw [inv_mul_cancel₀ hC, one_mul]
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: the backprojection `Λ_ρ` is a bounded operator
 `L²(λ_α; Y) → L²(ν_α; Y)`. -/
 theorem thm_vector_valued_C_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp Y 2 (parameterMeasure ν),
       MemLp (backprojectionVec α ν ρ γ) 2 ν ∧
         ∫ ξ, ‖backprojectionVec α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
   exact ⟨admissibilityConst α ρ,
-    fun γ => hν.memLp_backprojectionVec (def_admissible_filter ρ hρ α hα) γ⟩
+    fun γ => hν.memLp_backprojectionVec hρ γ⟩
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: `Λ_ρ W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
 theorem thm_vector_valued_C_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
-    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+    (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → Y, StronglyMeasurable F → MemLp F 2 ν →
       backprojectionVec α ν ρ (spectralCoefficientVec ν ρ F) =ᵐ[ν]
         fun ξ => (admissibilityConst α ρ : ℂ) • F ξ := by
   intro F hF hF₂
   exact hν.backprojectionVec_spectralCoefficientVec hα
-    (def_admissible_filter ρ hρ α hα) hF hF₂
+    hρ hF hF₂
 
 /-- **Theorem [thm:vector-valued]** Vector-valued extension.  Theorem `thm:C`(iv) for
 `Y`-valued targets: `Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` pointwise for `f ∈ 𝒟_α(Y)`, with `Λ_ρ`
 computed from the Fourier-slice representative of `R_ρ f`. -/
 theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) (f : spectralCoreVec Y μ ν) :
+    (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν) :
     ∀ ξ : H,
       backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ =
         (admissibilityConst α ρ : ℂ) • gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y) ξ := by
@@ -1194,7 +1194,7 @@ theorem thm_vector_valued_C_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [
 `ξ ≠ 0`. -/
 theorem thm_vector_valued_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :
     ∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
       hermiteCoefficientVec μ Q ((f : Lp Y 2 μ) : H → Y) ξ n =
@@ -1209,7 +1209,7 @@ theorem thm_vector_valued_C_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [
 `f ∈ 𝒟_α(Y)` in `L²(μ_Q; Y)`. -/
 theorem thm_vector_valued_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
     ∀ f g : spectralCoreVec Y μ ν,
       (∀ ξ : H, ξ ≠ 0 → ∀ n : ℕ,
@@ -1225,13 +1225,13 @@ theorem thm_vector_valued_C_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [
 `Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
 theorem thm_vector_valued_C_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsBandPass ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+    (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :
     gaussFourierInvVec μ ν
         (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •
           backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ ((f : Lp Y 2 μ) : H → Y))) ξ) =
       (f : Lp Y 2 μ) := by
-  have hρ' := def_admissible_filter ρ hρ α hα
+  have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
   have hf : Integrable ((f : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
   have hfun : (fun ξ => (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •

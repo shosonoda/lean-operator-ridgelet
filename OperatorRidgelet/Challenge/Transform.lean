@@ -330,13 +330,13 @@ theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   sorry
 
 /-- **Theorem [thm:B]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
-`α`-admissible and `f ∈ L²(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
+`α`-admissible and `f ∈ L¹(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
 `μ_Q`-almost everywhere. -/
 theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
-    (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
+    (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : Integrable f μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure (gaussianMixture N α)] 0) :
     f =ᵐ[μ] 0 := by
   sorry

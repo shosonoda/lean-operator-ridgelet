@@ -412,7 +412,7 @@ theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
   rw [ex_closed_form_iii_a hH hP hQ hN hα μ hμ ρ hρ W S hW hW0 hWi hS hM]
   funext x
   exact (thm_E_iii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
-    β b hβ hb hbp _ hG x).symm
+    β b hβ hb _ hG x).symm
 
 /-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
 real, globally Lipschitz, non-polynomial `β`, the sampled network `eq:polar-network` of
@@ -447,7 +447,7 @@ theorem ex_closed_form_iii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     hμ (gaussianMixture N α) (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
   rw [ex_closed_form_iii_a hH hP hQ hN hα μ hμ ρ hρ W S hW hW0 hWi hS hM]
   exact thm_E_iv (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
-    β b hβ hb hbp _ hG hK hn
+    β b hβ hb _ hG hK hn
 
 /-! ### Example `ex:core-elements`, second and third claims -/
 
@@ -932,7 +932,7 @@ theorem ex_operator_layer_ii_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
   rw [ex_operator_layer_ii_g hQ μ hμ ρ hρ m a b hL φ]
   funext x
   exact (thm_E_iii (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
-    β' b' hβ' hb' hb'p _ hG x).symm
+    β' b' hβ' hb' _ hG x).symm
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation: the sampled network `eq:polar-network` of `R_ρ F_φ λ_α` with a real Lipschitz
@@ -968,7 +968,7 @@ theorem ex_operator_layer_ii_j (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
     (lem_gaussian_decay_i hH hP hQ hN hα) hI.isCompact hI.zero_notMem
   rw [ex_operator_layer_ii_g hQ μ hμ ρ hρ m a b hL φ]
   exact thm_E_iv (gaussianMixture N α) hα (lem_homogeneous_mixture_v hH hP hN hα) ρ hρ I hI
-    β' b' hβ' hb' hb'p _ hG hK hn
+    β' b' hβ' hb' _ hG hK hn
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `ℱ ∈ 𝒟_α(Y)` for every `α > 0`. -/
