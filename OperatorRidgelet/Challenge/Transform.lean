@@ -121,11 +121,11 @@ theorem lem_fourier_slice_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sch
 /-! ### Definition `def:spectral-coefficient` and Lemma `lem:coefficient-isometry` -/
 
 /-- **Definition [def:spectral-coefficient]** The coefficient operator.  For
-`G ∈ L¹(ν) ∩ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
+`G ∈ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
 `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
 theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
-    (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
+    (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
   sorry
 

@@ -5,6 +5,7 @@ import OperatorRidgelet.Paper.Tempered
 import OperatorRidgelet.Paper.Sampling
 import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Paper.Revision
+import OperatorRidgelet.Paper.SamplingRevision
 
 /-!
 # Statements of the manuscript

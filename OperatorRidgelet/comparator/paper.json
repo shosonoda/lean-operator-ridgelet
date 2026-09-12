@@ -97,7 +97,10 @@
       "number": "3.5",
       "page": "9",
       "title": "Partial Fourier transform of a square-integrable coefficient",
-      "lean": [],
+      "lean": [
+        "OperatorRidgelet.Paper.lem_partial_fourier_l2",
+        "OperatorRidgelet.Paper.lem_partial_fourier_l2_uniqueness"
+      ],
       "note": ""
     },
     {
@@ -112,7 +115,7 @@
         "OperatorRidgelet.coefficientFormula",
         "OperatorRidgelet.Paper.def_spectral_coefficient"
       ],
-      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def_spectral_coefficient is the L¹ ∩ L² formula claim (λ-a.e. equality with coefficientFormula)."
+      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability along ν-a.e. ray (HasBiasFourier), junk 0 if none; def_spectral_coefficient is the L² formula claim (λ-a.e. equality with coefficientFormula)."
     },
     {
       "label": "lem:coefficient-isometry",
@@ -125,7 +128,8 @@
         "OperatorRidgelet.Paper.lem_coefficient_isometry_ii",
         "OperatorRidgelet.Paper.lem_coefficient_isometry_iii",
         "OperatorRidgelet.Paper.lem_coefficient_isometry_iv",
-        "OperatorRidgelet.Paper.def_spectral_coefficient"
+        "OperatorRidgelet.Paper.def_spectral_coefficient",
+        "OperatorRidgelet.Paper.lem_coefficient_isometry_v"
       ],
       "note": "Stated for an abstract σ-finite homogeneous ν; the formula claim is def_spectral_coefficient (shared with def:spectral-coefficient)."
     },
@@ -135,7 +139,11 @@
       "number": "3.8",
       "page": "10",
       "title": "The backprojection is the adjoint coefficient operator",
-      "lean": [],
+      "lean": [
+        "OperatorRidgelet.Paper.lem_coefficient_adjoint_i",
+        "OperatorRidgelet.Paper.lem_coefficient_adjoint_ii",
+        "OperatorRidgelet.Paper.lem_coefficient_adjoint_iii"
+      ],
       "note": ""
     },
     {
@@ -283,7 +291,8 @@
         "OperatorRidgelet.Paper.thm_C_iv_c",
         "OperatorRidgelet.Paper.thm_C_iv_d",
         "OperatorRidgelet.Paper.thm_C_iv_e",
-        "OperatorRidgelet.Paper.thm_C_iv_f"
+        "OperatorRidgelet.Paper.thm_C_iv_f",
+        "OperatorRidgelet.Paper.thm_C_iv_completion"
       ],
       "note": "Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv_d–iv_f add μ = 𝒩(0,Q). 𝓔_α is represented by 𝒦_α = spectralRange μ ν with U_α the inclusion; the continuous anti-dual 𝓔_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆[ℂ] ℂ), so that J_α = rieszMap = innerSLFlip ℂ, U_α' = transposeEmbed, T_α = frameOperator = U_α' U_α, S_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R_ρ on 𝓔_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T_α⁻¹ is rieszInv = J_α⁻¹ (part i_a says T_α = J_α, proved by rfl; i_b/i_c: J_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii_a is the representation of T_α f by g_{𝒢f}, iii_b the converse identity R_ρ T_α⁻¹ U_α' G = W_ρ G, iii_c the representation of U_α' G by g_G for G ∈ L¹, iii_d the second reconstruction formula for U_α' G, and iii_e its concrete form (U_α' G paired with g ∈ 𝒟_α equals C⁻¹ ∫ S_ρ[γ_G λ_α] conj g dμ, the spectral synthesis identity) when γ_G ∈ L¹(λ_α). Part iv: Λ_ρ = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the ray average of a given representative); boundedness iv_a is square integrability with a norm bound (linearity of Λ_ρ on L²(λ_α) is a consequence of prop_coefficient_projection_iv); iv_b is Λ_ρ W_ρ = C Id; iv_c is the pointwise identity Λ_ρ R_ρ f = C 𝒢f using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^{t²τ²/2} 𝒢f(tξ)); iv_e is totality on 𝒟_α; iv_f is f = Δ_Q[C⁻¹ Λ_ρ R_ρ f] with Δ_Q = gaussFourierInv the inverse of 𝒢 on its range on 𝒟_α (chosen by uniqueness)."
     },
@@ -293,7 +302,12 @@
       "number": "4.5",
       "page": "14",
       "title": "Stability under coefficient perturbations",
-      "lean": [],
+      "lean": [
+        "OperatorRidgelet.Paper.cor_coefficient_stability_i",
+        "OperatorRidgelet.Paper.cor_coefficient_stability_ii",
+        "OperatorRidgelet.Paper.cor_coefficient_stability_iii",
+        "OperatorRidgelet.Paper.cor_coefficient_stability_iv"
+      ],
       "note": ""
     },
     {
@@ -336,7 +350,8 @@
         "OperatorRidgelet.Paper.thm_vector_valued_C_iv_d",
         "OperatorRidgelet.Paper.thm_vector_valued_C_iv_e",
         "OperatorRidgelet.Paper.thm_vector_valued_C_iv_f",
-        "OperatorRidgelet.Paper.thm_vector_valued_A_iii_e"
+        "OperatorRidgelet.Paper.thm_vector_valued_A_iii_e",
+        "OperatorRidgelet.Paper.thm_vector_valued_C_iv_completion"
       ],
       "note": "One theorem per part of thm:A, thm:B, thm:C, mirroring the scalar statements (thm:B in the abstract-pair form of thm:general-weights) for a separable complex Hilbert space Y ([InnerProductSpace ℂ Y] [CompleteSpace Y] [SecondCountableTopology Y]) and targets f : H → Y; scalar integrals are Bochner integrals, products f(x)φ(x) are φ(x) • f(x), absolute values are norms in Y, Borel measurability is StronglyMeasurable, and inner products ⟨u,v⟩_Y (linear in u) are Mathlib's inner ℂ v u. The Y-valued objects are the Vec-suffixed definitions of Reconstruction/Defs (gaussFourierVec, ridgeletVec, coefficientFormulaVec, biasFourierVec, spectralCoefficientVec, spectralInnerVec, spectralCoreVec, spectralRangeVec, spectralEmbedVec, ridgeletExtensionVec, SpectralAntiDualVec, rieszMapVec, rieszInvVec, transposeEmbedVec, frameOperatorVec, synthesisVec, backprojectionOfVec, backprojectionVec, hermiteExtensionVec, hermiteCoefficientVec, gaussFourierInvVec); spectralTarget, IsRegularAlongRays, and integralNetworkDensity are polymorphic in the target. The existence claim thm:A(iii)(d) is scalar and is not repeated; thm:B(ii)(b)–(d) are stated for the chosen extension ridgeletExtensionVec, which (ii)(a) makes unique."
     },
@@ -433,7 +448,10 @@
       "number": "6.1",
       "page": "17",
       "title": "Qualitative sampling of integrable Banach-valued atoms",
-      "lean": [],
+      "lean": [
+        "OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_i",
+        "OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_ii"
+      ],
       "note": ""
     },
     {
@@ -530,7 +548,8 @@
         "OperatorRidgelet.Paper.cor_vector_rates_i_a",
         "OperatorRidgelet.Paper.cor_vector_rates_i_b",
         "OperatorRidgelet.Paper.cor_vector_rates_ii_a",
-        "OperatorRidgelet.Paper.cor_vector_rates_ii_b"
+        "OperatorRidgelet.Paper.cor_vector_rates_ii_b",
+        "OperatorRidgelet.Paper.cor_vector_rates_i_exact"
       ],
       "note": "Y a separable complex Hilbert space, Γ a VectorMeasure (H × ℝ) Y with finite variation, β : ℝ → ℂ with LipschitzWith L β, second moment as Integrable (‖a‖²+|c|²) (polarLaw Γ). Part i is split into the two inequalities i_a (‖·‖²_{L²(ζ;Y)} written as ∫ ‖·‖² dζ, ζ a probability measure with Integrable ‖x‖² ζ) and i_b (explicit bound with ‖β 0‖² and L²); part ii into ii_a (2V 𝔑^Y_N bound, with 𝔑^Y_N = rademacherComplexity with Y-valued phase polarDensity Γ) and ii_b (Tendsto to 0 as N → ∞). N > 0 in i and ii_a. Parts i_a, ii_a and ii_b explicitly carry SecondCountableTopology H, the standing separability hypothesis, for joint measurability and the compact atom map. The Hilbert-valued polar decomposition is proved from the Riesz representation theorem on L² of the variation measure. The compact bound uses Banach-valued symmetrization; convergence follows from the L¹ law of large numbers for the signed compact atom map, without a dimension-free Banach-space rate."
     },
@@ -705,7 +724,7 @@
         "OperatorRidgelet.Paper.lem_coefficient_finite_order_iv",
         "OperatorRidgelet.Paper.lem_coefficient_finite_order_v"
       ],
-      "note": ""
+      "note": "Finite C^(r+2) ray regularity gives A_(r+2,r) moments; decay and moment constants are explicit definitions depending only on the filter and order, independent of the output space."
     },
     {
       "label": "lem:weak-equals-strong",
@@ -984,7 +1003,10 @@
         "OperatorRidgelet.Paper.thm_general_weights_extension_closed_range",
         "OperatorRidgelet.Paper.thm_general_weights_extension_coefficient",
         "OperatorRidgelet.Paper.thm_general_weights_injective",
-        "OperatorRidgelet.Paper.thm_general_weights_one_mem_iff"
+        "OperatorRidgelet.Paper.thm_general_weights_one_mem_iff",
+        "OperatorRidgelet.Paper.thm_general_weights_dense",
+        "OperatorRidgelet.Paper.thm_general_weights_backprojection",
+        "OperatorRidgelet.Paper.thm_general_weights_stability"
       ],
       "note": "The Fourier-slice identity is already stated for general μ (lem_fourier_slice_v); thm:B for the abstract pair is the eight parts here; the abstract-weight versions of thm:A and thm:C(i)-(iii) belong to the reconstruction work package."
     },

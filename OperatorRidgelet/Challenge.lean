@@ -5,6 +5,7 @@ import Challenge.Tempered
 import Challenge.Sampling
 import Challenge.Examples
 import Challenge.Revision
+import Challenge.SamplingRevision
 
 /-!
 # comparator challenge

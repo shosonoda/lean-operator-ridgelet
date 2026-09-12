@@ -286,8 +286,8 @@ attribute [blueprint "lem:fourier-slice-v"
     a)$. -/)]
   OperatorRidgelet.Paper.lem_fourier_slice_v
 
-attribute [blueprint "def:spectral-coefficient-l1"
-  (statement := /-- If $G\in L^1(\nu)\cap L^2(\nu)$, then $W_\rho G=\gamma_G$ almost
+attribute [blueprint "def:spectral-coefficient-formula"
+  (statement := /-- If $G\in L^2(\nu)$, then $W_\rho G=\gamma_G$ almost
     everywhere. -/)]
   OperatorRidgelet.Paper.def_spectral_coefficient
 
