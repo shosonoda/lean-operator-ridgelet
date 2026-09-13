@@ -6,6 +6,7 @@ import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
+import OperatorRidgelet.ToFoML.TwoCoordinate
 import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs
@@ -51,6 +52,8 @@ import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
+import OperatorRidgelet.ToMathlib.RealInnerDual
+import OperatorRidgelet.ToMathlib.SqrtSumSq
 import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
 import OperatorRidgelet.ToMathlib.EntirePowerSeries
 import OperatorRidgelet.ToMathlib.FourierDilation

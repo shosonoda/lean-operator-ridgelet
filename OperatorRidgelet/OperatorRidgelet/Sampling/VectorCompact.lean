@@ -144,7 +144,7 @@ variable [BorelSpace H] [SecondCountableTopology H] [SecondCountableTopology Y]
 /-- The vector atoms with a measurable unit phase and finite parameter moment are integrable. -/
 theorem integrable_vectorRidgeAtom (hK : IsCompact K) {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (p : Measure (H × ℝ)) [IsProbabilityMeasure p]
-    (h : H × ℝ → Y) (hh : AEStronglyMeasurable h p) (hu : ∀ᵐ θ ∂p, ‖h θ‖ = 1)
+    (h : H × ℝ → Y) (hh : AEStronglyMeasurable h p) (hu : ∀ᵐ θ ∂p, ‖h θ‖ ≤ 1)
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p) :
     Integrable (fun θ => vectorRidgeAtom hK hβ.continuous θ (h θ)) p := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
@@ -162,7 +162,8 @@ theorem integrable_vectorRidgeAtom (hK : IsCompact K) {β : ℝ → ℂ} {L : �
   apply hb.mono' hm
   filter_upwards [hu] with θ hθ
   refine (norm_vectorRidgeAtom hK hβ.continuous θ (h θ)).trans ?_
-  rw [hθ, mul_one]
+  refine le_trans (mul_le_mul_of_nonneg_left hθ (norm_nonneg _)) ?_
+  rw [mul_one]
   have ha : ‖ridgeAtom hK hβ.continuous θ‖ ≤ C * (1 + ‖θ.1‖ + |θ.2|) := by
     apply (BoundedContinuousFunction.norm_le (by positivity)).mpr
     intro x
@@ -189,7 +190,7 @@ theorem integral_polarSampledNetwork_compact_le {β : ℝ → ℂ} {L : ℝ≥0}
     aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
   have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
   have hint : Integrable Φ (polarLaw Γ) := integrable_vectorRidgeAtom hK hβ (polarLaw Γ)
-    (polarDensity Γ) hh hh1 hM
+    (polarDensity Γ) hh (hh1.mono fun _ hθ => hθ.le) hM
   have hΦ' : ∀ θ (x : K), Φ θ x = β (⟪(id θ).1, (x : H)⟫ + (id θ).2) • polarDensity Γ θ := hΦ
   have hpt : ∀ θ : Fin N → H × ℝ,
       compactSupNorm K (fun x => polarSampledNetwork β Γ θ x - integralNetwork β Γ x) =

@@ -414,6 +414,12 @@ attribute [blueprint "ex:operator-layer-i-e"
     N}(|\beta(0)|+\operatorname{Lip}(\beta)R_K\|A\|_\infty)$. -/)
 ] OperatorRidgelet.Paper.ex_operator_layer_i_e
 
+attribute [blueprint "ex:operator-layer-i-f"
+  (statement := /-- $\mathbb E\|F_N-F\|_{C(K;Y)}\le\frac{B_1}{\sqrt
+    N}(4|\beta(0)|+8\operatorname{Lip}(\beta)R_K\|A\|_\infty)$ with $B_1=\int\|v_y\|\,m(\mathrm
+    dy)$, uniformly over the whole output function. -/)
+] OperatorRidgelet.Paper.ex_operator_layer_i_f
+
 attribute [blueprint "ex:operator-layer-ii-a"
   (statement := /-- $F_\varphi\in\mathcal D_\alpha$ for every $\alpha>0$. -/)]
   OperatorRidgelet.Paper.ex_operator_layer_ii_a

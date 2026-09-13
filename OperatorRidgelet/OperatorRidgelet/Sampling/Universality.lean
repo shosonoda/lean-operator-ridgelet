@@ -1,4 +1,5 @@
 import OperatorRidgelet.Sampling.Spectral
+import OperatorRidgelet.Sampling.VectorBarron
 import OperatorRidgelet.Reconstruction.Basic
 import Mathlib.Topology.ContinuousMap.StoneWeierstrass
 
@@ -1242,7 +1243,8 @@ section VectorDensityRademacher
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H] [SecondCountableTopology H] {K : Set H}
-variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
+  [SecondCountableTopology Y]
 
 /-- The phase of a `Y`-valued coefficient density is measurable for the parameter law. -/
 theorem aestronglyMeasurable_densityPhaseVec {Θ : Type*} [MeasurableSpace Θ] {lam : Measure Θ}
@@ -1348,6 +1350,52 @@ theorem integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec (hK :
         rw [← Finset.mul_sum]
         ring
 
+/-- **The Hilbert-valued Barron bound for a coefficient measure with a density.**  The mean
+compact-open error of the sampled network of `γ λ` is at most
+`(8V/√N)(|β(0)| + Lip(β) R_K M₂)`, by `thm:lipschitz-barron` through the vector Rademacher
+complexity. -/
+theorem integral_compactSupNorm_densitySampledNetwork_sub_leVec (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
+    (hγ : Integrable γ lam)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) :
+    ∫ θ, compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+            integralNetworkDensity (fun t => (β t : ℂ)) lam γ x)
+        ∂sampleLaw N (densityLaw lam γ) ≤
+      8 * densityWeight lam γ / Real.sqrt N *
+        (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (densityLaw lam γ))) := by
+  by_cases hV : densityWeight lam γ = 0
+  · rw [densityLaw_eq_zero hγ hV, sampleLaw_zero hN, integral_zero_measure, hV]
+    simp
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  have hW : 0 ≤ densityWeight lam γ := densityWeight_nonneg lam γ
+  have hrc := rademacherComplexity_vectorRidge_le hK hβ (densityLaw lam γ) (densityPhase γ)
+    (aestronglyMeasurable_densityPhaseVec hγ)
+    (Eventually.of_forall fun θ => norm_densityPhase_le_one γ θ) hM hN
+  refine (integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec hK hβ hγ hM hN).trans
+    ?_
+  have hstep : 2 * densityWeight lam γ *
+      rademacherComplexity N K (densityLaw lam γ) (fun t => (β t : ℂ)) (densityPhase γ) ≤
+      2 * densityWeight lam γ *
+        ((2 * |β 0| + 4 * (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (densityLaw lam γ))) / Real.sqrt N) :=
+    mul_le_mul_of_nonneg_left hrc (by linarith)
+  refine hstep.trans ?_
+  have hb : 0 ≤ |β 0| := abs_nonneg _
+  have hR : 0 ≤ compactRadius K := compactRadius_nonneg K
+  have hM2 : 0 ≤ Real.sqrt (secondMoment (densityLaw lam γ)) := Real.sqrt_nonneg _
+  have hsqrtN : 0 ≤ Real.sqrt N := Real.sqrt_nonneg _
+  have hdiff : 8 * densityWeight lam γ / Real.sqrt N *
+        (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (densityLaw lam γ))) -
+      2 * densityWeight lam γ *
+        ((2 * |β 0| + 4 * (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (densityLaw lam γ))) / Real.sqrt N) =
+      densityWeight lam γ / Real.sqrt N * (4 * |β 0|) := by ring
+  have hpos : 0 ≤ densityWeight lam γ / Real.sqrt N * (4 * |β 0|) :=
+    mul_nonneg (div_nonneg hW hsqrtN) (by linarith)
+  linarith
+
 end VectorDensityRademacher
 
 /-! ### Theorem `thm:D` for `Y`-valued targets -/
@@ -1356,7 +1404,8 @@ section UniversalVec
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] {K : Set H}
-variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
+variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
+  [SecondCountableTopology Y]
 
 /-- The `Y`-valued target with a density regular along rays is the integral network of the
 explicit coefficient; Theorem `thm:A`(iii) without the Lipschitz hypothesis on the
@@ -1437,6 +1486,42 @@ theorem norm_densitySampledNetwork_sub_le_compactSupNormVec (hK : IsCompact K) {
       fun θ' => ((β (⟪θ'.1, (y : H)⟫ + θ'.2) : ℝ) : ℂ)).symm]
   simp only [densitySampledNetwork, sampledNetwork, finiteNetwork, id]
 
+/-- The deterministic realization of the Hilbert-valued Barron bound for a coefficient measure
+with a density. -/
+theorem exists_compactSupNorm_densitySampledNetwork_sub_leVec (hK : IsCompact K) {β : ℝ → ℝ}
+    {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
+    (hγ : Integrable γ lam)
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (densityLaw lam γ)) {N : ℕ}
+    (hN : 0 < N) :
+    ∃ θ : Fin N → H × ℝ,
+      compactSupNorm K (fun x =>
+          densitySampledNetwork (fun t => (β t : ℂ)) lam γ θ x -
+            integralNetworkDensity (fun t => (β t : ℂ)) lam γ x) ≤
+        8 * densityWeight lam γ / Real.sqrt N *
+          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (densityLaw lam γ))) := by
+  by_cases hV : densityWeight lam γ = 0
+  · refine ⟨fun _ => (0, 0), ?_⟩
+    have hzero : ∀ x : H,
+        densitySampledNetwork (fun t => (β t : ℂ)) lam γ (fun _ : Fin N => (0, 0)) x -
+          integralNetworkDensity (fun t => (β t : ℂ)) lam γ x =
+        - integralNetworkDensity (fun t => (β t : ℂ)) lam γ x := by
+      intro x
+      simp [densitySampledNetwork, sampledNetwork, finiteNetwork, hV]
+    have hcoeff : ∀ᵐ θ ∂lam, γ θ = 0 := by
+      have h := (integral_eq_zero_iff_of_nonneg (fun θ => norm_nonneg (γ θ)) hγ.norm).mp hV
+      filter_upwards [h] with θ hθ using norm_eq_zero.mp hθ
+    have hnet : ∀ x : H, integralNetworkDensity (fun t => (β t : ℂ)) lam γ x = 0 := by
+      intro x
+      refine (integral_congr_ae (g := fun _ : H × ℝ => (0 : Y)) ?_).trans (integral_zero _ _)
+      filter_upwards [hcoeff] with θ hθ using by rw [hθ, smul_zero]
+    rw [hV]
+    refine le_of_le_of_eq (compactSupNorm_le le_rfl fun x _ => ?_) (by simp)
+    rw [hzero, hnet, neg_zero, norm_zero]
+  haveI := isProbabilityMeasure_densityLaw hγ hV
+  obtain ⟨θ, hθ⟩ := exists_realization_le_mean _ _
+    (integrable_compactSupNorm_densitySampledNetwork_subVec hK hβ hγ hV hM hN)
+  exact ⟨θ, hθ.trans (integral_compactSupNorm_densitySampledNetwork_sub_leVec hK hβ hγ hM hN)⟩
+
 /-- **Theorem `thm:D`, vector-valued**, for a direction measure that is finite on bounded sets:
 a constructive universal approximation of a continuous `f : H → Y` with the vector-valued
 compact-open rate `2V 𝔑^Y_N(K; p, β)` of Corollary `cor:vector-rates`(ii). -/
@@ -1456,14 +1541,25 @@ theorem exists_spectralDensity_universal_approx_vec (ν : Measure H) [SigmaFinit
         (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ m * ‖coefficientFormulaVec ρ G θ‖)
         (parameterMeasure ν)) ∧
       (∀ L : ℝ≥0, LipschitzWith L b → ∀ N : ℕ, 0 < N →
-        ∫ θ, compactSupNorm K (fun x =>
+        (∫ θ, compactSupNorm K (fun x =>
               f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
                 (coefficientFormulaVec ρ G) θ x)
             ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) ≤
-          ε + 2 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) *
-            rademacherComplexity N K
-              (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
-              (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
+          ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) / Real.sqrt N *
+            (|b 0| + (L : ℝ) * compactRadius K *
+              Real.sqrt
+                (secondMoment
+                  (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) ∧
+        ∃ θ : Fin N → H × ℝ,
+          compactSupNorm K (fun x =>
+              f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x) ≤
+            ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) /
+                Real.sqrt N *
+              (|b 0| + (L : ℝ) * compactRadius K *
+                Real.sqrt
+                  (secondMoment
+                    (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) := by
   obtain ⟨G, hGreg, hGsmooth, hGsupp, hGapp⟩ :=
     exists_isRegularAlongRays_norm_sub_spectralTarget_leVec ν hfin hI.isCompact hI.zero_notMem
       hf hK (half_pos hε)
@@ -1488,13 +1584,37 @@ theorem exists_spectralDensity_universal_approx_vec (ν : Measure H) [SigmaFinit
     exact integrable_moment_norm_coefficientFormulaVec hρ hI hGreg m
   · intro L hb N hN
     set W : ℝ := densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) with hWdef
-    set R : ℝ := rademacherComplexity N K
-      (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
-      (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G)) with hRdef
+    set bnd : ℝ := 8 * W / Real.sqrt N *
+      (|b 0| + (L : ℝ) * compactRadius K *
+        Real.sqrt
+          (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))
+      with hbnddef
     by_cases hV : W = 0
-    · rw [densityLaw_eq_zero hγ hV, sampleLaw_zero hN, integral_zero_measure, hV, mul_zero,
-        zero_mul, add_zero]
-      exact hε.le
+    · have hcoeff : ∀ᵐ θ ∂parameterMeasure ν, coefficientFormulaVec ρ G θ = 0 := by
+        have h := (integral_eq_zero_iff_of_nonneg
+          (fun θ => norm_nonneg (coefficientFormulaVec ρ G θ)) hγ.norm).mp hV
+        filter_upwards [h] with θ hθ using norm_eq_zero.mp hθ
+      have hnet : ∀ x : H, integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+          (coefficientFormulaVec ρ G) x = 0 := by
+        intro x
+        refine (integral_congr_ae (g := fun _ : H × ℝ => (0 : Y)) ?_).trans (integral_zero _ _)
+        filter_upwards [hcoeff] with θ hθ using by rw [hθ, smul_zero]
+      have hbnd0 : bnd = 0 := by rw [hbnddef, hV]; simp
+      have hsampled : ∀ (θ : Fin N → H × ℝ) (x : H),
+          densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+            (coefficientFormulaVec ρ G) θ x = 0 := by
+        intro θ x
+        simp [densitySampledNetwork, sampledNetwork, finiteNetwork, ← hWdef, hV]
+      constructor
+      · rw [densityLaw_eq_zero hγ hV, sampleLaw_zero hN, integral_zero_measure, hbnd0]
+        linarith
+      · refine ⟨fun _ => (0, 0), ?_⟩
+        rw [hbnd0, add_zero]
+        refine compactSupNorm_le hε.le fun x hx => ?_
+        rw [hsampled, sub_zero]
+        have hx2 := hA x hx
+        rw [hnet, sub_zero] at hx2
+        linarith
     · haveI := isProbabilityMeasure_densityLaw hγ hV
       have hDint := integrable_compactSupNorm_densitySampledNetwork_subVec hK hb hγ hV hM hN
       have hptw : ∀ θ : Fin N → H × ℝ,
@@ -1527,29 +1647,38 @@ theorem exists_spectralDensity_universal_approx_vec (ν : Measure H) [SigmaFinit
               refine add_le_add (hA x hx) ?_
               rw [norm_sub_rev]
               exact norm_densitySampledNetwork_sub_le_compactSupNormVec hK hb hγ hV hM hN θ hx
-      calc ∫ θ, compactSupNorm K (fun x => f x - densitySampledNetwork (fun t => (b t : ℂ))
-              (parameterMeasure ν) (coefficientFormulaVec ρ G) θ x)
-            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
-          ≤ ∫ θ, (ε / 2 + compactSupNorm K (fun x =>
-              densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
-                (coefficientFormulaVec ρ G) θ x -
-              integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
-                (coefficientFormulaVec ρ G) x))
-            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) :=
-            integral_mono_of_nonneg (Eventually.of_forall fun _ => compactSupNorm_nonneg _ _)
-              (Integrable.add (integrable_const _) hDint) (Eventually.of_forall hptw)
-        _ = ε / 2 + ∫ θ, compactSupNorm K (fun x =>
-              densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
-                (coefficientFormulaVec ρ G) θ x -
-              integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
-                (coefficientFormulaVec ρ G) x)
-            ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) := by
-            rw [integral_add (integrable_const _) hDint, integral_const]
-            simp
-        _ ≤ ε / 2 + 2 * W * R :=
-            add_le_add le_rfl
-              (integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec hK hb hγ hM hN)
-        _ ≤ ε + 2 * W * R := by linarith
+      constructor
+      · calc ∫ θ, compactSupNorm K (fun x => f x - densitySampledNetwork (fun t => (b t : ℂ))
+                (parameterMeasure ν) (coefficientFormulaVec ρ G) θ x)
+              ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
+            ≤ ∫ θ, (ε / 2 + compactSupNorm K (fun x =>
+                densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) θ x -
+                integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x))
+              ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) :=
+              integral_mono_of_nonneg (Eventually.of_forall fun _ => compactSupNorm_nonneg _ _)
+                (Integrable.add (integrable_const _) hDint) (Eventually.of_forall hptw)
+          _ = ε / 2 + ∫ θ, compactSupNorm K (fun x =>
+                densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) θ x -
+                integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+                  (coefficientFormulaVec ρ G) x)
+              ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) := by
+              rw [integral_add (integrable_const _) hDint, integral_const]
+              simp
+          _ ≤ ε / 2 + bnd :=
+              add_le_add le_rfl
+                (integral_compactSupNorm_densitySampledNetwork_sub_leVec hK hb hγ hM hN)
+          _ ≤ ε + bnd := by linarith
+      · obtain ⟨θ, hθ⟩ := exists_compactSupNorm_densitySampledNetwork_sub_leVec hK hb hγ hM hN
+        refine ⟨θ, (hptw θ).trans ?_⟩
+        have h2 : ε / 2 + compactSupNorm K (fun x =>
+            densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+              (coefficientFormulaVec ρ G) θ x -
+            integralNetworkDensity (fun t => (b t : ℂ)) (parameterMeasure ν)
+              (coefficientFormulaVec ρ G) x) ≤ ε / 2 + bnd := add_le_add le_rfl hθ
+        linarith
 
 end UniversalVec
 

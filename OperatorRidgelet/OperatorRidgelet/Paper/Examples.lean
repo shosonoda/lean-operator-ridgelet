@@ -756,7 +756,8 @@ theorem ex_operator_layer_i_e (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
       hL.stronglyMeasurable_layerWeight φ, hL.integrable_layerWeight φ⟩
   haveI := hW.isFiniteMeasure_layerMeasure_variation
   obtain ⟨hM, hMb⟩ := hW.polarLaw_moment
-  have h := thm_lipschitz_barron_i hβ (layerMeasure m a (layerWeight b φ)) hM hK hn
+  have h := integral_compactSupNorm_polarSampledNetwork_sub_le hβ
+    (layerMeasure m a (layerWeight b φ)) hM hK hn
   have heq : layerObservable m a b β φ = operatorLayer m a (layerWeight b φ) β := by
     funext x
     exact hL.layerObservable_eq_integral_inner hβ.continuous φ x
@@ -766,6 +767,30 @@ theorem ex_operator_layer_i_e (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
       layerSupNorm a := (Real.sqrt_le_iff).2 ⟨layerSupNorm_nonneg a, hMb⟩
   have hK0 := compactRadius_nonneg K
   gcongr <;> first | positivity | exact hW.polarWeight_layerMeasure_le | exact hsq
+
+/-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  For globally
+Lipschitz `β`, Theorem `thm:lipschitz-barron` applied to `F = S_β[Γ]`, `Γ = ι_#(v_y m)`, bounds
+the error of the polar sampled network uniformly on the whole output function:
+`E‖F_N - F‖_{C(K;Y)} ≤ B₁ N^{-1/2} (4|β(0)| + 8 Lip(β) R_K ‖A‖_∞)` with
+`B₁ = ∫ ‖v_y‖ m(dy)` (`eq:operator-layer-uniform`). -/
+theorem ex_operator_layer_i_f (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
+    (hL : IsLayerData m a b) (β : ℝ → ℝ) {L : ℝ≥0} (hβ : LipschitzWith L β) (K : Set H)
+    (hK : IsCompact K) (n : ℕ) (hn : 0 < n) :
+    ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) (layerMeasure m a b) θ x -
+            operatorLayer m a b β x)
+        ∂sampleLaw n (polarLaw (layerMeasure m a b)) ≤
+      (∫ y, ‖b y‖ ∂m) / Real.sqrt n *
+        (4 * |β 0| + 8 * (L : ℝ) * compactRadius K * layerSupNorm a) := by
+  haveI := hL.isFiniteMeasure_layerMeasure_variation
+  obtain ⟨hM, hMb⟩ := hL.polarLaw_moment
+  have h := thm_lipschitz_barron_i hβ (layerMeasure m a b) hM hK hn
+  rw [← hL.operatorLayer_eq_integralNetwork hβ.continuous] at h
+  refine h.trans ?_
+  have hsq : Real.sqrt (secondMoment (polarLaw (layerMeasure m a b))) ≤ layerSupNorm a :=
+    (Real.sqrt_le_iff).2 ⟨layerSupNorm_nonneg a, hMb⟩
+  have hK0 := compactRadius_nonneg K
+  gcongr <;> first | positivity | exact hL.polarWeight_layerMeasure_le | exact hsq
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
 activation `β = Φ`: `F_φ ∈ 𝒟_α` for every `α > 0`. -/

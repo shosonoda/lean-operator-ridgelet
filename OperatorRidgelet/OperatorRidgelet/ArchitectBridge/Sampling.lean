@@ -106,9 +106,10 @@ attribute [blueprint "thm:general-rademacher"
   OperatorRidgelet.Paper.thm_general_rademacher
 
 attribute [blueprint "thm:lipschitz-barron-i"
-  (statement := /-- For real globally Lipschitz $\beta$ and
-    $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
-    $\mathbb E\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$
+  (statement := /-- For real globally Lipschitz $\beta$, a finite-variation $Y$-valued $\Gamma$,
+    and $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
+    $\mathbb E\|f_N-f\|_{C(K;Y)}\le\frac{V}{\sqrt N}
+      (4|\beta(0)|+8\operatorname{Lip}(\beta)R_KM_2)$
     with $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)]
   OperatorRidgelet.Paper.thm_lipschitz_barron_i
 
@@ -116,6 +117,12 @@ attribute [blueprint "thm:lipschitz-barron-ii"
   (statement := /-- At least one deterministic width-$N$ realization satisfies the same
     bound. -/)]
   OperatorRidgelet.Paper.thm_lipschitz_barron_ii
+
+attribute [blueprint "thm:lipschitz-barron-iii"
+  (statement := /-- The same expectation is at most
+    $\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, the second displayed
+    inequality. -/)]
+  OperatorRidgelet.Paper.thm_lipschitz_barron_iii
 
 /-! ## Section 6: finite variation from the spectral density -/
 
@@ -169,8 +176,10 @@ attribute [blueprint "thm:D-dense"
 attribute [blueprint "thm:D-vec"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same
     statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i) and (ii) and the
-    vector-valued compact-open rate
-    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+2V\mathfrak R^Y_N(K;p,\beta)$ in (iii). -/)]
+    same explicit rate
+    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+\frac{8V}{\sqrt
+    N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, with a deterministic realization, in
+    (iii). -/)]
   OperatorRidgelet.Paper.thm_D_vec
 
 /-! ## Section 6: vector-valued sampling -/

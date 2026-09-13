@@ -6,6 +6,7 @@ import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Sampling.Spectral
 import OperatorRidgelet.Sampling.Universality
 import OperatorRidgelet.Sampling.VectorConvergence
+import OperatorRidgelet.Sampling.VectorBarron
 import OperatorRidgelet.Sampling.FirstMoment
 import OperatorRidgelet.Paper.Reconstruction
 
@@ -87,12 +88,84 @@ theorem thm_general_rademacher [MeasurableSpace H] [BorelSpace H] (β : ℝ → 
         rw [← Finset.mul_sum]
         ring
 
-/-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  For real
-globally Lipschitz `β` and `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`, the sampled network of the polar
-decomposition of `Γ` satisfies
-`𝔼‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
-theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
-    (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound.  For a
+finite-variation `Y`-valued measure `Γ = h|Γ|` with `V = ‖Γ‖_TV` and `p = |Γ|/V`, a real
+globally Lipschitz `β`, and `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`, the sampled network
+`eq:polar-network` with `Y`-valued weights satisfies
+`𝔼‖f_N − f‖_{C(K;Y)} ≤ (V/√N)(4|β(0)| + 8 Lip(β) R_K M₂)`.  The manuscript's conventions
+`V = 0` (the zero network) and `K = ∅` (zero error) are instances of the statement. -/
+theorem thm_lipschitz_barron_i {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
+    ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x)
+        ∂sampleLaw N (polarLaw Γ) ≤
+      polarWeight Γ / Real.sqrt N *
+        (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (polarLaw Γ))) := by
+  by_cases h0 : totalVariation Γ = 0
+  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
+      polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hu : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ = 1 := ae_polarLaw_norm_polarDensity_eq_one Γ
+  calc ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x) ∂sampleLaw N (polarLaw Γ)
+      ≤ 2 * polarWeight Γ *
+          rademacherComplexity N K (polarLaw Γ) (fun t => (β t : ℂ)) (polarDensity Γ) :=
+        integral_polarSampledNetwork_compact_le (lipschitzWith_ofReal_comp hβ) Γ hM hK hN
+    _ ≤ 2 * polarWeight Γ *
+          ((2 * |β 0| + 4 * (L : ℝ) * compactRadius K *
+            Real.sqrt (secondMoment (polarLaw Γ))) / Real.sqrt N) :=
+        mul_le_mul_of_nonneg_left
+          (rademacherComplexity_vectorRidge_le hK hβ (polarLaw Γ) (polarDensity Γ) hh
+            (hu.mono fun _ hθ => hθ.le) hM hN)
+          (by linarith [polarWeight_nonneg Γ])
+    _ = polarWeight Γ / Real.sqrt N *
+          (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+            Real.sqrt (secondMoment (polarLaw Γ))) := by ring
+
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound.  At
+least one deterministic width-`N` realization satisfies the same bound
+`‖f_N − f‖_{C(K;Y)} ≤ (V/√N)(4|β(0)| + 8 Lip(β) R_K M₂)`. -/
+theorem thm_lipschitz_barron_ii {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
+    ∃ θ : Fin N → H × ℝ,
+      compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x) ≤
+        polarWeight Γ / Real.sqrt N *
+          (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+            Real.sqrt (secondMoment (polarLaw Γ))) := by
+  by_cases h0 : totalVariation Γ = 0
+  · refine ⟨fun _ => (0, 0), ?_⟩
+    rw [polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    refine le_of_le_of_eq (compactSupNorm_le le_rfl fun x _ => ?_) (by simp)
+    rw [polarSampledNetwork_eq_zero _ h0, integralNetwork_eq_zero_of_totalVariation_eq_zero _ h0,
+      sub_zero, norm_zero]
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  obtain ⟨θ, hθ⟩ := exists_realization_le_mean _ _
+    (integrable_compactSupNorm_polarSampledNetwork_sub_vec hK hβ Γ hM hN)
+  exact ⟨θ, hθ.trans (thm_lipschitz_barron_i hβ Γ hM hK hN)⟩
+
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound, in the
+weaker form `𝔼‖f_N − f‖_{C(K;Y)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)` of the second displayed
+inequality. -/
+theorem thm_lipschitz_barron_iii {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x =>
@@ -101,74 +174,20 @@ theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → 
         ∂sampleLaw N (polarLaw Γ) ≤
       8 * polarWeight Γ / Real.sqrt N *
         (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-  by_cases h0 : totalVariation Γ = 0
-  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
-      polarWeight_eq_zero_of_totalVariation_eq_zero h0]
-    simp
-  haveI := isProbabilityMeasure_polarLaw Γ h0
-  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
-    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
-  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ ≤ 1 :=
-    (ae_polarLaw_norm_polarDensity_eq_one Γ).mono fun θ hθ => hθ.le
-  have hsqrt : Real.sqrt N / N = 1 / Real.sqrt N := Real.sqrt_div_self'
-  calc ∫ θ, compactSupNorm K (fun x =>
-          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
-            integralNetwork (fun t => (β t : ℂ)) Γ x) ∂sampleLaw N (polarLaw Γ)
-      = ∫ θ, polarWeight Γ / N *
-          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
-            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
-              ∂polarLaw Γ‖
-          ∂sampleLaw N (polarLaw Γ) :=
-        integral_congr_ae (Eventually.of_forall
-          (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN))
-    _ = polarWeight Γ / N * ∫ θ,
-          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
-            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
-              ∂polarLaw Γ‖
-          ∂sampleLaw N (polarLaw Γ) := integral_const_mul _ _
-    _ ≤ polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
-          Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ))) :=
-        mul_le_mul_of_nonneg_left
-          (integral_norm_sum_smul_ridgeAtom_sub_le hK hβ (polarLaw Γ) measurable_id hh hh1 hM N)
-          (div_nonneg (polarWeight_nonneg Γ) (Nat.cast_nonneg N))
-    _ = 8 * polarWeight Γ / Real.sqrt N *
-          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-        rw [secondMoment]
-        calc polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
-                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)))
-            = 8 * polarWeight Γ * (|β 0| + L * compactRadius K *
-                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)) * (Real.sqrt N / N) := by
-              ring
-          _ = _ := by rw [hsqrt]; ring
+  refine (thm_lipschitz_barron_i hβ Γ hM hK hN).trans ?_
+  have hV : 0 ≤ polarWeight Γ / Real.sqrt N :=
+    div_nonneg (polarWeight_nonneg Γ) (Real.sqrt_nonneg _)
+  have hb : 0 ≤ |β 0| := abs_nonneg _
+  have hdiff : 8 * polarWeight Γ / Real.sqrt N *
+        (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) -
+      polarWeight Γ / Real.sqrt N *
+        (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (polarLaw Γ))) =
+      polarWeight Γ / Real.sqrt N * (4 * |β 0|) := by ring
+  have hpos : 0 ≤ polarWeight Γ / Real.sqrt N * (4 * |β 0|) :=
+    mul_nonneg hV (by linarith)
+  linarith
 
-/-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  At least one
-deterministic width-`N` realization satisfies the same bound
-`‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
-theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
-    (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
-    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
-    ∃ θ : Fin N → H × ℝ,
-      compactSupNorm K (fun x =>
-          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
-            integralNetwork (fun t => (β t : ℂ)) Γ x) ≤
-        8 * polarWeight Γ / Real.sqrt N *
-          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-  by_cases h0 : totalVariation Γ = 0
-  · refine ⟨fun _ => (0, 0), ?_⟩
-    rw [polarWeight_eq_zero_of_totalVariation_eq_zero h0]
-    refine le_of_le_of_eq (compactSupNorm_le le_rfl fun x _ => ?_) (by simp)
-    rw [polarSampledNetwork_eq_zero _ h0, integralNetwork_eq_zero_of_totalVariation_eq_zero _ h0,
-      sub_zero, norm_zero]
-  haveI := isProbabilityMeasure_polarLaw Γ h0
-  have hint : Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
-      polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
-        integralNetwork (fun t => (β t : ℂ)) Γ x)) (sampleLaw N (polarLaw Γ)) :=
-    ((integrable_norm_sum_sub (polarLaw Γ) (integrable_polar_atom hK hβ Γ h0 hM) N).const_mul
-      (polarWeight Γ / N)).congr (Eventually.of_forall fun θ =>
-        (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN θ).symm)
-  obtain ⟨θ, hθ⟩ := exists_realization_le_mean _ _ hint
-  exact ⟨θ, hθ.trans (thm_lipschitz_barron_i hβ Γ hM hK hN)⟩
 
 /-! ## Section 6: finite variation from the spectral density -/
 
@@ -460,9 +479,10 @@ theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
 hold for continuous `f : H → Y` with values in a separable complex Hilbert space: there is a
 `Y`-valued spectral density `G`, regular along rays, smooth, and vanishing outside a bounded
 set, with (i) `‖f − g_G‖_{C(K;Y)} < ε`, (ii) `g_G = S_β[γ_G λ_α]` with a finite coefficient
-measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the
-vector-valued compact-open rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + 2V 𝔑^Y_N(K; p, β)` of Corollary
-`cor:vector-rates`.  As in `thm_D`, the direction measure is assumed finite on bounded sets
+measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the same
+explicit rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + (8V/√N)(|β(0)| + Lip(β) R_K M₂)` as in the scalar
+case, by the Hilbert-valued Theorem `thm:lipschitz-barron`, together with a deterministic
+width-`N` realization.  As in `thm_D`, the direction measure is assumed finite on bounded sets
 (`hfin`). -/
 theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
     [SecondCountableTopology Y] (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
@@ -482,14 +502,25 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
         (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ m * ‖coefficientFormulaVec ρ G θ‖)
         (parameterMeasure ν)) ∧
       (∀ L : ℝ≥0, LipschitzWith L b → ∀ N : ℕ, 0 < N →
-        ∫ θ, compactSupNorm K (fun x =>
+        (∫ θ, compactSupNorm K (fun x =>
               f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
                 (coefficientFormulaVec ρ G) θ x)
             ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) ≤
-          ε + 2 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) *
-            rademacherComplexity N K
-              (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
-              (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
+          ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) / Real.sqrt N *
+            (|b 0| + (L : ℝ) * compactRadius K *
+              Real.sqrt
+                (secondMoment
+                  (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) ∧
+        ∃ θ : Fin N → H × ℝ,
+          compactSupNorm K (fun x =>
+              f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x) ≤
+            ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) /
+                Real.sqrt N *
+              (|b 0| + (L : ℝ) * compactRadius K *
+                Real.sqrt
+                  (secondMoment
+                    (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) := by
   -- Step 1 in the vector-valued case is `exists_character_approx_vec`: the compact set of
   -- values `f(K)` is covered by finitely many `ε`-balls whose bumps normalize into a partition
   -- of unity on `K`, which reduces `f` to a finite combination `∑ g_k • y_k` of continuous
@@ -661,7 +692,7 @@ theorem cor_sampling_concentration [MeasurableSpace H] [BorelSpace H] {β : ℝ 
     filter_upwards [ae_sampleLaw_forall (N := N) hgΦ] with θ hθ
     rw [compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN θ, hgint,
       Finset.sum_congr rfl fun j _ => hθ j]
-  have hErr := thm_lipschitz_barron_i hβ Γ hM hK hN
+  have hErr := integral_compactSupNorm_polarSampledNetwork_sub_le hβ Γ hM hK hN
   have hEF : ∫ θ, compactSupNorm K (fun x =>
         polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
           integralNetwork (fun t => (β t : ℂ)) Γ x) ∂sampleLaw N (polarLaw Γ) =
@@ -1002,7 +1033,7 @@ theorem cor_two_stage_error_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace
     ((integrable_norm_sum_sub (polarLaw Γ) (integrable_polar_atom hK hβ Γ h0 hM) N).const_mul
       (polarWeight Γ / N)).congr (Eventually.of_forall fun θ =>
         (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN θ).symm)
-  have herr_le := thm_lipschitz_barron_i hβ Γ hM hK hN
+  have herr_le := integral_compactSupNorm_polarSampledNetwork_sub_le hβ Γ hM hK hN
   -- the pointwise bound: sampling error plus truncation error
   have hpt : ∀ᵐ θ ∂sampleLaw N (polarLaw Γ),
       compactSupNorm K (fun x =>

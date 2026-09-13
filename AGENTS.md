@@ -96,7 +96,12 @@ the index of its statements.
    [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
    `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
    sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
-4. All 63 manuscript items, comprising 345 statements, are verified on `main`. Earlier work
+4. The 63 items of the previous manuscript revision, comprising 345 statements, are verified on
+   `main`. The branch `lean/ca-revision-20260913` tracks the 2026-09-13 Constructive
+   Approximation revision: 5 new items are not formalized, 3 verified items were restated, and
+   the manuscript flipped the bias sign (`sigma(<a,x> - b)`, `b = -c`) while the Lean
+   definitions keep `<a,x> + c`. `STATUS.md` and `comparator/paper.json` carry the details.
+   Earlier work
    branches are historical checkpoints; resume from `main`, not their WIP tips.
 5. The deferred line-length and docstring pass is complete. After `lake build`, run
    `python3 scripts/check-style.py` to check the 100-character limit and declaration documentation

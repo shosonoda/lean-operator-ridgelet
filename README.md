@@ -19,7 +19,12 @@ lemma, corollary, and example of the manuscript is stated in `OperatorRidgelet/C
 `OperatorRidgelet/comparator/config.json` once comparator verifies the proof against the statement
 with only the axioms `propext`, `Quot.sound`, and `Classical.choice`.
 
-All 63 manuscript items are fully verified, comprising 345 Lean statements.
+The manuscript index tracks 68 items of the 2026-09-13 Constructive Approximation revision.
+The 63 items of the previous revision are fully verified, comprising 345 Lean statements; of
+these, 3 were restated in the manuscript after their Lean statements were written.  The 5 items
+new in that revision (weak Sobolev synthesis and its tools, the two-coordinate Rademacher
+comparison, the non-band-pass filter family) are not formalized yet.  See [STATUS.md](STATUS.md),
+whose Status column marks both cases.
 
 The human-readable Verso Blueprint is published at
 <https://shosonoda.github.io/lean-operator-ridgelet/> by the `Blueprint pages` workflow on every
