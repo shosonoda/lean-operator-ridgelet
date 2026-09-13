@@ -14,6 +14,7 @@ import OperatorRidgelet.ArchitectBridge.Sampling
 import OperatorRidgelet.ArchitectBridge.Examples
 import OperatorRidgelet.ArchitectBridge.Revision
 import OperatorRidgelet.ArchitectBridge.SamplingRevision
+import OperatorRidgelet.ArchitectBridge.Sobolev
 
 /-!
 # LeanArchitect metadata bridge
