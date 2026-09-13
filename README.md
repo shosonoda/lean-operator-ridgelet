@@ -19,12 +19,13 @@ lemma, corollary, and example of the manuscript is stated in `OperatorRidgelet/C
 `OperatorRidgelet/comparator/config.json` once comparator verifies the proof against the statement
 with only the axioms `propext`, `Quot.sound`, and `Classical.choice`.
 
-The manuscript index tracks 68 items of the 2026-09-13 Constructive Approximation revision.
-The 63 items of the previous revision are fully verified, comprising 345 Lean statements; of
-these, 3 were restated in the manuscript after their Lean statements were written.  The 5 items
-new in that revision (weak Sobolev synthesis and its tools, the two-coordinate Rademacher
-comparison, the non-band-pass filter family) are not formalized yet.  See [STATUS.md](STATUS.md),
-whose Status column marks both cases.
+The manuscript index tracks the 68 items of the 2026-09-13 revision, and all of them are
+verified: the 369 Lean statements of `comparator/config.json` pass comparator, and the items
+that are pure definitions are `sorry`-free.  [STATUS.md](STATUS.md) is the per-item table; its
+Conventions paragraph records the bias sign and the renamings that a manuscript-to-Lean reading
+goes through.  Where a definition is closed with a junk value, the property it leaves open is a
+theorem: `OperatorRidgelet/BasisIndependence.lean` proves that the trace, the Fredholm
+determinant, and the Hilbert-Schmidt norm do not depend on the chosen basis.
 
 The human-readable Verso Blueprint is published at
 <https://shosonoda.github.io/lean-operator-ridgelet/> by the `Blueprint pages` workflow on every

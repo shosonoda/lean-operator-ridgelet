@@ -98,17 +98,13 @@ the index of its statements.
    [lean4export](https://github.com/leanprover/lean4export) at tag `v4.32.0` and run
    `scripts/comparator-check.sh` (see the README for how the executables are located). On Linux it
    sandboxes with `landrun`; elsewhere use comparator's `fake-landrun.sh` shim.
-4. The 63 items of the previous manuscript revision, comprising 345 statements, are verified on
-   `main`. The branch `lean/ca-revision-20260913` tracks the 2026-09-13 Constructive
-   Approximation revision: 5 new items are not formalized, 3 verified items were restated, and
-   the manuscript flipped the bias sign (`sigma(<a,x> - b)`, `b = -c`) while the Lean
-   definitions keep `<a,x> + c`. `STATUS.md` and `comparator/paper.json` carry the details.
-   Earlier work
-   branches are historical checkpoints; resume from `main`, not their WIP tips.
-5. The deferred line-length and docstring pass is complete. After `lake build`, run
-   `python3 scripts/check-style.py` to check the 100-character limit and declaration documentation
-   in project-owned modules. Vendored files keep their upstream formatting.
-6. The 2026-09-12 revision includes the unitary partial Fourier transform, coefficient
-   adjoint and stability, finite-order ray estimates with output-independent constants,
-   exact sampling variance, and qualitative vector sampling under a first moment.
-   Full build, Comparator, LeanArchitect, Blueprint build/check, and style checks pass.
+4. All 68 items of the 2026-09-13 manuscript revision are verified on `main`, comprising the
+   369 statements of `comparator/config.json`. Resume from `main`; work branches that survive
+   are historical checkpoints, not resumption points. The manuscript writes neurons as
+   `sigma(<a,x> - b)` while the Lean definitions keep `<a,x> + c`, with `b = -c`;
+   `STATUS.md` and `comparator/paper.json` carry this and the renamings.
+5. After `lake build`, run `python3 scripts/check-style.py` to check the 100-character limit and
+   declaration documentation in project-owned modules. Vendored files keep their upstream
+   formatting.
+6. A change is finished when the full build, `check-challenge.py`, `check-style.py`, comparator,
+   and the blueprint build and check all pass, and `STATUS.md` has been regenerated.
