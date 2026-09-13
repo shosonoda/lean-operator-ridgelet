@@ -361,7 +361,16 @@
     "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii",
     "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii",
     "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv",
-    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v"
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_i",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ii",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iii",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vii",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_viii",
+    "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ix"
   ],
   "permitted_axioms": [
     "propext",

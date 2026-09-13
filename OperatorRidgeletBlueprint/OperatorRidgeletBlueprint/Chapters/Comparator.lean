@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (numbers synced 2026-09-13). Verified declarations in `theorem_names`: 360.
+Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (numbers synced 2026-09-13). Verified declarations in `theorem_names`: 369.
 
 :::table +header
 *
@@ -56,12 +56,10 @@ Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (n
   * Partially verified
 *
   * 68
-  * 67
-  * 67
+  * 68
+  * 68
   * 0
 :::
-
-Of these, 1 item(s) are new in this manuscript revision and not yet formalized, and 0 item(s) whose Lean statements are verified were restated in the manuscript after those statements were written, so their status refers to the earlier statement.  Both are marked in the status line of the item and explained in its formalization note.
 
 Conventions. Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G\_Q -> F\_Q, scalar activation beta -> sigma, operator activation sigma -> Sigma, spectral density G -> g, target g\_G -> f\_g, coefficient gamma\_G -> gamma\_g, \\mathcal N(0,Q) -> mu\_Q, Gaussian activation Phi -> sigma\_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L\_D^\{-1\}, the Gaussian-parameter ReLU target F\_Q -> f\_\{ReLU,Q\}.
 
@@ -2380,9 +2378,9 @@ Status: *verified by comparator*.
 
 Blueprint node: {bpref "thm:weak-sobolev-synthesis"}[]. Status: *verified* (all 5 Lean theorems verified).
 
-Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under Sobolev regularity of order s along rays. Formalized in the pair formulation of OperatorRidgelet.Sobolev.Defs: the hypothesis that the classes h\_a = ρ̂(-·)g(·a) lie in H^s\_ω and form a strongly measurable map into it is rendered as a jointly measurable γ : H × ℝ → Y (hγm) whose rays satisfy MemRaySobolev s (γ(a,·)) and rayProfile (γ(a,·)) ω = ρ̂(-ω) • g(ω a) for ν-almost every a, so the manuscript's conclusion that a jointly measurable coefficient exists is part of the setting; 𝔅\_s(ρ,g) is the lower integral ∫⁻ (1+‖a‖)^s ‖h\_a‖\_\{H^s\_ω\} dν, assumed finite. Hypothesis 3 is MemRaySobolev s γq together with rayProfile γq ω = ρ̂(-ω)|ω|^\{-α\}, and the cross constant C^\{(α)\}\_\{σ,ρ\} = (2π)⁻¹⟨σ̂, q\_\{α,ρ\}⟩ is the Sobolev pairing sobolevPairing σ γq of lem:sobolev-pairing. i is eq:sobolev-moments for every 0 ≤ r < s - 1/2; ii is the finite variation of Γ\_g; iii is eq:weak-sobolev-synthesis, stated as the Bochner integral of σ(⟪a,x⟫ - b) • γ(a,b) over ν ⊗ db — this theorem is written in the manuscript's bias convention, since its coefficient is defined by its own Fourier relation; iv is the uniform integrable majorant on a ball of inputs; v is the continuity of the synthesis. Only strong measurability of g is needed for iii, so the manuscript's L¹ ∩ L² hypothesis on g is not carried; the clause that γ\_g lies in L²(ν ⊗ db) with ‖γ\_g‖² = C^\{(α)\}\_ρ ‖g‖²\_\{L²(ν)\} is not part of the Lean statement.
+Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under Sobolev regularity of order s along rays. Formalized in the pair formulation of OperatorRidgelet.Sobolev.Defs: the hypothesis that the classes h\_a = ρ̂(-·)g(·a) lie in H^s\_ω and form a strongly measurable map into it is rendered as a jointly measurable γ : H × ℝ → Y (hγm) whose rays satisfy MemRaySobolev s (γ(a,·)) and rayProfile (γ(a,·)) ω = ρ̂(-ω) • g(ω a) for ν-almost every a, so the manuscript's conclusion that a jointly measurable coefficient exists is part of the setting; 𝔅\_s(ρ,g) is the lower integral ∫⁻ (1+‖a‖)^s ‖h\_a‖\_\{H^s\_ω\} dν, assumed finite. Hypothesis 3 is MemRaySobolev s γq together with rayProfile γq ω = ρ̂(-ω)|ω|^\{-α\}, and the cross constant C^\{(α)\}\_\{σ,ρ\} = (2π)⁻¹⟨σ̂, q\_\{α,ρ\}⟩ is the Sobolev pairing sobolevPairing σ γq of lem:sobolev-pairing. i is eq:sobolev-moments for every 0 ≤ r < s - 1/2; ii is the finite variation of Γ\_g; iii is eq:weak-sobolev-synthesis, stated as the Bochner integral of σ(⟪a,x⟫ - b) • γ(a,b) over ν ⊗ db — this theorem is written in the manuscript's bias convention, since its coefficient is defined by its own Fourier relation, and the library lemma OperatorRidgelet.integral\_synthesis\_eq\_integralNetworkDensity rewrites it as integralNetworkDensity of the transported coefficient γ ∘ τ, τ(a,c) = (a,-c); iv is the uniform integrable majorant on a ball of inputs; v is the continuity of the synthesis. Only strong measurability of g is needed for iii, so the manuscript's L¹ ∩ L² hypothesis on g is not carried; the clause that γ\_g lies in L²(ν ⊗ db) with ‖γ\_g‖² = C^\{(α)\}\_ρ ‖g‖²\_\{L²(ν)\} is not part of the Lean statement.
 
-`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L92):
+`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L93):
 
 ```
 /-- **Theorem [thm:weak-sobolev-synthesis]**(i) The coefficient moments `eq:sobolev-moments`:
@@ -2398,7 +2396,7 @@ theorem thm_weak_sobolev_synthesis_i [CompleteSpace Y] {s r : ℝ} (hr0 : 0 ≤ 
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L103):
+`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L104):
 
 ```
 /-- **Theorem [thm:weak-sobolev-synthesis]**(ii) The coefficient measure
@@ -2413,7 +2411,7 @@ theorem thm_weak_sobolev_synthesis_ii [CompleteSpace Y] {s : ℝ} (hs : 1 / 2 < 
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L113):
+`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L114):
 
 ```
 /-- **Theorem [thm:weak-sobolev-synthesis]**(iii) The synthesis identity
@@ -2438,7 +2436,7 @@ theorem thm_weak_sobolev_synthesis_iii [CompleteSpace Y] {s p α Cσ : ℝ} (hp 
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L133):
+`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L134):
 
 ```
 /-- **Theorem [thm:weak-sobolev-synthesis]**(iv) The absolute convergence is uniform on bounded
@@ -2455,7 +2453,7 @@ theorem thm_weak_sobolev_synthesis_iv [CompleteSpace Y] {s p Cσ R : ℝ} (hp : 
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L145):
+`OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L146):
 
 ```
 /-- **Theorem [thm:weak-sobolev-synthesis]**(v) The synthesis is continuous. -/
@@ -5030,7 +5028,7 @@ Blueprint node: {bpref "lem:sobolev-tools"}[]. Status: *verified* (all 4 Lean th
 
 Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-tools`. The Sobolev space H^s\_ω(ℝ;Y) is carried by the pair of a profile h and its inverse Fourier transform γ = ȟ (OperatorRidgelet.Sobolev.Defs): MemRaySobolev s γ is the membership (γ square integrable against the weight ⟨t⟩^\{2s\} = (1+t²)^s), raySobolevNorm s γ is the norm (2π ∫ ⟨t⟩^\{2s\} ‖γ‖²)^\{1/2\} of eq:sobolev-norm, rayProfile γ = γ̂ in the angular convention (for s > 1/2 the coefficient is integrable by part i, so the profile is an ordinary Fourier integral), and sobolevMomentConst s r is A\_\{s,r\}. i is eq:sobolev-weighted-l1; ii is the reflection isometry together with the identity Rh = (γ(-·))^; iii is eq:sobolev-modulation together with the identity M\_u h = (γ(·+u))^; iv is the joint continuity of (u,h) ↦ M\_u h, stated along an arbitrary filter as the convergence of ‖M\_\{u\_i\} h\_i − M\_\{u₀\} h‖\_\{H^s\_ω\} to zero when u\_i → u₀ and ‖h\_i − h‖\_\{H^s\_ω\} → 0.
 
-`OperatorRidgelet.Paper.lem_sobolev_tools_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L25):
+`OperatorRidgelet.Paper.lem_sobolev_tools_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L26):
 
 ```
 /-- **Lemma [lem:sobolev-tools]**(i) The weighted inverse Fourier estimate
@@ -5043,7 +5041,7 @@ theorem lem_sobolev_tools_i {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s) {�
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_sobolev_tools_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L33):
+`OperatorRidgelet.Paper.lem_sobolev_tools_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L34):
 
 ```
 /-- **Lemma [lem:sobolev-tools]**(ii) Reflection `R h(ω) = h(-ω)` is an isometry of
@@ -5057,7 +5055,7 @@ theorem lem_sobolev_tools_ii {s : ℝ} {γ : ℝ → Y} (hγ : MemRaySobolev s �
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_sobolev_tools_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L42):
+`OperatorRidgelet.Paper.lem_sobolev_tools_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L43):
 
 ```
 /-- **Lemma [lem:sobolev-tools]**(iii) Modulation `M_u h(ω) = e^{iuω} h(ω)` maps `H^s_ω(ℝ;Y)`
@@ -5073,7 +5071,7 @@ theorem lem_sobolev_tools_iii {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (hγ : M
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_sobolev_tools_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L53):
+`OperatorRidgelet.Paper.lem_sobolev_tools_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L54):
 
 ```
 /-- **Lemma [lem:sobolev-tools]**(iv) The map `(u, h) ↦ M_u h` is jointly continuous: if the
@@ -5093,7 +5091,7 @@ Blueprint node: {bpref "lem:sobolev-pairing"}[]. Status: *verified* (all 3 Lean 
 
 Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-pairing`. In the pair formulation of OperatorRidgelet.Sobolev.Defs the pairing is the absolutely convergent integral sobolevPairing σ γ = ∫ σ(t) • γ(-t) dt, which is the manuscript's normalization (2π)⁻¹⟨σ̂, q⟩ = ∫ σ(t) q̌(-t) dt written on the coefficient side, and sobolevPairingConst σ s is b\_\{σ,s\}. i is the finiteness of b\_\{σ,s\} for a continuous σ of polynomial growth p and s > p + 1/2, stated as square integrability of ⟨·⟩^\{-s\}σ; ii is the absolute convergence together with the bound ‖L\_σ^Y(h)‖ ≤ (2π)^\{-1/2\} b\_\{σ,s\} ‖h‖\_\{H^s\_ω\}, which is the assertion that the functional lies in the bilinear dual with that norm; iii is eq:sobolev-bias-pairing. The identification of the extended functional with the distributional Fourier transform of σ on Schwartz tests is the manuscript's interpretation of the same integral and is not restated in Lean.
 
-`OperatorRidgelet.Paper.lem_sobolev_pairing_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L62):
+`OperatorRidgelet.Paper.lem_sobolev_pairing_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L63):
 
 ```
 /-- **Lemma [lem:sobolev-pairing]**(i) For a continuous activation of polynomial growth `p` and
@@ -5106,7 +5104,7 @@ theorem lem_sobolev_pairing_i {σ : ℝ → ℂ} {p s C : ℝ} (hp : 0 ≤ p) (h
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_sobolev_pairing_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L70):
+`OperatorRidgelet.Paper.lem_sobolev_pairing_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L71):
 
 ```
 /-- **Lemma [lem:sobolev-pairing]**(ii) The pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` converges
@@ -5122,7 +5120,7 @@ theorem lem_sobolev_pairing_ii {σ : ℝ → ℂ} {s : ℝ} {γ : ℝ → Y}
 
 Status: *verified by comparator*.
 
-`OperatorRidgelet.Paper.lem_sobolev_pairing_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L81):
+`OperatorRidgelet.Paper.lem_sobolev_pairing_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L82):
 
 ```
 /-- **Lemma [lem:sobolev-pairing]**(iii) The bias translation of the activation is the
@@ -6365,6 +6363,121 @@ Status: *verified by comparator*.
 
 ## Proposition I.3 — Non-band-pass Gaussian-derivative filters (`prop:nonbandpass-sobolev`)
 
-Blueprint node: none yet. Status: *not formalized* (new in this manuscript revision, no Lean statement yet).
+Blueprint node: {bpref "prop:nonbandpass-sobolev"}[]. Status: *verified* (all 9 Lean theorems verified).
 
-Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:prop:nonbandpass-sobolev`. Gaussian-derivative filters rho^(omega) = omega^\{2k\} e^\{-omega^2\} with 2k > alpha + 2s - 1/2 satisfy the hypotheses of thm:weak-sobolev-synthesis without being band pass. Not formalized.
+Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:prop:nonbandpass-sobolev`. The Gaussian-derivative filter rho\_k with rho^\_k(omega) = omega^\{2k\} e^\{-omega^2\} is built in OperatorRidgelet.Sobolev.GaussianDefs as the inverse angular transform of that symbol, which is real because the symbol is real and even; i is that transform, ii the failure of the band-pass property, and iii self-admissibility, which holds for alpha < 4k+1. iv is eq:homogeneous-polynomial-integrability, stated for a homogeneous nu that is finite on the unit ball. v-vii are the hypotheses of thm:weak-sobolev-synthesis for the target g(xi) = e^\{-||xi||^2\} v: the rays are the dilates A^\{-2k-1\} rho\_k(b/A) v at the scale A = (1+||a||^2)^\{1/2\}, and the Sobolev mass B\_s is finite exactly in the range eq:nonbandpass-order, 2k > alpha + 2s - 1/2. viii is q\_\{alpha,rho\} in H^s\_omega; the manuscript proves it by differentiating |omega|^delta e^\{-omega^2\} off the origin, the Lean proof instead subordinates through the Gamma integral |omega|^\{-alpha\} = Gamma(alpha/2)^\{-1\} int u^\{alpha/2-1\} e^\{-u omega^2\} du, which writes q as a superposition of the ray symbols and needs no weak derivatives. ix assembles i-viii into the conclusion of thm:weak-sobolev-synthesis for this filter and every continuous activation of growth order p < s - 1/2. The two closed-form constants of the manuscript, C^(alpha)\_\{sigma,rho\} for the Gaussian activation and for ReLU, are not formalized: the Lean statement carries the constant as the Sobolev pairing sobolevPairing sigma q of lem:sobolev-pairing, which is what the synthesis identity uses.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L158):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(i) The Gaussian-derivative filter of order `k`
+is a real Schwartz function with Fourier transform `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
+theorem prop_nonbandpass_sobolev_i (k : ℕ) (ω : ℝ) :
+    filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L164):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(ii) The filter is not band pass: its Fourier
+transform vanishes only at the origin. -/
+theorem prop_nonbandpass_sobolev_ii (k : ℕ) : ¬ IsBandPass (gaussDerivFilter k) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L169):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(iii) The filter is nevertheless `α`-admissible,
+`0 < C^{(α)}_{ρ_k} < ∞`, in the range `α < 4k + 1`. -/
+theorem prop_nonbandpass_sobolev_iii {k : ℕ} {α : ℝ} (hα : 0 < α) (hk : α < 4 * k + 1) :
+    IsAdmissible α (gaussDerivFilter k) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L175):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(iv) The polynomial moments
+`eq:homogeneous-polynomial-integrability` of a homogeneous measure that is finite on the unit
+ball: `∫ (1 + ‖a‖²)^e dν < ∞` whenever `2e + α < 0`. -/
+theorem prop_nonbandpass_sobolev_iv {α e : ℝ} (hα : 0 < α) {ν : Measure H}
+    (hν : IsHomogeneous α ν) (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (he : 2 * e + α < 0) :
+    ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖ ^ 2) ^ e) ∂ν < ⊤ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L183):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(v) The coefficient of the rays of the filter for
+the Gaussian target `g(ξ) = e^{-‖ξ‖²} v` is jointly strongly measurable. -/
+theorem prop_nonbandpass_sobolev_v (k : ℕ) (v : Y) :
+    StronglyMeasurable (gaussRayCoefficient (H := H) k v) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L189):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(vi) Every ray lies in `H^s_ω(ℝ;Y)` and has the
+profile `h_a(ω) = ρ̂_k(-ω) g(ωa)` required by `thm:weak-sobolev-synthesis`. -/
+theorem prop_nonbandpass_sobolev_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
+    (a : H) :
+    MemRaySobolev s (fun b => gaussRayCoefficient k v (a, b)) ∧
+      ∀ ω : ℝ, rayProfile (fun b => gaussRayCoefficient k v (a, b)) ω =
+        filterFourier (gaussDerivFilter k) (-ω) • gaussTarget v (ω • a) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L198):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(vii) The Sobolev mass `𝔅_s(ρ_k, g)` is finite in
+the range `2k > α + 2s - 1/2` of `eq:nonbandpass-order`. -/
+theorem prop_nonbandpass_sobolev_vii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 0 ≤ s)
+    (hk : α + 2 * s - 1 / 2 < 2 * k) {ν : Measure H} (hν : IsHomogeneous α ν)
+    (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) :
+    ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ s *
+      raySobolevNorm s fun b => gaussRayCoefficient k v (a, b)) ∂ν ≠ ⊤ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_viii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L207):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(viii) The Sobolev test
+`q_{α,ρ_k}(ω) = ρ̂_k(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)` in the same range. -/
+theorem prop_nonbandpass_sobolev_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
+    (hk : α + 2 * s - 1 / 2 < 2 * k) :
+    MemRaySobolev s (gaussSobolevRay k α) ∧
+      ∀ ω : ℝ, rayProfile (gaussSobolevRay k α) ω =
+        filterFourier (gaussDerivFilter k) (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ix`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L216):
+
+```
+/-- **Proposition [prop:nonbandpass-sobolev]**(ix) Consequently the filter satisfies every
+hypothesis of `thm:weak-sobolev-synthesis`: for each continuous activation of growth order
+`p < s - 1/2` the synthesis of the rays is absolutely convergent and reproduces the target. -/
+theorem prop_nonbandpass_sobolev_ix [CompleteSpace Y] {k : ℕ} {α s p Cσ : ℝ} (hα : 0 < α)
+    (hp : 0 ≤ p) (hps : p + 1 / 2 < s) (hk : α + 2 * s - 1 / 2 < 2 * k)
+    {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
+    (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) {σ : ℝ → ℂ} (hσc : Continuous σ)
+    (hσg : ∀ t : ℝ, ‖σ t‖ ≤ Cσ * (1 + |t|) ^ p) (x : H) :
+    ∫ q : H × ℝ, σ (⟪q.1, x⟫ - q.2) • gaussRayCoefficient k v q ∂(ν.prod volume) =
+      sobolevPairing σ (gaussSobolevRay k α) • spectralTarget ν (gaussTarget v) x := by
+```
+
+Status: *verified by comparator*.

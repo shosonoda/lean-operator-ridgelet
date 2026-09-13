@@ -60,3 +60,42 @@ attribute [blueprint "thm:weak-sobolev-synthesis-iv"
 attribute [blueprint "thm:weak-sobolev-synthesis-v"
   (statement := /-- The synthesis is continuous. -/)]
   OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v
+
+attribute [blueprint "prop:nonbandpass-sobolev-i"
+  (statement := /-- The Gaussian-derivative filter is a real Schwartz function with
+    $\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_i
+
+attribute [blueprint "prop:nonbandpass-sobolev-ii"
+  (statement := /-- The filter is not band pass. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ii
+
+attribute [blueprint "prop:nonbandpass-sobolev-iii"
+  (statement := /-- The filter is $\alpha$-admissible for $\alpha<4k+1$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iii
+
+attribute [blueprint "prop:nonbandpass-sobolev-iv"
+  (statement := /-- $\int(1+\|a\|^2)^{-d/2}\,\mathrm d\nu<\infty$ whenever $d>\alpha$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv
+
+attribute [blueprint "prop:nonbandpass-sobolev-v"
+  (statement := /-- The coefficient of the rays is jointly strongly measurable. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v
+
+attribute [blueprint "prop:nonbandpass-sobolev-vi"
+  (statement := /-- Each ray lies in $H^s_\omega$ and has the profile
+    $\widehat\rho_k(-\omega)g(\omega a)$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi
+
+attribute [blueprint "prop:nonbandpass-sobolev-vii"
+  (statement := /-- $\mathfrak B_s(\rho_k,g)<\infty$ when $2k>\alpha+2s-1/2$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vii
+
+attribute [blueprint "prop:nonbandpass-sobolev-viii"
+  (statement := /-- $q_{\alpha,\rho_k}\in H^s_\omega$ in the same range. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_viii
+
+attribute [blueprint "prop:nonbandpass-sobolev-ix"
+  (statement := /-- The synthesis identity of {bpref "thm:weak-sobolev-synthesis"} holds for this
+    filter and every continuous activation of growth order $p<s-1/2$. -/)]
+  OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ix

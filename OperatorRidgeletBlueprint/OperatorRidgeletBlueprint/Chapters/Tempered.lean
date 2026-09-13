@@ -217,3 +217,37 @@ the $`L^1` uniqueness of the profile then identifies $`\Psi` with
 $`\check q_{\alpha,\rho}(-\cdot)f_g(x)`, and the pairing gives the constant. Continuity is
 dominated convergence with the majorant.
 :::
+
+# Non-band-pass filters for Sobolev synthesis
+
+:::proposition "prop:nonbandpass-sobolev" (lean := "OperatorRidgelet.gaussDerivFilter, OperatorRidgelet.gaussTarget, OperatorRidgelet.gaussRayCoefficient, OperatorRidgelet.gaussSobolevRay, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_i, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ii, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iii, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vii, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_viii, OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ix") (uses := "thm:weak-sobolev-synthesis, lem:sobolev-tools, def:admissible-filter, aux:conventions")
+Let $`\nu` be homogeneous of degree $`\alpha>0` and finite on the unit ball, fix $`s>1/2` and an
+integer $`k\ge1` with $`2k>\alpha+2s-1/2`, and let
+$`\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}`, $`g(\xi)=e^{-\|\xi\|^2}v`. Then $`\rho_k` is
+a real Schwartz filter (i) that is not band pass (ii) but is $`\alpha`-admissible for
+$`\alpha<4k+1` (iii). The homogeneous moments $`\int(1+\|a\|^2)^{-d/2}\mathrm d\nu` are finite
+for $`d>\alpha` (iv); the coefficient of the rays is jointly measurable (v), each ray lies in
+$`H^s_\omega` with profile $`\widehat\rho_k(-\omega)g(\omega a)` (vi), and
+$`\mathfrak B_s(\rho_k,g)<\infty` (vii). The Sobolev test $`q_{\alpha,\rho_k}` lies in
+$`H^s_\omega` (viii). Hence {bpref "thm:weak-sobolev-synthesis"}[] applies to this filter for
+every continuous activation of growth order $`p<s-1/2` (ix).
+:::
+
+:::proof "prop:nonbandpass-sobolev"
+The symbol is a polynomial times a Gaussian, hence Schwartz, and real and even, so its inverse
+angular transform is a real Schwartz function. It vanishes only at the origin, which is
+therefore in the closed support, so the filter is not band pass, while
+$`|\widehat\rho_k|^2|\omega|^{-\alpha}=|\omega|^{4k-\alpha}e^{-2\omega^2}` is integrable exactly
+for $`4k-\alpha>-1`. Homogeneity scales balls, $`\nu(B_R)=R^\alpha\nu(B_1)`, and the dyadic
+annuli give a geometric series, which is the moment bound. Writing
+$`A=(1+\|a\|^2)^{1/2}`, the ray with profile $`\omega^{2k}e^{-A^2\omega^2}v` has coefficient
+$`A^{-2k-1}\rho_k(b/A)v`, a dilate of a Schwartz function, so it lies in every $`H^s_\omega`,
+with $`\|h_a\|_{H^s_\omega}\le\|v\|\,\|h_0\|_{H^s_\omega}A^{s-2k-1/2}`;
+$`1+\|a\|\le\sqrt2A` and the moment bound give $`\mathfrak B_s<\infty` exactly in the stated
+range. For the Sobolev test, the Gamma integral
+$`|\omega|^{-\alpha}=\Gamma(\alpha/2)^{-1}\int_0^\infty u^{\alpha/2-1}e^{-u\omega^2}\mathrm du`
+writes $`q_{\alpha,\rho_k}` as a superposition of the same symbols at the scales
+$`(1+u)^{1/2}`; Fubini gives its profile, and Cauchy--Schwarz against the finite weight
+$`u^{\alpha/2-1}(1+u)^{(s-2k-1/2)/2}` together with Tonelli reduces its Sobolev norm to the
+norms of the dilated filters.
+:::
