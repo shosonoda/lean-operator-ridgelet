@@ -22,6 +22,7 @@ import OperatorRidgelet.ToFoML.TwoCoordinate
 import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs
+import OperatorRidgelet.BasisIndependence
 import OperatorRidgelet.Architecture.Basic
 import OperatorRidgelet.Architecture.Reduction
 import OperatorRidgelet.Transform.Defs
@@ -103,6 +104,9 @@ import OperatorRidgelet.ToMathlib.TendstoUniformlyOnCompact
 import OperatorRidgelet.ToMathlib.GaussianOrthonormalCoordinates
 import OperatorRidgelet.ToMathlib.PositiveEigenbasis
 import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
+import OperatorRidgelet.ToMathlib.TraceBasisIndependent
+import OperatorRidgelet.ToMathlib.FredholmDetEigenbasis
+import OperatorRidgelet.ToMathlib.HilbertSchmidtBasis
 import OperatorRidgelet.ToMathlib.VectorMeasureMapDensity
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.ToMathlib.IteratedDerivMeasurable

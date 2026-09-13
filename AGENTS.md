@@ -38,7 +38,9 @@ the index of its statements.
   "verified".  A `sorry`-ed theorem is never in `theorem_names`.
 - Definitions used in statements live in `*/Defs.lean` modules and are `sorry`-free.  Close heavy
   proof obligations inside definitions with junk values in the Mathlib style; state the
-  properties as theorems.
+  properties as theorems.  `OperatorRidgelet/BasisIndependence.lean` is where the obligations of
+  the chosen-basis definitions (`traceOf`, `fredholmDet`, `hsNormSq`) are discharged; add new
+  ones there, with the general mathematics in `ToMathlib`.
 - Run `scripts/check-challenge.py` after editing either side, and regenerate `STATUS.md` with
   `scripts/status.py > ../STATUS.md`.
 
