@@ -101,18 +101,23 @@ theorem filterFourier_eq_rayProfile (ρ : ℝ → ℝ) (ω : ℝ) :
   push_cast
   ring
 
+/-- The profile of the complex filter is the symbol `ρ̂_k`. -/
+theorem rayProfile_gaussDerivFilterC (k : ℕ) (ω : ℝ) :
+    rayProfile (gaussDerivFilterC k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
+  have hprof : rayProfile (⇑(gaussDerivFilterC k)) ω
+      = SchwartzMap.ofReal (gaussDerivDilatedHat k) (ω / (2 * Real.pi)) := by
+    rw [rayProfile_eq_fourier, ← SchwartzMap.fourier_coe, gaussDerivFilterC,
+      FourierTransform.fourier_fourierInv_eq]
+  rw [hprof]
+  simp only [SchwartzMap.ofReal_apply, gaussDerivDilatedHat_apply, gaussDerivHat_apply]
+  rw [mul_div_cancel₀ _ (by positivity : (2 * Real.pi) ≠ 0)]
+
 /-- **The defining property of the Gaussian-derivative filter**: `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
 theorem filterFourier_gaussDerivFilter (k : ℕ) (ω : ℝ) :
     filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
-  have hprof : rayProfile (fun t => ((gaussDerivFilter k t : ℝ) : ℂ)) ω
-      = SchwartzMap.ofReal (gaussDerivDilatedHat k) (ω / (2 * Real.pi)) := by
-    have hfun : (fun t => ((gaussDerivFilter k t : ℝ) : ℂ)) = ⇑(gaussDerivFilterC k) :=
-      funext (gaussDerivFilter_ofReal k)
-    rw [hfun, rayProfile_eq_fourier, ← SchwartzMap.fourier_coe, gaussDerivFilterC,
-      FourierTransform.fourier_fourierInv_eq]
-  rw [filterFourier_eq_rayProfile, hprof]
-  simp only [SchwartzMap.ofReal_apply, gaussDerivDilatedHat_apply, gaussDerivHat_apply]
-  rw [mul_div_cancel₀ _ (by positivity : (2 * Real.pi) ≠ 0)]
+  have hfun : (fun t => ((gaussDerivFilter k t : ℝ) : ℂ)) = ⇑(gaussDerivFilterC k) :=
+    funext (gaussDerivFilter_ofReal k)
+  rw [filterFourier_eq_rayProfile, hfun, rayProfile_gaussDerivFilterC]
 
 /-! ### The filter is not band pass, but is still admissible -/
 
