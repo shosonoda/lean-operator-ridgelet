@@ -4,9 +4,9 @@ Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (n
 
 | Items | Stated (theorem in `Challenge`, or definition in the library) | Verified by comparator (or pure definition) | Partially verified |
 |---|---|---|---|
-| 68 | 63 | 63 | 0 |
+| 68 | 64 | 64 | 0 |
 
-Of these, 5 item(s) are new in this manuscript revision and not yet formalized, and 3 item(s) whose Lean statements are verified were restated in the manuscript after those statements were written, so their `verified` status refers to the earlier statement. Both are marked in the Status column and explained in the note of `comparator/paper.json`.
+Of these, 4 item(s) are new in this manuscript revision and not yet formalized, and 3 item(s) whose Lean statements are verified were restated in the manuscript after those statements were written, so their `verified` status refers to the earlier statement. Both are marked in the Status column and explained in the note of `comparator/paper.json`.
 
 Conventions. Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \mathcal H, Y -> \mathcal Y (outY), \mathcal G_Q -> F_Q, scalar activation beta -> sigma, operator activation sigma -> Sigma, spectral density G -> g, target g_G -> f_g, coefficient gamma_G -> gamma_g, \mathcal N(0,Q) -> mu_Q, Gaussian activation Phi -> sigma_Gauss, operator layer \mathcal F -> F, Dirichlet Green operator \mathsf G -> L_D^{-1}, the Gaussian-parameter ReLU target F_Q -> f_{ReLU,Q}.
 
@@ -63,7 +63,7 @@ Conventions. Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - 
 | C.3 | `lem:sobolev-tools` | lemma | Weighted inverse Fourier estimates and modulation | — | not formalized |
 | C.4 | `lem:sobolev-pairing` | lemma | The bilinear Sobolev pairing and its translation formula | — | not formalized |
 | D.1 | `lem:banach-rademacher-vanishing` | lemma | Qualitative sampling of integrable Banach-valued atoms | `OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_i`<br>`OperatorRidgelet.Paper.lem_banach_rademacher_vanishing_ii` | verified |
-| D.2 | `lem:two-coordinate-comparison` | lemma | A two-coordinate Rademacher comparison | — | not formalized |
+| D.2 | `lem:two-coordinate-comparison` | lemma | A two-coordinate Rademacher comparison | `OperatorRidgelet.Paper.lem_two_coordinate_comparison` | verified |
 | D.3 | `lem:ray-regular-examples` | lemma | Densities that are regular along rays | `OperatorRidgelet.Paper.lem_ray_regular_examples_a`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_i`<br>`OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii` | verified |
 | D.4 | `lem:qualitative-sampling` | lemma | Qualitative finite-atomic approximation | `OperatorRidgelet.Paper.lem_qualitative_sampling` | verified |
 | D.5 | `cor:sampling-concentration` | corollary | Concentration for bounded parameters | `OperatorRidgelet.Paper.cor_sampling_concentration` | verified |

@@ -6,6 +6,7 @@ import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
 import OperatorRidgelet.ToFoML.RidgeFeature
+import OperatorRidgelet.ToFoML.TwoCoordinate
 import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.Network.Defs
 import OperatorRidgelet.Architecture.Defs

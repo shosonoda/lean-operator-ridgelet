@@ -844,9 +844,10 @@
       "number": "D.2",
       "page": "36",
       "title": "A two-coordinate Rademacher comparison",
-      "lean": [],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:supp-two-coordinate-comparison`. Two-coordinate Rademacher comparison behind the Hilbert-valued uniform bound of thm:lipschitz-barron. Not formalized.",
-      "revision": "new"
+      "lean": [
+        "OperatorRidgelet.Paper.lem_two_coordinate_comparison"
+      ],
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:supp-two-coordinate-comparison`. Two-coordinate Rademacher comparison behind the Hilbert-valued uniform bound of thm:lipschitz-barron. The Lean statement writes the Rademacher averages as uniform averages over the Boolean sign vectors `Fin N → Bool` and boundedness as `∃ C, ∀ s, |f s| ≤ C`; the supremum is the `⨆` over the countable index type."
     },
     {
       "label": "lem:ray-regular-examples",

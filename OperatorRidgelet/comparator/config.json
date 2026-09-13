@@ -226,6 +226,7 @@
     "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_lipschitz",
     "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_mem",
     "OperatorRidgelet.Paper.lem_standard_activation_class_tanh_not_polynomial",
+    "OperatorRidgelet.Paper.lem_two_coordinate_comparison",
     "OperatorRidgelet.Paper.lem_weak_equals_strong_i",
     "OperatorRidgelet.Paper.lem_weak_equals_strong_ii",
     "OperatorRidgelet.Paper.lem_weighted_duality_i",

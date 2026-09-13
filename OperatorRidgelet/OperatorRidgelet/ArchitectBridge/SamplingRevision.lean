@@ -17,3 +17,8 @@ attribute [blueprint "cor:vector-rates-i-exact"
   (statement := /-- The expected squared Hilbert error is the exact variance divided by the
     sample width, including zero total variation. -/)]
   OperatorRidgelet.Paper.cor_vector_rates_i_exact
+
+attribute [blueprint "lem:two-coordinate-comparison"
+  (statement := /-- The Rademacher average of a supremum of signed sums whose increments are
+    dominated by two coordinates is at most twice the two-coordinate average. -/)]
+  OperatorRidgelet.Paper.lem_two_coordinate_comparison
