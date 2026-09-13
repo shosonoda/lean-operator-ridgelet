@@ -7,6 +7,8 @@ import OperatorRidgelet.Sobolev.Basic
 import OperatorRidgelet.Sobolev.Pairing
 import OperatorRidgelet.Sobolev.Uniqueness
 import OperatorRidgelet.Sobolev.Synthesis
+import OperatorRidgelet.Sobolev.Homogeneous
+import OperatorRidgelet.Sobolev.GaussianFilter
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod
