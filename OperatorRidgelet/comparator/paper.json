@@ -1108,9 +1108,18 @@
       "number": "I.3",
       "page": "50",
       "title": "Non-band-pass Gaussian-derivative filters",
-      "lean": [],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:prop:nonbandpass-sobolev`. Gaussian-derivative filters rho^(omega) = omega^{2k} e^{-omega^2} with 2k > alpha + 2s - 1/2 satisfy the hypotheses of thm:weak-sobolev-synthesis without being band pass. Not formalized.",
-      "revision": "new"
+      "lean": [
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_i",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ii",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iii",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vii",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_viii",
+        "OperatorRidgelet.Paper.prop_nonbandpass_sobolev_ix"
+      ],
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:prop:nonbandpass-sobolev`. The Gaussian-derivative filter rho_k with rho^_k(omega) = omega^{2k} e^{-omega^2} is built in OperatorRidgelet.Sobolev.GaussianDefs as the inverse angular transform of that symbol, which is real because the symbol is real and even; i is that transform, ii the failure of the band-pass property, and iii self-admissibility, which holds for alpha < 4k+1. iv is eq:homogeneous-polynomial-integrability, stated for a homogeneous nu that is finite on the unit ball. v-vii are the hypotheses of thm:weak-sobolev-synthesis for the target g(xi) = e^{-||xi||^2} v: the rays are the dilates A^{-2k-1} rho_k(b/A) v at the scale A = (1+||a||^2)^{1/2}, and the Sobolev mass B_s is finite exactly in the range eq:nonbandpass-order, 2k > alpha + 2s - 1/2. viii is q_{alpha,rho} in H^s_omega; the manuscript proves it by differentiating |omega|^delta e^{-omega^2} off the origin, the Lean proof instead subordinates through the Gamma integral |omega|^{-alpha} = Gamma(alpha/2)^{-1} int u^{alpha/2-1} e^{-u omega^2} du, which writes q as a superposition of the ray symbols and needs no weak derivatives. ix assembles i-viii into the conclusion of thm:weak-sobolev-synthesis for this filter and every continuous activation of growth order p < s - 1/2. The two closed-form constants of the manuscript, C^(alpha)_{sigma,rho} for the Gaussian activation and for ReLU, are not formalized: the Lean statement carries the constant as the Sobolev pairing sobolevPairing sigma q of lem:sobolev-pairing, which is what the synthesis identity uses."
     }
   ]
 }

@@ -98,7 +98,8 @@ to the uniform estimate of 7.4).  Its formalized content is unchanged, so it car
 
 ## Progress (2026-09-13)
 
-Steps 1 and 2 of the work list below are done and verified by comparator.
+All four steps of the work list below are done and verified by comparator: the 68 indexed items
+of the manuscript are formalized, 369 Lean statements in all.
 
 * `lem:two-coordinate-comparison` (D.2) is `OperatorRidgelet/ToFoML/TwoCoordinate.lean`: the
   one-sign comparison `iSup_add_sign_le` with an arbitrary bounded offset, and the comparison
@@ -154,6 +155,35 @@ manuscript item claimed yet.
   through homogeneity, and `L¹` uniqueness.  The `L²(ν ⊗ db)` clause of the manuscript's
   conclusion (with value `C^{(α)}_ρ ‖g‖²`) is not part of the Lean statement; `paper.json`
   records this.
+
+**`prop:nonbandpass-sobolev` (I.3).**  The concrete Gaussian-derivative filters are
+`OperatorRidgelet/Sobolev/GaussianDefs.lean` (definitions), `GaussianFilter.lean` (the filter and
+its two elementary properties), `GaussianRays.lean` (the rays of the Gaussian target),
+`GaussianSobolev.lean` (the Sobolev test), and `Homogeneous.lean`, `Dilation.lean`,
+`Schwartz.lean` (the general tools they use).  Two places depart from the manuscript proof.
+
+* The filter is *defined* as the inverse angular transform of the symbol
+  `ρ̂_k(ω) = ω^{2k} e^{-ω²}` rather than as a Hermite-Gaussian; that it is real is the evenness
+  argument of `ToMathlib/FourierEven.lean`, and the symbol is Schwartz by
+  `ToMathlib/PolynomialGaussianSchwartz.lean`.  This avoids computing the Fourier transform of a
+  Gaussian derivative.
+* `q_{α,ρ} ∈ H^s_ω` is proved by subordination, not by weak derivatives.  The Gamma integral
+  `|ω|^{-α} = Γ(α/2)^{-1} ∫₀^∞ u^{α/2-1} e^{-uω²} du` writes `q_{α,ρ_k}` as a superposition of
+  the symbols of the rays at the scales `(1+u)^{1/2}`, so its coefficient is the corresponding
+  superposition of dilated filters; its profile follows from Fubini, and its Sobolev norm from
+  Cauchy–Schwarz against the finite weight `u^{α/2-1}(1+u)^{(s-2k-1/2)/2}` and Tonelli.  The
+  manuscript's route — differentiating `|ω|^δ e^{-ω²}` off the origin, checking that the
+  classical derivatives are the weak ones, and using Plancherel — would need integration by
+  parts with vanishing boundary terms at the origin, which the subordination avoids entirely.
+  The Beta-type weight this needs is `ToMathlib/RpowOneAddRpow.lean`, and the even Gaussian
+  weight of the admissibility integral is `ToMathlib/AbsRpowGaussian.lean`.
+
+  The two closed-form constants of the manuscript, `C^{(α)}_{σ,ρ}` for the Gaussian activation
+  and for ReLU, are not formalized.  The Lean statements carry the constant as the Sobolev
+  pairing `sobolevPairing σ q` of C.4, which is what the synthesis identity uses; the closed
+  forms would need the Parseval identity for the pairing and, for ReLU, the finite-part
+  regularization of `ω^{-2}` against a Sobolev test, i.e. the cutoff argument of the manuscript.
+  `paper.json` records the omission.
 
 **The bias convention.**  The existing items keep the Lean convention `⟨a,x⟩ + c`, as the plan's
 Section 10 suggests; `paper.json` `manuscript.conventions` records the transport `τ(a,c) =

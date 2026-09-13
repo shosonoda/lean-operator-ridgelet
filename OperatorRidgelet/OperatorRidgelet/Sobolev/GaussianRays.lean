@@ -22,9 +22,6 @@ open scoped RealInnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- The scale `A(a) = (1 + ‖a‖²)^{1/2}` of the ray in direction `a`. -/
-def rayScale (a : H) : ℝ := Real.sqrt (1 + ‖a‖ ^ 2)
-
 omit [InnerProductSpace ℝ H] in
 /-- The scale is at least one. -/
 theorem one_le_rayScale (a : H) : 1 ≤ rayScale a := by
@@ -50,18 +47,6 @@ theorem one_add_norm_le_rayScale (a : H) : 1 + ‖a‖ ≤ Real.sqrt 2 * rayScal
   have h0 : (0 : ℝ) ≤ Real.sqrt 2 * rayScale a :=
     mul_nonneg (Real.sqrt_nonneg 2) (rayScale_pos a).le
   nlinarith [norm_nonneg a]
-
-/-- The Gaussian target `g(ξ) = e^{-‖ξ‖²} v` of `prop:nonbandpass-sobolev`. -/
-def gaussTarget (v : Y) (ξ : H) : Y := (Real.exp (-‖ξ‖ ^ 2) : ℝ) • v
-
-/-- The scalar ray `A^{-2k-1} ρ_k(b/A)` of the Gaussian-derivative filter at scale `A`. -/
-def gaussRayFun (k : ℕ) (A b : ℝ) : ℂ :=
-  (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) • gaussDerivFilterC k (b / A)
-
-/-- The coefficient of the Gaussian-derivative ray: the dilate `A^{-2k-1} ρ_k(b/A) v` of the
-filter. -/
-def gaussRayCoefficient (k : ℕ) (v : Y) (q : H × ℝ) : Y :=
-  gaussRayFun k (rayScale q.1) q.2 • v
 
 /-- The scalar ray at scale `A ≥ 1` lies in every Sobolev class. -/
 theorem memRaySobolev_gaussRayFun_of_one_le (k : ℕ) {s A : ℝ} (hs : 0 ≤ s) (hA : 1 ≤ A) :
@@ -196,6 +181,15 @@ theorem rayProfile_gaussRayCoefficient [CompleteSpace Y] (k : ℕ) (v : Y) (a : 
 section Measurable
 
 variable [MeasurableSpace H] [BorelSpace H]
+
+/-- The Gaussian target is strongly measurable. -/
+theorem stronglyMeasurable_gaussTarget (v : Y) :
+    StronglyMeasurable (gaussTarget (H := H) v) := by
+  have h : Continuous fun ξ : H => (Real.exp (-‖ξ‖ ^ 2) : ℝ) :=
+    (Real.continuous_exp.comp ((continuous_norm.pow 2).neg))
+  have hm : StronglyMeasurable fun ξ : H => (Real.exp (-‖ξ‖ ^ 2) : ℝ) := h.stronglyMeasurable
+  unfold gaussTarget
+  exact hm.smul stronglyMeasurable_const
 
 /-- The coefficient is jointly strongly measurable. -/
 theorem stronglyMeasurable_gaussRayCoefficient (k : ℕ) (v : Y) :

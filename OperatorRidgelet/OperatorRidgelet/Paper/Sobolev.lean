@@ -2,6 +2,7 @@ import OperatorRidgelet.Sobolev.Defs
 import OperatorRidgelet.Sobolev.Synthesis
 import OperatorRidgelet.Sobolev.Basic
 import OperatorRidgelet.Sobolev.Pairing
+import OperatorRidgelet.Sobolev.GaussianSobolev
 
 /-!
 # Statements of Appendix C: Appendix C, the weak Sobolev tools
@@ -162,5 +163,102 @@ theorem thm_weak_sobolev_synthesis_v [CompleteSpace Y] {s p Cσ : ℝ} (hp : 0 �
     (hB : ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ s * raySobolevNorm s fun b => γ (a, b)) ∂ν ≠ ⊤) :
     Continuous fun x : H => ∫ q : H × ℝ, σ (⟪q.1, x⟫ - q.2) • γ q ∂(ν.prod volume) := by
   exact continuous_synthesis hp hps hσc hσg hγm hray hB
+
+/-! ### Proposition `prop:nonbandpass-sobolev` -/
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(i) The Gaussian-derivative filter of order `k`
+is a real Schwartz function with Fourier transform `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
+theorem prop_nonbandpass_sobolev_i (k : ℕ) (ω : ℝ) :
+    filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
+  exact filterFourier_gaussDerivFilter k ω
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(ii) The filter is not band pass: its Fourier
+transform vanishes only at the origin. -/
+theorem prop_nonbandpass_sobolev_ii (k : ℕ) : ¬ IsBandPass (gaussDerivFilter k) := by
+  exact not_isBandPass_gaussDerivFilter k
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(iii) The filter is nevertheless `α`-admissible,
+`0 < C^{(α)}_{ρ_k} < ∞`, in the range `α < 4k + 1`. -/
+theorem prop_nonbandpass_sobolev_iii {k : ℕ} {α : ℝ} (hα : 0 < α) (hk : α < 4 * k + 1) :
+    IsAdmissible α (gaussDerivFilter k) := by
+  exact isAdmissible_gaussDerivFilter hk
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(iv) The polynomial moments
+`eq:homogeneous-polynomial-integrability` of a homogeneous measure that is finite on the unit
+ball: `∫ (1 + ‖a‖²)^e dν < ∞` whenever `2e + α < 0`. -/
+theorem prop_nonbandpass_sobolev_iv {α e : ℝ} (hα : 0 < α) {ν : Measure H}
+    (hν : IsHomogeneous α ν) (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (he : 2 * e + α < 0) :
+    ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖ ^ 2) ^ e) ∂ν < ⊤ := by
+  exact hν.lintegral_one_add_norm_sq_rpow_lt_top hα hB he
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(v) The coefficient of the rays of the filter for
+the Gaussian target `g(ξ) = e^{-‖ξ‖²} v` is jointly strongly measurable. -/
+theorem prop_nonbandpass_sobolev_v (k : ℕ) (v : Y) :
+    StronglyMeasurable (gaussRayCoefficient (H := H) k v) := by
+  exact stronglyMeasurable_gaussRayCoefficient k v
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(vi) Every ray lies in `H^s_ω(ℝ;Y)` and has the
+profile `h_a(ω) = ρ̂_k(-ω) g(ωa)` required by `thm:weak-sobolev-synthesis`. -/
+theorem prop_nonbandpass_sobolev_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
+    (a : H) :
+    MemRaySobolev s (fun b => gaussRayCoefficient k v (a, b)) ∧
+      ∀ ω : ℝ, rayProfile (fun b => gaussRayCoefficient k v (a, b)) ω =
+        filterFourier (gaussDerivFilter k) (-ω) • gaussTarget v (ω • a) := by
+  exact ⟨memRaySobolev_gaussRayCoefficient k v hs a,
+    rayProfile_gaussRayCoefficient k v a⟩
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(vii) The Sobolev mass `𝔅_s(ρ_k, g)` is finite in
+the range `2k > α + 2s - 1/2` of `eq:nonbandpass-order`. -/
+theorem prop_nonbandpass_sobolev_vii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 0 ≤ s)
+    (hk : α + 2 * s - 1 / 2 < 2 * k) {ν : Measure H} (hν : IsHomogeneous α ν)
+    (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) :
+    ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ s *
+      raySobolevNorm s fun b => gaussRayCoefficient k v (a, b)) ∂ν ≠ ⊤ := by
+  exact lintegral_raySobolevNorm_gaussRayCoefficient_ne_top hα hs hk hν hB v
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(viii) The Sobolev test
+`q_{α,ρ_k}(ω) = ρ̂_k(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)` in the same range. -/
+theorem prop_nonbandpass_sobolev_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
+    (hk : α + 2 * s - 1 / 2 < 2 * k) :
+    MemRaySobolev s (gaussSobolevRay k α) ∧
+      ∀ ω : ℝ, rayProfile (gaussSobolevRay k α) ω =
+        filterFourier (gaussDerivFilter k) (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ) := by
+  have hk1 : 1 ≤ k := by
+    by_contra hcon
+    have hk0 : k = 0 := by omega
+    rw [hk0] at hk
+    push_cast at hk
+    linarith
+  have hk2 : α < 2 * k := by linarith
+  exact ⟨memRaySobolev_gaussSobolevRay hα (by linarith) hk,
+    rayProfile_gaussSobolevRay hk1 hα hk2⟩
+
+/-- **Proposition [prop:nonbandpass-sobolev]**(ix) Consequently the filter satisfies every
+hypothesis of `thm:weak-sobolev-synthesis`: for each continuous activation of growth order
+`p < s - 1/2` the synthesis of the rays is absolutely convergent and reproduces the target. -/
+theorem prop_nonbandpass_sobolev_ix [CompleteSpace Y] {k : ℕ} {α s p Cσ : ℝ} (hα : 0 < α)
+    (hp : 0 ≤ p) (hps : p + 1 / 2 < s) (hk : α + 2 * s - 1 / 2 < 2 * k)
+    {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
+    (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) {σ : ℝ → ℂ} (hσc : Continuous σ)
+    (hσg : ∀ t : ℝ, ‖σ t‖ ≤ Cσ * (1 + |t|) ^ p) (x : H) :
+    ∫ q : H × ℝ, σ (⟪q.1, x⟫ - q.2) • gaussRayCoefficient k v q ∂(ν.prod volume) =
+      sobolevPairing σ (gaussSobolevRay k α) • spectralTarget ν (gaussTarget v) x := by
+  have hs : 1 / 2 < s := by linarith
+  have hk1 : 1 ≤ k := by
+    by_contra hcon
+    have hk0 : k = 0 := by omega
+    rw [hk0] at hk
+    push_cast at hk
+    linarith
+  have hk2 : α < 2 * k := by linarith
+  refine integral_synthesis_eq_pairing_smul hp hps hν ?_ hσc hσg
+    (stronglyMeasurable_gaussRayCoefficient k v)
+    (Filter.Eventually.of_forall fun a =>
+      memRaySobolev_gaussRayCoefficient k v (by linarith) a)
+    (Filter.Eventually.of_forall fun a => rayProfile_gaussRayCoefficient k v a)
+    (lintegral_raySobolevNorm_gaussRayCoefficient_ne_top hα (by linarith) hk hν hB v)
+    (memRaySobolev_gaussSobolevRay hα (by linarith) hk)
+    (rayProfile_gaussSobolevRay hk1 hα hk2) x
+  exact stronglyMeasurable_gaussTarget v
 
 end OperatorRidgelet.Paper

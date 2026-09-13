@@ -1,3 +1,4 @@
+import OperatorRidgelet.Sobolev.GaussianDefs
 import OperatorRidgelet.Sobolev.Homogeneous
 import OperatorRidgelet.Sobolev.Uniqueness
 import OperatorRidgelet.Tempered.Fourier
@@ -24,12 +25,6 @@ namespace OperatorRidgelet
 open MeasureTheory Complex LeanRidgelet LeanRidgelet.Fourier
 open scoped Polynomial FourierTransform
 
-/-- The Fourier transform `ρ̂(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative filter of order
-`k`, as a real Schwartz function. -/
-def gaussDerivHat (k : ℕ) : SchwartzMap ℝ ℝ :=
-  SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (realDilationCLE (Real.sqrt 2) (by positivity))
-    (Real.polynomialGaussianSchwartz (Polynomial.C (((2 : ℝ) ^ k)⁻¹) * Polynomial.X ^ (2 * k)))
-
 /-- The value `ρ̂_k(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative symbol. -/
 @[simp]
 theorem gaussDerivHat_apply (k : ℕ) (ω : ℝ) :
@@ -44,27 +39,12 @@ theorem gaussDerivHat_apply (k : ℕ) (ω : ℝ) :
   rw [hpow, hsq]
   field_simp
 
-/-- The Fourier transform of the filter, read in Mathlib's frequency variable:
-`ξ ↦ ρ̂(2πξ)`. -/
-def gaussDerivDilatedHat (k : ℕ) : SchwartzMap ℝ ℝ :=
-  SchwartzMap.compCLMOfContinuousLinearEquiv ℝ
-    (realDilationCLE (2 * Real.pi) (by positivity)) (gaussDerivHat k)
-
 /-- The value of the symbol in Mathlib's frequency variable. -/
 @[simp]
 theorem gaussDerivDilatedHat_apply (k : ℕ) (ξ : ℝ) :
     gaussDerivDilatedHat k ξ = gaussDerivHat k (2 * Real.pi * ξ) := by
   rw [gaussDerivDilatedHat, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply,
     realDilationCLE_apply]
-
-/-- The Gaussian-derivative filter of order `k`, as a complex Schwartz function; it is
-real-valued (`gaussDerivFilterC_conj`). -/
-def gaussDerivFilterC (k : ℕ) : SchwartzMap ℝ ℂ :=
-  𝓕⁻ (SchwartzMap.ofReal (gaussDerivDilatedHat k))
-
-/-- The Gaussian-derivative filter `ρ_k ∈ 𝒮(ℝ;ℝ)` of order `k` of `prop:nonbandpass-sobolev`. -/
-def gaussDerivFilter (k : ℕ) : SchwartzMap ℝ ℝ :=
-  SchwartzMap.postcompCLM Complex.reCLM (gaussDerivFilterC k)
 
 /-- The complex filter is invariant under conjugation: its frequency profile is real and
 even. -/

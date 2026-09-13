@@ -10,6 +10,7 @@ import OperatorRidgelet.Sobolev.Synthesis
 import OperatorRidgelet.Sobolev.Homogeneous
 import OperatorRidgelet.Sobolev.Dilation
 import OperatorRidgelet.Sobolev.Schwartz
+import OperatorRidgelet.Sobolev.GaussianDefs
 import OperatorRidgelet.Sobolev.GaussianFilter
 import OperatorRidgelet.Sobolev.GaussianRays
 import OperatorRidgelet.Sobolev.GaussianSobolev

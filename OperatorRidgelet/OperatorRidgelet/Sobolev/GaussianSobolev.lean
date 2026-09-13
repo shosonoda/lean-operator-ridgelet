@@ -22,9 +22,6 @@ namespace OperatorRidgelet
 open MeasureTheory Set
 open scoped ENNReal
 
-/-- The subordination scale `B(u) = (1+u)^{1/2}`. -/
-def subScale (u : ℝ) : ℝ := Real.sqrt (1 + u)
-
 /-- The subordination scale is at least one. -/
 theorem one_le_subScale {u : ℝ} (hu : 0 ≤ u) : 1 ≤ subScale u := by
   calc (1 : ℝ) = Real.sqrt 1 := Real.sqrt_one.symm
@@ -90,11 +87,6 @@ theorem integral_norm_gaussRayFun (k : ℕ) {A : ℝ} (hA : 0 < A) :
   exact h1
 
 /-! ### The subordination superposition -/
-
-/-- The coefficient of `q_{α,ρ_k}`: the subordination superposition of the dilated filters. -/
-def gaussSobolevRay (k : ℕ) (α : ℝ) (b : ℝ) : ℂ :=
-  (Real.Gamma (α / 2))⁻¹ • ∫ u in Ioi (0 : ℝ),
-    (u ^ (α / 2 - 1) : ℝ) • gaussRayFun k (subScale u) b
 
 /-- The dilated filters depend measurably on the scale parameter and the bias. -/
 theorem measurable_subScale_gaussRayFun (k : ℕ) :
