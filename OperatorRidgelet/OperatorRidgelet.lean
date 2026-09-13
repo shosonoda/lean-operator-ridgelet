@@ -2,6 +2,8 @@ import OperatorRidgelet.Activation
 import OperatorRidgelet.Cylindrical
 import OperatorRidgelet.RankOneLift
 import OperatorRidgelet.OperatorValuedRidgelet
+import OperatorRidgelet.Sobolev.Defs
+import OperatorRidgelet.Sobolev.Basic
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod

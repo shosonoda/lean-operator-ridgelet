@@ -119,6 +119,30 @@ Steps 1 and 2 of the work list below are done and verified by comparator.
 
 Outstanding: the Sobolev line (C.3, C.4, 5.6, I.3) and the bias convention.
 
+### Started: the Sobolev line
+
+`OperatorRidgelet/Sobolev/` holds the coefficient-side foundation of Appendix C, with no
+manuscript item claimed yet.
+
+* `Defs.lean`: the bracket `⟨t⟩`, the class `MemRaySobolev s γ` (`γ` square integrable against
+  `⟨t⟩^{2s}`), the norm `raySobolevNorm s γ = (2π ∫ ⟨t⟩^{2s} ‖γ‖²)^{1/2}` of the profile whose
+  inverse Fourier transform is `γ`, the profile `rayProfile γ = γ̂` in the angular convention,
+  and the constants `A_{s,r}` and `b_{σ,s}`.  For `s > 1/2` the coefficient is integrable, so
+  the profile is an ordinary Fourier integral and no `L²` extension of the transform is needed.
+* `Basic.lean`: of Lemma `lem:sobolev-tools` (C.3), the weighted inverse Fourier estimate
+  `∫ ⟨t⟩^r ‖γ‖ ≤ A_{s,r} ‖h‖_{H^s_ω}` for `0 ≤ r < s - 1/2` (`integral_bracket_rpow_norm_le`),
+  the reflection isometry with its profile identity, and the modulation bound
+  `‖M_u h‖ ≤ (1+|u|)^s ‖h‖` with its profile identity.  Outstanding in C.3: the joint
+  continuity of `(u, h) ↦ M_u h`, which reduces to strong continuity of translation in the
+  weighted `L²` space (Mathlib's `Lp.compMeasurePreserving_continuous` plus a dominated
+  convergence step for the multiplier `(⟨t⟩/⟨t+u⟩)^s`).
+
+Then C.4 needs the bounded pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` and its translation formula,
+and 5.6 needs, beyond those, the Bochner integral of the profiles over directions, the Fubini
+and homogeneity identification of `Φ_x` with `q_{α,ρ} f_g(x)`, and the moment bound.  The new
+statements should keep the Lean bias convention `⟨a,x⟩ + c` and record the transport `τ` in
+`paper.json`, as every other bias-dependent item does.
+
 ## Suggested order of work
 
 1. `lem:two-coordinate-comparison` (D.2), then the Hilbert-valued `thm:lipschitz-barron` (6.3), with
