@@ -87,7 +87,7 @@ theorem tendsto_rademacherComplexity_vector [BorelSpace H] [SecondCountableTopol
   let Φ : H × ℝ → (K →ᵇ Y) := fun θ => vectorRidgeAtom hK hβ.continuous θ (polarDensity Γ θ)
   have hi := integrable_vectorRidgeAtom hK hβ (polarLaw Γ) (polarDensity Γ)
     (aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0))
-    (ae_polarLaw_norm_polarDensity_eq_one Γ) hM
+    ((ae_polarLaw_norm_polarDensity_eq_one Γ).mono fun _ hθ => hθ.le) hM
   have ht := tendsto_signed_sample_average (polarLaw Γ) hi
   apply ht.congr
   intro N

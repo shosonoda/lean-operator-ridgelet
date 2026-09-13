@@ -56,13 +56,13 @@ on the Lean statements.  Lean names follow Mathlib conventions and are not renam
 
 They come from the manuscript's `supp.tex`, whose results were proved by hand but never formalized.
 
-| Item | Label | Source in `supp.tex` | Depends on |
-|---|---|---|---|
-| 5.6 | `thm:weak-sobolev-synthesis` | `supp:thm:weak-sobolev-synthesis` | C.3, C.4 |
-| C.3 | `lem:sobolev-tools` | `supp:lem:sobolev-tools` | — |
-| C.4 | `lem:sobolev-pairing` | `supp:lem:sobolev-pairing` | C.3 |
-| D.2 | `lem:two-coordinate-comparison` | `supp:lem:supp-two-coordinate-comparison` | — |
-| I.3 | `prop:nonbandpass-sobolev` | `supp:prop:nonbandpass-sobolev` | 5.6 |
+| Item | Label | Source in `supp.tex` | Depends on | Status |
+|---|---|---|---|---|
+| 5.6 | `thm:weak-sobolev-synthesis` | `supp:thm:weak-sobolev-synthesis` | C.3, C.4 | outstanding |
+| C.3 | `lem:sobolev-tools` | `supp:lem:sobolev-tools` | — | outstanding |
+| C.4 | `lem:sobolev-pairing` | `supp:lem:sobolev-pairing` | C.3 | outstanding |
+| D.2 | `lem:two-coordinate-comparison` | `supp:lem:supp-two-coordinate-comparison` | — | **done** |
+| I.3 | `prop:nonbandpass-sobolev` | `supp:prop:nonbandpass-sobolev` | 5.6 | outstanding |
 
 `thm:weak-sobolev-synthesis` gives absolute synthesis for filters that need not be band pass: with
 Sobolev regularity of order `s` along rays it needs `s > p + 1/2` for an activation of growth `p`
@@ -88,6 +88,36 @@ update; with `Q = P = L_D^{-1}` the input measure is the Gaussian field with cov
 not `L_D^{-2}`; the claim that no rate is available for the nonlinear layer is replaced by a pointer
 to the uniform estimate of 7.4).  Its formalized content is unchanged, so it carries a note but no
 `revision` flag.
+
+## Progress (2026-09-13)
+
+Steps 1 and 2 of the work list below are done and verified by comparator.
+
+* `lem:two-coordinate-comparison` (D.2) is `OperatorRidgelet/ToFoML/TwoCoordinate.lean`: the
+  one-sign comparison `iSup_add_sign_le` with an arbitrary bounded offset, and the comparison
+  itself by replacing one coordinate at a time along the Boolean sign vectors
+  (`pow_two_mul_sum_iSup_boolSignVector_le`, normalized as `avg_iSup_boolSignVector_le`).  The
+  Lean statement holds for an arbitrary nonempty index type; the manuscript's countability is
+  kept in the `Paper` statement only for fidelity.
+* `thm:lipschitz-barron` (6.3) is now the Hilbert-valued statement in three parts: the
+  expectation bound with the sharp constant `V(4|β(0)| + 8 Lip(β) R_K M₂)/√N` (`_i`), the
+  deterministic realization (`_ii`), and the weaker second inequality `8V(…)/√N` (`_iii`).  The
+  conditional Rademacher average of the `Y`-valued ridge atoms is
+  `OperatorRidgelet/Sampling/VectorBarron.lean`, which writes the output norm as a supremum over
+  the unit ball of `Y` and applies D.2.  The scalar bound that `cor:sampling-concentration`,
+  `cor:two-stage-error` and `ex:operator-layer`(i-e) consume moved to the library as
+  `integral_compactSupNorm_polarSampledNetwork_sub_le`, so no other manuscript statement changed.
+* `thm:D` (6.5): the vector clause `thm_D_vec` now carries the same explicit width-`N` bound and
+  a deterministic realization, through the `Y`-valued Barron bound for a coefficient measure with
+  a density (`integral_compactSupNorm_densitySampledNetwork_sub_leVec`).
+* `ex:operator-layer` (7.4): the new clause `ex_operator_layer_i_f` is the uniform bound
+  `E‖F_N − F‖_{C(K;Y)} ≤ B₁(4|β(0)| + 8 Lip(β) R_K ‖A‖_∞)/√N` of `eq:operator-layer-uniform` for
+  the whole output function; `i_e` stays the scalar observable.
+* Two general-purpose lemmas were added to `OperatorRidgelet/ToMathlib/`: `RealInnerDual.lean`
+  (the norm as a real inner product against the unit ball) and `SqrtSumSq.lean` (the `ℓ²`
+  triangle inequality).
+
+Outstanding: the Sobolev line (C.3, C.4, 5.6, I.3) and the bias convention.
 
 ## Suggested order of work
 

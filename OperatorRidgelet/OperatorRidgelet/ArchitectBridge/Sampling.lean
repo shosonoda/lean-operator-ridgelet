@@ -176,8 +176,10 @@ attribute [blueprint "thm:D-dense"
 attribute [blueprint "thm:D-vec"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same
     statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i) and (ii) and the
-    vector-valued compact-open rate
-    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+2V\mathfrak R^Y_N(K;p,\beta)$ in (iii). -/)]
+    same explicit rate
+    $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+\frac{8V}{\sqrt
+    N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, with a deterministic realization, in
+    (iii). -/)]
   OperatorRidgelet.Paper.thm_D_vec
 
 /-! ## Section 6: vector-valued sampling -/

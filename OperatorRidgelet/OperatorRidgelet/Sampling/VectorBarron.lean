@@ -305,7 +305,7 @@ variable [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
 second moment `M₂²`. -/
 theorem rademacherComplexity_vectorRidge_le (hK : IsCompact K) {β : ℝ → ℝ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (p : Measure (H × ℝ)) [IsProbabilityMeasure p] (h : H × ℝ → Y)
-    (hmeas : AEStronglyMeasurable h p) (hu : ∀ᵐ θ ∂p, ‖h θ‖ = 1)
+    (hmeas : AEStronglyMeasurable h p) (hu : ∀ᵐ θ ∂p, ‖h θ‖ ≤ 1)
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p) {N : ℕ} (hN : 0 < N) :
     rademacherComplexity N K p (fun t => (β t : ℂ)) h ≤
       (2 * |β 0| + 4 * L * compactRadius K * Real.sqrt (secondMoment p)) / Real.sqrt N := by
@@ -342,7 +342,7 @@ theorem rademacherComplexity_vectorRidge_le (hK : IsCompact K) {β : ℝ → ℝ
       (2 ^ N : ℝ)⁻¹ * ∑ σ : Signs N, ‖∑ j, signVector σ j • Φ (ω j)‖ ≤
         2 * |β 0| * Real.sqrt N + 4 * (L : ℝ) * compactRadius K *
           Real.sqrt (∑ j, (‖(ω j).1‖ ^ 2 + |(ω j).2| ^ 2)) := by
-    filter_upwards [ae_sampleLaw_forall (N := N) (hu.mono fun θ hθ => hθ.le)] with ω hω
+    filter_upwards [ae_sampleLaw_forall (N := N) hu] with ω hω
     exact inv_pow_two_mul_sum_norm_sum_signVector_smul_vectorRidgeAtom_le hK hKne hβ
       (fun j => ω j) (fun j => h (ω j)) hω
   have hmain : (2 ^ N : ℝ)⁻¹ * ∑ σ : Signs N,
@@ -423,7 +423,8 @@ theorem integrable_compactSupNorm_polarSampledNetwork_sub_vec (hK : IsCompact K)
   have hΦ' : ∀ θ (x : K), Φ θ x =
       (β (⟪(id θ).1, (x : H)⟫ + (id θ).2) : ℂ) • polarDensity Γ θ := fun _ _ => rfl
   have hint : Integrable Φ (polarLaw Γ) :=
-    integrable_vectorRidgeAtom hK hβc (polarLaw Γ) (polarDensity Γ) hh hh1 hM
+    integrable_vectorRidgeAtom hK hβc (polarLaw Γ) (polarDensity Γ) hh
+      (hh1.mono fun _ hθ => hθ.le) hM
   have hpt : ∀ θ : Fin N → H × ℝ,
       compactSupNorm K (fun x => polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
           integralNetwork (fun t => (β t : ℂ)) Γ x) =

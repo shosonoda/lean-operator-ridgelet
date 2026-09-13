@@ -269,8 +269,8 @@ satisfies
 $`\mathbb E\|f-f_N\|_{C(K)}\le\varepsilon+\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)`,
 and one deterministic width-$`N` network satisfies the same bound. In particular the
 finite-width networks with activation $`\beta` are dense in $`C(H)` for the compact-open
-topology, and the same statements hold for continuous $`f:H\to Y` with the vector-valued rate
-of {bpref "cor:vector-rates"}[] (ii) in (iii).
+topology, and the same statements hold for continuous $`f:H\to Y` with $`C(K;Y)` norms and the
+same explicit rate in (iii), by the Hilbert-valued {bpref "thm:lipschitz-barron"}[].
 :::
 
 :::proof "thm:D"

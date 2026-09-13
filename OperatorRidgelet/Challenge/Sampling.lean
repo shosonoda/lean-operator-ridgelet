@@ -229,9 +229,10 @@ theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
 hold for continuous `f : H → Y` with values in a separable complex Hilbert space: there is a
 `Y`-valued spectral density `G`, regular along rays, smooth, and vanishing outside a bounded
 set, with (i) `‖f − g_G‖_{C(K;Y)} < ε`, (ii) `g_G = S_β[γ_G λ_α]` with a finite coefficient
-measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the
-vector-valued compact-open rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + 2V 𝔑^Y_N(K; p, β)` of Corollary
-`cor:vector-rates`.  As in `thm_D`, the direction measure is assumed finite on bounded sets
+measure with finite moments of all orders, and (iii), for globally Lipschitz `β`, the same
+explicit rate `𝔼‖f − f_N‖_{C(K;Y)} ≤ ε + (8V/√N)(|β(0)| + Lip(β) R_K M₂)` as in the scalar
+case, by the Hilbert-valued Theorem `thm:lipschitz-barron`, together with a deterministic
+width-`N` realization.  As in `thm_D`, the direction measure is assumed finite on bounded sets
 (`hfin`). -/
 theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
     [SecondCountableTopology Y] (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
@@ -251,14 +252,25 @@ theorem thm_D_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [
         (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ m * ‖coefficientFormulaVec ρ G θ‖)
         (parameterMeasure ν)) ∧
       (∀ L : ℝ≥0, LipschitzWith L b → ∀ N : ℕ, 0 < N →
-        ∫ θ, compactSupNorm K (fun x =>
+        (∫ θ, compactSupNorm K (fun x =>
               f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
                 (coefficientFormulaVec ρ G) θ x)
             ∂sampleLaw N (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G)) ≤
-          ε + 2 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) *
-            rademacherComplexity N K
-              (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))
-              (fun t => (b t : ℂ)) (densityPhase (coefficientFormulaVec ρ G))) := by
+          ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) / Real.sqrt N *
+            (|b 0| + (L : ℝ) * compactRadius K *
+              Real.sqrt
+                (secondMoment
+                  (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) ∧
+        ∃ θ : Fin N → H × ℝ,
+          compactSupNorm K (fun x =>
+              f x - densitySampledNetwork (fun t => (b t : ℂ)) (parameterMeasure ν)
+                (coefficientFormulaVec ρ G) θ x) ≤
+            ε + 8 * densityWeight (parameterMeasure ν) (coefficientFormulaVec ρ G) /
+                Real.sqrt N *
+              (|b 0| + (L : ℝ) * compactRadius K *
+                Real.sqrt
+                  (secondMoment
+                    (densityLaw (parameterMeasure ν) (coefficientFormulaVec ρ G))))) := by
   sorry
 
 end Spectral
