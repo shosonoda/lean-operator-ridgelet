@@ -106,9 +106,10 @@ attribute [blueprint "thm:general-rademacher"
   OperatorRidgelet.Paper.thm_general_rademacher
 
 attribute [blueprint "thm:lipschitz-barron-i"
-  (statement := /-- For real globally Lipschitz $\beta$ and
-    $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
-    $\mathbb E\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$
+  (statement := /-- For real globally Lipschitz $\beta$, a finite-variation $Y$-valued $\Gamma$,
+    and $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
+    $\mathbb E\|f_N-f\|_{C(K;Y)}\le\frac{V}{\sqrt N}
+      (4|\beta(0)|+8\operatorname{Lip}(\beta)R_KM_2)$
     with $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)]
   OperatorRidgelet.Paper.thm_lipschitz_barron_i
 
@@ -116,6 +117,12 @@ attribute [blueprint "thm:lipschitz-barron-ii"
   (statement := /-- At least one deterministic width-$N$ realization satisfies the same
     bound. -/)]
   OperatorRidgelet.Paper.thm_lipschitz_barron_ii
+
+attribute [blueprint "thm:lipschitz-barron-iii"
+  (statement := /-- The same expectation is at most
+    $\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, the second displayed
+    inequality. -/)]
+  OperatorRidgelet.Paper.thm_lipschitz_barron_iii
 
 /-! ## Section 6: finite variation from the spectral density -/
 

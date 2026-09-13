@@ -82,20 +82,45 @@ Apply {bpref "lem:banach-rademacher-vanishing"}[] in $`C(K)` and multiply by $`V
 The same lemma gives convergence to zero. This step needs only Bochner integrability.
 :::
 
-:::theorem "thm:lipschitz-barron" (lean := "OperatorRidgelet.Paper.thm_lipschitz_barron_i, OperatorRidgelet.Paper.thm_lipschitz_barron_ii") (uses := "thm:general-rademacher, aux:sampling-data, roadmap:contraction-principle")
-Suppose $`\beta:\mathbb R\to\mathbb R` is globally Lipschitz and
+:::lemma_ "lem:two-coordinate-comparison" (lean := "OperatorRidgelet.Paper.lem_two_coordinate_comparison") (uses := "def:rademacher-complexity")
+Let $`S` be a nonempty countable set and let $`\psi_i,u_i,v_i:S\to\mathbb R` be bounded with
+$`|\psi_i(s)-\psi_i(t)|\le|u_i(s)-u_i(t)|+|v_i(s)-v_i(t)|` for all $`s,t`. Then
+$`\mathbb E\sup_s\sum_i\varepsilon_i\psi_i(s)
+  \le2\mathbb E\sup_s\sum_i(\varepsilon_{i1}u_i(s)+\varepsilon_{i2}v_i(s))`
+for independent Rademacher signs.
+:::
+
+:::proof "lem:two-coordinate-comparison"
+Fix all signs but $`\varepsilon_i`. Choosing near-maximizers $`s_\pm` of $`F\pm\psi_i` and
+using $`\mathbb E|A+D|\ge\mathbb E|D|` for a symmetric $`D`, together with
+$`\mathbb E|\eta_1r+\eta_2q|=\max\{|r|,|q|\}\ge(|r|+|q|)/2`, gives the one-sign comparison
+with an arbitrary bounded offset $`F`. Replacing one coordinate at a time and averaging over
+the remaining signs proves the statement.
+:::
+
+:::theorem "thm:lipschitz-barron" (lean := "OperatorRidgelet.Paper.thm_lipschitz_barron_i, OperatorRidgelet.Paper.thm_lipschitz_barron_ii, OperatorRidgelet.Paper.thm_lipschitz_barron_iii") (uses := "thm:general-rademacher, aux:sampling-data, lem:two-coordinate-comparison")
+Suppose $`\beta:\mathbb R\to\mathbb R` is globally Lipschitz, $`\Gamma` is a
+finite-variation $`Y`-valued measure for a separable complex Hilbert space $`Y`, and
 $`M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty`. For compact $`K\subset H` with
 $`R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}`,
-$`\mathbb E\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}\bigl(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2\bigr)`
-(i), and at least one deterministic width-$`N` realization satisfies the same bound (ii).
+$`\mathbb E\|f_N-f\|_{C(K;Y)}\le\frac{V}{\sqrt N}\bigl(4|\beta(0)|
+  +8\operatorname{Lip}(\beta)R_KM_2\bigr)`
+(i), at least one deterministic width-$`N` realization satisfies the same bound (ii), and the
+weaker bound $`\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)` follows
+(iii). The scalar case is $`Y=\mathbb C`.
 :::
 
 :::proof "thm:lipschitz-barron"
-Symmetrize, separate $`\beta(0)`, split the complex phases into real and imaginary parts, and
-apply the real contraction principle; the remaining linear process is bounded by
-$`R_K\|\sum_j\varepsilon_j(a_j,c_j)\|`, whose expectation is at most $`R_K\sqrt NM_2` by the
-Hilbert-space Khintchine inequality. An integrable random variable cannot exceed its
-expectation almost surely.
+Write the output norm as a supremum of real inner products over the unit ball of $`Y`, so that
+the signed process is indexed by $`K\times B_Y`. The increments of
+$`\psi_j(x,y)=\beta(\langle a_j,x\rangle+c_j)\langle y,h_j\rangle` are dominated by those
+of $`\operatorname{Lip}(\beta)(\langle a_j,x\rangle+c_j)` and of
+$`B_j\langle y,h_j\rangle` with $`B_j=|\beta(0)|+\operatorname{Lip}(\beta)R_K\|(a_j,c_j)\|`,
+so {bpref "lem:two-coordinate-comparison"}[] applies. Hilbert duality and the Khintchine
+inequality bound the two resulting averages by
+$`\operatorname{Lip}(\beta)R_K(\sum_j\|(a_j,c_j)\|^2)^{1/2}` and
+$`(\sum_jB_j^2)^{1/2}`, and symmetrization and Jensen's inequality give (i). An integrable
+random variable cannot exceed its expectation almost surely, which gives (ii).
 :::
 
 :::lemma_ "lem:qualitative-sampling" (lean := "OperatorRidgelet.Paper.lem_qualitative_sampling") (uses := "def:integral-network, def:rademacher-complexity, aux:sampling-data")

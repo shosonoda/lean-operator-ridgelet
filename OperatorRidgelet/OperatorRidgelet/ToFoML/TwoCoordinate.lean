@@ -207,6 +207,26 @@ theorem sum_boolVector_succ₂ {N : ℕ} (G : (Fin (N + 1) → Bool) → (Fin (N
         exact Finset.sum_congr rfl fun ε₁ _ => Finset.sum_congr rfl fun b₁ _ =>
           (sum_boolVector_succ fun ε₂ => G (Fin.cons b₁ ε₁) ε₂).symm
 
+/-- The Boolean signs and the signs of `FoML.Signs`, as an equivalence. -/
+def boolEquivSign : Bool ≃ {z : ℤ // z ∈ ({-1, 1} : Finset ℤ)} where
+  toFun b := if b then ⟨1, by simp⟩ else ⟨-1, by simp⟩
+  invFun z := decide ((z : ℤ) = 1)
+  left_inv b := by cases b <;> simp
+  right_inv z := by
+    obtain ⟨z, hz⟩ := z
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl <;> simp
+
+/-- Sums over `FoML`'s sign vectors are sums over the Boolean vectors. -/
+theorem sum_signs_eq_sum_bool {N : ℕ} (f : (Fin N → ℝ) → ℝ) :
+    ∑ σ : Signs N, f (signVector σ) = ∑ ε : Fin N → Bool, f (boolSignVector ε) := by
+  refine (Fintype.sum_equiv (Equiv.arrowCongr (Equiv.refl (Fin N)) boolEquivSign)
+    (fun ε => f (boolSignVector ε)) (fun σ => f (signVector σ)) fun ε => ?_).symm
+  refine congrArg f (funext fun j => ?_)
+  simp only [signVector_apply, boolSignVector, Equiv.arrowCongr_apply, Equiv.refl_symm,
+    Equiv.coe_refl, Function.comp_apply, id_eq, boolEquivSign, Equiv.coe_fn_mk]
+  split_ifs <;> norm_num
+
 /-! ### The two-coordinate comparison -/
 
 /-- **Two-coordinate comparison.**  If the increments of `ψ i` are dominated by those of `u i`

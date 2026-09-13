@@ -449,10 +449,10 @@
       "title": "Dimension-free uniform Hilbert-valued Barron bound",
       "lean": [
         "OperatorRidgelet.Paper.thm_lipschitz_barron_i",
-        "OperatorRidgelet.Paper.thm_lipschitz_barron_ii"
+        "OperatorRidgelet.Paper.thm_lipschitz_barron_ii",
+        "OperatorRidgelet.Paper.thm_lipschitz_barron_iii"
       ],
-      "note": "Real β with LipschitzWith L β; Lip(β) is any such L (equivalent to the least constant). M₂² < ∞ is Integrable (‖a‖² + |c|²) (polarLaw Γ), and M₂ = √(secondMoment (polarLaw Γ)); R_K = compactRadius K = sSup of √(‖x‖²+1) over K. Part i is the expectation bound over sampleLaw N (polarLaw Γ) with N > 0; part ii the existence of a deterministic sample θ : Fin N → H × ℝ with the same bound. Γ = 0 is allowed (all quantities vanish). Restated in the 2026-09-13 revision: the bound is now for Y-valued coefficient measures in C(K;Y) with the sharper constant V(4|sigma(0)| + 8 Lip(sigma) R_K M_2)/sqrt N (the previous 8V(|sigma(0)| + Lip(sigma) R_K M_2)/sqrt N is kept as a corollary of it), and the conventions for V = 0 and empty K are stated. The listed Lean statements are the earlier scalar bound; they remain correct but no longer cover the manuscript statement.",
-      "revision": "restated"
+      "note": "Real β with LipschitzWith L β; Lip(β) is any such L (equivalent to the least constant). Γ is a Y-valued measure of finite variation for a separable complex Hilbert space Y (the scalar case is Y = ℂ). M₂² < ∞ is Integrable (‖a‖² + |c|²) (polarLaw Γ), and M₂ = √(secondMoment (polarLaw Γ)); R_K = compactRadius K = sSup of √(‖x‖²+1) over K. Part i is the expectation bound V(4|β(0)| + 8 Lip(β) R_K M₂)/√N over sampleLaw N (polarLaw Γ) with N > 0; part ii the existence of a deterministic sample θ : Fin N → H × ℝ with the same bound; part iii the weaker second inequality 8V(|β(0)| + Lip(β) R_K M₂)/√N. Γ = 0 and K = ∅ are allowed (all quantities vanish), which is the manuscript's convention for V = 0 and for the empty compact set. The proof replaces the contraction principle by lem:two-coordinate-comparison; the scalar bound used by the corollaries is the library lemma OperatorRidgelet.integral_compactSupNorm_polarSampledNetwork_sub_le."
     },
     {
       "label": "thm:E",

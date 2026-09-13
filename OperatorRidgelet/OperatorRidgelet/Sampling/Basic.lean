@@ -1335,4 +1335,68 @@ theorem rademacherComplexity_eq_sum_signs (N : ℕ) (p : Measure (H × ℝ))
 
 end RademacherComplexity
 
+/-! ### The scalar compact-open Barron bound -/
+
+section ScalarBarron
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
+  [BorelSpace H] {K : Set H}
+
+/-- **The scalar dimension-free compact-open Barron bound.**  For a real globally Lipschitz `β`
+and a complex measure `Γ` of finite variation with `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`,
+`𝔼‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)`.  It is the case `Y = ℂ` of the
+Hilbert-valued bound of `OperatorRidgelet.Sampling.VectorBarron` with the constant of the
+manuscript's second inequality. -/
+theorem integral_compactSupNorm_polarSampledNetwork_sub_le {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ))
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
+    ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x)
+        ∂sampleLaw N (polarLaw Γ) ≤
+      8 * polarWeight Γ / Real.sqrt N *
+        (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
+  by_cases h0 : totalVariation Γ = 0
+  · rw [polarLaw_eq_zero_of_totalVariation_eq_zero h0, sampleLaw_zero hN, integral_zero_measure,
+      polarWeight_eq_zero_of_totalVariation_eq_zero h0]
+    simp
+  haveI := isProbabilityMeasure_polarLaw Γ h0
+  have hh : AEStronglyMeasurable (polarDensity Γ) (polarLaw Γ) :=
+    aestronglyMeasurable_polarDensity Γ (ne_zero_of_totalVariation_ne_zero h0)
+  have hh1 : ∀ᵐ θ ∂polarLaw Γ, ‖polarDensity Γ θ‖ ≤ 1 :=
+    (ae_polarLaw_norm_polarDensity_eq_one Γ).mono fun θ hθ => hθ.le
+  have hsqrt : Real.sqrt N / N = 1 / Real.sqrt N := Real.sqrt_div_self'
+  calc ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x) ∂sampleLaw N (polarLaw Γ)
+      = ∫ θ, polarWeight Γ / N *
+          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
+            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
+              ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) :=
+        integral_congr_ae (Filter.Eventually.of_forall
+          (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN))
+    _ = polarWeight Γ / N * ∫ θ,
+          ‖∑ j, polarDensity Γ (θ j) • ridgeAtom hK (continuous_ofReal_comp hβ) (θ j) -
+            (N : ℝ) • ∫ θ', polarDensity Γ θ' • ridgeAtom hK (continuous_ofReal_comp hβ) θ'
+              ∂polarLaw Γ‖
+          ∂sampleLaw N (polarLaw Γ) := integral_const_mul _ _
+    _ ≤ polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+          Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ))) :=
+        mul_le_mul_of_nonneg_left
+          (integral_norm_sum_smul_ridgeAtom_sub_le hK hβ (polarLaw Γ) measurable_id hh hh1 hM N)
+          (div_nonneg (polarWeight_nonneg Γ) (Nat.cast_nonneg N))
+    _ = 8 * polarWeight Γ / Real.sqrt N *
+          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
+        rw [secondMoment]
+        calc polarWeight Γ / N * (8 * Real.sqrt N * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)))
+            = 8 * polarWeight Γ * (|β 0| + L * compactRadius K *
+                Real.sqrt (∫ θ, (‖θ.1‖ ^ 2 + |θ.2| ^ 2) ∂polarLaw Γ)) * (Real.sqrt N / N) := by
+              ring
+          _ = _ := by rw [hsqrt]; ring
+
+end ScalarBarron
+
 end OperatorRidgelet

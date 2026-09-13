@@ -756,7 +756,8 @@ theorem ex_operator_layer_i_e (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H
       hL.stronglyMeasurable_layerWeight φ, hL.integrable_layerWeight φ⟩
   haveI := hW.isFiniteMeasure_layerMeasure_variation
   obtain ⟨hM, hMb⟩ := hW.polarLaw_moment
-  have h := thm_lipschitz_barron_i hβ (layerMeasure m a (layerWeight b φ)) hM hK hn
+  have h := integral_compactSupNorm_polarSampledNetwork_sub_le hβ
+    (layerMeasure m a (layerWeight b φ)) hM hK hn
   have heq : layerObservable m a b β φ = operatorLayer m a (layerWeight b φ) β := by
     funext x
     exact hL.layerObservable_eq_integral_inner hβ.continuous φ x

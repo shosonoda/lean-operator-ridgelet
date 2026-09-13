@@ -52,6 +52,8 @@ import OperatorRidgelet.Examples.SliceCoefficient
 import OperatorRidgelet.Examples.SliceCoefficientVec
 import OperatorRidgelet.Examples.GaussianQuadratic
 import OperatorRidgelet.ToMathlib.CharFunCoordinate
+import OperatorRidgelet.ToMathlib.RealInnerDual
+import OperatorRidgelet.ToMathlib.SqrtSumSq
 import OperatorRidgelet.ToMathlib.FourierCompactSupportDecay
 import OperatorRidgelet.ToMathlib.EntirePowerSeries
 import OperatorRidgelet.ToMathlib.FourierDilation

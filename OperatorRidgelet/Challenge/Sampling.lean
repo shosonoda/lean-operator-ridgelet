@@ -35,12 +35,52 @@ theorem thm_general_rademacher [MeasurableSpace H] [BorelSpace H] (β : ℝ → 
       2 * polarWeight Γ * rademacherComplexity N K (polarLaw Γ) β (polarDensity Γ) := by
   sorry
 
-/-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  For real
-globally Lipschitz `β` and `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`, the sampled network of the polar
-decomposition of `Γ` satisfies
-`𝔼‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
-theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
-    (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound.  For a
+finite-variation `Y`-valued measure `Γ = h|Γ|` with `V = ‖Γ‖_TV` and `p = |Γ|/V`, a real
+globally Lipschitz `β`, and `M₂² = ∫ (‖a‖² + |c|²) dp < ∞`, the sampled network
+`eq:polar-network` with `Y`-valued weights satisfies
+`𝔼‖f_N − f‖_{C(K;Y)} ≤ (V/√N)(4|β(0)| + 8 Lip(β) R_K M₂)`.  The manuscript's conventions
+`V = 0` (the zero network) and `K = ∅` (zero error) are instances of the statement. -/
+theorem thm_lipschitz_barron_i {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
+    ∫ θ, compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x)
+        ∂sampleLaw N (polarLaw Γ) ≤
+      polarWeight Γ / Real.sqrt N *
+        (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+          Real.sqrt (secondMoment (polarLaw Γ))) := by
+  sorry
+
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound.  At
+least one deterministic width-`N` realization satisfies the same bound
+`‖f_N − f‖_{C(K;Y)} ≤ (V/√N)(4|β(0)| + 8 Lip(β) R_K M₂)`. -/
+theorem thm_lipschitz_barron_ii {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
+    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
+    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
+    ∃ θ : Fin N → H × ℝ,
+      compactSupNorm K (fun x =>
+          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
+            integralNetwork (fun t => (β t : ℂ)) Γ x) ≤
+        polarWeight Γ / Real.sqrt N *
+          (4 * |β 0| + 8 * (L : ℝ) * compactRadius K *
+            Real.sqrt (secondMoment (polarLaw Γ))) := by
+  sorry
+
+/-- **Theorem [thm:lipschitz-barron]** Dimension-free uniform Hilbert-valued Barron bound, in the
+weaker form `𝔼‖f_N − f‖_{C(K;Y)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)` of the second displayed
+inequality. -/
+theorem thm_lipschitz_barron_iii {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
+    [CompleteSpace Y] [SecondCountableTopology Y] [MeasurableSpace H] [BorelSpace H]
+    [SecondCountableTopology H] {β : ℝ → ℝ} {L : ℝ≥0}
+    (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
     (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
     ∫ θ, compactSupNorm K (fun x =>
@@ -49,21 +89,6 @@ theorem thm_lipschitz_barron_i [MeasurableSpace H] [BorelSpace H] {β : ℝ → 
         ∂sampleLaw N (polarLaw Γ) ≤
       8 * polarWeight Γ / Real.sqrt N *
         (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
-  sorry
-
-/-- **Theorem [thm:lipschitz-barron]** Dimension-free compact-open Barron bound.  At least one
-deterministic width-`N` realization satisfies the same bound
-`‖f_N − f‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
-theorem thm_lipschitz_barron_ii [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0}
-    (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]
-    (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ)) {K : Set H}
-    (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
-    ∃ θ : Fin N → H × ℝ,
-      compactSupNorm K (fun x =>
-          polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
-            integralNetwork (fun t => (β t : ℂ)) Γ x) ≤
-        8 * polarWeight Γ / Real.sqrt N *
-          (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
   sorry
 
 /-! ## Section 6: finite variation from the spectral density -/
