@@ -2,6 +2,7 @@ import Verso
 import VersoManual
 import VersoBlueprint
 import OperatorRidgelet.Paper.Tempered
+import OperatorRidgelet.Paper.Sobolev
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -186,4 +187,33 @@ integrable for $`s-p>1/2`. Weighted Cauchy--Schwarz against
 {bpref "lem:sobolev-tools"}[] gives absolute convergence and the bound, the reflection isometry
 turning $`\|\gamma(-\cdot)\|` into $`\|h\|_{H^s_\omega}`. The translation formula is the change
 of variables $`b=u-t`.
+:::
+
+:::theorem "thm:weak-sobolev-synthesis" (lean := "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v") (uses := "lem:sobolev-tools, lem:sobolev-pairing, def:admissible-filter, aux:conventions")
+Let $`\nu` be homogeneous of degree $`\alpha>0`, $`\rho\in\mathcal S(\mathbb R)` with
+$`0<C^{(\alpha)}_\rho<\infty`, $`\sigma` continuous with $`|\sigma(t)|\le
+C_\sigma(1+|t|)^p` and $`s>p+1/2`, and $`g:H\to Y` strongly measurable. Suppose the rays
+$`h_a(\omega)=\widehat\rho(-\omega)g(\omega a)` lie in $`H^s_\omega(\mathbb R;Y)` with a jointly
+measurable coefficient and $`\mathfrak B_s(\rho,g)=\int(1+\|a\|)^s\|h_a\|_{H^s_\omega}\,\mathrm
+d\nu<\infty`, and that $`q_{\alpha,\rho}(\omega)=\widehat\rho(-\omega)|\omega|^{-\alpha}` lies in
+$`H^s_\omega(\mathbb R)`. Then for $`0\le r<s-1/2`
+$`\int(1+\|a\|+|b|)^r\|\gamma_g\|\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)`, the coefficient measure
+is finite, and the ordinary absolutely convergent synthesis satisfies
+$`S_\sigma[\Gamma_g](x)=C^{(\alpha)}_{\sigma,\rho}f_g(x)` with
+$`C^{(\alpha)}_{\sigma,\rho}=(2\pi)^{-1}\langle\widehat\sigma,q_{\alpha,\rho}\rangle`, uniformly
+absolutely on bounded input sets and continuously in $`x`.
+:::
+
+:::proof "thm:weak-sobolev-synthesis"
+The moments are the weighted $`L^1` estimate of {bpref "lem:sobolev-tools"}[] on each ray,
+$`1+\|a\|+|b|\le\sqrt2(1+\|a\|)\langle b\rangle`, and Tonelli; the case $`r=0` gives the finite
+variation, and the growth bound of $`\sigma` with $`r=p` gives the absolute convergence and the
+majorant. For the identity, the bias translation formula of {bpref "lem:sobolev-pairing"}[] and
+Fubini turn the synthesis into $`\int\sigma(t)\Psi(t)\,\mathrm dt` with
+$`\Psi(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu`. Fubini again computes the profile
+of the integrable $`\Psi`, which homogeneity identifies with
+$`\widehat\rho(\omega)|\omega|^{-\alpha}f_g(x)` off the origin, hence everywhere by continuity;
+the $`L^1` uniqueness of the profile then identifies $`\Psi` with
+$`\check q_{\alpha,\rho}(-\cdot)f_g(x)`, and the pairing gives the constant. Continuity is
+dominated convergence with the majorant.
 :::

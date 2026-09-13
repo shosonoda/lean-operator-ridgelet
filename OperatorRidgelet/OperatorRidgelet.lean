@@ -4,6 +4,9 @@ import OperatorRidgelet.RankOneLift
 import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.Sobolev.Defs
 import OperatorRidgelet.Sobolev.Basic
+import OperatorRidgelet.Sobolev.Pairing
+import OperatorRidgelet.Sobolev.Uniqueness
+import OperatorRidgelet.Sobolev.Synthesis
 import OperatorRidgelet.ToFoML.ActivationContraction
 import OperatorRidgelet.ToFoML.BoundedDifference
 import OperatorRidgelet.ToFoML.ProbabilisticMethod

@@ -223,6 +223,44 @@ theorem MemRaySobolev.aestronglyMeasurable {s : ℝ} {γ : ℝ → Y} (hγ : Mem
   exact (hw.aestronglyMeasurable.smul (MemLp.aestronglyMeasurable hγ)).congr
     (Filter.Eventually.of_forall key)
 
+/-- The weighted coefficient of a Sobolev ray is integrable against `⟨t⟩^r` for
+`0 ≤ r < s - 1/2`. -/
+theorem integrable_bracket_rpow_norm {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s) {γ : ℝ → Y}
+    (hγ : MemRaySobolev s γ) :
+    Integrable (fun t : ℝ => (bracket t ^ r : ℝ) * ‖γ t‖) volume := by
+  have hsr : 1 / 2 < s - r := by linarith
+  have hfcont : Continuous fun t : ℝ => (bracket t ^ (-(s - r)) : ℝ) :=
+    continuous_bracket.rpow_const fun t => Or.inl (bracket_pos t).ne'
+  have hw := integrable_one_add_sq_rpow_neg (a := s - r) hsr
+  have hf2 : MemLp (fun t : ℝ => (bracket t ^ (-(s - r)) : ℝ)) 2 volume := by
+    refine (memLp_two_iff_integrable_sq hfcont.aestronglyMeasurable).2 ?_
+    refine hw.congr (Filter.Eventually.of_forall fun t => ?_)
+    simp only
+    rw [← bracket_rpow_sq]
+  have hgeq : ∀ t : ℝ, ‖(bracket t ^ s : ℝ) • γ t‖ = (bracket t ^ s : ℝ) * ‖γ t‖ := by
+    intro t
+    rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (bracket_pos t).le s)]
+  have hg2 : MemLp (fun t : ℝ => (bracket t ^ s : ℝ) * ‖γ t‖) 2 volume :=
+    (memLp_congr_ae (Filter.Eventually.of_forall hgeq)).1 hγ.norm
+  have hprod := hg2.mul (𝕜 := ℝ) (p := 2) (q := 2) (r := 1) hf2
+  refine (memLp_one_iff_integrable.1 ?_)
+  refine (memLp_congr_ae (Filter.Eventually.of_forall fun t => ?_)).1 hprod
+  show (bracket t ^ (-(s - r)) : ℝ) * ((bracket t ^ s : ℝ) * ‖γ t‖) = _
+  rw [← mul_assoc, ← bracket_rpow_add]
+  ring_nf
+
+/-- A Sobolev ray of order `s > 1/2` is integrable. -/
+theorem integrable_of_memRaySobolev {s : ℝ} (hs : 1 / 2 < s) {γ : ℝ → Y}
+    (hγ : MemRaySobolev s γ) : Integrable γ volume := by
+  have h := integrable_bracket_rpow_norm (r := 0) le_rfl (by linarith) hγ
+  refine ⟨MemRaySobolev.aestronglyMeasurable hγ, ?_⟩
+  rw [hasFiniteIntegral_iff_enorm]
+  have hfin := h.hasFiniteIntegral
+  rw [hasFiniteIntegral_iff_enorm] at hfin
+  refine lt_of_le_of_lt (le_of_eq (lintegral_congr fun t => ?_)) hfin
+  rw [Real.rpow_zero, one_mul, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm,
+    Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _)]
+
 /-- Translation of the coefficient stays in the Sobolev class. -/
 theorem memRaySobolev_translate {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (hγ : MemRaySobolev s γ)
     (u : ℝ) : MemRaySobolev s (fun t => γ (t + u)) := by

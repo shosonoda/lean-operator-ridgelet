@@ -408,9 +408,14 @@
       "number": "5.6",
       "page": "15",
       "title": "Absolute synthesis from weak Sobolev regularity along rays",
-      "lean": [],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under Sobolev regularity of order s along rays: needs s > p + 1/2 for an activation of growth p, gives moments of every order r < s - 1/2 (so s > 5/2 for the second moment used by thm:lipschitz-barron). Not formalized.",
-      "revision": "new"
+      "lean": [
+        "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i",
+        "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii",
+        "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii",
+        "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv",
+        "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v"
+      ],
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under Sobolev regularity of order s along rays. Formalized in the pair formulation of OperatorRidgelet.Sobolev.Defs: the hypothesis that the classes h_a = ρ̂(-·)g(·a) lie in H^s_ω and form a strongly measurable map into it is rendered as a jointly measurable γ : H × ℝ → Y (hγm) whose rays satisfy MemRaySobolev s (γ(a,·)) and rayProfile (γ(a,·)) ω = ρ̂(-ω) • g(ω a) for ν-almost every a, so the manuscript's conclusion that a jointly measurable coefficient exists is part of the setting; 𝔅_s(ρ,g) is the lower integral ∫⁻ (1+‖a‖)^s ‖h_a‖_{H^s_ω} dν, assumed finite. Hypothesis 3 is MemRaySobolev s γq together with rayProfile γq ω = ρ̂(-ω)|ω|^{-α}, and the cross constant C^{(α)}_{σ,ρ} = (2π)⁻¹⟨σ̂, q_{α,ρ}⟩ is the Sobolev pairing sobolevPairing σ γq of lem:sobolev-pairing. i is eq:sobolev-moments for every 0 ≤ r < s - 1/2; ii is the finite variation of Γ_g; iii is eq:weak-sobolev-synthesis, stated as the Bochner integral of σ(⟪a,x⟫ - b) • γ(a,b) over ν ⊗ db — this theorem is written in the manuscript's bias convention, since its coefficient is defined by its own Fourier relation, and the library lemma OperatorRidgelet.integral_synthesis_eq_integralNetworkDensity rewrites it as integralNetworkDensity of the transported coefficient γ ∘ τ, τ(a,c) = (a,-c); iv is the uniform integrable majorant on a ball of inputs; v is the continuity of the synthesis. Only strong measurability of g is needed for iii, so the manuscript's L¹ ∩ L² hypothesis on g is not carried; the clause that γ_g lies in L²(ν ⊗ db) with ‖γ_g‖² = C^{(α)}_ρ ‖g‖²_{L²(ν)} is not part of the Lean statement."
     },
     {
       "label": "def:rademacher-complexity",

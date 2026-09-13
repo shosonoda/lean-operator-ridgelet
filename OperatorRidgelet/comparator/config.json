@@ -356,7 +356,12 @@
     "OperatorRidgelet.Paper.thm_vector_valued_C_iv_completion",
     "OperatorRidgelet.Paper.thm_vector_valued_C_iv_d",
     "OperatorRidgelet.Paper.thm_vector_valued_C_iv_e",
-    "OperatorRidgelet.Paper.thm_vector_valued_C_iv_f"
+    "OperatorRidgelet.Paper.thm_vector_valued_C_iv_f",
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i",
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii",
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii",
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv",
+    "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v"
   ],
   "permitted_axioms": [
     "propext",

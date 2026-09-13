@@ -58,11 +58,18 @@ They come from the manuscript's `supp.tex`, whose results were proved by hand bu
 
 | Item | Label | Source in `supp.tex` | Depends on | Status |
 |---|---|---|---|---|
-| 5.6 | `thm:weak-sobolev-synthesis` | `supp:thm:weak-sobolev-synthesis` | C.3, C.4 | outstanding |
-| C.3 | `lem:sobolev-tools` | `supp:lem:sobolev-tools` | — | outstanding |
-| C.4 | `lem:sobolev-pairing` | `supp:lem:sobolev-pairing` | C.3 | outstanding |
+| 5.6 | `thm:weak-sobolev-synthesis` | `supp:thm:weak-sobolev-synthesis` | C.3, C.4 | **done** |
+| C.3 | `lem:sobolev-tools` | `supp:lem:sobolev-tools` | — | **done** |
+| C.4 | `lem:sobolev-pairing` | `supp:lem:sobolev-pairing` | C.3 | **done** |
 | D.2 | `lem:two-coordinate-comparison` | `supp:lem:supp-two-coordinate-comparison` | — | **done** |
 | I.3 | `prop:nonbandpass-sobolev` | `supp:prop:nonbandpass-sobolev` | 5.6 | outstanding |
+
+`prop:nonbandpass-sobolev` (I.3) is what remains.  It needs the Schwartz filter with
+`ρ̂(ω) = ω^{2k}e^{-ω²}` (the vendored Hermite–Gaussian tools should supply it), the membership
+`q_{α,ρ} ∈ H^s_ω` for `2k > α + 2s - 1/2` — that is, a weighted `L²` bound on the inverse
+transform of `|ω|^{δ}e^{-ω²}`, which the manuscript obtains from `H^m ⊆ H^s` and integration by
+parts on the two half-lines — the Gaussian ray hypotheses, and the two Gamma-function
+reconstruction constants.
 
 `thm:weak-sobolev-synthesis` gives absolute synthesis for filters that need not be band pass: with
 Sobolev regularity of order `s` along rays it needs `s > p + 1/2` for an activation of growth `p`
@@ -117,9 +124,9 @@ Steps 1 and 2 of the work list below are done and verified by comparator.
   (the norm as a real inner product against the unit ball) and `SqrtSumSq.lean` (the `ℓ²`
   triangle inequality).
 
-Outstanding: the Sobolev line (C.3, C.4, 5.6, I.3) and the bias convention.
+The Sobolev line is then done except for `prop:nonbandpass-sobolev` (I.3).
 
-### Started: the Sobolev line
+### The Sobolev line
 
 `OperatorRidgelet/Sobolev/` holds the coefficient-side foundation of Appendix C, with no
 manuscript item claimed yet.
@@ -129,19 +136,31 @@ manuscript item claimed yet.
   inverse Fourier transform is `γ`, the profile `rayProfile γ = γ̂` in the angular convention,
   and the constants `A_{s,r}` and `b_{σ,s}`.  For `s > 1/2` the coefficient is integrable, so
   the profile is an ordinary Fourier integral and no `L²` extension of the transform is needed.
-* `Basic.lean`: of Lemma `lem:sobolev-tools` (C.3), the weighted inverse Fourier estimate
-  `∫ ⟨t⟩^r ‖γ‖ ≤ A_{s,r} ‖h‖_{H^s_ω}` for `0 ≤ r < s - 1/2` (`integral_bracket_rpow_norm_le`),
-  the reflection isometry with its profile identity, and the modulation bound
-  `‖M_u h‖ ≤ (1+|u|)^s ‖h‖` with its profile identity.  Outstanding in C.3: the joint
-  continuity of `(u, h) ↦ M_u h`, which reduces to strong continuity of translation in the
-  weighted `L²` space (Mathlib's `Lp.compMeasurePreserving_continuous` plus a dominated
-  convergence step for the multiplier `(⟨t⟩/⟨t+u⟩)^s`).
+* `Basic.lean`: all four clauses of `lem:sobolev-tools` (C.3) — the weighted inverse Fourier
+  estimate, the reflection isometry, the modulation bound, and the joint continuity of
+  `(u, h) ↦ M_u h`, which is reduced to the strong continuity of translation in `L²`
+  (`ToMathlib/L2Translation.lean`, from Mathlib's continuous `ℝᵈᵃᵃ` action on `Lp`) and a
+  dominated convergence step for the multiplier `(⟨t⟩/⟨t+u⟩)^s`.
+* `Pairing.lean`: `lem:sobolev-pairing` (C.4) — finiteness of `b_{σ,s}`, absolute convergence
+  with the bound `(2π)^{-1/2} b_{σ,s} ‖h‖`, and the bias translation formula.
+* `Uniqueness.lean`: `L¹` uniqueness of the profile (the multiplication formula, the fact that
+  every real test function is a profile, and Mathlib's
+  `ae_eq_of_integral_contDiff_smul_eq`).  This replaces the manuscript's `H^s`-valued Bochner
+  integral: the direction average `Ψ(t) = ∫ γ(a, ⟪a,x⟫ - t) dν` is identified with
+  `q̌_{α,ρ}(-t) f_g(x)` by comparing profiles, not by constructing `Φ_x` in `H^s`.
+* `Synthesis.lean`: `thm:weak-sobolev-synthesis` (5.6) — the moment bound, the finite variation,
+  the synthesis identity, the uniform majorant on balls, and the continuity of the synthesis.
+  The identity is proved by the bias translation formula, two Fubini steps, the profile of `Ψ`
+  through homogeneity, and `L¹` uniqueness.  The `L²(ν ⊗ db)` clause of the manuscript's
+  conclusion (with value `C^{(α)}_ρ ‖g‖²`) is not part of the Lean statement; `paper.json`
+  records this.
 
-Then C.4 needs the bounded pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` and its translation formula,
-and 5.6 needs, beyond those, the Bochner integral of the profiles over directions, the Fubini
-and homogeneity identification of `Φ_x` with `q_{α,ρ} f_g(x)`, and the moment bound.  The new
-statements should keep the Lean bias convention `⟨a,x⟩ + c` and record the transport `τ` in
-`paper.json`, as every other bias-dependent item does.
+**The bias convention.**  The existing items keep the Lean convention `⟨a,x⟩ + c`, as the plan's
+Section 10 suggests; `paper.json` `manuscript.conventions` records the transport `τ(a,c) =
+(a,-c)`.  Theorem 5.6 is the exception: its coefficient is defined by its own Fourier relation,
+so it is stated in the manuscript's convention `σ(⟪a,x⟫ - b)`, and
+`integral_synthesis_eq_integralNetworkDensity` is the wrapper that rewrites it as the library's
+`integralNetworkDensity` of the transported coefficient `γ ∘ τ`.
 
 ## Suggested order of work
 

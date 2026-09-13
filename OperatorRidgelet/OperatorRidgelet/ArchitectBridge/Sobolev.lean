@@ -36,3 +36,27 @@ attribute [blueprint "lem:sobolev-pairing-ii"
 attribute [blueprint "lem:sobolev-pairing-iii"
   (statement := /-- $\int\sigma(u-b)\gamma(b)\,\mathrm db=L_\sigma^Y(M_uh)$. -/)]
   OperatorRidgelet.Paper.lem_sobolev_pairing_iii
+
+attribute [blueprint "thm:weak-sobolev-synthesis-i"
+  (statement := /-- For $0\le r<s-1/2$, $\int(1+\|a\|+|b|)^r\|\gamma_g(a,b)\|\,\mathrm
+    d\nu\,\mathrm db\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)$. -/)]
+  OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i
+
+attribute [blueprint "thm:weak-sobolev-synthesis-ii"
+  (statement := /-- The coefficient measure $\Gamma_g=\gamma_g(\nu\otimes\mathrm db)$ is
+    finite. -/)]
+  OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii
+
+attribute [blueprint "thm:weak-sobolev-synthesis-iii"
+  (statement := /-- $S_\sigma[\Gamma_g](x)=C^{(\alpha)}_{\sigma,\rho}f_g(x)$, with the cross
+    constant given by the Sobolev pairing. -/)]
+  OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii
+
+attribute [blueprint "thm:weak-sobolev-synthesis-iv"
+  (statement := /-- The synthesis integrand has one integrable majorant on each ball of
+    inputs. -/)]
+  OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv
+
+attribute [blueprint "thm:weak-sobolev-synthesis-v"
+  (statement := /-- The synthesis is continuous. -/)]
+  OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v
