@@ -119,21 +119,26 @@ reduction gives no information on the parameters; the constructive statement is
 :::
 
 :::lemma_ "lem:measure-transport" (lean := "OperatorRidgelet.Paper.lem_measure_transport_i, OperatorRidgelet.Paper.lem_measure_transport_ii, OperatorRidgelet.Paper.lem_measure_transport_iii, OperatorRidgelet.Paper.lem_measure_transport_iv, OperatorRidgelet.Paper.lem_measure_transport_v") (uses := "aux:operator-neuron, lem:rank-one-lift, def:integral-network")
-Let $`\beta` be real and globally Lipschitz, $`\psi\ne0`, and $`\Gamma_{\mathrm{op}}` a finite
-complex Borel measure on $`\mathcal L_2(H)\times H` with
-$`\int(1+\|A\|_{\mathcal L_2}+\|b\|)\,\mathrm d|\Gamma_{\mathrm{op}}|<\infty`, and normalize
-$`\langle\ell,z\rangle=1`. Then
-$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}=S_\beta[(\pi_\psi)_\#\Gamma_{\mathrm{op}}]` (i),
-$`|(\pi_\psi)_\#\Gamma_{\mathrm{op}}|\le(\pi_\psi)_\#|\Gamma_{\mathrm{op}}|` (ii), and for
+Each part carries only the hypotheses it needs. For every $`\psi` and every finite complex
+Borel measure $`\Gamma_{\mathrm{op}}` on $`\mathcal L_2(H)\times H`,
+$`|(\pi_\psi)_\#\Gamma_{\mathrm{op}}|\le(\pi_\psi)_\#|\Gamma_{\mathrm{op}}|` (ii). If moreover
+$`\beta` is real and globally Lipschitz, $`\langle\ell,z\rangle=1`, and
+$`\int(1+\|A\|_{\mathcal L_2}+\|b\|)\,\mathrm d|\Gamma_{\mathrm{op}}|<\infty`, then
+$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}=S_\beta[(\pi_\psi)_\#\Gamma_{\mathrm{op}}]` (i) and, for
 compact $`K` with $`r_K=\sup_K\|x\|`,
 $`\|S_{\mathrm{op}}\Gamma_{\mathrm{op}}\|_{C(K)}\le\int[|\beta(0)|+\operatorname{Lip}(\beta)\|\psi\|(r_K\|A\|_{\mathcal L_2}+\|b\|)]\,\mathrm d|\Gamma_{\mathrm{op}}|`
-(iii). Conversely $`(\pi_\psi)_\#(J_\psi)_\#\Gamma=\Gamma` (iv) and
-$`S_{\mathrm{op}}(J_\psi)_\#\Gamma=S_\beta[\Gamma]` (v).
+(iii); $`\psi\ne0` is not needed for any of these. Conversely, for $`\psi\ne0` and
+$`\langle\ell,z\rangle=1`, $`(\pi_\psi)_\#(J_\psi)_\#\Gamma=\Gamma` (iv) and
+$`S_{\mathrm{op}}(J_\psi)_\#\Gamma=S_\beta[\Gamma]` (v) for every activation $`\beta` and every
+finite complex Borel measure $`\Gamma` on $`H\times\mathbb R`, with no Lipschitz and no moment
+condition.
 :::
 
 :::proof "lem:measure-transport"
-The atom identity is the rank-one reduction, $`\|A^*\psi\|\le\|A\|_{\mathcal L_2}\|\psi\|`
-supplies the integrable envelope, the change of variables for finite complex measures proves
-the synthesis identity, the variation inequality is the definition of the variation as a
-supremum over partitions, and $`\pi_\psi\circ J_\psi=\mathrm{id}`.
+The variation inequality is the definition of the variation as a supremum over partitions,
+applied to the preimages of a partition. The atom identity is the rank-one reduction,
+$`\|A^*\psi\|\le\|A\|_{\mathcal L_2}\|\psi\|` supplies the integrable envelope, and the change
+of variables for finite complex measures proves the synthesis identity. Finally
+$`\pi_\psi\circ J_\psi=\mathrm{id}`, and $`J_\psi` is a homeomorphism onto its closed range, so
+the last change of variables holds atomwise.
 :::

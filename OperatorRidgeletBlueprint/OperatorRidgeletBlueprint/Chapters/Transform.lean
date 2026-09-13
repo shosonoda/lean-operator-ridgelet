@@ -108,11 +108,12 @@ $`\omega\ne0`.
 
 :::definition "def:admissible-filter" (lean := "OperatorRidgelet.IsAdmissible, OperatorRidgelet.admissibilityConst, OperatorRidgelet.IsBandPass, OperatorRidgelet.crossAdmissibilityConst, OperatorRidgelet.Paper.def_admissible_filter") (uses := "aux:conventions")
 A real $`\rho\in\mathcal S(\mathbb R)` is $`\alpha`-admissible if
-$`0<C_\rho^{(\alpha)}=\frac1{2\pi}\int_{\mathbb R}|\widehat\rho(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega<\infty`.
+$`0<(\!(\rho,\rho)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}|\widehat\rho(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega<\infty`.
 It is a band-pass filter if moreover $`\widehat\rho\in C_c^\infty(\mathbb R\setminus\{0\})`
 (and $`\rho\ne0`), in which case it is $`\alpha`-admissible for every $`\alpha>0`. For two
 admissible filters,
-$`C_{\rho_1,\rho_2}^{(\alpha)}=\frac1{2\pi}\int_{\mathbb R}\widehat\rho_1(\omega)\overline{\widehat\rho_2(\omega)}|\omega|^{-\alpha}\,\mathrm d\omega`.
+$`(\!(\rho_1,\rho_2)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}\widehat\rho_1(\omega)\overline{\widehat\rho_2(\omega)}|\omega|^{-\alpha}\,\mathrm d\omega`;
+self-admissibility is the case $`\rho_1=\rho_2=\rho` of this pairing, since $`\rho` is real.
 :::
 
 :::definition "def:ridgelet-analysis" (lean := "OperatorRidgelet.ridgelet, OperatorRidgelet.parameterMeasure, OperatorRidgelet.gaussFourier") (uses := "aux:centered-gaussian, aux:gaussian-mixture, aux:conventions")
@@ -154,7 +155,7 @@ the integral converges absolutely for every $`c`. This formula is the theorem pa
 :::lemma_ "lem:coefficient-isometry" (lean := "OperatorRidgelet.Paper.lem_coefficient_isometry_i, OperatorRidgelet.Paper.lem_coefficient_isometry_ii, OperatorRidgelet.Paper.lem_coefficient_isometry_iii, OperatorRidgelet.Paper.lem_coefficient_isometry_iv, OperatorRidgelet.Paper.def_spectral_coefficient, OperatorRidgelet.Paper.lem_coefficient_isometry_v") (uses := "def:spectral-coefficient, lem:homogeneous-mixture")
 $`W_\rho:L^2(\nu_\alpha)\to L^2(\lambda_\alpha)` is well defined (i), independent of the Borel
 representative of $`G` (ii), and
-$`\|W_\rho G\|_{L^2(\lambda_\alpha)}^2=C_\rho^{(\alpha)}\|G\|_{L^2(\nu_\alpha)}^2` (iii). If
+$`\|W_\rho G\|_{L^2(\lambda_\alpha)}^2=(\!(\rho,\rho)\!)_\alpha\|G\|_{L^2(\nu_\alpha)}^2` (iii). If
 $`G\in L^1(\nu_\alpha)`, then $`\omega\mapsto G(-\omega a)` is integrable on compact subsets of
 $`\mathbb R\setminus\{0\}` for $`\nu_\alpha`-almost every $`a` (iv), and the explicit formula
 for $`\gamma_G` holds already for $`G\in L^2(\nu_\alpha)`, with absolute convergence on
@@ -165,7 +166,7 @@ $`R_\rho f=W_\rho\,\mathcal G_Qf`.
 :::proof "lem:coefficient-isometry"
 $`(a,\omega)\mapsto G(-\omega a)` is Borel, and the homogeneous change of variables with
 Tonelli gives
-$`\frac1{2\pi}\int\int|\widehat\rho(\omega)|^2|G(-\omega a)|^2\,\nu_\alpha(\mathrm da)\,\mathrm d\omega=C_\rho^{(\alpha)}\|G\|^2_{L^2(\nu_\alpha)}`;
+$`\frac1{2\pi}\int\int|\widehat\rho(\omega)|^2|G(-\omega a)|^2\,\nu_\alpha(\mathrm da)\,\mathrm d\omega=(\!(\rho,\rho)\!)_\alpha\|G\|^2_{L^2(\nu_\alpha)}`;
 the same computation with $`|G|` on a compact set gives local integrability, and the inverse
 Fourier transform in $`\omega` for almost every $`a` gives the formula.
 :::
@@ -187,8 +188,8 @@ measurability. Fiberwise uniqueness and Fubini prove independence of the represe
 :::lemma_ "lem:coefficient-adjoint" (lean := "OperatorRidgelet.Paper.lem_coefficient_adjoint_i, OperatorRidgelet.Paper.lem_coefficient_adjoint_ii, OperatorRidgelet.Paper.lem_coefficient_adjoint_iii") (uses := "lem:partial-fourier-l2, lem:coefficient-isometry")
 For an admissible Schwartz filter and a sigma-finite homogeneous direction measure,
 the backprojection is $`\Lambda_\rho=W_\rho^*`. It satisfies
-$`\Lambda_\rho W_\rho=C_\rho^{(\alpha)}\mathrm{Id}` and
-$`\|\Lambda_\rho\gamma\|_2\le\sqrt{C_\rho^{(\alpha)}}\|\gamma\|_2`.
+$`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` and
+$`\|\Lambda_\rho\gamma\|_2\le\sqrt{(\!(\rho,\rho)\!)_\alpha}\|\gamma\|_2`.
 Its ray formula is
 $`\Lambda_\rho\gamma(\xi)=(2\pi)^{-1}\int\overline{\widehat\rho(\omega)}\widehat\gamma(-\xi/\omega,\omega)|\omega|^{-\alpha}\,\mathrm d\omega`;
 this integral is absolutely convergent for almost every $`\xi` and is independent of the
@@ -269,7 +270,7 @@ the Gaussian case. Then the Fourier-slice identity, {bpref "thm:A"}[], {bpref "t
 {bpref "thm:C"}[] (i)–(iii) remain valid with $`(\mu_Q,\nu_\alpha)` replaced by
 $`(\mu,\nu)`: for $`f\in\mathcal D_{\mu,\nu}` the transform lies in $`L^2(\lambda)` and
 satisfies the Plancherel identity, $`R_\rho` has a unique bounded extension of norm at most
-$`(C^{(\alpha)}_\rho)^{1/2}` (with equality when the core is nonzero), with closed range and
+$`((\!(\rho,\rho)\!)_\alpha)^{1/2}` (with equality when the core is nonzero), with closed range and
 $`R_\rho=W_\rho U`, and
 $`R_\rho f=0` implies $`f=0`. Moreover $`1\in\mathcal D_{\mu,\nu}` if and only if
 $`\int_H|\widehat\mu(\xi)|^2\nu(\mathrm d\xi)<\infty`. The abstract-weight versions of
@@ -292,10 +293,10 @@ full support with Fourier uniqueness gives injectivity; finally $`\mathcal G_\mu
 Let $`\alpha>0`. (i) For $`f,g\in\mathcal D_\alpha` and $`\alpha`-admissible
 $`\rho_1,\rho_2`, the transforms $`R_{\rho_1}f` and $`R_{\rho_2}g` belong to
 $`L^2(\lambda_\alpha)`, and
-$`\langle R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=C_{\rho_1,\rho_2}^{(\alpha)}\langle f,g\rangle_{\mathcal E_\alpha}`.
+$`\langle R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=(\!(\rho_1,\rho_2)\!)_\alpha\langle f,g\rangle_{\mathcal E_\alpha}`.
 (ii) An $`\alpha`-admissible $`\rho` determines a unique bounded extension
 $`R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)` with
-$`\|R_\rho f\|^2=C_\rho^{(\alpha)}\|f\|_{\mathcal E_\alpha}^2`; its range is closed, and
+$`\|R_\rho f\|^2=(\!(\rho,\rho)\!)_\alpha\|f\|_{\mathcal E_\alpha}^2`; its range is closed, and
 $`R_\rho=W_\rho U_\alpha`. (iii) If $`\rho` is $`\alpha`-admissible and
 $`f\in L^1(H,\mu_Q)`, then $`R_\rho f=0` $`\lambda_\alpha`-almost everywhere implies $`f=0`
 $`\mu_Q`-almost everywhere.
@@ -329,10 +330,10 @@ Let $`H=\mathbb R^m`, $`0<\alpha<m`, and let $`p` be a nondegenerate Gaussian de
 $`f\in L^2(p\,\mathrm dx)` with $`g=fp\in\mathcal S(\mathbb R^m)`, then $`f\in\mathcal D_\alpha`
 (i) and $`t_f=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g` (ii). For a band-pass $`\rho`, the
 synthesis $`S_\rho R_\rho f` is represented against $`p\,\mathrm dx` by
-$`C_\rho^{(\alpha)}t_f` (iii), so that, distributionally,
-$`f=\frac{p^{-1}}{k_{m,\alpha}C_\rho^{(\alpha)}}(-\Delta)^{(m-\alpha)/2}S_\rho R_\rho f` (iv).
+$`(\!(\rho,\rho)\!)_\alphat_f` (iii), so that, distributionally,
+$`f=\frac{p^{-1}}{k_{m,\alpha}(\!(\rho,\rho)\!)_\alpha}(-\Delta)^{(m-\alpha)/2}S_\rho R_\rho f` (iv).
 With Lebesgue direction measure and $`\alpha=m`, $`t_f=(2\pi)^mg` (v) and
-$`f=(2\pi)^{-m}(C_\rho^{(m)})^{-1}p^{-1}S_\rho R_\rho f` (vi).
+$`f=(2\pi)^{-m}((\!(\rho,\rho)\!)_m)^{-1}p^{-1}S_\rho R_\rho f` (vi).
 :::
 
 :::proof "cor:finite-backprojection"
@@ -342,7 +343,7 @@ identifies $`\int t_f\overline h\,p\,\mathrm dx` with $`\langle f,h\rangle_{\mat
 which is the frame-operator representation of {bpref "thm:C"}[] (iii).
 :::
 
-:::proposition "prop:dilation-obstruction" (lean := "OperatorRidgelet.Paper.prop_dilation_obstruction_i_a, OperatorRidgelet.Paper.prop_dilation_obstruction_i_b, OperatorRidgelet.Paper.prop_dilation_obstruction_i_c, OperatorRidgelet.Paper.prop_dilation_obstruction_i_d, OperatorRidgelet.Paper.prop_dilation_obstruction_ii") (uses := "aux:finite-dim, aux:centered-gaussian, roadmap:gaussian-strong-law")
+:::proposition "prop:dilation-obstruction" (lean := "OperatorRidgelet.Paper.prop_dilation_obstruction_i_a, OperatorRidgelet.Paper.prop_dilation_obstruction_i_b, OperatorRidgelet.Paper.prop_dilation_obstruction_i_c, OperatorRidgelet.Paper.prop_dilation_obstruction_i_d, OperatorRidgelet.Paper.prop_dilation_obstruction_ii") (uses := "aux:finite-dim, aux:centered-gaussian")
 Let $`\dim H=\infty` and let $`W` be injective, positive, self-adjoint, and trace class with
 eigenvectors $`e_j` and eigenvalues $`w_j>0`. The sets $`E_t`, $`t>0`, are Borel (i a) and
 pairwise disjoint (i b), $`\mathcal N(0,tW)(E_t)=1` (i c), and consequently a
@@ -375,7 +376,7 @@ $`\widehat\rho_{\mathrm{bp}}` is smooth (i), nonpositive (ii), nonzero (iii), an
 $`\{1\le|\omega|\le2\}` (iv), so $`\rho_{\mathrm{bp}}\in\mathcal S(\mathbb R)` is real (v)
 and even (vi) with the prescribed Fourier transform (vii), satisfies the band-pass condition
 (viii), and is $`\alpha`-admissible for every $`\alpha>0` (ix); multiplying by
-$`(C_{\rho_{\mathrm{bp}}}^{(\alpha)})^{-1/2}` normalizes the admissibility constant to one (x).
+$`((\!(\rho_{\mathrm{bp}},\rho_{\mathrm{bp}})\!)_\alpha)^{-1/2}` normalizes the admissibility constant to one (x).
 The sign makes it admissible for ReLU synthesis in the sense of {bpref "cor:relu-admissible"}[].
 :::
 
@@ -390,14 +391,14 @@ and below.
 $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}` is a Schwartz function (i) with
 $`\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}` (ii). It is
 $`\alpha`-admissible exactly for $`0<\alpha<5` (iii), with
-$`C_{\rho_{\mathrm{MH}}}^{(\alpha)}=\Gamma((5-\alpha)/2)` (iv) and
-$`C_{\rho_{\mathrm{MH}}}^{(1)}=1` (v). It is not band pass (vi), so {bpref "thm:B"}[] applies
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\Gamma((5-\alpha)/2)` (iv) and
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_1=1` (v). It is not band pass (vi), so {bpref "thm:B"}[] applies
 to it but {bpref "thm:A"}[] and {bpref "thm:tempered-reconstruction"}[] do not.
 :::
 
 :::proof "ex:mexican-hat"
 With $`g(t)=e^{-t^2/2}`, $`\rho_{\mathrm{MH}}=-g''` and the differentiation rule gives the
 Fourier transform; then
-$`C_{\rho_{\mathrm{MH}}}^{(\alpha)}=\int_{\mathbb R}|\omega|^{4-\alpha}e^{-\omega^2}\mathrm d\omega=\Gamma((5-\alpha)/2)`,
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\int_{\mathbb R}|\omega|^{4-\alpha}e^{-\omega^2}\mathrm d\omega=\Gamma((5-\alpha)/2)`,
 convergent at zero exactly when $`\alpha<5`.
 :::

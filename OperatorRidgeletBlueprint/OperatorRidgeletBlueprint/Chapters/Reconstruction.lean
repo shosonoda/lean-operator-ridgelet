@@ -106,7 +106,7 @@ Let $`\alpha>0`. Part (ii) assumes an $`\alpha`-admissible Schwartz filter $`\rh
 bounded with $`\|g_G\|_\infty\le\|G\|_{L^1(\nu_\alpha)}` and continuous,
 and $`g_G=0` only if $`G=0` $`\nu_\alpha`-almost everywhere. (ii) For
 $`G\in L^1(\nu_\alpha)\cap L^2(\nu_\alpha)` and every $`x`, the iterated integral
-$`\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=C_\rho^{(\alpha)}g_G(x)`
+$`\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=(\!(\rho,\rho)\!)_\alphag_G(x)`
 converges absolutely, and if $`\gamma_G\in L^1(\lambda_\alpha)` its left side is the integral
 network $`S_\rho[\gamma_G\lambda_\alpha](x)`. (iii) For a tempered $`\beta` that is a
 continuous function of polynomial growth and $`G` regular along rays, the integrand
@@ -183,7 +183,7 @@ of $`|\gamma||g||\rho(\langle a,x\rangle+c)|` is at most
 $`\|\gamma\|_{L^1}\|\rho\|_\infty\|g\|_{L^1(\mu_Q)}`, so Fubini applies; $`\rho` is real.
 :::
 
-:::lemma_ "lem:hermite-totality" (lean := "OperatorRidgelet.Paper.lem_hermite_totality_i, OperatorRidgelet.Paper.lem_hermite_totality_ii, OperatorRidgelet.Paper.lem_hermite_totality_iii, OperatorRidgelet.Paper.lem_hermite_totality_iv, OperatorRidgelet.Paper.lem_hermite_totality_v, OperatorRidgelet.Paper.lem_hermite_totality_vi") (uses := "aux:hermite, aux:centered-gaussian, roadmap:wick-totality")
+:::lemma_ "lem:hermite-totality" (lean := "OperatorRidgelet.Paper.lem_hermite_totality_i, OperatorRidgelet.Paper.lem_hermite_totality_ii, OperatorRidgelet.Paper.lem_hermite_totality_iii, OperatorRidgelet.Paper.lem_hermite_totality_iv, OperatorRidgelet.Paper.lem_hermite_totality_v, OperatorRidgelet.Paper.lem_hermite_totality_vi") (uses := "aux:hermite, aux:centered-gaussian")
 For $`f\in L^2(\mu_Q)` and $`\xi\ne0`, the function $`z\mapsto G_f(z\xi)` is entire (i),
 $`G_f(z\xi)=\sum_{n\ge0}\frac{(-iz\tau(\xi))^n}{n!}\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]`
 (ii) with locally uniform convergence (iii),
@@ -204,7 +204,7 @@ powers.
 :::
 
 :::proposition "prop:coefficient-projection" (lean := "OperatorRidgelet.Paper.prop_coefficient_projection_i, OperatorRidgelet.Paper.prop_coefficient_projection_ii, OperatorRidgelet.Paper.prop_coefficient_projection_iii, OperatorRidgelet.Paper.prop_coefficient_projection_iv, OperatorRidgelet.Paper.prop_coefficient_projection_v, OperatorRidgelet.Paper.prop_coefficient_projection_vi, OperatorRidgelet.Paper.prop_coefficient_projection_vii, OperatorRidgelet.Paper.prop_coefficient_projection_viii") (uses := "aux:backprojection, aux:frame-operator, lem:coefficient-isometry, lem:homogeneous-mixture, thm:B")
-Let $`\rho` be $`\alpha`-admissible with $`C=C_\rho^{(\alpha)}` and
+Let $`\rho` be $`\alpha`-admissible with $`C=(\!(\rho,\rho)\!)_\alpha` and
 $`\mathcal Y=L^2(\lambda_\alpha)`. The ray-average integral defining $`\Lambda_\rho\gamma`
 converges absolutely for $`\nu_\alpha`-almost every $`\xi` (i), is independent as an $`L^2`
 class of the jointly measurable Fourier representative (ii), and satisfies
@@ -231,39 +231,39 @@ $`(\operatorname{Ran}R_\rho)^\perp`.
 :::theorem "thm:C" (lean := "OperatorRidgelet.Paper.thm_C_i_a, OperatorRidgelet.Paper.thm_C_i_b, OperatorRidgelet.Paper.thm_C_i_c, OperatorRidgelet.Paper.thm_C_i_d, OperatorRidgelet.Paper.thm_C_ii_a, OperatorRidgelet.Paper.thm_C_ii_b, OperatorRidgelet.Paper.thm_C_iii_a, OperatorRidgelet.Paper.thm_C_iii_b, OperatorRidgelet.Paper.thm_C_iii_c, OperatorRidgelet.Paper.thm_C_iii_d, OperatorRidgelet.Paper.thm_C_iii_e, OperatorRidgelet.Paper.thm_C_iv_a, OperatorRidgelet.Paper.thm_C_iv_b, OperatorRidgelet.Paper.thm_C_iv_c, OperatorRidgelet.Paper.thm_C_iv_d, OperatorRidgelet.Paper.thm_C_iv_e, OperatorRidgelet.Paper.thm_C_iv_f, OperatorRidgelet.Paper.thm_C_iv_completion") (uses := "aux:frame-operator, aux:backprojection, aux:hermite, def:ray-regular, thm:B, lem:spectral-unitary, lem:fourier-slice, lem:homogeneous-mixture, lem:weak-equals-strong, lem:hermite-totality, prop:coefficient-projection")
 Let $`\alpha>0` and let $`\rho` be an $`\alpha`-admissible Schwartz filter. (i) The frame operator
 $`T_\alpha=U_\alpha'U_\alpha` equals the Riesz map $`J_\alpha`, an isometric bijection
-$`\mathcal E_\alpha\to\mathcal E_\alpha'`, and $`S_\rho R_\rho f=C_\rho^{(\alpha)}T_\alpha f`
+$`\mathcal E_\alpha\to\mathcal E_\alpha'`, and $`S_\rho R_\rho f=(\!(\rho,\rho)\!)_\alphaT_\alpha f`
 for $`f\in\mathcal E_\alpha`. (ii) For $`f\in\mathcal E_\alpha` and $`g\in\mathcal E_\alpha'`,
-$`f=(C_\rho^{(\alpha)})^{-1}T_\alpha^{-1}S_\rho R_\rho f` and
-$`g=(C_\rho^{(\alpha)})^{-1}S_\rho(R_\rho T_\alpha^{-1}g)`. (iii) If $`f\in\mathcal D_\alpha`
+$`f=((\!(\rho,\rho)\!)_\alpha)^{-1}T_\alpha^{-1}S_\rho R_\rho f` and
+$`g=((\!(\rho,\rho)\!)_\alpha)^{-1}S_\rho(R_\rho T_\alpha^{-1}g)`. (iii) If $`f\in\mathcal D_\alpha`
 and $`\mathcal G_Qf\in L^1(\nu_\alpha)`, then $`T_\alpha f` is represented by
 $`g_{\mathcal G_Qf}` against $`\mu_Q`; conversely, for $`G\in\mathcal K_\alpha`,
 $`R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G`, and when $`G\in L^1(\nu_\alpha)`, $`U_\alpha'G` is
 represented by $`g_G` and the second reconstruction formula is the spectral synthesis identity
 of {bpref "thm:A"}[] (ii). (iv) The backprojection $`\Lambda_\rho` is a bounded operator
-$`L^2(\lambda_\alpha)\to L^2(\nu_\alpha)` with $`\Lambda_\rho W_\rho=C_\rho^{(\alpha)}\mathrm{Id}`,
-and $`\Lambda_\rho R_\rho f=C_\rho^{(\alpha)}U_\alpha f` holds in $`L^2(\nu_\alpha)` for
+$`L^2(\lambda_\alpha)\to L^2(\nu_\alpha)` with $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}`,
+and $`\Lambda_\rho R_\rho f=(\!(\rho,\rho)\!)_\alphaU_\alpha f` holds in $`L^2(\nu_\alpha)` for
 every $`f\in\mathcal E_\alpha`. For a concrete core input, it holds pointwise with
 $`U_\alpha f=\mathcal G_Qf` when the continuous Fourier-slice representative is used.
 The remaining inversion step uses Gaussian input: the Hermite formula at $`\xi\ne0`
 recovers the Hermite coefficients of $`f` from $`\mathcal G_Qf`, these coefficients determine
-$`f` in $`L^2(\mu_Q)`, and $`f=\Delta_Q[(C_\rho^{(\alpha)})^{-1}\Lambda_\rho R_\rho f]`.
+$`f` in $`L^2(\mu_Q)`, and $`f=\Delta_Q[((\!(\rho,\rho)\!)_\alpha)^{-1}\Lambda_\rho R_\rho f]`.
 :::
 
 :::proof "thm:C"
 Since $`U_\alpha` is unitary onto $`\mathcal K_\alpha`,
 $`U_\alpha'U_\alpha f[g]=\langle U_\alpha f,U_\alpha g\rangle=\langle f,g\rangle_{\mathcal E_\alpha}`,
 the Riesz representation theorem makes $`J_\alpha` an isometric bijection, and the Plancherel
-identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=C_\rho^{(\alpha)}J_\alpha f[g]`;
+identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=(\!(\rho,\rho)\!)_\alphaJ_\alpha f[g]`;
 (ii) follows by applying $`T_\alpha^{-1}` or substituting $`f=T_\alpha^{-1}g`. Part (iii) is a
 Fubini computation with $`u=J_\alpha^{-1}U_\alpha'G` and {bpref "lem:weak-equals-strong"}[],
-and (iv) first uses $`\Lambda_\rho W_\rho=C_\rho^{(\alpha)}\mathrm{Id}` from
+and (iv) first uses $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` from
 {bpref "lem:coefficient-adjoint"}[] and $`R_\rho=W_\rho U_\alpha` on the completion.
 The pointwise core formula uses the continuous Fourier-slice representative; only the final
 Hermite inversion invokes {bpref "lem:hermite-totality"}[] and Gaussian input.
 :::
 
 :::corollary "cor:coefficient-stability" (lean := "OperatorRidgelet.Paper.cor_coefficient_stability_i, OperatorRidgelet.Paper.cor_coefficient_stability_ii, OperatorRidgelet.Paper.cor_coefficient_stability_iii, OperatorRidgelet.Paper.cor_coefficient_stability_iv") (uses := "thm:C, aux:frame-operator, lem:coefficient-isometry")
-Let $`\rho` be $`\alpha`-admissible, put $`C=C_\rho^{(\alpha)}>0`, and define
+Let $`\rho` be $`\alpha`-admissible, put $`C=(\!(\rho,\rho)\!)_\alpha>0`, and define
 $`D_\rho=C^{-1}T_\alpha^{-1}S_\rho`. Then $`D_\rho R_\rho=\mathrm{Id}` and
 $`\|D_\rho\|\le C^{-1/2}`. If $`f\in\mathcal E_\alpha`,
 $`\gamma_\delta\in L^2(\lambda_\alpha)`, and $`\|\gamma_\delta-R_\rho f\|_2\le\delta`, then

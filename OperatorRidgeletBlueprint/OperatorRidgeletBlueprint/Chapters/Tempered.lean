@@ -168,7 +168,10 @@ the coefficient side, and $`\langle t-u\rangle\le(1+|u|)\langle t\rangle` gives 
 bound. Joint continuity reduces, by that bound and the triangle inequality, to the strong
 continuity of translation, which follows from the strong continuity of translation in $`L^2`
 and dominated convergence for the multiplier
-$`(\langle t\rangle/\langle t+u\rangle)^s`.
+$`(\langle t\rangle/\langle t+u\rangle)^s`. Only the weighted $`L^1` bound and the reflection
+isometry are used for {bpref "thm:weak-sobolev-synthesis"}[]; the modulation bound and the
+joint continuity are the mapping properties of the alternative route through an
+$`H^s_\omega`-valued Bochner integral.
 :::
 
 :::lemma_ "lem:sobolev-pairing" (lean := "OperatorRidgelet.sobolevPairing, OperatorRidgelet.sobolevPairingConst, OperatorRidgelet.Paper.lem_sobolev_pairing_i, OperatorRidgelet.Paper.lem_sobolev_pairing_ii, OperatorRidgelet.Paper.lem_sobolev_pairing_iii") (uses := "lem:sobolev-tools")
@@ -190,32 +193,41 @@ of variables $`b=u-t`.
 :::
 
 :::theorem "thm:weak-sobolev-synthesis" (lean := "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v") (uses := "lem:sobolev-tools, lem:sobolev-pairing, def:admissible-filter, aux:conventions")
-Let $`\nu` be homogeneous of degree $`\alpha>0`, $`\rho\in\mathcal S(\mathbb R)` with
-$`0<C^{(\alpha)}_\rho<\infty`, $`\sigma` continuous with $`|\sigma(t)|\le
-C_\sigma(1+|t|)^p` and $`s>p+1/2`, and $`g:H\to Y` strongly measurable. Suppose the rays
-$`h_a(\omega)=\widehat\rho(-\omega)g(\omega a)` lie in $`H^s_\omega(\mathbb R;Y)` with a jointly
-measurable coefficient and $`\mathfrak B_s(\rho,g)=\int(1+\|a\|)^s\|h_a\|_{H^s_\omega}\,\mathrm
-d\nu<\infty`, and that $`q_{\alpha,\rho}(\omega)=\widehat\rho(-\omega)|\omega|^{-\alpha}` lies in
-$`H^s_\omega(\mathbb R)`. Then for $`0\le r<s-1/2`
-$`\int(1+\|a\|+|b|)^r\|\gamma_g\|\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)`, the coefficient measure
-is finite, and the ordinary absolutely convergent synthesis satisfies
-$`S_\sigma[\Gamma_g](x)=C^{(\alpha)}_{\sigma,\rho}f_g(x)` with
-$`C^{(\alpha)}_{\sigma,\rho}=(2\pi)^{-1}\langle\widehat\sigma,q_{\alpha,\rho}\rangle`, uniformly
-absolutely on bounded input sets and continuously in $`x`.
+Let $`\nu` be homogeneous of degree $`\alpha>0`, let $`\rho\in\mathcal S(\mathbb R)` be nonzero,
+let $`\sigma` be continuous with $`|\sigma(t)|\le C_\sigma(1+|t|)^p` and $`s>p+1/2`, and let
+$`g:H\to Y` be strongly measurable into a complex Banach space $`Y`. Suppose there is a jointly
+measurable $`\gamma_g` whose bias lines are the coefficients of the rays
+$`h_a(\omega)=\widehat\rho(-\omega)g(\omega a)\in H^s_\omega(\mathbb R;Y)`, that
+$`\mathfrak B_s(\rho,g)=\int(1+\|a\|)^s\|h_a\|_{H^s_\omega}\,\mathrm d\nu<\infty`, and that
+$`q_{\alpha,\rho}(\omega)=\widehat\rho(-\omega)|\omega|^{-\alpha}` lies in
+$`H^s_\omega(\mathbb R)`. Then $`g\in L^1(\nu;Y)`; for $`0\le r<s-1/2`
+$`\int(1+\|a\|+|b|)^r\|\gamma_g\|\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)`, so the coefficient
+measure is finite; the direction average
+$`\Psi_x(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu` is integrable and equals
+$`\check q_{\alpha,\rho}(-t)f_g(x)` almost everywhere; and the ordinary absolutely convergent
+synthesis satisfies
+$`S_\sigma[\Gamma_g](x)=(\!(\sigma,\rho)\!)_\alpha f_g(x)` with
+$`(\!(\sigma,\rho)\!)_\alpha=(2\pi)^{-1}\langle\widehat\sigma,q_{\alpha,\rho}\rangle`, uniformly
+absolutely on bounded input sets and continuously in $`x`. Admissibility of $`\rho` is not
+assumed, and neither the inner product nor the separability of $`Y` is used.
 :::
 
 :::proof "thm:weak-sobolev-synthesis"
 The moments are the weighted $`L^1` estimate of {bpref "lem:sobolev-tools"}[] on each ray,
 $`1+\|a\|+|b|\le\sqrt2(1+\|a\|)\langle b\rangle`, and Tonelli; the case $`r=0` gives the finite
 variation, and the growth bound of $`\sigma` with $`r=p` gives the absolute convergence and the
-majorant. For the identity, the bias translation formula of {bpref "lem:sobolev-pairing"}[] and
-Fubini turn the synthesis into $`\int\sigma(t)\Psi(t)\,\mathrm dt` with
+majorant. For the identity, Fubini in the two parameters turns the synthesis into
+$`\int\sigma(t)\Psi(t)\,\mathrm dt` with
 $`\Psi(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu`. Fubini again computes the profile
 of the integrable $`\Psi`, which homogeneity identifies with
 $`\widehat\rho(\omega)|\omega|^{-\alpha}f_g(x)` off the origin, hence everywhere by continuity;
 the $`L^1` uniqueness of the profile then identifies $`\Psi` with
-$`\check q_{\alpha,\rho}(-\cdot)f_g(x)`, and the pairing gives the constant. Continuity is
-dominated convergence with the majorant.
+$`\check q_{\alpha,\rho}(-\cdot)f_g(x)`, and the pairing of {bpref "lem:sobolev-pairing"}[] gives
+the constant. Continuity is dominated convergence with the majorant. The final clause of the
+manuscript statement, that $`\gamma_g` lies in $`L^2(\nu\otimes\mathrm db;Y)` with
+$`\|\gamma_g\|^2=(\!(\rho,\rho)\!)_\alpha\|g\|^2_{L^2(\nu;Y)}` when $`Y` is a separable complex
+Hilbert space, $`(\!(\rho,\rho)\!)_\alpha<\infty` and $`g\in L^2(\nu;Y)`, is not part of the
+Lean statement.
 :::
 
 # Non-band-pass filters for Sobolev synthesis
