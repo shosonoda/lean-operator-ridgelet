@@ -83,7 +83,7 @@ The same lemma gives convergence to zero. This step needs only Bochner integrabi
 :::
 
 :::lemma_ "lem:two-coordinate-comparison" (lean := "OperatorRidgelet.Paper.lem_two_coordinate_comparison") (uses := "def:rademacher-complexity")
-Let $`S` be a nonempty countable set and let $`\psi_i,u_i,v_i:S\to\mathbb R` be bounded with
+Let $`S` be a nonempty set and let $`\psi_i,u_i,v_i:S\to\mathbb R` be bounded with
 $`|\psi_i(s)-\psi_i(t)|\le|u_i(s)-u_i(t)|+|v_i(s)-v_i(t)|` for all $`s,t`. Then
 $`\mathbb E\sup_s\sum_i\varepsilon_i\psi_i(s)
   \le2\mathbb E\sup_s\sum_i(\varepsilon_{i1}u_i(s)+\varepsilon_{i2}v_i(s))`
