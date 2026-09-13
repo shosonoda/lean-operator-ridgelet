@@ -63,12 +63,66 @@ filter. -/
 def gaussRayCoefficient (k : ℕ) (v : Y) (q : H × ℝ) : Y :=
   gaussRayFun k (rayScale q.1) q.2 • v
 
+/-- The scalar ray at scale `A ≥ 1` lies in every Sobolev class. -/
+theorem memRaySobolev_gaussRayFun_of_one_le (k : ℕ) {s A : ℝ} (hs : 0 ≤ s) (hA : 1 ≤ A) :
+    MemRaySobolev s (gaussRayFun k A) :=
+  memRaySobolev_const_smul (memRaySobolev_dilate hs hA (memRaySobolev_schwartz s _))
+
+/-- The Sobolev norm of the scalar ray at scale `A ≥ 1`. -/
+theorem raySobolevNorm_gaussRayFun_le (k : ℕ) {s A : ℝ} (hs : 0 ≤ s) (hA : 1 ≤ A) :
+    raySobolevNorm s (gaussRayFun k A) ≤
+      A ^ (s - 2 * (k : ℝ) - 1 / 2) * raySobolevNorm s (gaussDerivFilterC k) := by
+  have hA0 : (0 : ℝ) < A := lt_of_lt_of_le zero_lt_one hA
+  have hexp : A ^ (-(2 * (k : ℝ) + 1)) * A ^ (s + 1 / 2) = A ^ (s - 2 * (k : ℝ) - 1 / 2) := by
+    rw [← Real.rpow_add hA0]
+    congr 1
+    ring
+  have hdil := raySobolevNorm_dilate_le hs hA (memRaySobolev_schwartz s (gaussDerivFilterC k))
+  have hmul : A ^ (-(2 * (k : ℝ) + 1)) *
+        raySobolevNorm s (fun b => gaussDerivFilterC k (b / A)) ≤
+      A ^ (-(2 * (k : ℝ) + 1)) *
+        (A ^ (s + 1 / 2) * raySobolevNorm s (gaussDerivFilterC k)) := by
+    gcongr
+  calc raySobolevNorm s (gaussRayFun k A)
+      = A ^ (-(2 * (k : ℝ) + 1)) * raySobolevNorm s fun b => gaussDerivFilterC k (b / A) := by
+        unfold gaussRayFun
+        rw [raySobolevNorm_const_smul, abs_of_nonneg (Real.rpow_nonneg hA0.le _)]
+    _ ≤ A ^ (-(2 * (k : ℝ) + 1)) *
+          (A ^ (s + 1 / 2) * raySobolevNorm s (gaussDerivFilterC k)) := hmul
+    _ = A ^ (s - 2 * (k : ℝ) - 1 / 2) * raySobolevNorm s (gaussDerivFilterC k) := by
+        rw [← hexp]
+        ring
+
+/-- The profile of the scalar ray at scale `A > 0` is `ω^{2k} e^{-A²ω²}`. -/
+theorem rayProfile_gaussRayFun {A : ℝ} (hA0 : 0 < A) (k : ℕ) (ω : ℝ) :
+    rayProfile (gaussRayFun k A) ω = ((ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2)) : ℝ) : ℂ) := by
+  have hpow : (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) * (A * A ^ (2 * k)) = 1 := by
+    have h1 : A * A ^ (2 * k) = A ^ (1 + ((2 * k : ℕ) : ℝ)) := by
+      rw [Real.rpow_add hA0, Real.rpow_one, Real.rpow_natCast]
+    rw [h1, ← Real.rpow_add hA0, show -(2 * (k : ℝ) + 1) + (1 + ((2 * k : ℕ) : ℝ)) = 0 by
+      push_cast; ring, Real.rpow_zero]
+  unfold gaussRayFun
+  rw [rayProfile_const_smul, rayProfile_dilate hA0, rayProfile_gaussDerivFilterC]
+  have hcast : (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) •
+      (A • (((A * ω) ^ (2 * k) * Real.exp (-(A * ω) ^ 2) : ℝ) : ℂ)) =
+      (((A ^ (-(2 * (k : ℝ) + 1)) : ℝ) *
+        (A * ((A * ω) ^ (2 * k) * Real.exp (-(A * ω) ^ 2))) : ℝ) : ℂ) := by
+    push_cast [Complex.real_smul]
+    ring
+  rw [hcast]
+  congr 1
+  rw [mul_pow A ω (2 * k), show (A * ω) ^ 2 = A ^ 2 * ω ^ 2 from mul_pow A ω 2]
+  calc (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) *
+        (A * (A ^ (2 * k) * ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2))))
+      = ((A ^ (-(2 * (k : ℝ) + 1)) : ℝ) * (A * A ^ (2 * k))) *
+          (ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2))) := by ring
+    _ = ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2)) := by rw [hpow, one_mul]
+
 omit [InnerProductSpace ℝ H] in
 /-- Each scalar ray lies in every Sobolev class. -/
 theorem memRaySobolev_gaussRayFun (k : ℕ) {s : ℝ} (hs : 0 ≤ s) (a : H) :
     MemRaySobolev s fun b => gaussRayFun k (rayScale a) b :=
-  memRaySobolev_const_smul
-    (memRaySobolev_dilate hs (one_le_rayScale a) (memRaySobolev_schwartz s _))
+  memRaySobolev_gaussRayFun_of_one_le k hs (one_le_rayScale a)
 
 omit [InnerProductSpace ℝ H] in
 /-- Each ray lies in every Sobolev class. -/
@@ -83,28 +137,15 @@ theorem raySobolevNorm_gaussRayCoefficient_le (k : ℕ) (v : Y) {s : ℝ} (hs : 
       rayScale a ^ (s - 2 * (k : ℝ) - 1 / 2) *
         (‖v‖ * raySobolevNorm s (gaussDerivFilterC k)) := by
   have hA := one_le_rayScale a
-  have hA0 := rayScale_pos a
-  set A := rayScale a
-  simp only [gaussRayCoefficient, gaussRayFun]
-  rw [raySobolevNorm_smul_const, raySobolevNorm_const_smul,
-    abs_of_nonneg (Real.rpow_nonneg hA0.le _)]
-  have hdil := raySobolevNorm_dilate_le hs hA (memRaySobolev_schwartz s (gaussDerivFilterC k))
-  have hmul : ‖v‖ * (A ^ (-(2 * (k : ℝ) + 1)) *
-        raySobolevNorm s fun b => gaussDerivFilterC k (b / A)) ≤
-      ‖v‖ * (A ^ (-(2 * (k : ℝ) + 1)) *
-        (A ^ (s + 1 / 2) * raySobolevNorm s (gaussDerivFilterC k))) := by
-    gcongr
-  refine hmul.trans (le_of_eq ?_)
-  have hexp : A ^ (-(2 * (k : ℝ) + 1)) * A ^ (s + 1 / 2) = A ^ (s - 2 * (k : ℝ) - 1 / 2) := by
-    rw [← Real.rpow_add hA0]
-    congr 1
-    ring
-  calc ‖v‖ * (A ^ (-(2 * (k : ℝ) + 1)) *
-        (A ^ (s + 1 / 2) * raySobolevNorm s (gaussDerivFilterC k)))
-      = (A ^ (-(2 * (k : ℝ) + 1)) * A ^ (s + 1 / 2)) *
+  simp only [gaussRayCoefficient]
+  rw [raySobolevNorm_smul_const]
+  have h := raySobolevNorm_gaussRayFun_le k hs hA
+  calc ‖v‖ * raySobolevNorm s (gaussRayFun k (rayScale a))
+      ≤ ‖v‖ * (rayScale a ^ (s - 2 * (k : ℝ) - 1 / 2) *
+          raySobolevNorm s (gaussDerivFilterC k)) := by
+        exact mul_le_mul_of_nonneg_left h (norm_nonneg v)
+    _ = rayScale a ^ (s - 2 * (k : ℝ) - 1 / 2) *
           (‖v‖ * raySobolevNorm s (gaussDerivFilterC k)) := by ring
-    _ = A ^ (s - 2 * (k : ℝ) - 1 / 2) * (‖v‖ * raySobolevNorm s (gaussDerivFilterC k)) := by
-        rw [hexp]
 
 /-! ### Measurability and the profile -/
 
@@ -129,29 +170,7 @@ theorem rayProfile_gaussRayCoefficient [CompleteSpace Y] (k : ℕ) (v : Y) (a : 
       filterFourier (gaussDerivFilter k) (-ω) • gaussTarget v (ω • a) := by
   have hA0 := rayScale_pos a
   set A := rayScale a with hAdef
-  have hpow : (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) * (A * A ^ (2 * k)) = 1 := by
-    have h1 : A * A ^ (2 * k) = A ^ (1 + ((2 * k : ℕ) : ℝ)) := by
-      rw [Real.rpow_add hA0, Real.rpow_one, Real.rpow_natCast]
-    rw [h1, ← Real.rpow_add hA0, show -(2 * (k : ℝ) + 1) + (1 + ((2 * k : ℕ) : ℝ)) = 0 by
-      push_cast; ring, Real.rpow_zero]
-  have hscalar : rayProfile (fun b => gaussRayFun k A b) ω =
-      ((ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2)) : ℝ) : ℂ) := by
-    simp only [gaussRayFun]
-    rw [rayProfile_const_smul, rayProfile_dilate hA0, rayProfile_gaussDerivFilterC]
-    have hcast : (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) •
-        (A • (((A * ω) ^ (2 * k) * Real.exp (-(A * ω) ^ 2) : ℝ) : ℂ)) =
-        (((A ^ (-(2 * (k : ℝ) + 1)) : ℝ) *
-          (A * ((A * ω) ^ (2 * k) * Real.exp (-(A * ω) ^ 2))) : ℝ) : ℂ) := by
-      push_cast [Complex.real_smul]
-      ring
-    rw [hcast]
-    congr 1
-    rw [mul_pow A ω (2 * k), show (A * ω) ^ 2 = A ^ 2 * ω ^ 2 from mul_pow A ω 2]
-    calc (A ^ (-(2 * (k : ℝ) + 1)) : ℝ) *
-          (A * (A ^ (2 * k) * ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2))))
-        = ((A ^ (-(2 * (k : ℝ) + 1)) : ℝ) * (A * A ^ (2 * k))) *
-            (ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2))) := by ring
-      _ = ω ^ (2 * k) * Real.exp (-(A ^ 2 * ω ^ 2)) := by rw [hpow, one_mul]
+  have hscalar := rayProfile_gaussRayFun hA0 k ω
   have hnorm : ‖ω • a‖ ^ 2 = ω ^ 2 * ‖a‖ ^ 2 := by
     rw [norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
   have hrhs : filterFourier (gaussDerivFilter k) (-ω) • gaussTarget v (ω • a) =

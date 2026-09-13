@@ -161,6 +161,33 @@ theorem rayProfile_dilate {A : ℝ} (hA : 0 < A) (γ : ℝ → Y) (ω : ℝ) :
   simp only
   rw [show A * ω * (b / A) = ω * b by field_simp]
 
+/-! ### The Sobolev norm as a Lebesgue integral -/
+
+omit [NormedSpace ℂ Y] in
+/-- The weighted square integral in terms of the Sobolev norm. -/
+theorem integral_bracket_rpow_norm_sq (s : ℝ) (γ : ℝ → Y) :
+    ∫ t : ℝ, (bracket t ^ (2 * s) : ℝ) * ‖γ t‖ ^ 2 =
+      raySobolevNorm s γ ^ 2 / (2 * Real.pi) := by
+  have hX : 0 ≤ ∫ t : ℝ, (bracket t ^ (2 * s) : ℝ) * ‖γ t‖ ^ 2 :=
+    integral_nonneg fun t => mul_nonneg (Real.rpow_nonneg (bracket_pos t).le _) (by positivity)
+  rw [raySobolevNorm, Real.sq_sqrt (by positivity)]
+  field_simp
+
+/-- The weighted square of a Sobolev ray as a Lebesgue integral. -/
+theorem lintegral_bracket_rpow_enorm_sq {s : ℝ} {γ : ℝ → Y} (hγ : MemRaySobolev s γ) :
+    ∫⁻ t : ℝ, ENNReal.ofReal (bracket t ^ (2 * s)) * ‖γ t‖ₑ ^ 2 =
+      ENNReal.ofReal (raySobolevNorm s γ ^ 2 / (2 * Real.pi)) := by
+  have hint := (memRaySobolev_iff (MemRaySobolev.aestronglyMeasurable hγ)).1 hγ
+  have h0 : 0 ≤ᵐ[volume] fun t : ℝ => (bracket t ^ (2 * s) : ℝ) * ‖γ t‖ ^ 2 :=
+    Filter.Eventually.of_forall fun t =>
+      mul_nonneg (Real.rpow_nonneg (bracket_pos t).le _) (by positivity)
+  rw [← integral_bracket_rpow_norm_sq s γ, MeasureTheory.ofReal_integral_eq_lintegral_ofReal
+    hint h0]
+  refine lintegral_congr fun t => ?_
+  rw [ENNReal.ofReal_mul (Real.rpow_nonneg (bracket_pos t).le _)]
+  congr 1
+  rw [← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]
+
 /-! ### Scalar multiples of a ray -/
 
 /-- The profile of a scalar multiple. -/
