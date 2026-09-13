@@ -46,7 +46,7 @@ comparator* is settled; one marked *statement only* is formalized but its proof 
 
 # Summary
 
-Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (numbers synced 2026-09-13). Verified declarations in `theorem_names`: 348.
+Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (numbers synced 2026-09-13). Verified declarations in `theorem_names`: 355.
 
 :::table +header
 *
@@ -56,12 +56,12 @@ Manuscript `main.tex`, version 2026-09-13 Constructive Approximation revision (n
   * Partially verified
 *
   * 68
-  * 64
-  * 64
+  * 66
+  * 66
   * 0
 :::
 
-Of these, 4 item(s) are new in this manuscript revision and not yet formalized, and 0 item(s) whose Lean statements are verified were restated in the manuscript after those statements were written, so their status refers to the earlier statement.  Both are marked in the status line of the item and explained in its formalization note.
+Of these, 2 item(s) are new in this manuscript revision and not yet formalized, and 0 item(s) whose Lean statements are verified were restated in the manuscript after those statements were written, so their status refers to the earlier statement.  Both are marked in the status line of the item and explained in its formalization note.
 
 Conventions. Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G\_Q -> F\_Q, scalar activation beta -> sigma, operator activation sigma -> Sigma, spectral density G -> g, target g\_G -> f\_g, coefficient gamma\_G -> gamma\_g, \\mathcal N(0,Q) -> mu\_Q, Gaussian activation Phi -> sigma\_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L\_D^\{-1\}, the Gaussian-parameter ReLU target F\_Q -> f\_\{ReLU,Q\}.
 
@@ -4938,15 +4938,112 @@ Status: *verified by comparator*.
 
 ## Lemma C.3 — Weighted inverse Fourier estimates and modulation (`lem:sobolev-tools`)
 
-Blueprint node: none yet. Status: *not formalized* (new in this manuscript revision, no Lean statement yet).
+Blueprint node: {bpref "lem:sobolev-tools"}[]. Status: *verified* (all 4 Lean theorems verified).
 
-Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-tools`. Weighted inverse Fourier estimates and modulation, used by thm:weak-sobolev-synthesis. Not formalized.
+Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-tools`. The Sobolev space H^s\_ω(ℝ;Y) is carried by the pair of a profile h and its inverse Fourier transform γ = ȟ (OperatorRidgelet.Sobolev.Defs): MemRaySobolev s γ is the membership (γ square integrable against the weight ⟨t⟩^\{2s\} = (1+t²)^s), raySobolevNorm s γ is the norm (2π ∫ ⟨t⟩^\{2s\} ‖γ‖²)^\{1/2\} of eq:sobolev-norm, rayProfile γ = γ̂ in the angular convention (for s > 1/2 the coefficient is integrable by part i, so the profile is an ordinary Fourier integral), and sobolevMomentConst s r is A\_\{s,r\}. i is eq:sobolev-weighted-l1; ii is the reflection isometry together with the identity Rh = (γ(-·))^; iii is eq:sobolev-modulation together with the identity M\_u h = (γ(·+u))^; iv is the joint continuity of (u,h) ↦ M\_u h, stated along an arbitrary filter as the convergence of ‖M\_\{u\_i\} h\_i − M\_\{u₀\} h‖\_\{H^s\_ω\} to zero when u\_i → u₀ and ‖h\_i − h‖\_\{H^s\_ω\} → 0.
+
+`OperatorRidgelet.Paper.lem_sobolev_tools_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L23):
+
+```
+/-- **Lemma [lem:sobolev-tools]**(i) The weighted inverse Fourier estimate
+`∫ ⟨t⟩^r ‖γ(t)‖ dt ≤ A_{s,r} ‖h‖_{H^s_ω}` (`eq:sobolev-weighted-l1`) for `0 ≤ r < s - 1/2`,
+where `γ = ȟ` and `A_{s,r} = (2π)^{-1/2}(∫ (1+t²)^{-(s-r)} dt)^{1/2}`. -/
+theorem lem_sobolev_tools_i {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s) {γ : ℝ → Y}
+    (hγ : MemRaySobolev s γ) :
+    ∫ t : ℝ, (bracket t ^ r : ℝ) * ‖γ t‖ ≤ sobolevMomentConst s r * raySobolevNorm s γ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_sobolev_tools_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L31):
+
+```
+/-- **Lemma [lem:sobolev-tools]**(ii) Reflection `R h(ω) = h(-ω)` is an isometry of
+`H^s_ω(ℝ;Y)`: the reflected coefficient is again in the class with the same norm, and its
+profile is the reflected profile. -/
+theorem lem_sobolev_tools_ii {s : ℝ} {γ : ℝ → Y} (hγ : MemRaySobolev s γ) :
+    MemRaySobolev s (fun t => γ (-t)) ∧
+      raySobolevNorm s (fun t => γ (-t)) = raySobolevNorm s γ ∧
+      ∀ ω : ℝ, rayProfile (fun t => γ (-t)) ω = rayProfile γ (-ω) := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_sobolev_tools_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L40):
+
+```
+/-- **Lemma [lem:sobolev-tools]**(iii) Modulation `M_u h(ω) = e^{iuω} h(ω)` maps `H^s_ω(ℝ;Y)`
+to itself with `‖M_u h‖_{H^s_ω} ≤ (1 + |u|)^s ‖h‖_{H^s_ω}` (`eq:sobolev-modulation`); its
+coefficient is the translate `γ(· + u)`. -/
+theorem lem_sobolev_tools_iii {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (hγ : MemRaySobolev s γ)
+    (u : ℝ) :
+    MemRaySobolev s (fun t => γ (t + u)) ∧
+      raySobolevNorm s (fun t => γ (t + u)) ≤ ((1 + |u|) ^ s : ℝ) * raySobolevNorm s γ ∧
+      ∀ ω : ℝ, rayProfile (fun t => γ (t + u)) ω =
+        Complex.exp (((u * ω : ℝ) : ℂ) * Complex.I) • rayProfile γ ω := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_sobolev_tools_iv`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L51):
+
+```
+/-- **Lemma [lem:sobolev-tools]**(iv) The map `(u, h) ↦ M_u h` is jointly continuous: if the
+biases converge and the profiles converge in `H^s_ω(ℝ;Y)`, then so do the modulated profiles. -/
+theorem lem_sobolev_tools_iv {S : Type*} {l : Filter S} {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y}
+    {γ' : S → ℝ → Y} {u : S → ℝ} {u₀ : ℝ} (hγ : MemRaySobolev s γ)
+    (hγ' : ∀ i, MemRaySobolev s (γ' i)) (hu : Tendsto u l (nhds u₀))
+    (hconv : Tendsto (fun i => raySobolevNorm s (fun t => γ' i t - γ t)) l (nhds 0)) :
+    Tendsto (fun i => raySobolevNorm s (fun t => γ' i (t + u i) - γ (t + u₀))) l (nhds 0) := by
+```
+
+Status: *verified by comparator*.
 
 ## Lemma C.4 — The bilinear Sobolev pairing and its translation formula (`lem:sobolev-pairing`)
 
-Blueprint node: none yet. Status: *not formalized* (new in this manuscript revision, no Lean statement yet).
+Blueprint node: {bpref "lem:sobolev-pairing"}[]. Status: *verified* (all 3 Lean theorems verified).
 
-Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-pairing`. The bilinear Sobolev pairing and its translation formula, used by thm:weak-sobolev-synthesis. Not formalized.
+Formalization note. New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-pairing`. In the pair formulation of OperatorRidgelet.Sobolev.Defs the pairing is the absolutely convergent integral sobolevPairing σ γ = ∫ σ(t) • γ(-t) dt, which is the manuscript's normalization (2π)⁻¹⟨σ̂, q⟩ = ∫ σ(t) q̌(-t) dt written on the coefficient side, and sobolevPairingConst σ s is b\_\{σ,s\}. i is the finiteness of b\_\{σ,s\} for a continuous σ of polynomial growth p and s > p + 1/2, stated as square integrability of ⟨·⟩^\{-s\}σ; ii is the absolute convergence together with the bound ‖L\_σ^Y(h)‖ ≤ (2π)^\{-1/2\} b\_\{σ,s\} ‖h‖\_\{H^s\_ω\}, which is the assertion that the functional lies in the bilinear dual with that norm; iii is eq:sobolev-bias-pairing. The identification of the extended functional with the distributional Fourier transform of σ on Schwartz tests is the manuscript's interpretation of the same integral and is not restated in Lean.
+
+`OperatorRidgelet.Paper.lem_sobolev_pairing_i`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L60):
+
+```
+/-- **Lemma [lem:sobolev-pairing]**(i) For a continuous activation of polynomial growth `p` and
+`s > p + 1/2`, the weighted activation `⟨·⟩^{-s} σ` is square integrable, that is
+`b_{σ,s} = ‖⟨·⟩^{-s}σ‖_2 < ∞`. -/
+theorem lem_sobolev_pairing_i {σ : ℝ → ℂ} {p s C : ℝ} (hp : 0 ≤ p) (hps : p + 1 / 2 < s)
+    (hσ : Continuous σ) (hbound : ∀ t : ℝ, ‖σ t‖ ≤ C * (1 + |t|) ^ p) :
+    MemLp (fun t : ℝ => (bracket t ^ (-s) : ℝ) • σ t) 2 volume := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_sobolev_pairing_ii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L68):
+
+```
+/-- **Lemma [lem:sobolev-pairing]**(ii) The pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` converges
+absolutely and is bounded: `‖L_σ^Y(h)‖ ≤ (2π)^{-1/2} b_{σ,s} ‖h‖_{H^s_ω}`, so it is an element
+of the bilinear dual of `H^s_ω(ℝ;Y)` with that norm (`eq:sobolev-pairing`). -/
+theorem lem_sobolev_pairing_ii {σ : ℝ → ℂ} {s : ℝ} {γ : ℝ → Y}
+    (hσ : MemLp (fun t : ℝ => (bracket t ^ (-s) : ℝ) • σ t) 2 volume)
+    (hγ : MemRaySobolev s γ) :
+    Integrable (fun t : ℝ => σ t • γ (-t)) volume ∧
+      ‖sobolevPairing σ γ‖ ≤
+        sobolevPairingConst σ s / Real.sqrt (2 * Real.pi) * raySobolevNorm s γ := by
+```
+
+Status: *verified by comparator*.
+
+`OperatorRidgelet.Paper.lem_sobolev_pairing_iii`, theorem in [`Challenge/Sobolev.lean`](https://github.com/shosonoda/lean-operator-ridgelet/blob/main/OperatorRidgelet/Challenge/Sobolev.lean#L79):
+
+```
+/-- **Lemma [lem:sobolev-pairing]**(iii) The bias translation of the activation is the
+modulation of the profile: `∫ σ(u - b) γ(b) db = L_σ^Y(M_u h)` (`eq:sobolev-bias-pairing`). -/
+theorem lem_sobolev_pairing_iii (σ : ℝ → ℂ) (γ : ℝ → Y) (u : ℝ) :
+    ∫ b : ℝ, σ (u - b) • γ b = sobolevPairing σ (fun t => γ (t + u)) := by
+```
+
+Status: *verified by comparator*.
 
 # Appendix D
 

@@ -57,6 +57,10 @@ def rayProfile (γ : ℝ → Y) (ω : ℝ) : Y :=
 def sobolevMomentConst (s r : ℝ) : ℝ :=
   Real.sqrt (∫ t : ℝ, ((1 + t ^ 2) ^ (-(s - r)) : ℝ)) / Real.sqrt (2 * Real.pi)
 
+/-- The Sobolev pairing `L_σ^Y(h) = ∫ σ(t) • γ(-t) dt` of an activation `σ` of polynomial
+growth with the profile `h` whose inverse Fourier transform is `γ` (`eq:sobolev-pairing`). -/
+def sobolevPairing (σ : ℝ → ℂ) (γ : ℝ → Y) : Y := ∫ t : ℝ, σ t • γ (-t)
+
 /-- The constant `b_{σ,s} = ‖⟨·⟩^{-s} σ‖_2` of Lemma `lem:sobolev-pairing`. -/
 def sobolevPairingConst (σ : ℝ → ℂ) (s : ℝ) : ℝ :=
   Real.sqrt (∫ t : ℝ, ‖(bracket t ^ (-s) : ℝ) • σ t‖ ^ 2)

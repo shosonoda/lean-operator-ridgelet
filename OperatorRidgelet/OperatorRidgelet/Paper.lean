@@ -6,6 +6,7 @@ import OperatorRidgelet.Paper.Sampling
 import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Paper.Revision
 import OperatorRidgelet.Paper.SamplingRevision
+import OperatorRidgelet.Paper.Sobolev
 
 /-!
 # Statements of the manuscript

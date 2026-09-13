@@ -146,3 +146,44 @@ of the four activations.
 The three properties are {bpref "lem:standard-activation-class"}[]; a globally Lipschitz
 function has polynomial growth, so {bpref "thm:A"}[] (iii) and {bpref "thm:E"}[] apply.
 :::
+
+# Weak Sobolev regularity along rays
+
+:::lemma_ "lem:sobolev-tools" (lean := "OperatorRidgelet.bracket, OperatorRidgelet.MemRaySobolev, OperatorRidgelet.raySobolevNorm, OperatorRidgelet.rayProfile, OperatorRidgelet.sobolevMomentConst, OperatorRidgelet.Paper.lem_sobolev_tools_i, OperatorRidgelet.Paper.lem_sobolev_tools_ii, OperatorRidgelet.Paper.lem_sobolev_tools_iii, OperatorRidgelet.Paper.lem_sobolev_tools_iv") (uses := "aux:conventions")
+Write $`H^s_\omega(\mathbb R;Y)` for the profiles $`h` whose inverse Fourier transform
+$`\gamma=\check h` satisfies $`\|h\|_{H^s_\omega}^2=2\pi\int\langle
+t\rangle^{2s}\|\gamma(t)\|^2\,\mathrm dt<\infty`. For $`s>1/2` and $`0\le r<s-1/2`,
+$`\int\langle t\rangle^r\|\gamma(t)\|\,\mathrm dt\le A_{s,r}\|h\|_{H^s_\omega}` with
+$`A_{s,r}=(2\pi)^{-1/2}(\int(1+t^2)^{-(s-r)}\mathrm dt)^{1/2}`. Reflection $`Rh(\omega)=h(-\omega)`
+is an isometry, $`\|M_uh\|_{H^s_\omega}\le(1+|u|)^s\|h\|_{H^s_\omega}` for the modulation
+$`M_uh(\omega)=e^{iu\omega}h(\omega)`, and $`(u,h)\mapsto M_uh` is jointly continuous.
+:::
+
+:::proof "lem:sobolev-tools"
+The weighted $`L^1` bound is Cauchy--Schwarz applied to $`\langle t\rangle^{-(s-r)}` and
+$`\langle t\rangle^{s}\|\gamma(t)\|`, the scalar factor being integrable exactly when
+$`s-r>1/2`. Reflection and modulation correspond to $`\gamma(-\cdot)` and $`\gamma(\cdot+u)` on
+the coefficient side, and $`\langle t-u\rangle\le(1+|u|)\langle t\rangle` gives the modulation
+bound. Joint continuity reduces, by that bound and the triangle inequality, to the strong
+continuity of translation, which follows from the strong continuity of translation in $`L^2`
+and dominated convergence for the multiplier
+$`(\langle t\rangle/\langle t+u\rangle)^s`.
+:::
+
+:::lemma_ "lem:sobolev-pairing" (lean := "OperatorRidgelet.sobolevPairing, OperatorRidgelet.sobolevPairingConst, OperatorRidgelet.Paper.lem_sobolev_pairing_i, OperatorRidgelet.Paper.lem_sobolev_pairing_ii, OperatorRidgelet.Paper.lem_sobolev_pairing_iii") (uses := "lem:sobolev-tools")
+Let $`\sigma` be continuous with $`|\sigma(t)|\le C_\sigma(1+|t|)^p`, $`p\ge0`, and
+$`s>p+1/2`, and put $`b_{\sigma,s}=\|\langle\cdot\rangle^{-s}\sigma\|_2`, which is finite. The
+pairing $`L_\sigma^Y(h)=\int\sigma(t)\check h(-t)\,\mathrm dt` converges absolutely and
+satisfies $`\|L_\sigma^Y(h)\|\le(2\pi)^{-1/2}b_{\sigma,s}\|h\|_{H^s_\omega}`, so it is the
+bounded extension of $`(2\pi)^{-1}\langle\widehat\sigma,\cdot\rangle` to $`H^s_\omega`.
+Moreover $`\int\sigma(u-b)\gamma(b)\,\mathrm db=L_\sigma^Y(M_uh)`.
+:::
+
+:::proof "lem:sobolev-pairing"
+$`1+|t|\le\sqrt2\langle t\rangle` turns the growth bound into
+$`\langle t\rangle^{-s}|\sigma(t)|\le C_\sigma2^{p/2}\langle t\rangle^{p-s}`, whose square is
+integrable for $`s-p>1/2`. Weighted Cauchy--Schwarz against
+{bpref "lem:sobolev-tools"}[] gives absolute convergence and the bound, the reflection isometry
+turning $`\|\gamma(-\cdot)\|` into $`\|h\|_{H^s_\omega}`. The translation formula is the change
+of variables $`b=u-t`.
+:::

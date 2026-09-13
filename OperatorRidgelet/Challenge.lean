@@ -6,6 +6,7 @@ import Challenge.Sampling
 import Challenge.Examples
 import Challenge.Revision
 import Challenge.SamplingRevision
+import Challenge.Sobolev
 
 /-!
 # comparator challenge
