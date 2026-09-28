@@ -1,6 +1,6 @@
 import OperatorRidgelet.Reconstruction.VectorBiasFourierUnitary
 
-/-! # The vector coefficient operator and its ray-average adjoint -/
+/-! # The vector coefficient operator and its backprojection adjoint -/
 
 noncomputable section
 open MeasureTheory Complex Filter Topology
@@ -200,7 +200,7 @@ theorem IsHomogeneous.inner_spectralCoefficientVec (γ : Lp Y 2 (parameterMeasur
       ring
 
 omit hα in
-/-- The chosen backprojection class is represented by the vector ray average. -/
+/-- The chosen backprojection class is represented by the vector backprojection integral. -/
 theorem coeFn_backprojectionLpVec (γ : Lp Y 2 (parameterMeasure ν)) :
     ⇑(backprojectionLpVec α ν ρ γ) =ᵐ[ν] backprojectionVec α ν ρ γ := by
   have hm := (hν.memLp_backprojectionVec hρ γ).1
@@ -243,7 +243,7 @@ theorem spectralCoefficientVecCLM_adjoint_apply_self (F : Lp Y 2 ν) :
     ((hν.backprojectionVec_spectralCoefficientVec hα hρ
       (Lp.stronglyMeasurable F) (Lp.memLp F)).trans (Lp.coeFn_smul _ _).symm)
 
-/-- The bounded coefficient operator has the ray-average adjoint and the scaled left inverse. -/
+/-- The bounded coefficient operator has the backprojection adjoint and the scaled left inverse. -/
 theorem exists_spectralCoefficientVecCLM_adjoint :
     ∃ W : Lp Y 2 ν →L[ℂ] Lp Y 2 (parameterMeasure ν),
       (∀ F, W F = spectralCoefficientVec ν ρ F) ∧

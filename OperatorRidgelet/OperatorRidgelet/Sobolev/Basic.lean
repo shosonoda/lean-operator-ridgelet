@@ -6,7 +6,7 @@ import Mathlib.MeasureTheory.Measure.Haar.Unique
 import OperatorRidgelet.ToMathlib.L2Translation
 
 /-!
-# Weighted inverse Fourier estimates along a ray
+# Weighted inverse Fourier estimates for a fixed direction
 
 The estimates of Lemma `lem:sobolev-tools` on the coefficient side: the Sobolev weight is
 integrable in the range that makes the constant `A_{s,r}` finite, and weighted Cauchy–Schwarz

@@ -16,6 +16,11 @@ module.  They build on the Section 3 objects of `OperatorRidgelet.Transform.Defs
 
 ## Targets with a spectral density and regularity along rays
 
+For a density `G`, set `G_a(ω) := G (ω • a)`, the manuscript's `g_a(ω) := g(ωa)`.
+For `a ≠ 0`, this is the restriction of `G` to the line through the origin spanned by `a`;
+for `a = 0`, it is constant. "Regularity along rays" abbreviates the smoothness and weighted
+derivative bounds on these one-variable functions specified by `IsRegularAlongRays`.
+
 * `spectralTarget ν G` is `g_G(x) = ∫ e^{i⟪x,ξ⟫} G(ξ) ν(dξ)`, stated for a density `G` with
   values in any complex normed space (the scalar case is `Y = ℂ`, where `•` is `*`).
 * The compact symmetric set `I ⊆ ℝ ∖ {0}` containing `supp ρ̂` that the manuscript fixes before
@@ -48,8 +53,10 @@ manuscript's in the second; `innerSLFlip ℂ f g = ⟪g, f⟫ = ⟨f,g⟩_manusc
   Riesz representation, obtained from Mathlib's `InnerProductSpace.toDual` after conjugating the
   functional (`antiDualConj`).
 * `transposeEmbed μ ν F = U_α' F`, `U_α' F [g] = ⟨F, U_α g⟩_{L²(ν)}`.
-* `frameOperator μ ν f = T_α f = U_α' U_α f`; Theorem `thm:C`(i) says `T_α = J_α`, so `T_α⁻¹`
-  is `rieszInv`.
+* `frameOperator μ ν f = T_α f = U_α' U_α f` takes values in the continuous anti-dual.
+  Theorem `thm:C`(i) says `T_α = J_α`, so `T_α⁻¹` is `rieszInv`. It describes the correction
+  induced by the weights. With `C = admissibilityConst α ρ`, the reconstruction identity is
+  `R_ρ' R_ρ = C J_α = C T_α`; the Hilbert-space adjoint instead satisfies `R_ρ* R_ρ = C I`.
 * `ridgeletExtension μ ν ρ` is the bounded extension `R_ρ : 𝓔_α → L²(λ)` of Theorem `thm:B`(ii):
   the continuous linear map agreeing almost everywhere with `f ↦ R_ρ f` on `U_α(𝒟_α)`, chosen
   when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:B`(ii), a theorem
@@ -63,12 +70,13 @@ Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 ## Backprojection, coefficient projection, and the Hermite inverse
 
-* `backprojectionOf α ρ Φ ξ` is the ray average `eq:ray-average` computed from a partial
+* `backprojectionOf α ρ Φ ξ` is the integral `eq:ray-average` computed from a partial
   bias-Fourier representative `Φ` of the coefficient; `backprojection α ν ρ γ = Λ_ρ γ` uses a
   jointly measurable representative of `γ ∈ L²(λ)` chosen through `HasBiasFourier` (`0` if there
-  is none), which requires the representative to be square integrable along almost every ray;
+  is none), which requires `ω ↦ Φ(a, ω)` to be square integrable for almost every `a`;
   Proposition `prop:coefficient-projection` states that the choice is immaterial.
-  `backprojectionLp` is `Λ_ρ γ` as an element of `L²(ν)` and `coefficientProjection` is
+  `backprojectionLp` is `Λ_ρ γ` as an element of `L²(ν)`. Backprojection is the Hilbert-space
+  adjoint `Λ_ρ = W_ρ*` of the coefficient operator. The `coefficientProjection` is
   `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ`.  The space `𝒴` of Appendix B is `L²(λ)`: the norm defined
   through the partial Fourier transform in the bias coincides with the `L²(λ)`-norm by
   Plancherel.
@@ -125,20 +133,22 @@ structure IsFrequencyWindow (ρ : ℝ → ℝ) (I : Set ℝ) : Prop where
   /-- `I` contains the support of `ρ̂`. -/
   tsupport_subset : tsupport (filterFourier ρ) ⊆ I
 
-/-- The ray-derivative bound `max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` of a density `G` at the
-direction `a`, in `ℝ≥0∞`. -/
+/-- The derivative bound `max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G_a(ω)‖`, with
+`G_a(ω) := G (ω • a)`, in `ℝ≥0∞`. -/
 def rayDerivBound (I : Set ℝ) (G : H → Y) (m : ℕ) (a : H) : ℝ≥0∞ :=
   ⨆ k : Fin (m + 1), ⨆ ω ∈ I, ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ₑ
 
-/-- The ray moment `M_m(G) = ∫ (1+‖a‖)^{m+2} max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ ν(da)`
+/-- The weighted derivative integral
+`M_m(G) = ∫ (1+‖a‖)^{m+2} max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖ ν(da)`
 (`eq:ray-regularity`), in `ℝ≥0∞`. -/
 def rayMoment (ν : Measure H) (I : Set ℝ) (G : H → Y) (m : ℕ) : ℝ≥0∞ :=
   ∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I G m a ∂ν
 
 /-- **Definition [def:ray-regular]** A bounded Borel density `G` is regular along rays (with
 respect to the direction measure `ν` and the frequency window `I`) if for every direction `a`
-the map `ω ↦ G(ωa)` is `C^∞` on a neighbourhood of `I` and every ray moment `M_m(G)` is
-finite. -/
+the restriction `G_a(ω) := G (ω • a)` to the line through the origin is `C^∞` on a
+neighbourhood of `I` and every weighted derivative integral `M_m(G)` is finite.
+The case `a = 0` gives the constant function `G 0`. -/
 structure IsRegularAlongRays (ν : Measure H) (I : Set ℝ) (G : H → Y) : Prop where
   /-- `G` is Borel. -/
   stronglyMeasurable : StronglyMeasurable G
@@ -254,7 +264,7 @@ section Backprojection
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
-/-- The backprojection (ray average, `eq:ray-average`) of a partial bias-Fourier representative
+/-- The backprojection integral (`eq:ray-average`) of a partial bias-Fourier representative
 `Φ` of a coefficient: `Λ_ρ Φ (ξ) = (2π)⁻¹ ∫ conj(ρ̂(ω)) |ω|^{-α} Φ(-ξ/ω, ω) dω`. -/
 def backprojectionOf (α : ℝ) (ρ : ℝ → ℝ) (Φ : H → ℝ → ℂ) (ξ : H) : ℂ :=
   ((2 * Real.pi)⁻¹ : ℝ) *
@@ -264,10 +274,10 @@ open Classical in
 /-- The backprojection `Λ_ρ γ` of a coefficient `γ`, computed from a jointly measurable partial
 bias-Fourier representative of `γ` (`HasBiasFourier`), and `0` if there is none.
 
-`HasBiasFourier` requires the representative to be square integrable along `ν`-almost every
-ray, which pins it down up to a null set on almost every ray (`HasBiasFourier.ae_ae_eq`), and
-the ray substitution `(a, ω) ↦ (-ωa, ω)` preserves null sets by homogeneity; hence the ray
-average does not depend on the chosen representative as an element of `L²(ν)`
+`HasBiasFourier` requires `ω ↦ Φ(a, ω)` to be square integrable for `ν`-almost every `a`.
+It determines this frequency profile up to a null set (`HasBiasFourier.ae_ae_eq`). The
+substitution `(a, ω) ↦ (-ωa, ω)` preserves null sets by homogeneity, so the backprojection
+integral does not depend on the chosen representative as an element of `L²(ν)`
 (`prop_coefficient_projection_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
 (`exists_measurable_hasBiasFourier`), so the junk value is never taken on `L²(λ)`. -/
 def backprojection (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → ℂ) : H → ℂ :=
@@ -300,7 +310,7 @@ section Hermite
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
 /-- The analytic continuation `z ↦ 𝒢_μ f(zξ) = ∫ f(x) e^{-iz⟪x,ξ⟫} μ(dx)` of the weighted Fourier
-transform along the ray through `ξ` to complex `z`. -/
+transform on the line through `ξ` and the origin to complex `z`. -/
 def gaussFourierLine (μ : Measure H) (f : H → ℂ) (ξ : H) (z : ℂ) : ℂ :=
   ∫ x, f x * Complex.exp (-(z * (⟪x, ξ⟫ : ℝ) * Complex.I)) ∂μ
 
@@ -352,7 +362,7 @@ def biasFourierVec (γ : H × ℝ → Y) (a : H) (ω : ℝ) : Y :=
   ∫ c : ℝ, Complex.exp (-((ω * c : ℝ) * Complex.I)) • γ (a, c)
 
 /-- `HasBiasFourierVec ν γ Φ`: the partial Fourier transform in the bias of the `Y`-valued
-coefficient `γ` is `Φ`: for `ν`-almost every direction the ray function `Φ(a,·)` is square
+coefficient `γ` is `Φ`: for `ν`-almost every direction `a`, the function `ω ↦ Φ(a,ω)` is square
 integrable and Parseval's identity against Schwartz test functions holds (the `Y`-valued form
 of `HasBiasFourier`, whose docstring explains the square-integrability clause). -/
 structure HasBiasFourierVec (ν : Measure H) (γ : H × ℝ → Y) (Φ : H → ℝ → Y) : Prop where
@@ -374,7 +384,7 @@ def spectralCoefficientVec (ν : Measure H) (ρ : ℝ → ℝ) (G : H → Y) :
   else 0
 
 /-- The analytic continuation `z ↦ 𝒢_μ f(zξ)` of the `Y`-valued weighted Fourier transform along
-the ray through `ξ`. -/
+the line through `ξ` and the origin. -/
 def gaussFourierLineVec (μ : Measure H) (f : H → Y) (ξ : H) (z : ℂ) : Y :=
   ∫ x, Complex.exp (-(z * (⟪x, ξ⟫ : ℝ) * Complex.I)) • f x ∂μ
 

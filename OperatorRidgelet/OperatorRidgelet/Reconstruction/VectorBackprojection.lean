@@ -98,7 +98,7 @@ section Rays
 
 variable [NormedAddCommGroup H] [InnerProductSpace ℝ H] [BorelSpace H]
 
-/-- The integrand of a vector-valued ray average is jointly strongly measurable. -/
+/-- The integrand of a vector-valued backprojection integral is jointly strongly measurable. -/
 theorem stronglyMeasurable_backprojectionOfVec_integrand (α : ℝ) (ρ : SchwartzMap ℝ ℝ)
     {Φ : H → ℝ → Y} (hΦ : StronglyMeasurable (Function.uncurry Φ)) :
     StronglyMeasurable fun p : H × ℝ => ((starRingEnd ℂ) (filterFourier ρ p.2) *
@@ -108,13 +108,13 @@ theorem stronglyMeasurable_backprojectionOfVec_integrand (α : ℝ) (ρ : Schwar
       ((continuous_abs.measurable.comp measurable_snd).pow_const (-α)))).stronglyMeasurable.smul
     (hΦ.comp_measurable measurable_raySubst)
 
-/-- The vector-valued ray average is strongly measurable. -/
+/-- The vector-valued backprojection integral is strongly measurable. -/
 theorem stronglyMeasurable_backprojectionOfVec (α : ℝ) (ρ : SchwartzMap ℝ ℝ)
     {Φ : H → ℝ → Y} (hΦ : StronglyMeasurable (Function.uncurry Φ)) :
     StronglyMeasurable (backprojectionOfVec α ρ Φ) :=
   (stronglyMeasurable_backprojectionOfVec_integrand α ρ hΦ).integral_prod_right'.const_smul _
 
-/-- The weighted squared norm of a vector-valued Fourier representative on a ray. -/
+/-- The weighted squared norm of a vector-valued Fourier representative for a fixed direction. -/
 def rayEnergyVec (α : ℝ) (Φ : H → ℝ → Y) (ξ : H) : ℝ≥0∞ :=
   ∫⁻ ω, ENNReal.ofReal (|ω| ^ (-α)) * ‖Φ (-(ω⁻¹ • ξ)) ω‖ₑ ^ 2
 
@@ -139,7 +139,7 @@ theorem IsHomogeneous.lintegral_rayEnergyVec {Φ : H → ℝ → Y}
   rfl
 
 omit hν in
-/-- Weighted Cauchy–Schwarz bounds the squared norm of the vector ray average. -/
+/-- Weighted Cauchy–Schwarz bounds the squared norm of the vector backprojection integral. -/
 theorem enorm_backprojectionOfVec_sq_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
     {Φ : H → ℝ → Y} (hΦ : StronglyMeasurable (Function.uncurry Φ)) (ξ : H) :
     ‖backprojectionOfVec α ρ Φ ξ‖ₑ ^ 2 ≤
@@ -237,7 +237,7 @@ theorem stronglyMeasurable_coefficient_representative_vec {ρ : SchwartzMap ℝ 
   ((continuous_filterFourier ρ).measurable.comp measurable_snd).stronglyMeasurable.smul
     (hF.comp_measurable (by fun_prop : Continuous fun p : H × ℝ => -(p.2 • p.1)).measurable)
 
-/-- The vector-valued ray average depends only on the Fourier representative's
+/-- The vector-valued backprojection integral depends only on the Fourier representative's
 almost-everywhere class. -/
 theorem IsHomogeneous.backprojectionOfVec_ae_eq (ρ : ℝ → ℝ) {γ : H × ℝ → Y}
     {Φ Φ' : H → ℝ → Y} (hΦ : StronglyMeasurable (Function.uncurry Φ))
@@ -257,7 +257,8 @@ theorem IsHomogeneous.backprojectionOfVec_ae_eq (ρ : ℝ → ℝ) {γ : H × �
   exact congrArg _ hω
 
 omit hν in
-/-- The ray average of an explicit vector coefficient representative is the admissibility constant
+/-- The backprojection integral of an explicit vector coefficient representative is the
+admissibility constant
 times its spectral density. -/
 theorem backprojectionOfVec_coefficient_representative (α : ℝ) (ρ : SchwartzMap ℝ ℝ)
     (F : H → Y) (ξ : H) :

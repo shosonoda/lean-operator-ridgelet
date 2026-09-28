@@ -18,7 +18,8 @@ file := "reconstruction"
 This chapter is Section 4 of the manuscript together with Appendix B. The Fourier-slice
 identity, read backwards, produces a network from a spectral density
 ({bpref "thm:A"}[]); the transpose of the transform is the synthesis operator, and the frame
-operator $`T_\alpha=U_\alpha'U_\alpha` is the Riesz map of $`\mathcal E_\alpha`
+operator $`T_\alpha=U_\alpha'U_\alpha` is the Riesz map from $`\mathcal E_\alpha` onto its
+continuous anti-dual, expressing the correction induced by the weights
 ({bpref "thm:C"}[]). The Lean statements are for the abstract pair $`(\mu,\nu)` of Appendix H
 wherever the manuscript allows it; the Hermite inversion needs the Gaussian input measure.
 
@@ -51,8 +52,9 @@ continuous spectral target and justifies its synthesis.
 :::definition "def:ray-regular" (lean := "OperatorRidgelet.IsFrequencyWindow, OperatorRidgelet.rayDerivBound, OperatorRidgelet.rayMoment, OperatorRidgelet.IsRegularAlongRays, OperatorRidgelet.spectralTarget, OperatorRidgelet.Paper.def_ray_regular") (uses := "def:admissible-filter, aux:gaussian-mixture, lem:homogeneous-mixture")
 Fix a symmetric compact set
 $`I\subset\mathbb R\setminus\{0\}` containing $`\operatorname{supp}\widehat\rho` (a frequency
-window). A bounded Borel $`G:H\to\mathbb C` is regular along rays if for every $`a\in H` the
-function $`\omega\mapsto G(\omega a)` is $`C^\infty` on a neighbourhood of $`I` and
+window). Write $`G_a(\omega):=G(\omega a)`, the restriction to the line through the origin
+spanned by $`a\ne0`, with $`G_0` constant. A bounded Borel $`G:H\to\mathbb C` is
+regular along rays if every $`G_a` is $`C^\infty` on a neighbourhood of $`I` and
 $`M_m(G)=\int_H(1+\|a\|)^{m+2}\max_{k\le m}\sup_{\omega\in I}|\partial_\omega^kG(\omega a)|\,\nu_\alpha(\mathrm da)<\infty`
 for every integer $`m\ge0`. Such a $`G` belongs to $`L^1(\nu_\alpha)\cap L^2(\nu_\alpha)`
 (the theorem part of the definition).
@@ -87,8 +89,9 @@ No synthesis identity enters this argument.
 :::
 
 This is the coefficient estimate placed before the representation proof in Appendix B.
-In particular, $`C^4` ray regularity and $`A_{4,2}(G)<\infty` suffice for a second parameter
-moment. Full regularity along rays gives $`A_{r+2,r}(G)\le M_{r+2}(G)` and hence moments of
+In particular, $`C^4` regularity of $`G_a(\omega)=G(\omega a)` near $`I` and
+$`A_{4,2}(G)<\infty` suffice for a second parameter moment.
+The condition in {bpref "def:ray-regular"}[] gives $`A_{r+2,r}(G)\le M_{r+2}(G)` and hence moments of
 all orders. The finite-order estimate alone does not assert tempered synthesis.
 
 :::definition "aux:tempered-activation" (lean := "OperatorRidgelet.IsTemperedFunction, OperatorRidgelet.temperedTestFilter, OperatorRidgelet.temperedAdmissibilityConst") (uses := "def:admissible-filter, aux:conventions")
@@ -106,10 +109,10 @@ Let $`\alpha>0`. Part (ii) assumes an $`\alpha`-admissible Schwartz filter $`\rh
 bounded with $`\|g_G\|_\infty\le\|G\|_{L^1(\nu_\alpha)}` and continuous,
 and $`g_G=0` only if $`G=0` $`\nu_\alpha`-almost everywhere. (ii) For
 $`G\in L^1(\nu_\alpha)\cap L^2(\nu_\alpha)` and every $`x`, the iterated integral
-$`\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=(\!(\rho,\rho)\!)_\alphag_G(x)`
+$`\int_H[\int_{\mathbb R}\gamma_G(a,c)\rho(\langle a,x\rangle+c)\,\mathrm dc]\,\nu_\alpha(\mathrm da)=(\!(\rho,\rho)\!)_\alpha g_G(x)`
 converges absolutely, and if $`\gamma_G\in L^1(\lambda_\alpha)` its left side is the integral
 network $`S_\rho[\gamma_G\lambda_\alpha](x)`. (iii) For a tempered $`\beta` that is a
-continuous function of polynomial growth and $`G` regular along rays, the integrand
+continuous function of polynomial growth and $`G` satisfying {bpref "def:ray-regular"}[], the integrand
 $`\gamma_G(a,c)\beta(\langle a,x\rangle+c)` is absolutely integrable on the product space.
 Its integral is the ordinary network with finite coefficient measure $`\gamma_G\lambda_\alpha`
 and equals $`C_{\beta,\rho}^{(\alpha)}g_G(x)`. This identity allows a zero constant.
@@ -124,7 +127,7 @@ integral into a frequency integral of
 $`\widehat\rho(\omega)G(-\omega a)` against $`\widehat\rho(-\omega)e^{-i\omega\langle a,x\rangle}`,
 and the homogeneous substitution $`\xi=-\omega a` separates the admissibility constant from
 $`g_G(x)`. For a tempered $`\beta` the bias integral is a distributional pairing with a test
-function supported in $`-\operatorname{supp}\widehat\rho`; regularity along rays makes
+function supported in $`-\operatorname{supp}\widehat\rho`; {bpref "def:ray-regular"}[] makes
 $`a\mapsto` (test function) Bochner integrable in a $`C^m` norm, so the pairing commutes with
 the direction integral. Joint absolute integrability follows independently from
 {bpref "lem:coefficient-finite-order"}[], choosing a moment at least as large as the
@@ -144,11 +147,15 @@ the frame operator is $`T_\alpha=U_\alpha'U_\alpha`. With $`R_\rho:\mathcal E_\a
 L^2(\lambda_\alpha)` the bounded extension of {bpref "thm:B"}[] (ii) and
 $`\operatorname{Ran}R_\rho` its range, synthesis with the analysis filter is the transpose
 $`S_\rho=R_\rho'`, $`(S_\rho\gamma)[g]=\langle\gamma,R_\rho g\rangle_{L^2(\lambda_\alpha)}`.
+Here the prime denotes transpose into the anti-dual, while the star denotes the Hilbert
+adjoint. With $`C=(\!(\rho,\rho)\!)_\alpha`, the Plancherel identity gives
+$`R_\rho^*R_\rho=C I_{\mathcal E_\alpha}` and
+$`R_\rho'R_\rho=CJ_\alpha=CT_\alpha`.
 :::
 
 :::definition "aux:backprojection" (lean := "OperatorRidgelet.backprojectionOf, OperatorRidgelet.backprojection, OperatorRidgelet.backprojectionLp, OperatorRidgelet.coefficientProjection") (uses := "def:spectral-coefficient, def:spectral-space, lem:partial-fourier-l2, lem:coefficient-adjoint")
 For $`\gamma\in L^2(\lambda_\alpha)`, define the backprojection as $`\Lambda_\rho=W_\rho^*`.
-By {bpref "lem:coefficient-adjoint"}[], it is represented by the ray average
+By {bpref "lem:coefficient-adjoint"}[], it is represented by the integral
 $`\Lambda_\rho\gamma(\xi)=\frac1{2\pi}\int_{\mathbb R}\overline{\widehat\rho(\omega)}\,|\omega|^{-\alpha}\,\widehat\gamma(-\xi/\omega,\omega)\,\mathrm d\omega`,
 computed from any jointly strongly measurable partial Fourier representative supplied by
 {bpref "lem:partial-fourier-l2"}[]. The integral converges absolutely for almost every
@@ -205,7 +212,7 @@ powers.
 
 :::proposition "prop:coefficient-projection" (lean := "OperatorRidgelet.Paper.prop_coefficient_projection_i, OperatorRidgelet.Paper.prop_coefficient_projection_ii, OperatorRidgelet.Paper.prop_coefficient_projection_iii, OperatorRidgelet.Paper.prop_coefficient_projection_iv, OperatorRidgelet.Paper.prop_coefficient_projection_v, OperatorRidgelet.Paper.prop_coefficient_projection_vi, OperatorRidgelet.Paper.prop_coefficient_projection_vii, OperatorRidgelet.Paper.prop_coefficient_projection_viii") (uses := "aux:backprojection, aux:frame-operator, lem:coefficient-isometry, lem:homogeneous-mixture, thm:B")
 Let $`\rho` be $`\alpha`-admissible with $`C=(\!(\rho,\rho)\!)_\alpha` and
-$`\mathcal Y=L^2(\lambda_\alpha)`. The ray-average integral defining $`\Lambda_\rho\gamma`
+$`\mathcal Y=L^2(\lambda_\alpha)`. The integral defining $`\Lambda_\rho\gamma`
 converges absolutely for $`\nu_\alpha`-almost every $`\xi` (i), is independent as an $`L^2`
 class of the jointly measurable Fourier representative (ii), and satisfies
 $`\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}` (iii);
@@ -231,7 +238,7 @@ $`(\operatorname{Ran}R_\rho)^\perp`.
 :::theorem "thm:C" (lean := "OperatorRidgelet.Paper.thm_C_i_a, OperatorRidgelet.Paper.thm_C_i_b, OperatorRidgelet.Paper.thm_C_i_c, OperatorRidgelet.Paper.thm_C_i_d, OperatorRidgelet.Paper.thm_C_ii_a, OperatorRidgelet.Paper.thm_C_ii_b, OperatorRidgelet.Paper.thm_C_iii_a, OperatorRidgelet.Paper.thm_C_iii_b, OperatorRidgelet.Paper.thm_C_iii_c, OperatorRidgelet.Paper.thm_C_iii_d, OperatorRidgelet.Paper.thm_C_iii_e, OperatorRidgelet.Paper.thm_C_iv_a, OperatorRidgelet.Paper.thm_C_iv_b, OperatorRidgelet.Paper.thm_C_iv_c, OperatorRidgelet.Paper.thm_C_iv_d, OperatorRidgelet.Paper.thm_C_iv_e, OperatorRidgelet.Paper.thm_C_iv_f, OperatorRidgelet.Paper.thm_C_iv_completion") (uses := "aux:frame-operator, aux:backprojection, aux:hermite, def:ray-regular, thm:B, lem:spectral-unitary, lem:fourier-slice, lem:homogeneous-mixture, lem:weak-equals-strong, lem:hermite-totality, prop:coefficient-projection")
 Let $`\alpha>0` and let $`\rho` be an $`\alpha`-admissible Schwartz filter. (i) The frame operator
 $`T_\alpha=U_\alpha'U_\alpha` equals the Riesz map $`J_\alpha`, an isometric bijection
-$`\mathcal E_\alpha\to\mathcal E_\alpha'`, and $`S_\rho R_\rho f=(\!(\rho,\rho)\!)_\alphaT_\alpha f`
+$`\mathcal E_\alpha\to\mathcal E_\alpha'`, and $`S_\rho R_\rho f=(\!(\rho,\rho)\!)_\alpha T_\alpha f`
 for $`f\in\mathcal E_\alpha`. (ii) For $`f\in\mathcal E_\alpha` and $`g\in\mathcal E_\alpha'`,
 $`f=((\!(\rho,\rho)\!)_\alpha)^{-1}T_\alpha^{-1}S_\rho R_\rho f` and
 $`g=((\!(\rho,\rho)\!)_\alpha)^{-1}S_\rho(R_\rho T_\alpha^{-1}g)`. (iii) If $`f\in\mathcal D_\alpha`
@@ -241,8 +248,8 @@ $`R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G`, and when $`G\in L^1(\nu_\alpha)`, $`
 represented by $`g_G` and the second reconstruction formula is the spectral synthesis identity
 of {bpref "thm:A"}[] (ii). (iv) The backprojection $`\Lambda_\rho` is a bounded operator
 $`L^2(\lambda_\alpha)\to L^2(\nu_\alpha)` with $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}`,
-and $`\Lambda_\rho R_\rho f=(\!(\rho,\rho)\!)_\alphaU_\alpha f` holds in $`L^2(\nu_\alpha)` for
-every $`f\in\mathcal E_\alpha`. For a concrete core input, it holds pointwise with
+and $`\Lambda_\rho R_\rho f=(\!(\rho,\rho)\!)_\alpha U_\alpha f` holds in $`L^2(\nu_\alpha)` for
+every $`f\in\mathcal E_\alpha`. For an input $`f\in\mathcal D_\alpha`, it holds pointwise with
 $`U_\alpha f=\mathcal G_Qf` when the continuous Fourier-slice representative is used.
 The remaining inversion step uses Gaussian input: the Hermite formula at $`\xi\ne0`
 recovers the Hermite coefficients of $`f` from $`\mathcal G_Qf`, these coefficients determine
@@ -253,7 +260,7 @@ $`f` in $`L^2(\mu_Q)`, and $`f=\Delta_Q[((\!(\rho,\rho)\!)_\alpha)^{-1}\Lambda_\
 Since $`U_\alpha` is unitary onto $`\mathcal K_\alpha`,
 $`U_\alpha'U_\alpha f[g]=\langle U_\alpha f,U_\alpha g\rangle=\langle f,g\rangle_{\mathcal E_\alpha}`,
 the Riesz representation theorem makes $`J_\alpha` an isometric bijection, and the Plancherel
-identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=(\!(\rho,\rho)\!)_\alphaJ_\alpha f[g]`;
+identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=(\!(\rho,\rho)\!)_\alpha J_\alpha f[g]`;
 (ii) follows by applying $`T_\alpha^{-1}` or substituting $`f=T_\alpha^{-1}g`. Part (iii) is a
 Fubini computation with $`u=J_\alpha^{-1}U_\alpha'G` and {bpref "lem:weak-equals-strong"}[],
 and (iv) first uses $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` from
@@ -287,7 +294,8 @@ $`\mathcal D_\alpha(Y)`, the completion $`\mathcal E_\alpha(Y)` with inner produ
 $`\int\langle\mathcal G_Qf,\mathcal G_Qg\rangle_Y\mathrm d\nu_\alpha`, the transform
 $`R_\rho f\in L^2(\lambda_\alpha;Y)`, the coefficient $`W_\rho G` of a density
 $`G\in L^2(\nu_\alpha;Y)`, the anti-dual, Riesz map, frame and synthesis operators, the
-backprojection, and the Hermite extension. The target $`g_G` and regularity along rays are
+backprojection, and the Hermite extension. The target $`g_G` and the condition in
+{bpref "def:ray-regular"}[] are
 already polymorphic in the target.
 :::
 
@@ -308,7 +316,7 @@ is not repeated.
 Use {bpref "lem:partial-fourier-l2"}[] for jointly measurable Fourier representatives and
 Hilbert-valued Plancherel, {bpref "lem:spectral-target-basic"}[] for spectral synthesis and
 uniqueness, and {bpref "lem:coefficient-finite-order"}[] for coefficient moments and joint
-absolute integrability. The vector adjoint identity and ray formula are
+absolute integrability. The vector adjoint identity and integral formula are
 {bpref "lem:coefficient-adjoint"}[]. These common lemmas justify the Fubini and Parseval
 steps with the same constants. Completing the vector core and applying Riesz representation
 proves the frame and reconstruction statements; the Gaussian Hermite expansion is applied

@@ -63,7 +63,10 @@ def main() -> int:
         })
     today = datetime.date.today().isoformat()
     data = {
-        "manuscript": {"file": args.tex.name, "version": args.version or today, "synced": today},
+        "manuscript": {
+            **old.get("manuscript", {}),
+            "file": args.tex.name, "version": args.version or today, "synced": today,
+        },
         "naming": "OperatorRidgelet.Paper.<kind>_<label>[_<part>] where <label> drops the prefix and uses _ for -",
         "items": items,
     }

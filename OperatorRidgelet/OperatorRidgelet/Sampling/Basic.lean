@@ -184,7 +184,7 @@ theorem polarWeight_eq_zero_of_totalVariation_eq_zero {Γ : VectorMeasure Θ Y}
     (h : totalVariation Γ = 0) : polarWeight Γ = 0 := by
   rw [polarWeight, h, ENNReal.toReal_zero]
 
-/-- The normalized polar law vanishes when total variation is zero. -/
+/-- The normalized sampling distribution vanishes when total variation is zero. -/
 theorem polarLaw_eq_zero_of_totalVariation_eq_zero {Γ : VectorMeasure Θ Y}
     (h : totalVariation Γ = 0) : polarLaw Γ = 0 := by
   rw [polarLaw, variation_eq_zero_of_totalVariation_eq_zero h, smul_zero]
@@ -227,7 +227,7 @@ theorem variation_eq_smul_polarLaw (Γ : VectorMeasure Θ Y) [IsFiniteMeasure Γ
   rw [polarWeight, ENNReal.ofReal_toReal (totalVariation_ne_top Γ), polarLaw, smul_smul,
     ENNReal.mul_inv_cancel h (totalVariation_ne_top Γ), one_smul]
 
-/-- The normalized polar law is absolutely continuous with respect to variation. -/
+/-- The normalized sampling distribution is absolutely continuous with respect to variation. -/
 theorem polarLaw_absolutelyContinuous (Γ : VectorMeasure Θ Y) : polarLaw Γ ≪ Γ.variation :=
   Measure.smul_absolutelyContinuous
 

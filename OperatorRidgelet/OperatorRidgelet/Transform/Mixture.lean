@@ -28,7 +28,7 @@ section LayersBasic
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   {P : H →L[ℝ] H} {N : ℝ → Measure H}
 
-/-- A Gaussian layer has the characteristic function of its scaled covariance. -/
+/-- A Gaussian component has the characteristic function of its scaled covariance. -/
 theorem IsCenteredGaussianLayers.charFun_eq (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) (ξ : H) :
     charFun (N s) ξ = Complex.exp (-((s * ⟪P ξ, ξ⟫ : ℝ) : ℂ)) := by
@@ -38,7 +38,7 @@ theorem IsCenteredGaussianLayers.charFun_eq (hN : IsCenteredGaussianLayers P N) 
   rw [real_inner_smul_left]
   ring
 
-/-- Every positive-scale Gaussian layer is a probability measure. -/
+/-- Every positive-scale Gaussian component is a probability measure. -/
 theorem IsCenteredGaussianLayers.isProbabilityMeasure (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) : IsProbabilityMeasure (N s) :=
   (hN s hs).isProbabilityMeasure
@@ -72,7 +72,9 @@ theorem IsCenteredGaussianLayers.map_smul (hN : IsCenteredGaussianLayers P N) {s
   rw [P.map_smul, real_inner_smul_left, real_inner_smul_right]
   ring
 
-/-- A positive-scale Gaussian layer is the pushforward of the unit layer by square-root scaling. -/
+/-- A positive-scale Gaussian component is the pushforward of the unit-scale component by
+square-root
+scaling. -/
 theorem IsCenteredGaussianLayers.eq_scaledLayer (hN : IsCenteredGaussianLayers P N) {s : ℝ}
     (hs : 0 < s) : N s = scaledLayer N s := by
   unfold scaledLayer

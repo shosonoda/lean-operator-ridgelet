@@ -5,27 +5,27 @@ import OperatorRidgelet.ToMathlib.IndicatorTendstoL2
 # The partial Fourier transform in the bias of a square-integrable coefficient
 
 Section 3 material behind Theorem `thm:C`(iv) and Proposition `prop:coefficient-projection`:
-the bias-Fourier representatives of `HasBiasFourier` are unique up to null sets on almost every
-ray, they satisfy Plancherel and Parseval along rays, and every `γ ∈ L²(λ)` has a jointly
-measurable representative.
+the bias-Fourier representatives of `HasBiasFourier` are unique up to null sets for almost every
+direction, they satisfy Plancherel and Parseval in the bias variable, and every `γ ∈ L²(λ)` has a
+jointly measurable representative.
 
-* **Uniqueness on a ray.**  Two square-integrable functions on `ℝ` with the same pairing against
-  `φ̂` for every Schwartz `φ` agree almost everywhere
+* **Uniqueness for a fixed direction.**  Two square-integrable functions on `ℝ` with the same
+  pairing against `φ̂` for every Schwartz `φ` agree almost everywhere
   (`ae_eq_of_forall_integral_mul_conj_lineFourier_eq`): the Fourier transform is a bijection of
   the Schwartz space, and test functions determine locally integrable functions.  Hence two
-  representatives of the same coefficient agree almost everywhere on almost every ray
+  representatives of the same coefficient agree almost everywhere for almost every direction
   (`HasBiasFourier.ae_ae_eq`).
-* **The `L²` Fourier transform of a ray.**  `lineFourierL2 u hu` is Mathlib's `L²` Fourier
-  transform of `u ∈ L²(ℝ)` at the rescaled frequency `ω / 2π`; it satisfies Parseval against
-  Schwartz functions and Plancherel, so it is *the* representative on almost every ray, and every
+* **The `L²` Fourier transform of a function on `ℝ`.**  `lineFourierL2 u hu` is Mathlib's `L²`
+  Fourier transform of `u ∈ L²(ℝ)` at the rescaled frequency `ω / 2π`; it satisfies Parseval against
+  Schwartz functions and Plancherel, so it is *the* representative for almost every direction. Every
   representative inherits Plancherel and the polarized Parseval identity
   (`HasBiasFourier.lintegral_enorm_sq_ae`, `HasBiasFourier.integral_mul_conj_ae`).
 * **Existence.**  For measurable `γ ∈ L²(ν ⊗ dc)` the Fourier integrals of the truncations
   `γ 1_{|c| ≤ n}` along the bias (`sliceFourier`) are jointly measurable and form a Cauchy
-  sequence in `L²(ν ⊗ dω)` (Plancherel along almost every ray); a measurable representative of
+  sequence in `L²(ν ⊗ dω)` (Plancherel for almost every direction); a measurable representative of
   the limit, rescaled to the manuscript's convention, is a bias-Fourier representative of `γ`
-  (`exists_measurable_hasBiasFourier`), because along a subsequence almost every ray of it is
-  the `L²` limit of the truncated transforms.
+  (`exists_measurable_hasBiasFourier`). Along a subsequence, for almost every direction,
+  this representative is the `L²` limit of the truncated transforms.
 -/
 
 noncomputable section
@@ -35,7 +35,7 @@ namespace OperatorRidgelet
 open MeasureTheory Complex Filter Topology
 open scoped ENNReal FourierTransform
 
-/-! ### Uniqueness along a ray -/
+/-! ### Uniqueness for a fixed direction -/
 
 section Ray
 
@@ -69,7 +69,8 @@ theorem exists_schwartz_lineFourier_eq {r : ℝ → ℝ} (hr : ContDiff ℝ (⊤
   simp only [hr']
   rw [mul_inv_cancel_left₀ (by positivity)]
 
-/-- **Uniqueness along a ray.**  Two square-integrable functions on `ℝ` with the same pairing
+/-- **Uniqueness for a fixed direction.**  Two square-integrable functions on `ℝ` with the same
+pairing
 against `conj (lineFourier φ)` for every Schwartz `φ` agree almost everywhere. -/
 theorem ae_eq_of_forall_integral_mul_conj_lineFourier_eq {f g : ℝ → ℂ} (hf : MemLp f 2 volume)
     (hg : MemLp g 2 volume)
@@ -94,7 +95,7 @@ theorem ae_eq_of_forall_integral_mul_conj_lineFourier_eq {f g : ℝ → ℂ} (hf
 
 end Ray
 
-/-! ### The `L²` Fourier transform of a ray -/
+/-! ### The `L²` Fourier transform of a function on `ℝ` -/
 
 section LineFourierL2
 
@@ -188,7 +189,7 @@ section Representatives
 variable {H : Type*} [MeasurableSpace H]
 
 /-- **Uniqueness of bias-Fourier representatives**: two representatives of the same coefficient
-agree almost everywhere on `ν`-almost every ray. -/
+agree almost everywhere on `ν`-almost every direction. -/
 theorem HasBiasFourier.ae_ae_eq {ν : Measure H} {γ : H × ℝ → ℂ} {Φ Φ' : H → ℝ → ℂ}
     (h : HasBiasFourier ν γ Φ) (h' : HasBiasFourier ν γ Φ') :
     ∀ᵐ a ∂ν, Φ a =ᵐ[volume] Φ' a := by
@@ -197,8 +198,9 @@ theorem HasBiasFourier.ae_ae_eq {ν : Measure H} {γ : H × ℝ → ℂ} {Φ Φ'
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (by positivity))
     ((h3 φ).symm.trans (h4 φ))
 
-/-- On `ν`-almost every ray, a bias-Fourier representative is the `L²` Fourier transform of the
-ray function of the coefficient. -/
+/-- On `ν`-almost every direction, a bias-Fourier representative is the `L²` Fourier transform of
+the
+function `c ↦ γ(a, c)`. -/
 theorem HasBiasFourier.ae_ae_eq_lineFourierL2 {ν : Measure H} {γ : H × ℝ → ℂ} {Φ : H → ℝ → ℂ}
     (h : HasBiasFourier ν γ Φ) :
     ∀ᵐ a ∂ν, ∀ hu : MemLp (fun c => γ (a, c)) 2 volume,
@@ -210,7 +212,7 @@ theorem HasBiasFourier.ae_ae_eq_lineFourierL2 {ν : Measure H} {γ : H × ℝ �
 
 variable {ν : Measure H} [SFinite ν]
 
-/-- **Plancherel along rays** for a bias-Fourier representative of `γ ∈ L²(ν ⊗ dc)`:
+/-- **Plancherel in the bias variable** for a bias-Fourier representative of `γ ∈ L²(ν ⊗ dc)`:
 `∫⁻ ‖Φ(a,ω)‖ₑ² dω = 2π ∫⁻ ‖γ(a,c)‖ₑ² dc` for `ν`-almost every `a`. -/
 theorem HasBiasFourier.lintegral_enorm_sq_ae {γ : H × ℝ → ℂ} (hγ : MemLp γ 2 (ν.prod volume))
     {Φ : H → ℝ → ℂ} (h : HasBiasFourier ν γ Φ) :
@@ -220,7 +222,7 @@ theorem HasBiasFourier.lintegral_enorm_sq_ae {γ : H × ℝ → ℂ} (hγ : MemL
   filter_upwards [ha hu] with ω hω
   rw [hω]
 
-/-- **Parseval along rays** for bias-Fourier representatives of `γ, γ' ∈ L²(ν ⊗ dc)`:
+/-- **Parseval in the bias variable** for bias-Fourier representatives of `γ, γ' ∈ L²(ν ⊗ dc)`:
 `∫ γ(a,c) conj(γ'(a,c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(Φ'(a,ω)) dω` for `ν`-almost every `a`. -/
 theorem HasBiasFourier.integral_mul_conj_ae {γ γ' : H × ℝ → ℂ} (hγ : MemLp γ 2 (ν.prod volume))
     (hγ' : MemLp γ' 2 (ν.prod volume)) {Φ Φ' : H → ℝ → ℂ} (h : HasBiasFourier ν γ Φ)
@@ -251,7 +253,7 @@ def sliceFourier (γ : H × ℝ → ℂ) (p : H × ℝ) : ℂ :=
   ∫ c : ℝ, Complex.exp (((-2 * Real.pi * c * p.2 : ℝ) : ℂ) * Complex.I) * γ (p.1, c)
 
 omit [MeasurableSpace H] in
-/-- `sliceFourier γ (a, ω)` is the Fourier transform of the ray `c ↦ γ(a, c)`. -/
+/-- `sliceFourier γ (a, ω)` is the Fourier transform of the function `c ↦ γ(a, c)`. -/
 theorem sliceFourier_eq (γ : H × ℝ → ℂ) (a : H) (ω : ℝ) :
     sliceFourier γ (a, ω) = 𝓕 (fun c => γ (a, c)) ω :=
   (Real.fourier_real_eq_integral_exp_smul _ _).symm

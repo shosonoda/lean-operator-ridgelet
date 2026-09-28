@@ -3,7 +3,7 @@ import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Transform.BiasFourier
 
 /-!
-# Backprojection: the ray average of a bias-Fourier representative (Appendix B.4)
+# Backprojection: the backprojection integral of a bias-Fourier representative (Appendix B.4)
 
 Ridgelet-specific lemmas behind Theorem `thm:C`(iv)(a)–(b) and Proposition
 `prop:coefficient-projection`(i)–(vi), for the abstract pair `(μ, ν)` of Appendix H.
@@ -14,16 +14,18 @@ Ridgelet-specific lemmas behind Theorem `thm:C`(iv)(a)–(b) and Proposition
   preserves null sets and transforms lower Lebesgue and Bochner integrals with the weight
   `|ω|^{-α}` (`IsHomogeneous.lintegral_raySubst`, `IsHomogeneous.integral_raySubst`).
 * **Absolute convergence and the bound.**  For a jointly measurable representative `Φ` of
-  `γ ∈ L²(λ)` the weighted ray energy `rayEnergy α Φ ξ = ∫ |ω|^{-α} ‖Φ(-ξ/ω, ω)‖² dω` integrates
-  over `ξ` to `2π ‖γ‖²` (ray substitution and Plancherel along rays), so it is finite for
+  `γ ∈ L²(λ)` the weighted integral `rayEnergy α Φ ξ = ∫ |ω|^{-α} ‖Φ(-ξ/ω, ω)‖² dω` integrates
+  over `ξ` to `2π ‖γ‖²` (ray substitution and Plancherel in the bias variable), so it is finite for
   almost every `ξ`; weighted Cauchy–Schwarz then gives the absolute convergence of the ray
   average and `‖Λ_ρ Φ(ξ)‖² ≤ (2π)⁻¹ C rayEnergy α Φ ξ`, hence `‖Λ_ρ γ‖² ≤ C ‖γ‖²`.
 * **Independence of the representative.**  Two representatives agree almost everywhere on
   almost every ray, hence on a `ν ⊗ dω`-full set, whose image under the ray substitution is
-  again full; the ray averages agree `ν`-almost everywhere.
-* **Adjointness and `Λ_ρ W_ρ = C`.**  Parseval along rays turns `⟨γ, W_ρ F⟩_{L²(λ)}` into the
+  again full; the backprojection integrals agree `ν`-almost everywhere.
+* **Adjointness and `Λ_ρ W_ρ = C`.**  Parseval in the bias variable turns `⟨γ, W_ρ F⟩_{L²(λ)}`
+  into the
   pairing of the representatives, the ray substitution turns it into
-  `⟨Λ_ρ γ, F⟩_{L²(ν)}`; on the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` the ray average is
+  `⟨Λ_ρ γ, F⟩_{L²(ν)}`; on the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` the backprojection
+integral is
   `C F(ξ)` pointwise.
 * **The projection.**  `Π_ρ = C⁻¹ W_ρ P_𝒦 Λ_ρ` maps into `Ran R_ρ = W_ρ(𝒦)`, and
   `γ - Π_ρ γ ⊥ R_ρ g` for `g ∈ 𝒦` by adjointness, `Λ_ρ W_ρ = C`, and the self-adjointness of
@@ -192,14 +194,14 @@ theorem IsHomogeneous.integrable_raySubst {K : H × ℝ → ℂ} (hK : Measurabl
 
 end RaySubst
 
-/-! ### The ray average of a jointly measurable representative -/
+/-! ### The backprojection integral of a jointly measurable representative -/
 
 section RayAverage
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H]
 
-/-- The integrand of the ray average `eq:ray-average` is jointly measurable. -/
+/-- The integrand of the backprojection integral `eq:ray-average` is jointly measurable. -/
 theorem measurable_backprojection_integrand (α : ℝ) (ρ : SchwartzMap ℝ ℝ) {Φ : H → ℝ → ℂ}
     (hΦ : Measurable (Function.uncurry Φ)) :
     Measurable fun p : H × ℝ => (starRingEnd ℂ) (filterFourier ρ p.2) *
@@ -209,7 +211,7 @@ theorem measurable_backprojection_integrand (α : ℝ) (ρ : SchwartzMap ℝ ℝ
       ((continuous_abs.measurable.comp measurable_snd).pow_const (-α)))).mul
     (hΦ.comp measurable_raySubst)
 
-/-- The ray average of a jointly measurable representative is measurable. -/
+/-- The backprojection integral of a jointly measurable representative is measurable. -/
 theorem measurable_backprojectionOf (α : ℝ) (ρ : SchwartzMap ℝ ℝ) {Φ : H → ℝ → ℂ}
     (hΦ : Measurable (Function.uncurry Φ)) : Measurable (backprojectionOf α ρ Φ) := by
   unfold backprojectionOf
@@ -224,7 +226,7 @@ theorem measurable_coefficient_representative {ρ : SchwartzMap ℝ ℝ} {F : H 
     (hF.comp (by fun_prop : Continuous fun p : H × ℝ => -(p.2 • p.1)).measurable)
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- The ray average of the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` is `C^{(α)}_ρ F(ξ)`,
+/-- The backprojection integral of the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` is `C^{(α)}_ρ F(ξ)`,
 pointwise in `ξ`. -/
 theorem backprojectionOf_coefficient_representative (α : ℝ) (ρ : SchwartzMap ℝ ℝ) (F : H → ℂ)
     (ξ : H) :
@@ -251,11 +253,11 @@ theorem backprojectionOf_coefficient_representative (α : ℝ) (ρ : SchwartzMap
         congr 1
         exact integral_ofReal
 
-/-- The weighted ray energy `∫ |ω|^{-α} ‖Φ(-ξ/ω, ω)‖² dω` of a representative at `ξ`. -/
+/-- The weighted integral `∫ |ω|^{-α} ‖Φ(-ξ/ω, ω)‖² dω` of a representative at `ξ`. -/
 def rayEnergy (α : ℝ) (Φ : H → ℝ → ℂ) (ξ : H) : ℝ≥0∞ :=
   ∫⁻ ω, ENNReal.ofReal (|ω| ^ (-α)) * ‖Φ (-(ω⁻¹ • ξ)) ω‖ₑ ^ 2
 
-/-- The ray energy of a jointly measurable representative is measurable in `ξ`. -/
+/-- The weighted integral of a jointly measurable representative is measurable in `ξ`. -/
 theorem measurable_rayEnergy (α : ℝ) {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) :
     Measurable (rayEnergy α Φ) :=
   ((measurable_rayWeight α).mul
@@ -264,7 +266,7 @@ theorem measurable_rayEnergy (α : ℝ) {Φ : H → ℝ → ℂ} (hΦ : Measurab
 variable {α : ℝ} {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
 include hν
 
-/-- The ray energy integrates to the squared `L²(ν ⊗ dω)` norm of the representative. -/
+/-- The weighted integral integrates to the squared `L²(ν ⊗ dω)` norm of the representative. -/
 theorem IsHomogeneous.lintegral_rayEnergy {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) :
     ∫⁻ ξ, rayEnergy α Φ ξ ∂ν = ∫⁻ p, ‖Function.uncurry Φ p‖ₑ ^ 2 ∂ν.prod volume := by
   unfold rayEnergy
@@ -294,7 +296,7 @@ theorem HasBiasFourier.memLp_uncurry {γ : H × ℝ → ℂ} (hγ : MemLp γ 2 (
     rw [h.lintegral_uncurry_enorm_sq hγ hΦ]
     exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hγ.lintegral_enorm_sq_lt_top)
 
-/-- The ray energy of a representative of `γ ∈ L²(ν ⊗ dc)` is finite for `ν`-almost every
+/-- The weighted integral of a representative of `γ ∈ L²(ν ⊗ dc)` is finite for `ν`-almost every
 `ξ`. -/
 theorem HasBiasFourier.ae_rayEnergy_lt_top {γ : H × ℝ → ℂ} (hγ : MemLp γ 2 (ν.prod volume))
     {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) (h : HasBiasFourier ν γ Φ) :
@@ -304,7 +306,8 @@ theorem HasBiasFourier.ae_rayEnergy_lt_top {γ : H × ℝ → ℂ} (hγ : MemLp 
     exact (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hγ.lintegral_enorm_sq_lt_top).ne)
 
 omit hν in
-/-- **Absolute convergence of the ray average** at every `ξ` with finite ray energy: weighted
+/-- **Absolute convergence of the backprojection integral** at every `ξ` with finite weighted
+integral: weighted
 Cauchy–Schwarz against the admissibility integral. -/
 theorem integrable_backprojection_integrand {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
     {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) {ξ : H}
@@ -335,7 +338,8 @@ theorem integrable_backprojection_integrand {ρ : SchwartzMap ℝ ℝ} (hρ : Is
     mul_nonneg (mul_nonneg (norm_nonneg (filterFourier ρ ω)) hw) (norm_nonneg (Φ (-(ω⁻¹ • ξ)) ω))]
 
 omit hν in
-/-- **The bound on the ray average**: `‖Λ_ρ Φ(ξ)‖² ≤ (2π)⁻¹ C_ρ · rayEnergy α Φ ξ` (weighted
+/-- **The bound on the backprojection integral**: `‖Λ_ρ Φ(ξ)‖² ≤ (2π)⁻¹ C_ρ · rayEnergy α Φ ξ`
+(weighted
 Cauchy–Schwarz). -/
 theorem enorm_backprojectionOf_sq_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
     {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ)) (ξ : H) :
@@ -399,7 +403,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 variable {α : ℝ} {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
 
 omit [BorelSpace H] hν in
-/-- The backprojection of `γ ∈ L²(λ)` is the ray average of a jointly measurable representative
+/-- The backprojection of `γ ∈ L²(λ)` is the backprojection integral of a jointly measurable
+representative
 of `γ` (the junk value is never taken on `L²(λ)`). -/
 theorem backprojection_eq_backprojectionOf (α : ℝ) (ρ : ℝ → ℝ) {γ : H × ℝ → ℂ}
     (hγ : MemLp γ 2 (parameterMeasure ν)) :
@@ -417,7 +422,7 @@ theorem backprojection_eq_backprojectionOf (α : ℝ) (ρ : ℝ → ℝ) {γ : H
 
 include hν
 
-/-- **Independence of the representative**: the ray averages of two jointly measurable
+/-- **Independence of the representative**: the backprojection integrals of two jointly measurable
 bias-Fourier representatives of the same coefficient agree `ν`-almost everywhere. -/
 theorem IsHomogeneous.backprojectionOf_ae_eq (ρ : ℝ → ℝ) {γ : H × ℝ → ℂ} {Φ Φ' : H → ℝ → ℂ}
     (hΦ : Measurable (Function.uncurry Φ)) (hΦ' : Measurable (Function.uncurry Φ'))
@@ -489,7 +494,7 @@ theorem IsHomogeneous.backprojection_spectralCoefficient {F : H → ℂ} (hF : M
 
 /-- **Adjointness for a representative**: for a jointly measurable representative `Φ` of a
 measurable `γ ∈ L²(λ)` and measurable `F ∈ L²(ν)`,
-`∫ γ conj(γ_F) dλ = ∫ Λ_ρ Φ conj(F) dν`, by Parseval along rays, the ray substitution, and
+`∫ γ conj(γ_F) dλ = ∫ Λ_ρ Φ conj(F) dν`, by Parseval in the bias variable, the ray substitution, and
 Fubini. -/
 theorem IsHomogeneous.integral_mul_conj_coefficientFormula {γ : H × ℝ → ℂ}
     (hγ : MemLp γ 2 (ν.prod volume)) {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ))

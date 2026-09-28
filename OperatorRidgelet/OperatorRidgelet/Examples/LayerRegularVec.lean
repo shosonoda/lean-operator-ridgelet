@@ -1,7 +1,7 @@
 import OperatorRidgelet.Examples.LayerRegular
 import OperatorRidgelet.Examples.LayerRidgelet
 
-/-! # Ray regularity for vector-valued Gaussian layers -/
+/-! # Ray regularity for vector-valued Gaussian-activation operator layers -/
 
 noncomputable section
 set_option maxHeartbeats 800000

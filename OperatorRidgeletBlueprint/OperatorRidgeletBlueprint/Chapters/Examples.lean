@@ -94,11 +94,12 @@ $`f_W(x)=e^{-\langle Wx,x\rangle/2}`, $`D=\det(I+M)`, and
 $`\kappa_W(\xi)=\langle Q^{1/2}(I+M)^{-1}Q^{1/2}\xi,\xi\rangle`. For every $`\alpha>0` and
 band-pass $`\rho`: (i) $`\mathcal G_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}` and
 $`R_\rho f_W(a,c)=D^{-1/2}(\rho*\phi_{\kappa_W(a)})(c)`, so $`f_W\in\mathcal D_\alpha`, and
-$`f_W` is not cylindrical when $`W` has infinite rank. (ii) $`G=\mathcal G_Qf_W` is regular
-along rays and $`T_\alpha f_W` is represented by
+$`f_W` is not cylindrical when $`W` has infinite rank. (ii) $`G=\mathcal G_Qf_W` satisfies
+{bpref "def:ray-regular"}[] and $`T_\alpha f_W` is represented by
 $`g_G(x)=D^{-1/2}\int_0^\infty\det(I+2sP^{1/2}S_WP^{1/2})^{-1/2}\exp(-\tfrac12\langle\Sigma_sx,x\rangle)\,s^{\alpha/2-1}\,\mathrm ds`.
-(iii) For every real, globally Lipschitz, non-polynomial $`\beta`, the coefficient
-$`R_\rho f_W=\gamma_G` has finite variation and second moment,
+(iii) For every real, globally Lipschitz, non-polynomial $`\beta`, the coefficient measure
+$`\Gamma_G=\gamma_G\lambda_\alpha`, with $`\gamma_G=R_\rho f_W`, has finite total variation
+and second parameter moment,
 $`S_\beta[R_\rho f_W\lambda_\alpha]=C_{\beta,\rho}^{(\alpha)}g_G`, and its sampled network
 converges at the rate $`N^{-1/2}` in $`C(K)`.
 :::
@@ -108,7 +109,7 @@ converges at the rate $`N^{-1/2}` in $`C(K)`.
 inversion in the bias gives the convolution, $`(I+M)^{-1}\ge(1+\|M\|)^{-1}I` gives the decay
 needed by {bpref "lem:gaussian-decay"}[], and $`f_W(x)<1=f_W(0)` for $`x\ne0` in the kernel
 of a finite-rank map. Part (ii) is {bpref "thm:C"}[] (iii) with the Gaussian integral applied
-on each layer of $`\nu_\alpha`; part (iii) is {bpref "lem:ray-regular-examples"}[] (a) with
+on each Gaussian component of $`\nu_\alpha`; part (iii) is {bpref "lem:ray-regular-examples"}[] (a) with
 $`S_W\ge(1+\|M\|)^{-1}Q` followed by {bpref "thm:E"}[].
 :::
 
@@ -187,8 +188,8 @@ $`\|w_\varphi\|_{L^1(m)}` in place of $`B_1`.
 (ii) For $`\beta=\Phi`, $`F_\varphi\in\mathcal D_\alpha` for every $`\alpha>0`,
 $`\mathcal G_QF_\varphi(\xi)=\int_\Omega w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm dy)`,
 $`R_\rho F_\varphi(a,c)=\int_\Omega w_\varphi(y)(1+\sigma_y^2)^{-1/2}(\rho*\phi_{\langle S_ya,a\rangle})(c)\,m(\mathrm dy)`,
-and $`S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q`; consequently $`\mathcal G_QF_\varphi` is regular
-along rays, the reconstruction formulas of {bpref "thm:C"}[] hold for $`F_\varphi`, and
+and $`S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q`; consequently $`\mathcal G_QF_\varphi` satisfies
+{bpref "def:ray-regular"}[], the reconstruction formulas of {bpref "thm:C"}[] hold for $`F_\varphi`, and
 $`R_\rho F_\varphi` synthesizes, with any real Lipschitz non-polynomial $`\beta'`, the target
 $`C_{\beta',\rho}^{(\alpha)}T_\alpha F_\varphi` with the finite-width rate of
 {bpref "thm:E"}[]; the same holds for $`\mathcal F` as a $`Y`-valued target. (iii) The
@@ -205,7 +206,7 @@ $`\|\iota(y)\|^2\le\|A\|_\infty^2`. For (ii), the pair
 $`(\langle a_y,x\rangle,\langle x,\xi\rangle)` is centred Gaussian under $`\mu_Q` and
 $`\mathbb E[e^{-Z^2/2}e^{-iW}]=(1+\sigma^2)^{-1/2}\exp(-\tau^2/2+r^2/(2(1+\sigma^2)))`;
 Cauchy–Schwarz gives the lower bound on $`S_y`, {bpref "lem:ray-regular-examples"}[] (a) and
-(c) give regularity along rays, and {bpref "thm:C"}[], {bpref "thm:E"}[], and
+(c) give the condition in {bpref "def:ray-regular"}[], and {bpref "thm:C"}[], {bpref "thm:E"}[], and
 {bpref "thm:vector-valued"}[] give the rest. Part (iii) is Fubini with
 {bpref "lem:gaussian-hinge"}[]; for (iv), a vector $`x\in\ker L\setminus\ker A` gives
 $`F_\varphi(tx)=F_\varphi(0)` for all $`t`, while dominated convergence gives

@@ -197,11 +197,11 @@ separates truncation from sampling, and projecting directions does not increase 
 moment.
 :::
 
-# Finite variation from the spectral density
+# Finite total variation and moments of the coefficient measure
 
 :::theorem "thm:E" (lean := "OperatorRidgelet.Paper.thm_E_i, OperatorRidgelet.Paper.thm_E_ii, OperatorRidgelet.Paper.thm_E_iii, OperatorRidgelet.Paper.thm_E_iv, OperatorRidgelet.Paper.thm_E_moments") (uses := "def:ray-regular, def:spectral-coefficient, lem:coefficient-finite-order, aux:tempered-activation, aux:sampling-data, thm:A, thm:lipschitz-barron, lem:homogeneous-mixture")
-Let $`\rho` be a band-pass filter with frequency window $`I`, and let $`G` be regular along
-rays. For every integer $`r\ge0` there is a finite constant $`c_{\rho,r}` such that
+Let $`\rho` be a band-pass filter with frequency window $`I`, and let $`G` satisfy
+{bpref "def:ray-regular"}[]. For every integer $`r\ge0` there is a finite constant $`c_{\rho,r}` such that
 $`\int_{H\times\mathbb R}(1+\|a\|+|c|)^r\|\gamma_G(a,c)\|\,\mathrm d\lambda_\alpha\le c_{\rho,r}M_{r+2}(G)<\infty`.
 The same constant works for every Hilbert output space $`Y`; it depends only on the filter
 and the order. In particular,
@@ -222,7 +222,7 @@ Use $`1+\|a\|^2+|c|^2\le(1+\|a\|+|c|)^2` for the second moment, then
 :::
 
 :::lemma_ "lem:ray-regular-examples" (lean := "OperatorRidgelet.Paper.lem_ray_regular_examples_a, OperatorRidgelet.Paper.lem_ray_regular_examples_b_i, OperatorRidgelet.Paper.lem_ray_regular_examples_b_ii, OperatorRidgelet.Paper.lem_ray_regular_examples_c_i, OperatorRidgelet.Paper.lem_ray_regular_examples_c_ii") (uses := "def:ray-regular, lem:gaussian-decay, lem:homogeneous-mixture")
-The following functions are regular along rays for every band-pass $`\rho`.
+The following functions satisfy {bpref "def:ray-regular"}[] for every band-pass $`\rho`.
 (a) $`G(\xi)=q(\xi)e^{-\kappa(\xi)/2}`, where $`\kappa(\xi)=\langle S\xi,\xi\rangle`,
 $`S` is bounded and positive, $`S\ge\theta Q` for some $`\theta>0`, and $`q` is a
 polynomial in $`\kappa` and finitely many bounded linear functionals $`\ell_i` satisfying
@@ -230,12 +230,13 @@ $`|\ell_i(\xi)|^2\le C_i\kappa(\xi)` for every $`\xi`. Equivalently,
 $`\ell_i=\langle S^{1/2}v_i,\cdot\rangle` for some $`v_i\in H`. A polynomial in
 $`\kappa` alone requires no further condition.
 (b) $`G(\xi)=\varphi(\|\xi-\xi_0\|^2)` for $`\varphi\in C_c^\infty(\mathbb R)`;
-more generally, bounded densities smooth along rays, with bounded support and
+more generally, bounded densities with bounded support, smooth restrictions
+$`G_a(\omega)=G(\omega a)` near $`I`, and
 $`\sup_{\omega\in I}|\partial_\omega^kG(\omega a)|\le C_k(1+\|a\|)^{p_k}` for every $`k`.
 (c) Finite linear combinations, and Bochner integrals $`G=\int_\Omega G_y\,m(\mathrm dy)`
 of uniformly bounded measurable families over a finite measure, subject to these
-neighbourhood bounds: there is an open $`U\supset I` where every ray of every $`G_y` is
-smooth, and finite-valued Borel $`h_k:H\to[0,\infty)` such that
+neighbourhood bounds: there is an open $`U\supset I` where every function
+$`\omega\mapsto G_y(\omega a)` is smooth, and finite-valued Borel $`h_k:H\to[0,\infty)` such that
 $`\sup_{\omega\in U}|\partial_\omega^kG_y(\omega a)|\le h_k(a)` for every $`y,a,k`, and
 $`\int_H(1+\|a\|)^{m+2}\max_{k\le m}h_k(a)\,\nu_\alpha(\mathrm da)<\infty` for every $`m`.
 The bounds hold on the open neighbourhood and for every direction.
@@ -243,7 +244,8 @@ The bounds hold on the open neighbourhood and for every direction.
 
 :::proof "lem:ray-regular-examples"
 For (a), domination of the linear functionals gives $`|q(\xi)|\le C(1+\kappa(\xi))^p`,
-so $`G` is bounded. Ray derivatives are polynomials times $`e^{-\omega^2\kappa(a)/2}`;
+so $`G` is bounded. Derivatives of $`G_a(\omega)=G(\omega a)` with respect to $`\omega`
+are polynomials times $`e^{-\omega^2\kappa(a)/2}`;
 on $`I\subset\{r\le|\omega|\le R\}` their bound is
 $`C_k(1+\|a\|)^{p_k}e^{-r^2\theta\langle Qa,a\rangle/2}`. Apply
 {bpref "lem:gaussian-decay"}[]. For (b), derivatives vanish outside a bounded set of
@@ -253,15 +255,15 @@ inequality and Tonelli give
 $`M_m(G)\le m(\Omega)\int_H(1+\|a\|)^{m+2}\max_{k\le m}h_k(a)\,\nu_\alpha(\mathrm da)<\infty`.
 :::
 
-# Constructive universal approximation
+# Constructive universal approximation with sampling bounds
 
 :::theorem "thm:D" (lean := "OperatorRidgelet.Paper.thm_D, OperatorRidgelet.Paper.thm_D_dense, OperatorRidgelet.Paper.thm_D_vec") (uses := "def:finite-network, def:ray-regular, aux:tempered-activation, thm:tempered-reconstruction, lem:ray-regular-examples, thm:A, thm:E, thm:lipschitz-barron, lem:qualitative-sampling, cor:vector-rates, thm:vector-valued")
 Let $`\beta:\mathbb R\to\mathbb R` be continuous, of polynomial growth, and not a polynomial,
 let $`\rho` be a band-pass filter with $`C_{\beta,\rho}^{(\alpha)}=1`, let $`f:H\to\mathbb C`
 be continuous, $`K\subset H` compact, and $`\varepsilon>0`. The direction measure has full
 support and is finite on bounded sets; these properties hold for $`\nu_\alpha` and are
-required in the abstract-weight version. Then there is a spectral density
-$`G`, regular along rays, smooth, and vanishing outside a bounded set, such that (i)
+required for general input and direction measures. Then there is a spectral density
+$`G` satisfying {bpref "def:ray-regular"}[], smooth and vanishing outside a bounded set, such that (i)
 $`\|f-g_G\|_{C(K)}<\varepsilon`; (ii) $`g_G=S_\beta[\gamma_G\lambda_\alpha]` is an integral
 network whose coefficient measure is finite with finite moments of all orders; (iii) if
 $`\beta` is globally Lipschitz, the sampled network $`f_N` of $`\gamma_G\lambda_\alpha`
@@ -278,8 +280,9 @@ Finite sums of characters $`e^{i\langle x,\xi\rangle}` form a self-conjugate alg
 containing the constants and separating points, so Stone–Weierstrass gives a trigonometric
 approximant on $`K`; each character is within $`r_K\delta` of $`g_{G_j}` for a normalized
 smooth bump $`G_j` supported in the ball of radius $`\delta` around $`\xi_j`. Full support
-makes its normalizing integral positive, and finiteness on bounded sets makes it finite. The sum $`G=\sum_jw_jG_j` is regular along rays by
-{bpref "lem:ray-regular-examples"}[], and {bpref "thm:A"}[] (iii), {bpref "thm:E"}[], and
+makes its normalizing integral positive, and finiteness on bounded sets makes it finite.
+By {bpref "lem:ray-regular-examples"}[], the sum $`G=\sum_jw_jG_j` satisfies
+{bpref "def:ray-regular"}[]. Then {bpref "thm:A"}[] (iii), {bpref "thm:E"}[], and
 {bpref "thm:lipschitz-barron"}[] give (ii) and (iii); the vector-valued case uses a partition
 of unity and {bpref "thm:vector-valued"}[].
 :::

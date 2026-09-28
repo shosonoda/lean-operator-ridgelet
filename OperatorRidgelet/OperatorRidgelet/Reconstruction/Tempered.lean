@@ -113,7 +113,7 @@ theorem exists_bound_iteratedDeriv_filterFourier {ρ : SchwartzMap ℝ ℝ} (hρ
 
 end RayFilter
 
-/-! ### Decay of the explicit coefficient along a ray -/
+/-! ### Decay of the explicit coefficient for a fixed direction -/
 
 section Decay
 

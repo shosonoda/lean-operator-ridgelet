@@ -73,6 +73,13 @@ existence of $`\rho` with nonzero constant is the last step of the proof of
 {bpref "thm:A"}[].
 :::
 
+# ReLU is admissible
+
+An activation is admissible here if it can be paired with a real band-pass analysis filter
+so that the reconstruction constant $`C_{\beta,\rho}^{(\alpha)}` is nonzero. This is a
+condition on the activation–filter pair; self-admissibility in
+{bpref "def:admissible-filter"}[] concerns the analysis filter alone.
+
 :::corollary "cor:relu-admissible" (lean := "OperatorRidgelet.reluDistribution, OperatorRidgelet.reluAdmissibilityScale, OperatorRidgelet.reluNormalizedFilter, OperatorRidgelet.Paper.cor_relu_admissible_i, OperatorRidgelet.Paper.cor_relu_admissible_ii, OperatorRidgelet.Paper.cor_relu_admissible_iii, OperatorRidgelet.Paper.cor_relu_admissible_iv, OperatorRidgelet.Paper.cor_relu_admissible_v, OperatorRidgelet.Paper.cor_relu_admissible_vi, OperatorRidgelet.Paper.cor_relu_admissible_vii, OperatorRidgelet.Paper.cor_relu_admissible_viii") (uses := "thm:tempered-reconstruction, thm:A, def:admissible-filter, aux:tempered-activation, def:ray-regular")
 Let $`\beta=\operatorname{ReLU}`, $`\operatorname{ReLU}(t)=\max(t,0)`. Then
 $`\widehat{\operatorname{ReLU}}=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'` (i), which
@@ -148,10 +155,19 @@ The three properties are {bpref "lem:standard-activation-class"}[]; a globally L
 function has polynomial growth, so {bpref "thm:A"}[] (iii) and {bpref "thm:E"}[] apply.
 :::
 
-# Weak Sobolev regularity along rays
+# Absolute synthesis under a Sobolev condition
+
+For Hilbert-valued functions, $`H^s_\omega(\mathbb R;Y)` is the Bessel potential space
+in the frequency variable, with the inverse Fourier norm displayed below. For general
+Banach-valued functions, the same notation denotes the weighted $`L^2` norm of the
+specified inverse transform. No $`L^2` Fourier isometry is asserted for a general Banach
+space; the synthesis hypotheses below state the weighted integrability condition directly.
+This subsection uses the bias coordinate $`b=-c` from the manuscript, so the profile is
+$`h_a(\omega)=\widehat\rho(-\omega)g(\omega a)`; this is the reflection of the coefficient
+formula in {bpref "def:spectral-coefficient"}[].
 
 :::lemma_ "lem:sobolev-tools" (lean := "OperatorRidgelet.bracket, OperatorRidgelet.MemRaySobolev, OperatorRidgelet.raySobolevNorm, OperatorRidgelet.rayProfile, OperatorRidgelet.sobolevMomentConst, OperatorRidgelet.Paper.lem_sobolev_tools_i, OperatorRidgelet.Paper.lem_sobolev_tools_ii, OperatorRidgelet.Paper.lem_sobolev_tools_iii, OperatorRidgelet.Paper.lem_sobolev_tools_iv") (uses := "aux:conventions")
-Write $`H^s_\omega(\mathbb R;Y)` for the profiles $`h` whose inverse Fourier transform
+Use $`\|h\|_{H^s_\omega}` for the norm of a profile $`h` whose inverse Fourier transform
 $`\gamma=\check h` satisfies $`\|h\|_{H^s_\omega}^2=2\pi\int\langle
 t\rangle^{2s}\|\gamma(t)\|^2\,\mathrm dt<\infty`. For $`s>1/2` and $`0\le r<s-1/2`,
 $`\int\langle t\rangle^r\|\gamma(t)\|\,\mathrm dt\le A_{s,r}\|h\|_{H^s_\omega}` with
@@ -195,9 +211,13 @@ of variables $`b=u-t`.
 :::theorem "thm:weak-sobolev-synthesis" (lean := "OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_i, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_ii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iii, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_iv, OperatorRidgelet.Paper.thm_weak_sobolev_synthesis_v") (uses := "lem:sobolev-tools, lem:sobolev-pairing, def:admissible-filter, aux:conventions")
 Let $`\nu` be homogeneous of degree $`\alpha>0`, let $`\rho\in\mathcal S(\mathbb R)` be nonzero,
 let $`\sigma` be continuous with $`|\sigma(t)|\le C_\sigma(1+|t|)^p` and $`s>p+1/2`, and let
-$`g:H\to Y` be strongly measurable into a complex Banach space $`Y`. Suppose there is a jointly
-measurable $`\gamma_g` whose bias lines are the coefficients of the rays
-$`h_a(\omega)=\widehat\rho(-\omega)g(\omega a)\in H^s_\omega(\mathbb R;Y)`, that
+$`g:H\to Y` be strongly measurable into a complex Banach space $`Y`. Write
+$`g_a(\omega):=g(\omega a)` and $`h_a(\omega):=\widehat\rho(-\omega)g_a(\omega)`.
+Suppose there is a jointly measurable $`\gamma_g` such that for almost every $`a`,
+$`\int\langle b\rangle^{2s}\|\gamma_g(a,b)\|^2\,\mathrm db<\infty` and
+$`\int\gamma_g(a,b)e^{-i\omega b}\,\mathrm db=h_a(\omega)` for every $`\omega`.
+For Hilbert $`Y` this means $`h_a\in H^s_\omega(\mathbb R;Y)` with
+$`\check h_a=\gamma_g(a,\cdot)`. Assume also that
 $`\mathfrak B_s(\rho,g)=\int(1+\|a\|)^s\|h_a\|_{H^s_\omega}\,\mathrm d\nu<\infty`, and that
 $`q_{\alpha,\rho}(\omega)=\widehat\rho(-\omega)|\omega|^{-\alpha}` lies in
 $`H^s_\omega(\mathbb R)`. Then $`g\in L^1(\nu;Y)`; for $`0\le r<s-1/2`
@@ -213,9 +233,11 @@ assumed, and neither the inner product nor the separability of $`Y` is used.
 :::
 
 :::proof "thm:weak-sobolev-synthesis"
-The moments are the weighted $`L^1` estimate of {bpref "lem:sobolev-tools"}[] on each ray,
+The moments are the weighted $`L^1` estimate of {bpref "lem:sobolev-tools"}[] applied to
+$`b\mapsto\gamma_g(a,b)`,
 $`1+\|a\|+|b|\le\sqrt2(1+\|a\|)\langle b\rangle`, and Tonelli; the case $`r=0` gives the finite
-variation, and the growth bound of $`\sigma` with $`r=p` gives the absolute convergence and the
+total variation of the coefficient measure, and the growth bound of $`\sigma` with $`r=p`
+gives the absolute convergence and the
 majorant. For the identity, Fubini in the two parameters turns the synthesis into
 $`\int\sigma(t)\Psi(t)\,\mathrm dt` with
 $`\Psi(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu`. Fubini again computes the profile
@@ -238,28 +260,31 @@ integer $`k\ge1` with $`2k>\alpha+2s-1/2`, and let
 $`\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}`, $`g(\xi)=e^{-\|\xi\|^2}v`. Then $`\rho_k` is
 a real Schwartz filter (i) that is not band pass (ii) but is $`\alpha`-admissible for
 $`\alpha<4k+1` (iii). The homogeneous moments $`\int(1+\|a\|^2)^{-d/2}\mathrm d\nu` are finite
-for $`d>\alpha` (iv); the coefficient of the rays is jointly measurable (v), each ray lies in
-$`H^s_\omega` with profile $`\widehat\rho_k(-\omega)g(\omega a)` (vi), and
+for $`d>\alpha` (iv); the coefficient $`\gamma_g` is jointly measurable (v), each function
+$`h_a(\omega)=\widehat\rho_k(-\omega)g(\omega a)` lies in $`H^s_\omega` (vi), and
 $`\mathfrak B_s(\rho_k,g)<\infty` (vii). The Sobolev test $`q_{\alpha,\rho_k}` lies in
 $`H^s_\omega` (viii). Hence {bpref "thm:weak-sobolev-synthesis"}[] applies to this filter for
 every continuous activation of growth order $`p<s-1/2` (ix).
 :::
 
 :::proof "prop:nonbandpass-sobolev"
-The symbol is a polynomial times a Gaussian, hence Schwartz, and real and even, so its inverse
+The Fourier transform $`\widehat\rho_k` is a polynomial times a Gaussian, hence Schwartz,
+and real and even, so its inverse
 angular transform is a real Schwartz function. It vanishes only at the origin, which is
 therefore in the closed support, so the filter is not band pass, while
 $`|\widehat\rho_k|^2|\omega|^{-\alpha}=|\omega|^{4k-\alpha}e^{-2\omega^2}` is integrable exactly
 for $`4k-\alpha>-1`. Homogeneity scales balls, $`\nu(B_R)=R^\alpha\nu(B_1)`, and the dyadic
-annuli give a geometric series, which is the moment bound. Writing
-$`A=(1+\|a\|^2)^{1/2}`, the ray with profile $`\omega^{2k}e^{-A^2\omega^2}v` has coefficient
+annuli give a geometric series, which is the moment bound. Write
+$`h_0(\omega)=\omega^{2k}e^{-\omega^2}` and $`A=(1+\|a\|^2)^{1/2}`.
+The function $`h_a(\omega)=\omega^{2k}e^{-A^2\omega^2}v` has inverse transform
 $`A^{-2k-1}\rho_k(b/A)v`, a dilate of a Schwartz function, so it lies in every $`H^s_\omega`,
 with $`\|h_a\|_{H^s_\omega}\le\|v\|\,\|h_0\|_{H^s_\omega}A^{s-2k-1/2}`;
 $`1+\|a\|\le\sqrt2A` and the moment bound give $`\mathfrak B_s<\infty` exactly in the stated
 range. For the Sobolev test, the Gamma integral
 $`|\omega|^{-\alpha}=\Gamma(\alpha/2)^{-1}\int_0^\infty u^{\alpha/2-1}e^{-u\omega^2}\mathrm du`
-writes $`q_{\alpha,\rho_k}` as a superposition of the same symbols at the scales
-$`(1+u)^{1/2}`; Fubini gives its profile, and Cauchy--Schwarz against the finite weight
+writes $`q_{\alpha,\rho_k}` as a superposition of the rescaled functions
+$`A^{-2k}h_0(A\,\cdot)` with $`A=(1+u)^{1/2}`; Fubini gives its inverse transform,
+and Cauchy--Schwarz against the finite weight
 $`u^{\alpha/2-1}(1+u)^{(s-2k-1/2)/2}` together with Tonelli reduces its Sobolev norm to the
 norms of the dilated filters.
 :::

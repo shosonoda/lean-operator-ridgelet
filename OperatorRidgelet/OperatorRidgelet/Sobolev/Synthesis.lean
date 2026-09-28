@@ -5,10 +5,10 @@ import OperatorRidgelet.Network.Defs
 import Mathlib.MeasureTheory.Group.LIntegral
 
 /-!
-# Absolute synthesis from weak Sobolev regularity along rays
+# Absolute synthesis from a Sobolev condition on frequency profiles
 
 The material behind Theorem `thm:weak-sobolev-synthesis`: the moment bound of the coefficient,
-its finite variation, and the synthesis identity.
+the finite total variation of its coefficient measure, and the synthesis identity.
 -/
 
 noncomputable section
@@ -43,7 +43,7 @@ theorem one_add_add_abs_le (c b : ℝ) (hc : 1 ≤ c) :
   have h2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   nlinarith [abs_nonneg b, one_le_bracket b]
 
-/-- The per-ray moment bound of Theorem `thm:weak-sobolev-synthesis`. -/
+/-- The moment bound for each fixed direction of Theorem `thm:weak-sobolev-synthesis`. -/
 theorem lintegral_ray_moment_le {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s) (c : ℝ)
     (hc : 1 ≤ c) {γ : ℝ → Y} (hγ : MemRaySobolev s γ) :
     ∫⁻ b : ℝ, ENNReal.ofReal ((c + |b|) ^ r * ‖γ b‖) ≤

@@ -23,18 +23,20 @@ attribute [blueprint "reconstruction:frequency-window"
   (hasProof := false)] OperatorRidgelet.IsFrequencyWindow
 
 attribute [blueprint "reconstruction:ray-deriv-bound"
-  (statement := /-- The ray-derivative bound $\max_{k\le m}\sup_{\omega\in
+  (statement := /-- The derivative bound $\max_{k\le m}\sup_{\omega\in
     I}\|\partial_\omega^kG(\omega a)\|$ at the direction $a$. -/)
   (hasProof := false)] OperatorRidgelet.rayDerivBound
 
 attribute [blueprint "reconstruction:ray-moment"
-  (statement := /-- The ray moment $M_m(G)=\int_H(1+\|a\|)^{m+2}\max_{k\le m}\sup_{\omega\in
+  (statement := /-- The weighted derivative integral
+    $M_m(G)=\int_H(1+\|a\|)^{m+2}\max_{k\le m}\sup_{\omega\in
     I}\|\partial_\omega^kG(\omega a)\|\,\nu(\mathrm da)$. -/)
   (hasProof := false)] OperatorRidgelet.rayMoment
 
 attribute [blueprint "def:ray-regular"
-  (statement := /-- A bounded Borel $G$ is regular along rays if $\omega\mapsto G(\omega a)$ is
-    $C^\infty$ on a neighbourhood of $I$ for every $a$ and $M_m(G)<\infty$ for every $m$. -/)
+  (statement := /-- Set $G_a(\omega):=G(\omega a)$, the restriction to the line through the
+    origin spanned by $a\ne0$; $G_0$ is constant. A bounded Borel $G$ is regular along rays if
+    every $G_a$ is $C^\infty$ on a neighbourhood of $I$ and $M_m(G)<\infty$ for every $m$. -/)
   (hasProof := false)] OperatorRidgelet.IsRegularAlongRays
 
 attribute [blueprint "reconstruction:tempered-function"
@@ -85,7 +87,7 @@ attribute [blueprint "reconstruction:synthesis"
   (hasProof := false)] OperatorRidgelet.synthesis
 
 attribute [blueprint "reconstruction:backprojection-of"
-  (statement := /-- The ray average $\Lambda_\rho\Phi(\xi)=\frac1{2\pi}\int_{\mathbb
+  (statement := /-- The backprojection integral $\Lambda_\rho\Phi(\xi)=\frac1{2\pi}\int_{\mathbb
     R}\overline{\widehat\rho(\omega)}|\omega|^{-\alpha}\Phi(-\xi/\omega,\omega)\,\mathrm
     d\omega$ of a bias-Fourier representative $\Phi$. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionOf
@@ -168,7 +170,7 @@ attribute [blueprint "reconstruction:hermite-coefficient-vec"
   (hasProof := false)] OperatorRidgelet.hermiteCoefficientVec
 
 attribute [blueprint "reconstruction:backprojection-of-vec"
-  (statement := /-- The $Y$-valued ray average of a bias-Fourier representative. -/)
+  (statement := /-- The $Y$-valued backprojection integral of a bias-Fourier representative. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionOfVec
 
 attribute [blueprint "reconstruction:backprojection-vec"
@@ -423,7 +425,8 @@ attribute [blueprint "lem:hermite-totality-vi"
     $L^2(\mu_Q)$. -/)] OperatorRidgelet.Paper.lem_hermite_totality_vi
 
 attribute [blueprint "prop:coefficient-projection-i"
-  (statement := /-- The ray-average integral converges absolutely for $\nu_\alpha$-a.e. $\xi$. -/)]
+  (statement := /-- The backprojection integral converges absolutely for
+    $\nu_\alpha$-a.e. $\xi$. -/)]
   OperatorRidgelet.Paper.prop_coefficient_projection_i
 
 attribute [blueprint "prop:coefficient-projection-ii"

@@ -34,12 +34,12 @@ The Gaussian objects are represented as follows.
   trace `tr P` is `traceOf P`, the sum along such a basis (`traceAlong`); for a positive
   operator the value is basis independent, which is a proof obligation and not part of the
   definition.
-* The Gaussian layers `𝒩(0,2sP)`, `s > 0`, are a family `N : ℝ → Measure H` satisfying
+* The Gaussian components `𝒩(0,2sP)`, `s > 0`, are a family `N : ℝ → Measure H` satisfying
   `IsCenteredGaussianLayers P N`; Mathlib has no constructor of a Gaussian measure with a
   prescribed trace-class covariance in infinite dimension, so the existence of such a family is
   recorded as a separate infrastructure statement (`exists_isCenteredGaussianLayers`).
 * The mixture `ν_α = ∫₀^∞ 𝒩(0,2sP) s^{α/2-1} ds` is `gaussianMixture N α`, the Giry-monad bind
-  of the weight `s^{α/2-1} ds` on `(0,∞)` against the layers (Lemma A.1).
+  of the weight `s^{α/2-1} ds` on `(0,∞)` against the components (Lemma A.1).
 
 ## The Hilbert space `𝓔_α`
 
@@ -52,10 +52,15 @@ and the Riesz map and the extension of `R_ρ` are stated on `𝒦_α`.
 
 ## The coefficient operator
 
+For a density `G`, write `G_a(ω) := G (ω • a)`, the manuscript's `g_a(ω) := g(ωa)`.
+For `a ≠ 0`, this is the restriction to the line through the origin spanned by `a`;
+`G_0` is constant. The formula below uses `G_a(-ω)` because Lean retains the bias sign
+`⟨a,x⟩ + c`, with `c = -b` relative to the manuscript.
+
 `W_ρ G ∈ L²(λ_α)` is "the function whose partial Fourier transform in the bias is
 `ρ̂(ω) G(-ωa)`".  The partial Fourier transform of an `L²` function is characterized through
 Parseval's identity against Schwartz test functions in the bias variable together with the
-square integrability of the transform along almost every ray (`HasBiasFourier`), and
+square integrability of the transform for almost every direction (`HasBiasFourier`), and
 `spectralCoefficient` is the element of `L²(λ_α)` with that property (junk value `0` if there is
 none); Lemma 3.6 states existence, uniqueness, and the explicit formula `coefficientFormula`.
 
@@ -209,7 +214,7 @@ structure IsCenteredGaussian (Q : H →L[ℝ] H) (μ : Measure H) : Prop where
   /-- The characteristic functional of `μ` is `exp(-⟪Qξ,ξ⟫/2)`. -/
   charFun_eq : ∀ ξ, charFun μ ξ = Complex.exp (-((⟪Q ξ, ξ⟫ / 2 : ℝ) : ℂ))
 
-/-- A family of Gaussian layers `N s = 𝒩(0, 2sP)` for `s > 0` (the value of `N` at `s ≤ 0` is
+/-- A family of Gaussian components `N s = 𝒩(0, 2sP)` for `s > 0` (the value of `N` at `s ≤ 0` is
 irrelevant).  The characteristic functional of `𝒩(0,2sP)` is `exp(-s⟪Pξ,ξ⟫)`. -/
 def IsCenteredGaussianLayers (P : H →L[ℝ] H) (N : ℝ → Measure H) : Prop :=
   ∀ s : ℝ, 0 < s → IsCenteredGaussian ((2 * s) • P) (N s)
@@ -219,7 +224,7 @@ def mixtureWeight (α : ℝ) (S : Set ℝ) : Measure ℝ :=
   (volume.restrict S).withDensity fun s => ENNReal.ofReal (s ^ (α / 2 - 1))
 
 /-- The Gaussian mixture over a set `S` of scales, `∫_S 𝒩(0,2sP) s^{α/2-1} ds`, as the
-Giry-monad bind of the weight `s^{α/2-1} ds` on `S` against the layers `N`. -/
+Giry-monad bind of the weight `s^{α/2-1} ds` on `S` against the components `N`. -/
 def gaussianMixtureOn (N : ℝ → Measure H) (α : ℝ) (S : Set ℝ) : Measure H :=
   (mixtureWeight α S).bind N
 
@@ -295,7 +300,7 @@ def coefficientFormula (ρ : ℝ → ℝ) (G : H → ℂ) (p : H × ℝ) : ℂ :
     ∫ ω : ℝ, filterFourier ρ ω * G (-(ω • p.1)) * Complex.exp ((ω * p.2 : ℝ) * Complex.I)
 
 /-- `HasBiasFourier ν γ Φ` says that the partial Fourier transform of `γ` in the bias is `Φ`:
-for `ν`-almost every direction `a`, the ray function `Φ(a,·)` is square integrable and
+for `ν`-almost every direction `a`, the function `ω ↦ Φ(a,ω)` is square integrable and
 Parseval's identity `∫ γ(a,c) conj(φ(c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(φ̂(ω)) dω` holds for every
 Schwartz test function `φ` on `ℝ`.  This characterizes `Φ(a,·)` up to a null set as the `L²`
 Fourier transform of `γ(a,·)` (`HasBiasFourier.ae_ae_eq`), and for `γ ∈ L²(λ)` such a
@@ -305,10 +310,10 @@ representative exists and can be chosen jointly measurable
 The square-integrability clause is essential.  Parseval's identity alone says nothing about
 `Φ(a,·)` where the integrand `Φ(a,ω) conj(φ̂(ω))` fails to be integrable, since Lean's Bochner
 integral of a non-integrable function is `0`: without the clause an arbitrary non-integrable
-function would be a "representative" of every coefficient, and the ray average
+function would be a "representative" of every coefficient, and the backprojection integral
 `backprojectionOf` computed from it would be meaningless.  With the clause all representatives
-of `γ` agree almost everywhere on almost every ray, so that `backprojection` does not depend on
-the choice (Proposition `prop:coefficient-projection`(ii)). -/
+of `γ` agree almost everywhere for almost every direction, so `backprojection` is independent
+of the choice (Proposition `prop:coefficient-projection`(ii)). -/
 structure HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → ℝ → ℂ) : Prop where
   /-- `Φ(a,·) ∈ L²(ℝ)` for `ν`-almost every direction `a`. -/
   memLp : ∀ᵐ a ∂ν, MemLp (Φ a) 2 volume

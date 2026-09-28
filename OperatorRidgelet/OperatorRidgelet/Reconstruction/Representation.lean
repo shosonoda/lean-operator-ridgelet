@@ -9,7 +9,8 @@ Ridgelet-specific lemmas behind Theorem `thm:A`(i)–(ii), Theorem `thm:C`(i)–
 `lem:weak-equals-strong`, and Proposition `prop:coefficient-projection`, for the abstract pair
 `(μ, ν)` of Appendix H.
 
-* **Regularity along rays.**  The ray moment `M_0(G)` dominates `∫ ‖G(ω₀ a)‖ ν(da)` for a fixed
+* **Regularity along rays.**  The weighted derivative integral `M_0(G)` dominates `∫ ‖G(ω₀ a)‖
+  ν(da)` for a fixed
   `ω₀ ∈ I`, and homogeneity turns this into `∫ ‖G‖ dν < ∞`; a bounded integrable density is
   square integrable.
 * **The target `g_G`.**  `g_G` is continuous (dominated convergence) and determines `G`
@@ -49,7 +50,7 @@ section RayRegular
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- The ray-derivative bound dominates the values on the ray: `‖G(ωa)‖ₑ ≤ rayDerivBound I G m a`
+/-- The derivative bound dominates the values on the ray: `‖G(ωa)‖ₑ ≤ rayDerivBound I G m a`
 for `ω ∈ I`. -/
 theorem enorm_le_rayDerivBound (I : Set ℝ) (G : H → Y) (m : ℕ) (a : H) {ω : ℝ} (hω : ω ∈ I) :
     ‖G (ω • a)‖ₑ ≤ rayDerivBound I G m a := by

@@ -8,7 +8,7 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 /-!
-# The Gaussian layers `𝒩(0,2sP)` and their small-ball estimates
+# The Gaussian components `𝒩(0,2sP)` and their small-ball estimates
 
 The Gaussian series construction of Appendix A.  A trace-class covariance `P` has a countable
 Hilbert basis `e_k` of eigenvectors with positive summable eigenvalues `p_k`
@@ -93,7 +93,7 @@ theorem IsCenteredGaussian.map_smul_sqrt {μ : Measure H} (hμ : IsCenteredGauss
     rw [this]
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- The dilates `(√(2s) ·)_# 𝒩(0,P)` form a family of Gaussian layers. -/
+/-- The dilates `(√(2s) ·)_# 𝒩(0,P)` form a family of Gaussian components. -/
 theorem IsCenteredGaussian.isCenteredGaussianLayers_map_smul {μ : Measure H}
     (hμ : IsCenteredGaussian P μ) :
     IsCenteredGaussianLayers P fun s => μ.map fun x => √(2 * s) • x :=
@@ -390,7 +390,7 @@ theorem lintegral_ofReal_norm_pow_mul_rpow_neg_lt_top {μ : Measure H} {q : H �
         lintegral_add_left ((measurable_norm.pow_const _).ennreal_ofReal) _
     _ < ⊤ := ENNReal.add_lt_top.mpr ⟨h1, h2⟩
 
-/-- The scale integral of a Gaussian layer: `∫₀^∞ s^{β-1} e^{-rs} ds = r^{-β} Γ(β)`, as a
+/-- The scale integral of a Gaussian component: `∫₀^∞ s^{β-1} e^{-rs} ds = r^{-β} Γ(β)`, as a
 Lebesgue integral. -/
 theorem lintegral_Ioi_rpow_mul_exp_neg_mul {β r : ℝ} (hβ : 0 < β) (hr : 0 < r) :
     ∫⁻ s in Set.Ioi 0, ENNReal.ofReal (s ^ (β - 1) * Real.exp (-(r * s))) =

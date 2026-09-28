@@ -5,7 +5,7 @@ import OperatorRidgelet.ToMathlib.HermiteExpansion
 import OperatorRidgelet.ToMathlib.EntirePowerSeries
 
 /-!
-# The Hermite expansion of the weighted Fourier transform along a ray
+# The Hermite expansion of the weighted Fourier transform for a fixed direction
 
 For a centred Gaussian `μ = 𝒩(0,Q)` and `ξ ≠ 0`, the coordinate `Y(x) = ⟪x,ξ⟫/τ(ξ)`,
 `τ(ξ) = ⟪Qξ,ξ⟫^{1/2}`, is a standard Gaussian coordinate (`isStdGaussianCoord_inner_div`).

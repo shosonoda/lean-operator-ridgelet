@@ -1,7 +1,12 @@
 import Architect
 import OperatorRidgelet.Paper.Sobolev
 
-/-! # Weak Sobolev tools metadata -/
+/-! # Sobolev tools metadata
+
+For Hilbert-valued profiles, `H^s_ω` denotes the Bessel potential space. For general Banach
+values, the notation refers to the weighted `L²` norm of a specified inverse Fourier
+transform, as defined in `Sobolev.Defs`; no Banach-valued Plancherel identity is used.
+-/
 
 attribute [blueprint "lem:sobolev-tools-i"
   (statement := /-- For $0\le r<s-1/2$, $\int\langle t\rangle^r\|\check h(t)\|\,\mathrm
@@ -79,11 +84,11 @@ attribute [blueprint "prop:nonbandpass-sobolev-iv"
   OperatorRidgelet.Paper.prop_nonbandpass_sobolev_iv
 
 attribute [blueprint "prop:nonbandpass-sobolev-v"
-  (statement := /-- The coefficient of the rays is jointly strongly measurable. -/)]
+  (statement := /-- The coefficient is jointly strongly measurable. -/)]
   OperatorRidgelet.Paper.prop_nonbandpass_sobolev_v
 
 attribute [blueprint "prop:nonbandpass-sobolev-vi"
-  (statement := /-- Each ray lies in $H^s_\omega$ and has the profile
+  (statement := /-- Each frequency profile lies in $H^s_\omega$ and equals
     $\widehat\rho_k(-\omega)g(\omega a)$. -/)]
   OperatorRidgelet.Paper.prop_nonbandpass_sobolev_vi
 

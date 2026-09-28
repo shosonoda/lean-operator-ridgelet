@@ -18,8 +18,8 @@ file := "transform"
 %%%
 
 This chapter is Section 3 of the manuscript together with Appendix A (the Gaussian mixture),
-Appendix G (the finite-dimensional case and the dilation obstruction), Appendix H (abstract
-weights), and Appendix I (explicit filters). The input measure is the centred Gaussian
+Appendix G (the finite-dimensional case and the dilation obstruction), Appendix H (general
+input and direction measures), and Appendix I (explicit filters). The input measure is the centred Gaussian
 $`\mu_Q=\mathcal N(0,Q)`, the direction measure is the homogeneous Gaussian mixture
 $`\nu_\alpha`, and the parameter measure is $`\lambda_\alpha=\nu_\alpha\otimes\mathrm dc`.
 
@@ -40,10 +40,10 @@ $`\int_He^{i\langle x,\xi\rangle}\mu(\mathrm dx)=e^{-\langle Q\xi,\xi\rangle/2}`
 :::
 
 :::definition "aux:gaussian-mixture" (lean := "OperatorRidgelet.IsCenteredGaussianLayers, OperatorRidgelet.mixtureWeight, OperatorRidgelet.gaussianMixtureOn, OperatorRidgelet.gaussianMixture") (uses := "aux:centered-gaussian, roadmap:gaussian-layers")
-The Gaussian layers are a family $`N_s=\mathcal N(0,2sP)`, $`s>0`, with characteristic
+The Gaussian components of the mixture form a family $`N_s=\mathcal N(0,2sP)`, $`s>0`, with characteristic
 functionals $`e^{-s\langle P\xi,\xi\rangle}`. For $`\alpha>0` the homogeneous Gaussian mixture
 is $`\nu_\alpha=\int_0^\infty\mathcal N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds`, the Giry-monad
-bind of the weight $`s^{\alpha/2-1}\mathrm ds` against the layers; the truncated mixture over a
+bind of the weight $`s^{\alpha/2-1}\mathrm ds` against these components; the truncated mixture over a
 set of scales is used in Appendix A.
 :::
 
@@ -75,7 +75,7 @@ for every nonnegative Borel $`F` (vi).
 Coordinate small-ball estimates of order $`s^{-k/2}` with $`k>\alpha` give finite mass on
 bounded sets, the part $`s\le1` is integrable because $`s^{\alpha/2-1}` is, balls exhaust
 $`H` while $`\nu_\alpha(H)=\int_0^\infty s^{\alpha/2-1}\mathrm ds=\infty`, injectivity of
-$`P` gives full support, and the substitution $`u=s\omega^2` on each layer proves homogeneity.
+$`P` gives full support, and the substitution $`u=s\omega^2` in each component proves homogeneity.
 :::
 
 :::lemma_ "lem:mixture-character" (lean := "OperatorRidgelet.Paper.lem_mixture_character_i, OperatorRidgelet.Paper.lem_mixture_character_ii, OperatorRidgelet.Paper.lem_mixture_character_iii, OperatorRidgelet.Paper.lem_mixture_character_iv") (uses := "aux:gaussian-mixture, lem:mixture-integration, lem:homogeneous-mixture")
@@ -103,14 +103,17 @@ Fourier transform in the bias of a coefficient is
 $`\widehat\gamma(a,\omega)=\int_{\mathbb R}\gamma(a,c)e^{-i\omega c}\,\mathrm dc`; the analysis
 character on $`H` is $`x\mapsto e^{-i\langle x,\xi\rangle}`. A measure $`\nu` on $`H` is
 homogeneous of degree $`\alpha` when $`(D_\omega)_\#\nu=|\omega|^{-\alpha}\nu` for every
-$`\omega\ne0`.
+$`\omega\ne0`. The Lean network uses $`\langle a,x\rangle+c`; the manuscript bias is
+$`b=-c`, so a coefficient written in $`b` has its bias Fourier transform reflected in
+$`\omega` relative to the coefficient written in $`c`.
 :::
 
 :::definition "def:admissible-filter" (lean := "OperatorRidgelet.IsAdmissible, OperatorRidgelet.admissibilityConst, OperatorRidgelet.IsBandPass, OperatorRidgelet.crossAdmissibilityConst, OperatorRidgelet.Paper.def_admissible_filter") (uses := "aux:conventions")
 A real $`\rho\in\mathcal S(\mathbb R)` is $`\alpha`-admissible if
 $`0<(\!(\rho,\rho)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}|\widehat\rho(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega<\infty`.
 It is a band-pass filter if moreover $`\widehat\rho\in C_c^\infty(\mathbb R\setminus\{0\})`
-(and $`\rho\ne0`), in which case it is $`\alpha`-admissible for every $`\alpha>0`. For two
+(and $`\rho\ne0`): band-pass here specifies compact Fourier support away from zero.
+Such a filter is $`\alpha`-admissible for every $`\alpha>0`. For two
 admissible filters,
 $`(\!(\rho_1,\rho_2)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}\widehat\rho_1(\omega)\overline{\widehat\rho_2(\omega)}|\omega|^{-\alpha}\,\mathrm d\omega`;
 self-admissibility is the case $`\rho_1=\rho_2=\rho` of this pairing, since $`\rho` is real.
@@ -139,13 +142,17 @@ $`\widehat{R_\rho f}(a,\omega)=\widehat\rho(\omega)\,\mathcal G_\mu f(-\omega a)
 Boundedness is $`|R_\rho f|\le\|f\|_1\|\rho\|_\infty`, joint continuity is dominated
 convergence, the bounds are Cauchy–Schwarz and Tonelli in the probability measure $`\mu`, and
 the substitution $`u=\langle a,x\rangle+c` in the inner Fourier transform gives the slice
-identity.
+identity. For nonzero $`a`, the function $`\omega\mapsto\mathcal G_\mu f(\omega a)` is
+the restriction of $`\mathcal G_\mu f` to the line through the origin spanned by $`a`.
 :::
 
 :::definition "def:spectral-coefficient" (lean := "OperatorRidgelet.HasBiasFourier, OperatorRidgelet.spectralCoefficient, OperatorRidgelet.coefficientFormula, OperatorRidgelet.Paper.def_spectral_coefficient") (uses := "def:admissible-filter, def:ridgelet-analysis, aux:conventions")
+For a function $`g` on $`H`, write $`g_a(\omega):=g(\omega a)`, $`\omega\in\mathbb R`.
+For $`a\ne0` this is the restriction of $`g` to the line through the origin spanned by
+$`a`; for $`a=0` it is constant. We write $`G_a` when the density is denoted by $`G`.
 Let $`\rho` be $`\alpha`-admissible and $`G\in L^2(\nu_\alpha)` Borel. The coefficient
 $`W_\rho G\in L^2(\lambda_\alpha)` is the function whose partial Fourier transform in the bias
-is $`\widehat{W_\rho G}(a,\omega)=\widehat\rho(\omega)\,G(-\omega a)`, characterized through
+is $`\widehat{W_\rho G}(a,\omega)=\widehat\rho(\omega)\,G_a(-\omega)`, characterized through
 Parseval's identity against Schwartz test functions in the bias. For every such
 $`G\in L^2(\nu_\alpha)` and $`\nu_\alpha`-almost every $`a`,
 $`\gamma_G(a,c)=W_\rho G(a,c)=\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega`;
@@ -159,7 +166,7 @@ $`\|W_\rho G\|_{L^2(\lambda_\alpha)}^2=(\!(\rho,\rho)\!)_\alpha\|G\|_{L^2(\nu_\a
 $`G\in L^1(\nu_\alpha)`, then $`\omega\mapsto G(-\omega a)` is integrable on compact subsets of
 $`\mathbb R\setminus\{0\}` for $`\nu_\alpha`-almost every $`a` (iv), and the explicit formula
 for $`\gamma_G` holds already for $`G\in L^2(\nu_\alpha)`, with absolute convergence on
-almost every ray for every bias. In this notation the Fourier-slice identity reads
+almost every $`a` and every bias. In this notation the Fourier-slice identity reads
 $`R_\rho f=W_\rho\,\mathcal G_Qf`.
 :::
 
@@ -175,8 +182,8 @@ Fourier transform in $`\omega` for almost every $`a` gives the formula.
 For a separable complex Hilbert space $`Y`, partial Fourier transformation in the bias is a
 unitary map from $`L^2(\nu\otimes\mathrm dc;Y)` onto
 $`L^2(\nu\otimes\mathrm d\omega/(2\pi);Y)`. Each transform admits a jointly strongly
-measurable representative agreeing with the one-dimensional Plancherel transform on almost
-every ray. Such representatives agree almost everywhere.
+measurable representative agreeing with the one-dimensional Plancherel transform of
+$`c\mapsto\gamma(a,c)` for almost every $`a`. Such representatives agree almost everywhere.
 :::
 
 :::proof "lem:partial-fourier-l2"
@@ -187,10 +194,11 @@ measurability. Fiberwise uniqueness and Fubini prove independence of the represe
 
 :::lemma_ "lem:coefficient-adjoint" (lean := "OperatorRidgelet.Paper.lem_coefficient_adjoint_i, OperatorRidgelet.Paper.lem_coefficient_adjoint_ii, OperatorRidgelet.Paper.lem_coefficient_adjoint_iii") (uses := "lem:partial-fourier-l2, lem:coefficient-isometry")
 For an admissible Schwartz filter and a sigma-finite homogeneous direction measure,
-the backprojection is $`\Lambda_\rho=W_\rho^*`. It satisfies
+the backprojection $`\Lambda_\rho=W_\rho^*` is the Hilbert adjoint of the coefficient operator,
+with values in the frequency space $`L^2(\nu_\alpha)`. It satisfies
 $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` and
 $`\|\Lambda_\rho\gamma\|_2\le\sqrt{(\!(\rho,\rho)\!)_\alpha}\|\gamma\|_2`.
-Its ray formula is
+Its integral formula is
 $`\Lambda_\rho\gamma(\xi)=(2\pi)^{-1}\int\overline{\widehat\rho(\omega)}\widehat\gamma(-\xi/\omega,\omega)|\omega|^{-\alpha}\,\mathrm d\omega`;
 this integral is absolutely convergent for almost every $`\xi` and is independent of the
 jointly measurable Fourier representative.
@@ -198,7 +206,7 @@ jointly measurable Fourier representative.
 
 :::proof "lem:coefficient-adjoint"
 Plancherel in the bias and the substitution $`\xi=-\omega a` identify the inner product
-with the ray formula. Weighted Cauchy–Schwarz and Tonelli give its absolute convergence and
+with the integral formula. Weighted Cauchy–Schwarz and Tonelli give its absolute convergence and
 norm bound; polarization of the coefficient isometry gives the left inverse identity.
 :::
 
@@ -236,7 +244,7 @@ $`f\in\mathcal D_\alpha` for every $`\alpha>0` (ii).
 :::
 
 :::proof "lem:gaussian-decay"
-On each Gaussian layer, Cauchy–Schwarz separates the polynomial factor, whose moments are
+On each Gaussian component, Cauchy–Schwarz separates the polynomial factor, whose moments are
 finite, from the Gaussian factor, whose integral is $`\prod_j(1+8st\theta_j)^{-1/2}` with
 $`\theta_j>0` the eigenvalues of $`P^{1/2}QP^{1/2}`; retaining $`k>4m+2\alpha` factors makes
 the mixture integral finite.
@@ -273,7 +281,7 @@ satisfies the Plancherel identity, $`R_\rho` has a unique bounded extension of n
 $`((\!(\rho,\rho)\!)_\alpha)^{1/2}` (with equality when the core is nonzero), with closed range and
 $`R_\rho=W_\rho U`, and
 $`R_\rho f=0` implies $`f=0`. Moreover $`1\in\mathcal D_{\mu,\nu}` if and only if
-$`\int_H|\widehat\mu(\xi)|^2\nu(\mathrm d\xi)<\infty`. The abstract-weight versions of
+$`\int_H|\widehat\mu(\xi)|^2\nu(\mathrm d\xi)<\infty`. The versions for general input and direction measures of
 {bpref "thm:A"}[] and {bpref "thm:C"}[] are the Lean statements of those theorems themselves.
 The backprojection and coefficient stability results also hold. If, in addition, $`\nu` is
 finite on bounded sets, the spectral-density construction gives compact-open universality.
@@ -330,7 +338,7 @@ Let $`H=\mathbb R^m`, $`0<\alpha<m`, and let $`p` be a nondegenerate Gaussian de
 $`f\in L^2(p\,\mathrm dx)` with $`g=fp\in\mathcal S(\mathbb R^m)`, then $`f\in\mathcal D_\alpha`
 (i) and $`t_f=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g` (ii). For a band-pass $`\rho`, the
 synthesis $`S_\rho R_\rho f` is represented against $`p\,\mathrm dx` by
-$`(\!(\rho,\rho)\!)_\alphat_f` (iii), so that, distributionally,
+$`(\!(\rho,\rho)\!)_\alpha t_f` (iii), so that, distributionally,
 $`f=\frac{p^{-1}}{k_{m,\alpha}(\!(\rho,\rho)\!)_\alpha}(-\Delta)^{(m-\alpha)/2}S_\rho R_\rho f` (iv).
 With Lebesgue direction measure and $`\alpha=m`, $`t_f=(2\pi)^mg` (v) and
 $`f=(2\pi)^{-m}((\!(\rho,\rho)\!)_m)^{-1}p^{-1}S_\rho R_\rho f` (vi).

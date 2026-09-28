@@ -32,7 +32,7 @@ unified with the definitions of the reconstruction and sampling chapters.
 
 :::theorem "roadmap:gaussian-layers" (lean := "OperatorRidgelet.exists_isCenteredGaussianLayers") (uses := "aux:centered-gaussian")
 For an injective, positive, self-adjoint, trace-class $`P` on a separable Hilbert space there
-is a family of Gaussian layers $`\mathcal N(0,2sP)`, $`s>0`, with characteristic functionals
+is a family of Gaussian components $`\mathcal N(0,2sP)`, $`s>0`, with characteristic functionals
 $`e^{-s\langle P\xi,\xi\rangle}`: the Gaussian series $`X=\sum_j\sqrt{p_j}Z_je_j` of
 Appendix A, which converges in $`L^2(\Omega;H)` and almost surely. Mathlib has the class of
 Gaussian measures but no constructor of a centred Gaussian measure with a prescribed

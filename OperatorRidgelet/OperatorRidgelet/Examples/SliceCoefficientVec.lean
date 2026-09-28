@@ -172,7 +172,7 @@ theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) 
         rw [smul_smul, mul_comm]
 
 omit hcoord [MeasurableSpace H] [CompleteSpace Y] in
-/-- The `Y`-valued explicit coefficient is a Fourier transform along each ray. -/
+/-- The `Y`-valued explicit coefficient is a Fourier transform for each fixed direction. -/
 theorem coefficientFormulaVec_eq_fourier (G : H → Y) (a : H) (c : ℝ) :
     coefficientFormulaVec ρ G (a, c) =
       𝓕 (fun u : ℝ => filterFourier ρ (2 * Real.pi * u) • G (-((2 * Real.pi * u) • a))) (-c) := by
