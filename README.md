@@ -1,18 +1,14 @@
 # lean-operator-ridgelet
 
-<!-- BEGIN GENERATED BADGES -->
-[![Lean 4.32.0](https://img.shields.io/badge/Lean-4.32.0-0f4c81.svg?style=flat-square)](https://lean-lang.org/)
-[![Blueprint](https://img.shields.io/badge/blueprint-Verso-6f42c1.svg?style=flat-square)](https://shosonoda.github.io/lean-operator-ridgelet/)
-[![Blueprint pages](https://img.shields.io/github/actions/workflow/status/shosonoda/lean-operator-ridgelet/pages.yml?branch=main&label=blueprint%20pages&style=flat-square)](https://github.com/shosonoda/lean-operator-ridgelet/actions/workflows/pages.yml)
-[![License Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg?style=flat-square)](LICENSE)
-<!-- END GENERATED BADGES -->
-
 Lean 4 formalization of the operator ridgelet transform on infinite-dimensional Hilbert spaces,
 following the manuscript by Sho Sonoda and coauthors. It covers the Gaussian-weighted ridgelet
 transform, Plancherel and reconstruction theorems, tempered synthesis activations such as ReLU,
 and dimension-free finite-width approximation.
 
-The repository tracks the **68 manuscript items of the 2026-09-13 revision**: all are recorded as
+This submission snapshot (`snapshot20260929`) contains the Lean sources, pinned dependency
+configuration, and comparator inputs. Build caches and development tooling are omitted.
+
+The snapshot tracks the **68 manuscript items of the 2026-09-13 revision**: all are recorded as
 verified, comprising **369 Lean statements checked by comparator** and the pure definitions.
 The manuscript itself is not included. See the [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/)
 for a human-readable presentation and [STATUS.md](STATUS.md) for the generated per-item record.
@@ -31,13 +27,20 @@ The mathematics is in [OperatorRidgelet/OperatorRidgelet/](OperatorRidgelet/Oper
 | Gaussian examples, operator layers, convolution and Dirichlet operators | [Examples/](OperatorRidgelet/OperatorRidgelet/Examples/) |
 | Finite-dimensional formulas and explicit analysis filters | [FiniteDim/](OperatorRidgelet/OperatorRidgelet/FiniteDim/), [Filters/](OperatorRidgelet/OperatorRidgelet/Filters/) |
 
-[The formalization guide](docs/FORMALIZATION.md) explains the manuscript-to-Lean correspondence,
-where to find the precise statements and proofs, the notation conventions, and the scope of
-verification. [STATUS.md](STATUS.md) lists individual items and Lean declaration names.
+[STATUS.md](STATUS.md) lists individual items, Lean declaration names, and notation conventions.
+[comparator/paper.json](OperatorRidgelet/comparator/paper.json) records the manuscript-to-Lean
+correspondence and formalization notes. The precise statements are in
+[Challenge/](OperatorRidgelet/Challenge/) and their proofs in
+[Paper/](OperatorRidgelet/OperatorRidgelet/Paper/).
+
+`STATUS.md` preserves the verification record generated before packaging. References there to
+`scripts/status.py` and `scripts/comparator-check.sh` describe the development repository;
+the scripts are omitted here. Use the direct comparator command below to reproduce the check.
 
 ## Build
 
-Install [elan](https://github.com/leanprover/elan), clone this repository, then run from its root:
+Install [elan](https://github.com/leanprover/elan), extract the archive, then run from its root
+(with network access to fetch the pinned dependencies and Mathlib cache):
 
 ```sh
 cd OperatorRidgelet
@@ -58,16 +61,18 @@ Build [comparator](https://github.com/leanprover/comparator) and
 ```sh
 cd OperatorRidgelet
 lake build Challenge Solution
-./scripts/comparator-check.sh
+export COMPARATOR_LEAN4EXPORT="$(command -v lean4export)"
+export COMPARATOR_LANDRUN="$(command -v landrun)"
+lake env comparator comparator/config.json
 ```
 
 The check compares the proved statements with the independent `Challenge` statements and
 allows only `propext`, `Quot.sound`, and `Classical.choice`. On systems other than Linux, use
 comparator's `scripts/fake-landrun.sh` through `COMPARATOR_LANDRUN` (without sandboxing).
-See [the contributor guide](CONTRIBUTING.md#comparator-tools) for executable paths and setup details.
-
-Development checks, Blueprint builds, and publishing instructions are in
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Set `COMPARATOR_LEAN4EXPORT` and `COMPARATOR_LANDRUN` to absolute executable paths if the tools
+are not on `PATH`. On macOS, replace the `COMPARATOR_LANDRUN` export above with the absolute
+path to `scripts/fake-landrun.sh` in the comparator checkout. The snapshot contains all
+369 configured statements in [comparator/config.json](OperatorRidgelet/comparator/config.json).
 
 ## License
 
