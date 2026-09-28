@@ -240,7 +240,7 @@ theorem thm_general_weights_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
 /-- **Lemma [lem:coefficient-isometry]** The L² inverse formula is absolutely integrable
-on almost every ray, for every bias value. -/
+for almost every direction, for every bias value. -/
 theorem lem_coefficient_isometry_v {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (G : H → ℂ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
@@ -294,7 +294,7 @@ theorem lem_coefficient_adjoint_i (ν : Measure H) [SigmaFinite ν] {α : ℝ}
   exists_spectralCoefficientVecCLM_adjoint hν hα hρ
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-adjoint]** The ray-average integral is absolutely convergent a.e. -/
+/-- **Lemma [lem:coefficient-adjoint]** The backprojection integral is absolutely convergent a.e. -/
 theorem lem_coefficient_adjoint_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (γ : Lp Y 2 (parameterMeasure ν)) (Φ : H → ℝ → Y)

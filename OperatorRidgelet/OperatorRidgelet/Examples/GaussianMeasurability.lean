@@ -8,7 +8,8 @@ import OperatorRidgelet.Examples.OperatorLayer
 The hypothesis `IsCenteredGaussian Q μ` (the characteristic functional of `μ` is
 `ξ ↦ e^{-⟪Qξ,ξ⟫/2}`) is stated for an arbitrary σ-algebra on `H`.  Since the characteristic
 functional never vanishes, every character `x ↦ e^{i⟪x,ξ⟫}` is a.e. strongly measurable
-(`IsCenteredGaussian.aestronglyMeasurable_exp_inner_mul_I`), and letting `ξ → 0` along a ray
+(`IsCenteredGaussian.aestronglyMeasurable_exp_inner_mul_I`), and letting `ξ → 0` for a fixed
+direction
 shows that every coordinate `x ↦ ⟪x, v⟫` is a.e.-measurable
 (`IsCenteredGaussian.aemeasurable_inner`).  Together with the strong measurability of the
 directions `y ↦ a_y`, the pairing `(x, y) ↦ ⟪a_y, x⟫` is a.e. strongly measurable on `μ ⊗ m`
@@ -52,7 +53,7 @@ theorem IsCenteredGaussian.aestronglyMeasurable_character (hμ : IsCenteredGauss
   push_cast
   ring_nf
 
-/-- The difference quotient of the exponential along a ray: for `|t s| ≤ 1`,
+/-- The difference quotient of the exponential for a fixed direction: for `|t s| ≤ 1`,
 `‖(e^{i t s} - 1) / (i s) - t‖ ≤ t² |s|`. -/
 theorem norm_exp_mul_I_sub_one_div_sub_le {t s : ℝ} (hs : s ≠ 0) (hts : |t * s| ≤ 1) :
     ‖(Complex.exp (((t * s : ℝ) : ℂ) * Complex.I) - 1) / ((s : ℂ) * Complex.I) - t‖ ≤

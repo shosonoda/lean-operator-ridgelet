@@ -381,14 +381,14 @@ theorem lem_mixture_integration_iv {P : H →L[ℝ] H} (hP : IsTraceClassCovaria
 
 /-! ### Lemma `lem:mixture-character` -/
 
-/-- **Lemma [lem:mixture-character]** Gaussian-layer regularization.  For `z ≠ 0` the quadratic
+/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  For `z ≠ 0` the quadratic
 form `q = ⟨Pz,z⟩` is positive. -/
 theorem lem_mixture_character_i {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) (z : H)
     (hz : z ≠ 0) :
     0 < ⟪P z, z⟫ := by
   sorry
 
-/-- **Lemma [lem:mixture-character]** Gaussian-layer regularization.  The characteristic
+/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  The characteristic
 functionals of the truncated mixtures `ν_α^{ε,M} = ∫_ε^M 𝒩(0,2sP) s^{α/2-1} ds` converge, as
 `ε ↓ 0` and `M ↑ ∞`, to `Γ(α/2) q^{-α/2}`. -/
 theorem lem_mixture_character_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
@@ -399,7 +399,7 @@ theorem lem_mixture_character_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovarianc
       (𝓝 ((Real.Gamma (α / 2) * ⟪P z, z⟫ ^ (-(α / 2)) : ℝ) : ℂ)) := by
   sorry
 
-/-- **Lemma [lem:mixture-character]** Gaussian-layer regularization.  The limit is the Gamma
+/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  The limit is the Gamma
 integral `∫₀^∞ e^{-sq} s^{α/2-1} ds = Γ(α/2) q^{-α/2}`. -/
 theorem lem_mixture_character_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) {α : ℝ}
     (hα : 0 < α) (z : H) (hz : z ≠ 0) :
@@ -407,7 +407,7 @@ theorem lem_mixture_character_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovarian
       Real.Gamma (α / 2) * ⟪P z, z⟫ ^ (-(α / 2)) := by
   sorry
 
-/-- **Lemma [lem:mixture-character]** Gaussian-layer regularization.  In contrast, the character
+/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  In contrast, the character
 `ξ ↦ e^{i⟨z,ξ⟩}` is not integrable against `ν_α`, so the limit is not a Lebesgue integral. -/
 theorem lem_mixture_character_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
@@ -561,7 +561,8 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
 
 /-! ### Theorem `thm:general-weights` -/
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(i) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(i) for the
 abstract pair: `R_ρ f ∈ L²(λ)` for `f ∈ 𝒟_{μ,ν}` and `α`-admissible `ρ`. -/
 theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -569,7 +570,8 @@ theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityM
     MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(i) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(i) for the
 abstract pair: the Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_{μ,ν}}`. -/
 theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure μ]
@@ -580,7 +582,8 @@ theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure
       crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ ν f g := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(ii) for the
 abstract pair: the unique bounded extension `R_ρ : 𝓔_{μ,ν} → L²(λ)`. -/
 theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -590,7 +593,8 @@ theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure 
         (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(ii) for the
 abstract pair: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_{μ,ν}}`. -/
 theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -601,7 +605,8 @@ theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMea
     ∀ G : spectralRange μ ν, ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(ii) for the
 abstract pair: the extension has closed range. -/
 theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -612,7 +617,8 @@ theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbab
     IsClosed (Set.range R) := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(ii) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(ii) for the
 abstract pair: `R_ρ = W_ρ U`. -/
 theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -623,7 +629,8 @@ theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabi
     ∀ G : spectralRange μ ν, R G = spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  Theorem `thm:B`(iii) for the
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
+`thm:B`(iii) for the
 abstract pair: `R_ρ f = 0` `λ`-a.e. implies `f = 0` `μ`-a.e. for `f ∈ L²(μ)`. -/
 theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -632,7 +639,8 @@ theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure 
     f =ᵐ[μ] 0 := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Abstract-weight extension.  `1 ∈ 𝒟_{μ,ν}` if and only if
+/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  `1 ∈
+𝒟_{μ,ν}` if and only if
 `∫ |μ̂(ξ)|² ν(dξ) < ∞`. -/
 theorem thm_general_weights_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) :

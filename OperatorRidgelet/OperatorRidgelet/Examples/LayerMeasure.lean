@@ -82,7 +82,7 @@ theorem IsLayerData.polarWeight_layerMeasure_le (hL : IsLayerData m a b) :
   simpa only [layerMeasure,
       ← integral_norm_eq_lintegral_enorm hL.integrable_b.aestronglyMeasurable] using ht
 
-/-- The polar law of a layer has a bounded second parameter moment. -/
+/-- The sampling distribution of a layer has a bounded second parameter moment. -/
 theorem IsLayerData.polarLaw_moment (hL : IsLayerData m a b) :
     Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw (layerMeasure m a b)) ∧
       secondMoment (polarLaw (layerMeasure m a b)) ≤ layerSupNorm a ^ 2 := by

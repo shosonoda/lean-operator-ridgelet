@@ -147,7 +147,11 @@ theorem thm_tempered_reconstruction_vi {α : ℝ} (hα : 0 < α) (β : TemperedD
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
   sorry
 
-/-! ### Corollary `cor:relu-admissible` -/
+/-! ### Corollary `cor:relu-admissible`
+
+"ReLU is admissible" refers to the existence of a real band-pass analysis filter whose
+reconstruction constant with ReLU is nonzero. The admissibility is a property of the pair.
+-/
 
 /-- **Corollary [cor:relu-admissible]** ReLU is admissible.  Under the manuscript's convention
 `ReLU^ = -fp(ω^{-2}) + iπ δ₀'`: tested against a Schwartz function `φ`, the Hadamard finite part

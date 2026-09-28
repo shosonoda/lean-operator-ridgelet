@@ -2,7 +2,7 @@ import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.Reconstruction.Tempered
 
 /-!
-# Finite variation and moments of the ridgelet coefficient
+# Finite total variation and moments of the coefficient measure
 
 The material behind Theorem `thm:E`.  For a band-pass filter `ρ` with frequency window `I` and a
 density `G` regular along rays, the uniform decay of the explicit coefficient

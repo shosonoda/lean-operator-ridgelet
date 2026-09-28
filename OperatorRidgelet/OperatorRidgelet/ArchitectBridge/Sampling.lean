@@ -124,7 +124,7 @@ attribute [blueprint "thm:lipschitz-barron-iii"
     inequality. -/)]
   OperatorRidgelet.Paper.thm_lipschitz_barron_iii
 
-/-! ## Section 6: finite variation from the spectral density -/
+/-! ## Section 6: finite total variation of the coefficient measure -/
 
 attribute [blueprint "thm:E-i"
   (statement := /-- For a band-pass $\rho$ there is a constant $c_\rho<\infty$, depending only

@@ -761,7 +761,7 @@ theorem stronglyMeasurable_coefficientFormula (ρ : SchwartzMap ℝ ℝ) (hG : M
   exact stronglyMeasurable_const.mul hF.integral_prod_right'
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- The explicit coefficient is a Fourier transform along each ray:
+/-- The explicit coefficient is a Fourier transform for each fixed direction:
 `γ_G(a, c) = 𝓕 (u ↦ ρ̂(2πu) G(-2πu a)) (-c)` (a formal change of variables). -/
 theorem coefficientFormula_eq_fourier (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ) (a : H) (c : ℝ) :
     coefficientFormula ρ G (a, c) =
@@ -780,7 +780,7 @@ theorem coefficientFormula_eq_fourier (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ)
   rw [this]
   ring
 
-/-- Plancherel along a ray: `∫⁻ ‖γ_G(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ̂(ω) G(-ωa)‖ₑ² dω`. -/
+/-- Plancherel for a fixed direction: `∫⁻ ‖γ_G(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ̂(ω) G(-ωa)‖ₑ² dω`. -/
 theorem lintegral_coefficientFormula_slice_sq (ρ : SchwartzMap ℝ ℝ) (hG : Measurable G) {a : H}
     (ha₁ : Integrable fun ω : ℝ => filterFourier ρ ω * G (-(ω • a)))
     (ha₂ : MemLp (fun ω : ℝ => filterFourier ρ ω * G (-(ω • a))) 2 volume) :

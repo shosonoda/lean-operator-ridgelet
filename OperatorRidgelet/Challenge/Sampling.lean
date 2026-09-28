@@ -91,13 +91,14 @@ theorem thm_lipschitz_barron_iii {Y : Type*} [NormedAddCommGroup Y] [InnerProduc
         (|β 0| + (L : ℝ) * compactRadius K * Real.sqrt (secondMoment (polarLaw Γ))) := by
   sorry
 
-/-! ## Section 6: finite variation from the spectral density -/
+/-! ## Section 6: finite total variation from the spectral density -/
 
 section Spectral
 
 variable [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For a band-pass `ρ`
+/-- **Theorem [thm:E]** Finite total variation and moments of the coefficient measure.  For a
+band-pass `ρ`
 with frequency window `I` there is a finite constant `c_ρ`, depending only on `ρ` and `α`,
 such that every `G` regular along rays satisfies
 `∫ (1 + ‖a‖² + |c|²) |γ_G| dλ_α ≤ c_ρ M₄(G)`. -/
@@ -110,7 +111,8 @@ theorem thm_E_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
         c * rayMoment ν I G 4 := by
   sorry
 
-/-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For `G` regular along
+/-- **Theorem [thm:E]** Finite total variation and moments of the coefficient measure.  For `G`
+regular along
 rays, `∫ (1 + ‖a‖² + |c|²) |γ_G| dλ_α < ∞`: the coefficient measure `γ_G λ_α` is finite with
 finite second moment. -/
 theorem thm_E_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
@@ -120,7 +122,8 @@ theorem thm_E_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
       (parameterMeasure ν) := by
   sorry
 
-/-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  Consequently, for every
+/-- **Theorem [thm:E]** Finite total variation and moments of the coefficient measure.
+Consequently, for every
 real `β` that is globally Lipschitz (a tempered activation that is the
 function `b`), the target `C^{(α)}_{β,ρ} g_G` is the integral network `S_β[γ_G λ_α]`. -/
 theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
@@ -133,7 +136,8 @@ theorem thm_E_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : 
         x := by
   sorry
 
-/-- **Theorem [thm:E]** Finite variation and moments of the coefficient.  For real globally
+/-- **Theorem [thm:E]** Finite total variation and moments of the coefficient measure.  For real
+globally
 Lipschitz `β`, the sampled network `eq:polar-network` of `γ_G λ_α`, with
 `V = ‖γ_G‖_{L¹(λ_α)}` and `M₂` the second moment of `p = |γ_G| λ_α / V`, satisfies
 `𝔼‖f_N − C^{(α)}_{β,ρ} g_G‖_{C(K)} ≤ (8V/√N)(|β(0)| + Lip(β) R_K M₂)` for every compact
@@ -156,7 +160,8 @@ theorem thm_E_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
 
 /-! ## Section 6: constructive universal approximation -/
 
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  For a continuous,
+/-- **Theorem [thm:D]** Constructive universal approximation with sampling bounds.  For a
+continuous,
 polynomially growing, non-polynomial real `β` (the function `b` of the tempered `β`), a
 band-pass `ρ` with `C^{(α)}_{β,ρ} = 1`, a continuous `f : H → ℂ`, a compact `K`, and `ε > 0`,
 there is a spectral density `G`, regular along rays, smooth, and vanishing outside a bounded
@@ -206,7 +211,8 @@ theorem thm_D (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
                   (secondMoment (densityLaw (parameterMeasure ν) (coefficientFormula ρ G))))) := by
   sorry
 
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  In particular, under
+/-- **Theorem [thm:D]** Constructive universal approximation with sampling bounds.  In particular,
+under
 the hypotheses of the theorem, the finite-width networks with the continuous, polynomially
 growing, non-polynomial real activation `β` are dense in `C(H)` for the compact-open topology:
 every continuous `f : H → ℂ` is approximated within `ε` on every compact `K` by a network of
@@ -225,7 +231,8 @@ theorem thm_D_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α 
       compactSupNorm K (fun x => f x - finiteNetwork (fun t => (b t : ℂ)) v a c x) < ε := by
   sorry
 
-/-- **Theorem [thm:D]** Constructive universal approximation with rates.  The same statements
+/-- **Theorem [thm:D]** Constructive universal approximation with sampling bounds.  The same
+statements
 hold for continuous `f : H → Y` with values in a separable complex Hilbert space: there is a
 `Y`-valued spectral density `G`, regular along rays, smooth, and vanishing outside a bounded
 set, with (i) `‖f − g_G‖_{C(K;Y)} < ε`, (ii) `g_G = S_β[γ_G λ_α]` with a finite coefficient

@@ -68,7 +68,8 @@ theorem lem_gaussian_hinge_ii (k : ℕ) :
 
 /-! ### Example `ex:closed-form` -/
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For `W` bounded,
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+For `W` bounded,
 positive, injective, self-adjoint with `M = Q^{1/2} W Q^{1/2}` trace class,
 `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`. -/
 theorem ex_closed_form_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -82,7 +83,8 @@ theorem ex_closed_form_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
         Complex.exp (-((gaussianKappa S W ξ / 2 : ℝ) : ℂ)) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+For every
 band-pass `ρ`, `R_ρ f_W(a,c) = D^{-1/2} (ρ * φ_{κ_W(a)})(c)`. -/
 theorem ex_closed_form_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -95,7 +97,8 @@ theorem ex_closed_form_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
         ℝ) : ℂ) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  In particular
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+In particular
 `f_W ∈ 𝒟_α` for every `α > 0`. -/
 theorem ex_closed_form_i_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -107,14 +110,16 @@ theorem ex_closed_form_i_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] 
   sorry
 
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  `f_W` is not
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+`f_W` is not
 cylindrical when `W` has infinite rank. -/
 theorem ex_closed_form_i_d (W : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hWi : Function.Injective W) (hrank : HasInfiniteRank (W : H →ₗ[ℝ] H)) :
     ¬ IsCylindrical (gaussianTarget W) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+For every
 band-pass `ρ`, the density `G = 𝒢_Q f_W` is regular along rays. -/
 theorem ex_closed_form_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -126,7 +131,8 @@ theorem ex_closed_form_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
       IsRegularAlongRays (gaussianMixture N α) I (gaussFourier μ (gaussianTarget W)) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The image
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+The image
 `T_α f_W` is represented by the bounded continuous function `g_G`, `G = 𝒢_Q f_W`:
 `T_α f_W [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
 theorem ex_closed_form_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -143,7 +149,8 @@ theorem ex_closed_form_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
             (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  With
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+With
 `S_W = Q^{1/2}(I+M)⁻¹Q^{1/2}`, `R = P^{1/2}`, and
 `Σ_s = 2s P^{1/2}(I + 2s P^{1/2} S_W P^{1/2})⁻¹ P^{1/2}`, the representing function is
 `g_G(x) = D^{-1/2} ∫₀^∞ det(I + 2s P^{1/2} S_W P^{1/2})^{-1/2} exp(-½⟨Σ_s x,x⟩) s^{α/2-1} ds`
@@ -162,7 +169,8 @@ theorem ex_closed_form_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
             s ^ (α / 2 - 1) : ℝ) : ℂ) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The ridgelet
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+The ridgelet
 coefficient of `f_W` is the coefficient `γ_G` of its density `G = 𝒢_Q f_W`:
 `R_ρ f_W = γ_G`. -/
 theorem ex_closed_form_iii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -174,8 +182,9 @@ theorem ex_closed_form_iii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     ridgelet μ ρ (gaussianTarget W) = coefficientFormula ρ (gaussFourier μ (gaussianTarget W)) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  The ridgelet
-coefficient `R_ρ f_W` has finite variation and second moment:
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+The ridgelet
+coefficient measure `(R_ρ f_W) λ_α` has finite total variation and second moment:
 `∫ (1 + ‖a‖² + |c|²) |R_ρ f_W(a,c)| λ_α(da,dc) < ∞`. -/
 theorem ex_closed_form_iii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -187,7 +196,8 @@ theorem ex_closed_form_iii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
       (parameterMeasure (gaussianMixture N α)) := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+For every
 real, globally Lipschitz, non-polynomial `β` (including ReLU), the integral network
 `S_β[R_ρ f_W λ_α]` equals `C^{(α)}_{β,ρ} g_G`. -/
 theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
@@ -204,7 +214,8 @@ theorem ex_closed_form_iii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
         spectralTarget (gaussianMixture N α) (gaussFourier μ (gaussianTarget W)) x := by
   sorry
 
-/-- **Example [ex:closed-form]** Closed-form transform and its filtered network.  For every
+/-- **Example [ex:closed-form]** Closed-form transform and integral representation of `T_α f_W`.
+For every
 real, globally Lipschitz, non-polynomial `β`, the sampled network `eq:polar-network` of
 `R_ρ f_W λ_α` (with `V = ‖R_ρ f_W‖_{L¹(λ_α)}` and samples from `p = |R_ρ f_W| λ_α / V`, as in
 Theorem `thm:E`(iv)) converges to `C^{(α)}_{β,ρ} g_G` at the rate `n^{-1/2}` in `C(K)`, as in
@@ -524,7 +535,7 @@ theorem ex_operator_layer_ii_g {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  Gaussian
-activation: the ridgelet coefficient `R_ρ F_φ` has finite variation and moments,
+activation: the coefficient measure `(R_ρ F_φ) λ_α` has finite total variation and moments,
 `∫ (1 + ‖a‖² + |c|²) |R_ρ F_φ(a,c)| λ_α(da,dc) < ∞`. -/
 theorem ex_operator_layer_ii_h (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -631,7 +642,8 @@ theorem ex_operator_layer_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance 
   sorry
 
 /-- **Example [ex:operator-layer]** Neural-operator layer as an integral network.  The same
-holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ` has finite variation and moments. -/
+holds for `ℱ` itself as a `Y`-valued target: the coefficient measure `(R_ρ ℱ) λ_α` has finite
+total variation and moments. -/
 theorem ex_operator_layer_ii_o (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)

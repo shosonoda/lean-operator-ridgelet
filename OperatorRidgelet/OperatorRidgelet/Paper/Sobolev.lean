@@ -5,15 +5,17 @@ import OperatorRidgelet.Sobolev.Pairing
 import OperatorRidgelet.Sobolev.GaussianSobolev
 
 /-!
-# Statements of Appendix C: Appendix C, the weak Sobolev tools
+# Statements of Appendix C: Appendix C, the Sobolev tools
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
 `Challenge.Sobolev`, and proved from the library.
 
-The Sobolev space `H^s_ω(ℝ;Y)` of the manuscript is carried by the pair of a profile `h` and its
-inverse Fourier transform `γ`, as documented in `OperatorRidgelet.Sobolev.Defs`: `MemRaySobolev`
-is the membership, `raySobolevNorm` the norm `eq:sobolev-norm`, and `rayProfile γ = γ̂` the
-profile of a coefficient.
+For Hilbert-valued `Y`, the Bessel potential space `H^s_ω(ℝ;Y)` is represented by a profile
+`h` and its inverse Fourier transform `γ`. As documented in `OperatorRidgelet.Sobolev.Defs`,
+`MemRaySobolev s γ` and `raySobolevNorm s γ` express the weighted inverse-transform condition
+and norm `eq:sobolev-norm`, and `rayProfile γ = γ̂`. For general Banach `Y`, every use of this
+notation refers directly to the specified weighted inverse transform; no Plancherel identity
+is assumed.
 -/
 
 noncomputable section
@@ -191,13 +193,14 @@ theorem prop_nonbandpass_sobolev_iv {α e : ℝ} (hα : 0 < α) {ν : Measure H}
     ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖ ^ 2) ^ e) ∂ν < ⊤ := by
   exact hν.lintegral_one_add_norm_sq_rpow_lt_top hα hB he
 
-/-- **Proposition [prop:nonbandpass-sobolev]**(v) The coefficient of the rays of the filter for
+/-- **Proposition [prop:nonbandpass-sobolev]**(v) The coefficient associated with the filter for
 the Gaussian target `g(ξ) = e^{-‖ξ‖²} v` is jointly strongly measurable. -/
 theorem prop_nonbandpass_sobolev_v (k : ℕ) (v : Y) :
     StronglyMeasurable (gaussRayCoefficient (H := H) k v) := by
   exact stronglyMeasurable_gaussRayCoefficient k v
 
-/-- **Proposition [prop:nonbandpass-sobolev]**(vi) Every ray lies in `H^s_ω(ℝ;Y)` and has the
+/-- **Proposition [prop:nonbandpass-sobolev]**(vi) Every profile belongs to `H^s_ω(ℝ;Y)` and
+equals the
 profile `h_a(ω) = ρ̂_k(-ω) g(ωa)` required by `thm:weak-sobolev-synthesis`. -/
 theorem prop_nonbandpass_sobolev_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
     (a : H) :
@@ -235,7 +238,8 @@ theorem prop_nonbandpass_sobolev_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs 
 
 /-- **Proposition [prop:nonbandpass-sobolev]**(ix) Consequently the filter satisfies every
 hypothesis of `thm:weak-sobolev-synthesis`: for each continuous activation of growth order
-`p < s - 1/2` the synthesis of the rays is absolutely convergent and reproduces the target. -/
+`p < s - 1/2` the synthesis of the coefficient is absolutely convergent and reproduces the target.
+-/
 theorem prop_nonbandpass_sobolev_ix [CompleteSpace Y] {k : ℕ} {α s p Cσ : ℝ} (hα : 0 < α)
     (hp : 0 ≤ p) (hps : p + 1 / 2 < s) (hk : α + 2 * s - 1 / 2 < 2 * k)
     {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)

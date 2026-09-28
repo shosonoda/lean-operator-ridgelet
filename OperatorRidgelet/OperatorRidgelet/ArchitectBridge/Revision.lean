@@ -96,7 +96,7 @@ attribute [blueprint "thm:general-weights-dense"
 
 attribute [blueprint "lem:coefficient-isometry-v"
   (statement := /-- Lemma lem:coefficient-isometry The L² inverse formula is absolutely integrable
-on almost every ray, for every bias value. -/)]
+for almost every direction, for every bias value. -/)]
   OperatorRidgelet.Paper.lem_coefficient_isometry_v
 
 attribute [blueprint "lem:partial-fourier-l2-ii"
@@ -121,7 +121,7 @@ adjoint and the scaled left-inverse identity. -/)]
   OperatorRidgelet.Paper.lem_coefficient_adjoint_i
 
 attribute [blueprint "lem:coefficient-adjoint-ii"
-  (statement := /-- Lemma lem:coefficient-adjoint The ray-average integral is absolutely
+  (statement := /-- Lemma lem:coefficient-adjoint The backprojection integral is absolutely
     convergent a.e. -/)]
   OperatorRidgelet.Paper.lem_coefficient_adjoint_ii
 

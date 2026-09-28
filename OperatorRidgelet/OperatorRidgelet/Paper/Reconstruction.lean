@@ -42,7 +42,12 @@ open scoped ENNReal RealInnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-! ### Definition `def:ray-regular` -/
+/-! ### Definition `def:ray-regular`
+
+Set `G_a(ω) := G (ω • a)`, the restriction of `G` to the line through the origin spanned
+by `a ≠ 0`; `G_0` is constant. Regularity along rays means the smoothness and weighted
+derivative bounds on these functions bundled in `IsRegularAlongRays`.
+-/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
@@ -577,7 +582,7 @@ set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
 /-- **Proposition [prop:coefficient-projection]** Bounded backprojection and orthogonal range
 projection.  For `γ ∈ L²(λ_α)` and a jointly measurable partial bias-Fourier representative
-`Φ` of `γ`, the ray-average integral `eq:ray-average` converges absolutely for `ν_α`-almost
+`Φ` of `γ`, the backprojection integral `eq:ray-average` converges absolutely for `ν_α`-almost
 every `ξ`. -/
 theorem prop_coefficient_projection_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)

@@ -320,7 +320,7 @@ theorem exists_norm_iteratedDeriv_gaussianTypeDensity_smul_le (S : H →L[ℝ] H
         rw [pow_add (1 + ‖a‖) d (2 * n)]
         ring
 
-/-- The ray-derivative bound `rayDerivBound I G m a` of a Gaussian-type density is dominated by
+/-- The derivative bound `rayDerivBound I G m a` of a Gaussian-type density is dominated by
 `C (1 + ‖a‖)^p e^{-t κ(a)}` for some `t > 0` depending only on the frequency window `I`. -/
 theorem exists_rayDerivBound_gaussianTypeDensity_le (S : H →L[ℝ] H) (hS0 : ∀ ξ, 0 ≤ ⟪S ξ, ξ⟫)
     {k : ℕ} (ℓ : Fin k → (H →L[ℝ] ℝ)) (q : MvPolynomial (Option (Fin k)) ℂ) {I : Set ℝ}
@@ -351,7 +351,8 @@ theorem exists_rayDerivBound_gaussianTypeDensity_le (S : H →L[ℝ] H) (hS0 : �
 
 variable [MeasurableSpace H]
 
-/-- The ray moments of a Gaussian-type density are finite, given the Gaussian-decay
+/-- The weighted derivative integrals of a Gaussian-type density are finite, given the
+Gaussian-decay
 integrability `∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν < ∞` of Lemma `lem:gaussian-decay` and `S ≥ θQ`. -/
 theorem rayMoment_gaussianTypeDensity_lt_top (ν : Measure H) {Q : H →L[ℝ] H}
     (hQ0 : ∀ ξ, 0 ≤ ⟪Q ξ, ξ⟫)
@@ -819,7 +820,7 @@ theorem iteratedDeriv_finset_sum_mul {ι : Type*} (s : Finset ι) (c : ι → �
       iteratedDerivWithin_const_mul hx hU.uniqueDiffOn (c j) hgj,
       ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
 
-/-- The ray-derivative bound of a finite linear combination is dominated by the linear
+/-- The derivative bound of a finite linear combination is dominated by the linear
 combination of the ray-derivative bounds. -/
 theorem rayDerivBound_finset_sum_le {ι : Type*} (s : Finset ι) (c : ι → ℂ) (G : ι → H → ℂ)
     {I : Set ℝ} (m : ℕ) (a : H)
@@ -928,7 +929,7 @@ theorem iteratedDeriv_finset_sum_smul {ι : Type*} (s : Finset ι) (g : ι → �
       ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- The ray-derivative bound of a finite combination with constant weights in a Banach space is
+/-- The derivative bound of a finite combination with constant weights in a Banach space is
 dominated by the combination of the ray-derivative bounds. -/
 theorem rayDerivBound_finset_sum_smul_le {ι : Type*} (s : Finset ι) (G : ι → H → ℂ) (w : ι → Y)
     {I : Set ℝ} (m : ℕ) (a : H)
@@ -1006,7 +1007,7 @@ section BochnerIntegral
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
-/-- The ray-derivative bound dominates every ray derivative of order at most `m` on `I`. -/
+/-- The derivative bound dominates every ray derivative of order at most `m` on `I`. -/
 theorem enorm_iteratedDeriv_le_rayDerivBound {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
     (I : Set ℝ) (G : H → Y) {m k : ℕ} (hk : k ≤ m) (a : H) {ω : ℝ} (hω : ω ∈ I) :
     ‖iteratedDeriv k (fun ω : ℝ => G (ω • a)) ω‖ₑ ≤ rayDerivBound I G m a := by

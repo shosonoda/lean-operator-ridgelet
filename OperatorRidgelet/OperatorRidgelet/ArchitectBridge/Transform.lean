@@ -69,7 +69,7 @@ attribute [blueprint "transform:centered-gaussian"
   (hasProof := false)] OperatorRidgelet.IsCenteredGaussian
 
 attribute [blueprint "transform:gaussian-layers"
-  (statement := /-- A family $N_s=\mathcal N(0,2sP)$, $s>0$, of Gaussian layers with
+  (statement := /-- A family $N_s=\mathcal N(0,2sP)$, $s>0$, of Gaussian components with
     characteristic functionals $e^{-s\langle P\xi,\xi\rangle}$. -/)
   (hasProof := false)] OperatorRidgelet.IsCenteredGaussianLayers
 
@@ -227,7 +227,7 @@ attribute [blueprint "filters:mexican-hat"
 
 attribute [blueprint "infra:gaussian-layers-exist"
   (statement := /-- For an injective, positive, self-adjoint, trace-class $P$ there is a family
-    of Gaussian layers $\mathcal N(0,2sP)$, $s>0$ (the Gaussian series of
+    of Gaussian components $\mathcal N(0,2sP)$, $s>0$ (the Gaussian series of
     Appendix A). -/)
   ] OperatorRidgelet.exists_isCenteredGaussianLayers
 

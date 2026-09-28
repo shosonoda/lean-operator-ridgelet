@@ -330,7 +330,8 @@ attribute [blueprint "ex:closed-form-iii-a"
   OperatorRidgelet.Paper.ex_closed_form_iii_a
 
 attribute [blueprint "ex:closed-form-iii-b"
-  (statement := /-- $R_\rho f_W$ has finite variation and second moment. -/)]
+  (statement := /-- The measure with density $R_\rho f_W$ has finite total variation
+  and second moment. -/)]
   OperatorRidgelet.Paper.ex_closed_form_iii_b
 
 attribute [blueprint "ex:closed-form-iii-c"
@@ -454,7 +455,8 @@ attribute [blueprint "ex:operator-layer-ii-g"
   OperatorRidgelet.Paper.ex_operator_layer_ii_g
 
 attribute [blueprint "ex:operator-layer-ii-h"
-  (statement := /-- $R_\rho F_\varphi$ has finite variation and moments. -/)]
+  (statement := /-- The measure with density $R_\rho F_\varphi$ has finite total variation
+  and moments. -/)]
   OperatorRidgelet.Paper.ex_operator_layer_ii_h
 
 attribute [blueprint "ex:operator-layer-ii-i"
@@ -485,7 +487,8 @@ attribute [blueprint "ex:operator-layer-ii-n"
   OperatorRidgelet.Paper.ex_operator_layer_ii_n
 
 attribute [blueprint "ex:operator-layer-ii-o"
-  (statement := /-- $R_\rho\mathcal F$ has finite variation and moments. -/)
+  (statement := /-- The measure with density $R_\rho\mathcal F$ has finite total variation
+  and moments. -/)
 ] OperatorRidgelet.Paper.ex_operator_layer_ii_o
 
 attribute [blueprint "ex:operator-layer-ii-p"

@@ -19,6 +19,10 @@ module.
 
 ## Tempered distributions
 
+"ReLU is admissible" means that ReLU can be paired with a real band-pass analysis filter
+whose reconstruction constant is nonzero. This is admissibility of an activation/filter pair;
+`IsAdmissible` in `Transform.Defs` instead describes an analysis filter's self-pairing.
+
 A synthesis activation is a tempered distribution `β : TemperedDistribution ℝ ℂ` (Mathlib's
 `𝓢'(ℝ, ℂ)`), whose Fourier transform in the manuscript's convention is the vendored
 `angularFourierDistribution`.  The manuscript's "real `β ∈ 𝒮'(ℝ)`" is `IsRealDistribution`:
