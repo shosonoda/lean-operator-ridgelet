@@ -7,7 +7,9 @@ open Verso Doc
 open Verso.Genre Manual
 
 def main (args : List String) : IO UInt32 := do
-  let document ← match OperatorRidgeletBlueprint.ManuscriptLayout.apply
+  -- Read the index on each render: changes to JSON must not reuse compiled numbering.
+  let index ← IO.FS.readFile "../OperatorRidgelet/comparator/paper.json"
+  let document ← match OperatorRidgeletBlueprint.ManuscriptLayout.apply index
       (%doc OperatorRidgeletBlueprint.Blueprint) with
     | .ok document => pure document
     | .error message => throw (IO.userError message)

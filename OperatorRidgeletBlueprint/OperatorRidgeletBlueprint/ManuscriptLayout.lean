@@ -23,9 +23,9 @@ structure Item where
 def Item.title (item : Item) : String :=
   s!"{item.kind} {item.sectionPrefix}.{item.count}"
 
-/-- Read the same numbered index used by the mathematics project. -/
-def items : Except String (Array Item) := do
-  let index ← Json.parse (include_str "../../OperatorRidgelet/comparator/paper.json")
+/-- Parse the numbered index supplied at rendering time, independently of cached modules. -/
+def items (source : String) : Except String (Array Item) := do
+  let index ← Json.parse source
   let rows ← (← index.getObjVal? "items").getArr?
   rows.mapM fun row => do
     let label ← row.getObjValAs? String "blueprint_label"
@@ -121,7 +121,7 @@ partial def rewritePart (index : Array Item) (part : Part Manual) :
     subParts := ← part.subParts.mapM (rewritePart index) }
 
 /-- Prepare an authored Blueprint independently of chapter-local counters. -/
-def apply (part : Part Manual) : Except String (Part Manual) := do
-  rewritePart (← items) part
+def apply (source : String) (part : Part Manual) : Except String (Part Manual) := do
+  rewritePart (← items source) part
 
 end OperatorRidgeletBlueprint.ManuscriptLayout
