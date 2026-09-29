@@ -111,7 +111,7 @@ theorem thm_6_4_moments (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ 
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.2]** Tempered synthesis is jointly absolutely integrable. -/
+/-- **Theorem [thm:4.2]** The network integrand is jointly absolutely integrable. -/
 theorem thm_4_2_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
@@ -122,7 +122,7 @@ theorem thm_4_2_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ �
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Theorem [thm:4.6]** Tempered synthesis is Bochner integrable on the product. -/
+/-- **Theorem [thm:4.6]** The network integrand is Bochner integrable on the product. -/
 theorem thm_4_6_representation_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)

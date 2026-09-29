@@ -2,7 +2,7 @@ import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Reconstruction.Defs
 
 /-!
-# comparator challenge: Section 5 (tempered synthesis activations and ReLU) and Appendix C
+# comparator challenge: Section 5 (reconstruction formulas and activation functions) and Appendix C
 
 Statements with proof `sorry`, identical to `OperatorRidgelet.Paper.Tempered`.
 -/

@@ -5,10 +5,12 @@ import OperatorRidgelet.Network.Defs
 import Mathlib.MeasureTheory.Group.LIntegral
 
 /-!
-# Absolute synthesis from a Sobolev condition on frequency profiles
+# Integral representation under Sobolev conditions on frequency profiles
 
 The material behind Theorem `thm:5.6`: the moment bound of the coefficient,
-the finite total variation of its coefficient measure, and the synthesis identity.
+the finite total variation of its coefficient measure, and the integral representation.
+The network integral converges absolutely under these hypotheses; for vector-valued
+coefficients, this means Bochner integrability of the network integrand.
 -/
 
 noncomputable section

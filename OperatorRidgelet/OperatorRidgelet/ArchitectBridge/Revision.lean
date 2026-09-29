@@ -49,11 +49,11 @@ attribute [blueprint "thm:6.4-moments"
   OperatorRidgelet.Paper.thm_6_4_moments
 
 attribute [blueprint "thm:4.2-iii-e"
-  (statement := /-- Theorem thm:4.2 Tempered synthesis is jointly absolutely integrable. -/)]
+  (statement := /-- Theorem thm:4.2 The network integrand is jointly absolutely integrable. -/)]
   OperatorRidgelet.Paper.thm_4_2_iii_e
 
 attribute [blueprint "thm:4.6-representation-iii-e"
-  (statement := /-- Theorem thm:4.6 Tempered synthesis is Bochner integrable on the
+  (statement := /-- Theorem thm:4.6 The network integrand is Bochner integrable on the
     product. -/)]
   OperatorRidgelet.Paper.thm_4_6_representation_iii_e
 

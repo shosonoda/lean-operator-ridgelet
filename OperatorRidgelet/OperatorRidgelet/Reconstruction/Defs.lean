@@ -31,7 +31,7 @@ derivative bounds on these one-variable functions specified by `IsRegularAlongRa
   (`StronglyMeasurable`, which is Borel measurability for separable targets), smoothness of
   `ω ↦ G(ωa)` on an open neighbourhood of `I`, and the finiteness of every `M_m(G)`.
 
-## Tempered synthesis activations
+## Activations of polynomial growth
 
 A tempered distribution `β ∈ 𝒮'(ℝ)` "that is a continuous function of polynomial growth" is
 represented by the pair of `β : TemperedDistribution ℝ ℂ` and a function `b : ℝ → ℝ` with
@@ -65,7 +65,7 @@ manuscript's in the second; `innerSLFlip ℂ f g = ⟪g, f⟫ = ⟨f,g⟩_manusc
 
 These are the only definitions of `𝓔_α'`, `R_ρ` on `𝓔_α`, `S_ρ`, `J_α`, `J_α⁻¹`, `g_G`, and
 regularity along rays in the library: Section 5 (`OperatorRidgelet.Tempered.Defs`, the
-regularized and tempered synthesis `S_{β_ε}`, `S_β`, and Corollary `cor:5.3`) and
+regularized synthesis `S_{β_ε}` and its limit `S_β`, and Corollary `cor:5.3`) and
 Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 ## Backprojection, coefficient projection, and the Hermite inverse

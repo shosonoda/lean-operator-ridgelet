@@ -12,7 +12,7 @@ import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 
 /-!
-# Definitions for Section 5 (tempered synthesis activations and ReLU) and Appendix C
+# Definitions for Section 5 (reconstruction formulas and activation functions) and Appendix C
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
@@ -81,7 +81,9 @@ instance `b = ReLU` of Theorem 4.2(iii) (`IsFrequencyWindow`, `IsRegularAlongRay
 The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ = synthesis μ ν β_ε γ` is
 `regularizedSynthesis`, and the synthesis with `β` is
 `temperedSynthesis μ ν β χ η γ := lim_{ε ↓ 0} S_{β_ε} γ` in `𝓔_α'`, obtained by choice whenever
-the limit exists (junk `0` otherwise).
+the limit exists (junk `0` otherwise). This is a norm limit in the continuous anti-dual.
+Here the activation is a tempered distribution; convergence of an ordinary network integral
+requires separate integrability hypotheses.
 
 ## Standard activations and the weighted Sobolev spaces (Appendix C)
 

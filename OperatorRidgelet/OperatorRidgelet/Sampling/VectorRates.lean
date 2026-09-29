@@ -1,7 +1,7 @@
 import OperatorRidgelet.Sampling.Basic
 import OperatorRidgelet.ToMathlib.IntegratedSampling
 
-/-! # Second-moment estimates for vector-valued sampling -/
+/-! # Second-moment estimates for vector-valued approximation -/
 
 noncomputable section
 
@@ -34,7 +34,7 @@ theorem norm_ridge_sq_le {β : ℝ → ℂ} {L : ℝ≥0} (hβ : LipschitzWith L
   nlinarith [sq_nonneg (‖β 0‖ - (L : ℝ) * (‖a‖ * ‖x‖ + |c|))]
 
 /-- Integrating a Lipschitz ridge atom in the input and parameter variables gives the
-explicit second-moment bound used in the vector-valued sampling rate. -/
+explicit second-moment bound used in the vector-valued approximation rate. -/
 theorem integral_integral_norm_ridge_sq_le [MeasurableSpace H] {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (p : Measure (H × ℝ)) [IsProbabilityMeasure p]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) p)

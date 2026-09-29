@@ -1,7 +1,7 @@
 import Architect
 import OperatorRidgelet.Paper.SamplingRevision
 
-/-! # Banach sampling and exact Hilbert variance metadata -/
+/-! # Banach-valued approximation and exact Hilbert variance metadata -/
 
 attribute [blueprint "lem:D.1-i"
   (statement := /-- Signed empirical means of an integrable Banach-valued atom converge to zero

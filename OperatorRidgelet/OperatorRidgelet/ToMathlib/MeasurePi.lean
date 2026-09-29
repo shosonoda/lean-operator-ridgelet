@@ -40,7 +40,7 @@ theorem memLp_eval_pi {E : Type*} [NormedAddCommGroup E] {g : Ω → E} {q : ℝ
 
 end Pi
 
-/-! ### The Hilbert-valued sampling identity -/
+/-! ### The mean-square error identity for Hilbert-valued averages -/
 
 section Hilbert
 

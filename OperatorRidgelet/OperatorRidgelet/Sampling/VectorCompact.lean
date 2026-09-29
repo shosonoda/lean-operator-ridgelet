@@ -172,7 +172,7 @@ theorem integrable_vectorRidgeAtom (hK : IsCompact K) {β : ℝ → ℂ} {L : �
   apply mul_le_mul_of_nonneg_left _ hC
   nlinarith [sq_nonneg (‖θ.1‖ - 1), sq_nonneg (|θ.2| - 1)]
 
-/-- The compact-open vector sampling bound from symmetrization of the integrable atom map. -/
+/-- The compact-open vector approximation bound from symmetrization of the integrable atom map. -/
 theorem integral_polarSampledNetwork_compact_le {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ ^ 2 + |θ.2| ^ 2) (polarLaw Γ))

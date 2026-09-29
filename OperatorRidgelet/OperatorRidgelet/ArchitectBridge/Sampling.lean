@@ -97,7 +97,7 @@ attribute [blueprint "sampling:finite-rank-projection"
   (statement := /-- $P$ is a finite-rank orthogonal projection. -/)
   (hasProof := false)] OperatorRidgelet.IsFiniteRankProjection
 
-/-! ## Section 6: sampling bounds -/
+/-! ## Section 6: approximation rates -/
 
 attribute [blueprint "thm:6.2"
   (statement := /-- Whenever the atoms $x\mapsto h(\theta)\beta(\langle a,x\rangle+c)$ are
@@ -182,7 +182,7 @@ attribute [blueprint "thm:6.5-vec"
     (iii). -/)]
   OperatorRidgelet.Paper.thm_6_5_vec
 
-/-! ## Section 6: vector-valued sampling -/
+/-! ## Section 6: vector-valued approximation -/
 
 attribute [blueprint "cor:6.6-i-a"
   (statement := /-- For every Borel probability measure $\zeta$ on $H$ with
@@ -206,7 +206,7 @@ attribute [blueprint "cor:6.6-ii-b"
   (statement := /-- $\mathfrak R^Y_N(K;p,\beta)\to0$ as $N\to\infty$. -/)]
   OperatorRidgelet.Paper.cor_6_6_ii_b
 
-/-! ## Appendix D: supplementary sampling results -/
+/-! ## Appendix D: supplementary approximation results -/
 
 attribute [blueprint "lem:D.4"
   (statement := /-- For continuous $\beta$, compact $K$, and

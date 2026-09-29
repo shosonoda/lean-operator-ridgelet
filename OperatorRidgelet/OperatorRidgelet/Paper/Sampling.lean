@@ -38,9 +38,9 @@ open scoped ENNReal NNReal RealInnerProductSpace BoundedContinuousFunction
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
-/-! ## Section 6: sampling bounds -/
+/-! ## Section 6: approximation rates -/
 
-/-- **Theorem [thm:6.2]** General compact-open sampling bound.  Whenever the
+/-- **Theorem [thm:6.2]** Compact-open approximation bound.  Whenever the
 atoms `x ↦ h(θ) β(⟪a, x⟫ + c)` are measurable and integrably bounded in `C(K)` (they are the
 values of a Bochner-integrable map `Φ : Θ → C(K)`), the sampled network of the polar
 decomposition of `Γ` satisfies `𝔼‖f_N − f‖_{C(K)} ≤ 2V 𝔑_N(K; p, β)`. -/
@@ -314,7 +314,7 @@ theorem thm_6_4_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α :
 
 /-! ## Section 6: constructive universal approximation -/
 
-/-- **Theorem [thm:6.5]** Constructive universal approximation with sampling bounds.  For a
+/-- **Theorem [thm:6.5]** Constructive universal approximation with approximation rates.  For a
 continuous,
 polynomially growing, non-polynomial real `β` (the function `b` of the tempered `β`), a
 band-pass `ρ` with `C^{(α)}_{β,ρ} = 1`, a continuous `f : H → ℂ`, a compact `K`, and `ε > 0`,
@@ -370,9 +370,9 @@ theorem thm_6_5 (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : �
   -- normalization of a radial bump needs `ν (closedBall 0 R) < ⊤`.
   exact exists_spectralDensity_universal_approx ν hfin hν β b hβ ρ hρ hC I hI hf hK hε
 
-/-- **Theorem [thm:6.5]** Constructive universal approximation with sampling bounds.  In particular,
-under
-the hypotheses of the theorem, the finite-width networks with the continuous, polynomially
+/-- **Theorem [thm:6.5]** Constructive universal approximation with approximation rates.
+In particular, under the hypotheses of the theorem, the finite-width networks with the continuous,
+polynomially
 growing, non-polynomial real activation `β` are dense in `C(H)` for the compact-open topology:
 every continuous `f : H → ℂ` is approximated within `ε` on every compact `K` by a network of
 some finite width `N`.  The manuscript states the sentence inside Theorem `thm:6.5`, under all
@@ -481,7 +481,7 @@ theorem thm_6_5_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {�
   exact lt_of_le_of_lt (compactSupNorm_le
     (add_nonneg (compactSupNorm_nonneg _ _) (compactSupNorm_nonneg _ _)) key) (by linarith)
 
-/-- **Theorem [thm:6.5]** Constructive universal approximation with sampling bounds.  The same
+/-- **Theorem [thm:6.5]** Constructive universal approximation with approximation rates.  The same
 statements
 hold for continuous `f : H → Y` with values in a separable complex Hilbert space: there is a
 `Y`-valued spectral density `G`, regular along rays, smooth, and vanishing outside a bounded
@@ -543,7 +543,7 @@ theorem thm_6_5_vec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
 
 end Spectral
 
-/-! ## Section 6: vector-valued sampling -/
+/-! ## Section 6: vector-valued approximation -/
 
 section VectorValued
 
@@ -607,7 +607,7 @@ theorem cor_6_6_ii_b [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology
 
 end VectorValued
 
-/-! ## Appendix D: supplementary sampling results -/
+/-! ## Appendix D: supplementary approximation results -/
 
 /-- **Lemma [lem:D.4]** Qualitative finite-atomic approximation.  For
 continuous `β`, compact `K`, and `∫ ‖β(⟪a,·⟫ + c)‖_{C(K)} d|Γ| < ∞`, for every `ε > 0` there
@@ -774,8 +774,9 @@ variable {Ω : Type*} [MeasurableSpace Ω] {X : Type*} [NormedAddCommGroup X]
   [InnerProductSpace ℝ X] [CompleteSpace X] [SecondCountableTopology X]
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:D.6]** Hilbert-valued sampling identity.  For `Y ∈ L²(p; X)` with
-values in a separable Hilbert space, independent copies `Y_j`, `f = V 𝔼Y`, and
+/-- **Lemma [lem:D.6]** Mean-square error identity for Hilbert-valued averages.
+For `Y ∈ L²(p; X)` with values in a separable Hilbert space, independent copies `Y_j`, `f = V 𝔼Y`,
+and
 `f_N = V N⁻¹ ∑_j Y_j`: `𝔼‖f_N − f‖² = (V²/N)(𝔼‖Y‖² − ‖𝔼Y‖²)`. -/
 theorem lem_D_6_i (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
@@ -783,7 +784,7 @@ theorem lem_D_6_i (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
       V ^ 2 / N * ((∫ ω', ‖Y ω'‖ ^ 2 ∂p) - ‖∫ ω', Y ω' ∂p‖ ^ 2) :=
   integral_norm_sq_sampleMean p hY V hN
 
-/-- **Lemma [lem:D.6]** Hilbert-valued sampling identity.
+/-- **Lemma [lem:D.6]** Mean-square error identity for Hilbert-valued averages.
 `𝔼‖f_N − f‖² ≤ (V²/N) 𝔼‖Y‖²`. -/
 theorem lem_D_6_ii (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
@@ -794,8 +795,8 @@ theorem lem_D_6_ii (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
   have h2 : 0 ≤ ‖∫ ω', Y ω' ∂p‖ ^ 2 := by positivity
   nlinarith
 
-/-- **Lemma [lem:D.6]** Hilbert-valued sampling identity.  A deterministic sample
-satisfies the same upper bound `‖f_N − f‖² ≤ (V²/N) 𝔼‖Y‖²`. -/
+/-- **Lemma [lem:D.6]** Mean-square error identity for Hilbert-valued averages.
+A deterministic sample satisfies the same upper bound `‖f_N − f‖² ≤ (V²/N) 𝔼‖Y‖²`. -/
 theorem lem_D_6_iii (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
     (hY : MemLp Y 2 p) (V : ℝ) {N : ℕ} (hN : 0 < N) :
     ∃ ω : Fin N → Ω,
@@ -809,7 +810,7 @@ theorem lem_D_6_iii (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
 
 end Hilbert
 
-/-- **Corollary [cor:D.7]** Sampling in operator parameters.  For a finite
+/-- **Corollary [cor:D.7]** Approximation with operator-valued parameters.  For a finite
 complex measure `Γ_op` on `𝓛₂(H) × H` with polar decomposition `h_op |Γ_op|`,
 `V_op = ‖Γ_op‖_TV`, `p_op = |Γ_op|/V_op`, real globally Lipschitz `β`, readout normalized by
 `⟪ℓ, z⟫ = 1`, and `M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) dp_op < ∞`, sampling `(A_j, b_j)` from
@@ -908,7 +909,7 @@ theorem cor_D_7_i [CompleteSpace H] [SecondCountableTopology H]
                   ∂polarLaw Γop)) * (Real.sqrt N / N) := by ring
           _ = _ := by rw [hsqrt]; ring
 
-/-- **Corollary [cor:D.7]** Sampling in operator parameters.
+/-- **Corollary [cor:D.7]** Approximation with operator-valued parameters.
 `M_op² ≤ ‖ψ‖² ∫ (‖A‖²_{𝓛₂} + ‖b‖²) dp_op`. -/
 theorem cor_D_7_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H] (ψ : H)
     (Γop : ComplexMeasure (OperatorRidgeParameter H)) [IsFiniteMeasure Γop.variation]
@@ -940,7 +941,7 @@ theorem cor_D_7_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H] (ψ : H)
     calc ‖⟪ψ, q.2⟫‖ ^ 2 ≤ (‖ψ‖ * ‖q.2‖) ^ 2 := by gcongr; exact norm_inner_le_norm ψ q.2
       _ = ‖ψ‖ ^ 2 * ‖q.2‖ ^ 2 := by ring
 
-/-- **Corollary [cor:D.8]** Input truncation and sampling are separate errors.  For
+/-- **Corollary [cor:D.8]** Input truncation and finite-width approximation errors.  For
 finite-rank orthogonal projections `Π_m` converging strongly to the identity, `f ∈ C(H)`, and
 compact `K`, `‖f − f ∘ Π_m‖_{C(K)} → 0`. -/
 theorem cor_D_8_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
@@ -982,7 +983,7 @@ theorem cor_D_8_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
     _ ≤ ε / 3 + ε / 3 := by rw [dist_comm (f i)]; linarith
     _ = 2 * ε / 3 := by ring
 
-/-- **Corollary [cor:D.8]** Input truncation and sampling are separate errors.  If
+/-- **Corollary [cor:D.8]** Input truncation and finite-width approximation errors.  If
 `f = S_β Γ` satisfies the hypotheses of Theorem `thm:6.3` and the same samples and
 weights `(V/N) h(θ_j)` are used with the truncated directions `Π_m a_j` inside the activation,
 `f_{m,N}(x) = (V/N) ∑_j h(θ_j) β(⟪Π_m a_j, x⟫ + c_j)`, then
@@ -1033,7 +1034,7 @@ theorem cor_D_8_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
     rw [integral_finsetSum Finset.univ fun j _ => hintj j]
     simp_rw [sampleLaw, integral_eval_pi (polarLaw Γ) hint_a.aestronglyMeasurable]
     simp
-  -- the sampling error of the untruncated network
+  -- the approximation error of the untruncated network
   have herr_int : Integrable (fun θ : Fin N → H × ℝ => compactSupNorm K (fun x =>
       polarSampledNetwork (fun t => (β t : ℂ)) Γ θ x -
         integralNetwork (fun t => (β t : ℂ)) Γ x)) (sampleLaw N (polarLaw Γ)) :=
@@ -1041,7 +1042,7 @@ theorem cor_D_8_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
       (polarWeight Γ / N)).congr (Eventually.of_forall fun θ =>
         (compactSupNorm_polarSampledNetwork_sub_eq hK hβ Γ h0 hM hN θ).symm)
   have herr_le := integral_compactSupNorm_polarSampledNetwork_sub_le hβ Γ hM hK hN
-  -- the pointwise bound: sampling error plus truncation error
+  -- the pointwise bound: approximation error plus truncation error
   have hpt : ∀ᵐ θ ∂sampleLaw N (polarLaw Γ),
       compactSupNorm K (fun x =>
         integralNetwork (fun t => (β t : ℂ)) Γ x -
