@@ -35,6 +35,16 @@ def main():
         (plain(entry["label"]), entry["facet"]): entry
         for entry in manifest["previews"] if entry["targetKind"] == "block"
     }
+    expected_chapters = {
+        "2": "networks", "3": "transform", "4": "reconstruction", "5": "tempered",
+        "6": "sampling", "7": "examples",
+        **{letter: "appendix-" + letter.lower() for letter in "ABCDEF"},
+    }
+    retired_labels = {"lem:F.1", "lem:F.2", "lem:F.4", "thm:H.1",
+                      "aux:hilbert-schmidt", "aux:operator-neuron",
+                      "roadmap:finite-dim-universality"}
+    assert not retired_labels.intersection(by_label), "Retired nodes remain in graph"
+    assert len(items) == 62, "Unexpected manuscript inventory"
     proof_count = 0
     for item in items:
         label = item["blueprint_label"]
@@ -46,6 +56,9 @@ def main():
         statement = previews[label, "statement"]
         assert statement["title"] == title, (label, statement["title"])
         check_link(statement["href"])
+        chapter = item["number"].split(".")[0]
+        assert statement["href"].split("/")[0] == expected_chapters[chapter], (
+            label, "Statement outside its manuscript chapter", statement["href"])
         proof = previews.get((label, "proof"))
         if proof:
             assert proof["title"] == "Proof for " + title, (label, proof["title"])
@@ -58,6 +71,13 @@ def main():
             proof_count += 1
         for warning, active in node["warnings"].items():
             assert not active, (label, warning)
+    for label in ["ex:3.12", "ex:3.13", "prop:5.8"]:
+        assert previews[label, "proof"]["href"].startswith("appendix-g/"), label
+    assert "/supplementary-estimates/" in previews["cor:D.7", "statement"]["href"], (
+        "New D.7 must not reuse the retired operator-approximation URL")
+    assert by_label["prop:F.3"]["href"].startswith("appendix-f/"), "Dilation result misplaced"
+    for route in ["numerics/", "discussion/", "appendix-g/", "appendix-h/"]:
+        check_link(route)
     labels = {item["blueprint_label"] for item in items}
     old_labels = {item["label"] for item in items} - labels
     assert not old_labels.intersection(by_label), "Retired manuscript labels in graph"

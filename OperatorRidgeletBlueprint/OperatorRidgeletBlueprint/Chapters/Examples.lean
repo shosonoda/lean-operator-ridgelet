@@ -31,7 +31,7 @@ linear measurements. We first compute the transform of a Gaussian target, then g
 Gaussian-parameter networks on $`\ell^2`, and finally treat nonlinear layers built from
 bounded operators, periodic convolution, and a Dirichlet solution operator.
 
-Appendix E contains the Gaussian integral and detailed calculations. Appendix J illustrates
+Appendix E contains the Gaussian integral and detailed calculations. Section 8 illustrates
 sampling and the explicit transform numerically.
 
 # A Gaussian target with a closed-form transform

@@ -25,6 +25,9 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "discussion"
 %%%
 
+We discuss what the representation and approximation results establish and identify
+the remaining limitations in spectral approximation, computation and measure choices.
+
 # Main results
 
 The results give two complementary chains. For an admissible filter with constant $`C>0`,
@@ -54,7 +57,7 @@ activation also gives explicit transforms for these layers.
 of coefficient moments. When $`s>5/2`, its second-moment conclusion connects to the
 Hilbert-valued uniform approximation theorem.
 
-The experiments in Appendix J support the predicted approximation rates on finite test
+The experiments in Section 8 support the predicted approximation rates on finite test
 sets and check a closed-form transform independently. They also show a discretization
 floor. Computing an integral coefficient, sampling a direction and representing that
 direction with finitely many numbers remain distinct numerical tasks.
@@ -65,7 +68,7 @@ direction with finitely many numbers remain distinct numerical tasks.
   a homogeneous Sobolev norm of a Gaussian-weighted density. A comparable description
   through a Gaussian Sobolev or Wiener-chaos scale in infinite dimension is open.
 * *General operator activations.* The reconstruction theory treats scalar activations
-  composed with linear functionals and their rank-one lifts. General nonlinear maps
+  composed with linear functionals. General nonlinear maps
   $`\Sigma:H\to H` would require an appropriate representation and nondegeneracy condition.
 * *Rates for spectral approximation.* The first step of {bpref "thm:6.5"}[] has no
   quantitative rate without regularity assumptions on the target. Function classes
@@ -76,3 +79,6 @@ direction with finitely many numbers remain distinct numerical tasks.
 * *The cost of directions.* Width alone does not measure the cost of storing
   $`a_j\in H`. Kernel translates and Green's functions offer structured direction
   families for operator layers; Gaussian directions require separate tail estimates.
+
+Extending the construction beyond the Gaussian-based choice of measures, while retaining
+a nontrivial analysis space and an explicit inverse, is a direction for future work.

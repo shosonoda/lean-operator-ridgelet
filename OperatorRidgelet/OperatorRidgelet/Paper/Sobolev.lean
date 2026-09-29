@@ -166,43 +166,43 @@ theorem thm_5_6_v [CompleteSpace Y] {s p Cσ : ℝ} (hp : 0 ≤ p)
     Continuous fun x : H => ∫ q : H × ℝ, σ (⟪q.1, x⟫ - q.2) • γ q ∂(ν.prod volume) := by
   exact continuous_synthesis hp hps hσc hσg hγm hray hB
 
-/-! ### Proposition `prop:I.3` -/
+/-! ### Proposition `prop:5.8` -/
 
-/-- **Proposition [prop:I.3]**(i) The Gaussian-derivative filter of order `k`
+/-- **Proposition [prop:5.8]**(i) The Gaussian-derivative filter of order `k`
 is a real Schwartz function with Fourier transform `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
-theorem prop_I_3_i (k : ℕ) (ω : ℝ) :
+theorem prop_5_8_i (k : ℕ) (ω : ℝ) :
     filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
   exact filterFourier_gaussDerivFilter k ω
 
-/-- **Proposition [prop:I.3]**(ii) The filter is not band pass: its Fourier
+/-- **Proposition [prop:5.8]**(ii) The filter is not band pass: its Fourier
 transform vanishes only at the origin. -/
-theorem prop_I_3_ii (k : ℕ) : ¬ IsBandPass (gaussDerivFilter k) := by
+theorem prop_5_8_ii (k : ℕ) : ¬ IsBandPass (gaussDerivFilter k) := by
   exact not_isBandPass_gaussDerivFilter k
 
-/-- **Proposition [prop:I.3]**(iii) The filter is nevertheless `α`-admissible,
+/-- **Proposition [prop:5.8]**(iii) The filter is nevertheless `α`-admissible,
 `0 < C^{(α)}_{ρ_k} < ∞`, in the range `α < 4k + 1`. -/
-theorem prop_I_3_iii {k : ℕ} {α : ℝ} (hα : 0 < α) (hk : α < 4 * k + 1) :
+theorem prop_5_8_iii {k : ℕ} {α : ℝ} (hα : 0 < α) (hk : α < 4 * k + 1) :
     IsAdmissible α (gaussDerivFilter k) := by
   exact isAdmissible_gaussDerivFilter hk
 
-/-- **Proposition [prop:I.3]**(iv) The polynomial moments
+/-- **Proposition [prop:5.8]**(iv) The polynomial moments
 `eq:homogeneous-polynomial-integrability` of a homogeneous measure that is finite on the unit
 ball: `∫ (1 + ‖a‖²)^e dν < ∞` whenever `2e + α < 0`. -/
-theorem prop_I_3_iv {α e : ℝ} (hα : 0 < α) {ν : Measure H}
+theorem prop_5_8_iv {α e : ℝ} (hα : 0 < α) {ν : Measure H}
     (hν : IsHomogeneous α ν) (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (he : 2 * e + α < 0) :
     ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖ ^ 2) ^ e) ∂ν < ⊤ := by
   exact hν.lintegral_one_add_norm_sq_rpow_lt_top hα hB he
 
-/-- **Proposition [prop:I.3]**(v) The coefficient associated with the filter for
+/-- **Proposition [prop:5.8]**(v) The coefficient associated with the filter for
 the Gaussian target `g(ξ) = e^{-‖ξ‖²} v` is jointly strongly measurable. -/
-theorem prop_I_3_v (k : ℕ) (v : Y) :
+theorem prop_5_8_v (k : ℕ) (v : Y) :
     StronglyMeasurable (gaussRayCoefficient (H := H) k v) := by
   exact stronglyMeasurable_gaussRayCoefficient k v
 
-/-- **Proposition [prop:I.3]**(vi) Every profile belongs to `H^s_ω(ℝ;Y)` and
+/-- **Proposition [prop:5.8]**(vi) Every profile belongs to `H^s_ω(ℝ;Y)` and
 equals the
 profile `h_a(ω) = ρ̂_k(-ω) g(ωa)` required by `thm:5.6`. -/
-theorem prop_I_3_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
+theorem prop_5_8_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
     (a : H) :
     MemRaySobolev s (fun b => gaussRayCoefficient k v (a, b)) ∧
       ∀ ω : ℝ, rayProfile (fun b => gaussRayCoefficient k v (a, b)) ω =
@@ -210,18 +210,18 @@ theorem prop_I_3_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
   exact ⟨memRaySobolev_gaussRayCoefficient k v hs a,
     rayProfile_gaussRayCoefficient k v a⟩
 
-/-- **Proposition [prop:I.3]**(vii) The Sobolev mass `𝔅_s(ρ_k, g)` is finite in
+/-- **Proposition [prop:5.8]**(vii) The Sobolev mass `𝔅_s(ρ_k, g)` is finite in
 the range `2k > α + 2s - 1/2` of `eq:nonbandpass-order`. -/
-theorem prop_I_3_vii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 0 ≤ s)
+theorem prop_5_8_vii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 0 ≤ s)
     (hk : α + 2 * s - 1 / 2 < 2 * k) {ν : Measure H} (hν : IsHomogeneous α ν)
     (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) :
     ∫⁻ a : H, ENNReal.ofReal ((1 + ‖a‖) ^ s *
       raySobolevNorm s fun b => gaussRayCoefficient k v (a, b)) ∂ν ≠ ⊤ := by
   exact lintegral_raySobolevNorm_gaussRayCoefficient_ne_top hα hs hk hν hB v
 
-/-- **Proposition [prop:I.3]**(viii) The Sobolev test
+/-- **Proposition [prop:5.8]**(viii) The Sobolev test
 `q_{α,ρ_k}(ω) = ρ̂_k(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)` in the same range. -/
-theorem prop_I_3_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
+theorem prop_5_8_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
     (hk : α + 2 * s - 1 / 2 < 2 * k) :
     MemRaySobolev s (gaussSobolevRay k α) ∧
       ∀ ω : ℝ, rayProfile (gaussSobolevRay k α) ω =
@@ -236,11 +236,11 @@ theorem prop_I_3_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
   exact ⟨memRaySobolev_gaussSobolevRay hα (by linarith) hk,
     rayProfile_gaussSobolevRay hk1 hα hk2⟩
 
-/-- **Proposition [prop:I.3]**(ix) Consequently the filter satisfies every
+/-- **Proposition [prop:5.8]**(ix) Consequently the filter satisfies every
 hypothesis of `thm:5.6`: for each continuous activation of growth order
 `p < s - 1/2` the synthesis of the coefficient is absolutely convergent and reproduces the target.
 -/
-theorem prop_I_3_ix [CompleteSpace Y] {k : ℕ} {α s p Cσ : ℝ} (hα : 0 < α)
+theorem prop_5_8_ix [CompleteSpace Y] {k : ℕ} {α s p Cσ : ℝ} (hα : 0 < α)
     (hp : 0 ≤ p) (hps : p + 1 / 2 < s) (hk : α + 2 * s - 1 / 2 < 2 * k)
     {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν)
     (hB : ν (Metric.closedBall 0 1) ≠ ⊤) (v : Y) {σ : ℝ → ℂ} (hσc : Continuous σ)

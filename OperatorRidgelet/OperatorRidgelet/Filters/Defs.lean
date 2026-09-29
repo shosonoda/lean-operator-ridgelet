@@ -1,7 +1,7 @@
 import OperatorRidgelet.Transform.Defs
 
 /-!
-# Definitions for Appendix I (explicit admissible filters)
+# Definitions for Appendix G (explicit admissible filters)
 
 Definitions only, free of `sorry`.  The band-pass filter `ρ_bp` is defined through its Fourier
 transform `ρ̂_bp(ω) = -η(2|ω| - 3)` with the bump `η(u) = exp(-1/(1-u²))` on `|u| < 1`, and the

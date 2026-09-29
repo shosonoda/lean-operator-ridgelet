@@ -25,6 +25,10 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "introduction"
 %%%
 
+We develop ridgelet analysis for neural networks with infinite-dimensional inputs.
+The construction connects explicit integral representations to finite-width approximation
+and uniform approximation on compact sets.
+
 # From function inputs to network coefficients
 
 Operator learning approximates nonlinear maps whose inputs, and sometimes outputs, are
@@ -65,7 +69,7 @@ $`F_Qf(\xi)=\int_H f(x)e^{-i\langle x,\xi\rangle}\,\mu_Q(\mathrm dx)`.
 For nonzero $`a`, the right side uses the restriction of $`F_Qf` to the line through
 $`a`. Homogeneity separates direction and frequency integration. Direct dilation of a
 Gaussian spectral measure has a different behavior: distinct scales can be mutually
-singular, producing the obstruction proved in {bpref "prop:G.3"}[].
+singular, producing the obstruction proved in {bpref "prop:F.3"}[].
 
 For a spectral density $`g`, write $`g_a(\omega)=g(\omega a)`. Reading the slice
 identity in reverse suggests the coefficient
@@ -109,8 +113,7 @@ Reconstruction with a tempered distribution as the activation takes place in a d
 Ordinary integral networks use
 continuous activations and appropriate moments. The explicit uniform rate additionally
 requires global Lipschitz continuity and a second moment. General nonlinear operator
-activations are outside this reconstruction theorem; rank-one lifts are treated in
-Appendix F.
+activations are outside this reconstruction theorem.
 
 # Related work
 
@@ -126,7 +129,7 @@ encoders, although direct infinite-dimensional universality and Hilbert-input ra
 representations are also available. The present construction combines an infinite-dimensional
 analysis operator with explicit coefficients, a Plancherel identity and reconstruction.
 Its Gaussian input weighting and homogeneous direction mixture serve different analytic
-purposes. Appendix F includes a separate finite-dimensional reduction for comparison.
+purposes.
 
 # Notation and organization
 
@@ -144,11 +147,11 @@ $`G` for a spectral density $`g`. These are changes of coordinates and notation,
 changes in the network or theorem hypotheses.
 
 Sections 2–7 develop the definitions, analysis, reconstruction, activations, approximation and
-examples. Section 8 discusses computation and open questions. Appendices A–E collect
-the detailed proofs; F–I give operator parameters, finite-dimensional comparison, general
-weights and explicit filters; J reports numerical experiments.
+examples. Section 8 reports numerical experiments and Section 9 discusses computation
+and open questions. Appendices A–E collect the detailed proofs; F compares the construction
+with finite-dimensional formulas, G verifies the explicit filters, and H gives numerical methods.
 
 Each numbered result links to its Lean declarations. The $`L^2` clause of Theorem 5.6
-and the closed-form reconstruction constants of Proposition I.3 are carried in weaker
+and the closed-form reconstruction constants of Proposition 5.8 are carried in weaker
 forms by the Lean statements. The formalization infrastructure is documented separately
 after the manuscript chapters.

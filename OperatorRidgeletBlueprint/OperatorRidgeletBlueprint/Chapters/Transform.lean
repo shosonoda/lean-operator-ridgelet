@@ -211,3 +211,41 @@ $`\mu_Q`-almost everywhere.
 :::
 
 See the [proof in Appendix A](appendix-a/A___4-Proof-of-Theorem-3___11_LPAR_i_RPAR_-and-_LPAR_ii_RPAR_/#--informal-preview-_FLQQ_thm___3___11_FLQQ_--proof).
+
+# Examples of analysis filters
+
+A band-pass filter is available for every positive homogeneity exponent. The Mexican
+hat separates admissibility from the additional support condition used for band-pass
+reconstruction. Appendix G supplies the calculations.
+
+:::definition "aux:explicit-filters" (lean := "OperatorRidgelet.Filters.bump, OperatorRidgelet.Filters.bandPassHat, OperatorRidgelet.Filters.bandPassFun, OperatorRidgelet.Filters.bandPass, OperatorRidgelet.Filters.mexicanHatFun, OperatorRidgelet.Filters.mexicanHat") (uses := "aux:conventions")
+With the bump $`\eta(u)=\exp(-1/(1-u^2))` for $`|u|<1` and $`0` otherwise, the band-pass
+filter $`\rho_{\mathrm{bp}}` is the real even Schwartz function with
+$`\widehat\rho_{\mathrm{bp}}(\omega)=-\eta(2|\omega|-3)`, obtained by Fourier inversion; the
+Mexican hat is $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}`. Both are taken as Schwartz maps by
+choice, with junk value $`0` should the explicit function fail to be Schwartz.
+:::
+
+:::example_ "ex:3.12" (lean := "OperatorRidgelet.Paper.ex_3_12_i, OperatorRidgelet.Paper.ex_3_12_ii, OperatorRidgelet.Paper.ex_3_12_iii, OperatorRidgelet.Paper.ex_3_12_iv, OperatorRidgelet.Paper.ex_3_12_v, OperatorRidgelet.Paper.ex_3_12_vi, OperatorRidgelet.Paper.ex_3_12_vii, OperatorRidgelet.Paper.ex_3_12_viii, OperatorRidgelet.Paper.ex_3_12_ix, OperatorRidgelet.Paper.ex_3_12_x") (uses := "aux:explicit-filters, def:3.2, aux:conventions")
+$`\widehat\rho_{\mathrm{bp}}` is smooth (i), nonpositive (ii), nonzero (iii), and supported in
+$`\{1\le|\omega|\le2\}` (iv), so $`\rho_{\mathrm{bp}}\in\mathcal S(\mathbb R)` is real (v)
+and even (vi) with the prescribed Fourier transform (vii), satisfies the band-pass condition
+(viii), and is $`\alpha`-admissible for every $`\alpha>0` (ix); multiplying by
+$`((\!(\rho_{\mathrm{bp}},\rho_{\mathrm{bp}})\!)_\alpha)^{-1/2}` normalizes the admissibility constant to one (x).
+The sign makes it admissible for ReLU synthesis in the sense of {bpref "cor:5.3"}[].
+:::
+
+See the [proof in Appendix G](appendix-g/proof-3-12/#--informal-preview-_FLQQ_ex___3___12_FLQQ_--proof).
+
+:::example_ "ex:3.13" (lean := "OperatorRidgelet.Paper.ex_3_13_i, OperatorRidgelet.Paper.ex_3_13_ii, OperatorRidgelet.Paper.ex_3_13_iii, OperatorRidgelet.Paper.ex_3_13_iv, OperatorRidgelet.Paper.ex_3_13_v, OperatorRidgelet.Paper.ex_3_13_vi") (uses := "aux:explicit-filters, def:3.2, aux:conventions")
+$`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}` is a Schwartz function (i) with
+$`\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}` (ii). It is
+$`\alpha`-admissible exactly for $`0<\alpha<5` (iii), with
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\Gamma((5-\alpha)/2)` (iv) and
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_1=1` (v). It is not band pass (vi).
+When $`0<\alpha<5`, {bpref "thm:3.11"}[], {bpref "thm:4.3"}[] and part (ii) of
+{bpref "thm:4.2"}[] apply. The band-pass statements in part (iii) of
+{bpref "thm:4.2"}[] and in {bpref "thm:5.2"}[] do not apply to this filter.
+:::
+
+See the [proof in Appendix G](appendix-g/proof-3-13/#--informal-preview-_FLQQ_ex___3___13_FLQQ_--proof).

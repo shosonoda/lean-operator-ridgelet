@@ -1,5 +1,5 @@
 import OperatorRidgelet.Sampling.Defs
-import OperatorRidgelet.Architecture.Basic
+import OperatorRidgelet.Network.Basic
 import OperatorRidgelet.ToMathlib.MeasurePi
 import OperatorRidgelet.ToMathlib.ComplexMeasurePolar
 import OperatorRidgelet.ToMathlib.VectorMeasureRadonNikodym
@@ -40,7 +40,7 @@ Facts used by the proofs of `OperatorRidgelet.Paper.Sampling`.
   error by its compact sup norm (`norm_polarSampledNetwork_sub_le_compactSupNorm`), and the
   Lipschitz estimate for projecting the directions inside the activation
   (`norm_finiteNetwork_sub_finiteNetwork_map_le`, `norm_sampledNetwork_sub_truncated_le`, for
-  Corollary `cor:D.8`).
+  Corollary `cor:D.7`).
 
 The Hilbert-valued variance identity of Lemma D.3 is the general `integral_norm_sq_sampleMean`
 of `OperatorRidgelet.ToMathlib.MeasurePi`.

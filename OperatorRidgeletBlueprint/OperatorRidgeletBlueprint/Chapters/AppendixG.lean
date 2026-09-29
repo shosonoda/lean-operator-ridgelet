@@ -20,101 +20,81 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix G. The finite-dimensional case and the dilation obstruction" =>
+#doc (Manual) "Appendix G. Details of the analysis filters" =>
 %%%
 file := "appendix-g"
 number := false
 %%%
 
-This appendix compares the weighted construction with the finite-dimensional Fourier
-calculation. In finite dimension the homogeneous Gaussian mixture has a restricted range
-of exponents. We then identify the frame operator and explain why direct dilation of a
-Gaussian spectral measure cannot supply the proposed finite coefficient measure.
+This appendix verifies the explicit filters presented in Sections 3 and 5. It supplies
+the admissibility calculations, Sobolev estimates and reconstruction constants used
+in those examples.
 
-# G.1 A Fourier calculation for comparison
+# G.1 Proof of Example 3.12
 %%%
+file := "proof-3-12"
 number := false
 %%%
 
-For Lebesgue input measure on $`\mathbb R^m`, Fourier inversion and a change of
-variables give the familiar dilation integral with the factor $`|\omega|^{-m}`.
-The infinite-dimensional construction replaces this factor by homogeneity of the
-direction measure, with exponent $`\alpha`, rather than assigning a dimension to $`H`.
+The statement is {bpref "ex:3.12"}[].
 
-# G.2 The finite-dimensional reference measure
+:::proof "ex:3.12"
+The bump and all its derivatives vanish at $`|u|=1`, the support stays away from
+$`\omega=0`, Fourier inversion maps $`C_c^\infty` into $`\mathcal S`, even real Fourier data
+give an even real inverse, and on the compact support $`|\omega|^{-\alpha}` is bounded above
+and below.
+:::
+
+# G.2 Proof of Example 3.13
 %%%
+file := "proof-3-13"
 number := false
 %%%
 
-For $`0<\alpha<m`, the mixture of $`\mathcal N(0,2sI)` with weight
-$`s^{\alpha/2-1}\,\mathrm ds` has density $`c_{m,\alpha}|\xi|^{\alpha-m}`.
-The constant is $`c_{m,\alpha}=2^{-\alpha}\pi^{-m/2}\Gamma((m-\alpha)/2)`.
-The Lebesgue-direction case must be treated separately; it is not obtained by
-substituting $`\alpha=m` into this mixture formula.
+The statement is {bpref "ex:3.13"}[].
 
-*Remark G.1 (Comparison with familiar spaces).*
+:::proof "ex:3.13"
+With $`g(t)=e^{-t^2/2}`, $`\rho_{\mathrm{MH}}=-g''` and the differentiation rule gives the
+Fourier transform; then
+$`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\int_{\mathbb R}|\omega|^{4-\alpha}e^{-\omega^2}\mathrm d\omega=\Gamma((5-\alpha)/2)`,
+convergent at zero exactly when $`\alpha<5`.
+:::
 
-For $`0<\alpha<m`, the squared norm is
-$`c_{m,\alpha}\int_{\mathbb R^m}|\widehat{fp_Q}(\xi)|^2|\xi|^{\alpha-m}\,\mathrm d\xi`:
-the homogeneous Sobolev norm of order $`(\alpha-m)/2` of the weighted density $`fp_Q`.
-In infinite dimension there is no Lebesgue measure with which to remove the weight, and
-no identification of $`\mathcal E_\alpha` with a Sobolev space is asserted. The closed
-space $`\mathcal K_\alpha\subset L^2(\nu_\alpha)` is not asserted to be a reproducing
-kernel Hilbert space.
-
-# G.3 Filtered backprojection
+# G.3 Proof of Proposition 5.8
 %%%
+file := "proof-5-8"
 number := false
 %%%
 
-:::definition "aux:finite-dim" (lean := "OperatorRidgelet.FiniteDim.mixtureConst, OperatorRidgelet.FiniteDim.directionMeasure, OperatorRidgelet.FiniteDim.frameConst, OperatorRidgelet.FiniteDim.fourier, OperatorRidgelet.FiniteDim.densityMeasure, OperatorRidgelet.FiniteDim.frameRepresentative, OperatorRidgelet.FiniteDim.fracLaplacian, OperatorRidgelet.strongLawSet") (uses := "aux:centered-gaussian")
-On $`H=\mathbb R^m` with $`P=I` and $`0<\alpha<m`, the mixture is
-$`\nu_\alpha(\mathrm da)=c_{m,\alpha}\|a\|^{\alpha-m}\,\mathrm da` with
-$`c_{m,\alpha}=2^{-\alpha}\pi^{-m/2}\Gamma((m-\alpha)/2)` and $`k_{m,\alpha}=(2\pi)^mc_{m,\alpha}`;
-for a Gaussian density $`p` and $`g=fp`, the frame representative is
-$`t_f(x)=\int e^{i\langle x,\xi\rangle}\widehat g(\xi)\,\nu_\alpha(\mathrm d\xi)`, and
-$`(-\Delta)^s` is the Fourier multiplier $`\|\xi\|^{2s}`. For the dilation obstruction, with
-eigenvectors $`e_j` and eigenvalues $`w_j>0` of $`W`, the strong-law sets are
-$`E_t=\{x:\lim_n\frac1n\sum_{j\le n}\langle x,e_j\rangle^2/w_j=t\}`.
-:::
+The statement is {bpref "prop:5.8"}[].
 
-:::corollary "cor:G.2" (lean := "OperatorRidgelet.Paper.cor_G_2_i, OperatorRidgelet.Paper.cor_G_2_ii, OperatorRidgelet.Paper.cor_G_2_iii, OperatorRidgelet.Paper.cor_G_2_iv, OperatorRidgelet.Paper.cor_G_2_v, OperatorRidgelet.Paper.cor_G_2_vi") (uses := "aux:finite-dim, def:3.7")
-Let $`H=\mathbb R^m`, $`0<\alpha<m`, and let $`p` be a nondegenerate Gaussian density. If
-$`f\in L^2(p\,\mathrm dx)` with $`g=fp\in\mathcal S(\mathbb R^m)`, then $`f\in\mathcal D_\alpha`
-(i) and $`t_f=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g` (ii). For a band-pass $`\rho`, the
-synthesis $`S_\rho R_\rho f` is represented against $`p\,\mathrm dx` by
-$`(\!(\rho,\rho)\!)_\alpha t_f` (iii), so that, distributionally,
-$`f=\frac{p^{-1}}{k_{m,\alpha}(\!(\rho,\rho)\!)_\alpha}(-\Delta)^{(m-\alpha)/2}S_\rho R_\rho f` (iv).
-With Lebesgue direction measure and $`\alpha=m`, $`t_f=(2\pi)^mg` (v) and
-$`f=(2\pi)^{-m}((\!(\rho,\rho)\!)_m)^{-1}p^{-1}S_\rho R_\rho f` (vi).
-:::
+:::proof "prop:5.8" (uses := "lem:C.3")
+The Fourier transform $`\widehat\rho_k` is a polynomial times a Gaussian, hence Schwartz,
+and real and even, so its inverse
+angular transform is a real Schwartz function. It vanishes only at the origin, which is
+therefore in the closed support, so the filter is not band pass, while
+$`|\widehat\rho_k|^2|\omega|^{-\alpha}=|\omega|^{4k-\alpha}e^{-2\omega^2}` is integrable exactly
+for $`4k-\alpha>-1`. Homogeneity scales balls, $`\nu(B_R)=R^\alpha\nu(B_1)`, and the dyadic
+annuli give a geometric series, which is the moment bound. Write
+$`h_0(\omega)=\omega^{2k}e^{-\omega^2}` and $`A=(1+\|a\|^2)^{1/2}`.
+The function $`h_a(\omega)=\omega^{2k}e^{-A^2\omega^2}v` has inverse transform
+$`A^{-2k-1}\rho_k(b/A)v`, a dilate of a Schwartz function, so it lies in every $`H^s_\omega`,
+with $`\|h_a\|_{H^s_\omega}\le\|v\|\,\|h_0\|_{H^s_\omega}A^{s-2k-1/2}`;
+$`1+\|a\|\le\sqrt2A` and the moment bound give $`\mathfrak B_s<\infty` exactly in the stated
+range. For the Sobolev test, the Gamma integral
+$`|\omega|^{-\alpha}=\Gamma(\alpha/2)^{-1}\int_0^\infty u^{\alpha/2-1}e^{-u\omega^2}\mathrm du`
+writes $`q_{\alpha,\rho_k}` as a superposition of the rescaled functions
+$`A^{-2k}h_0(A\,\cdot)` with $`A=(1+u)^{1/2}`; Fubini gives its inverse transform,
+and Cauchy--Schwarz against the finite weight
+$`u^{\alpha/2-1}(1+u)^{(s-2k-1/2)/2}` together with Tonelli reduces its Sobolev norm to the
+norms of the dilated filters.
 
-:::proof "cor:G.2" (uses := "thm:3.11, thm:4.3")
-Here $`\mathcal G_Qf=\widehat g`, the weight $`\|\xi\|^{\alpha-m}` is locally integrable, and
-Fourier inversion gives $`\widehat{t_f}=k_{m,\alpha}\|\xi\|^{\alpha-m}\widehat g`; Fubini
-identifies $`\int t_f\overline h\,p\,\mathrm dx` with $`\langle f,h\rangle_{\mathcal E_\alpha}`,
-which is the frame-operator representation of {bpref "thm:4.3"}[] (iii).
-:::
-
-# G.4 Why the spectral measure cannot be dilated
-%%%
-number := false
-%%%
-
-:::proposition "prop:G.3" (lean := "OperatorRidgelet.Paper.prop_G_3_i_a, OperatorRidgelet.Paper.prop_G_3_i_b, OperatorRidgelet.Paper.prop_G_3_i_c, OperatorRidgelet.Paper.prop_G_3_i_d, OperatorRidgelet.Paper.prop_G_3_ii") (uses := "aux:finite-dim, aux:centered-gaussian")
-Let $`\dim H=\infty` and let $`W` be injective, positive, self-adjoint, and trace class with
-eigenvectors $`e_j` and eigenvalues $`w_j>0`. The sets $`E_t`, $`t>0`, are Borel (i a) and
-pairwise disjoint (i b), $`\mathcal N(0,tW)(E_t)=1` (i c), and consequently a
-$`\sigma`-finite measure dominates $`\mathcal N(0,tW)` for at most countably many $`t` (i d).
-Hence, for a bounded Borel $`r` with $`\{r\ne0\}` of positive measure, there is no finite
-complex Borel measure $`\Gamma` on $`H\times\mathbb R` whose bias slices satisfy
-$`\int_{E\times\mathbb R}e^{i\omega c}\,\Gamma(\mathrm da,\mathrm dc)=r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)(E)`
-for almost every $`\omega\ne0` (ii).
-:::
-
-:::proof "prop:G.3"
-The strong law of large numbers for the independent normalized Gaussian coordinates gives
-$`\mathcal N(0,tW)(E_t)=1`, a $`\sigma`-finite measure has at most countably many disjoint
-sets of positive measure, and a measure $`\Gamma` as in (ii) would give a finite measure
-dominating $`\mathcal N(0,W/\omega^2)` for uncountably many $`\omega`.
+For the Gaussian activation, substitute
+$`\widehat\sigma(\omega)=\sqrt{2\pi}e^{-\omega^2/2}` in the pairing and evaluate
+$`\int_{\mathbb R}|\omega|^\delta e^{-3\omega^2/2}\,\mathrm d\omega`
+by the Gamma integral. For ReLU, its Fourier transform away from zero is
+$`-\omega^{-2}`. When $`s>3/2`, the order condition gives $`\delta>5/2`, so
+the origin-supported terms vanish against the Sobolev test and the remaining integral is
+$`-(2\pi)^{-1}\int_{\mathbb R}|\omega|^{\delta-2}e^{-\omega^2}\,\mathrm d\omega`.
+This is the stated negative, nonzero Gamma constant.
 :::

@@ -4,7 +4,7 @@ import OperatorRidgelet.Sobolev.Schwartz
 /-!
 # The rays of the Gaussian-derivative filters
 
-For the filter `ρ_k` of `prop:I.3` and the Gaussian target
+For the filter `ρ_k` of `prop:5.8` and the Gaussian target
 `g(ξ) = e^{-‖ξ‖²} v`, the ray at direction `a` has the profile
 `h_a(ω) = ρ̂_k(-ω) g(ωa) = ω^{2k} e^{-A²ω²} v`, `A = (1+‖a‖²)^{1/2}`, which is the dilate
 `A^{-2k} ρ̂_k(Aω) v` of the symbol.  Its coefficient is therefore the dilate

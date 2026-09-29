@@ -20,10 +20,9 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix J. Numerical experiments" =>
+#doc (Manual) "Numerical experiments" =>
 %%%
-file := "appendix-j"
-number := false
+file := "numerics"
 %%%
 
 Three experiments illustrate the sampling step of {bpref "thm:6.5"}[] and
@@ -33,9 +32,8 @@ represented numerically by finitely many coordinates. Varying that resolution te
 the sensitivity of the observed errors; these finite computations do not prove a
 uniform-in-dimension theorem.
 
-The experiments use seed 20260908. Errors are supremum errors over a test set of 100 or
-200 points, averaged over independent trials. Slopes are least-squares fits in logarithmic
-coordinates over widths $`N=4,8,\ldots,4096`.
+Errors are supremum errors over finite test sets, averaged over independent trials.
+Appendix H records the seed, sampling laws, numerical integration and evaluation procedures.
 
 # Experiment 1: ReLU with Gaussian random directions
 
@@ -63,19 +61,18 @@ Although this filter is not band pass, the analyzed-target identity only needs
 admissibility. Finite variation and the second parameter moment follow directly from
 the explicit coefficient and the Gaussian decay estimate.
 
-The coefficient is
-$`\gamma_g(a,b)=D^{-1/2}\sqrt{2\pi}\,\phi_{1+\kappa_W(a)}^{(4)}(b)`, where
-$`\phi_u` is the centered Gaussian density of variance $`u` and
-$`D=\det(I+Q^{1/2}WQ^{1/2})`. The target $`6f_g`, representing $`6T_\alpha f_W`,
-and the total variation $`V` are evaluated by quadrature. Conditional biases are
-sampled by rejection from a mixture of Gaussian moment densities. Directions are
-obtained by sampling–importance resampling from 200000 Gaussian-mixture proposals,
-with effective sample sizes between 2800 and 9700.
+The target $`6f_g`, representing $`6T_\alpha f_W`, is synthesized from its explicit
+coefficient measure. Appendix H describes the quadrature and importance-resampling
+procedures used to evaluate this target and draw its parameters.
 
-For $`d=10,100,1000` and the test set from Experiment 1, ten trials compare
+For $`d=10,100,1000` and 100 test inputs drawn by the rule of Experiment 1, ten trials compare
 $`f_N=(V/N)\sum_j\operatorname{sgn}(\gamma_g(\theta_j))\rho(\langle a_j,\cdot\rangle-b_j)`
 with $`6f_g`, whose supremum on the test set is about 12.5. The error again decays
 approximately as $`N^{-1/2}` across the tested resolutions.
+
+The direction law is approximated by a weighted proposal pool shared across trials at
+each resolution. The reported trial variation is conditional on that pool and does not
+measure its approximation error; Appendix H describes this limitation and the sampling procedure.
 
 ![Experiment 2: sampled synthesis error for the Gaussian target at three truncation dimensions](exp2.svg)
 
@@ -85,8 +82,8 @@ Use {bpref "ex:7.6"}[] with Gaussian activation and observable $`\varphi=1`.
 For the Dirichlet Green's function $`g`, the output weight is
 $`w(y)=\int_0^1g(y,t)\,\mathrm dt=1-\cosh(y-1/2)/\cosh(1/2)>0` and
 $`V=\int_0^1w(y)\,\mathrm dy=1-2\tanh(1/2)\approx0.0758`.
-Use $`d=64,512,4096` midpoint nodes and 100 test inputs
-$`x=\sum_{n\le30}(u_n/n)e_n`, with independent uniform $`u_n\in[-1,1]`.
+Use $`d=64,512,4096` midpoint nodes and 100 test inputs with 30 sine modes.
+Appendix H gives the input and parameter distributions.
 
 For sampling, compare
 $`f_N(x)=(V/N)\sum_j e^{-\langle g(y_j,\cdot),x\rangle^2/2}`, with

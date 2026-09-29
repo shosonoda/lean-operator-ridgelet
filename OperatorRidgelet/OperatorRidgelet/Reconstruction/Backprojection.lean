@@ -6,7 +6,7 @@ import OperatorRidgelet.Transform.BiasFourier
 # Backprojection: the backprojection integral of a bias-Fourier representative (Appendix B.4)
 
 Ridgelet-specific lemmas behind Theorem `thm:4.3`(iv)(a)–(b) and Proposition
-`prop:B.8`(i)–(vi), for the abstract pair `(μ, ν)` of Appendix H.
+`prop:B.8`(i)–(vi), for the abstract pair `(μ, ν)` used by the supporting lemmas.
 
 * **The ray substitution.**  `raySubst (ξ, ω) = (-ξ/ω, ω)` inverts `(a, ω) ↦ (-ωa, ω)`; by
   homogeneity it maps the weighted measure `|ω|^{-α} (ν ⊗ dω)` to `ν ⊗ dω`

@@ -156,6 +156,7 @@ of unity and {bpref "thm:4.6"}[].
 
 # D.4 Supplementary approximation results
 %%%
+file := "supplementary-estimates"
 number := false
 %%%
 
@@ -199,25 +200,7 @@ $`\mathbb E\langle Z_j,Z_k\rangle=0` for $`j\ne k`, so the expanded squared norm
 $`N\,\mathbb E\|Z_1\|^2`.
 :::
 
-:::corollary "cor:D.7" (lean := "OperatorRidgelet.Paper.cor_D_7_i, OperatorRidgelet.Paper.cor_D_7_ii") (uses := "aux:sampling-data")
-Let $`\Gamma_{\mathrm{op}}` be a finite complex measure on $`\mathcal L_2(H)\times H` with
-polar decomposition $`h_{\mathrm{op}}|\Gamma_{\mathrm{op}}|`, $`V_{\mathrm{op}}>0`,
-$`p_{\mathrm{op}}=|\Gamma_{\mathrm{op}}|/V_{\mathrm{op}}`, let $`\beta` be real and globally
-Lipschitz, and assume $`M_{\mathrm{op}}^2<\infty`. Sampling $`(A_j,b_j)` from
-$`p_{\mathrm{op}}` with the weights $`h_{\mathrm{op}}` gives
-$`\mathbb E\|f_{\mathrm{op},N}-S_{\mathrm{op}}\Gamma_{\mathrm{op}}\|_{C(K)}\le8V_{\mathrm{op}}N^{-1/2}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_{\mathrm{op}})`
-(i), and $`M_{\mathrm{op}}^2\le\|\psi\|^2\int(\|A\|_{\mathcal L_2}^2+\|b\|^2)\,\mathrm dp_{\mathrm{op}}`
-(ii).
-:::
-
-:::proof "cor:D.7" (uses := "thm:6.3, lem:F.4")
-The atom is the scalar ridge with parameter $`\pi_\psi(A,b)`, so the proof of
-{bpref "thm:6.3"}[] applies on the operator probability space with $`M_2`
-replaced by $`M_{\mathrm{op}}`; Cauchy–Schwarz and $`\|A\|_{\mathrm{op}}\le\|A\|_{\mathcal L_2}`
-give the last estimate.
-:::
-
-:::corollary "cor:D.8" (lean := "OperatorRidgelet.Paper.cor_D_8_i, OperatorRidgelet.Paper.cor_D_8_ii") (uses := "thm:6.3, aux:sampling-data")
+:::corollary "cor:D.7" (lean := "OperatorRidgelet.Paper.cor_D_7_i, OperatorRidgelet.Paper.cor_D_7_ii") (uses := "thm:6.3, aux:sampling-data")
 Let $`\Pi_m` be finite-rank orthogonal projections converging strongly to the identity. For
 $`f\in C(H)` and compact $`K`, $`\|f-f\circ\Pi_m\|_{C(K)}\to0` (i). If $`f=S_\beta\Gamma`
 satisfies the hypotheses of {bpref "thm:6.3"}[] and the same samples are used
@@ -226,7 +209,7 @@ $`\mathbb E\|f-f_{m,N}\|_{C(K)}\le\operatorname{Lip}(\beta)\bigl(\int\|a\|\,\mat
 (ii).
 :::
 
-:::proof "cor:D.8"
+:::proof "cor:D.7"
 A finite-net argument gives $`\sup_K\|x-\Pi_mx\|\to0`, and uniform convergence of
 $`f\circ\Pi_m` on $`K` follows by compactness and continuity of $`f`; the triangle inequality
 separates truncation from sampling, and projecting directions does not increase their second

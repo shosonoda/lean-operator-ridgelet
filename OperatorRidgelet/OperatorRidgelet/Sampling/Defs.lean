@@ -1,9 +1,9 @@
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.MeasureTheory.Constructions.Pi
 import Mathlib.MeasureTheory.Measure.Dirac
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.Topology.ContinuousMap.Bounded.Basic
 import OperatorRidgelet.Network.Defs
-import OperatorRidgelet.Architecture.Defs
 
 /-!
 # Definitions for Section 6 (finite-width approximation) and Appendix D
@@ -53,16 +53,13 @@ activation-dependent Rademacher complexity `𝔑_N(K; p, β)` of Definition
 it is polymorphic in the output space, so that `𝔑^Y_N` of Corollary `cor:6.6` is the
 same definition with `Y`-valued phases `h`.
 
-## Moments, atomic measures, and operator parameters
+## Moments, atomic measures, and input projections
 
 `secondMoment p = M₂² = ∫ (‖a‖² + |c|²) dp`; `M₂` itself is `√(secondMoment p)`.  The Lipschitz
 constant `Lip(β)` is not a separate definition: the statements take any `L` with
 `LipschitzWith L β` and are stated with `L`, which is equivalent to the statement with the least
-Lipschitz constant.  A finite atomic measure `∑_j w_j δ_{θ_j}` is `atomicMeasure w θ`.  The
-operator-parameter sampled network of Corollary `cor:D.7` is
-`sampledOperatorNetwork σ ℓ V h ω`, an `operatorFiniteNetwork` with outer weights
-`(V/N) h(A_j, b_j)`, and `operatorSecondMoment ψ p = M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) dp`.
-`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:D.8` on each `Π_m`.
+Lipschitz constant. A finite atomic measure `∑_j w_j δ_{θ_j}` is `atomicMeasure w θ`.
+`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:D.7` on each `Π_m`.
 -/
 
 noncomputable section
@@ -186,25 +183,11 @@ def atomicMeasure {n : ℕ} (w : Fin n → Y) (θ : Fin n → H × ℝ) : Vector
 
 end Sampling
 
-/-! ### Operator parameters and finite-rank projections -/
+/-! ### Finite-rank projections -/
 
-section Operator
+section Projections
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-
-/-- The sampled operator network `f_{op,N}(x) = (V/N) ∑_j h(A_j, b_j) n_{ℓ,A_j,b_j}(x)` of
-Corollary `cor:D.7`: a finite-width operator network with the samples
-`(A_j, b_j)` and outer weights `(V/N) h(A_j, b_j)`. -/
-def sampledOperatorNetwork {N : ℕ} (σ : H → H) (ℓ : H) (V : ℝ)
-    (h : OperatorRidgeParameter H → ℂ) (ω : Fin N → OperatorRidgeParameter H) : H → ℂ :=
-  operatorFiniteNetwork σ ℓ (fun j => ((V / N : ℝ) : ℂ) • h (ω j)) (fun j => (ω j).1)
-    (fun j => (ω j).2)
-
-/-- The operator second moment `M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) p_op(dA, db)` of Corollary
-`cor:D.7`. -/
-def operatorSecondMoment [MeasurableSpace H] (ψ : H)
-    (p : Measure (OperatorRidgeParameter H)) : ℝ :=
-  ∫ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2) ∂p
 
 /-- `P` is a finite-rank orthogonal projection: a self-adjoint idempotent with
 finite-dimensional range. -/
@@ -214,6 +197,6 @@ structure IsFiniteRankProjection (P : H →L[ℝ] H) : Prop where
   /-- The range of `P` is finite dimensional. -/
   finiteDimensional_range : FiniteDimensional ℝ (LinearMap.range (P : H →ₗ[ℝ] H))
 
-end Operator
+end Projections
 
 end OperatorRidgelet

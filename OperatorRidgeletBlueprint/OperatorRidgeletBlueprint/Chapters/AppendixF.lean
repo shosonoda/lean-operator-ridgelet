@@ -20,102 +20,101 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix F. Operator-valued parameters and the finite-dimensional reduction" =>
+#doc (Manual) "Appendix F. The finite-dimensional case and the dilation obstruction" =>
 %%%
 file := "appendix-f"
 number := false
 %%%
 
-Operator-valued parameters can be related exactly to scalar ridge parameters through a
-rank-one lift. Strong finite-rank approximation is uniform on compact input sets and gives
-the Hilbert–Schmidt reduction. The finite-dimensional universality argument here is a
-separate qualitative result; the constructive result of Section 6 uses spectral densities.
+This appendix compares the weighted construction with the finite-dimensional Fourier
+calculation. In finite dimension the homogeneous Gaussian mixture has a restricted range
+of exponents. We then identify the frame operator and explain why direct dilation of a
+Gaussian spectral measure cannot supply the proposed finite coefficient measure.
 
-:::definition "aux:hilbert-schmidt" (lean := "OperatorRidgelet.hsNormSq, OperatorRidgelet.IsHilbertSchmidt, OperatorRidgelet.hsNorm")
-The squared Hilbert–Schmidt norm of a bounded operator $`A` on $`H` is the supremum
-$`\|A\|_{\mathcal L_2}^2=\sup\{\sum_{e\in s}\|Ae\|^2\}` over finite orthonormal families $`s`,
-and $`\mathcal L_2(H)` is the set of bounded operators with finite Hilbert–Schmidt norm. Mathlib
-has no Hilbert–Schmidt class; the definition is intrinsic, and equality with
-$`\sum_n\|Ae_n\|^2` along a Hilbert basis follows from the basis-independence theorem
-in the formalization infrastructure.
+# F.1 A Fourier calculation for comparison
+%%%
+number := false
+%%%
+
+For Lebesgue input measure on $`\mathbb R^m`, Fourier inversion and a change of
+variables give the familiar dilation integral with the factor $`|\omega|^{-m}`.
+The infinite-dimensional construction replaces this factor by homogeneity of the
+direction measure, with exponent $`\alpha`, rather than assigning a dimension to $`H`.
+
+# F.2 The finite-dimensional reference measure
+%%%
+number := false
+%%%
+
+For $`0<\alpha<m`, the mixture of $`\mathcal N(0,2sI)` with weight
+$`s^{\alpha/2-1}\,\mathrm ds` has density $`c_{m,\alpha}|\xi|^{\alpha-m}`.
+The constant is $`c_{m,\alpha}=2^{-\alpha}\pi^{-m/2}\Gamma((m-\alpha)/2)`.
+The Lebesgue-direction case must be treated separately; it is not obtained by
+substituting $`\alpha=m` into this mixture formula.
+
+*Remark F.1 (Comparison with familiar spaces).*
+
+For $`0<\alpha<m`, the squared norm is
+$`c_{m,\alpha}\int_{\mathbb R^m}|\widehat{fp_Q}(\xi)|^2|\xi|^{\alpha-m}\,\mathrm d\xi`:
+the homogeneous Sobolev norm of order $`(\alpha-m)/2` of the weighted density $`fp_Q`.
+In infinite dimension there is no Lebesgue measure with which to remove the weight, and
+no identification of $`\mathcal E_\alpha` with a Sobolev space is asserted. The closed
+space $`\mathcal K_\alpha\subset L^2(\nu_\alpha)` is not asserted to be a reproducing
+kernel Hilbert space.
+
+# F.3 Filtered backprojection
+%%%
+number := false
+%%%
+
+:::definition "aux:finite-dim" (lean := "OperatorRidgelet.FiniteDim.mixtureConst, OperatorRidgelet.FiniteDim.directionMeasure, OperatorRidgelet.FiniteDim.frameConst, OperatorRidgelet.FiniteDim.fourier, OperatorRidgelet.FiniteDim.densityMeasure, OperatorRidgelet.FiniteDim.frameRepresentative, OperatorRidgelet.FiniteDim.fracLaplacian, OperatorRidgelet.strongLawSet") (uses := "aux:centered-gaussian")
+On $`H=\mathbb R^m` with $`P=I` and $`0<\alpha<m`, the mixture is
+$`\nu_\alpha(\mathrm da)=c_{m,\alpha}\|a\|^{\alpha-m}\,\mathrm da` with
+$`c_{m,\alpha}=2^{-\alpha}\pi^{-m/2}\Gamma((m-\alpha)/2)` and $`k_{m,\alpha}=(2\pi)^mc_{m,\alpha}`;
+for a Gaussian density $`p` and $`g=fp`, the frame representative is
+$`t_f(x)=\int e^{i\langle x,\xi\rangle}\widehat g(\xi)\,\nu_\alpha(\mathrm d\xi)`, and
+$`(-\Delta)^s` is the Fourier multiplier $`\|\xi\|^{2s}`. For the dilation obstruction, with
+eigenvectors $`e_j` and eigenvalues $`w_j>0` of $`W`, the strong-law sets are
+$`E_t=\{x:\lim_n\frac1n\sum_{j\le n}\langle x,e_j\rangle^2/w_j=t\}`.
 :::
 
-:::definition "aux:operator-neuron" (lean := "OperatorRidgelet.operatorNeuron, OperatorRidgelet.operatorNeuronSet, OperatorRidgelet.ridgeSet, OperatorRidgelet.rankOneActivation, OperatorRidgelet.operatorFiniteNetwork, OperatorRidgelet.operatorSynthesis") (uses := "aux:hilbert-schmidt, def:2.1, def:2.2")
-The operator neuron $`\mathrm n_{\ell,A,b}(x)=\langle\ell,\sigma(Ax+b)\rangle`, the sets of
-neurons with operator parameter in a given subset of $`\mathcal L(H)` and of scalar ridges
-$`x\mapsto\beta(\langle a,x\rangle+c)`, both as subsets of $`C(H;\mathbb R)` with the
-compact-open topology, the rank-one activation $`\sigma_\beta(y)=\beta(\langle\psi,y\rangle)z`,
-the finite-width operator network $`x\mapsto\sum_jv_j\,\mathrm n_{\ell,A_j,b_j}(x)`, and the
-operator synthesis
-$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}(x)=\int\mathrm n_{\ell,A,b}(x)\,\Gamma_{\mathrm{op}}(\mathrm dA,\mathrm db)`
-of a finite complex measure on $`\mathcal L(H)\times H`.
+:::corollary "cor:F.2" (lean := "OperatorRidgelet.Paper.cor_F_2_i, OperatorRidgelet.Paper.cor_F_2_ii, OperatorRidgelet.Paper.cor_F_2_iii, OperatorRidgelet.Paper.cor_F_2_iv, OperatorRidgelet.Paper.cor_F_2_v, OperatorRidgelet.Paper.cor_F_2_vi") (uses := "aux:finite-dim, def:3.7")
+Let $`H=\mathbb R^m`, $`0<\alpha<m`, and let $`p` be a nondegenerate Gaussian density. If
+$`f\in L^2(p\,\mathrm dx)` with $`g=fp\in\mathcal S(\mathbb R^m)`, then $`f\in\mathcal D_\alpha`
+(i) and $`t_f=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g` (ii). For a band-pass $`\rho`, the
+synthesis $`S_\rho R_\rho f` is represented against $`p\,\mathrm dx` by
+$`(\!(\rho,\rho)\!)_\alpha t_f` (iii), so that, distributionally,
+$`f=\frac{p^{-1}}{k_{m,\alpha}(\!(\rho,\rho)\!)_\alpha}(-\Delta)^{(m-\alpha)/2}S_\rho R_\rho f` (iv).
+With Lebesgue direction measure and $`\alpha=m`, $`t_f=(2\pi)^mg` (v) and
+$`f=(2\pi)^{-m}((\!(\rho,\rho)\!)_m)^{-1}p^{-1}S_\rho R_\rho f` (vi).
 :::
 
-:::lemma_ "lem:F.1" (lean := "OperatorRidgelet.Paper.lem_F_1") (uses := "aux:hilbert-schmidt, aux:operator-neuron")
-Suppose $`\sigma:H\to H` is globally Lipschitz. The finite linear spans of the neurons
-$`\mathrm n_{\ell,A,b}` with $`A\in\mathcal L(H)` and with $`A\in\mathcal L_2(H)` have the
-same compact-open closure in $`C(H;\mathbb R)`.
+:::proof "cor:F.2" (uses := "thm:3.11, thm:4.3")
+Here $`\mathcal G_Qf=\widehat g`, the weight $`\|\xi\|^{\alpha-m}` is locally integrable, and
+Fourier inversion gives $`\widehat{t_f}=k_{m,\alpha}\|\xi\|^{\alpha-m}\widehat g`; Fubini
+identifies $`\int t_f\overline h\,p\,\mathrm dx` with $`\langle f,h\rangle_{\mathcal E_\alpha}`,
+which is the frame-operator representation of {bpref "thm:4.3"}[] (iii).
 :::
 
-:::proof "lem:F.1"
-Replace $`A_j` by $`A_j\Pi_n` with $`\Pi_n` the projection onto the first $`n` basis vectors;
-each $`A_j\Pi_n` has finite rank, and strong convergence $`\Pi_nx\to x` is uniform on compact
-sets by a finite-net argument, so the Lipschitz bound gives convergence in $`C(K)`.
+# F.4 Why the spectral measure cannot be dilated
+%%%
+number := false
+%%%
+
+:::proposition "prop:F.3" (lean := "OperatorRidgelet.Paper.prop_F_3_i_a, OperatorRidgelet.Paper.prop_F_3_i_b, OperatorRidgelet.Paper.prop_F_3_i_c, OperatorRidgelet.Paper.prop_F_3_i_d, OperatorRidgelet.Paper.prop_F_3_ii") (uses := "aux:finite-dim, aux:centered-gaussian")
+Let $`\dim H=\infty` and let $`W` be injective, positive, self-adjoint, and trace class with
+eigenvectors $`e_j` and eigenvalues $`w_j>0`. The sets $`E_t`, $`t>0`, are Borel (i a) and
+pairwise disjoint (i b), $`\mathcal N(0,tW)(E_t)=1` (i c), and consequently a
+$`\sigma`-finite measure dominates $`\mathcal N(0,tW)` for at most countably many $`t` (i d).
+Hence, for a bounded Borel $`r` with $`\{r\ne0\}` of positive measure, there is no finite
+complex Borel measure $`\Gamma` on $`H\times\mathbb R` whose bias slices satisfy
+$`\int_{E\times\mathbb R}e^{i\omega c}\,\Gamma(\mathrm da,\mathrm dc)=r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)(E)`
+for almost every $`\omega\ne0` (ii).
 :::
 
-:::lemma_ "lem:F.2" (lean := "OperatorRidgelet.Paper.lem_F_2_i, OperatorRidgelet.Paper.lem_F_2_ii, OperatorRidgelet.Paper.lem_F_2_iii, OperatorRidgelet.Paper.lem_F_2_iv, OperatorRidgelet.Paper.lem_F_2_v, OperatorRidgelet.Paper.lem_F_2_vi, OperatorRidgelet.Paper.lem_F_2_vii") (uses := "aux:hilbert-schmidt, aux:operator-neuron, def:2.1, def:2.2")
-For $`\psi\ne0` put $`A_a=\|\psi\|^{-2}\psi\otimes a` and $`b_c=c\|\psi\|^{-2}\psi`. Then
-$`A_a\in\mathcal L_2(H)` (i), $`\|A_a\|_{\mathcal L_2}=\|a\|/\|\psi\|` (ii),
-$`\|b_c\|=|c|/\|\psi\|` (iii), and $`\pi_\psi(A_a,b_c)=(a,c)` (iv). The section
-$`J_\psi(a,c)=(A_a,b_c)` is continuous into $`\mathcal L_2(H)\times H` (v), and every scalar
-integral network (vi) or finite-width network (vii) with activation $`\beta` lifts exactly to
-the operator architecture with activation $`\sigma_\beta` and readout normalized by
-$`\langle\ell,z\rangle=1`.
-:::
-
-:::proof "lem:F.2"
-$`A_a` has rank at most one and $`A_a^*y=\|\psi\|^{-2}\langle y,\psi\rangle a`, so
-$`A_a^*\psi=a`; the norms are computed directly, and pushing a coefficient measure forward by
-$`J_\psi` preserves its synthesis because the neuron at $`J_\psi(a,c)` is the scalar ridge at
-$`(a,c)`.
-:::
-
-:::proposition "prop:F.3" (lean := "OperatorRidgelet.Paper.prop_F_3_i, OperatorRidgelet.Paper.prop_F_3_ii") (uses := "aux:operator-neuron")
-Let $`\beta:\mathbb R\to\mathbb R` be continuous and not a polynomial. Finite linear
-combinations of $`\beta(\langle a,x\rangle+c)` are dense in $`C(H;\mathbb R)` for uniform
-convergence on compact sets (i); the same holds for the rank-one operator activation
-$`\sigma_\beta` with Hilbert–Schmidt parameters (ii).
-:::
-
-:::proof "prop:F.3" (uses := "lem:F.2, cor:D.8, roadmap:finite-dim-universality")
-For finite-rank projections $`\Pi_m\to I`, $`f\circ\Pi_m\to f` uniformly on compact sets; the
-finite-dimensional universal approximation theorem approximates $`f` on $`\Pi_mK` by scalar
-ridges, which compose with $`\Pi_m` to ridges on $`H`, and the rank-one lift gives (ii). This
-reduction gives no information on the parameters; the constructive statement is
-{bpref "thm:6.5"}[].
-:::
-
-:::lemma_ "lem:F.4" (lean := "OperatorRidgelet.Paper.lem_F_4_i, OperatorRidgelet.Paper.lem_F_4_ii, OperatorRidgelet.Paper.lem_F_4_iii, OperatorRidgelet.Paper.lem_F_4_iv, OperatorRidgelet.Paper.lem_F_4_v") (uses := "aux:operator-neuron, def:2.2")
-Each part carries only the hypotheses it needs. For every $`\psi` and every finite complex
-Borel measure $`\Gamma_{\mathrm{op}}` on $`\mathcal L_2(H)\times H`,
-$`|(\pi_\psi)_\#\Gamma_{\mathrm{op}}|\le(\pi_\psi)_\#|\Gamma_{\mathrm{op}}|` (ii). If moreover
-$`\beta` is real and globally Lipschitz, $`\langle\ell,z\rangle=1`, and
-$`\int(1+\|A\|_{\mathcal L_2}+\|b\|)\,\mathrm d|\Gamma_{\mathrm{op}}|<\infty`, then
-$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}=S_\beta[(\pi_\psi)_\#\Gamma_{\mathrm{op}}]` (i) and, for
-compact $`K` with $`r_K=\sup_K\|x\|`,
-$`\|S_{\mathrm{op}}\Gamma_{\mathrm{op}}\|_{C(K)}\le\int[|\beta(0)|+\operatorname{Lip}(\beta)\|\psi\|(r_K\|A\|_{\mathcal L_2}+\|b\|)]\,\mathrm d|\Gamma_{\mathrm{op}}|`
-(iii); $`\psi\ne0` is not needed for any of these. Conversely, for $`\psi\ne0` and
-$`\langle\ell,z\rangle=1`, $`(\pi_\psi)_\#(J_\psi)_\#\Gamma=\Gamma` (iv) and
-$`S_{\mathrm{op}}(J_\psi)_\#\Gamma=S_\beta[\Gamma]` (v) for every activation $`\beta` and every
-finite complex Borel measure $`\Gamma` on $`H\times\mathbb R`, with no Lipschitz and no moment
-condition.
-:::
-
-:::proof "lem:F.4" (uses := "lem:F.2")
-The variation inequality is the definition of the variation as a supremum over partitions,
-applied to the preimages of a partition. The atom identity is the rank-one reduction,
-$`\|A^*\psi\|\le\|A\|_{\mathcal L_2}\|\psi\|` supplies the integrable envelope, and the change
-of variables for finite complex measures proves the synthesis identity. Finally
-$`\pi_\psi\circ J_\psi=\mathrm{id}`, and $`J_\psi` is a homeomorphism onto its closed range, so
-the last change of variables holds atomwise.
+:::proof "prop:F.3"
+The strong law of large numbers for the independent normalized Gaussian coordinates gives
+$`\mathcal N(0,tW)(E_t)=1`, a $`\sigma`-finite measure has at most countably many disjoint
+sets of positive measure, and a measure $`\Gamma` as in (ii) would give a finite measure
+dominating $`\mathcal N(0,W/\omega^2)` for uncountably many $`\omega`.
 :::

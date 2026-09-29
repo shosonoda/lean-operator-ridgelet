@@ -6,7 +6,7 @@ import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 
 A Schwartz coefficient lies in every Sobolev class of `lem:C.3`: the weight `⟨t⟩^s`
 has temperate growth, so `⟨·⟩^s γ` is again a Schwartz function, hence square integrable.  This
-is what makes the concrete rays of Appendix I available at every order `s`.
+is what makes the concrete rays of Appendix G available at every order `s`.
 -/
 
 noncomputable section

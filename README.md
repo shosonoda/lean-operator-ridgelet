@@ -12,11 +12,11 @@ following the manuscript by Sho Sonoda and coauthors. It covers the Gaussian-wei
 transform, Plancherel and reconstruction theorems, activations represented by tempered
 distributions such as ReLU, and dimension-free finite-width approximation.
 
-The repository tracks the **68 manuscript items of the 2026-09-29 terminology revision**:
+The repository tracks the **62 manuscript items of the 2026-09-30 manuscript revision**:
 all are recorded as
-verified, comprising **369 Lean statements checked by comparator** and the pure definitions.
+verified, comprising **341 Lean statements checked by comparator** and the pure definitions.
 The manuscript itself is not included. See the [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/)
-for a presentation organized by manuscript Sections 1–8 and Appendices A–J, followed by
+for a presentation organized by manuscript Sections 1–9 and Appendices A–H, followed by
 supporting infrastructure, and [STATUS.md](STATUS.md) for the generated per-item record.
 
 ## What is formalized, and where?
@@ -25,7 +25,7 @@ The mathematics is in [OperatorRidgelet/OperatorRidgelet/](OperatorRidgelet/Oper
 
 | Topic | Main modules |
 | --- | --- |
-| Scalar and operator networks, rank-one lifts, universality | [Network/](OperatorRidgelet/OperatorRidgelet/Network/), [Architecture/](OperatorRidgelet/OperatorRidgelet/Architecture/) |
+| Scalar activations and Hilbert-valued networks | [Network/](OperatorRidgelet/OperatorRidgelet/Network/) |
 | Gaussian-weighted transform, Fourier-slice identity, Plancherel | [Transform/](OperatorRidgelet/OperatorRidgelet/Transform/) |
 | Integral representation, reconstruction, frame operator, vector-valued extensions | [Reconstruction/](OperatorRidgelet/OperatorRidgelet/Reconstruction/) |
 | Reconstruction formulas and activation functions; integral representation under Sobolev conditions | [Tempered/](OperatorRidgelet/OperatorRidgelet/Tempered/), [Sobolev/](OperatorRidgelet/OperatorRidgelet/Sobolev/) |
@@ -75,11 +75,7 @@ Development checks, Blueprint builds, and publishing instructions are in
 
 Apache License 2.0, see [LICENSE](LICENSE).  The files under `OperatorRidgelet/LeanRidgelet/`
 are copied from [shosonoda/lean-ridgelet](https://github.com/shosonoda/lean-ridgelet), also
-Apache 2.0. The files under `OperatorRidgelet/NeuralNetworkProofs/` are copied from
-[Davor Runje's neural-network-proofs](https://github.com/davorrunje/neural-network-proofs),
-commit `f90942517be8b66dd34574212ada69b2130a48e5`, also Apache 2.0. Their copyright headers
-and license are preserved. `OperatorRidgelet/NeuralNetworkProofs.lean` records the subset and
-the compatibility adaptation for Mathlib v4.32.0.
+Apache 2.0.
 `OperatorRidgeletBlueprint/vendor/VersoBlueprint/` preserves Verso Blueprint's Apache-2.0
 license and copyright notices; its pinned revision and Example-kind extension are documented
 in [PROVENANCE.md](OperatorRidgeletBlueprint/vendor/VersoBlueprint/PROVENANCE.md).

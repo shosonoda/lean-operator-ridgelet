@@ -1,3 +1,4 @@
+import Mathlib.MeasureTheory.Measure.Complex
 import OperatorRidgelet.Sampling.Defs
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Reconstruction.Defs
@@ -174,8 +175,7 @@ satisfies the same bound.  The direction measure is assumed finite on bounded se
 which Lemma `lem:3.1` supplies for the Gaussian mixture `ν_α` in infinite
 dimension and which the manuscript uses throughout, since it states the theorem for `ν_α`
 only; the abstract hypotheses (σ-finite, full support, homogeneous of degree `α > 0`) do not
-imply it, and Theorem `thm:H.1` deliberately does not extend `thm:6.5` to abstract
-weights. -/
+imply it, so `hfin` is retained explicitly in the Lean statement. -/
 theorem thm_6_5 (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
@@ -410,55 +410,23 @@ theorem lem_D_6_iii (p : Measure Ω) [IsProbabilityMeasure p] {Y : Ω → X}
 
 end Hilbert
 
-/-- **Corollary [cor:D.7]** Approximation with operator-valued parameters.  For a finite
-complex measure `Γ_op` on `𝓛₂(H) × H` with polar decomposition `h_op |Γ_op|`,
-`V_op = ‖Γ_op‖_TV`, `p_op = |Γ_op|/V_op`, real globally Lipschitz `β`, readout normalized by
-`⟪ℓ, z⟫ = 1`, and `M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) dp_op < ∞`, sampling `(A_j, b_j)` from
-`p_op` with the weights `h_op` gives
-`𝔼‖f_{op,N} − S_op Γ_op‖_{C(K)} ≤ 8 V_op N^{-1/2} (|β(0)| + Lip(β) R_K M_op)`. -/
-theorem cor_D_7_i [CompleteSpace H] [SecondCountableTopology H]
-    [MeasurableSpace H] [BorelSpace H] {β : ℝ → ℝ} {L : ℝ≥0} (hβ : LipschitzWith L β) (ψ : H)
-    (Γop : ComplexMeasure (OperatorRidgeParameter H)) [IsFiniteMeasure Γop.variation]
-    (hHS : ∀ᵐ q ∂Γop.variation, IsHilbertSchmidt q.1)
-    (hM : Integrable (fun q : OperatorRidgeParameter H =>
-      ‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2) (polarLaw Γop))
-    {ℓ z : H} (hℓz : ⟪ℓ, z⟫ = 1) {K : Set H} (hK : IsCompact K) {N : ℕ} (hN : 0 < N) :
-    ∫ ω, compactSupNorm K (fun x =>
-          sampledOperatorNetwork (rankOneActivation β ψ z) ℓ (polarWeight Γop)
-              (polarDensity Γop) ω x -
-            operatorSynthesis (rankOneActivation β ψ z) ℓ Γop x)
-        ∂sampleLaw N (polarLaw Γop) ≤
-      8 * polarWeight Γop / Real.sqrt N *
-        (|β 0| + (L : ℝ) * compactRadius K *
-          Real.sqrt (operatorSecondMoment ψ (polarLaw Γop))) := by
-  sorry
-
-/-- **Corollary [cor:D.7]** Approximation with operator-valued parameters.
-`M_op² ≤ ‖ψ‖² ∫ (‖A‖²_{𝓛₂} + ‖b‖²) dp_op`. -/
-theorem cor_D_7_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H] (ψ : H)
-    (Γop : ComplexMeasure (OperatorRidgeParameter H)) [IsFiniteMeasure Γop.variation]
-    (hHS : ∀ᵐ q ∂Γop.variation, IsHilbertSchmidt q.1) :
-    ∫⁻ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ₑ ^ 2 + ‖⟪ψ, q.2⟫‖ₑ ^ 2) ∂polarLaw Γop ≤
-      ‖ψ‖ₑ ^ 2 * ∫⁻ q, (hsNormSq q.1 + ‖q.2‖ₑ ^ 2) ∂polarLaw Γop := by
-  sorry
-
-/-- **Corollary [cor:D.8]** Input truncation and finite-width approximation errors.  For
+/-- **Corollary [cor:D.7]** Input truncation and finite-width approximation errors.  For
 finite-rank orthogonal projections `Π_m` converging strongly to the identity, `f ∈ C(H)`, and
 compact `K`, `‖f − f ∘ Π_m‖_{C(K)} → 0`. -/
-theorem cor_D_8_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
+theorem cor_D_7_i [CompleteSpace H] (P : ℕ → (H →L[ℝ] H))
     (hP : ∀ m, IsFiniteRankProjection (P m))
     (hlim : ∀ x : H, Tendsto (fun m => P m x) atTop (𝓝 x)) {f : H → ℂ} (hf : Continuous f)
     {K : Set H} (hK : IsCompact K) :
     Tendsto (fun m => compactSupNorm K (fun x => f x - f (P m x))) atTop (𝓝 0) := by
   sorry
 
-/-- **Corollary [cor:D.8]** Input truncation and finite-width approximation errors.  If
+/-- **Corollary [cor:D.7]** Input truncation and finite-width approximation errors.  If
 `f = S_β Γ` satisfies the hypotheses of Theorem `thm:6.3` and the same samples and
 weights `(V/N) h(θ_j)` are used with the truncated directions `Π_m a_j` inside the activation,
 `f_{m,N}(x) = (V/N) ∑_j h(θ_j) β(⟪Π_m a_j, x⟫ + c_j)`, then
 `𝔼‖f − f_{m,N}‖_{C(K)} ≤ Lip(β) (∫ ‖a‖ d|Γ|) sup_K ‖x − Π_m x‖ +
 (8V/√N)(|β(0)| + Lip(β) R_K M₂)`. -/
-theorem cor_D_8_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
+theorem cor_D_7_ii [CompleteSpace H] [MeasurableSpace H] [BorelSpace H]
     (P : ℕ → (H →L[ℝ] H)) (hP : ∀ m, IsFiniteRankProjection (P m))
     (hlim : ∀ x : H, Tendsto (fun m => P m x) atTop (𝓝 x)) {β : ℝ → ℝ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : ComplexMeasure (H × ℝ)) [IsFiniteMeasure Γ.variation]

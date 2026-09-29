@@ -59,11 +59,3 @@ density $`\gamma` with respect to a $`\sigma`-finite reference measure $`\lambda
 also written $`S_\beta[\gamma]` and computed as the Bochner integral of
 $`\beta(\langle a,x\rangle+c)\gamma(a,c)` against $`\lambda` (part ii).
 :::
-
-# Operator-valued parameters
-
-For a rank-one activation $`\Sigma(y)=\beta(\langle\psi,y\rangle)z`, the neuron
-$`\langle\ell,\Sigma(Ax+c)\rangle` equals
-$`\langle\ell,z\rangle\beta(\langle A^*\psi,x\rangle+\langle\psi,c\rangle)`.
-Thus the effective direction is $`A^*\psi`. Appendix F proves the exact lift, the
-Hilbert–Schmidt reduction, and the transport of coefficient measures.

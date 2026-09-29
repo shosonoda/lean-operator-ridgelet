@@ -30,7 +30,7 @@ number := false
 A Gaussian integral gives the closed-form transform of the Gaussian target and the
 operator-layer formula. The Gaussian activation also has an exact ReLU hinge representation.
 These identities concern the exact infinite-dimensional objects; the numerical experiments
-in Appendix J use finite representations of their directions.
+in Section 8 use finite representations of their directions.
 
 # E.1 A Gaussian integral
 %%%

@@ -89,11 +89,6 @@ attribute [blueprint "thm:4.6-frame-iv-completion"
     recovered in L². -/)]
   OperatorRidgelet.Paper.thm_4_6_frame_iv_completion
 
-attribute [blueprint "thm:H.1-dense"
-  (statement := /-- Theorem thm:H.1 Bounded-set finite direction weights retain
-    universality. -/)]
-  OperatorRidgelet.Paper.thm_H_1_dense
-
 attribute [blueprint "lem:B.1-v"
   (statement := /-- Lemma lem:B.1 The L² inverse formula is absolutely integrable
 for almost every direction, for every bias value. -/)]
@@ -103,16 +98,6 @@ attribute [blueprint "lem:A.1-ii"
   (statement := /-- Lemma lem:A.1 The Fourier representatives agree on almost
     every section. -/)]
   OperatorRidgelet.Paper.lem_A_1_uniqueness
-
-attribute [blueprint "thm:H.1-backprojection"
-  (statement := /-- Theorem thm:H.1 Abstract input weights retain completed
-    backprojection. -/)]
-  OperatorRidgelet.Paper.thm_H_1_backprojection
-
-attribute [blueprint "thm:H.1-stability"
-  (statement := /-- Theorem thm:H.1 Stability holds for an arbitrary probability
-    input weight. -/)]
-  OperatorRidgelet.Paper.thm_H_1_stability
 
 attribute [blueprint "lem:3.6-i"
   (statement := /-- Lemma lem:3.6 The coefficient operator has the bounded

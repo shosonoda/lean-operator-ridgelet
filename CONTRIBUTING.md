@@ -28,16 +28,12 @@ Python scripts require Python 3.
   node kind. Preserve the upstream license and copyright notices; the source and local
   changes are recorded in [PROVENANCE.md](OperatorRidgeletBlueprint/vendor/VersoBlueprint/PROVENANCE.md).
   Keep its `.lake/build` separate from any upstream checkout when compiling the extension.
-- `OperatorRidgelet/NeuralNetworkProofs/` vendors the Leshno theorem from
-  `davorrunje/neural-network-proofs`; its pinned revision, license, and compatibility adaptation
-  are recorded in `NeuralNetworkProofs.lean`. Preserve the upstream copyright headers and
-  document any further adaptations. Keep the operator-specific bridge in `Architecture/`.
 
 ## Updating manuscript statements
 
 - Every theorem, proposition, lemma, corollary, and example of the manuscript is a theorem
   `OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, with dots in the manuscript number
-  replaced by underscores (for example, `thm_3_11_i` or `cor_G_2_i`). Multipart results
+  replaced by underscores (for example, `thm_3_11_i` or `cor_F_2_i`). Multipart results
   retain their part suffixes; vector-valued theorem parts use descriptive `plancherel`,
   `representation`, and `frame` suffixes. Pure definitions retain their semantic names.
   In `paper.json`, `label` remains the source LaTeX label, while `blueprint_label` is the
@@ -51,7 +47,7 @@ Python scripts require Python 3.
 - Definitions used in statements live in `*/Defs.lean` modules and are `sorry`-free.  Close heavy
   proof obligations inside definitions with junk values in the Mathlib style; state the
   properties as theorems.  `OperatorRidgelet/BasisIndependence.lean` is where the obligations of
-  the chosen-basis definitions (`traceOf`, `fredholmDet`, `hsNormSq`) are discharged; add new
+  the chosen-basis definitions (`traceOf`, `fredholmDet`) are discharged; add new
   ones there, with the general mathematics in `ToMathlib`.
 - Run `scripts/check-challenge.py` after editing either side, and regenerate `STATUS.md` with
   `scripts/status.py > ../STATUS.md`.
@@ -181,10 +177,10 @@ lake exe vbp check
 lake exe vbp query work-queue                             # statements whose proof is still `sorry`
 ```
 
-The Blueprint follows manuscript Sections 1–8 and Appendices A–J, with supporting
+The Blueprint follows manuscript Sections 1–9 and Appendices A–H, with supporting
 infrastructure presented separately. Each mathematical node links its informal statement to
 the corresponding Lean declarations. The formalization notes in `paper.json` record the
-scope of those statements. Comparator independently checks the 369 propositions in
+scope of those statements. Comparator independently checks the 341 propositions in
 `Challenge` against their proved counterparts; [STATUS.md](STATUS.md) records the item mapping.
 
 ### Continuous integration and GitHub Pages

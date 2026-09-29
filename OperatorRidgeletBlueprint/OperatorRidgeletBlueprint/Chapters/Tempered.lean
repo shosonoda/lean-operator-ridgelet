@@ -35,7 +35,7 @@ A dual-space identity and an ordinary integral network have different integrabil
 requirements. The Sobolev criterion below supplies an absolutely convergent network
 integral, including non-band-pass filters, under direct conditions on the inverse Fourier
 transform of $`h_a(\omega)=\widehat\rho(-\omega)G(\omega a)`.
-Appendix C gives the pairing and its estimates; Appendix I gives explicit filters.
+Appendix C gives the pairing and its estimates; Appendix G gives explicit filters.
 
 :::definition "aux:tempered-distributions" (lean := "OperatorRidgelet.IsPolynomialDistribution, OperatorRidgelet.schwartzOfFun, OperatorRidgelet.tanhDistribution, OperatorRidgelet.gaussianCdfDistribution, OperatorRidgelet.gaussianDistribution") (uses := "aux:conventions")
 A tempered distribution $`\beta\in\mathcal S'(\mathbb R)` is a polynomial, equivalently
@@ -178,5 +178,37 @@ frequency where $`\widehat\rho` does not vanish and then using homogeneity.
 
 A second parameter moment needs $`s>5/2`. With a globally Lipschitz activation,
 {bpref "thm:6.3"}[] then applies; reconstruction of $`f_G` also requires
-division by a nonzero synthesis pairing. Appendix I verifies a concrete non-band-pass
+division by a nonzero synthesis pairing. Appendix G verifies a concrete non-band-pass
 example.
+
+*Examples of filters for the reconstruction formula.*
+
+The following explicit filters meet the Sobolev criterion without band-pass support.
+Their coefficient estimates and constants are proved in Appendix G.
+
+:::proposition "prop:5.8" (lean := "OperatorRidgelet.gaussDerivFilter, OperatorRidgelet.gaussTarget, OperatorRidgelet.gaussRayCoefficient, OperatorRidgelet.gaussSobolevRay, OperatorRidgelet.Paper.prop_5_8_i, OperatorRidgelet.Paper.prop_5_8_ii, OperatorRidgelet.Paper.prop_5_8_iii, OperatorRidgelet.Paper.prop_5_8_iv, OperatorRidgelet.Paper.prop_5_8_v, OperatorRidgelet.Paper.prop_5_8_vi, OperatorRidgelet.Paper.prop_5_8_vii, OperatorRidgelet.Paper.prop_5_8_viii, OperatorRidgelet.Paper.prop_5_8_ix") (uses := "thm:5.6, def:3.2, aux:conventions")
+Under the input-space and sigma-finite Borel measure hypotheses of {bpref "thm:5.6"}[],
+let $`\nu` be homogeneous of degree $`\alpha>0` and finite on the unit ball. Fix $`s>1/2` and an
+integer $`k\ge1` with $`2k>\alpha+2s-1/2`, and let
+$`\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}`, $`g(\xi)=e^{-\|\xi\|^2}v`. Then $`\rho_k` is
+a real Schwartz filter (i) that is not band pass (ii) but is $`\alpha`-admissible for
+$`\alpha<4k+1` (iii). The homogeneous moments $`\int(1+\|a\|^2)^{-d/2}\mathrm d\nu` are finite
+for $`d>\alpha` (iv); the coefficient $`\gamma_g` is jointly measurable (v), each function
+$`h_a(\omega)=\widehat\rho_k(-\omega)g(\omega a)` lies in $`H^s_\omega` (vi), and
+$`\mathfrak B_s(\rho_k,g)<\infty` (vii). The Sobolev test $`q_{\alpha,\rho_k}` lies in
+$`H^s_\omega` (viii). Hence {bpref "thm:5.6"}[] applies to this filter for
+every continuous activation of growth order $`p<s-1/2` (ix).
+
+Put $`\delta=2k-\alpha`. For $`\sigma(t)=e^{-t^2/2}`, the reconstruction constant is
+$`(\!(\sigma,\rho_k)\!)_\alpha=\Gamma((\delta+1)/2)(3/2)^{-(\delta+1)/2}/\sqrt{2\pi}>0`.
+If $`s>3/2`, ReLU also satisfies the hypotheses and
+$`(\!(\operatorname{ReLU},\rho_k)\!)_\alpha=-(2\pi)^{-1}\Gamma((\delta-1)/2)\ne0`.
+The unit-ball finiteness hypothesis holds for the homogeneous Gaussian mixtures on the
+infinite-dimensional Hilbert space used in the main construction.
+:::
+
+The two closed-form constants are part of the manuscript statement. The associated
+Lean statements retain their Sobolev-pairing formulations; they do not assert these
+closed-form evaluations.
+
+See the [proof in Appendix G](appendix-g/proof-5-8/#--informal-preview-_FLQQ_prop___5___8_FLQQ_--proof).

@@ -10,6 +10,7 @@ import OperatorRidgeletBlueprint.Chapters.Reconstruction
 import OperatorRidgeletBlueprint.Chapters.Tempered
 import OperatorRidgeletBlueprint.Chapters.Sampling
 import OperatorRidgeletBlueprint.Chapters.Examples
+import OperatorRidgeletBlueprint.Chapters.NumericalExperiments
 import OperatorRidgeletBlueprint.Chapters.Discussion
 import OperatorRidgeletBlueprint.Chapters.AppendixA
 import OperatorRidgeletBlueprint.Chapters.AppendixB
@@ -19,8 +20,6 @@ import OperatorRidgeletBlueprint.Chapters.AppendixE
 import OperatorRidgeletBlueprint.Chapters.AppendixF
 import OperatorRidgeletBlueprint.Chapters.AppendixG
 import OperatorRidgeletBlueprint.Chapters.AppendixH
-import OperatorRidgeletBlueprint.Chapters.AppendixI
-import OperatorRidgeletBlueprint.Chapters.AppendixJ
 import OperatorRidgeletBlueprint.Chapters.Infrastructure
 
 open Verso.Genre
@@ -31,8 +30,9 @@ open Informal
 
 This Blueprint follows the manuscript in reading order, from the motivation and the
 Gaussian-weighted construction to reconstruction, finite-width approximation and examples.
-Sections 1–8 contain the main exposition. Appendices A–J contain the detailed proofs,
-extensions, explicit filters and numerical illustration.
+Sections 1–9 contain the main exposition, numerical experiments and discussion.
+Appendices A–H contain detailed proofs, finite-dimensional comparison, filter calculations
+and numerical methods.
 
 Numbered mathematical statements have the manuscript's identifiers and numbers. Their Lean
 panels show the precise formal statements and proof status. Descriptive auxiliary nodes
@@ -47,6 +47,7 @@ experiments are not marked as machine-checked theorems.
 {include 0 OperatorRidgeletBlueprint.Chapters.Tempered}
 {include 0 OperatorRidgeletBlueprint.Chapters.Sampling}
 {include 0 OperatorRidgeletBlueprint.Chapters.Examples}
+{include 0 OperatorRidgeletBlueprint.Chapters.NumericalExperiments}
 {include 0 OperatorRidgeletBlueprint.Chapters.Discussion}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixA}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixB}
@@ -56,8 +57,6 @@ experiments are not marked as machine-checked theorems.
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixF}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixG}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixH}
-{include 0 OperatorRidgeletBlueprint.Chapters.AppendixI}
-{include 0 OperatorRidgeletBlueprint.Chapters.AppendixJ}
 
 {include 0 OperatorRidgeletBlueprint.Chapters.Infrastructure}
 

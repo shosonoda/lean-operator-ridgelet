@@ -11,14 +11,14 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Topology.Algebra.Module.Basic
 
 /-!
-# Definitions for Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, G, H, I
+# Definitions for Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, F, G
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
 
 ## The abstract pair `(μ, ν)`
 
-Following Appendix H of the manuscript, the core theory is set up for an abstract pair: `μ` is
+The supporting definitions are set up for an abstract pair: `μ` is
 a Borel probability measure on the input space `H` (the manuscript's `μ_Q = 𝒩(0,Q)`), and `ν`
 is a σ-finite Borel measure on the direction space `H` with full support which is homogeneous of
 degree `α` under dilations, `(D_ω)_# ν = |ω|^{-α} ν` (the manuscript's Gaussian mixture `ν_α`).

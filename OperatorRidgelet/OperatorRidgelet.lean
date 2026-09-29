@@ -1,7 +1,5 @@
 import OperatorRidgelet.Activation
 import OperatorRidgelet.Cylindrical
-import OperatorRidgelet.RankOneLift
-import OperatorRidgelet.OperatorValuedRidgelet
 import OperatorRidgelet.Sobolev.Defs
 import OperatorRidgelet.Sobolev.Basic
 import OperatorRidgelet.Sobolev.Pairing
@@ -21,10 +19,8 @@ import OperatorRidgelet.ToFoML.RidgeFeature
 import OperatorRidgelet.ToFoML.TwoCoordinate
 import OperatorRidgelet.ToFoML.RademacherSigns
 import OperatorRidgelet.Network.Defs
-import OperatorRidgelet.Architecture.Defs
 import OperatorRidgelet.BasisIndependence
-import OperatorRidgelet.Architecture.Basic
-import OperatorRidgelet.Architecture.Reduction
+import OperatorRidgelet.Network.Basic
 import OperatorRidgelet.Transform.Defs
 import OperatorRidgelet.Transform.Infra
 import OperatorRidgelet.Transform.Gaussian
@@ -106,7 +102,6 @@ import OperatorRidgelet.ToMathlib.PositiveEigenbasis
 import OperatorRidgelet.ToMathlib.TraceClassEigenbasis
 import OperatorRidgelet.ToMathlib.TraceBasisIndependent
 import OperatorRidgelet.ToMathlib.FredholmDetEigenbasis
-import OperatorRidgelet.ToMathlib.HilbertSchmidtBasis
 import OperatorRidgelet.ToMathlib.VectorMeasureMapDensity
 import OperatorRidgelet.ToMathlib.VectorMeasureWithDensity
 import OperatorRidgelet.ToMathlib.IteratedDerivMeasurable

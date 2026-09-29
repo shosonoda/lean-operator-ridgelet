@@ -15,7 +15,8 @@ import OperatorRidgelet.Reconstruction.Tempered
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Tempered`, and proved from the library.
 
-The statements are made for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability measure,
+The statements are made for the abstract pair `(μ, ν)` used by the supporting lemmas (`μ` a
+probability measure,
 `ν` σ-finite with full support and homogeneous of degree `α`), of which the Gaussian pair
 `(μ_Q, ν_α)` of the manuscript is the instance; `𝓔_α` is represented by `𝒦_α = spectralRange μ ν`,
 its anti-dual by `SpectralAntiDual μ ν`, the extended transform `R_ρ` by `ridgeletExtension`,

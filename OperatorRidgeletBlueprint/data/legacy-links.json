@@ -1,11 +1,535 @@
 [
   {
+    "oldhref": "appendix-a/#--informal-preview-_FLQQ_lem___A___1_FLQQ_--proof",
+    "targetlabel": "lem:A.1"
+  },
+  {
+    "oldhref": "appendix-a/#--informal-preview-_FLQQ_lem___A___1_FLQQ_--statement",
+    "targetlabel": "lem:A.1"
+  },
+  {
+    "oldhref": "appendix-a/A___1-The-Gaussian-series-and-the-mixture/#--informal-preview-_FLQQ_lem___A___2_FLQQ_--proof",
+    "targetlabel": "lem:A.2"
+  },
+  {
+    "oldhref": "appendix-a/A___1-The-Gaussian-series-and-the-mixture/#--informal-preview-_FLQQ_lem___A___2_FLQQ_--statement",
+    "targetlabel": "lem:A.2"
+  },
+  {
+    "oldhref": "appendix-a/A___2-Proof-of-Lemma-3___1/#--informal-preview-_FLQQ_lem___3___1_FLQQ_--proof",
+    "targetlabel": "lem:3.1"
+  },
+  {
+    "oldhref": "appendix-a/A___3-Proof-of-Lemma-3___9/#--informal-preview-_FLQQ_lem___3___9_FLQQ_--proof",
+    "targetlabel": "lem:3.9"
+  },
+  {
+    "oldhref": "appendix-a/A___4-Proof-of-Theorem-3___11_LPAR_i_RPAR_-and-_LPAR_ii_RPAR_/#--informal-preview-_FLQQ_thm___3___11_FLQQ_--proof",
+    "targetlabel": "thm:3.11"
+  },
+  {
+    "oldhref": "appendix-a/A___6-The-regularized-characteristic-functional-of-the-mixture/#--informal-preview-_FLQQ_lem___A___3_FLQQ_--proof",
+    "targetlabel": "lem:A.3"
+  },
+  {
+    "oldhref": "appendix-a/A___6-The-regularized-characteristic-functional-of-the-mixture/#--informal-preview-_FLQQ_lem___A___3_FLQQ_--statement",
+    "targetlabel": "lem:A.3"
+  },
+  {
+    "oldhref": "appendix-b/#--informal-preview-_FLQQ_lem___B___1_FLQQ_--proof",
+    "targetlabel": "lem:B.1"
+  },
+  {
+    "oldhref": "appendix-b/#--informal-preview-_FLQQ_lem___B___1_FLQQ_--statement",
+    "targetlabel": "lem:B.1"
+  },
+  {
+    "oldhref": "appendix-b/#--informal-preview-_FLQQ_lem___B___2_FLQQ_--proof",
+    "targetlabel": "lem:B.2"
+  },
+  {
+    "oldhref": "appendix-b/#--informal-preview-_FLQQ_lem___B___2_FLQQ_--statement",
+    "targetlabel": "lem:B.2"
+  },
+  {
+    "oldhref": "appendix-b/B___1-Coefficient-decay-before-synthesis/#--informal-preview-_FLQQ_lem___B___3_FLQQ_--proof",
+    "targetlabel": "lem:B.3"
+  },
+  {
+    "oldhref": "appendix-b/B___1-Coefficient-decay-before-synthesis/#--informal-preview-_FLQQ_lem___B___3_FLQQ_--statement",
+    "targetlabel": "lem:B.3"
+  },
+  {
+    "oldhref": "appendix-b/B___2-Proof-of-Theorem-4___2/#--informal-preview-_FLQQ_thm___4___2_FLQQ_--proof",
+    "targetlabel": "thm:4.2"
+  },
+  {
+    "oldhref": "appendix-b/B___3-The-synthesis-operator-on-integrable-coefficients/#--informal-preview-_FLQQ_lem___B___4_FLQQ_--proof",
+    "targetlabel": "lem:B.4"
+  },
+  {
+    "oldhref": "appendix-b/B___3-The-synthesis-operator-on-integrable-coefficients/#--informal-preview-_FLQQ_lem___B___4_FLQQ_--statement",
+    "targetlabel": "lem:B.4"
+  },
+  {
+    "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_aux___hermite_FLQQ_--statement",
+    "targetlabel": "aux:hermite"
+  },
+  {
+    "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_lem___B___5_FLQQ_--proof",
+    "targetlabel": "lem:B.5"
+  },
+  {
+    "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_lem___B___5_FLQQ_--statement",
+    "targetlabel": "lem:B.5"
+  },
+  {
+    "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_thm___4___3_FLQQ_--proof",
+    "targetlabel": "thm:4.3"
+  },
+  {
+    "oldhref": "appendix-b/B___5-Coefficient-projection/#--informal-preview-_FLQQ_prop___B___8_FLQQ_--proof",
+    "targetlabel": "prop:B.8"
+  },
+  {
+    "oldhref": "appendix-b/B___5-Coefficient-projection/#--informal-preview-_FLQQ_prop___B___8_FLQQ_--statement",
+    "targetlabel": "prop:B.8"
+  },
+  {
+    "oldhref": "appendix-c/C___1-Proof-of-Theorem-5___2/#--informal-preview-_FLQQ_thm___5___2_FLQQ_--proof",
+    "targetlabel": "thm:5.2"
+  },
+  {
+    "oldhref": "appendix-c/C___2-Weighted-Sobolev-activation-spaces/#--informal-preview-_FLQQ_lem___C___1_FLQQ_--proof",
+    "targetlabel": "lem:C.1"
+  },
+  {
+    "oldhref": "appendix-c/C___2-Weighted-Sobolev-activation-spaces/#--informal-preview-_FLQQ_lem___C___1_FLQQ_--statement",
+    "targetlabel": "lem:C.1"
+  },
+  {
+    "oldhref": "appendix-c/C___2-Weighted-Sobolev-activation-spaces/#--informal-preview-_FLQQ_lem___C___2_FLQQ_--proof",
+    "targetlabel": "lem:C.2"
+  },
+  {
+    "oldhref": "appendix-c/C___2-Weighted-Sobolev-activation-spaces/#--informal-preview-_FLQQ_lem___C___2_FLQQ_--statement",
+    "targetlabel": "lem:C.2"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-and-Fourier-duality/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--proof",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-and-Fourier-duality/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--statement",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-and-Fourier-duality/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--proof",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-and-Fourier-duality/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--statement",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--proof",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--statement",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--proof",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--statement",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-c/C___4-Proof-of-Theorem-5___6/#--informal-preview-_FLQQ_thm___5___6_FLQQ_--proof",
+    "targetlabel": "thm:5.6"
+  },
+  {
+    "oldhref": "appendix-d/#--informal-preview-_FLQQ_lem___D___1_FLQQ_--proof",
+    "targetlabel": "lem:D.1"
+  },
+  {
+    "oldhref": "appendix-d/#--informal-preview-_FLQQ_lem___D___1_FLQQ_--statement",
+    "targetlabel": "lem:D.1"
+  },
+  {
+    "oldhref": "appendix-d/D___1-Proof-of-Theorem-6___3/#--informal-preview-_FLQQ_lem___D___2_FLQQ_--proof",
+    "targetlabel": "lem:D.2"
+  },
+  {
+    "oldhref": "appendix-d/D___1-Proof-of-Theorem-6___3/#--informal-preview-_FLQQ_lem___D___2_FLQQ_--statement",
+    "targetlabel": "lem:D.2"
+  },
+  {
+    "oldhref": "appendix-d/D___1-Proof-of-Theorem-6___3/#--informal-preview-_FLQQ_lem___D___3_FLQQ_--proof",
+    "targetlabel": "lem:D.3"
+  },
+  {
+    "oldhref": "appendix-d/D___1-Proof-of-Theorem-6___3/#--informal-preview-_FLQQ_lem___D___3_FLQQ_--statement",
+    "targetlabel": "lem:D.3"
+  },
+  {
+    "oldhref": "appendix-d/D___1-Proof-of-Theorem-6___3/#--informal-preview-_FLQQ_thm___6___3_FLQQ_--proof",
+    "targetlabel": "thm:6.3"
+  },
+  {
+    "oldhref": "appendix-d/D___2-Proof-of-Theorem-6___4/#--informal-preview-_FLQQ_thm___6___4_FLQQ_--proof",
+    "targetlabel": "thm:6.4"
+  },
+  {
+    "oldhref": "appendix-d/D___3-Proof-of-Theorem-6___5/#--informal-preview-_FLQQ_thm___6___5_FLQQ_--proof",
+    "targetlabel": "thm:6.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--proof",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--statement",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--proof",
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--statement",
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--proof",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--statement",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--proof",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--statement",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--proof",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-approximation-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--statement",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--proof",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--statement",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--proof",
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--statement",
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--proof",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--statement",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--proof",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--statement",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--proof",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--statement",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-e/E___1-A-Gaussian-integral/#--informal-preview-_FLQQ_lem___E___1_FLQQ_--proof",
+    "targetlabel": "lem:E.1"
+  },
+  {
+    "oldhref": "appendix-e/E___1-A-Gaussian-integral/#--informal-preview-_FLQQ_lem___E___1_FLQQ_--statement",
+    "targetlabel": "lem:E.1"
+  },
+  {
+    "oldhref": "appendix-e/E___2-Proof-of-Example-7___1/#--informal-preview-_FLQQ_ex___7___1_FLQQ_--proof",
+    "targetlabel": "ex:7.1"
+  },
+  {
+    "oldhref": "appendix-e/E___3-The-hinge-representation-of-the-Gaussian/#--informal-preview-_FLQQ_aux___relu-identities_FLQQ_--statement",
+    "targetlabel": "aux:relu-identities"
+  },
+  {
+    "oldhref": "appendix-e/E___3-The-hinge-representation-of-the-Gaussian/#--informal-preview-_FLQQ_lem___E___2_FLQQ_--proof",
+    "targetlabel": "lem:E.2"
+  },
+  {
+    "oldhref": "appendix-e/E___3-The-hinge-representation-of-the-Gaussian/#--informal-preview-_FLQQ_lem___E___2_FLQQ_--statement",
+    "targetlabel": "lem:E.2"
+  },
+  {
+    "oldhref": "appendix-e/E___4-Proof-of-Example-7___4/#--informal-preview-_FLQQ_ex___7___4_FLQQ_--proof",
+    "targetlabel": "ex:7.4"
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_aux___hilbert-schmidt_FLQQ_--statement",
+    "retired": {
+      "label": "aux:hilbert-schmidt",
+      "title": "Hilbert–Schmidt operators (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Defs.lean#L49"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_aux___operator-neuron_FLQQ_--statement",
+    "retired": {
+      "label": "aux:operator-neuron",
+      "title": "Operator neurons (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Defs.lean#L65"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___1_FLQQ_--proof",
+    "retired": {
+      "label": "lem:F.1",
+      "title": "Lemma F.1: Hilbert–Schmidt reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L69"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___1_FLQQ_--statement",
+    "retired": {
+      "label": "lem:F.1",
+      "title": "Lemma F.1: Hilbert–Schmidt reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L69"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___2_FLQQ_--proof",
+    "retired": {
+      "label": "lem:F.2",
+      "title": "Lemma F.2: Exact rank-one lift (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L85"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___2_FLQQ_--statement",
+    "retired": {
+      "label": "lem:F.2",
+      "title": "Lemma F.2: Exact rank-one lift (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L85"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___4_FLQQ_--proof",
+    "retired": {
+      "label": "lem:F.4",
+      "title": "Lemma F.4: Transport of coefficient measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L160"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_lem___F___4_FLQQ_--statement",
+    "retired": {
+      "label": "lem:F.4",
+      "title": "Lemma F.4: Transport of coefficient measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L160"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_prop___F___3_FLQQ_--proof",
+    "retired": {
+      "label": "prop:F.3",
+      "title": "Proposition F.3: Universality by finite-dimensional reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L139"
+    }
+  },
+  {
+    "oldhref": "appendix-f/#--informal-preview-_FLQQ_prop___F___3_FLQQ_--statement",
+    "retired": {
+      "label": "prop:F.3",
+      "title": "Proposition F.3: Universality by finite-dimensional reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L139"
+    }
+  },
+  {
+    "oldhref": "appendix-g/G___3-Filtered-backprojection/#--informal-preview-_FLQQ_aux___finite-dim_FLQQ_--statement",
+    "targetlabel": "aux:finite-dim"
+  },
+  {
+    "oldhref": "appendix-g/G___3-Filtered-backprojection/#--informal-preview-_FLQQ_cor___G___2_FLQQ_--proof",
+    "targetlabel": "cor:F.2"
+  },
+  {
+    "oldhref": "appendix-g/G___3-Filtered-backprojection/#--informal-preview-_FLQQ_cor___G___2_FLQQ_--statement",
+    "targetlabel": "cor:F.2"
+  },
+  {
+    "oldhref": "appendix-g/G___4-Why-the-spectral-measure-cannot-be-dilated/#--informal-preview-_FLQQ_prop___G___3_FLQQ_--proof",
+    "targetlabel": "prop:F.3"
+  },
+  {
+    "oldhref": "appendix-g/G___4-Why-the-spectral-measure-cannot-be-dilated/#--informal-preview-_FLQQ_prop___G___3_FLQQ_--statement",
+    "targetlabel": "prop:F.3"
+  },
+  {
+    "oldhref": "appendix-h/#--informal-preview-_FLQQ_thm___H___1_FLQQ_--proof",
+    "retired": {
+      "label": "thm:H.1",
+      "title": "Theorem H.1: General input and direction measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean#L1227"
+    }
+  },
+  {
+    "oldhref": "appendix-h/#--informal-preview-_FLQQ_thm___H___1_FLQQ_--statement",
+    "retired": {
+      "label": "thm:H.1",
+      "title": "Theorem H.1: General input and direction measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean#L1227"
+    }
+  },
+  {
+    "oldhref": "appendix-i/#--informal-preview-_FLQQ_aux___explicit-filters_FLQQ_--statement",
+    "targetlabel": "aux:explicit-filters"
+  },
+  {
+    "oldhref": "appendix-i/#--informal-preview-_FLQQ_ex___I___1_FLQQ_--proof",
+    "targetlabel": "ex:3.12"
+  },
+  {
+    "oldhref": "appendix-i/#--informal-preview-_FLQQ_ex___I___1_FLQQ_--statement",
+    "targetlabel": "ex:3.12"
+  },
+  {
+    "oldhref": "appendix-i/#--informal-preview-_FLQQ_ex___I___2_FLQQ_--proof",
+    "targetlabel": "ex:3.13"
+  },
+  {
+    "oldhref": "appendix-i/#--informal-preview-_FLQQ_ex___I___2_FLQQ_--statement",
+    "targetlabel": "ex:3.13"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Examples-of-filters-for-the-reconstruction-formula/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--proof",
+    "targetlabel": "prop:5.8"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Examples-of-filters-for-the-reconstruction-formula/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--statement",
+    "targetlabel": "prop:5.8"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--proof",
+    "targetlabel": "prop:5.8"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--statement",
+    "targetlabel": "prop:5.8"
+  },
+  {
+    "oldhref": "appendix-j/",
+    "targethref": "numerics/"
+  },
+  {
+    "oldhref": "appendix-j/Approximation-error-summary/",
+    "targethref": "numerics/Approximation-error-summary/"
+  },
+  {
+    "oldhref": "appendix-j/Experiment-1___-ReLU-with-Gaussian-random-directions/",
+    "targethref": "numerics/Experiment-1___-ReLU-with-Gaussian-random-directions/"
+  },
+  {
+    "oldhref": "appendix-j/Experiment-2___-synthesis-of-the-weighted-Gaussian-target/",
+    "targethref": "numerics/Experiment-2___-synthesis-of-the-weighted-Gaussian-target/"
+  },
+  {
+    "oldhref": "appendix-j/Experiment-3___-the-Dirichlet-operator-layer/",
+    "targethref": "numerics/Experiment-3___-the-Dirichlet-operator-layer/"
+  },
+  {
+    "oldhref": "appendix-j/Sampling-error-summary/",
+    "targethref": "numerics/Sampling-error-summary/"
+  },
+  {
+    "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_aux___cylindrical_FLQQ_--statement",
+    "targetlabel": "aux:cylindrical"
+  },
+  {
+    "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_aux___gaussian-target_FLQQ_--statement",
+    "targetlabel": "aux:gaussian-target"
+  },
+  {
+    "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_aux___trace-class-operators_FLQQ_--statement",
+    "targetlabel": "aux:trace-class-operators"
+  },
+  {
+    "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_ex___7___1_FLQQ_--statement",
+    "targetlabel": "ex:7.1"
+  },
+  {
     "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_ex___closed-form_FLQQ_--proof",
     "targetlabel": "ex:7.1"
   },
   {
     "oldhref": "examples/A-Gaussian-target-with-a-closed-form-transform/#--informal-preview-_FLQQ_ex___closed-form_FLQQ_--statement",
     "targetlabel": "ex:7.1"
+  },
+  {
+    "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_aux___gaussian-parameter-networks_FLQQ_--statement",
+    "targetlabel": "aux:gaussian-parameter-networks"
+  },
+  {
+    "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_cor___7___3_FLQQ_--proof",
+    "targetlabel": "cor:7.3"
+  },
+  {
+    "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_cor___7___3_FLQQ_--statement",
+    "targetlabel": "cor:7.3"
+  },
+  {
+    "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_ex___7___2_FLQQ_--proof",
+    "targetlabel": "ex:7.2"
+  },
+  {
+    "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_ex___7___2_FLQQ_--statement",
+    "targetlabel": "ex:7.2"
   },
   {
     "oldhref": "examples/Gaussian-parameter-networks-on-the-sequence-space/#--informal-preview-_FLQQ_aux___gaussian-parameter-networks_FLQQ_--statement",
@@ -38,6 +562,26 @@
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_aux___torus_FLQQ_--statement",
     "targetlabel": "aux:torus"
+  },
+  {
+    "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___4_FLQQ_--statement",
+    "targetlabel": "ex:7.4"
+  },
+  {
+    "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___5_FLQQ_--proof",
+    "targetlabel": "ex:7.5"
+  },
+  {
+    "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___5_FLQQ_--statement",
+    "targetlabel": "ex:7.5"
+  },
+  {
+    "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___6_FLQQ_--proof",
+    "targetlabel": "ex:7.6"
+  },
+  {
+    "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___6_FLQQ_--statement",
+    "targetlabel": "ex:7.6"
   },
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___convolution_FLQQ_--proof",
@@ -96,6 +640,34 @@
     "targetlabel": "lem:E.1"
   },
   {
+    "oldhref": "infrastructure/#--informal-preview-_FLQQ_roadmap___finite-dim-universality_FLQQ_--statement",
+    "retired": {
+      "label": "roadmap:finite-dim-universality",
+      "title": "Finite-dimensional universality infrastructure (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Universality.lean#L60"
+    }
+  },
+  {
+    "oldhref": "infrastructure/#--informal-preview-_FLQQ_roadmap___gaussian-layers_FLQQ_--statement",
+    "targetlabel": "roadmap:gaussian-layers"
+  },
+  {
+    "oldhref": "infrastructure/#--informal-preview-_FLQQ_roadmap___polar-decomposition_FLQQ_--statement",
+    "targetlabel": "roadmap:polar-decomposition"
+  },
+  {
+    "oldhref": "infrastructure/#--informal-preview-_FLQQ_roadmap___trace-and-determinant_FLQQ_--statement",
+    "targetlabel": "roadmap:trace-and-determinant"
+  },
+  {
+    "oldhref": "networks/Finite-width-and-integral-networks/#--informal-preview-_FLQQ_def___2___1_FLQQ_--statement",
+    "targetlabel": "def:2.1"
+  },
+  {
+    "oldhref": "networks/Finite-width-and-integral-networks/#--informal-preview-_FLQQ_def___2___2_FLQQ_--statement",
+    "targetlabel": "def:2.2"
+  },
+  {
     "oldhref": "networks/Finite-width-and-integral-networks/#--informal-preview-_FLQQ_def___finite-network_FLQQ_--statement",
     "targetlabel": "def:2.1"
   },
@@ -105,47 +677,91 @@
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_aux___hilbert-schmidt_FLQQ_--statement",
-    "targetlabel": "aux:hilbert-schmidt"
+    "retired": {
+      "label": "aux:hilbert-schmidt",
+      "title": "Hilbert–Schmidt operators (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Defs.lean#L49"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_aux___operator-neuron_FLQQ_--statement",
-    "targetlabel": "aux:operator-neuron"
+    "retired": {
+      "label": "aux:operator-neuron",
+      "title": "Operator neurons (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Defs.lean#L65"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___hs-reduction_FLQQ_--proof",
-    "targetlabel": "lem:F.1"
+    "retired": {
+      "label": "lem:F.1",
+      "title": "Lemma F.1: Hilbert–Schmidt reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L69"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___hs-reduction_FLQQ_--statement",
-    "targetlabel": "lem:F.1"
+    "retired": {
+      "label": "lem:F.1",
+      "title": "Lemma F.1: Hilbert–Schmidt reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L69"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___measure-transport_FLQQ_--proof",
-    "targetlabel": "lem:F.4"
+    "retired": {
+      "label": "lem:F.4",
+      "title": "Lemma F.4: Transport of coefficient measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L160"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___measure-transport_FLQQ_--statement",
-    "targetlabel": "lem:F.4"
+    "retired": {
+      "label": "lem:F.4",
+      "title": "Lemma F.4: Transport of coefficient measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L160"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___rank-one-lift_FLQQ_--proof",
-    "targetlabel": "lem:F.2"
+    "retired": {
+      "label": "lem:F.2",
+      "title": "Lemma F.2: Exact rank-one lift (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L85"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_lem___rank-one-lift_FLQQ_--statement",
-    "targetlabel": "lem:F.2"
+    "retired": {
+      "label": "lem:F.2",
+      "title": "Lemma F.2: Exact rank-one lift (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L85"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_prop___scalar-universality_FLQQ_--proof",
-    "targetlabel": "prop:F.3"
+    "retired": {
+      "label": "prop:F.3",
+      "title": "Proposition F.3: Universality by finite-dimensional reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L139"
+    }
   },
   {
     "oldhref": "networks/Operator-valued-parameters/#--informal-preview-_FLQQ_prop___scalar-universality_FLQQ_--statement",
-    "targetlabel": "prop:F.3"
+    "retired": {
+      "label": "prop:F.3",
+      "title": "Proposition F.3: Universality by finite-dimensional reduction (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean#L139"
+    }
   },
   {
     "oldhref": "reconstruction/Targets-with-a-spectral-density/#--informal-preview-_FLQQ_aux___tempered-activation_FLQQ_--statement",
     "targetlabel": "aux:tempered-activation"
+  },
+  {
+    "oldhref": "reconstruction/Targets-with-a-spectral-density/#--informal-preview-_FLQQ_def___4___1_FLQQ_--statement",
+    "targetlabel": "def:4.1"
   },
   {
     "oldhref": "reconstruction/Targets-with-a-spectral-density/#--informal-preview-_FLQQ_def___ray-regular_FLQQ_--statement",
@@ -168,6 +784,10 @@
     "targetlabel": "lem:B.2"
   },
   {
+    "oldhref": "reconstruction/Targets-with-a-spectral-density/#--informal-preview-_FLQQ_thm___4___2_FLQQ_--statement",
+    "targetlabel": "thm:4.2"
+  },
+  {
     "oldhref": "reconstruction/Targets-with-a-spectral-density/#--informal-preview-_FLQQ_thm___A_FLQQ_--proof",
     "targetlabel": "thm:4.2"
   },
@@ -186,6 +806,14 @@
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_aux___hermite_FLQQ_--statement",
     "targetlabel": "aux:hermite"
+  },
+  {
+    "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_cor___4___4_FLQQ_--proof",
+    "targetlabel": "cor:4.4"
+  },
+  {
+    "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_cor___4___4_FLQQ_--statement",
+    "targetlabel": "cor:4.4"
   },
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_cor___coefficient-stability_FLQQ_--proof",
@@ -220,6 +848,10 @@
     "targetlabel": "prop:B.8"
   },
   {
+    "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_thm___4___3_FLQQ_--statement",
+    "targetlabel": "thm:4.3"
+  },
+  {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_thm___C_FLQQ_--proof",
     "targetlabel": "thm:4.3"
   },
@@ -232,6 +864,14 @@
     "targetlabel": "aux:vector-valued"
   },
   {
+    "oldhref": "reconstruction/Vector-valued-targets/#--informal-preview-_FLQQ_thm___4___6_FLQQ_--proof",
+    "targetlabel": "thm:4.6"
+  },
+  {
+    "oldhref": "reconstruction/Vector-valued-targets/#--informal-preview-_FLQQ_thm___4___6_FLQQ_--statement",
+    "targetlabel": "thm:4.6"
+  },
+  {
     "oldhref": "reconstruction/Vector-valued-targets/#--informal-preview-_FLQQ_thm___vector-valued_FLQQ_--proof",
     "targetlabel": "thm:4.6"
   },
@@ -241,7 +881,11 @@
   },
   {
     "oldhref": "roadmap/#--informal-preview-_FLQQ_roadmap___finite-dim-universality_FLQQ_--statement",
-    "targetlabel": "roadmap:finite-dim-universality"
+    "retired": {
+      "label": "roadmap:finite-dim-universality",
+      "title": "Finite-dimensional universality infrastructure (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Architecture/Universality.lean#L60"
+    }
   },
   {
     "oldhref": "roadmap/#--informal-preview-_FLQQ_roadmap___gaussian-layers_FLQQ_--statement",
@@ -256,11 +900,35 @@
     "targetlabel": "roadmap:trace-and-determinant"
   },
   {
+    "oldhref": "sampling/Approximation-rates/#--informal-preview-_FLQQ_aux___sampling-data_FLQQ_--statement",
+    "targetlabel": "aux:sampling-data"
+  },
+  {
+    "oldhref": "sampling/Approximation-rates/#--informal-preview-_FLQQ_def___6___1_FLQQ_--statement",
+    "targetlabel": "def:6.1"
+  },
+  {
+    "oldhref": "sampling/Approximation-rates/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--proof",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Approximation-rates/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--statement",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Approximation-rates/#--informal-preview-_FLQQ_thm___6___3_FLQQ_--statement",
+    "targetlabel": "thm:6.3"
+  },
+  {
     "oldhref": "sampling/Constructive-universal-approximation-with-sampling-bounds/#--informal-preview-_FLQQ_thm___D_FLQQ_--proof",
     "targetlabel": "thm:6.5"
   },
   {
     "oldhref": "sampling/Constructive-universal-approximation-with-sampling-bounds/#--informal-preview-_FLQQ_thm___D_FLQQ_--statement",
+    "targetlabel": "thm:6.5"
+  },
+  {
+    "oldhref": "sampling/Constructive-universal-approximation/#--informal-preview-_FLQQ_thm___6___5_FLQQ_--statement",
     "targetlabel": "thm:6.5"
   },
   {
@@ -280,16 +948,28 @@
     "targetlabel": "thm:6.4"
   },
   {
+    "oldhref": "sampling/Finite-variation-from-the-spectral-density/#--informal-preview-_FLQQ_thm___6___4_FLQQ_--statement",
+    "targetlabel": "thm:6.4"
+  },
+  {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_aux___sampling-data_FLQQ_--statement",
     "targetlabel": "aux:sampling-data"
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_cor___operator-sampling_FLQQ_--proof",
-    "targetlabel": "cor:D.7"
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_cor___operator-sampling_FLQQ_--statement",
-    "targetlabel": "cor:D.7"
+    "retired": {
+      "label": "cor:D.7",
+      "title": "Corollary D.7: Approximation with operator-valued parameters (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean#L819"
+    }
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_cor___sampling-concentration_FLQQ_--proof",
@@ -301,11 +981,15 @@
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_cor___two-stage-error_FLQQ_--proof",
-    "targetlabel": "cor:D.8"
+    "targetlabel": "cor:D.7"
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_cor___two-stage-error_FLQQ_--statement",
-    "targetlabel": "cor:D.8"
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_def___6___1_FLQQ_--statement",
+    "targetlabel": "def:6.1"
   },
   {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_def___rademacher-complexity_FLQQ_--statement",
@@ -344,6 +1028,18 @@
     "targetlabel": "lem:D.2"
   },
   {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--proof",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--statement",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___3_FLQQ_--statement",
+    "targetlabel": "thm:6.3"
+  },
+  {
     "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___general-rademacher_FLQQ_--proof",
     "targetlabel": "thm:6.2"
   },
@@ -360,12 +1056,56 @@
     "targetlabel": "thm:6.3"
   },
   {
+    "oldhref": "sampling/Vector-valued-approximation/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--proof",
+    "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "sampling/Vector-valued-approximation/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--statement",
+    "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--proof",
+    "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--statement",
+    "targetlabel": "cor:6.6"
+  },
+  {
     "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___vector-rates_FLQQ_--proof",
     "targetlabel": "cor:6.6"
   },
   {
     "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___vector-rates_FLQQ_--statement",
     "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_aux___tempered-distributions_FLQQ_--statement",
+    "targetlabel": "aux:tempered-distributions"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_cor___5___3_FLQQ_--proof",
+    "targetlabel": "cor:5.3"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_cor___5___3_FLQQ_--statement",
+    "targetlabel": "cor:5.3"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_def___5___1_FLQQ_--statement",
+    "targetlabel": "def:5.1"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_ex___5___4_FLQQ_--proof",
+    "targetlabel": "ex:5.4"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_ex___5___4_FLQQ_--statement",
+    "targetlabel": "ex:5.4"
+  },
+  {
+    "oldhref": "tempered/#--informal-preview-_FLQQ_thm___5___2_FLQQ_--statement",
+    "targetlabel": "thm:5.2"
   },
   {
     "oldhref": "tempered/Absolute-synthesis-under-a-Sobolev-condition/#--informal-preview-_FLQQ_lem___sobolev-pairing_FLQQ_--proof",
@@ -384,6 +1124,10 @@
     "targetlabel": "lem:C.3"
   },
   {
+    "oldhref": "tempered/Absolute-synthesis-under-a-Sobolev-condition/#--informal-preview-_FLQQ_thm___5___6_FLQQ_--statement",
+    "targetlabel": "thm:5.6"
+  },
+  {
     "oldhref": "tempered/Absolute-synthesis-under-a-Sobolev-condition/#--informal-preview-_FLQQ_thm___weak-sobolev-synthesis_FLQQ_--proof",
     "targetlabel": "thm:5.6"
   },
@@ -392,12 +1136,16 @@
     "targetlabel": "thm:5.6"
   },
   {
+    "oldhref": "tempered/Integral-representation-under-Sobolev-conditions/#--informal-preview-_FLQQ_thm___5___6_FLQQ_--statement",
+    "targetlabel": "thm:5.6"
+  },
+  {
     "oldhref": "tempered/Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___nonbandpass-sobolev_FLQQ_--proof",
-    "targetlabel": "prop:I.3"
+    "targetlabel": "prop:5.8"
   },
   {
     "oldhref": "tempered/Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___nonbandpass-sobolev_FLQQ_--statement",
-    "targetlabel": "prop:I.3"
+    "targetlabel": "prop:5.8"
   },
   {
     "oldhref": "tempered/ReLU-is-admissible/#--informal-preview-_FLQQ_cor___relu-admissible_FLQQ_--proof",
@@ -452,6 +1200,18 @@
     "targetlabel": "aux:conventions"
   },
   {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_def___3___2_FLQQ_--statement",
+    "targetlabel": "def:3.2"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_def___3___3_FLQQ_--statement",
+    "targetlabel": "def:3.3"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_def___3___5_FLQQ_--statement",
+    "targetlabel": "def:3.5"
+  },
+  {
     "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_def___admissible-filter_FLQQ_--statement",
     "targetlabel": "def:3.2"
   },
@@ -462,6 +1222,22 @@
   {
     "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_def___spectral-coefficient_FLQQ_--statement",
     "targetlabel": "def:3.5"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_lem___3___4_FLQQ_--proof",
+    "targetlabel": "lem:3.4"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_lem___3___4_FLQQ_--statement",
+    "targetlabel": "lem:3.4"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_lem___3___6_FLQQ_--proof",
+    "targetlabel": "lem:3.6"
+  },
+  {
+    "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_lem___3___6_FLQQ_--statement",
+    "targetlabel": "lem:3.6"
   },
   {
     "oldhref": "transform/Admissible-filters___-the-transform___-and-the-Fourier-slice/#--informal-preview-_FLQQ_lem___coefficient-adjoint_FLQQ_--proof",
@@ -501,19 +1277,23 @@
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_ex___bandlimited-filter_FLQQ_--proof",
-    "targetlabel": "ex:I.1"
+    "targetlabel": "ex:3.12"
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_ex___bandlimited-filter_FLQQ_--statement",
-    "targetlabel": "ex:I.1"
+    "targetlabel": "ex:3.12"
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_ex___mexican-hat_FLQQ_--proof",
-    "targetlabel": "ex:I.2"
+    "targetlabel": "ex:3.13"
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_ex___mexican-hat_FLQQ_--statement",
-    "targetlabel": "ex:I.2"
+    "targetlabel": "ex:3.13"
+  },
+  {
+    "oldhref": "transform/Plancherel-identity___-closed-range___-and-injectivity/#--informal-preview-_FLQQ_thm___3___11_FLQQ_--statement",
+    "targetlabel": "thm:3.11"
   },
   {
     "oldhref": "transform/Plancherel-identity___-closed-range___-and-injectivity/#--informal-preview-_FLQQ_thm___B_FLQQ_--proof",
@@ -525,11 +1305,43 @@
   },
   {
     "oldhref": "transform/Plancherel-identity___-closed-range___-and-injectivity/#--informal-preview-_FLQQ_thm___general-weights_FLQQ_--proof",
-    "targetlabel": "thm:H.1"
+    "retired": {
+      "label": "thm:H.1",
+      "title": "Theorem H.1: General input and direction measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean#L1227"
+    }
   },
   {
     "oldhref": "transform/Plancherel-identity___-closed-range___-and-injectivity/#--informal-preview-_FLQQ_thm___general-weights_FLQQ_--statement",
-    "targetlabel": "thm:H.1"
+    "retired": {
+      "label": "thm:H.1",
+      "title": "Theorem H.1: General input and direction measures (earlier version)",
+      "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/525a54cf4c341fdc5c303b7db93a6e21d101a27e/OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean#L1227"
+    }
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_def___3___7_FLQQ_--statement",
+    "targetlabel": "def:3.7"
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_ex___3___10_FLQQ_--proof",
+    "targetlabel": "ex:3.10"
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_ex___3___10_FLQQ_--statement",
+    "targetlabel": "ex:3.10"
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_lem___3___8_FLQQ_--proof",
+    "targetlabel": "lem:3.8"
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_lem___3___8_FLQQ_--statement",
+    "targetlabel": "lem:3.8"
+  },
+  {
+    "oldhref": "transform/The-Hilbert-space-E-alpha/#--informal-preview-_FLQQ_lem___3___9_FLQQ_--statement",
+    "targetlabel": "lem:3.9"
   },
   {
     "oldhref": "transform/The-Hilbert-space/#--informal-preview-_FLQQ_def___spectral-space_FLQQ_--statement",
@@ -565,19 +1377,19 @@
   },
   {
     "oldhref": "transform/The-finite-dimensional-case-and-the-dilation-obstruction/#--informal-preview-_FLQQ_cor___finite-backprojection_FLQQ_--proof",
-    "targetlabel": "cor:G.2"
+    "targetlabel": "cor:F.2"
   },
   {
     "oldhref": "transform/The-finite-dimensional-case-and-the-dilation-obstruction/#--informal-preview-_FLQQ_cor___finite-backprojection_FLQQ_--statement",
-    "targetlabel": "cor:G.2"
+    "targetlabel": "cor:F.2"
   },
   {
     "oldhref": "transform/The-finite-dimensional-case-and-the-dilation-obstruction/#--informal-preview-_FLQQ_prop___dilation-obstruction_FLQQ_--proof",
-    "targetlabel": "prop:G.3"
+    "targetlabel": "prop:F.3"
   },
   {
     "oldhref": "transform/The-finite-dimensional-case-and-the-dilation-obstruction/#--informal-preview-_FLQQ_prop___dilation-obstruction_FLQQ_--statement",
-    "targetlabel": "prop:G.3"
+    "targetlabel": "prop:F.3"
   },
   {
     "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_aux___centered-gaussian_FLQQ_--statement",
@@ -586,6 +1398,10 @@
   {
     "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_aux___gaussian-mixture_FLQQ_--statement",
     "targetlabel": "aux:gaussian-mixture"
+  },
+  {
+    "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_lem___3___1_FLQQ_--statement",
+    "targetlabel": "lem:3.1"
   },
   {
     "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_lem___homogeneous-mixture_FLQQ_--proof",
@@ -610,97 +1426,5 @@
   {
     "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_lem___mixture-integration_FLQQ_--statement",
     "targetlabel": "lem:A.2"
-  },
-  {
-    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--proof",
-    "targetlabel": "cor:6.6"
-  },
-  {
-    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--statement",
-    "targetlabel": "cor:6.6"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--proof",
-    "targetlabel": "cor:D.5"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--statement",
-    "targetlabel": "cor:D.5"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--proof",
-    "targetlabel": "cor:D.7"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--statement",
-    "targetlabel": "cor:D.7"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--proof",
-    "targetlabel": "cor:D.8"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--statement",
-    "targetlabel": "cor:D.8"
-  },
-  {
-    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_def___6___1_FLQQ_--statement",
-    "targetlabel": "def:6.1"
-  },
-  {
-    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--proof",
-    "targetlabel": "lem:C.3"
-  },
-  {
-    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--statement",
-    "targetlabel": "lem:C.3"
-  },
-  {
-    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--proof",
-    "targetlabel": "lem:C.4"
-  },
-  {
-    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--statement",
-    "targetlabel": "lem:C.4"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--proof",
-    "targetlabel": "lem:D.4"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--statement",
-    "targetlabel": "lem:D.4"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--proof",
-    "targetlabel": "lem:D.6"
-  },
-  {
-    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--statement",
-    "targetlabel": "lem:D.6"
-  },
-  {
-    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--proof",
-    "targetlabel": "prop:I.3"
-  },
-  {
-    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--statement",
-    "targetlabel": "prop:I.3"
-  },
-  {
-    "oldhref": "tempered/Absolute-synthesis-under-a-Sobolev-condition/#--informal-preview-_FLQQ_thm___5___6_FLQQ_--statement",
-    "targetlabel": "thm:5.6"
-  },
-  {
-    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--proof",
-    "targetlabel": "thm:6.2"
-  },
-  {
-    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--statement",
-    "targetlabel": "thm:6.2"
-  },
-  {
-    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___3_FLQQ_--statement",
-    "targetlabel": "thm:6.3"
   }
 ]

@@ -12,16 +12,17 @@ import OperatorRidgelet.ToMathlib.GaussianFourier
 import OperatorRidgelet.Filters.Admissible
 
 /-!
-# Statements of Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, G, H, I
+# Statements of Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, F, G
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Transform`, and proved from the library.
 
-The core theory is stated for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability
+The core theory is stated for the abstract pair `(μ, ν)` used by the supporting lemmas (`μ` a
+probability
 measure, `ν` σ-finite with full support and homogeneous of degree `α`); the Gaussian case
 `(μ_Q, ν_α)` is the instance with `IsCenteredGaussian Q μ` and `ν = gaussianMixture N α`.
-Theorem `thm:3.11` is stated in the Gaussian case, Theorem `thm:H.1` is the same set of
-claims for the abstract pair.  The design choices for `ν_α`, `μ_Q`, trace class, `𝓔_α`, and
+Theorem `thm:3.11` specializes these lemmas to the Gaussian case. The design choices for `ν_α`,
+`μ_Q`, trace class, `𝓔_α`, and
 `W_ρ` are documented in `OperatorRidgelet.Transform.Defs`.
 -/
 
@@ -862,7 +863,7 @@ theorem lem_A_3_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
   rw [h2, lintegral_const, hN.gaussianMixture_univ α, one_mul] at h1
   exact lt_irrefl _ h1
 
-/-! ### Corollary `cor:G.2` -/
+/-! ### Corollary `cor:F.2` -/
 
 section FiniteDim
 
@@ -870,9 +871,9 @@ set_option linter.unusedVariables false
 
 open OperatorRidgelet.FiniteDim
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  If
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  If
 `f ∈ L²(p dx)` with `g = f p ∈ 𝒮(ℝ^m)`, then `f ∈ 𝒟_α`. -/
-theorem cor_G_2_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_F_2_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -889,10 +890,10 @@ theorem cor_G_2_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
   rw [mem_spectralCore_iff, hG, gaussFourier_densityMeasure p (fun x => (hp x).le) hpc, hgf]
   exact memLp_fourier_directionMeasure hα hαm g
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  The
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  The
 representative of the frame operator against the pivot measure is the Riesz potential
 `t_f = ∫ e^{i⟨x,ξ⟩} ĝ(ξ) ν_α(dξ) = k_{m,α} (-Δ)^{-(m-α)/2} g`. -/
-theorem cor_G_2_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_F_2_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -902,10 +903,10 @@ theorem cor_G_2_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
       frameConst m α * fracLaplacian (-((m - α) / 2)) g x := by
   exact frameRepresentative_eq_fracLaplacian hαm g
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  For a
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  For a
 band-pass `ρ`, the synthesis `S_ρ R_ρ f`, i.e. the functional `h ↦ ⟨R_ρ f, R_ρ h⟩_{L²(λ_α)}` on
 `𝒟_α`, is represented against the pivot measure by `C^{(α)}_ρ t_f`. -/
-theorem cor_G_2_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_F_2_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -931,11 +932,11 @@ theorem cor_G_2_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
       (integrable_fourier_directionMeasure hα hαm g) ((Lp.memLp h).integrable one_le_two)]
   simp only [spectralInner, hG]
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  The
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  The
 distributional reconstruction `f = p^{-1} (k_{m,α} C^{(α)}_ρ)^{-1} (-Δ)^{(m-α)/2} S_ρ R_ρ f`,
 with `S_ρ R_ρ f` represented by `C^{(α)}_ρ t_f`: tested against Schwartz functions `φ`,
 `∫ f φ p dx = (k C)^{-1} ∫ (C t_f) (-Δ)^{(m-α)/2} φ dx`. -/
-theorem cor_G_2_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_F_2_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -948,10 +949,10 @@ theorem cor_G_2_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
             fracLaplacian ((m - α) / 2) φ x := by
   exact finite_backprojection_reconstruction hα hαm p hp hpc f g hg ρ hρ
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  With
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, the multiplier is one and `k = (2π)^m`:
 `t_f = (2π)^m g`. -/
-theorem cor_G_2_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
+theorem cor_F_2_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
     (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m} (hQ : IsTraceClassCovariance Q)
     [IsProbabilityMeasure (densityMeasure p)] (hpQ : IsCenteredGaussian Q (densityMeasure p))
     (f : Euclid m → ℂ) (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
@@ -960,10 +961,10 @@ theorem cor_G_2_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
   intro x
   rw [frameRepresentative_volume, hg]
 
-/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  With
+/-- **Corollary [cor:F.2]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, `S_ρ R_ρ f` is represented against the pivot measure by
 `(2π)^m C^{(m)}_ρ f p`, that is `f = (2π)^{-m} (C^{(m)}_ρ)^{-1} p^{-1} S_ρ R_ρ f`. -/
-theorem cor_G_2_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
+theorem cor_F_2_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
     (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m} (hQ : IsTraceClassCovariance Q)
     [IsProbabilityMeasure (densityMeasure p)] (hpQ : IsCenteredGaussian Q (densityMeasure p))
     (f : Euclid m → ℂ) (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
@@ -1000,12 +1001,12 @@ theorem cor_G_2_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
 
 end FiniteDim
 
-/-! ### Proposition `prop:G.3` -/
+/-! ### Proposition `prop:F.3` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:G.3]** Dilation obstruction.  The sets `E_t` are Borel. -/
-theorem prop_G_3_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+/-- **Proposition [prop:F.3]** Dilation obstruction.  The sets `E_t` are Borel. -/
+theorem prop_F_3_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) :
     ∀ t : ℝ, MeasurableSet (strongLawSet e w t) := by
@@ -1019,9 +1020,9 @@ theorem prop_G_3_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
 
 set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
-/-- **Proposition [prop:G.3]** Dilation obstruction.  The sets `E_t` are pairwise
+/-- **Proposition [prop:F.3]** Dilation obstruction.  The sets `E_t` are pairwise
 disjoint. -/
-theorem prop_G_3_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_F_3_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) :
     ∀ t t' : ℝ, t ≠ t' → Disjoint (strongLawSet e w t) (strongLawSet e w t') := by
@@ -1029,9 +1030,9 @@ theorem prop_G_3_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
   exact Set.disjoint_left.mpr fun x hx hx' => htt' (tendsto_nhds_unique hx hx')
 
 set_option linter.unusedVariables false in
-/-- **Proposition [prop:G.3]** Dilation obstruction.  For `t > 0`,
+/-- **Proposition [prop:F.3]** Dilation obstruction.  For `t > 0`,
 `𝒩(0,tW)(E_t) = 1`. -/
-theorem prop_G_3_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_F_3_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
@@ -1110,12 +1111,12 @@ theorem prop_G_3_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     congr 1
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [hX, ← hYsq j x]
-  exact (prob_compl_eq_zero_iff (prop_G_3_i_a hH hW e w hw hWe t)).mp
+  exact (prob_compl_eq_zero_iff (prop_F_3_i_a hH hW e w hw hWe t)).mp
     (ae_iff.mp hE)
 
-/-- **Proposition [prop:G.3]** Dilation obstruction.  Consequently a σ-finite
+/-- **Proposition [prop:F.3]** Dilation obstruction.  Consequently a σ-finite
 measure dominates `𝒩(0,tW)` for at most countably many `t > 0`. -/
-theorem prop_G_3_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_F_3_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
@@ -1123,22 +1124,22 @@ theorem prop_G_3_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
   intro ν hν
   have hcount : Set.Countable {t : ℝ | 0 < ν (strongLawSet e w t)} :=
     Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
-      (prop_G_3_i_a hH hW e w hw hWe)
-      (fun t t' htt' => prop_G_3_i_b hH hW e w hw hWe t t' htt')
+      (prop_F_3_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_F_3_i_b hH hW e w hw hWe t t' htt')
   refine hcount.mono fun t ⟨ht, hac⟩ => ?_
   show 0 < ν (strongLawSet e w t)
   by_contra h
   rw [not_lt, nonpos_iff_eq_zero] at h
   have h1 := hac h
-  rw [prop_G_3_i_c hH hW e w hw hWe γ hγ t ht] at h1
+  rw [prop_F_3_i_c hH hW e w hw hWe γ hγ t ht] at h1
   exact one_ne_zero h1
 
 set_option linter.unusedVariables false in
-/-- **Proposition [prop:G.3]** Dilation obstruction.  For a bounded Borel `r`
+/-- **Proposition [prop:F.3]** Dilation obstruction.  For a bounded Borel `r`
 with `{r ≠ 0}` of positive Lebesgue measure, no finite complex Borel measure `Γ = h m` on
 `H × ℝ` (a finite measure `m` with an integrable density `h`) has bias slices
 `Γ⁺_ω(E) = ∫_{E×ℝ} e^{iωc} Γ(da,dc) = r(ω) (D_{1/ω})_# 𝒩(0,W)(E)` for almost every `ω ≠ 0`. -/
-theorem prop_G_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_F_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γW : Measure H) (hγW : IsCenteredGaussian W γW)
     (r : ℝ → ℝ) (hr : Measurable r) (hrb : ∃ M : ℝ, ∀ ω, |r ω| ≤ M)
@@ -1160,8 +1161,8 @@ theorem prop_G_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
   let S : Set ℝ := {t | 0 < ν (strongLawSet e w t)}
   have hS : S.Countable :=
     Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
-      (prop_G_3_i_a hH hW e w hw hWe)
-      (fun t t' htt' => prop_G_3_i_b hH hW e w hw hWe t t' htt')
+      (prop_F_3_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_F_3_i_b hH hW e w hw hWe t t' htt')
   let B : Set ℝ := (fun t => (Real.sqrt t)⁻¹) '' S ∪
     (fun t => -(Real.sqrt t)⁻¹) '' S
   have hB : B.Countable := (hS.image _).union (hS.image _)
@@ -1187,10 +1188,10 @@ theorem prop_G_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
       simp only [map_smul, real_inner_smul_left, real_inner_smul_right,
         smul_apply]
       ring
-    have hE := prop_G_3_i_a hH hW e w hw hWe ((ω⁻¹) ^ 2)
+    have hE := prop_F_3_i_a hH hW e w hw hWe ((ω⁻¹) ^ 2)
     have hmass : (γW.map fun a => ω⁻¹ • a) (strongLawSet e w ((ω⁻¹) ^ 2)) = 1 := by
       rw [heq]
-      exact prop_G_3_i_c hH hW e w hw hWe γ hγ _ ht
+      exact prop_F_3_i_c hH hW e w hw hWe γ hγ _ ht
     have hmem : (ω⁻¹) ^ 2 ∈ S := by
       change 0 < ν (strongLawSet e w ((ω⁻¹) ^ 2))
       by_contra hn
@@ -1217,159 +1218,36 @@ theorem prop_G_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
   rw [hrnull] at hr0
   exact lt_irrefl _ hr0
 
-/-! ### Theorem `thm:H.1` -/
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(i) for the
-abstract pair: `R_ρ f ∈ L²(λ)` for `f ∈ 𝒟_{μ,ν}` and `α`-admissible `ρ`. -/
-theorem thm_H_1_plancherel_memLp (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) :
-    MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) :=
-  memLp_ridgelet μ hν hρ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f) hf
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(i) for the
-abstract pair: the Plancherel identity
-`⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_{μ,ν}}`. -/
-theorem thm_H_1_plancherel (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ₁ ρ₂ : SchwartzMap ℝ ℝ) (hρ₁ : IsAdmissible α ρ₁) (hρ₂ : IsAdmissible α ρ₂)
-    (f g : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) (hg : g ∈ spectralCore μ ν) :
-    ∫ p, ridgelet μ ρ₁ f p * (starRingEnd ℂ) (ridgelet μ ρ₂ g p) ∂parameterMeasure ν =
-      crossAdmissibilityConst α ρ₁ ρ₂ * spectralInner μ ν f g :=
-  integral_ridgelet_mul_conj μ hν hρ₁ hρ₂ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f)
-    ((Lp.memLp g).integrable one_le_two) (Lp.memLp g) hf hg
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(ii) for the
-abstract pair: the unique bounded extension `R_ρ : 𝓔_{μ,ν} → L²(λ)`. -/
-theorem thm_H_1_extension (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
-    ∃! R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν),
-      ∀ f : spectralCore μ ν,
-        (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f :=
-  existsUnique_ridgeletExtensionCLM hν hρ
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(ii) for the
-abstract pair: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_{μ,ν}}`. -/
-theorem thm_H_1_extension_norm (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
-    (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
-    (hR : ∀ f : spectralCore μ ν,
-      (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
-    ∀ G : spectralRange μ ν, ‖R G‖ ^ 2 = admissibilityConst α ρ * ‖G‖ ^ 2 := by
-  intro G
-  rw [eq_ridgeletExtensionCLM hν hρ R hR]
-  exact norm_ridgeletExtensionCLM_sq hν hρ G
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(ii) for the
-abstract pair: the extension has closed range. -/
-theorem thm_H_1_extension_closed_range (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
-    (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
-    (hR : ∀ f : spectralCore μ ν,
-      (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
-    IsClosed (Set.range R) := by
-  rw [eq_ridgeletExtensionCLM hν hρ R hR]
-  exact isClosed_range_ridgeletExtensionCLM hν hρ
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(ii) for the
-abstract pair: `R_ρ = W_ρ U`. -/
-theorem thm_H_1_extension_coefficient (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
-    (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
-    (hR : ∀ f : spectralCore μ ν,
-      (R (spectralEmbed μ ν f) : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] ridgelet μ ρ f) :
-    ∀ G : spectralRange μ ν, R G = spectralCoefficient ν ρ ((G : Lp ℂ 2 ν) : H → ℂ) := by
-  intro G
-  rw [eq_ridgeletExtensionCLM hν hρ R hR]
-  exact ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ μ G
-
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
-`thm:3.11`(iii) for the
-abstract pair: `R_ρ f = 0` `λ`-a.e. implies `f = 0` `μ`-a.e. for `f ∈ L²(μ)`. -/
-theorem thm_H_1_injective (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
-    (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
-    (h : ridgelet μ ρ f =ᵐ[parameterMeasure ν] 0) :
-    f =ᵐ[μ] 0 :=
-  ae_eq_zero_of_ridgelet_ae_eq_zero μ hα hν hρ (hf.integrable one_le_two) h
-
-set_option linter.unusedVariables false in
-set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  `1 ∈
-𝒟_{μ,ν}` if and only if
-`∫ |μ̂(ξ)|² ν(dξ) < ∞`. -/
-theorem thm_H_1_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasure μ]
-    [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) :
-    MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ ν ↔
-      Integrable (fun ξ : H => ‖charFun μ ξ‖ ^ 2) ν := by
-  rw [mem_spectralCore_iff]
-  have h1 : gaussFourier μ
-      ((MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) : Lp ℂ 2 μ) : H → ℂ) =
-      fun ξ => charFun μ (-ξ) := by
-    funext ξ
-    rw [← gaussFourier_one]
-    simp only [gaussFourier]
-    apply integral_congr_ae
-    filter_upwards [MemLp.coeFn_toLp (memLp_const (1 : ℂ) (μ := μ) (p := 2))] with x hx
-    rw [hx]
-  have h2 : (fun ξ : H => ‖charFun μ (-ξ)‖ ^ 2) = fun ξ => ‖charFun μ ξ‖ ^ 2 := by
-    funext ξ
-    rw [charFun_neg, Complex.norm_conj]
-  rw [h1, memLp_two_iff_integrable_sq_norm (f := fun ξ => charFun μ (-ξ))
-    (stronglyMeasurable_charFun.comp_measurable measurable_neg).aestronglyMeasurable, h2]
-
-/-! ### Example `ex:I.1` -/
+/-! ### Example `ex:3.12` -/
 
 section Filters
 
 open OperatorRidgelet.Filters
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The prescribed
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The prescribed
 Fourier transform `ρ̂_bp` is smooth. -/
-theorem ex_I_1_i : ContDiff ℝ (⊤ : ℕ∞) bandPassHat :=
+theorem ex_3_12_i : ContDiff ℝ (⊤ : ℕ∞) bandPassHat :=
   contDiff_bandPassHat
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 nonpositive. -/
-theorem ex_I_1_ii : ∀ ω : ℝ, bandPassHat ω ≤ 0 := by
+theorem ex_3_12_ii : ∀ ω : ℝ, bandPassHat ω ≤ 0 := by
   intro ω
   unfold bandPassHat bump
   split_ifs
   · exact neg_nonpos.mpr (Real.exp_pos _).le
   · simp
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 nonzero. -/
-theorem ex_I_1_iii : bandPassHat ≠ 0 := by
+theorem ex_3_12_iii : bandPassHat ≠ 0 := by
   intro h
   have := congrFun h (3 / 2)
   norm_num [bandPassHat, bump] at this
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 supported in `{1 ≤ |ω| ≤ 2}`. -/
-theorem ex_I_1_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤ 2} := by
+theorem ex_3_12_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤ 2} := by
   apply closure_minimal
   · intro ω hω
     simp only [Function.mem_support, bandPassHat, bump] at hω
@@ -1383,13 +1261,13 @@ theorem ex_I_1_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤
     exact (isClosed_le continuous_const continuous_abs).inter
       (isClosed_le continuous_abs continuous_const)
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The inverse
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The inverse
 Fourier transform `ρ_bp` of `ρ̂_bp` is a real Schwartz function. -/
-theorem ex_I_1_v : ⇑bandPass = bandPassFun :=
+theorem ex_3_12_v : ⇑bandPass = bandPassFun :=
   coe_bandPass
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` is even. -/
-theorem ex_I_1_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ_bp` is even. -/
+theorem ex_3_12_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
   intro t
   rw [coe_bandPass]
   unfold bandPassFun
@@ -1404,52 +1282,52 @@ theorem ex_I_1_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
   push_cast
   ring
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The Fourier
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The Fourier
 transform of `ρ_bp` is the prescribed `ρ̂_bp`. -/
-theorem ex_I_1_vii : ∀ ω : ℝ, filterFourier bandPass ω = (bandPassHat ω : ℂ) :=
+theorem ex_3_12_vii : ∀ ω : ℝ, filterFourier bandPass ω = (bandPassHat ω : ℂ) :=
   filterFourier_bandPass
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` satisfies
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ_bp` satisfies
 the band-pass condition. -/
-theorem ex_I_1_viii : IsBandPass bandPass := by
+theorem ex_3_12_viii : IsBandPass bandPass := by
   have hF : filterFourier bandPass = fun ω => (bandPassHat ω : ℂ) := funext filterFourier_bandPass
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro h
-    apply ex_I_1_iii
+    apply ex_3_12_iii
     funext ω
     have h1 := filterFourier_bandPass ω
     rw [h, FunLike.coe_zero, filterFourier_zero] at h1
     exact_mod_cast h1.symm
   · rw [hF]
-    exact Complex.ofRealCLM.contDiff.comp ex_I_1_i
+    exact Complex.ofRealCLM.contDiff.comp ex_3_12_i
   · rw [hF]
     exact hasCompactSupport_bandPassHat.comp_left Complex.ofReal_zero
   · rw [hF]
     intro h0
     have hsub : tsupport (fun ω => (bandPassHat ω : ℂ)) ⊆ tsupport bandPassHat :=
       closure_mono (Function.support_comp_subset Complex.ofReal_zero bandPassHat)
-    have := (ex_I_1_iv (hsub h0)).1
+    have := (ex_3_12_iv (hsub h0)).1
     norm_num at this
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ_bp` is
 `α`-admissible for every `α > 0`. -/
-theorem ex_I_1_ix : ∀ α : ℝ, 0 < α → IsAdmissible α bandPass :=
-  def_3_2 bandPass ex_I_1_viii
+theorem ex_3_12_ix : ∀ α : ℝ, 0 < α → IsAdmissible α bandPass :=
+  def_3_2 bandPass ex_3_12_viii
 
-/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  Multiplying by
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  Multiplying by
 `(C^{(α)}_{ρ_bp})^{-1/2}` normalizes the admissibility constant to one. -/
-theorem ex_I_1_x :
+theorem ex_3_12_x :
     ∀ α : ℝ, 0 < α →
       admissibilityConst α ((Real.sqrt (admissibilityConst α bandPass))⁻¹ • bandPass) = 1 := by
   intro α hα
-  have hpos : 0 < admissibilityConst α bandPass := (ex_I_1_ix α hα).pos
+  have hpos : 0 < admissibilityConst α bandPass := (ex_3_12_ix α hα).pos
   rw [admissibilityConst_smul, inv_pow, Real.sq_sqrt hpos.le, inv_mul_cancel₀ hpos.ne']
 
-/-! ### Example `ex:I.2` -/
+/-! ### Example `ex:3.13` -/
 
-/-- **Example [ex:I.2]** Mexican hat.  `ρ_MH(t) = (1 - t²) e^{-t²/2}` is a Schwartz
+/-- **Example [ex:3.13]** Mexican hat.  `ρ_MH(t) = (1 - t²) e^{-t²/2}` is a Schwartz
 function. -/
-theorem ex_I_2_i : ⇑mexicanHat = mexicanHatFun := by
+theorem ex_3_13_i : ⇑mexicanHat = mexicanHatFun := by
   have h : ∃ ρ : SchwartzMap ℝ ℝ, ⇑ρ = mexicanHatFun :=
     ⟨Real.polynomialGaussianSchwartz (1 - Polynomial.X ^ 2), by
       funext t
@@ -1458,12 +1336,12 @@ theorem ex_I_2_i : ⇑mexicanHat = mexicanHatFun := by
   rw [dif_pos h]
   exact h.choose_spec
 
-/-- **Example [ex:I.2]** Mexican hat.  `ρ̂_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
-theorem ex_I_2_ii :
+/-- **Example [ex:3.13]** Mexican hat.  `ρ̂_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
+theorem ex_3_13_ii :
     ∀ ω : ℝ, filterFourier mexicanHat ω =
       ((Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) : ℂ) := by
   intro ω
-  rw [filterFourier_eq_fourier, ex_I_2_i]
+  rw [filterFourier_eq_fourier, ex_3_13_i]
   have hfun : (fun t : ℝ => (mexicanHatFun t : ℂ)) =
       fun t => (((1 - t ^ 2) * Real.exp (-t ^ 2 / 2) : ℝ) : ℂ) := rfl
   rw [hfun, Real.fourier_one_sub_sq_mul_gaussian]
@@ -1471,9 +1349,9 @@ theorem ex_I_2_ii :
     field_simp
   rw [h2π]
 
-/-- **Example [ex:I.2]** Mexican hat.  For `0 < α < 5`,
+/-- **Example [ex:3.13]** Mexican hat.  For `0 < α < 5`,
 `C^{(α)}_{ρ_MH} = Γ((5-α)/2)`. -/
-theorem ex_I_2_iv :
+theorem ex_3_13_iv :
     ∀ α : ℝ, 0 < α → α < 5 → admissibilityConst α mexicanHat = Real.Gamma ((5 - α) / 2) := by
   intro α hα hα5
   unfold admissibilityConst
@@ -1483,7 +1361,7 @@ theorem ex_I_2_iv :
   have hae : (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) =ᵐ[volume]
       fun ω => (2 * Real.pi) * (|ω| ^ (4 - α) * Real.exp (-ω ^ 2)) := by
     filter_upwards [h0] with ω hω
-    rw [ex_I_2_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
+    rw [ex_3_13_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
       abs_of_nonneg (Real.sqrt_nonneg _), abs_of_pos (Real.exp_pos _), abs_pow, mul_pow, mul_pow,
       Real.sq_sqrt (by positivity), ← pow_mul, ← Real.exp_nat_mul]
     have e1 : (|ω| ^ (2 * 2) : ℝ) = |ω| ^ (4 : ℝ) := by
@@ -1504,9 +1382,9 @@ theorem ex_I_2_iv :
   rw [h5]
   field_simp
 
-/-- **Example [ex:I.2]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
+/-- **Example [ex:3.13]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
 `α`-admissible exactly for `α < 5`. -/
-theorem ex_I_2_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
+theorem ex_3_13_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
   intro α hα
   have h0 : ∀ᵐ ω : ℝ ∂volume, ω ≠ 0 := by
     rw [ae_iff]
@@ -1514,7 +1392,7 @@ theorem ex_I_2_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α
   have hae : (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) =ᵐ[volume]
       fun ω => (2 * Real.pi) * (|ω| ^ (4 - α) * Real.exp (-ω ^ 2)) := by
     filter_upwards [h0] with ω hω
-    rw [ex_I_2_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
+    rw [ex_3_13_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
       abs_of_nonneg (Real.sqrt_nonneg _), abs_of_pos (Real.exp_pos _), abs_pow, mul_pow, mul_pow,
       Real.sq_sqrt (by positivity), ← pow_mul, ← Real.exp_nat_mul]
     have e1 : (|ω| ^ (2 * 2) : ℝ) = |ω| ^ (4 : ℝ) := by
@@ -1536,22 +1414,22 @@ theorem ex_I_2_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α
       Real.integrable_abs_rpow_mul_exp_neg_sq_iff]
     constructor <;> intro h <;> linarith
   exact ⟨fun h => hint.mp h.integrable, fun h =>
-    ⟨hint.mpr h, by rw [ex_I_2_iv α hα h]; exact Real.Gamma_pos_of_pos (by linarith)⟩⟩
+    ⟨hint.mpr h, by rw [ex_3_13_iv α hα h]; exact Real.Gamma_pos_of_pos (by linarith)⟩⟩
 
-/-- **Example [ex:I.2]** Mexican hat.  In particular `C^{(1)}_{ρ_MH} = 1`. -/
-theorem ex_I_2_v : admissibilityConst 1 mexicanHat = 1 := by
-  rw [ex_I_2_iv 1 one_pos (by norm_num)]
+/-- **Example [ex:3.13]** Mexican hat.  In particular `C^{(1)}_{ρ_MH} = 1`. -/
+theorem ex_3_13_v : admissibilityConst 1 mexicanHat = 1 := by
+  rw [ex_3_13_iv 1 one_pos (by norm_num)]
   have : ((5 : ℝ) - 1) / 2 = ((1 : ℕ) : ℝ) + 1 := by norm_num
   rw [this, Real.Gamma_nat_eq_factorial]
   simp
 
-/-- **Example [ex:I.2]** Mexican hat.  `ρ_MH` is not band pass. -/
-theorem ex_I_2_vi : ¬ IsBandPass mexicanHat := by
+/-- **Example [ex:3.13]** Mexican hat.  `ρ_MH` is not band pass. -/
+theorem ex_3_13_vi : ¬ IsBandPass mexicanHat := by
   intro h
   have hcs := h.hasCompactSupport
   have hsub : {ω : ℝ | ω ≠ 0} ⊆ Function.support (filterFourier mexicanHat) := by
     intro ω hω
-    rw [Function.mem_support, ex_I_2_ii]
+    rw [Function.mem_support, ex_3_13_ii]
     have : (Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) ≠ 0 :=
       mul_ne_zero (mul_ne_zero (Real.sqrt_pos.mpr (by positivity)).ne' (pow_ne_zero 2 hω))
         (Real.exp_pos _).ne'

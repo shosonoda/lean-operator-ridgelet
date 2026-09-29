@@ -15,9 +15,9 @@ the quadratic form of a trace-class covariance, the bridge between the manuscrip
 transform `ρ̂(ω) = ∫ ρ(t) e^{-itω} dt` and Mathlib's `𝓕`, the nonvanishing of the Fourier
 transform of a nonzero filter, the joint integrability of the ridgelet kernel, the integrated
 forms of the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`, the smoothness of the explicit band-pass
-Fourier transform of Appendix I, and the coordinates of a centred Gaussian measure `𝒩(0,Q)`
+Fourier transform of Appendix G, and the coordinates of a centred Gaussian measure `𝒩(0,Q)`
 (the law of `x ↦ ⟪x, v⟫` is `𝒩(0, ⟪Qv,v⟫)`, and `Q`-orthogonal coordinates are independent),
-which drive the strong law in Proposition `prop:G.3`.  General-purpose tools
+which drive the strong law in Proposition `prop:F.3`.  General-purpose tools
 live in `OperatorRidgelet.ToMathlib`.
 -/
 

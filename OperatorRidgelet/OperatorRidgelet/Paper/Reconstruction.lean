@@ -18,10 +18,10 @@ import OperatorRidgelet.Paper.Transform
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Reconstruction`, and proved from the library.
 
-Theorems `thm:4.2` and `thm:4.3` are stated for the abstract pair `(μ, ν)` of Appendix H (`μ` a
+Theorems `thm:4.2` and `thm:4.3` are stated for the abstract pair `(μ, ν)` used by the supporting
+lemmas (`μ` a
 probability measure, `ν` σ-finite with full support and homogeneous of degree `α`), which is
-what their proofs use (the manuscript notes this after the proof of `thm:4.2`, and Theorem
-`thm:H.1` asserts it for `thm:4.3`(i)–(iii)); the Hermite parts of `thm:4.3`(iv) and
+what their proofs use; the Hermite parts of `thm:4.3`(iv) and
 Lemma `lem:B.5` need the Gaussian input measure `μ = 𝒩(0,Q)`, and parts (a), (b) of
 Lemma `lem:D.3` need the Gaussian mixture `ν_α`.  The Gaussian case of the
 abstract statements is the instance `IsCenteredGaussian Q μ`, `ν = gaussianMixture N α`.

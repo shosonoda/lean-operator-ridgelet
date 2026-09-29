@@ -2,7 +2,8 @@
 """Preserve historical Blueprint statement/proof URLs after a site build.
 
 Run after `vbp check`. Redirects are HTML navigation helpers and add no Blueprint nodes.
-Use --self-test to exercise moved proofs, encoded hashes, subpath hosting, and reruns.
+Retired results receive explicit notices linked to their fixed historical source.
+Use --self-test to exercise moved proofs, reused numbers, encoded hashes and reruns.
 """
 
 import argparse
@@ -72,6 +73,28 @@ def redirect_script(links, fallback):
 </script>'''
 
 
+def retired_notice(record):
+    """Build a notice without treating a reused theorem number as its identity."""
+    label = record["label"]
+    slug = re.sub(r"[^a-zA-Z0-9]+", "-", label).strip("-").lower()
+    source = record["source"]
+    fixed_revision = "525a54cf4c341fdc5c303b7db93a6e21d101a27e"
+    prefix = "https://github.com/shosonoda/lean-operator-ridgelet/blob/"
+    if not source.startswith(prefix + fixed_revision + "/"):
+        raise ValueError("Retired source must use the preserved fixed revision")
+    title = html.escape(record.get("title", label))
+    page = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<title>Retired Blueprint result: ' + title + '</title></head><body>'
+            '<h1>Result removed from the current exposition</h1><p>' + title
+            + ' belongs to the earlier exposition and has been removed from the current '
+            'manuscript inventory. A reused number in the current version denotes a '
+            'different result.</p><p>The previous statement and proof are preserved in '
+            '<a href="' + html.escape(source, quote=True) + '">the fixed source snapshot</a>'
+            ' (525a54c; snapshot20260929before-pruning-appendix).</p>'
+            '<p><a href="../../index.html">Read the current Blueprint.</a></p></body></html>')
+    return "retired/" + slug + "/", page
+
+
 def install(site, manifest, legacy):
     targets = {}
     for graph in manifest.get("graphs", []):
@@ -82,16 +105,28 @@ def install(site, manifest, legacy):
             label = preview.get("authoredLabel") or label_text(preview["label"])
             targets[(label, preview["facet"])] = preview["href"]
 
+    current_hrefs = {split_href(href) for href in targets.values()}
+    notices = {}
     routes = {}
     for entry in legacy:
         route, fragment = split_href(entry["oldhref"])
-        facet = "proof" if fragment.endswith("--proof") else "statement"
-        key = (entry["targetlabel"], facet)
-        if key not in targets:
-            raise ValueError(f"Missing current {facet} target: {key[0]}")
-        target = targets[key]
+        if "retired" in entry:
+            if (route, fragment) in current_hrefs:
+                raise ValueError("Retired URL is reused by a current result: " + entry["oldhref"])
+            target, content = retired_notice(entry["retired"])
+            if target in notices and notices[target] != content:
+                raise ValueError("Conflicting retired notice: " + target)
+            notices[target] = content
+        elif "targethref" in entry:
+            target = entry["targethref"]
+        else:
+            facet = "proof" if fragment.endswith("--proof") else "statement"
+            key = (entry["targetlabel"], facet)
+            if key not in targets:
+                raise ValueError(f"Missing current {facet} target: {key[0]}")
+            target = targets[key]
         new_route, _ = split_href(target)
-        if not output_file(site, new_route).is_file():
+        if new_route not in notices and not output_file(site, new_route).is_file():
             raise ValueError(f"Missing current target page: {new_route}")
         entries = routes.setdefault(route, {})
         if fragment in entries and entries[fragment] != target:
@@ -99,6 +134,10 @@ def install(site, manifest, legacy):
         entries[fragment] = target
 
     # Resolve every target before changing output files.
+    for target, content in notices.items():
+        page = output_file(site, target)
+        page.parent.mkdir(parents=True, exist_ok=True)
+        page.write_text(content)
     for route, entries in routes.items():
         page = output_file(site, route)
         original = page.read_text() if page.is_file() else ""
@@ -168,6 +207,38 @@ assert.equal(run("https://example.org/project/transform/old/#old--proof",
              code.replace("../../appendix-a/#new--proof", "#old--proof")), null);
 '''.replace("CODE", json.dumps(body))
         subprocess.run(["node", "-e", harness], check=True)
+        # The old F.3 is universality; the new F.3 is dilation obstruction.
+        # A matching number must never redirect a retired result to the new theorem.
+        manifest["graphs"][0]["nodes"].append({"label": "«prop:F.3»",
+            "href": "transform/current/#dilation--statement"})
+        record = {"label": "prop:F.3", "title": "Proposition F.3 (earlier version)",
+            "source": "https://github.com/shosonoda/lean-operator-ridgelet/blob/"
+                      "525a54cf4c341fdc5c303b7db93a6e21d101a27e/"
+                      "OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean"}
+        retired = [{"oldhref": "appendix-f/#universality--statement", "retired": record}]
+        install(site, manifest, retired)
+        page = output_file(site, "appendix-f/").read_text()
+        assert "retired/prop-f-3/" in page and "dilation--statement" not in page
+        notice = output_file(site, "retired/prop-f-3/").read_text()
+        assert "removed from the current" in notice and "525a54c" in notice
+        install(site, manifest, retired)
+        assert notice == output_file(site, "retired/prop-f-3/").read_text()
+        reused = [{"oldhref": "transform/current/#dilation--statement", "retired": record}]
+        try:
+            install(site, manifest, reused)
+        except ValueError as error:
+            assert "reused" in str(error)
+        else:
+            raise AssertionError("A retired URL hijacked a current result")
+        # The D.7/D.8 migration needs the same distinction even when node kinds match.
+        d_record = dict(record, label="cor:D.7", title="Corollary D.7 (earlier version)")
+        manifest["graphs"][0]["nodes"].append({"label": "«cor:D.7»",
+            "href": "appendix-a/#truncation--statement"})
+        install(site, manifest, [
+            {"oldhref": "appendix-d/old/#old-D7--statement", "retired": d_record},
+            {"oldhref": "appendix-d/old/#old-D8--statement", "targetlabel": "cor:D.7"}])
+        d_page = output_file(site, "appendix-d/old/").read_text()
+        assert "retired/cor-d-7/" in d_page and "truncation--statement" in d_page
         broken = legacy + [{"oldhref": "x/#missing", "targetlabel": "missing"}]
         try:
             install(site, manifest, broken)

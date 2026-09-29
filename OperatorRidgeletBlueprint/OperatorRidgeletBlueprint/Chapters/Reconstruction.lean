@@ -183,8 +183,9 @@ inverse are isometries; their operator norms are one for $`Y\ne\{0\}` and zero f
 $`Y=\{0\}`. The $`L^1` input injectivity statement, admissible Schwartz synthesis and frame
 identities, completed $`L^2` backprojection, and jointly absolutely integrable tempered
 synthesis all retain the corresponding scalar assumptions. The Lean statements
-are one theorem per part of the three scalar theorems ({bpref "thm:3.11"}[] in the abstract-pair
-form of {bpref "thm:H.1"}[]); the scalar existence claim of {bpref "thm:4.2"}[] (iii)
+are one theorem per part of the three scalar theorems, with general input and
+homogeneous direction measures where appropriate; the scalar existence claim of
+{bpref "thm:4.2"}[] (iii)
 is not repeated.
 :::
 

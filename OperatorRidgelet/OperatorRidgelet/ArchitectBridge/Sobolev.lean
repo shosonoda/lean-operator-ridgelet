@@ -66,41 +66,41 @@ attribute [blueprint "thm:5.6-v"
   (statement := /-- The synthesis is continuous. -/)]
   OperatorRidgelet.Paper.thm_5_6_v
 
-attribute [blueprint "prop:I.3-i"
+attribute [blueprint "prop:5.8-i"
   (statement := /-- The Gaussian-derivative filter is a real Schwartz function with
     $\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_i
+  OperatorRidgelet.Paper.prop_5_8_i
 
-attribute [blueprint "prop:I.3-ii"
+attribute [blueprint "prop:5.8-ii"
   (statement := /-- The filter is not band pass. -/)]
-  OperatorRidgelet.Paper.prop_I_3_ii
+  OperatorRidgelet.Paper.prop_5_8_ii
 
-attribute [blueprint "prop:I.3-iii"
+attribute [blueprint "prop:5.8-iii"
   (statement := /-- The filter is $\alpha$-admissible for $\alpha<4k+1$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_iii
+  OperatorRidgelet.Paper.prop_5_8_iii
 
-attribute [blueprint "prop:I.3-iv"
+attribute [blueprint "prop:5.8-iv"
   (statement := /-- $\int(1+\|a\|^2)^{-d/2}\,\mathrm d\nu<\infty$ whenever $d>\alpha$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_iv
+  OperatorRidgelet.Paper.prop_5_8_iv
 
-attribute [blueprint "prop:I.3-v"
+attribute [blueprint "prop:5.8-v"
   (statement := /-- The coefficient is jointly strongly measurable. -/)]
-  OperatorRidgelet.Paper.prop_I_3_v
+  OperatorRidgelet.Paper.prop_5_8_v
 
-attribute [blueprint "prop:I.3-vi"
+attribute [blueprint "prop:5.8-vi"
   (statement := /-- Each frequency profile lies in $H^s_\omega$ and equals
     $\widehat\rho_k(-\omega)g(\omega a)$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_vi
+  OperatorRidgelet.Paper.prop_5_8_vi
 
-attribute [blueprint "prop:I.3-vii"
+attribute [blueprint "prop:5.8-vii"
   (statement := /-- $\mathfrak B_s(\rho_k,g)<\infty$ when $2k>\alpha+2s-1/2$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_vii
+  OperatorRidgelet.Paper.prop_5_8_vii
 
-attribute [blueprint "prop:I.3-viii"
+attribute [blueprint "prop:5.8-viii"
   (statement := /-- $q_{\alpha,\rho_k}\in H^s_\omega$ in the same range. -/)]
-  OperatorRidgelet.Paper.prop_I_3_viii
+  OperatorRidgelet.Paper.prop_5_8_viii
 
-attribute [blueprint "prop:I.3-ix"
+attribute [blueprint "prop:5.8-ix"
   (statement := /-- The synthesis identity of {bpref "thm:5.6"} holds for this
     filter and every continuous activation of growth order $p<s-1/2$. -/)]
-  OperatorRidgelet.Paper.prop_I_3_ix
+  OperatorRidgelet.Paper.prop_5_8_ix

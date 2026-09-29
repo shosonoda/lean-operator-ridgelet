@@ -108,7 +108,7 @@ number := false
 
 We prove {bpref "thm:3.11"}[].
 
-:::proof "thm:3.11" (uses := "lem:3.4, lem:3.1, lem:B.1, lem:3.8, thm:H.1")
+:::proof "thm:3.11" (uses := "lem:3.4, lem:3.1, lem:B.1, lem:3.8")
 Apply the one-dimensional Plancherel identity in the bias to the Fourier-slice identity and
 substitute $`\xi=-\omega a` by homogeneity; admissibility gives square integrability and
 Cauchy–Schwarz justifies the cross identity. The norm identity extends $`R_\rho` to the

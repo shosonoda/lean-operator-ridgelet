@@ -7,7 +7,7 @@ import OperatorRidgelet.Transform.Plancherel
 
 Ridgelet-specific lemmas behind Theorem `thm:4.2`(i)–(ii), Theorem `thm:4.3`(i)–(iii), Lemma
 `lem:B.4`, and Proposition `prop:B.8`, for the abstract pair
-`(μ, ν)` of Appendix H.
+`(μ, ν)` used by the supporting lemmas.
 
 * **Regularity along rays.**  The weighted derivative integral `M_0(G)` dominates `∫ ‖G(ω₀ a)‖
   ν(da)` for a fixed

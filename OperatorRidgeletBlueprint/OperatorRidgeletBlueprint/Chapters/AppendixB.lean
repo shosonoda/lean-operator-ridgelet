@@ -201,7 +201,7 @@ The regularized characteristic functional in {bpref "lem:A.3"}[] suggests
 the kernel $`\Gamma(\alpha/2)\langle P(x-y),x-y\rangle^{-\alpha/2}` for the frame
 operator. This is only a formal interchange against an infinite oscillatory measure and is
 not used as an identity. In finite dimension, with $`P=I` and $`0<\alpha<m`, it agrees
-with the Riesz-potential interpretation of {bpref "cor:G.2"}[].
+with the Riesz-potential interpretation of {bpref "cor:F.2"}[].
 
 *Remark B.7 (Range of the analysis operator).*
 

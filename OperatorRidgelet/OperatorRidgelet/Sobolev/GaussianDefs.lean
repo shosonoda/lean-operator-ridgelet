@@ -4,10 +4,10 @@ import OperatorRidgelet.ToMathlib.PolynomialGaussianSchwartz
 import OperatorRidgelet.ToMathlib.SchwartzFourier
 
 /-!
-# Definitions for Appendix I.3, the Gaussian-derivative filters
+# Definitions for Proposition 5.8, the Gaussian-derivative filters
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
-module.  The filter of `prop:I.3` is the real Schwartz function whose Fourier
+module.  The filter of `prop:5.8` is the real Schwartz function whose Fourier
 transform is `ρ̂_k(ω) = ω^{2k} e^{-ω²}`: it is built as the inverse angular transform of that
 symbol, which is real because the symbol is real and even.
 
@@ -44,14 +44,14 @@ real-valued (`gaussDerivFilterC_conj`). -/
 def gaussDerivFilterC (k : ℕ) : SchwartzMap ℝ ℂ :=
   𝓕⁻ (SchwartzMap.ofReal (gaussDerivDilatedHat k))
 
-/-- The Gaussian-derivative filter `ρ_k ∈ 𝒮(ℝ;ℝ)` of order `k` of `prop:I.3`. -/
+/-- The Gaussian-derivative filter `ρ_k ∈ 𝒮(ℝ;ℝ)` of order `k` of `prop:5.8`. -/
 def gaussDerivFilter (k : ℕ) : SchwartzMap ℝ ℝ :=
   SchwartzMap.postcompCLM Complex.reCLM (gaussDerivFilterC k)
 
 /-- The scale `A(a) = (1 + ‖a‖²)^{1/2}` of the ray in direction `a`. -/
 def rayScale (a : H) : ℝ := Real.sqrt (1 + ‖a‖ ^ 2)
 
-/-- The Gaussian target `g(ξ) = e^{-‖ξ‖²} v` of `prop:I.3`. -/
+/-- The Gaussian target `g(ξ) = e^{-‖ξ‖²} v` of `prop:5.8`. -/
 def gaussTarget (v : Y) (ξ : H) : Y := (Real.exp (-‖ξ‖ ^ 2) : ℝ) • v
 
 /-- The scalar ray `A^{-2k-1} ρ_k(b/A)` of the Gaussian-derivative filter at scale `A`. -/
