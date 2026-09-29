@@ -216,7 +216,7 @@ theorem tendsto_crossAdmissibilityConst_regularizedActivation {α : ℝ}
   filter_upwards [self_mem_nhdsWithin] with ε hε
   exact (hC ε hε).symm
 
-/-! ### The frame identity for the tempered synthesis -/
+/-! ### The frame identity for synthesis defined by regularization -/
 
 section Synthesis
 

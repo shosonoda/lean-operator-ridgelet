@@ -25,7 +25,8 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "sampling"
 %%%
 
-Sampling converts a finite coefficient measure into a finite-width network. The first
+Monte Carlo approximation converts a finite coefficient measure into a finite-width network.
+The first
 estimate uses an activation-dependent Rademacher complexity. For a globally Lipschitz
 activation, a separate contraction argument gives an explicit dimension-free
 $`N^{-1/2}` rate. Regularity of a spectral density supplies the total variation and
@@ -34,9 +35,9 @@ parameter moments needed to apply these estimates.
 Universality proceeds through targets with a spectral density. It does not provide a
 uniform width–accuracy relation for all continuous targets: the coefficient moments may
 depend on the chosen spectral approximation. Appendix D contains the proofs and supplementary
-sampling results.
+approximation results.
 
-# Sampling bounds
+# Approximation rates
 
 :::definition "aux:sampling-data" (lean := "OperatorRidgelet.compactRadius, OperatorRidgelet.densityWeight, OperatorRidgelet.densityLaw, OperatorRidgelet.densityPhase, OperatorRidgelet.polarSampledNetwork, OperatorRidgelet.densitySampledNetwork, OperatorRidgelet.secondMoment, OperatorRidgelet.atomicMeasure, OperatorRidgelet.sampledOperatorNetwork, OperatorRidgelet.operatorSecondMoment, OperatorRidgelet.IsFiniteRankProjection") (uses := "def:6.1, aux:operator-neuron")
 The radius $`R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}` of a compact set, the second moment
@@ -123,7 +124,7 @@ same explicit rate in (iii), by the Hilbert-valued {bpref "thm:6.3"}[].
 
 See the [proof in Appendix D](appendix-d/D___3-Proof-of-Theorem-6___5/#--informal-preview-_FLQQ_thm___6___5_FLQQ_--proof).
 
-# Vector-valued sampling
+# Vector-valued approximation
 
 A vector coefficient measure has a polar density of norm one almost everywhere
 with respect to its variation. This supplies the output weights in the sampled network.

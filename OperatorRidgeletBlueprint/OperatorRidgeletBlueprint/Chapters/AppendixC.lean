@@ -28,7 +28,8 @@ number := false
 %%%
 
 We prove tempered reconstruction through regularization, then establish weighted Sobolev
-duality and the estimates needed for absolute synthesis. Membership in a weighted Sobolev
+duality and the estimates needed for an absolutely convergent network integral.
+Membership in a weighted Sobolev
 activation class controls the distributional Fourier pairing; it does not by itself select
 a continuous pointwise representative.
 
@@ -87,7 +88,7 @@ is not smooth at zero, and the last statement is the final part of the proof of
 {bpref "thm:4.2"}[] followed by rescaling $`\rho`.
 :::
 
-# C.3 Sobolev estimates for absolute synthesis
+# C.3 Sobolev estimates and Fourier duality
 %%%
 number := false
 %%%

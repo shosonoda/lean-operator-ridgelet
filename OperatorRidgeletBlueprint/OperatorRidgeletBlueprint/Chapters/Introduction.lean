@@ -37,7 +37,7 @@ An integral representation replaces the finite sum by
 $`f(x)=S_\sigma[\Gamma](x)=\int_{H\times\mathbb R}\sigma(\langle a,x\rangle-b)\,\Gamma(\mathrm da,\mathrm db)`.
 The finite scalar or vector measure $`\Gamma` encodes the representation. Its normalized
 variation is a probability law for sampling neurons, and its polar density supplies their
-output weights. Variation and parameter moments then control the sampling error.
+output weights. Variation and parameter moments then control the approximation error.
 
 A ridgelet transform sends a target to coefficients indexed by directions and biases.
 The construction below is made directly on $`H`; it does not begin by selecting a
@@ -81,13 +81,13 @@ The assumptions on filters and activations belong to the individual statements.
 * {bpref "thm:3.11"}[] proves the Plancherel identity, closed range and injectivity on
   the Hilbert space $`\mathcal E_\alpha`.
 * {bpref "thm:4.2"}[] gives explicit coefficients for targets with a spectral density,
-  including absolute synthesis under regularity along rays.
+  including an absolutely convergent network integral under regularity along rays.
 * {bpref "thm:4.3"}[] identifies the frame operator as the Riesz isomorphism and gives
   reconstruction, backprojection and inversion formulas.
 * {bpref "thm:6.4"}[] proves finite total variation and parameter moments from
-  regularity along rays, connecting representation to sampling.
+  regularity along rays, connecting representation to finite-width approximation.
 * {bpref "thm:6.5"}[] gives constructive compact-open universality through spectral
-  targets, with sampling bounds for the resulting integral networks.
+  targets, with approximation rates for the resulting integral networks.
 
 The frame operator $`T_\alpha` is the correction induced by the weights. Analysis
 followed by synthesis gives $`C T_\alpha f`; applying $`C^{-1}T_\alpha^{-1}` recovers
@@ -105,7 +105,8 @@ Every finite-width network factors through its finite family of input measuremen
 The genuinely infinite-dimensional objects in the examples are the exact targets and
 integral networks. Finite representations of the directions create a further error.
 
-Tempered reconstruction takes place in a dual space. Ordinary integral networks use
+Reconstruction with a tempered distribution as the activation takes place in a dual space.
+Ordinary integral networks use
 continuous activations and appropriate moments. The explicit uniform rate additionally
 requires global Lipschitz continuity and a second moment. General nonlinear operator
 activations are outside this reconstruction theorem; rank-one lifts are treated in
@@ -142,13 +143,12 @@ nodes below use $`c=-b` and $`\beta`. They write $`\mathcal G_Q` for $`F_Q` and 
 $`G` for a spectral density $`g`. These are changes of coordinates and notation, not
 changes in the network or theorem hypotheses.
 
-Sections 2–7 develop the definitions, analysis, reconstruction, activations, sampling and
+Sections 2–7 develop the definitions, analysis, reconstruction, activations, approximation and
 examples. Section 8 discusses computation and open questions. Appendices A–E collect
 the detailed proofs; F–I give operator parameters, finite-dimensional comparison, general
-weights and explicit filters; J reports numerical illustrations.
+weights and explicit filters; J reports numerical experiments.
 
 Each numbered result links to its Lean declarations. The $`L^2` clause of Theorem 5.6
 and the closed-form reconstruction constants of Proposition I.3 are carried in weaker
 forms by the Lean statements. The formalization infrastructure is documented separately
 after the manuscript chapters.
-

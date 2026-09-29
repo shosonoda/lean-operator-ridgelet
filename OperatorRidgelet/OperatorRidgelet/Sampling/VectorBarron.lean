@@ -401,7 +401,7 @@ theorem integrable_norm_sum_sub_vec {Ω E : Type*} [MeasurableSpace Ω] [NormedA
     (measurePreserving_eval (fun _ => p) j).integrable_comp_of_integrable hint).sub
     (integrable_const _)).norm
 
-/-- The `C(K;Y)` sampling error of the polar sampled network is integrable in the sample. -/
+/-- The `C(K;Y)` approximation error of the polar sampled network is integrable in the sample. -/
 theorem integrable_compactSupNorm_polarSampledNetwork_sub_vec (hK : IsCompact K) {β : ℝ → ℝ}
     {L : ℝ≥0} (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y)
     [IsFiniteMeasure Γ.variation]

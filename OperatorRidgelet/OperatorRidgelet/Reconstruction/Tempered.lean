@@ -604,8 +604,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
 
 omit [CompleteSpace Y] in
-/-- After the translation `t = ⟪a,x⟫ + c` the integrand of the tempered synthesis identity is
-integrable on `ν ⊗ dt`, which is what Fubini needs. -/
+/-- For a continuous activation of polynomial growth, the translated network integrand
+(`t = ⟪a,x⟫ + c`) is integrable on `ν ⊗ dt`, as required by Fubini. -/
 theorem integrable_prod_smul_coefficientFormulaVec_shift {ν : Measure H} [SFinite ν] {I : Set ℝ}
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I) {G : H → Y}
     (hG : IsRegularAlongRays ν I G) {b : ℝ → ℝ} (hbc : Continuous b)

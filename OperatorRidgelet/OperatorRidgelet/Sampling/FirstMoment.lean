@@ -51,7 +51,7 @@ theorem integrable_vectorRidgeAtom_firstMoment (hK : IsCompact K) {β : ℝ → 
     exact (norm_ridge_le hβ (x : H) θ).trans (by dsimp [C]; gcongr; exact hr x x.2)
   simpa only [add_assoc] using ha
 
-/-- The compact-open vector sampling bound from symmetrization of the integrable atom map. -/
+/-- The compact-open vector approximation bound from symmetrization of the integrable atom map. -/
 theorem integral_polarSampledNetwork_compact_le_firstMoment {β : ℝ → ℂ} {L : ℝ≥0}
     (hβ : LipschitzWith L β) (Γ : VectorMeasure (H × ℝ) Y) [IsFiniteMeasure Γ.variation]
     (hM : Integrable (fun θ : H × ℝ => ‖θ.1‖ + |θ.2|) (polarLaw Γ))

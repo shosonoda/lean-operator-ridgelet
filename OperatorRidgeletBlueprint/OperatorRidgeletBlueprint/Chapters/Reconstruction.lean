@@ -198,6 +198,7 @@ steps with the same constants. Completing the vector core and applying Riesz rep
 proves the frame and reconstruction statements; the Gaussian Hermite expansion is applied
 componentwise. If $`Y\ne\{0\}`, a nonzero constant vector belongs to the Gaussian core by
 {bpref "lem:3.9"}[], so its Riesz isometries have norm one; when $`Y=\{0\}`, both
-spaces and norms are zero. Tempered synthesis uses the fixed-support $`C^m` Bochner argument
-and the distributional pairing tensored with the identity of $`Y`.
+spaces and norms are zero. The integral representation with a continuous activation of
+polynomial growth uses the fixed-support $`C^m` Bochner argument and the distributional
+pairing tensored with the identity of $`Y`.
 :::

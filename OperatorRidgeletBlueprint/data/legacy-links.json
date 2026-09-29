@@ -610,5 +610,97 @@
   {
     "oldhref": "transform/The-input-and-direction-measures/#--informal-preview-_FLQQ_lem___mixture-integration_FLQQ_--statement",
     "targetlabel": "lem:A.2"
+  },
+  {
+    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--proof",
+    "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "sampling/Vector-valued-sampling/#--informal-preview-_FLQQ_cor___6___6_FLQQ_--statement",
+    "targetlabel": "cor:6.6"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--proof",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___5_FLQQ_--statement",
+    "targetlabel": "cor:D.5"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--proof",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___7_FLQQ_--statement",
+    "targetlabel": "cor:D.7"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--proof",
+    "targetlabel": "cor:D.8"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_cor___D___8_FLQQ_--statement",
+    "targetlabel": "cor:D.8"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_def___6___1_FLQQ_--statement",
+    "targetlabel": "def:6.1"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--proof",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___3_FLQQ_--statement",
+    "targetlabel": "lem:C.3"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--proof",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-c/C___3-Sobolev-estimates-for-absolute-synthesis/#--informal-preview-_FLQQ_lem___C___4_FLQQ_--statement",
+    "targetlabel": "lem:C.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--proof",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___4_FLQQ_--statement",
+    "targetlabel": "lem:D.4"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--proof",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-d/D___4-Supplementary-sampling-results/#--informal-preview-_FLQQ_lem___D___6_FLQQ_--statement",
+    "targetlabel": "lem:D.6"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--proof",
+    "targetlabel": "prop:I.3"
+  },
+  {
+    "oldhref": "appendix-i/I___1-Non-band-pass-filters-for-Sobolev-synthesis/#--informal-preview-_FLQQ_prop___I___3_FLQQ_--statement",
+    "targetlabel": "prop:I.3"
+  },
+  {
+    "oldhref": "tempered/Absolute-synthesis-under-a-Sobolev-condition/#--informal-preview-_FLQQ_thm___5___6_FLQQ_--statement",
+    "targetlabel": "thm:5.6"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--proof",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___2_FLQQ_--statement",
+    "targetlabel": "thm:6.2"
+  },
+  {
+    "oldhref": "sampling/Sampling-bounds/#--informal-preview-_FLQQ_thm___6___3_FLQQ_--statement",
+    "targetlabel": "thm:6.3"
   }
 ]

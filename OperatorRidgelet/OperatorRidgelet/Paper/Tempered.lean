@@ -10,7 +10,7 @@ import OperatorRidgelet.Tempered.Reconstruction
 import OperatorRidgelet.Reconstruction.Tempered
 
 /-!
-# Statements of Section 5 (tempered synthesis activations and ReLU) and Appendix C
+# Statements of Section 5 (reconstruction formulas and activation functions) and Appendix C
 
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Tempered`, and proved from the library.

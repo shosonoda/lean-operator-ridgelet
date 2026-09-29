@@ -1,6 +1,6 @@
 import OperatorRidgelet.Sampling.Defs
 
-/-! # Integrable Banach-valued sampling: manuscript statements -/
+/-! # Approximation by averages of integrable Banach-valued atoms: manuscript statements -/
 
 noncomputable section
 namespace OperatorRidgelet.Paper

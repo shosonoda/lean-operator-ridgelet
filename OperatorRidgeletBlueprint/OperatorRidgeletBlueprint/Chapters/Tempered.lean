@@ -20,18 +20,21 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Tempered synthesis activations and ReLU" =>
+#doc (Manual) "Reconstruction formulas and activation functions" =>
 %%%
 file := "tempered"
 %%%
 
-The analysis filter is Schwartz, while the synthesis activation may be unbounded.
-For a non-polynomial tempered activation, a filter supported away from zero in frequency
-gives a nonzero distributional reconstruction pairing. ReLU is the primary exact example.
+The analysis filter is Schwartz, while the synthesis activation may be a tempered
+distribution, an element of $`\mathcal S'(\mathbb R)`. This includes unbounded activation
+functions such as ReLU. For a non-polynomial tempered distribution, a filter supported
+away from zero in frequency gives a nonzero distributional reconstruction pairing.
+ReLU is admissible in this sense and is the primary exact example.
 
 A dual-space identity and an ordinary integral network have different integrability
-requirements. The Sobolev criterion below supplies an absolute synthesis formula, including
-non-band-pass filters, under direct conditions on the inverse Fourier transform along rays.
+requirements. The Sobolev criterion below supplies an absolutely convergent network
+integral, including non-band-pass filters, under direct conditions on the inverse Fourier
+transform of $`h_a(\omega)=\widehat\rho(-\omega)G(\omega a)`.
 Appendix C gives the pairing and its estimates; Appendix I gives explicit filters.
 
 :::definition "aux:tempered-distributions" (lean := "OperatorRidgelet.IsPolynomialDistribution, OperatorRidgelet.schwartzOfFun, OperatorRidgelet.tanhDistribution, OperatorRidgelet.gaussianCdfDistribution, OperatorRidgelet.gaussianDistribution") (uses := "aux:conventions")
@@ -54,7 +57,7 @@ $`\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)\in C_c^\inf
 $`\gamma\in\operatorname{Ran}R_\rho`, the regularized synthesis is
 $`S_{\beta_\varepsilon}\gamma=R_{\beta_\varepsilon}'\gamma\in\mathcal E_\alpha'` (vi), and
 the synthesis with $`\beta` is $`S_\beta\gamma=\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}\gamma`
-in $`\mathcal E_\alpha'`, whenever the limit exists.
+in the norm of $`\mathcal E_\alpha'`, whenever the limit exists.
 :::
 
 :::theorem "thm:5.2" (lean := "OperatorRidgelet.Paper.thm_5_2_i, OperatorRidgelet.Paper.thm_5_2_ii, OperatorRidgelet.Paper.thm_5_2_iii, OperatorRidgelet.Paper.thm_5_2_iv, OperatorRidgelet.Paper.thm_5_2_v, OperatorRidgelet.Paper.thm_5_2_vi") (uses := "def:5.1, aux:tempered-activation")
@@ -107,13 +110,13 @@ function has polynomial growth, so {bpref "thm:4.2"}[] (iii) and {bpref "thm:6.4
 
 *Remark 5.5 (Identity in the dual space versus integral network).*
 
-The tempered frame identity holds in $`\mathcal E_\alpha'`. By itself it does not
+The frame identity for a tempered activation holds in $`\mathcal E_\alpha'`. By itself it does not
 produce a finite coefficient measure on $`H\times\mathbb R`. For a spectral density
 regular along rays, {bpref "thm:4.2"}[] gives an absolutely convergent integral network;
 {bpref "thm:6.4"}[] supplies finite total variation and moments. The ReLU examples use
 this stronger conclusion.
 
-# Absolute synthesis under a Sobolev condition
+# Integral representation under Sobolev conditions
 
 The condition is imposed directly on
 $`h_a(\omega)=\widehat\rho(-\omega)G(\omega a)` through its inverse Fourier transform.
@@ -141,8 +144,8 @@ Then $`g\in L^1(\nu;Y)`; for $`0\le r<s-1/2`
 $`\int(1+\|a\|+|b|)^r\|\gamma_g\|\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)`, so the coefficient
 measure is finite; the direction average
 $`\Psi_x(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu` is integrable and equals
-$`\check q_{\alpha,\rho}(-t)f_g(x)` almost everywhere; and the ordinary absolutely convergent
-synthesis satisfies
+$`\check q_{\alpha,\rho}(-t)f_g(x)` almost everywhere; and the absolutely convergent
+network integral satisfies
 $`S_\sigma[\Gamma_g](x)=(\!(\sigma,\rho)\!)_\alpha f_g(x)` with
 $`(\!(\sigma,\rho)\!)_\alpha=(2\pi)^{-1}\langle\widehat\sigma,q_{\alpha,\rho}\rangle`, uniformly
 absolutely on bounded input sets and continuously in $`x`. Here
@@ -165,7 +168,8 @@ See the [proof in Appendix C](appendix-c/C___4-Proof-of-Theorem-5___6/#--informa
 
 *Remark 5.7 (What the synthesis identity uses).*
 
-Absolute synthesis uses the inner product and Borel structure of the input space,
+The absolutely convergent integral representation uses the inner product and Borel structure
+of the input space,
 homogeneity of the direction measure, and completeness of the output norm. The output
 Hilbert structure is needed only for the $`L^2` coefficient conclusion. Positivity of the
 admissibility constant is not required. The ray hypotheses already imply

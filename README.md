@@ -9,8 +9,8 @@
 
 Lean 4 formalization of the operator ridgelet transform on infinite-dimensional Hilbert spaces,
 following the manuscript by Sho Sonoda and coauthors. It covers the Gaussian-weighted ridgelet
-transform, Plancherel and reconstruction theorems, tempered synthesis activations such as ReLU,
-and dimension-free finite-width approximation.
+transform, Plancherel and reconstruction theorems, activations represented by tempered
+distributions such as ReLU, and dimension-free finite-width approximation.
 
 The repository tracks the **68 manuscript items of the 2026-09-29 terminology revision**:
 all are recorded as
@@ -28,8 +28,8 @@ The mathematics is in [OperatorRidgelet/OperatorRidgelet/](OperatorRidgelet/Oper
 | Scalar and operator networks, rank-one lifts, universality | [Network/](OperatorRidgelet/OperatorRidgelet/Network/), [Architecture/](OperatorRidgelet/OperatorRidgelet/Architecture/) |
 | Gaussian-weighted transform, Fourier-slice identity, Plancherel | [Transform/](OperatorRidgelet/OperatorRidgelet/Transform/) |
 | Integral representation, reconstruction, frame operator, vector-valued extensions | [Reconstruction/](OperatorRidgelet/OperatorRidgelet/Reconstruction/) |
-| Tempered activations and ReLU; absolute synthesis under a Sobolev condition | [Tempered/](OperatorRidgelet/OperatorRidgelet/Tempered/), [Sobolev/](OperatorRidgelet/OperatorRidgelet/Sobolev/) |
-| Finite-width approximation and sampling bounds | [Sampling/](OperatorRidgelet/OperatorRidgelet/Sampling/) |
+| Reconstruction formulas and activation functions; integral representation under Sobolev conditions | [Tempered/](OperatorRidgelet/OperatorRidgelet/Tempered/), [Sobolev/](OperatorRidgelet/OperatorRidgelet/Sobolev/) |
+| Finite-width approximation rates | [Sampling/](OperatorRidgelet/OperatorRidgelet/Sampling/) |
 | Gaussian examples, operator layers, convolution and Dirichlet operators | [Examples/](OperatorRidgelet/OperatorRidgelet/Examples/) |
 | Finite-dimensional formulas and explicit analysis filters | [FiniteDim/](OperatorRidgelet/OperatorRidgelet/FiniteDim/), [Filters/](OperatorRidgelet/OperatorRidgelet/Filters/) |
 

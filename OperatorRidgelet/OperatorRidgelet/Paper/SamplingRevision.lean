@@ -3,7 +3,7 @@ import OperatorRidgelet.ToFoML.TwoCoordinate
 import OperatorRidgelet.Sampling.FirstMoment
 import OperatorRidgelet.Sampling.Variance
 
-/-! # Integrable Banach-valued sampling: manuscript statements -/
+/-! # Approximation by averages of integrable Banach-valued atoms: manuscript statements -/
 
 noncomputable section
 namespace OperatorRidgelet.Paper

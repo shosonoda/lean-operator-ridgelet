@@ -25,7 +25,7 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "discussion"
 %%%
 
-# What has been shown
+# Main results
 
 The results give two complementary chains. For an admissible filter with constant $`C>0`,
 analysis and synthesis give
@@ -39,27 +39,27 @@ parameter. The transform is an injective scaled isometry on $`\mathcal E_\alpha`
 and the frame operator is an isometric isomorphism to its dual. Targets with spectral
 densities have explicit network coefficients. Every continuous target is a compact-open
 limit of such networks, and regularity along rays together with a globally Lipschitz
-activation gives an explicit $`N^{-1/2}` sampling rate.
+activation gives an explicit $`N^{-1/2}` approximation rate.
 
-Tempered reconstruction permits any non-polynomial tempered activation. Absolute
-integral-network synthesis requires a continuous representative of suitable growth,
-and the explicit uniform sampling estimate adds Lipschitz continuity. ReLU, tanh, the
+The reconstruction formula permits any non-polynomial tempered distribution as the activation.
+An absolutely convergent network integral requires a continuous representative of suitable
+growth, and the explicit uniform approximation rate adds Lipschitz continuity. ReLU, tanh, the
 Gaussian distribution function and the Gaussian activation satisfy the relevant conditions.
 Periodic convolution and Dirichlet layers have explicit coefficient measures; Gaussian
 activation also gives explicit transforms for these layers.
 
-# Absolute synthesis and computation
+# Approximation rates and numerical implementation
 
 {bpref "thm:5.6"}[] allows non-band-pass filters and a finite range
 of coefficient moments. When $`s>5/2`, its second-moment conclusion connects to the
-Hilbert-valued uniform sampling theorem.
+Hilbert-valued uniform approximation theorem.
 
-The experiments in Appendix J support the predicted sampling behavior on finite test
+The experiments in Appendix J support the predicted approximation rates on finite test
 sets and check a closed-form transform independently. They also show a discretization
 floor. Computing an integral coefficient, sampling a direction and representing that
 direction with finitely many numbers remain distinct numerical tasks.
 
-# What remains open
+# Open problems
 
 * *An intrinsic description of the Hilbert space.* In finite dimension its norm is
   a homogeneous Sobolev norm of a Gaussian-weighted density. A comparable description

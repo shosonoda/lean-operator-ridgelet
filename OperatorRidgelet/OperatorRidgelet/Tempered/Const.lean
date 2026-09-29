@@ -4,8 +4,8 @@ import LeanRidgelet.Fourier.AngularDistribution
 /-!
 # The distributional admissibility constant
 
-The manuscript pairs the Fourier transform of a tempered synthesis activation `β ∈ 𝒮'(ℝ)` with
-the band-pass analysis filter:
+The manuscript treats the activation as a tempered distribution `β ∈ 𝒮'(ℝ)` and pairs its
+Fourier transform with the band-pass analysis filter:
 `C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β̂, ρ̂(-·) |·|^{-α}⟩` (Theorem 4.2(iii); the "distributional
 admissibility" displayed at the start of Section 5).  The test function `ω ↦ ρ̂(-ω) |ω|^{-α}` is
 Schwartz exactly when `ρ̂` vanishes near the origin, which is the band-pass condition; below it

@@ -21,16 +21,16 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix D. Proofs for Section 6 and supplementary sampling results" =>
+#doc (Manual) "Appendix D. Proofs for Section 6 and supplementary approximation results" =>
 %%%
 file := "appendix-d"
 number := false
 %%%
 
-The uniform sampling estimates require a Banach-valued law of large numbers for
+The uniform approximation estimates require a Banach-valued law of large numbers for
 Rademacher averages and, for the explicit rate, a Hilbert-valued contraction argument.
 We then verify regularity along rays, prove the spectral moment and universality results,
-and record concentration, Hilbert-norm sampling and input-truncation estimates.
+and record concentration, Hilbert-norm approximation and input-truncation estimates.
 
 :::lemma_ "lem:D.1" (lean := "OperatorRidgelet.Paper.lem_D_1_i, OperatorRidgelet.Paper.lem_D_1_ii") (uses := "def:6.1")
 Let $`X` be a separable Banach space, $`p` a probability measure, and $`\Phi\in L^1(p;X)`.
@@ -154,7 +154,7 @@ By {bpref "lem:D.3"}[], the sum $`G=\sum_jw_jG_j` satisfies
 of unity and {bpref "thm:4.6"}[].
 :::
 
-# D.4 Supplementary sampling results
+# D.4 Supplementary approximation results
 %%%
 number := false
 %%%

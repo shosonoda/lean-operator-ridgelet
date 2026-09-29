@@ -20,7 +20,7 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Examples with genuinely infinite-dimensional inputs" =>
+#doc (Manual) "Examples on infinite-dimensional spaces" =>
 %%%
 file := "examples"
 %%%

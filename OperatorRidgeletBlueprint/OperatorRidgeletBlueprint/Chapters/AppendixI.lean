@@ -29,7 +29,7 @@ number := false
 A nonzero smooth Fourier filter supported away from zero is admissible for every
 positive homogeneity exponent. The Mexican-hat example shows that admissibility alone does
 not imply band-pass support. The last result constructs non-band-pass filters for the
-Sobolev synthesis theorem, with explicit moment conditions.
+integral representation under Sobolev conditions, with explicit moment conditions.
 
 :::definition "aux:explicit-filters" (lean := "OperatorRidgelet.Filters.bump, OperatorRidgelet.Filters.bandPassHat, OperatorRidgelet.Filters.bandPassFun, OperatorRidgelet.Filters.bandPass, OperatorRidgelet.Filters.mexicanHatFun, OperatorRidgelet.Filters.mexicanHat") (uses := "aux:conventions")
 With the bump $`\eta(u)=\exp(-1/(1-u^2))` for $`|u|<1` and $`0` otherwise, the band-pass
@@ -73,7 +73,7 @@ $`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\int_{\mathbb R}|\omega|^
 convergent at zero exactly when $`\alpha<5`.
 :::
 
-# I.1 Non-band-pass filters for Sobolev synthesis
+# I.1 Examples of filters for the reconstruction formula
 %%%
 number := false
 %%%

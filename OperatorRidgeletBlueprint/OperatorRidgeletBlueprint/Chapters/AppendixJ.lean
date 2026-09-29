@@ -20,7 +20,7 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix J. Numerical illustration" =>
+#doc (Manual) "Appendix J. Numerical experiments" =>
 %%%
 file := "appendix-j"
 number := false
@@ -135,7 +135,7 @@ about three standard errors:
   * 0.00018
 :::
 
-# Sampling-error summary
+# Approximation-error summary
 
 The table gives the mean supremum error at widths 4 and 4096, together with the
 fitted logarithmic slope. The dashed lines in the figures are proportional to
@@ -210,7 +210,7 @@ $`N^{-1/2}`.
   * −0.50
 :::
 
-These experiments illustrate sampling estimates rather than computational cost, which
+These experiments illustrate approximation rates rather than computational cost, which
 grows with the input resolution through the inner products. Similar errors across the
 tested resolutions occur only once discretization error is sufficiently small. Finite
 test sets, quadrature and importance resampling remain numerical approximations; the

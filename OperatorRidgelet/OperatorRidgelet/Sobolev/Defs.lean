@@ -3,7 +3,7 @@ import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 
 /-!
-# Definitions for the absolute synthesis under a Sobolev condition of Section 5 and Appendix C
+# Definitions for integral representation under Sobolev conditions (Section 5 and Appendix C)
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.

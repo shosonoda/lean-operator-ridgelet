@@ -1,7 +1,7 @@
 {
   "manuscript": {
     "file": "main.tex",
-    "version": "2026-09-29 numbered manuscript",
+    "version": "2026-09-29 terminology revision",
     "synced": "2026-09-29",
     "conventions": "Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G_Q -> F_Q, scalar activation beta -> sigma, operator activation sigma -> Sigma, spectral density G -> g, target g_G -> f_g, coefficient gamma_G -> gamma_g, \\mathcal N(0,Q) -> mu_Q, Gaussian activation Phi -> sigma_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L_D^{-1}, the Gaussian-parameter ReLU target F_Q -> f_{ReLU,Q}. The 2026-09-29 numbering revision changes manuscript-facing declaration names without changing formal statements. G_a(ω) := G(ωa) denotes a restriction to a line through the origin; names containing ray, Layer, or polarLaw remain stable, while prose describes the corresponding restrictions, Gaussian mixture components, and sampling distribution."
   },
@@ -429,7 +429,7 @@
       "kind": "theorem",
       "number": "5.6",
       "page": "20",
-      "title": "Absolute synthesis under a Sobolev condition",
+      "title": "Integral representation under Sobolev conditions",
       "lean": [
         "OperatorRidgelet.Paper.thm_5_6_i",
         "OperatorRidgelet.Paper.thm_5_6_ii",
@@ -463,8 +463,8 @@
       "label": "thm:general-rademacher",
       "kind": "theorem",
       "number": "6.2",
-      "page": "22",
-      "title": "General compact-open sampling bound",
+      "page": "23",
+      "title": "Compact-open approximation bound",
       "lean": [
         "OperatorRidgelet.Paper.thm_6_2"
       ],
@@ -506,13 +506,13 @@
       "kind": "theorem",
       "number": "6.5",
       "page": "24",
-      "title": "Constructive universal approximation with sampling bounds",
+      "title": "Constructive universal approximation with approximation rates",
       "lean": [
         "OperatorRidgelet.Paper.thm_6_5",
         "OperatorRidgelet.Paper.thm_6_5_dense",
         "OperatorRidgelet.Paper.thm_6_5_vec"
       ],
-      "note": "thm_6_5 is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g_G) < ε, (ii) g_G = integralNetworkDensity b λ_α γ_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ_G‖) λ_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^{(α)}_{β,ρ} = 1 is temperedAdmissibilityConst α β ρ = 1. thm_6_5_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K.  The density sentence sits inside Theorem 6.6 in the manuscript, under all of its hypotheses, so the Lean statement of thm_6_5_dense carries the full hypothesis list of thm_6_5 (ν with SigmaFinite, IsOpenPosMeasure, IsHomogeneous α ν for α > 0 and hfin, the tempered activation (β, b) with ¬ IsPolynomialFun b, and the band-pass ρ with temperedAdmissibilityConst α β ρ = 1 and its frequency window I) and is proved from thm_6_5(i)-(ii) together with lem:qualitative-sampling, as the manuscript's proof does. thm_6_5_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the same explicit rate ε + 8V/√N(|b(0)| + Lip(b) R_K M₂) as in the scalar case, by the Hilbert-valued thm:lipschitz-barron, together with a deterministic width-N realization (the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement). Both thm_6_5 and thm_6_5_vec carry one hypothesis the manuscript's sentence does not display, hfin : ∀ R, ν (Metric.closedBall 0 R) < ⊤ (the direction measure is finite on bounded sets), placed right after IsHomogeneous α ν: Step 2 of the proof normalizes a radial bump by ν of a ball and needs that mass finite. lem:homogeneous-mixture supplies it for the Gaussian mixture ν_α in infinite dimension, and the manuscript states thm:D for ν_α only — thm:general-weights deliberately omits thm:D from the results it extends to abstract weights. The hypothesis is not redundant: σ-finiteness, full support and homogeneity of degree α > 0 do not imply it (on ℝ² the measure carrying r^{α−1} dr on every ray of rational angle has all three and gives infinite mass to every nonempty open set, and for it every continuous G regular along rays vanishes, so (i) fails). The 2026-09-13 revision restated the vector-valued clause to claim the same explicit width-N bound through thm:lipschitz-barron, where it previously referred to the weaker vector-valued rate; `thm_6_5_vec` now carries that bound, and `thm_6_5` and `thm_6_5_dense` are unchanged. The sampling bounds apply after a spectral approximation has been chosen; the statement does not give a uniform width-versus-accuracy rate over all continuous targets.",
+      "note": "thm_6_5 is one existence theorem with a conjunction (the same G for all parts), as in the manuscript: G regular along rays (w.r.t. the explicit window I), ContDiff ℝ ⊤ G, ∃ R, ‖ξ‖ > R → G ξ = 0, (i) compactSupNorm K (f − g_G) < ε, (ii) g_G = integralNetworkDensity b λ_α γ_G as functions and ∀ m, Integrable ((1+‖a‖+|c|)^m ‖γ_G‖) λ_α (m = 0 is finiteness), (iii) ∀ L, LipschitzWith L b → ∀ N > 0, the expectation bound ε + 8V/√N(…) and a deterministic sample with the same bound. The activation is (β, b) with IsTemperedFunction β b (continuous, polynomial growth) and ¬IsPolynomialFun b; C^{(α)}_{β,ρ} = 1 is temperedAdmissibilityConst α β ρ = 1. thm_6_5_dense is the 'in particular' density of finite-width networks in C(H) (compact-open), stated as ∀ f K ε, ∃ finiteNetwork within ε on K.  The density sentence sits inside Theorem 6.5 in the manuscript, under all of its hypotheses, so the Lean statement of thm_6_5_dense carries the full hypothesis list of thm_6_5 (ν with SigmaFinite, IsOpenPosMeasure, IsHomogeneous α ν for α > 0 and hfin, the tempered activation (β, b) with ¬ IsPolynomialFun b, and the band-pass ρ with temperedAdmissibilityConst α β ρ = 1 and its frequency window I) and is proved from thm_6_5(i)-(ii) together with lem:qualitative-sampling, as the manuscript's proof does. thm_6_5_vec is the vector-valued sentence with Y a separable complex Hilbert space, coefficientFormulaVec, and, for (iii), the same explicit rate ε + 8V/√N(|b(0)| + Lip(b) R_K M₂) as in the scalar case, by the Hilbert-valued thm:lipschitz-barron, together with a deterministic width-N realization (the L²(ζ;Y) rate of cor:vector-rates(i) is not combined with (i), which is a C(K;Y) statement). Both thm_6_5 and thm_6_5_vec carry one hypothesis the manuscript's sentence does not display, hfin : ∀ R, ν (Metric.closedBall 0 R) < ⊤ (the direction measure is finite on bounded sets), placed right after IsHomogeneous α ν: Step 2 of the proof normalizes a radial bump by ν of a ball and needs that mass finite. lem:homogeneous-mixture supplies it for the Gaussian mixture ν_α in infinite dimension, and the manuscript states thm:D for ν_α only — thm:general-weights deliberately omits thm:D from the results it extends to abstract weights. The hypothesis is not redundant: σ-finiteness, full support and homogeneity of degree α > 0 do not imply it (on ℝ² the measure carrying r^{α−1} dr on every ray of rational angle has all three and gives infinite mass to every nonempty open set, and for it every continuous G regular along rays vanishes, so (i) fails). The 2026-09-13 revision restated the vector-valued clause to claim the same explicit width-N bound through thm:lipschitz-barron, where it previously referred to the weaker vector-valued rate; `thm_6_5_vec` now carries that bound, and `thm_6_5` and `thm_6_5_dense` are unchanged. The approximation rates apply after a spectral approximation has been chosen; the statement does not give a uniform width-versus-accuracy rate over all continuous targets.",
       "blueprint_label": "thm:6.5"
     },
     {
@@ -557,7 +557,7 @@
       "label": "ex:gaussian-parameter",
       "kind": "example",
       "number": "7.2",
-      "page": "26",
+      "page": "27",
       "title": "ReLU and Gaussian networks with Gaussian parameters",
       "lean": [
         "OperatorRidgelet.Paper.ex_7_2_i",
@@ -890,7 +890,7 @@
       "kind": "lemma",
       "number": "D.1",
       "page": "43",
-      "title": "Qualitative sampling of integrable Banach-valued atoms",
+      "title": "Approximation by averages of integrable Banach-valued atoms",
       "lean": [
         "OperatorRidgelet.Paper.lem_D_1_i",
         "OperatorRidgelet.Paper.lem_D_1_ii"
@@ -955,7 +955,7 @@
       "kind": "lemma",
       "number": "D.6",
       "page": "48",
-      "title": "Hilbert-valued sampling identity",
+      "title": "Mean-square error identity for Hilbert-valued averages",
       "lean": [
         "OperatorRidgelet.Paper.lem_D_6_i",
         "OperatorRidgelet.Paper.lem_D_6_ii",
@@ -969,7 +969,7 @@
       "kind": "corollary",
       "number": "D.7",
       "page": "49",
-      "title": "Sampling in operator parameters",
+      "title": "Approximation with operator-valued parameters",
       "lean": [
         "OperatorRidgelet.Paper.cor_D_7_i",
         "OperatorRidgelet.Paper.cor_D_7_ii"
@@ -982,7 +982,7 @@
       "kind": "corollary",
       "number": "D.8",
       "page": "49",
-      "title": "Input truncation and sampling are separate errors",
+      "title": "Input truncation and finite-width approximation errors",
       "lean": [
         "OperatorRidgelet.Paper.cor_D_8_i",
         "OperatorRidgelet.Paper.cor_D_8_ii"
@@ -1051,7 +1051,7 @@
       "label": "prop:scalar-universality",
       "kind": "proposition",
       "number": "F.3",
-      "page": "52",
+      "page": "53",
       "title": "Compact-open universality by finite-dimensional reduction",
       "lean": [
         "OperatorRidgelet.Paper.prop_F_3_i",

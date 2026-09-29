@@ -2,7 +2,9 @@ import Architect
 import OperatorRidgelet.Paper.Tempered
 
 /-!
-# LeanArchitect metadata for Section 5 (tempered synthesis activations and ReLU) and Appendix C
+# LeanArchitect metadata for Section 5 and Appendix C
+
+Reconstruction formulas and activation functions.
 
 `attribute [blueprint ...]` commands for the declarations of `OperatorRidgelet.Paper.Tempered`
 and the definitions it uses.  Labels are the manuscript labels with the part appended; auxiliary
@@ -66,7 +68,7 @@ attribute [blueprint "def:5.1-activation"
     $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedActivation
 
-/-! ## Definitions: the regularized and the tempered synthesis
+/-! ## Definitions: regularized synthesis and its limit
 
 The anti-dual `𝓔_α'`, the extended transform `R_ρ`, the synthesis `S_ρ`, the Riesz map and its
 inverse, the target `g_G`, and regularity along rays are the Section 4 definitions tagged in
@@ -78,9 +80,9 @@ attribute [blueprint "def:5.1-regularized"
   (hasProof := false)] OperatorRidgelet.regularizedSynthesis
 
 attribute [blueprint "def:5.1"
-  (statement := /-- The synthesis with a real tempered activation,
+  (statement := /-- Synthesis with an activation represented by a real tempered distribution,
     $S_\beta\gamma:=\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}\gamma$ in
-    $\mathcal E_\alpha'$, whenever the limit exists. -/)
+    the norm of $\mathcal E_\alpha'$, whenever the limit exists. -/)
   (hasProof := false)] OperatorRidgelet.temperedSynthesis
 
 /-! ## Definitions: standard activations and the weighted Sobolev spaces -/

@@ -41,8 +41,8 @@ manuscript-facing theorems; the other modules supply definitions and supporting 
 | Networks (§2), Hilbert–Schmidt reduction, exact lifts and universality (Appendix F) | [Network/](../OperatorRidgelet/OperatorRidgelet/Network/), [Architecture/](../OperatorRidgelet/OperatorRidgelet/Architecture/), [RankOneLift.lean](../OperatorRidgelet/OperatorRidgelet/RankOneLift.lean), [OperatorValuedRidgelet.lean](../OperatorRidgelet/OperatorRidgelet/OperatorValuedRidgelet.lean) | [Paper/Networks.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean) |
 | Homogeneous Gaussian mixtures, Fourier-slice identity, the Hilbert space and Plancherel (§3, Theorem 3.11) | [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
 | Integral representation, reconstruction, frame operator and vector-valued extensions (§4, Theorems 4.2 and 4.3; Appendix B) | [Reconstruction/](../OperatorRidgelet/OperatorRidgelet/Reconstruction/) | [Paper/Reconstruction.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Reconstruction.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
-| Tempered synthesis, ReLU and standard activations (§5, Appendix C) | [Tempered/](../OperatorRidgelet/OperatorRidgelet/Tempered/), [Activation.lean](../OperatorRidgelet/OperatorRidgelet/Activation.lean) | [Paper/Tempered.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Tempered.lean) |
-| Absolute synthesis under a Sobolev condition, Sobolev pairing and non-band-pass Gaussian-derivative filters (§5.6, C.3–C.4, I.3) | [Sobolev/](../OperatorRidgelet/OperatorRidgelet/Sobolev/) | [Paper/Sobolev.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sobolev.lean) |
+| Reconstruction formulas, ReLU and standard activations (§5, Appendix C) | [Tempered/](../OperatorRidgelet/OperatorRidgelet/Tempered/), [Activation.lean](../OperatorRidgelet/OperatorRidgelet/Activation.lean) | [Paper/Tempered.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Tempered.lean) |
+| Integral representation under Sobolev conditions, Fourier duality and Gaussian-derivative filters (§5.6, C.3–C.4, I.3) | [Sobolev/](../OperatorRidgelet/OperatorRidgelet/Sobolev/) | [Paper/Sobolev.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sobolev.lean) |
 | Rademacher bounds, dimension-free finite-width approximation, sampling and input truncation (§6, Theorems 6.4 and 6.5; Appendix D) | [Sampling/](../OperatorRidgelet/OperatorRidgelet/Sampling/), [ToFoML/](../OperatorRidgelet/OperatorRidgelet/ToFoML/) | [Paper/Sampling.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean), [Paper/SamplingRevision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/SamplingRevision.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
 | Gaussian targets, operator layers, convolution, Dirichlet operators and Gaussian integral identities (§7, Appendix E) | [Examples/](../OperatorRidgelet/OperatorRidgelet/Examples/) | [Paper/Examples.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Examples.lean) |
 | Finite-dimensional backprojection and dilation obstruction (Appendix G) | [FiniteDim/](../OperatorRidgelet/OperatorRidgelet/FiniteDim/), [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean) |
@@ -85,6 +85,13 @@ of the coefficient operator, with values in the frequency-domain density space.
 An analysis filter is *band-pass* here when it is nonzero and its smooth Fourier transform
 has compact support away from zero. *ReLU is admissible* refers to its pairing with a suitable
 analysis filter, giving a nonzero reconstruction constant; ReLU itself is not a Schwartz filter.
+
+For an activation represented by a tempered distribution, synthesis is defined by regularizing
+the activation and taking a norm limit in the continuous anti-dual (Definition 5.1). An
+absolutely convergent network integral instead requires integrability of the integrand against
+the total variation of its coefficient measure. These describe different aspects of the
+construction: under the additional hypotheses of Theorems 4.2(iii) or 5.6, a continuous
+activation of polynomial growth gives such an integral.
 
 For Hilbert-valued functions, the Sobolev norm is the Bessel-potential norm in the frequency
 variable. For Banach-valued functions, `MemRaySobolev` and `raySobolevNorm` directly express
