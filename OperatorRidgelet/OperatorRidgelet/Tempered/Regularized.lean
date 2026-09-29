@@ -4,7 +4,7 @@ import OperatorRidgelet.ToMathlib.TemperedDistributionTranslate
 /-!
 # The regularized spectrum and the regularized activation
 
-Definition `def:regularized-synthesis`, parts (iii) and (iv): for a real tempered `β`, a cutoff
+Definition `def:5.1`, parts (iii) and (iv): for a real tempered `β`, a cutoff
 `χ`, and an approximate identity `(η_ε)`, the regularized spectrum
 `β̂_ε = χ (β̂ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})`, and there is a real Schwartz function `β_ε`
 with Fourier transform `β̂_ε`.
@@ -68,7 +68,7 @@ theorem contDiff_distributionConvolution (u : TemperedDistribution ℝ ℂ) {η 
 
 /-! ### The regularized spectrum is in `C_c^∞(ℝ ∖ {0})` -/
 
-/-- **Definition `def:regularized-synthesis`(iii)**, smoothness. -/
+/-- **Definition `def:5.1`(iii)**, smoothness. -/
 theorem IsCutoff.contDiff_regularizedSpectrum {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ}
     (hχ : IsCutoff ρ χ) {η : ℝ → ℝ → ℝ} (hη : IsApproximateIdentity η) {ε : ℝ} (hε : 0 < ε)
     (β : TemperedDistribution ℝ ℂ) : ContDiff ℝ (⊤ : ℕ∞) (regularizedSpectrum β χ η ε) := by
@@ -76,13 +76,13 @@ theorem IsCutoff.contDiff_regularizedSpectrum {ρ : SchwartzMap ℝ ℝ} {χ : �
   exact (Complex.ofRealCLM.contDiff.comp hχ.contDiff).mul
     (contDiff_distributionConvolution _ (hη.contDiff ε hε) (hη.hasCompactSupport ε hε))
 
-/-- **Definition `def:regularized-synthesis`(iii)**, compact support. -/
+/-- **Definition `def:5.1`(iii)**, compact support. -/
 theorem IsCutoff.hasCompactSupport_regularizedSpectrum {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ}
     (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ) (ε : ℝ) (β : TemperedDistribution ℝ ℂ) :
     HasCompactSupport (regularizedSpectrum β χ η ε) :=
   (hχ.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right
 
-/-- **Definition `def:regularized-synthesis`(iii)**, support away from the origin. -/
+/-- **Definition `def:5.1`(iii)**, support away from the origin. -/
 theorem IsCutoff.zero_notMem_tsupport_regularizedSpectrum {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ}
     (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ) (ε : ℝ) (β : TemperedDistribution ℝ ℂ) :
     (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) := by
@@ -122,7 +122,7 @@ theorem conj_regularizedSpectrum_neg {β : TemperedDistribution ℝ ℂ} (hβ : 
     hβ.conj_distributionConvolution_neg (hη.contDiff ε hε) (hη.hasCompactSupport ε hε)
       (hη.even ε hε)]
 
-/-- **Definition `def:regularized-synthesis`(iv)**, existence: a real Schwartz function with
+/-- **Definition `def:5.1`(iv)**, existence: a real Schwartz function with
 Fourier transform `β̂_ε`. -/
 theorem exists_regularizedActivation {β : TemperedDistribution ℝ ℂ} (hβ : IsRealDistribution β)
     {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ} (hχ : IsCutoff ρ χ) {η : ℝ → ℝ → ℝ}
@@ -136,7 +136,7 @@ theorem exists_regularizedActivation {β : TemperedDistribution ℝ ℂ} (hβ : 
     rw [hψ, hψ]
     exact conj_regularizedSpectrum_neg hβ hχ hη hε ω), hψ]
 
-/-- **Definition `def:regularized-synthesis`(iv)**: the chosen regularized activation has
+/-- **Definition `def:5.1`(iv)**: the chosen regularized activation has
 Fourier transform `β̂_ε`. -/
 theorem filterFourier_regularizedActivation {β : TemperedDistribution ℝ ℂ}
     (hβ : IsRealDistribution β) {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ} (hχ : IsCutoff ρ χ)

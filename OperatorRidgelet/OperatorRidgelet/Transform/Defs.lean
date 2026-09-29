@@ -28,7 +28,7 @@ The Gaussian objects are represented as follows.
   characteristic functional `ξ ↦ exp(-⟨Qξ,ξ⟩/2)`, which is the manuscript's definition of the
   centred Gaussian measure with covariance `Q`.
 * "positive, self-adjoint, trace class" is the predicate `IsPositiveTraceClass` (the
-  hypothesis of Lemma `lem:gaussian-quadratic`), and "injective, positive, self-adjoint, trace
+  hypothesis of Lemma `lem:E.1`), and "injective, positive, self-adjoint, trace
   class" is `IsTraceClassCovariance`, which extends it by injectivity.  The trace condition
   `HasSummableTrace P` is the summability of `∑ ⟪P e_j, e_j⟫` along some Hilbert basis, and the
   trace `tr P` is `traceOf P`, the sum along such a basis (`traceAlong`); for a positive
@@ -188,7 +188,7 @@ def traceOf (P : H →L[ℝ] H) : ℝ :=
   if h : HasSummableTrace P then traceAlong h.choose_spec.choose P else 0
 
 /-- A positive, self-adjoint, trace-class operator: the hypothesis on `Σ` in Lemma
-`lem:gaussian-quadratic`, and the covariance hypothesis `IsTraceClassCovariance` without
+`lem:E.1`, and the covariance hypothesis `IsTraceClassCovariance` without
 injectivity. -/
 structure IsPositiveTraceClass (P : H →L[ℝ] H) : Prop where
   /-- `P` is self-adjoint. -/
@@ -313,7 +313,7 @@ integral of a non-integrable function is `0`: without the clause an arbitrary no
 function would be a "representative" of every coefficient, and the backprojection integral
 `backprojectionOf` computed from it would be meaningless.  With the clause all representatives
 of `γ` agree almost everywhere for almost every direction, so `backprojection` is independent
-of the choice (Proposition `prop:coefficient-projection`(ii)). -/
+of the choice (Proposition `prop:B.8`(ii)). -/
 structure HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → ℝ → ℂ) : Prop where
   /-- `Φ(a,·) ∈ L²(ℝ)` for `ν`-almost every direction `a`. -/
   memLp : ∀ᵐ a ∂ν, MemLp (Φ a) 2 volume

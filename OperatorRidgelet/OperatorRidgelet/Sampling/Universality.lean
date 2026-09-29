@@ -6,7 +6,7 @@ import Mathlib.Topology.ContinuousMap.StoneWeierstrass
 /-!
 # Constructive universal approximation
 
-The material behind Theorem `thm:D`.  Two independent ingredients are proved here.
+The material behind Theorem `thm:6.5`.  Two independent ingredients are proved here.
 
 *Step 1 (Stone--Weierstrass).*  The characters `χ_ξ(x) = e^{i⟪x,ξ⟫}`, restricted to a compact
 `K ⊆ H`, span a self-conjugate subalgebra of `C(K;ℂ)`: they are closed under multiplication
@@ -26,7 +26,7 @@ regular along rays by `isRegularAlongRays_radialBump`.
 Combining the two steps, `exists_isRegularAlongRays_norm_sub_spectralTarget_le` produces, for
 every continuous `f`, compact `K` and `ε > 0`, a density `G` that is smooth, vanishes outside a
 bounded set, is regular along rays, and satisfies `‖f - g_G‖ ≤ ε` on `K`.  Feeding it to
-Theorem `thm:A`(iii) and to the moment bounds of Theorem `thm:E` gives Theorem `thm:D` for a
+Theorem `thm:4.2`(iii) and to the moment bounds of Theorem `thm:6.4` gives Theorem `thm:6.5` for a
 direction measure that is finite on bounded sets.
 -/
 
@@ -160,7 +160,7 @@ theorem charAlgebra_separatesPoints (K : Set H) : (charAlgebra K).SeparatesPoint
   rw [hx] at hcon
   exact Complex.exp_ne_zero ((⟪(y : H), ξ⟫ : ℝ) * Complex.I) (by linear_combination -hcon / 2)
 
-/-- **Step 1 of Theorem `thm:D`.**  Every continuous `F` on a compact `K` is uniformly
+/-- **Step 1 of Theorem `thm:6.5`.**  Every continuous `F` on a compact `K` is uniformly
 approximated by a finite linear combination of characters.  The statement is for a continuous
 map on the subtype `K`, so that it applies to functions defined only on `K`. -/
 theorem exists_character_approx_continuousMap {K : Set H} (hK : IsCompact K) (F : C(K, ℂ))
@@ -192,7 +192,7 @@ theorem exists_character_approx_continuousMap {K : Set H} (hK : IsCompact K) (F 
   rw [← dist_eq_norm]
   exact hgdist.le
 
-/-- **Step 1 of Theorem `thm:D`.**  Every continuous `f : H → ℂ` is uniformly approximated on a
+/-- **Step 1 of Theorem `thm:6.5`.**  Every continuous `f : H → ℂ` is uniformly approximated on a
 compact `K` by a finite linear combination of characters. -/
 theorem exists_character_approx {K : Set H} (hK : IsCompact K) {f : H → ℂ} (hf : Continuous f)
     {ε : ℝ} (hε : 0 < ε) :
@@ -211,7 +211,7 @@ section CharactersVec
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- **Step 1 of Theorem `thm:D`, vector-valued, first half.**  A continuous `Y`-valued map is
+/-- **Step 1 of Theorem `thm:6.5`, vector-valued, first half.**  A continuous `Y`-valued map is
 uniformly approximated on a compact `K` by a finite combination `∑ g_k • y_k` of continuous
 scalar functions with constant weights in `Y`: the compact set of values `f(K)` is covered by
 finitely many `ε`-balls, and the bumps `max(0, ε − ‖f(x) − y_k‖)` of their centres normalize
@@ -274,7 +274,7 @@ theorem exists_scalar_smul_approx {K : Set H} (hK : IsCompact K) {f : H → Y} (
     refine (Finset.sum_le_sum fun k _ => hterm k).trans ?_
     rw [← Finset.sum_mul, hcsum, one_mul]
 
-/-- **Step 1 of Theorem `thm:D`, vector-valued.**  Every continuous `f : H → Y` is uniformly
+/-- **Step 1 of Theorem `thm:6.5`, vector-valued.**  Every continuous `f : H → Y` is uniformly
 approximated on a compact `K` by a finite combination of characters with constant weights in
 `Y`. -/
 theorem exists_character_approx_vec {K : Set H} (hK : IsCompact K) {f : H → Y}
@@ -553,7 +553,7 @@ theorem spectralTarget_finset_sum (ν : Measure H) {ι : Type*} (s : Finset ι) 
   exact Finset.sum_congr rfl fun i _ => by
     rw [integral_const_mul, spectralTarget_eq_integral_mul]
 
-/-- **Step 2 of Theorem `thm:D`.**  A character is uniformly close to the target with the
+/-- **Step 2 of Theorem `thm:6.5`.**  A character is uniformly close to the target with the
 normalized radial bump as spectral density. -/
 theorem norm_char_sub_spectralTarget_bumpDensity_le (ν : Measure H) [ν.IsOpenPosMeasure]
     (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) (ξ₀ : H) {δ : ℝ} (hδ : 0 < δ) (x : H) :
@@ -609,7 +609,7 @@ section Approx
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H]
 
-/-- **Steps 1--3 of Theorem `thm:D`.**  For a direction measure with full support that is finite
+/-- **Steps 1--3 of Theorem `thm:6.5`.**  For a direction measure with full support that is finite
 on bounded sets, every continuous `f` is uniformly approximated on a compact `K` by the target
 `g_G` of a spectral density `G` that is smooth, vanishes outside a bounded set, and is regular
 along rays. -/
@@ -714,7 +714,7 @@ theorem spectralTarget_finset_sum_smul (ν : Measure H) {ι : Type*} (s : Finset
         Finset.sum_congr rfl fun i _ => by
           rw [integral_smul_const, spectralTarget_eq_integral_mul]
 
-/-- **Steps 1--3 of Theorem `thm:D`, vector-valued.**  For a direction measure with full support
+/-- **Steps 1--3 of Theorem `thm:6.5`, vector-valued.**  For a direction measure with full support
 that is finite on bounded sets, every continuous `f : H → Y` is uniformly approximated on a
 compact `K` by the target `g_G` of a `Y`-valued spectral density `G` that is smooth, vanishes
 outside a bounded set, and is regular along rays. -/
@@ -791,7 +791,7 @@ theorem exists_isRegularAlongRays_norm_sub_spectralTarget_leVec (ν : Measure H)
 
 end ApproxVec
 
-/-! ### Theorem `thm:D` for a direction measure finite on bounded sets -/
+/-! ### Theorem `thm:6.5` for a direction measure finite on bounded sets -/
 
 section Universal
 
@@ -799,7 +799,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
 /-- The target with a density regular along rays is the integral network of the explicit
-coefficient; Theorem `thm:E`(iii) without the Lipschitz hypothesis on the activation. -/
+coefficient; Theorem `thm:6.4`(iii) without the Lipschitz hypothesis on the activation. -/
 theorem spectralTarget_eq_integralNetworkDensity (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) {I : Set ℝ}
     (hI : IsFrequencyWindow ρ I) {β : TemperedDistribution ℝ ℂ} {b : ℝ → ℝ}
@@ -852,7 +852,7 @@ theorem exists_compactSupNorm_ridge_le {K : Set H} (hK : IsCompact K) {b : ℝ �
     _ = C₀ * (1 + max r 0) ^ n * (1 + ‖θ.1‖ + |θ.2|) ^ n := by rw [mul_pow]; ring
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- The hypothesis of Lemma `lem:qualitative-sampling` for a coefficient measure `Γ = γ λ`
+/-- The hypothesis of Lemma `lem:D.4` for a coefficient measure `Γ = γ λ`
 with all parameter moments finite and an activation that is continuous and of polynomial
 growth: the ridge atoms are integrably bounded in `C(K)` against `|Γ|`. -/
 theorem integrable_compactSupNorm_ridge_variation_withDensityᵥ {K : Set H} (hK : IsCompact K)
@@ -882,8 +882,8 @@ theorem integrable_compactSupNorm_ridge_variation_withDensityᵥ {K : Set H} (hK
         exact mul_le_mul_of_nonneg_left (hCle θ) (norm_nonneg _)
     _ = C * ((1 + ‖θ.1‖ + |θ.2|) ^ m * ‖γ θ‖) := by ring
 
-/-- **Theorem `thm:D`** for a direction measure that is finite on bounded sets: a constructive
-universal approximation with the rate of Theorem `thm:lipschitz-barron`. -/
+/-- **Theorem `thm:6.5`** for a direction measure that is finite on bounded sets: a constructive
+universal approximation with the rate of Theorem `thm:6.3`. -/
 theorem exists_spectralDensity_universal_approx (ν : Measure H) [SigmaFinite ν]
     [ν.IsOpenPosMeasure] (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) {α : ℝ}
     (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
@@ -1302,7 +1302,7 @@ theorem compactSupNorm_densitySampledNetwork_sub_eqVec (hK : IsCompact K) {β : 
         (densityPhase γ) (fun θ' x => rfl) (integrable_density_atomVec hK hβ hγ hV hM)
         (densityWeight_nonneg lam γ) hN θ
 
-/-- **The vector-valued Rademacher bound of Corollary `cor:vector-rates`(ii)** for a coefficient
+/-- **The vector-valued Rademacher bound of Corollary `cor:6.6`(ii)** for a coefficient
 measure with a density: the mean compact-open error of the sampled network of `γ λ` is at most
 `2V 𝔑^Y_N(K; p, β)`. -/
 theorem integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec (hK : IsCompact K)
@@ -1352,7 +1352,7 @@ theorem integral_compactSupNorm_densitySampledNetwork_sub_le_rademacherVec (hK :
 
 /-- **The Hilbert-valued Barron bound for a coefficient measure with a density.**  The mean
 compact-open error of the sampled network of `γ λ` is at most
-`(8V/√N)(|β(0)| + Lip(β) R_K M₂)`, by `thm:lipschitz-barron` through the vector Rademacher
+`(8V/√N)(|β(0)| + Lip(β) R_K M₂)`, by `thm:6.3` through the vector Rademacher
 complexity. -/
 theorem integral_compactSupNorm_densitySampledNetwork_sub_leVec (hK : IsCompact K) {β : ℝ → ℝ}
     {L : ℝ≥0} (hβ : LipschitzWith L β) {lam : Measure (H × ℝ)} {γ : H × ℝ → Y}
@@ -1398,7 +1398,7 @@ theorem integral_compactSupNorm_densitySampledNetwork_sub_leVec (hK : IsCompact 
 
 end VectorDensityRademacher
 
-/-! ### Theorem `thm:D` for `Y`-valued targets -/
+/-! ### Theorem `thm:6.5` for `Y`-valued targets -/
 
 section UniversalVec
 
@@ -1408,7 +1408,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
   [SecondCountableTopology Y]
 
 /-- The `Y`-valued target with a density regular along rays is the integral network of the
-explicit coefficient; Theorem `thm:A`(iii) without the Lipschitz hypothesis on the
+explicit coefficient; Theorem `thm:4.2`(iii) without the Lipschitz hypothesis on the
 activation. -/
 theorem spectralTarget_eq_integralNetworkDensityVec (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) {I : Set ℝ}
@@ -1522,9 +1522,9 @@ theorem exists_compactSupNorm_densitySampledNetwork_sub_leVec (hK : IsCompact K)
     (integrable_compactSupNorm_densitySampledNetwork_subVec hK hβ hγ hV hM hN)
   exact ⟨θ, hθ.trans (integral_compactSupNorm_densitySampledNetwork_sub_leVec hK hβ hγ hM hN)⟩
 
-/-- **Theorem `thm:D`, vector-valued**, for a direction measure that is finite on bounded sets:
+/-- **Theorem `thm:6.5`, vector-valued**, for a direction measure that is finite on bounded sets:
 a constructive universal approximation of a continuous `f : H → Y` with the vector-valued
-compact-open rate `2V 𝔑^Y_N(K; p, β)` of Corollary `cor:vector-rates`(ii). -/
+compact-open rate `2V 𝔑^Y_N(K; p, β)` of Corollary `cor:6.6`(ii). -/
 theorem exists_spectralDensity_universal_approx_vec (ν : Measure H) [SigmaFinite ν]
     [ν.IsOpenPosMeasure] (hfin : ∀ R : ℝ, ν (closedBall (0 : H) R) < ⊤) {α : ℝ}
     (hν : IsHomogeneous α ν) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)

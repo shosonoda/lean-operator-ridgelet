@@ -7,7 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 # The Dirichlet solution operator: bounds on the Green kernel
 
 The Green kernel `g(y,t) = sinh(min(y,t)) sinh(1 - max(y,t)) / sinh 1` of Example
-`ex:dirichlet` is nonnegative and bounded by `sinh 1` on `(0,1)²` (`abs_dirichletKernel_le`),
+`ex:7.6` is nonnegative and bounded by `sinh 1` on `(0,1)²` (`abs_dirichletKernel_le`),
 and Lipschitz in `y` uniformly in `t` (`abs_dirichletKernel_sub_le`).  Hence the directions
 `a_y = g(y,·)` are bounded in `L²(0,1)` (`norm_dirichletDirection_le`) and depend continuously
 on `y` (`continuous_dirichletDirection`), so the standing hypotheses of the neural-operator
@@ -134,7 +134,7 @@ theorem measureUnivNNReal_volume_unitOpenInterval :
     measureUnivNNReal (volume : Measure UnitOpenInterval) = 1 := by
   rw [← ENNReal.coe_inj, coe_measureUnivNNReal, measure_univ, ENNReal.coe_one]
 
-/-- **Example `ex:dirichlet`**: `‖a_y‖₂ ≤ sinh 1`. -/
+/-- **Example `ex:7.6`**: `‖a_y‖₂ ≤ sinh 1`. -/
 theorem norm_dirichletDirection_le (y : UnitOpenInterval) :
     ‖dirichletDirection y‖ ≤ Real.sinh 1 := by
   rw [dirichletDirection_eq]
@@ -177,7 +177,7 @@ theorem norm_dirichletOutput_le (y : UnitOpenInterval) : ‖dirichletOutput y‖
   rw [norm_ofRealCLM_compLp]
   exact norm_dirichletDirection_le y
 
-/-- **Example `ex:dirichlet`**: the standing hypotheses of the neural-operator layer hold. -/
+/-- **Example `ex:7.6`**: the standing hypotheses of the neural-operator layer hold. -/
 theorem isLayerData_dirichlet : IsLayerData volume dirichletDirection dirichletOutput where
   stronglyMeasurable_a := continuous_dirichletDirection.stronglyMeasurable
   bounded_a := ⟨Real.sinh 1, norm_dirichletDirection_le⟩

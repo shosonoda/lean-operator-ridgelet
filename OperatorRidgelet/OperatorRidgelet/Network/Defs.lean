@@ -10,9 +10,9 @@ Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper`
 module.
 
 * `finiteNetwork`: the width-`N` network `f_N(x) = ∑_j v_j β(⟪a_j, x⟫ + c_j)` of Definition
-  `def:finite-network`.
+  `def:2.1`.
 * `integralNetwork`: the integral network `S_β[Γ](x) = ∫ β(⟪a, x⟫ + c) Γ(da, dc)` of Definition
-  `def:integral-network`, together with `totalVariation` and the density form
+  `def:2.2`, together with `totalVariation` and the density form
   `integralNetworkDensity` (`S_β[γ]` for `Γ = γ λ`).
 * `IsPolynomialFun`: the scalar activations excluded by the universality statements;
   `HasPolynomialGrowth`: the growth condition `|β(t)| ≤ C (1 + |t|)^p` on scalar activations
@@ -44,7 +44,7 @@ open scoped ENNReal
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- **Definition [def:finite-network]** The width-`N` network on `H` with values in `Y`,
+/-- **Definition [def:2.1]** The width-`N` network on `H` with values in `Y`,
 `f_N(x) = ∑_{j} β(⟪a_j, x⟫ + c_j) • v_j`, with outer weights `v : Fin N → Y`, directions
 `a : Fin N → H`, biases `c : Fin N → ℝ`, and scalar activation `β : ℝ → ℂ` (continuous in the
 manuscript).  The scalar case is `Y = ℂ`. -/
@@ -71,7 +71,7 @@ def totalVariation (Γ : VectorMeasure Θ Y) : ℝ≥0∞ :=
 
 variable [MeasurableSpace H]
 
-/-- **Definition [def:integral-network]** The integral network
+/-- **Definition [def:2.2]** The integral network
 `S_β[Γ](x) = ∫ β(⟪a, x⟫ + c) Γ(da, dc)` of a `Y`-valued measure `Γ` on `Θ = H × ℝ`, as the
 vector-measure Bochner integral with complex scalars acting on `Y`; it is `0` when the integrand
 is not integrable against `Γ.variation`. -/

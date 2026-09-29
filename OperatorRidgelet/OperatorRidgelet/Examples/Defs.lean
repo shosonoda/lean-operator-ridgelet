@@ -34,7 +34,7 @@ Mathlib v4.32.0 has neither trace-class operators nor Fredholm determinants.
 
 * The trace `traceOf P = ∑ ⟪P e_i, e_i⟫` along a Hilbert basis for which the sum converges
   (`HasSummableTrace`; `0` if there is none) and the hypothesis `IsPositiveTraceClass P` of
-  Lemma `lem:gaussian-quadratic` (positive, self-adjoint, summable trace: the covariance
+  Lemma `lem:E.1` (positive, self-adjoint, summable trace: the covariance
   hypothesis `IsTraceClassCovariance` without injectivity, of which it is the parent
   structure) are defined in `OperatorRidgelet.Transform.Defs` next to `IsTraceClassCovariance`.
 * Square roots such as `Q^{1/2}` are data `S` with `IsPositiveSqrt S Q` (`S` positive
@@ -81,18 +81,18 @@ The sampling claims inside the examples are stated with the Section 6 objects of
 expectation `𝔼‖f_N − f‖` is the Bochner integral against it.
 
 * The sampled network of a coefficient measure `γ λ_α` with a density (Example
-  `ex:closed-form`(iii), Example `ex:operator-layer`(ii)) is `densitySampledNetwork β λ_α γ`
+  `ex:7.1`(iii), Example `ex:7.4`(ii)) is `densitySampledNetwork β λ_α γ`
   with the law `densityLaw λ_α γ = |γ| λ_α / V`, `V = densityWeight λ_α γ`, exactly as in
-  Theorem `thm:E`(iv).
+  Theorem `thm:6.4`(iv).
 * The sampled networks of the neural-operator layer `ℱ = S_β[Γ]`, `Γ = ι_#(b_y m(dy))`, and of
-  its scalar observables `F_φ = S_β[Γ_φ]`, `Γ_φ = ι_#(w_φ m)` (Example `ex:operator-layer`(i))
-  are the polar sampled networks `polarSampledNetwork β Γ` of Corollary `cor:vector-rates` and
-  Theorem `thm:lipschitz-barron`, with samples from `polarLaw Γ`; the manuscript invokes exactly
+  its scalar observables `F_φ = S_β[Γ_φ]`, `Γ_φ = ι_#(w_φ m)` (Example `ex:7.4`(i))
+  are the polar sampled networks `polarSampledNetwork β Γ` of Corollary `cor:6.6` and
+  Theorem `thm:6.3`, with samples from `polarLaw Γ`; the manuscript invokes exactly
   these two results, and the constants `∫ ‖b_y‖ m(dy) ≥ ‖Γ‖_TV` and `‖A‖_∞ ≥ M₂` are kept.
 * The discretized Gaussian-parameter ReLU network `F_{Q,N}` of Corollary
-  `cor:relu-discretization` is `sampledNetwork ReLU 1 1 θ` with `θ_j = (a_j, 0)`, i.e. samples
+  `cor:7.3` is `sampledNetwork ReLU 1 1 θ` with `θ_j = (a_j, 0)`, i.e. samples
   of the law `ι_# 𝒩(0,Q)`, `ι(a) = (a, 0)`, which is the case `V = 1`, `c = 0`, `h = 1` of
-  Theorem `thm:lipschitz-barron` used in the manuscript's proof.
+  Theorem `thm:6.3` used in the manuscript's proof.
 
 An earlier version of this module carried local stand-ins (`Examples.supNormOn`,
 `Examples.compactRadius`, `Examples.secondMoment`, `Examples.normalizedLaw`,
@@ -353,7 +353,7 @@ def layerA (m : Measure Ω) (a : Ω → H) : H →ₗ[ℝ] (Ω →ₘ[m] ℝ) wh
     · simp only [dif_neg h, smul_zero]
 
 /-- The covariance `S_y = Q - (1 + σ_y²)⁻¹ (Qa_y) ⊗ (Qa_y)`, `σ_y² = ⟨Qa_y, a_y⟩`, of
-Example `ex:operator-layer`(ii). -/
+Example `ex:7.4`(ii). -/
 def layerCovariance (Q : H →L[ℝ] H) (a : Ω → H) (y : Ω) : H →L[ℝ] H :=
   Q - (1 + ⟪Q (a y), a y⟫)⁻¹ • InnerProductSpace.rankOne ℝ (Q (a y)) (Q (a y))
 

@@ -18,27 +18,27 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Lemma [lem:spectral-target-basic]** The spectral target has the uniform L¹ norm bound. -/
-theorem lem_spectral_target_basic_i (ν : Measure H) (G : H → Y) (_hG : Integrable G ν) :
+/-- **Lemma [lem:B.2]** The spectral target has the uniform L¹ norm bound. -/
+theorem lem_B_2_i (ν : Measure H) (G : H → Y) (_hG : Integrable G ν) :
     ∀ x : H, ‖spectralTarget ν G x‖ ≤ ∫ ξ, ‖G ξ‖ ∂ν := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Lemma [lem:spectral-target-basic]** An integrable spectral density has a continuous target. -/
-theorem lem_spectral_target_basic_ii (ν : Measure H) (G : H → Y) (hG : Integrable G ν) :
+/-- **Lemma [lem:B.2]** An integrable spectral density has a continuous target. -/
+theorem lem_B_2_ii (ν : Measure H) (G : H → Y) (hG : Integrable G ν) :
     Continuous (spectralTarget ν G) := by
   sorry
 
-/-- **Lemma [lem:spectral-target-basic]** A spectral density is determined by its target. -/
-theorem lem_spectral_target_basic_iii (ν : Measure H) (G : H → Y) (hG : Integrable G ν)
+/-- **Lemma [lem:B.2]** A spectral density is determined by its target. -/
+theorem lem_B_2_iii (ν : Measure H) (G : H → Y) (hG : Integrable G ν)
     (hzero : spectralTarget ν G = 0) : G =ᵐ[ν] 0 := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Lemma [lem:coefficient-finite-order]** A bounded density with a finite ray moment is L¹∩L². -/
-theorem lem_coefficient_finite_order_i (ν : Measure H) {α : ℝ}
+/-- **Lemma [lem:B.3]** A bounded density with a finite ray moment is L¹∩L². -/
+theorem lem_B_3_i (ν : Measure H) {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (G : H → Y) (hG : StronglyMeasurable G)
     (hbound : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M) (r : ℕ)
@@ -47,8 +47,8 @@ theorem lem_coefficient_finite_order_i (ν : Measure H) {α : ℝ}
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-finite-order]** The inverse integral represents the coefficient. -/
-theorem lem_coefficient_finite_order_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+/-- **Lemma [lem:B.3]** The inverse integral represents the coefficient. -/
+theorem lem_B_3_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (G : H → Y) (hG : StronglyMeasurable G)
     (hbound : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M) (r : ℕ)
@@ -60,8 +60,8 @@ theorem lem_coefficient_finite_order_ii (ν : Measure H) [SigmaFinite ν] {α : 
 
 omit [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
   [CompleteSpace Y] [SecondCountableTopology Y] in
-/-- **Lemma [lem:coefficient-finite-order]** Finitely many ray derivatives give pointwise decay. -/
-theorem lem_coefficient_finite_order_iii (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+/-- **Lemma [lem:B.3]** Finitely many ray derivatives give pointwise decay. -/
+theorem lem_B_3_iii (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (r : ℕ) :
     0 < finiteCoefficientDecayConstant ρ (r + 2) ∧
       finiteCoefficientDecayConstant ρ (r + 2) < ⊤ ∧ ∀ G : H → Y,
@@ -74,8 +74,8 @@ theorem lem_coefficient_finite_order_iii (ρ : SchwartzMap ℝ ℝ) (hρ : IsBan
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Lemma [lem:coefficient-finite-order]** The parameter moment is bounded by A_{r+2,r}. -/
-theorem lem_coefficient_finite_order_iv (ν : Measure H) [SigmaFinite ν]
+/-- **Lemma [lem:B.3]** The parameter moment is bounded by A_{r+2,r}. -/
+theorem lem_B_3_iv (ν : Measure H) [SigmaFinite ν]
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (r : ℕ) :
     finiteCoefficientMomentConstant ρ r ≠ ⊤ ∧ ∀ G : H → Y, StronglyMeasurable G →
@@ -88,8 +88,8 @@ theorem lem_coefficient_finite_order_iv (ν : Measure H) [SigmaFinite ν]
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Lemma [lem:coefficient-finite-order]** Finite ray data imply a finite parameter moment. -/
-theorem lem_coefficient_finite_order_v (ν : Measure H) [SigmaFinite ν]
+/-- **Lemma [lem:B.3]** Finite ray data imply a finite parameter moment. -/
+theorem lem_B_3_v (ν : Measure H) [SigmaFinite ν]
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (G : H → Y) (hG : StronglyMeasurable G) (r : ℕ)
     (hGs : ∀ a : H, ∃ U : Set ℝ, IsOpen U ∧ I ⊆ U ∧
@@ -101,8 +101,8 @@ theorem lem_coefficient_finite_order_v (ν : Measure H) [SigmaFinite ν]
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Theorem [thm:E]** All parameter moments are bounded, also for vector-valued densities. -/
-theorem thm_E_moments (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+/-- **Theorem [thm:6.4]** All parameter moments are bounded, also for vector-valued densities. -/
+theorem thm_6_4_moments (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I) (r : ℕ) :
     finiteCoefficientMomentConstant ρ r ≠ ⊤ ∧ ∀ G : H → Y, IsRegularAlongRays ν I G →
       ∫⁻ θ : H × ℝ, ENNReal.ofReal ((1 + ‖θ.1‖ + |θ.2|) ^ r) *
@@ -111,8 +111,8 @@ theorem thm_E_moments (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ �
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:A]** Tempered synthesis is jointly absolutely integrable. -/
-theorem thm_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+/-- **Theorem [thm:4.2]** Tempered synthesis is jointly absolutely integrable. -/
+theorem thm_4_2_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
     (G : H → ℂ) (hG : IsRegularAlongRays ν I G) (x : H) :
@@ -122,8 +122,8 @@ theorem thm_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
 
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Theorem [thm:vector-valued]** Tempered synthesis is Bochner integrable on the product. -/
-theorem thm_vector_valued_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+/-- **Theorem [thm:4.6]** Tempered synthesis is Bochner integrable on the product. -/
+theorem thm_4_6_representation_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (I : Set ℝ) (hI : IsFrequencyWindow ρ I)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ) (hβ : IsTemperedFunction β b)
     (G : H → Y) (hG : IsRegularAlongRays ν I G) (x : H) :
@@ -133,9 +133,9 @@ theorem thm_vector_valued_A_iii_e (ν : Measure H) [SigmaFinite ν] (ρ : Schwar
 
 omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [BorelSpace H] in
-/-- **Lemma [lem:partial-fourier-l2]** Bias Fourier transformation is a genuine unitary
+/-- **Lemma [lem:A.1]** Bias Fourier transformation is a genuine unitary
 with jointly measurable representatives and the angular normalization. -/
-theorem lem_partial_fourier_l2 (ν : Measure H) [SigmaFinite ν] :
+theorem lem_A_1 (ν : Measure H) [SigmaFinite ν] :
     ∃ U : Lp Y 2 (parameterMeasure ν) ≃ₗᵢ[ℂ]
       Lp Y 2 (ν.prod (ENNReal.ofReal (2 * Real.pi)⁻¹ • (volume : Measure ℝ))),
       ∀ γ : Lp Y 2 (parameterMeasure ν),
@@ -145,32 +145,32 @@ theorem lem_partial_fourier_l2 (ν : Measure H) [SigmaFinite ν] :
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Corollary [cor:coefficient-stability]** The decoder is C⁻¹ T⁻¹ S. -/
-theorem cor_coefficient_stability_i (α : ℝ) (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Corollary [cor:4.4]** The decoder is C⁻¹ T⁻¹ S. -/
+theorem cor_4_4_i (α : ℝ) (μ ν : Measure H) [IsProbabilityMeasure μ]
     (ρ : ℝ → ℝ) (γ : Lp ℂ 2 (parameterMeasure ν)) :
     coefficientDecoder α μ ν ρ γ =
       ((admissibilityConst α ρ : ℂ)⁻¹) • rieszInv μ ν (synthesis μ ν ρ γ) := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Corollary [cor:coefficient-stability]** The bounded decoder is a left inverse. -/
-theorem cor_coefficient_stability_ii (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Corollary [cor:4.4]** The bounded decoder is a left inverse. -/
+theorem cor_4_4_ii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
     coefficientDecoder α μ ν ρ (ridgeletExtension μ ν ρ f) = f := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Corollary [cor:coefficient-stability]** The decoder norm is at most 1/√C. -/
-theorem cor_coefficient_stability_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Corollary [cor:4.4]** The decoder norm is at most 1/√C. -/
+theorem cor_4_4_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ‖coefficientDecoder α μ ν ρ‖ ≤ (Real.sqrt (admissibilityConst α ρ))⁻¹ := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Corollary [cor:coefficient-stability]** Coefficient error δ gives spectral error δ/√C. -/
-theorem cor_coefficient_stability_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Corollary [cor:4.4]** Coefficient error δ gives spectral error δ/√C. -/
+theorem cor_4_4_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) (γ : Lp ℂ 2 (parameterMeasure ν))
     {δ : ℝ} (hδ : ‖γ - ridgeletExtension μ ν ρ f‖ ≤ δ) :
@@ -178,8 +178,8 @@ theorem cor_coefficient_stability_iv (μ ν : Measure H) [IsProbabilityMeasure �
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:C]** Backprojection after analysis recovers the completed spectral density. -/
-theorem thm_C_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.3]** Backprojection after analysis recovers the completed spectral density. -/
+theorem thm_4_3_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
     backprojection α ν ρ (ridgeletExtension μ ν ρ f) =ᵐ[ν]
@@ -187,16 +187,16 @@ theorem thm_C_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:vector-valued]** The completed vector spectral density is recovered in L². -/
-theorem thm_vector_valued_C_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Theorem [thm:4.6]** The completed vector spectral density is recovered in L². -/
+theorem thm_4_6_frame_iv_completion (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : spectralRangeVec Y μ ν) :
     backprojectionVec α ν ρ (ridgeletExtensionVec Y μ ν ρ f) =ᵐ[ν]
       fun ξ => (admissibilityConst α ρ : ℂ) • (f : Lp Y 2 ν) ξ := by
   sorry
 
-/-- **Theorem [thm:general-weights]** Bounded-set finite direction weights retain universality. -/
-theorem thm_general_weights_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+/-- **Theorem [thm:H.1]** Bounded-set finite direction weights retain universality. -/
+theorem thm_H_1_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (hfin : ∀ R : ℝ, ν (Metric.closedBall (0 : H) R) < ⊤)
     (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
@@ -209,9 +209,9 @@ theorem thm_general_weights_dense (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPo
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-isometry]** The L² inverse formula is absolutely integrable
+/-- **Lemma [lem:B.1]** The L² inverse formula is absolutely integrable
 for almost every direction, for every bias value. -/
-theorem lem_coefficient_isometry_v {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem lem_B_1_v {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (G : H → ℂ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     ∀ᵐ a ∂ν, ∀ c : ℝ, Integrable (fun ω : ℝ =>
@@ -220,16 +220,16 @@ theorem lem_coefficient_isometry_v {α : ℝ} (hα : 0 < α) (ν : Measure H) [S
 
 omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [BorelSpace H] in
-/-- **Lemma [lem:partial-fourier-l2]** The Fourier representatives agree on almost every section. -/
-theorem lem_partial_fourier_l2_uniqueness (ν : Measure H) [SigmaFinite ν]
+/-- **Lemma [lem:A.1]** The Fourier representatives agree on almost every section. -/
+theorem lem_A_1_uniqueness (ν : Measure H) [SigmaFinite ν]
     (γ : H × ℝ → Y) (Φ Φ' : H → ℝ → Y) (hΦ : HasBiasFourierVec ν γ Φ)
     (hΦ' : HasBiasFourierVec ν γ Φ') :
     ∀ᵐ a ∂ν, Φ a =ᵐ[volume] Φ' a := by
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:general-weights]** Abstract input weights retain completed backprojection. -/
-theorem thm_general_weights_backprojection (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Theorem [thm:H.1]** Abstract input weights retain completed backprojection. -/
+theorem thm_H_1_backprojection (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) :
     backprojection α ν ρ (ridgeletExtension μ ν ρ f) =ᵐ[ν]
@@ -237,8 +237,8 @@ theorem thm_general_weights_backprojection (μ ν : Measure H) [IsProbabilityMea
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:general-weights]** Stability holds for an arbitrary probability input weight. -/
-theorem thm_general_weights_stability (μ ν : Measure H) [IsProbabilityMeasure μ]
+/-- **Theorem [thm:H.1]** Stability holds for an arbitrary probability input weight. -/
+theorem thm_H_1_stability (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralRange μ ν) (γ : Lp ℂ 2 (parameterMeasure ν))
     {δ : ℝ} (hδ : ‖γ - ridgeletExtension μ ν ρ f‖ ≤ δ) :
@@ -246,9 +246,9 @@ theorem thm_general_weights_stability (μ ν : Measure H) [IsProbabilityMeasure 
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-adjoint]** The coefficient operator has the bounded ray-average
+/-- **Lemma [lem:3.6]** The coefficient operator has the bounded ray-average
 adjoint and the scaled left-inverse identity. -/
-theorem lem_coefficient_adjoint_i (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+theorem lem_3_6_i (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∃ W : Lp Y 2 ν →L[ℂ] Lp Y 2 (parameterMeasure ν),
@@ -261,8 +261,8 @@ theorem lem_coefficient_adjoint_i (ν : Measure H) [SigmaFinite ν] {α : ℝ}
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-adjoint]** The backprojection integral is absolutely convergent a.e. -/
-theorem lem_coefficient_adjoint_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+/-- **Lemma [lem:3.6]** The backprojection integral is absolutely convergent a.e. -/
+theorem lem_3_6_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (γ : Lp Y 2 (parameterMeasure ν)) (Φ : H → ℝ → Y)
     (hΦ : StronglyMeasurable (Function.uncurry Φ)) (hB : HasBiasFourierVec ν γ Φ) :
@@ -272,8 +272,8 @@ theorem lem_coefficient_adjoint_ii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:coefficient-adjoint]** Every measurable Fourier representative gives Λ. -/
-theorem lem_coefficient_adjoint_iii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
+/-- **Lemma [lem:3.6]** Every measurable Fourier representative gives Λ. -/
+theorem lem_3_6_iii (ν : Measure H) [SigmaFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (γ : Lp Y 2 (parameterMeasure ν)) (Φ : H → ℝ → Y)
     (hΦ : StronglyMeasurable (Function.uncurry Φ)) (hB : HasBiasFourierVec ν γ Φ) :

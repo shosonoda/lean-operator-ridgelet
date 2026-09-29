@@ -14,13 +14,13 @@ import OperatorRidgelet.Filters.Admissible
 /-!
 # Statements of Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, G, H, I
 
-Each item is `theorem OperatorRidgelet.Paper.<kind>_<label>[_<part>]`, identical to its twin in
+Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Transform`, and proved from the library.
 
 The core theory is stated for the abstract pair `(μ, ν)` of Appendix H (`μ` a probability
 measure, `ν` σ-finite with full support and homogeneous of degree `α`); the Gaussian case
 `(μ_Q, ν_α)` is the instance with `IsCenteredGaussian Q μ` and `ν = gaussianMixture N α`.
-Theorem `thm:B` is stated in the Gaussian case, Theorem `thm:general-weights` is the same set of
+Theorem `thm:3.11` is stated in the Gaussian case, Theorem `thm:H.1` is the same set of
 claims for the abstract pair.  The design choices for `ν_α`, `μ_Q`, trace class, `𝓔_α`, and
 `W_ρ` are documented in `OperatorRidgelet.Transform.Defs`.
 -/
@@ -35,56 +35,56 @@ open scoped ENNReal RealInnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-! ### Lemma `lem:homogeneous-mixture` -/
+/-! ### Lemma `lem:3.1` -/
 
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  In infinite dimension the
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  In infinite dimension the
 mixture `ν_α` is σ-finite. -/
-theorem lem_homogeneous_mixture_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     SigmaFinite (gaussianMixture N α) := by
   haveI := hP.isLocallyFiniteMeasure_gaussianMixture hH hN hα
   infer_instance
 
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
 finite on bounded Borel sets. -/
-theorem lem_homogeneous_mixture_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     ∀ E : Set H, MeasurableSet E → Bornology.IsBounded E → gaussianMixture N α E < ⊤ :=
   fun _ _ hE => hP.gaussianMixture_lt_top_of_isBounded hH hN hα hE
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  The mixture `ν_α` is
 infinite on `H`. -/
-theorem lem_homogeneous_mixture_iii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_iii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     gaussianMixture N α Set.univ = ⊤ :=
   hN.gaussianMixture_univ α
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The mixture `ν_α` has
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  The mixture `ν_α` has
 full support: it charges every nonempty open set. -/
-theorem lem_homogeneous_mixture_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     (gaussianMixture N α).IsOpenPosMeasure :=
   hP.isOpenPosMeasure_gaussianMixture hN α
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  Homogeneity:
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  Homogeneity:
 `(D_ω)_# ν_α = |ω|^{-α} ν_α` for `ω ≠ 0`. -/
-theorem lem_homogeneous_mixture_v (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_v (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     IsHomogeneous α (gaussianMixture N α) :=
   hN.isHomogeneous_gaussianMixture α
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:homogeneous-mixture]** Homogeneous Gaussian mixture.  The integrated form of
+/-- **Lemma [lem:3.1]** Homogeneous Gaussian mixture.  The integrated form of
 homogeneity: `∫ F(ωa) ν_α(da) = |ω|^{-α} ∫ F dν_α` for every nonnegative Borel `F`. -/
-theorem lem_homogeneous_mixture_vi (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_3_1_vi (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) :
     ∀ ω : ℝ, ω ≠ 0 → ∀ F : H → ℝ≥0∞, Measurable F →
@@ -94,11 +94,11 @@ theorem lem_homogeneous_mixture_vi (hH : ¬ FiniteDimensional ℝ H) {P : H →L
   rw [← lintegral_map hF (measurable_const_smul ω), hN.isHomogeneous_gaussianMixture α ω hω,
     lintegral_smul_measure, smul_eq_mul]
 
-/-! ### Definition `def:admissible-filter` -/
+/-! ### Definition `def:3.2` -/
 
-/-- **Definition [def:admissible-filter]** Admissible analysis filter.  A band-pass filter is
+/-- **Definition [def:3.2]** Admissible analysis filter.  A band-pass filter is
 `α`-admissible for every `α > 0`. -/
-theorem def_admissible_filter (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+theorem def_3_2 (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
     ∀ α : ℝ, 0 < α → IsAdmissible α ρ := by
   intro α hα
   have hcont : Continuous (filterFourier ρ) := hρ.contDiff.continuous
@@ -135,11 +135,11 @@ theorem def_admissible_filter (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
   exact hcont.isOpen_support.measure_pos volume
     (Function.support_nonempty_iff.mpr (filterFourier_ne_zero hρ.ne_zero))
 
-/-! ### Lemma `lem:fourier-slice` -/
+/-! ### Lemma `lem:3.4` -/
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
-/-- **Lemma [lem:fourier-slice]** Fourier-slice identity.  `R_ρ f` is bounded on `H × ℝ`. -/
-theorem lem_fourier_slice_i (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
+/-- **Lemma [lem:3.4]** Fourier-slice identity.  `R_ρ f` is bounded on `H × ℝ`. -/
+theorem lem_3_4_i (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) :
     ∃ M : ℝ, ∀ p : H × ℝ, ‖ridgelet μ ρ f p‖ ≤ M := by
   obtain ⟨C, hC⟩ := ρ.decay 0 0
@@ -153,9 +153,9 @@ theorem lem_fourier_slice_i (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sch
   exact mul_le_mul_of_nonneg_left (hC.2 _) (norm_nonneg _)
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:fourier-slice]** Fourier-slice identity.  `R_ρ f` is jointly continuous on
+/-- **Lemma [lem:3.4]** Fourier-slice identity.  `R_ρ f` is jointly continuous on
 `H × ℝ`. -/
-theorem lem_fourier_slice_ii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
+theorem lem_3_4_ii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) :
     Continuous (ridgelet μ ρ f) := by
   obtain ⟨C, hC⟩ := ρ.decay 0 0
@@ -173,9 +173,9 @@ theorem lem_fourier_slice_ii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sc
     fun_prop
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:fourier-slice]** Fourier-slice identity.  For every direction `a`, the bias
+/-- **Lemma [lem:3.4]** Fourier-slice identity.  For every direction `a`, the bias
 function `R_ρ f (a, ·)` is integrable with `‖R_ρ f(a,·)‖_{L¹} ≤ ‖f‖_{L¹(μ)} ‖ρ‖_{L¹}`. -/
-theorem lem_fourier_slice_iii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
+theorem lem_3_4_iii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) :
     ∀ a : H, Integrable (fun c : ℝ => ridgelet μ ρ f (a, c)) ∧
       ∫ c : ℝ, ‖ridgelet μ ρ f (a, c)‖ ≤ (∫ x, ‖f x‖ ∂μ) * ∫ t : ℝ, ‖ρ t‖ := by
@@ -197,10 +197,10 @@ theorem lem_fourier_slice_iii (μ : Measure H) [IsProbabilityMeasure μ] (ρ : S
     _ = (∫ x, ‖f x‖ ∂μ) * ∫ t : ℝ, ‖ρ t‖ := integral_mul_const _ _
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:fourier-slice]** Fourier-slice identity.  If moreover `f ∈ L²(μ)`, then for every
+/-- **Lemma [lem:3.4]** Fourier-slice identity.  If moreover `f ∈ L²(μ)`, then for every
 direction `a` the bias function is square integrable with
 `‖R_ρ f(a,·)‖²_{L²} ≤ ‖f‖²_{L²(μ)} ‖ρ‖²_{L²}`. -/
-theorem lem_fourier_slice_iv (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
+theorem lem_3_4_iv (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) (hf₂ : MemLp f 2 μ) :
     ∀ a : H, MemLp (fun c : ℝ => ridgelet μ ρ f (a, c)) 2 volume ∧
       ∫ c : ℝ, ‖ridgelet μ ρ f (a, c)‖ ^ 2 ≤ (∫ x, ‖f x‖ ^ 2 ∂μ) * ∫ t : ℝ, ‖ρ t‖ ^ 2 := by
@@ -259,7 +259,7 @@ theorem lem_fourier_slice_iv (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sc
   have hGc : Integrable (fun c : ℝ => (∫ x, ‖f x‖ ^ 2 ∂μ) * ∫ x, ‖ρ (⟪a, x⟫ + c)‖ ^ 2 ∂μ) :=
     hG.integral_prod_right.const_mul _
   have hmeasR : AEStronglyMeasurable (fun c : ℝ => ridgelet μ ρ f (a, c)) volume :=
-    ((lem_fourier_slice_ii μ ρ f hf).comp (by fun_prop : Continuous fun c : ℝ => (a, c)))
+    ((lem_3_4_ii μ ρ f hf).comp (by fun_prop : Continuous fun c : ℝ => (a, c)))
       |>.aestronglyMeasurable
   refine ⟨?_, ?_⟩
   · rw [memLp_two_iff_integrable_sq_norm hmeasR]
@@ -273,9 +273,9 @@ theorem lem_fourier_slice_iv (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sc
       _ = (∫ x, ‖f x‖ ^ 2 ∂μ) * ∫ t : ℝ, ‖ρ t‖ ^ 2 := by rw [integral_const_mul, hswap]
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:fourier-slice]** Fourier-slice identity.  The partial Fourier transform in the
+/-- **Lemma [lem:3.4]** Fourier-slice identity.  The partial Fourier transform in the
 bias is `\widehat{R_ρ f}(a,ω) = ρ̂(ω) 𝒢_μ f(-ωa)`. -/
-theorem lem_fourier_slice_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
+theorem lem_3_4_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) :
     ∀ (a : H) (ω : ℝ),
       biasFourier (ridgelet μ ρ f) a ω = filterFourier ρ ω * gaussFourier μ f (-(ω • a)) := by
@@ -332,14 +332,14 @@ theorem lem_fourier_slice_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : Sch
         rw [integral_mul_const, mul_comm]
         rfl
 
-/-! ### Definition `def:spectral-coefficient` and Lemma `lem:coefficient-isometry` -/
+/-! ### Definition `def:3.5` and Lemma `lem:B.1` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Definition [def:spectral-coefficient]** The coefficient operator.  For
+/-- **Definition [def:3.5]** The coefficient operator.  For
 `G ∈ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
 `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
-theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem def_3_5 {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     (spectralCoefficient ν ρ G : H × ℝ → ℂ) =ᵐ[parameterMeasure ν] coefficientFormula ρ G := by
@@ -347,10 +347,10 @@ theorem def_spectral_coefficient {α : ℝ} (hα : 0 < α) (ν : Measure H) [Sig
   exact MemLp.coeFn_toLp _
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.  `W_ρ G`
+/-- **Lemma [lem:B.1]** The coefficient operator is a scaled isometry.  `W_ρ G`
 is well defined: there is exactly one element of `L²(λ)` whose partial Fourier transform in the
 bias is `ρ̂(ω) G(-ωa)`. -/
-theorem lem_coefficient_isometry_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem lem_B_1_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     ∃! γ : Lp ℂ 2 (parameterMeasure ν),
@@ -359,18 +359,18 @@ theorem lem_coefficient_isometry_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [S
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.  `W_ρ G`
+/-- **Lemma [lem:B.1]** The coefficient operator is a scaled isometry.  `W_ρ G`
 does not depend on the Borel representative of `G`. -/
-theorem lem_coefficient_isometry_ii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem lem_B_1_ii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G G' : H → ℂ)
     (hG : Measurable G) (hG' : Measurable G') (hG₂ : MemLp G 2 ν) (hGG' : G =ᵐ[ν] G') :
     spectralCoefficient ν ρ G = spectralCoefficient ν ρ G' :=
   spectralCoefficient_congr_ae hν ρ hGG'
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.
+/-- **Lemma [lem:B.1]** The coefficient operator is a scaled isometry.
 `‖W_ρ G‖²_{L²(λ)} = C^{(α)}_ρ ‖G‖²_{L²(ν)}`. -/
-theorem lem_coefficient_isometry_iii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem lem_B_1_iii {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
     ∫ p, ‖(spectralCoefficient ν ρ G : H × ℝ → ℂ) p‖ ^ 2 ∂parameterMeasure ν =
@@ -379,21 +379,21 @@ theorem lem_coefficient_isometry_iii {α : ℝ} (hα : 0 < α) (ν : Measure H) 
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:coefficient-isometry]** The coefficient operator is a scaled isometry.  If
+/-- **Lemma [lem:B.1]** The coefficient operator is a scaled isometry.  If
 `G ∈ L¹(ν)`, then `ω ↦ G(-ωa)` is integrable on compact subsets of `ℝ ∖ {0}` for `ν`-almost
 every `a`. -/
-theorem lem_coefficient_isometry_iv {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
+theorem lem_B_1_iv {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) :
     ∀ᵐ a ∂ν, ∀ I : Set ℝ, IsCompact I → (0 : ℝ) ∉ I →
       IntegrableOn (fun ω : ℝ => G (-(ω • a))) I :=
   hν.ae_integrableOn_neg_smul hα hG hG₁
 
-/-! ### Lemma `lem:spectral-unitary` -/
+/-! ### Lemma `lem:3.8` -/
 
-/-- **Lemma [lem:spectral-unitary]** Positivity and the unitary extension.  The spectral form is
+/-- **Lemma [lem:3.8]** Positivity and the unitary extension.  The spectral form is
 positive definite on `𝒟`: `⟨f,f⟩_𝓔 = 0` forces `f = 0` in `L²(μ)`. -/
-theorem lem_spectral_unitary_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem lem_3_8_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
     ∀ f : Lp ℂ 2 μ, f ∈ spectralCore μ ν → spectralInner μ ν f f = 0 → f = 0 := by
   intro f hf h
@@ -402,10 +402,10 @@ theorem lem_spectral_unitary_i (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
     ((Lp.memLp f).integrable one_le_two) hf h)
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:spectral-unitary]** Positivity and the unitary extension.  `𝒢_μ` is an
+/-- **Lemma [lem:3.8]** Positivity and the unitary extension.  `𝒢_μ` is an
 isometry from `(𝒟, ⟨·,·⟩_𝓔)` into `𝒦`: the `L²(ν)` inner product of `U f` and `U g` (which in
 Mathlib is conjugate linear in the first argument) is `⟨g,f⟩_𝓔`. -/
-theorem lem_spectral_unitary_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem lem_3_8_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
     ∀ f g : spectralCore μ ν,
       inner ℂ (spectralEmbed μ ν f) (spectralEmbed μ ν g) =
@@ -419,10 +419,10 @@ theorem lem_spectral_unitary_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [S
   rw [hf, hg, RCLike.inner_apply, mul_comm]
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:spectral-unitary]** Positivity and the unitary extension.  The image of `𝒟`
+/-- **Lemma [lem:3.8]** Positivity and the unitary extension.  The image of `𝒟`
 under `𝒢_μ` is dense in `𝒦`, so the isometry extends uniquely to a unitary `U_α : 𝓔_α → 𝒦_α`
 (the identity of `𝒦` in this representation). -/
-theorem lem_spectral_unitary_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem lem_3_8_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
     Dense (Set.range (spectralEmbed μ ν)) := by
   have key : (spectralRange μ ν : Set (Lp ℂ 2 ν)) ⊆ closure (Set.range (gaussFourierLp μ ν)) := by
@@ -437,11 +437,11 @@ theorem lem_spectral_unitary_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [
   · rintro ⟨f, rfl⟩
     exact ⟨spectralEmbed μ ν f, ⟨f, rfl⟩, rfl⟩
 
-/-! ### Lemma `lem:gaussian-decay` and Example `ex:core-elements` -/
+/-! ### Lemma `lem:3.9` and Example `ex:3.10` -/
 
-/-- **Lemma [lem:gaussian-decay]** Gaussian decay with polynomial weights.  For `t > 0` and every
+/-- **Lemma [lem:3.9]** Gaussian decay with polynomial weights.  For `t > 0` and every
 integer `m ≥ 0`, `∫ ‖ξ‖^{2m} e^{-t⟨Qξ,ξ⟩} ν_α(dξ) < ∞`. -/
-theorem lem_gaussian_decay_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem lem_3_9_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) :
     ∀ t : ℝ, 0 < t → ∀ m : ℕ,
@@ -454,9 +454,9 @@ theorem lem_gaussian_decay_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
   exact hP.lintegral_norm_pow_mul_exp_gaussianMixture_lt_top hH hQ hN hα ht m
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:gaussian-decay]** Gaussian decay with polynomial weights.  If `f ∈ L²(μ_Q)` and
+/-- **Lemma [lem:3.9]** Gaussian decay with polynomial weights.  If `f ∈ L²(μ_Q)` and
 `|𝒢_Q f(ξ)| ≤ C (1+‖ξ‖)^p e^{-t⟨Qξ,ξ⟩/2}`, then `f ∈ 𝒟_α` for every `α > 0`. -/
-theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem lem_3_9_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : Lp ℂ 2 μ) (C p t : ℝ)
@@ -469,8 +469,8 @@ theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
   have hcont := continuous_gaussFourier μ hf
   refine (memLp_two_iff_integrable_sq_norm hcont.aestronglyMeasurable).mpr ?_
   set M : ℕ := ⌈p⌉₊ with hM
-  have h0 := lem_gaussian_decay_i hH hP hQ hN hα t ht 0
-  have hMint := lem_gaussian_decay_i hH hP hQ hN hα t ht M
+  have h0 := lem_3_9_i hH hP hQ hN hα t ht 0
+  have hMint := lem_3_9_i hH hP hQ hN hα t ht M
   simp only [mul_zero, pow_zero, one_mul] at h0
   have hbound : Integrable (fun ξ : H => C ^ 2 * 4 ^ M *
       (Real.exp (-t * ⟪Q ξ, ξ⟫) + ‖ξ‖ ^ (2 * M) * Real.exp (-t * ⟪Q ξ, ξ⟫)))
@@ -512,26 +512,26 @@ theorem lem_gaussian_decay_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[�
         ring
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
-/-- **Example [ex:core-elements]** Elements of `𝒟_α`.  The constant function has
+/-- **Example [ex:3.10]** Elements of `𝒟_α`.  The constant function has
 `𝒢_Q 1 (ξ) = e^{-⟨Qξ,ξ⟩/2}`. -/
-theorem ex_core_elements_i {Q : H →L[ℝ] H} (μ : Measure H) [IsProbabilityMeasure μ]
+theorem ex_3_10_i {Q : H →L[ℝ] H} (μ : Measure H) [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) :
     ∀ ξ : H, gaussFourier μ (fun _ => (1 : ℂ)) ξ = Complex.exp (-((⟪Q ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
   intro ξ
   rw [gaussFourier_one, hμ.charFun_eq, map_neg, inner_neg_neg]
 
-/-- **Example [ex:core-elements]** Elements of `𝒟_α`.  The constant function belongs to `𝒟_α`
+/-- **Example [ex:3.10]** Elements of `𝒟_α`.  The constant function belongs to `𝒟_α`
 for every `α > 0`. -/
-theorem ex_core_elements_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem ex_3_10_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ (gaussianMixture N α) := by
   rw [mem_spectralCore_iff, gaussFourier_toLp_const]
-  have hform := ex_core_elements_i μ hμ
+  have hform := ex_3_10_i μ hμ
   refine (memLp_two_iff_integrable_sq_norm
     (continuous_gaussFourier μ (integrable_const _)).aestronglyMeasurable).mpr ?_
-  have h := lem_gaussian_decay_i hH hP hQ hN hα 1 one_pos 0
+  have h := lem_3_9_i hH hP hQ hN hα 1 one_pos 0
   simp only [mul_zero, pow_zero, one_mul, neg_mul] at h
   refine h.congr (Eventually.of_forall fun ξ => ?_)
   dsimp only
@@ -540,14 +540,14 @@ theorem ex_core_elements_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ]
   push_cast
   ring
 
-/-- **Example [ex:core-elements]** Elements of `𝒟_α`.  Consequently `𝓔_α ≠ {0}`. -/
-theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+/-- **Example [ex:3.10]** Elements of `𝒟_α`.  Consequently `𝓔_α ≠ {0}`. -/
+theorem ex_3_10_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) :
     spectralRange μ (gaussianMixture N α) ≠ ⊥ := by
   rw [Submodule.ne_bot_iff]
-  have hmem := ex_core_elements_ii hH hP hQ hN hα μ hμ
+  have hmem := ex_3_10_ii hH hP hQ hN hα μ hμ
   refine ⟨gaussFourierLp μ _ ⟨_, hmem⟩,
     Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, rfl⟩), fun h0 => ?_⟩
   have hae : (gaussFourier μ
@@ -556,7 +556,7 @@ theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
     (MemLp.coeFn_toLp _).symm.trans (Lp.eq_zero_iff_ae_eq_zero.mp h0)
   rw [gaussFourier_toLp_const] at hae
   have hne : ∀ ξ, gaussFourier μ (fun _ => (1 : ℂ)) ξ ≠ 0 := fun ξ => by
-    rw [ex_core_elements_i μ hμ ξ]
+    rw [ex_3_10_i μ hμ ξ]
     exact Complex.exp_ne_zero _
   have hall : gaussianMixture N α Set.univ = 0 := by
     have := ae_iff.mp hae
@@ -564,12 +564,12 @@ theorem ex_core_elements_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ
   rw [hN.gaussianMixture_univ] at hall
   exact ENNReal.top_ne_zero hall
 
-/-! ### Theorem `thm:B` (Gaussian case) -/
+/-! ### Theorem `thm:3.11` (Gaussian case) -/
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  For `f ∈ 𝒟_α` and an
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  For `f ∈ 𝒟_α` and an
 `α`-admissible `ρ`, the transform `R_ρ f` belongs to `L²(λ_α)`. -/
-theorem thm_B_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -580,9 +580,9 @@ theorem thm_B_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     ((Lp.memLp f).integrable one_le_two) (Lp.memLp f) hf
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  The Plancherel identity
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  The Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ_α)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_α}` for `f, g ∈ 𝒟_α`. -/
-theorem thm_B_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ₁ ρ₂ : SchwartzMap ℝ ℝ)
@@ -598,9 +598,9 @@ theorem thm_B_i_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (Lp.memLp g) hf hg
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  An `α`-admissible `ρ` determines a
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  An `α`-admissible `ρ` determines a
 unique bounded extension `R_ρ : 𝓔_α → L²(λ_α)` of `f ↦ R_ρ f` from `𝒟_α`. -/
-theorem thm_B_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -614,9 +614,9 @@ theorem thm_B_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   exact existsUnique_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension satisfies
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  The extension satisfies
 `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_α}`. -/
-theorem thm_B_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -633,8 +633,8 @@ theorem thm_B_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   exact norm_ridgeletExtensionCLM_sq (hN.isHomogeneous_gaussianMixture α) hρ G
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension has closed range. -/
-theorem thm_B_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  The extension has closed range. -/
+theorem thm_3_11_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -650,9 +650,9 @@ theorem thm_B_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   exact isClosed_range_ridgeletExtensionCLM (hN.isHomogeneous_gaussianMixture α) hρ
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  The extension factors as
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  The extension factors as
 `R_ρ = W_ρ U_α`: on `𝒦_α` it is the coefficient operator. -/
-theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -671,10 +671,10 @@ theorem thm_B_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   exact ridgeletExtensionCLM_eq_spectralCoefficient (hN.isHomogeneous_gaussianMixture α) hα hρ μ G
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:B]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
+/-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  Injectivity: if `ρ` is
 `α`-admissible and `f ∈ L¹(μ_Q)`, then `R_ρ f = 0` `λ_α`-almost everywhere implies `f = 0`
 `μ_Q`-almost everywhere. -/
-theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem thm_3_11_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
@@ -686,13 +686,13 @@ theorem thm_B_iii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   exact ae_eq_zero_of_ridgelet_ae_eq_zero μ hα (hN.isHomogeneous_gaussianMixture α) hρ
     hf h
 
-/-! ### Lemma `lem:mixture-integration` -/
+/-! ### Lemma `lem:A.2` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:mixture-integration]** Measurability and integration of the mixture.  For every
+/-- **Lemma [lem:A.2]** Measurability and integration of the mixture.  For every
 Borel set `E`, the map `s ↦ 𝒩(0,2sP)(E)` is Borel measurable on `(0,∞)`. -/
-theorem lem_mixture_integration_i {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
+theorem lem_A_2_i {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
     {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) :
     ∀ E : Set H, MeasurableSet E → Measurable fun s : Set.Ioi (0 : ℝ) => N s E := by
   intro E hE
@@ -703,10 +703,10 @@ theorem lem_mixture_integration_i {P : H →L[ℝ] H} (hP : IsTraceClassCovarian
   exact ((Measure.measurable_coe hE).comp hN.measurable_scaledLayer).comp measurable_subtype_coe
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:mixture-integration]** Measurability and integration of the mixture.  The
+/-- **Lemma [lem:A.2]** Measurability and integration of the mixture.  The
 mixture is a countably additive Borel measure given on Borel sets by
 `ν_α(E) = ∫₀^∞ 𝒩(0,2sP)(E) s^{α/2-1} ds`. -/
-theorem lem_mixture_integration_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
+theorem lem_A_2_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
     {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) :
     ∀ E : Set H, MeasurableSet E →
       gaussianMixture N α E =
@@ -714,10 +714,10 @@ theorem lem_mixture_integration_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovaria
   fun E hE => hN.gaussianMixtureOn_apply α measurableSet_Ioi le_rfl hE
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:mixture-integration]** Measurability and integration of the mixture.  For every
+/-- **Lemma [lem:A.2]** Measurability and integration of the mixture.  For every
 nonnegative Borel `F`, `∫ F dν_α = ∫₀^∞ (∫ F d𝒩(0,2sP)) s^{α/2-1} ds`, both sides possibly
 infinite. -/
-theorem lem_mixture_integration_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
+theorem lem_A_2_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
     {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) :
     ∀ F : H → ℝ≥0∞, Measurable F →
       ∫⁻ ξ, F ξ ∂gaussianMixture N α =
@@ -725,30 +725,30 @@ theorem lem_mixture_integration_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovari
   fun F hF => hN.lintegral_gaussianMixtureOn α measurableSet_Ioi le_rfl hF
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:mixture-integration]** Measurability and integration of the mixture.  For
+/-- **Lemma [lem:A.2]** Measurability and integration of the mixture.  For
 complex `F` the integration formula holds when `∫ |F| dν_α < ∞`. -/
-theorem lem_mixture_integration_iv {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
+theorem lem_A_2_iv {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
     {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) :
     ∀ F : H → ℂ, Integrable F (gaussianMixture N α) →
       ∫ ξ, F ξ ∂gaussianMixture N α =
         ∫ s in Set.Ioi (0 : ℝ), (∫ ξ, F ξ ∂N s) * ((s ^ (α / 2 - 1) : ℝ) : ℂ) :=
   fun F hF => hN.integral_gaussianMixtureOn α measurableSet_Ioi le_rfl hF
 
-/-! ### Lemma `lem:mixture-character` -/
+/-! ### Lemma `lem:A.3` -/
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  For `z ≠ 0` the quadratic
+/-- **Lemma [lem:A.3]** Truncation of the scale integral.  For `z ≠ 0` the quadratic
 form `q = ⟨Pz,z⟩` is positive. -/
-theorem lem_mixture_character_i {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) (z : H)
+theorem lem_A_3_i {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) (z : H)
     (hz : z ≠ 0) :
     0 < ⟪P z, z⟫ :=
   hP.inner_pos hz
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  The characteristic
+/-- **Lemma [lem:A.3]** Truncation of the scale integral.  The characteristic
 functionals of the truncated mixtures `ν_α^{ε,M} = ∫_ε^M 𝒩(0,2sP) s^{α/2-1} ds` converge, as
 `ε ↓ 0` and `M ↑ ∞`, to `Γ(α/2) q^{-α/2}`. -/
-theorem lem_mixture_character_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
+theorem lem_A_3_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P)
     {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (z : H)
     (hz : z ≠ 0) :
     Tendsto (fun εM : ℝ × ℝ => charFun (gaussianMixtureOn N α (Set.Ioo εM.1 εM.2)) z)
@@ -831,9 +831,9 @@ theorem lem_mixture_character_ii {P : H →L[ℝ] H} (hP : IsTraceClassCovarianc
   exact (hform εM.1 εM.2 hε).symm
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  The limit is the Gamma
+/-- **Lemma [lem:A.3]** Truncation of the scale integral.  The limit is the Gamma
 integral `∫₀^∞ e^{-sq} s^{α/2-1} ds = Γ(α/2) q^{-α/2}`. -/
-theorem lem_mixture_character_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) {α : ℝ}
+theorem lem_A_3_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovariance P) {α : ℝ}
     (hα : 0 < α) (z : H) (hz : z ≠ 0) :
     ∫ s in Set.Ioi (0 : ℝ), Real.exp (-s * ⟪P z, z⟫) * s ^ (α / 2 - 1) =
       Real.Gamma (α / 2) * ⟪P z, z⟫ ^ (-(α / 2)) := by
@@ -847,9 +847,9 @@ theorem lem_mixture_character_iii {P : H →L[ℝ] H} (hP : IsTraceClassCovarian
   rw [hfun, h, Real.rpow_neg hq.le, one_div, Real.inv_rpow hq.le, mul_comm]
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:mixture-character]** Truncation of the scale integral.  In contrast, the character
+/-- **Lemma [lem:A.3]** Truncation of the scale integral.  In contrast, the character
 `ξ ↦ e^{i⟨z,ξ⟩}` is not integrable against `ν_α`, so the limit is not a Lebesgue integral. -/
-theorem lem_mixture_character_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_A_3_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) (z : H) (hz : z ≠ 0) :
     ¬ Integrable (fun ξ : H => Complex.exp ((⟪z, ξ⟫ : ℝ) * Complex.I)) (gaussianMixture N α) := by
@@ -862,7 +862,7 @@ theorem lem_mixture_character_iv (hH : ¬ FiniteDimensional ℝ H) {P : H →L[�
   rw [h2, lintegral_const, hN.gaussianMixture_univ α, one_mul] at h1
   exact lt_irrefl _ h1
 
-/-! ### Corollary `cor:finite-backprojection` -/
+/-! ### Corollary `cor:G.2` -/
 
 section FiniteDim
 
@@ -870,9 +870,9 @@ set_option linter.unusedVariables false
 
 open OperatorRidgelet.FiniteDim
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  If
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  If
 `f ∈ L²(p dx)` with `g = f p ∈ 𝒮(ℝ^m)`, then `f ∈ 𝒟_α`. -/
-theorem cor_finite_backprojection_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_G_2_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -889,10 +889,10 @@ theorem cor_finite_backprojection_i {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : 
   rw [mem_spectralCore_iff, hG, gaussFourier_densityMeasure p (fun x => (hp x).le) hpc, hgf]
   exact memLp_fourier_directionMeasure hα hαm g
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  The
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  The
 representative of the frame operator against the pivot measure is the Riesz potential
 `t_f = ∫ e^{i⟨x,ξ⟩} ĝ(ξ) ν_α(dξ) = k_{m,α} (-Δ)^{-(m-α)/2} g`. -/
-theorem cor_finite_backprojection_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_G_2_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -902,10 +902,10 @@ theorem cor_finite_backprojection_ii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
       frameConst m α * fracLaplacian (-((m - α) / 2)) g x := by
   exact frameRepresentative_eq_fracLaplacian hαm g
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  For a
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  For a
 band-pass `ρ`, the synthesis `S_ρ R_ρ f`, i.e. the functional `h ↦ ⟨R_ρ f, R_ρ h⟩_{L²(λ_α)}` on
 `𝒟_α`, is represented against the pivot measure by `C^{(α)}_ρ t_f`. -/
-theorem cor_finite_backprojection_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_G_2_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -931,11 +931,11 @@ theorem cor_finite_backprojection_iii {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm 
       (integrable_fourier_directionMeasure hα hαm g) ((Lp.memLp h).integrable one_le_two)]
   simp only [spectralInner, hG]
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  The
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  The
 distributional reconstruction `f = p^{-1} (k_{m,α} C^{(α)}_ρ)^{-1} (-Δ)^{(m-α)/2} S_ρ R_ρ f`,
 with `S_ρ R_ρ f` represented by `C^{(α)}_ρ t_f`: tested against Schwartz functions `φ`,
 `∫ f φ p dx = (k C)^{-1} ∫ (C t_f) (-Δ)^{(m-α)/2} φ dx`. -/
-theorem cor_finite_backprojection_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
+theorem cor_G_2_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm : α < m)
     (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x) (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m}
     (hQ : IsTraceClassCovariance Q) [IsProbabilityMeasure (densityMeasure p)]
     (hpQ : IsCenteredGaussian Q (densityMeasure p)) (f : Euclid m → ℂ)
@@ -948,10 +948,10 @@ theorem cor_finite_backprojection_iv {m : ℕ} {α : ℝ} (hα : 0 < α) (hαm :
             fracLaplacian ((m - α) / 2) φ x := by
   exact finite_backprojection_reconstruction hα hαm p hp hpc f g hg ρ hρ
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  With
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, the multiplier is one and `k = (2π)^m`:
 `t_f = (2π)^m g`. -/
-theorem cor_finite_backprojection_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
+theorem cor_G_2_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
     (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m} (hQ : IsTraceClassCovariance Q)
     [IsProbabilityMeasure (densityMeasure p)] (hpQ : IsCenteredGaussian Q (densityMeasure p))
     (f : Euclid m → ℂ) (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
@@ -960,10 +960,10 @@ theorem cor_finite_backprojection_v {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x
   intro x
   rw [frameRepresentative_volume, hg]
 
-/-- **Corollary [cor:finite-backprojection]** The frame operator in finite dimension.  With
+/-- **Corollary [cor:G.2]** The frame operator in finite dimension.  With
 Lebesgue direction measure and `α = m`, `S_ρ R_ρ f` is represented against the pivot measure by
 `(2π)^m C^{(m)}_ρ f p`, that is `f = (2π)^{-m} (C^{(m)}_ρ)^{-1} p^{-1} S_ρ R_ρ f`. -/
-theorem cor_finite_backprojection_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
+theorem cor_G_2_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ x, 0 < p x)
     (hpc : Continuous p) {Q : Euclid m →L[ℝ] Euclid m} (hQ : IsTraceClassCovariance Q)
     [IsProbabilityMeasure (densityMeasure p)] (hpQ : IsCenteredGaussian Q (densityMeasure p))
     (f : Euclid m → ℂ) (hf : MemLp f 2 (densityMeasure p)) (g : SchwartzMap (Euclid m) ℂ)
@@ -1000,12 +1000,12 @@ theorem cor_finite_backprojection_vi {m : ℕ} (p : Euclid m → ℝ) (hp : ∀ 
 
 end FiniteDim
 
-/-! ### Proposition `prop:dilation-obstruction` -/
+/-! ### Proposition `prop:G.3` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  The sets `E_t` are Borel. -/
-theorem prop_dilation_obstruction_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+/-- **Proposition [prop:G.3]** Dilation obstruction.  The sets `E_t` are Borel. -/
+theorem prop_G_3_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) :
     ∀ t : ℝ, MeasurableSet (strongLawSet e w t) := by
@@ -1019,9 +1019,9 @@ theorem prop_dilation_obstruction_i_a (hH : ¬ FiniteDimensional ℝ H) {W : H �
 
 set_option linter.unusedVariables false in
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
-/-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  The sets `E_t` are pairwise
+/-- **Proposition [prop:G.3]** Dilation obstruction.  The sets `E_t` are pairwise
 disjoint. -/
-theorem prop_dilation_obstruction_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_G_3_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) :
     ∀ t t' : ℝ, t ≠ t' → Disjoint (strongLawSet e w t) (strongLawSet e w t') := by
@@ -1029,9 +1029,9 @@ theorem prop_dilation_obstruction_i_b (hH : ¬ FiniteDimensional ℝ H) {W : H �
   exact Set.disjoint_left.mpr fun x hx hx' => htt' (tendsto_nhds_unique hx hx')
 
 set_option linter.unusedVariables false in
-/-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  For `t > 0`,
+/-- **Proposition [prop:G.3]** Dilation obstruction.  For `t > 0`,
 `𝒩(0,tW)(E_t) = 1`. -/
-theorem prop_dilation_obstruction_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_G_3_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
@@ -1110,12 +1110,12 @@ theorem prop_dilation_obstruction_i_c (hH : ¬ FiniteDimensional ℝ H) {W : H �
     congr 1
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [hX, ← hYsq j x]
-  exact (prob_compl_eq_zero_iff (prop_dilation_obstruction_i_a hH hW e w hw hWe t)).mp
+  exact (prob_compl_eq_zero_iff (prop_G_3_i_a hH hW e w hw hWe t)).mp
     (ae_iff.mp hE)
 
-/-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  Consequently a σ-finite
+/-- **Proposition [prop:G.3]** Dilation obstruction.  Consequently a σ-finite
 measure dominates `𝒩(0,tW)` for at most countably many `t > 0`. -/
-theorem prop_dilation_obstruction_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_G_3_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γ : ℝ → Measure H)
     (hγ : ∀ t : ℝ, 0 < t → IsCenteredGaussian (t • W) (γ t)) :
@@ -1123,22 +1123,22 @@ theorem prop_dilation_obstruction_i_d (hH : ¬ FiniteDimensional ℝ H) {W : H �
   intro ν hν
   have hcount : Set.Countable {t : ℝ | 0 < ν (strongLawSet e w t)} :=
     Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
-      (prop_dilation_obstruction_i_a hH hW e w hw hWe)
-      (fun t t' htt' => prop_dilation_obstruction_i_b hH hW e w hw hWe t t' htt')
+      (prop_G_3_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_G_3_i_b hH hW e w hw hWe t t' htt')
   refine hcount.mono fun t ⟨ht, hac⟩ => ?_
   show 0 < ν (strongLawSet e w t)
   by_contra h
   rw [not_lt, nonpos_iff_eq_zero] at h
   have h1 := hac h
-  rw [prop_dilation_obstruction_i_c hH hW e w hw hWe γ hγ t ht] at h1
+  rw [prop_G_3_i_c hH hW e w hw hWe γ hγ t ht] at h1
   exact one_ne_zero h1
 
 set_option linter.unusedVariables false in
-/-- **Proposition [prop:dilation-obstruction]** Dilation obstruction.  For a bounded Borel `r`
+/-- **Proposition [prop:G.3]** Dilation obstruction.  For a bounded Borel `r`
 with `{r ≠ 0}` of positive Lebesgue measure, no finite complex Borel measure `Γ = h m` on
 `H × ℝ` (a finite measure `m` with an integrable density `h`) has bias slices
 `Γ⁺_ω(E) = ∫_{E×ℝ} e^{iωc} Γ(da,dc) = r(ω) (D_{1/ω})_# 𝒩(0,W)(E)` for almost every `ω ≠ 0`. -/
-theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
+theorem prop_G_3_ii (hH : ¬ FiniteDimensional ℝ H) {W : H →L[ℝ] H}
     (hW : IsTraceClassCovariance W) (e : HilbertBasis ℕ ℝ H) (w : ℕ → ℝ) (hw : ∀ j, 0 < w j)
     (hWe : ∀ j, W (e j) = w j • e j) (γW : Measure H) (hγW : IsCenteredGaussian W γW)
     (r : ℝ → ℝ) (hr : Measurable r) (hrb : ∃ M : ℝ, ∀ ω, |r ω| ≤ M)
@@ -1160,8 +1160,8 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
   let S : Set ℝ := {t | 0 < ν (strongLawSet e w t)}
   have hS : S.Countable :=
     Measure.countable_meas_pos_of_disjoint_iUnion (μ := ν)
-      (prop_dilation_obstruction_i_a hH hW e w hw hWe)
-      (fun t t' htt' => prop_dilation_obstruction_i_b hH hW e w hw hWe t t' htt')
+      (prop_G_3_i_a hH hW e w hw hWe)
+      (fun t t' htt' => prop_G_3_i_b hH hW e w hw hWe t t' htt')
   let B : Set ℝ := (fun t => (Real.sqrt t)⁻¹) '' S ∪
     (fun t => -(Real.sqrt t)⁻¹) '' S
   have hB : B.Countable := (hS.image _).union (hS.image _)
@@ -1187,10 +1187,10 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
       simp only [map_smul, real_inner_smul_left, real_inner_smul_right,
         smul_apply]
       ring
-    have hE := prop_dilation_obstruction_i_a hH hW e w hw hWe ((ω⁻¹) ^ 2)
+    have hE := prop_G_3_i_a hH hW e w hw hWe ((ω⁻¹) ^ 2)
     have hmass : (γW.map fun a => ω⁻¹ • a) (strongLawSet e w ((ω⁻¹) ^ 2)) = 1 := by
       rw [heq]
-      exact prop_dilation_obstruction_i_c hH hW e w hw hWe γ hγ _ ht
+      exact prop_G_3_i_c hH hW e w hw hWe γ hγ _ ht
     have hmem : (ω⁻¹) ^ 2 ∈ S := by
       change 0 < ν (strongLawSet e w ((ω⁻¹) ^ 2))
       by_contra hn
@@ -1217,14 +1217,14 @@ theorem prop_dilation_obstruction_ii (hH : ¬ FiniteDimensional ℝ H) {W : H �
   rw [hrnull] at hr0
   exact lt_irrefl _ hr0
 
-/-! ### Theorem `thm:general-weights` -/
+/-! ### Theorem `thm:H.1` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(i) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(i) for the
 abstract pair: `R_ρ f ∈ L²(λ)` for `f ∈ 𝒟_{μ,ν}` and `α`-admissible `ρ`. -/
-theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_plancherel_memLp (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) :
     MemLp (ridgelet μ ρ f) 2 (parameterMeasure ν) :=
@@ -1232,11 +1232,11 @@ theorem thm_general_weights_plancherel_memLp (μ ν : Measure H) [IsProbabilityM
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(i) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(i) for the
 abstract pair: the Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_{μ,ν}}`. -/
-theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_plancherel (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ₁ ρ₂ : SchwartzMap ℝ ℝ) (hρ₁ : IsAdmissible α ρ₁) (hρ₂ : IsAdmissible α ρ₂)
     (f g : Lp ℂ 2 μ) (hf : f ∈ spectralCore μ ν) (hg : g ∈ spectralCore μ ν) :
@@ -1247,10 +1247,10 @@ theorem thm_general_weights_plancherel (μ ν : Measure H) [IsProbabilityMeasure
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(ii) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(ii) for the
 abstract pair: the unique bounded extension `R_ρ : 𝓔_{μ,ν} → L²(λ)`. -/
-theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_extension (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃! R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν),
@@ -1260,10 +1260,10 @@ theorem thm_general_weights_extension (μ ν : Measure H) [IsProbabilityMeasure 
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(ii) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(ii) for the
 abstract pair: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_{μ,ν}}`. -/
-theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_extension_norm (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
@@ -1276,10 +1276,10 @@ theorem thm_general_weights_extension_norm (μ ν : Measure H) [IsProbabilityMea
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(ii) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(ii) for the
 abstract pair: the extension has closed range. -/
-theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_extension_closed_range (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
@@ -1291,10 +1291,10 @@ theorem thm_general_weights_extension_closed_range (μ ν : Measure H) [IsProbab
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(ii) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(ii) for the
 abstract pair: `R_ρ = W_ρ U`. -/
-theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_extension_coefficient (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (R : spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν))
@@ -1305,10 +1305,10 @@ theorem thm_general_weights_extension_coefficient (μ ν : Measure H) [IsProbabi
   rw [eq_ridgeletExtensionCLM hν hρ R hR]
   exact ridgeletExtensionCLM_eq_spectralCoefficient hν hα hρ μ G
 
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  Theorem
-`thm:B`(iii) for the
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  Theorem
+`thm:3.11`(iii) for the
 abstract pair: `R_ρ f = 0` `λ`-a.e. implies `f = 0` `μ`-a.e. for `f ∈ L²(μ)`. -/
-theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_injective (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (h : ridgelet μ ρ f =ᵐ[parameterMeasure ν] 0) :
@@ -1317,10 +1317,10 @@ theorem thm_general_weights_injective (μ ν : Measure H) [IsProbabilityMeasure 
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:general-weights]** Extension to general input and direction measures.  `1 ∈
+/-- **Theorem [thm:H.1]** Extension to general input and direction measures.  `1 ∈
 𝒟_{μ,ν}` if and only if
 `∫ |μ̂(ξ)|² ν(dξ) < ∞`. -/
-theorem thm_general_weights_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_H_1_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) :
     MemLp.toLp (fun _ : H => (1 : ℂ)) (memLp_const 1) ∈ spectralCore μ ν ↔
       Integrable (fun ξ : H => ‖charFun μ ξ‖ ^ 2) ν := by
@@ -1340,36 +1340,36 @@ theorem thm_general_weights_one_mem_iff (μ ν : Measure H) [IsProbabilityMeasur
   rw [h1, memLp_two_iff_integrable_sq_norm (f := fun ξ => charFun μ (-ξ))
     (stronglyMeasurable_charFun.comp_measurable measurable_neg).aestronglyMeasurable, h2]
 
-/-! ### Example `ex:bandlimited-filter` -/
+/-! ### Example `ex:I.1` -/
 
 section Filters
 
 open OperatorRidgelet.Filters
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  The prescribed
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The prescribed
 Fourier transform `ρ̂_bp` is smooth. -/
-theorem ex_bandlimited_filter_i : ContDiff ℝ (⊤ : ℕ∞) bandPassHat :=
+theorem ex_I_1_i : ContDiff ℝ (⊤ : ℕ∞) bandPassHat :=
   contDiff_bandPassHat
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 nonpositive. -/
-theorem ex_bandlimited_filter_ii : ∀ ω : ℝ, bandPassHat ω ≤ 0 := by
+theorem ex_I_1_ii : ∀ ω : ℝ, bandPassHat ω ≤ 0 := by
   intro ω
   unfold bandPassHat bump
   split_ifs
   · exact neg_nonpos.mpr (Real.exp_pos _).le
   · simp
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 nonzero. -/
-theorem ex_bandlimited_filter_iii : bandPassHat ≠ 0 := by
+theorem ex_I_1_iii : bandPassHat ≠ 0 := by
   intro h
   have := congrFun h (3 / 2)
   norm_num [bandPassHat, bump] at this
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
 supported in `{1 ≤ |ω| ≤ 2}`. -/
-theorem ex_bandlimited_filter_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤ 2} := by
+theorem ex_I_1_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤ 2} := by
   apply closure_minimal
   · intro ω hω
     simp only [Function.mem_support, bandPassHat, bump] at hω
@@ -1383,13 +1383,13 @@ theorem ex_bandlimited_filter_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |�
     exact (isClosed_le continuous_const continuous_abs).inter
       (isClosed_le continuous_abs continuous_const)
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  The inverse
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The inverse
 Fourier transform `ρ_bp` of `ρ̂_bp` is a real Schwartz function. -/
-theorem ex_bandlimited_filter_v : ⇑bandPass = bandPassFun :=
+theorem ex_I_1_v : ⇑bandPass = bandPassFun :=
   coe_bandPass
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ_bp` is even. -/
-theorem ex_bandlimited_filter_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` is even. -/
+theorem ex_I_1_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
   intro t
   rw [coe_bandPass]
   unfold bandPassFun
@@ -1404,52 +1404,52 @@ theorem ex_bandlimited_filter_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
   push_cast
   ring
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  The Fourier
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  The Fourier
 transform of `ρ_bp` is the prescribed `ρ̂_bp`. -/
-theorem ex_bandlimited_filter_vii : ∀ ω : ℝ, filterFourier bandPass ω = (bandPassHat ω : ℂ) :=
+theorem ex_I_1_vii : ∀ ω : ℝ, filterFourier bandPass ω = (bandPassHat ω : ℂ) :=
   filterFourier_bandPass
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ_bp` satisfies
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` satisfies
 the band-pass condition. -/
-theorem ex_bandlimited_filter_viii : IsBandPass bandPass := by
+theorem ex_I_1_viii : IsBandPass bandPass := by
   have hF : filterFourier bandPass = fun ω => (bandPassHat ω : ℂ) := funext filterFourier_bandPass
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro h
-    apply ex_bandlimited_filter_iii
+    apply ex_I_1_iii
     funext ω
     have h1 := filterFourier_bandPass ω
     rw [h, FunLike.coe_zero, filterFourier_zero] at h1
     exact_mod_cast h1.symm
   · rw [hF]
-    exact Complex.ofRealCLM.contDiff.comp ex_bandlimited_filter_i
+    exact Complex.ofRealCLM.contDiff.comp ex_I_1_i
   · rw [hF]
     exact hasCompactSupport_bandPassHat.comp_left Complex.ofReal_zero
   · rw [hF]
     intro h0
     have hsub : tsupport (fun ω => (bandPassHat ω : ℂ)) ⊆ tsupport bandPassHat :=
       closure_mono (Function.support_comp_subset Complex.ofReal_zero bandPassHat)
-    have := (ex_bandlimited_filter_iv (hsub h0)).1
+    have := (ex_I_1_iv (hsub h0)).1
     norm_num at this
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  `ρ_bp` is
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  `ρ_bp` is
 `α`-admissible for every `α > 0`. -/
-theorem ex_bandlimited_filter_ix : ∀ α : ℝ, 0 < α → IsAdmissible α bandPass :=
-  def_admissible_filter bandPass ex_bandlimited_filter_viii
+theorem ex_I_1_ix : ∀ α : ℝ, 0 < α → IsAdmissible α bandPass :=
+  def_3_2 bandPass ex_I_1_viii
 
-/-- **Example [ex:bandlimited-filter]** A band-pass filter for every `α > 0`.  Multiplying by
+/-- **Example [ex:I.1]** A band-pass filter for every `α > 0`.  Multiplying by
 `(C^{(α)}_{ρ_bp})^{-1/2}` normalizes the admissibility constant to one. -/
-theorem ex_bandlimited_filter_x :
+theorem ex_I_1_x :
     ∀ α : ℝ, 0 < α →
       admissibilityConst α ((Real.sqrt (admissibilityConst α bandPass))⁻¹ • bandPass) = 1 := by
   intro α hα
-  have hpos : 0 < admissibilityConst α bandPass := (ex_bandlimited_filter_ix α hα).pos
+  have hpos : 0 < admissibilityConst α bandPass := (ex_I_1_ix α hα).pos
   rw [admissibilityConst_smul, inv_pow, Real.sq_sqrt hpos.le, inv_mul_cancel₀ hpos.ne']
 
-/-! ### Example `ex:mexican-hat` -/
+/-! ### Example `ex:I.2` -/
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  `ρ_MH(t) = (1 - t²) e^{-t²/2}` is a Schwartz
+/-- **Example [ex:I.2]** Mexican hat.  `ρ_MH(t) = (1 - t²) e^{-t²/2}` is a Schwartz
 function. -/
-theorem ex_mexican_hat_i : ⇑mexicanHat = mexicanHatFun := by
+theorem ex_I_2_i : ⇑mexicanHat = mexicanHatFun := by
   have h : ∃ ρ : SchwartzMap ℝ ℝ, ⇑ρ = mexicanHatFun :=
     ⟨Real.polynomialGaussianSchwartz (1 - Polynomial.X ^ 2), by
       funext t
@@ -1458,12 +1458,12 @@ theorem ex_mexican_hat_i : ⇑mexicanHat = mexicanHatFun := by
   rw [dif_pos h]
   exact h.choose_spec
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  `ρ̂_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
-theorem ex_mexican_hat_ii :
+/-- **Example [ex:I.2]** Mexican hat.  `ρ̂_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
+theorem ex_I_2_ii :
     ∀ ω : ℝ, filterFourier mexicanHat ω =
       ((Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) : ℂ) := by
   intro ω
-  rw [filterFourier_eq_fourier, ex_mexican_hat_i]
+  rw [filterFourier_eq_fourier, ex_I_2_i]
   have hfun : (fun t : ℝ => (mexicanHatFun t : ℂ)) =
       fun t => (((1 - t ^ 2) * Real.exp (-t ^ 2 / 2) : ℝ) : ℂ) := rfl
   rw [hfun, Real.fourier_one_sub_sq_mul_gaussian]
@@ -1471,9 +1471,9 @@ theorem ex_mexican_hat_ii :
     field_simp
   rw [h2π]
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  For `0 < α < 5`,
+/-- **Example [ex:I.2]** Mexican hat.  For `0 < α < 5`,
 `C^{(α)}_{ρ_MH} = Γ((5-α)/2)`. -/
-theorem ex_mexican_hat_iv :
+theorem ex_I_2_iv :
     ∀ α : ℝ, 0 < α → α < 5 → admissibilityConst α mexicanHat = Real.Gamma ((5 - α) / 2) := by
   intro α hα hα5
   unfold admissibilityConst
@@ -1483,7 +1483,7 @@ theorem ex_mexican_hat_iv :
   have hae : (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) =ᵐ[volume]
       fun ω => (2 * Real.pi) * (|ω| ^ (4 - α) * Real.exp (-ω ^ 2)) := by
     filter_upwards [h0] with ω hω
-    rw [ex_mexican_hat_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
+    rw [ex_I_2_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
       abs_of_nonneg (Real.sqrt_nonneg _), abs_of_pos (Real.exp_pos _), abs_pow, mul_pow, mul_pow,
       Real.sq_sqrt (by positivity), ← pow_mul, ← Real.exp_nat_mul]
     have e1 : (|ω| ^ (2 * 2) : ℝ) = |ω| ^ (4 : ℝ) := by
@@ -1504,9 +1504,9 @@ theorem ex_mexican_hat_iv :
   rw [h5]
   field_simp
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
+/-- **Example [ex:I.2]** Mexican hat.  Under the standing assumption `α > 0`, `ρ_MH` is
 `α`-admissible exactly for `α < 5`. -/
-theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
+theorem ex_I_2_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHat ↔ α < 5) := by
   intro α hα
   have h0 : ∀ᵐ ω : ℝ ∂volume, ω ≠ 0 := by
     rw [ae_iff]
@@ -1514,7 +1514,7 @@ theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHa
   have hae : (fun ω : ℝ => ‖filterFourier mexicanHat ω‖ ^ 2 * |ω| ^ (-α)) =ᵐ[volume]
       fun ω => (2 * Real.pi) * (|ω| ^ (4 - α) * Real.exp (-ω ^ 2)) := by
     filter_upwards [h0] with ω hω
-    rw [ex_mexican_hat_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
+    rw [ex_I_2_ii ω, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_mul,
       abs_of_nonneg (Real.sqrt_nonneg _), abs_of_pos (Real.exp_pos _), abs_pow, mul_pow, mul_pow,
       Real.sq_sqrt (by positivity), ← pow_mul, ← Real.exp_nat_mul]
     have e1 : (|ω| ^ (2 * 2) : ℝ) = |ω| ^ (4 : ℝ) := by
@@ -1536,22 +1536,22 @@ theorem ex_mexican_hat_iii : ∀ α : ℝ, 0 < α → (IsAdmissible α mexicanHa
       Real.integrable_abs_rpow_mul_exp_neg_sq_iff]
     constructor <;> intro h <;> linarith
   exact ⟨fun h => hint.mp h.integrable, fun h =>
-    ⟨hint.mpr h, by rw [ex_mexican_hat_iv α hα h]; exact Real.Gamma_pos_of_pos (by linarith)⟩⟩
+    ⟨hint.mpr h, by rw [ex_I_2_iv α hα h]; exact Real.Gamma_pos_of_pos (by linarith)⟩⟩
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  In particular `C^{(1)}_{ρ_MH} = 1`. -/
-theorem ex_mexican_hat_v : admissibilityConst 1 mexicanHat = 1 := by
-  rw [ex_mexican_hat_iv 1 one_pos (by norm_num)]
+/-- **Example [ex:I.2]** Mexican hat.  In particular `C^{(1)}_{ρ_MH} = 1`. -/
+theorem ex_I_2_v : admissibilityConst 1 mexicanHat = 1 := by
+  rw [ex_I_2_iv 1 one_pos (by norm_num)]
   have : ((5 : ℝ) - 1) / 2 = ((1 : ℕ) : ℝ) + 1 := by norm_num
   rw [this, Real.Gamma_nat_eq_factorial]
   simp
 
-/-- **Example [ex:mexican-hat]** Mexican hat.  `ρ_MH` is not band pass. -/
-theorem ex_mexican_hat_vi : ¬ IsBandPass mexicanHat := by
+/-- **Example [ex:I.2]** Mexican hat.  `ρ_MH` is not band pass. -/
+theorem ex_I_2_vi : ¬ IsBandPass mexicanHat := by
   intro h
   have hcs := h.hasCompactSupport
   have hsub : {ω : ℝ | ω ≠ 0} ⊆ Function.support (filterFourier mexicanHat) := by
     intro ω hω
-    rw [Function.mem_support, ex_mexican_hat_ii]
+    rw [Function.mem_support, ex_I_2_ii]
     have : (Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) ≠ 0 :=
       mul_ne_zero (mul_ne_zero (Real.sqrt_pos.mpr (by positivity)).ne' (pow_ne_zero 2 hω))
         (Real.exp_pos _).ne'

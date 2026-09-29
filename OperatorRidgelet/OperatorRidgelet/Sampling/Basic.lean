@@ -36,11 +36,11 @@ Facts used by the proofs of `OperatorRidgelet.Paper.Sampling`.
   operator, and truncated-direction sampled networks at once.
 * The ingredients of the two corollaries of Appendix D: the envelope `|β(0)| + Lip(β) R_K B` of
   a ridge atom with `‖a‖² + c² ≤ B²` (`norm_ridgeAtom_le_of_sq_le`, for the bounded-difference
-  constant of Corollary `cor:sampling-concentration`), the pointwise bound of the sampled-network
+  constant of Corollary `cor:D.5`), the pointwise bound of the sampled-network
   error by its compact sup norm (`norm_polarSampledNetwork_sub_le_compactSupNorm`), and the
   Lipschitz estimate for projecting the directions inside the activation
   (`norm_finiteNetwork_sub_finiteNetwork_map_le`, `norm_sampledNetwork_sub_truncated_le`, for
-  Corollary `cor:two-stage-error`).
+  Corollary `cor:D.8`).
 
 The Hilbert-valued variance identity of Lemma D.3 is the general `integral_norm_sq_sampleMean`
 of `OperatorRidgelet.ToMathlib.MeasurePi`.
@@ -498,7 +498,7 @@ section QualitativeSampling
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H]
 
-/-- Qualitative finite-atomic approximation (Lemma `lem:qualitative-sampling`).  For a
+/-- Qualitative finite-atomic approximation (Lemma `lem:D.4`).  For a
 continuous activation `β`, a compact `K`, and a coefficient measure `Γ` whose ridge atoms are
 integrably bounded in `C(K)`, every `ε > 0` admits a finite atomic complex measure
 `Γ_ε = ∑_j w_j δ_{θ_j}` with `‖S_β Γ_ε − S_β Γ‖_{C(K)} < ε`.  The proof approximates the

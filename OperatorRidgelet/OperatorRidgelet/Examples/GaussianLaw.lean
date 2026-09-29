@@ -13,7 +13,7 @@ Under a centred Gaussian measure `μ = 𝒩(0,Q)` (`IsCenteredGaussian Q μ`) th
 `OperatorRidgelet.Transform.Basic`), which gives
 
 * the closed forms `F_Q(x) = √(⟪Qx,x⟫/(2π))` and `Φ_Q(x) = (1 + ⟪Qx,x⟫)^{-1/2}` of Example
-  `ex:gaussian-parameter` (`gaussianParameterReLU_eq`, `gaussianParameterGauss_eq`) and the
+  `ex:7.2` (`gaussianParameterReLU_eq`, `gaussianParameterGauss_eq`) and the
   hinge representation `Φ_Q(x) = ∫∫ ReLU(⟪a,x⟫ - b) φ''(b) 𝒩(0,Q)(da) db`
   (`gaussianParameterGauss_eq_integral_prod`);
 * the mixed integral `∫ Φ(⟪v,x⟫) e^{-i⟪x,ξ⟫} μ(dx) = (1+σ²)^{-1/2} e^{-⟪S_v ξ,ξ⟫/2}` with
@@ -94,7 +94,7 @@ theorem IsCenteredGaussian.integrable_inner (hμ : IsCenteredGaussian Q μ) (v :
   exact (integrable_map_measure aestronglyMeasurable_id hmeas.aemeasurable).mp h1
 
 omit [IsProbabilityMeasure μ] in
-/-- **Example `ex:gaussian-parameter`**, first closed form: `F_Q(x) = √(⟪Qx,x⟫/(2π))`. -/
+/-- **Example `ex:7.2`**, first closed form: `F_Q(x) = √(⟪Qx,x⟫/(2π))`. -/
 theorem gaussianParameterReLU_eq (hμ : IsCenteredGaussian Q μ) (x : H) (hx : 0 ≤ ⟪Q x, x⟫) :
     gaussianParameterReLU μ x = Real.sqrt (⟪Q x, x⟫ / (2 * Real.pi)) := by
   have hmeas : Measurable fun a : H => ⟪a, x⟫ := by fun_prop
@@ -107,7 +107,7 @@ theorem gaussianParameterReLU_eq (hμ : IsCenteredGaussian Q μ) (x : H) (hx : 0
   exact h
 
 omit [IsProbabilityMeasure μ] in
-/-- **Example `ex:gaussian-parameter`**, second closed form: `Φ_Q(x) = (1 + ⟪Qx,x⟫)^{-1/2}`. -/
+/-- **Example `ex:7.2`**, second closed form: `Φ_Q(x) = (1 + ⟪Qx,x⟫)^{-1/2}`. -/
 theorem gaussianParameterGauss_eq (hμ : IsCenteredGaussian Q μ) (x : H) (hx : 0 ≤ ⟪Q x, x⟫) :
     gaussianParameterGauss μ x = (Real.sqrt (1 + ⟪Q x, x⟫))⁻¹ := by
   have hmeas : Measurable fun a : H => ⟪a, x⟫ := by fun_prop
@@ -120,7 +120,7 @@ theorem gaussianParameterGauss_eq (hμ : IsCenteredGaussian Q μ) (x : H) (hx : 
   unfold gaussianParameterGauss gaussianFun
   exact h
 
-/-- **Example `ex:gaussian-parameter`**, hinge form:
+/-- **Example `ex:7.2`**, hinge form:
 `Φ_Q(x) = ∫∫ ReLU(⟪a,x⟫ - b) φ''(b) 𝒩(0,Q)(da) db`. -/
 theorem gaussianParameterGauss_eq_integral_prod (hμ : IsCenteredGaussian Q μ) (x : H)
     (hx : 0 ≤ ⟪Q x, x⟫) :

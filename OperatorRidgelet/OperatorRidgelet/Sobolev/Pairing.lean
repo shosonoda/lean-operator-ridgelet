@@ -4,7 +4,7 @@ import OperatorRidgelet.ToMathlib.IntegralCauchySchwarz
 /-!
 # The bilinear Sobolev pairing
 
-The pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` of Lemma `lem:sobolev-pairing`, where `γ = ȟ` is the
+The pairing `L_σ^Y(h) = ∫ σ(t) γ(-t) dt` of Lemma `lem:C.4`, where `γ = ȟ` is the
 coefficient of the profile `h`.  For an activation of polynomial growth `p` and `s > p + 1/2`
 the weighted activation `⟨·⟩^{-s} σ` is square integrable, the pairing integral converges
 absolutely with `‖L_σ^Y(h)‖ ≤ (2π)^{-1/2} b_{σ,s} ‖h‖_{H^s_ω}`, and the bias translation of the
@@ -30,7 +30,7 @@ theorem one_add_abs_le_sqrt_two_mul_bracket (t : ℝ) : 1 + |t| ≤ Real.sqrt 2 
   rwa [Real.sqrt_sq (by positivity)] at h3
 
 /-- The weighted activation of an activation of polynomial growth `p` is square integrable for
-`s > p + 1/2`: the constant `b_{σ,s}` of Lemma `lem:sobolev-pairing` is finite. -/
+`s > p + 1/2`: the constant `b_{σ,s}` of Lemma `lem:C.4` is finite. -/
 theorem memLp_bracket_rpow_neg_smul {σ : ℝ → ℂ} {p s C : ℝ} (hp : 0 ≤ p) (hps : p + 1 / 2 < s)
     (hσ : Continuous σ) (hbound : ∀ t : ℝ, ‖σ t‖ ≤ C * (1 + |t|) ^ p) :
     MemLp (fun t : ℝ => (bracket t ^ (-s) : ℝ) • σ t) 2 volume := by
@@ -87,7 +87,7 @@ theorem integrable_smul_neg {σ : ℝ → ℂ} {s : ℝ} {γ : ℝ → Y}
     ← Real.rpow_add (bracket_pos t)]
   norm_num
 
-/-- **Lemma [lem:sobolev-pairing]** the pairing bound
+/-- **Lemma [lem:C.4]** the pairing bound
 `‖L_σ^Y(h)‖ ≤ (2π)^{-1/2} b_{σ,s} ‖h‖_{H^s_ω}`. -/
 theorem norm_sobolevPairing_le {σ : ℝ → ℂ} {s : ℝ} {γ : ℝ → Y}
     (hσ : MemLp (fun t : ℝ => (bracket t ^ (-s) : ℝ) • σ t) 2 volume)
@@ -146,7 +146,7 @@ theorem norm_sobolevPairing_le {σ : ℝ → ℂ} {s : ℝ} {γ : ℝ → Y}
         rw [hb, hgint]
         ring
 
-/-- **Lemma [lem:sobolev-pairing]** the translation formula
+/-- **Lemma [lem:C.4]** the translation formula
 `∫ σ(u - b) γ(b) db = L_σ^Y(M_u h)` (`eq:sobolev-bias-pairing`). -/
 theorem integral_smul_sub_eq_sobolevPairing_translate (σ : ℝ → ℂ) (γ : ℝ → Y) (u : ℝ) :
     ∫ b : ℝ, σ (u - b) • γ b = sobolevPairing σ (fun t => γ (t + u)) := by

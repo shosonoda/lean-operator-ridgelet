@@ -13,7 +13,7 @@ For a Gaussian pair `(⟪v,x⟫, ⟪a,x⟫)` under `𝒩(0,Q)` and a continuous 
 Gaussian with variance `⟪S_v a, a⟫`, and the convolution with a centred Gaussian is symmetric.
 Consequently the ridgelet coefficient of the layer observable is
 `R_ρ F_φ(a,c) = ∫ w_φ(y) (1+σ_y²)^{-1/2} (ρ * φ_{⟪S_y a,a⟫})(c) m(dy)`
-(`IsLayerData.ridgelet_layerObservable_gaussianFun'`, Example `ex:operator-layer`(ii)).
+(`IsLayerData.ridgelet_layerObservable_gaussianFun'`, Example `ex:7.4`(ii)).
 -/
 
 noncomputable section
@@ -193,7 +193,7 @@ theorem IsLayerData.integrable_gaussianFun_mul_layerWeight_mul_filter (hμ : IsC
         · exact SchwartzMap.norm_le_seminorm ℝ ρ _
     _ = _ := by ring
 
-/-- **Example `ex:operator-layer`(ii)**, the ridgelet coefficient of the scalar observable:
+/-- **Example `ex:7.4`(ii)**, the ridgelet coefficient of the scalar observable:
 `R_ρ F_φ(a,c) = ∫ w_φ(y) (1+σ_y²)^{-1/2} (ρ * φ_{⟪S_y a,a⟫})(c) m(dy)`. -/
 theorem IsLayerData.ridgelet_layerObservable_gaussianFun' (hQ : IsSelfAdjoint Q)
     (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)

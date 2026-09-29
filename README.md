@@ -8,11 +8,12 @@ and dimension-free finite-width approximation.
 This source snapshot (`snapshot20260929`) contains the Lean sources, pinned dependency
 configuration, and comparator inputs. Build caches and development tooling are omitted.
 
-The snapshot tracks the **68 manuscript items of the 2026-09-29 terminology revision**:
+The snapshot tracks the **68 manuscript items of the 2026-09-29 numbered manuscript**:
 all are recorded as
 verified, comprising **369 Lean statements checked by comparator** and the pure definitions.
 The manuscript itself is not included. See the [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/)
-for a human-readable presentation and [STATUS.md](STATUS.md) for the generated per-item record.
+for a presentation organized by manuscript Sections 1–8 and Appendices A–J, followed by
+supporting infrastructure, and [STATUS.md](STATUS.md) for the generated per-item record.
 
 ## What is formalized, and where?
 
@@ -33,6 +34,12 @@ The mathematics is in [OperatorRidgelet/OperatorRidgelet/](OperatorRidgelet/Oper
 correspondence and formalization notes. The precise statements are in
 [Challenge/](OperatorRidgelet/Challenge/) and their proofs in
 [Paper/](OperatorRidgelet/OperatorRidgelet/Paper/).
+
+Manuscript-facing declarations use `OperatorRidgelet.Paper.<kind>_<number>[_<part>]`,
+with dots replaced by underscores, for example `thm_3_11_i`. Semantic definition names
+remain unchanged. In `paper.json`, `label` retains the source label and `blueprint_label`
+records the numbered Blueprint identifier. Comparator checks the 369 independent
+statements; there is no separate human-facing Comparator review chapter.
 
 `STATUS.md` preserves the verification record generated before packaging. References there to
 `scripts/status.py` and `scripts/comparator-check.sh` describe the development repository;

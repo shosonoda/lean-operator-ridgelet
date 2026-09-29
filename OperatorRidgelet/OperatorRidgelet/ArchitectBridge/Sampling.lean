@@ -67,7 +67,7 @@ attribute [blueprint "sampling:density-sampled-network"
     $V=\|\gamma\|_{L^1(\lambda)}$, $p=|\gamma|\lambda/V$, $h=\gamma/|\gamma|$. -/)
   (hasProof := false)] OperatorRidgelet.densitySampledNetwork
 
-attribute [blueprint "def:rademacher-complexity"
+attribute [blueprint "def:6.1"
   (statement := /-- For compact $K\subset H$,
     $\mathfrak R_N(K;p,\beta)=\mathbb E_{\theta,\varepsilon}\sup_{x\in K}
     \bigl|\frac1N\sum_{j=1}^N\varepsilon_jh(\theta_j)\beta(\langle a_j,x\rangle+c_j)\bigr|$
@@ -99,61 +99,61 @@ attribute [blueprint "sampling:finite-rank-projection"
 
 /-! ## Section 6: sampling bounds -/
 
-attribute [blueprint "thm:general-rademacher"
+attribute [blueprint "thm:6.2"
   (statement := /-- Whenever the atoms $x\mapsto h(\theta)\beta(\langle a,x\rangle+c)$ are
     measurable and integrably bounded in $C(K)$, the sampled network satisfies
     $\mathbb E\|f_N-f\|_{C(K)}\le2V\,\mathfrak R_N(K;p,\beta)$. -/)]
-  OperatorRidgelet.Paper.thm_general_rademacher
+  OperatorRidgelet.Paper.thm_6_2
 
-attribute [blueprint "thm:lipschitz-barron-i"
+attribute [blueprint "thm:6.3-i"
   (statement := /-- For real globally Lipschitz $\beta$, a finite-variation $Y$-valued $\Gamma$,
     and $M_2^2=\int(\|a\|^2+|c|^2)\,\mathrm dp<\infty$,
     $\mathbb E\|f_N-f\|_{C(K;Y)}\le\frac{V}{\sqrt N}
       (4|\beta(0)|+8\operatorname{Lip}(\beta)R_KM_2)$
     with $R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}$. -/)]
-  OperatorRidgelet.Paper.thm_lipschitz_barron_i
+  OperatorRidgelet.Paper.thm_6_3_i
 
-attribute [blueprint "thm:lipschitz-barron-ii"
+attribute [blueprint "thm:6.3-ii"
   (statement := /-- At least one deterministic width-$N$ realization satisfies the same
     bound. -/)]
-  OperatorRidgelet.Paper.thm_lipschitz_barron_ii
+  OperatorRidgelet.Paper.thm_6_3_ii
 
-attribute [blueprint "thm:lipschitz-barron-iii"
+attribute [blueprint "thm:6.3-iii"
   (statement := /-- The same expectation is at most
     $\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, the second displayed
     inequality. -/)]
-  OperatorRidgelet.Paper.thm_lipschitz_barron_iii
+  OperatorRidgelet.Paper.thm_6_3_iii
 
 /-! ## Section 6: finite total variation of the coefficient measure -/
 
-attribute [blueprint "thm:E-i"
+attribute [blueprint "thm:6.4-i"
   (statement := /-- For a band-pass $\rho$ there is a constant $c_\rho<\infty$, depending only
     on $\rho$ and $\alpha$, such that every $G$ regular along rays satisfies
     $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha\le c_\rho M_4(G)$. -/)]
-  OperatorRidgelet.Paper.thm_E_i
+  OperatorRidgelet.Paper.thm_6_4_i
 
-attribute [blueprint "thm:E-ii"
+attribute [blueprint "thm:6.4-ii"
   (statement := /-- For $G$ regular along rays,
     $\int(1+\|a\|^2+|c|^2)|\gamma_G|\,\mathrm d\lambda_\alpha<\infty$. -/)]
-  OperatorRidgelet.Paper.thm_E_ii
+  OperatorRidgelet.Paper.thm_6_4_ii
 
-attribute [blueprint "thm:E-iii"
+attribute [blueprint "thm:6.4-iii"
   (statement := /-- For every real globally Lipschitz $\beta$,
     $C^{(\alpha)}_{\beta,\rho}g_G=S_\beta[\gamma_G\lambda_\alpha]$. -/)]
-  OperatorRidgelet.Paper.thm_E_iii
+  OperatorRidgelet.Paper.thm_6_4_iii
 
-attribute [blueprint "thm:E-iv"
+attribute [blueprint "thm:6.4-iv"
   (statement := /-- The sampled network of $\gamma_G\lambda_\alpha$, with
     $V=\|\gamma_G\|_{L^1(\lambda_\alpha)}$ and $M_2$ the second moment of
     $|\gamma_G|\lambda_\alpha/V$, satisfies
     $\mathbb E\|f_N-C^{(\alpha)}_{\beta,\rho}g_G\|_{C(K)}
     \le\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$
     for every compact $K$. -/)]
-  OperatorRidgelet.Paper.thm_E_iv
+  OperatorRidgelet.Paper.thm_6_4_iv
 
 /-! ## Section 6: constructive universal approximation -/
 
-attribute [blueprint "thm:D"
+attribute [blueprint "thm:6.5"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, continuous,
     polynomially growing, non-polynomial real $\beta$, a band-pass $\rho$ with
     $C^{(\alpha)}_{\beta,\rho}=1$, continuous $f:H\to\mathbb C$, compact $K$, and
@@ -164,102 +164,102 @@ attribute [blueprint "thm:D"
     $\mathbb E\|f-f_N\|_{C(K)}\le\varepsilon+\frac{8V}{\sqrt N}
     (|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, and one deterministic width-$N$ network
     satisfies the same bound. -/)]
-  OperatorRidgelet.Paper.thm_D
+  OperatorRidgelet.Paper.thm_6_5
 
-attribute [blueprint "thm:D-dense"
+attribute [blueprint "thm:6.5-dense"
   (statement := /-- Under the hypotheses of the theorem, the finite-width networks with
     activation $\beta$ are dense in $C(H)$ for the compact-open topology: for continuous
     $f:H\to\mathbb C$, compact $K$, and $\varepsilon>0$ there are a width $N$ and a network
     $f_N$ with $\|f-f_N\|_{C(K)}<\varepsilon$. -/)]
-  OperatorRidgelet.Paper.thm_D_dense
+  OperatorRidgelet.Paper.thm_6_5_dense
 
-attribute [blueprint "thm:D-vec"
+attribute [blueprint "thm:6.5-vec"
   (statement := /-- For a direction measure $\nu$ that is finite on bounded sets, the same
     statements hold for continuous $f:H\to Y$ with $C(K;Y)$ in (i) and (ii) and the
     same explicit rate
     $\mathbb E\|f-f_N\|_{C(K;Y)}\le\varepsilon+\frac{8V}{\sqrt
     N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$, with a deterministic realization, in
     (iii). -/)]
-  OperatorRidgelet.Paper.thm_D_vec
+  OperatorRidgelet.Paper.thm_6_5_vec
 
 /-! ## Section 6: vector-valued sampling -/
 
-attribute [blueprint "cor:vector-rates-i-a"
+attribute [blueprint "cor:6.6-i-a"
   (statement := /-- For every Borel probability measure $\zeta$ on $H$ with
     $\int\|x\|^2\,\mathrm d\zeta<\infty$,
     $\mathbb E\|f_N-f\|^2_{L^2(\zeta;Y)}\le\frac{V^2}N\int
     \|\beta(\langle a,\cdot\rangle+c)\|^2_{L^2(\zeta)}\,\mathrm dp$. -/)]
-  OperatorRidgelet.Paper.cor_vector_rates_i_a
+  OperatorRidgelet.Paper.cor_6_6_i_a
 
-attribute [blueprint "cor:vector-rates-i-b"
+attribute [blueprint "cor:6.6-i-b"
   (statement := /-- $\frac{V^2}N\int\|\beta(\langle a,\cdot\rangle+c)\|^2_{L^2(\zeta)}\,
     \mathrm dp\le\frac{2V^2}N\bigl(|\beta(0)|^2+\operatorname{Lip}(\beta)^2
     (1+\int\|x\|^2\,\mathrm d\zeta)M_2^2\bigr)$. -/)]
-  OperatorRidgelet.Paper.cor_vector_rates_i_b
+  OperatorRidgelet.Paper.cor_6_6_i_b
 
-attribute [blueprint "cor:vector-rates-ii-a"
+attribute [blueprint "cor:6.6-ii-a"
   (statement := /-- For every compact $K$,
     $\mathbb E\|f_N-f\|_{C(K;Y)}\le2V\,\mathfrak R^Y_N(K;p,\beta)$. -/)]
-  OperatorRidgelet.Paper.cor_vector_rates_ii_a
+  OperatorRidgelet.Paper.cor_6_6_ii_a
 
-attribute [blueprint "cor:vector-rates-ii-b"
+attribute [blueprint "cor:6.6-ii-b"
   (statement := /-- $\mathfrak R^Y_N(K;p,\beta)\to0$ as $N\to\infty$. -/)]
-  OperatorRidgelet.Paper.cor_vector_rates_ii_b
+  OperatorRidgelet.Paper.cor_6_6_ii_b
 
 /-! ## Appendix D: supplementary sampling results -/
 
-attribute [blueprint "lem:qualitative-sampling"
+attribute [blueprint "lem:D.4"
   (statement := /-- For continuous $\beta$, compact $K$, and
     $\int\|\beta(\langle a,\cdot\rangle+c)\|_{C(K)}\,\mathrm d|\Gamma|<\infty$, for every
     $\varepsilon>0$ there is a finite atomic complex measure $\Gamma_\varepsilon$ with
     $\|S_\beta\Gamma_\varepsilon-S_\beta\Gamma\|_{C(K)}<\varepsilon$. -/)]
-  OperatorRidgelet.Paper.lem_qualitative_sampling
+  OperatorRidgelet.Paper.lem_D_4
 
-attribute [blueprint "cor:sampling-concentration"
+attribute [blueprint "cor:D.5"
   (statement := /-- Under the hypotheses of the Barron bound, if $\|a\|^2+|c|^2\le B^2$ almost
     surely for some $B\ge0$ and $M_K=|\beta(0)|+\operatorname{Lip}(\beta)R_KB$, then with
     probability at least $1-\delta$, $\|f_N-f\|_{C(K)}\le\frac{8V}{\sqrt N}(|\beta(0)|
     +\operatorname{Lip}(\beta)R_KM_2)+VM_K\sqrt{2\log(1/\delta)/N}$. -/)]
-  OperatorRidgelet.Paper.cor_sampling_concentration
+  OperatorRidgelet.Paper.cor_D_5
 
-attribute [blueprint "lem:hilbert-sampling-i"
+attribute [blueprint "lem:D.6-i"
   (statement := /-- For $Y\in L^2(p;X)$ with values in a separable Hilbert space, independent
     copies $Y_j$, $f=V\mathbb EY$, and $f_N=VN^{-1}\sum_jY_j$,
     $\mathbb E\|f_N-f\|_X^2=\frac{V^2}N(\mathbb E\|Y\|_X^2-\|\mathbb EY\|_X^2)$. -/)]
-  OperatorRidgelet.Paper.lem_hilbert_sampling_i
+  OperatorRidgelet.Paper.lem_D_6_i
 
-attribute [blueprint "lem:hilbert-sampling-ii"
+attribute [blueprint "lem:D.6-ii"
   (statement := /-- $\mathbb E\|f_N-f\|_X^2\le\frac{V^2}N\mathbb E\|Y\|_X^2$. -/)]
-  OperatorRidgelet.Paper.lem_hilbert_sampling_ii
+  OperatorRidgelet.Paper.lem_D_6_ii
 
-attribute [blueprint "lem:hilbert-sampling-iii"
+attribute [blueprint "lem:D.6-iii"
   (statement := /-- A deterministic sample satisfies the same upper bound. -/)]
-  OperatorRidgelet.Paper.lem_hilbert_sampling_iii
+  OperatorRidgelet.Paper.lem_D_6_iii
 
-attribute [blueprint "cor:operator-sampling-i"
+attribute [blueprint "cor:D.7-i"
   (statement := /-- For a finite complex measure $\Gamma_{\rm op}$ on $\mathcal L_2(H)\times H$
     with polar decomposition $h_{\rm op}|\Gamma_{\rm op}|$, real globally Lipschitz $\beta$, and
     $M_{\rm op}^2=\int(\|A^*\psi\|^2+|\langle\psi,b\rangle|^2)\,\mathrm dp_{\rm op}<\infty$,
     sampling $(A_j,b_j)$ from $p_{\rm op}$ with the weights $h_{\rm op}$ gives
     $\mathbb E\|f_{{\rm op},N}-S_{\rm op}\Gamma_{\rm op}\|_{C(K)}
     \le8V_{\rm op}N^{-1/2}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_{\rm op})$. -/)]
-  OperatorRidgelet.Paper.cor_operator_sampling_i
+  OperatorRidgelet.Paper.cor_D_7_i
 
-attribute [blueprint "cor:operator-sampling-ii"
+attribute [blueprint "cor:D.7-ii"
   (statement := /-- $M_{\rm op}^2\le\|\psi\|^2\int(\|A\|_{\mathcal L_2}^2+\|b\|^2)\,
     \mathrm dp_{\rm op}$. -/)]
-  OperatorRidgelet.Paper.cor_operator_sampling_ii
+  OperatorRidgelet.Paper.cor_D_7_ii
 
-attribute [blueprint "cor:two-stage-error-i"
+attribute [blueprint "cor:D.8-i"
   (statement := /-- For finite-rank orthogonal projections $\Pi_m$ converging strongly to the
     identity, $f\in C(H)$, and compact $K$, $\|f-f\circ\Pi_m\|_{C(K)}\to0$. -/)]
-  OperatorRidgelet.Paper.cor_two_stage_error_i
+  OperatorRidgelet.Paper.cor_D_8_i
 
-attribute [blueprint "cor:two-stage-error-ii"
+attribute [blueprint "cor:D.8-ii"
   (statement := /-- If $f=S_\beta\Gamma$ satisfies the hypotheses of the Barron bound and the
     same samples and weights $(V/N)h(\theta_j)$ are used with the truncated directions
     $\Pi_ma_j$ inside the activation, $f_{m,N}(x)=(V/N)\sum_jh(\theta_j)\beta(\langle\Pi_ma_j,
     x\rangle+c_j)$, then
     $\mathbb E\|f-f_{m,N}\|_{C(K)}\le\operatorname{Lip}(\beta)\bigl(\int\|a\|\,\mathrm d|\Gamma|
     \bigr)\sup_K\|x-\Pi_mx\|+\frac{8V}{\sqrt N}(|\beta(0)|+\operatorname{Lip}(\beta)R_KM_2)$. -/)]
-  OperatorRidgelet.Paper.cor_two_stage_error_ii
+  OperatorRidgelet.Paper.cor_D_8_ii

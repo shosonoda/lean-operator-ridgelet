@@ -5,8 +5,8 @@ import OperatorRidgelet.Transform.Plancherel
 /-!
 # Representation of targets with a spectral density and the frame identity (Section 4)
 
-Ridgelet-specific lemmas behind Theorem `thm:A`(i)–(ii), Theorem `thm:C`(i)–(iii), Lemma
-`lem:weak-equals-strong`, and Proposition `prop:coefficient-projection`, for the abstract pair
+Ridgelet-specific lemmas behind Theorem `thm:4.2`(i)–(ii), Theorem `thm:4.3`(i)–(iii), Lemma
+`lem:B.4`, and Proposition `prop:B.8`, for the abstract pair
 `(μ, ν)` of Appendix H.
 
 * **Regularity along rays.**  The weighted derivative integral `M_0(G)` dominates `∫ ‖G(ω₀ a)‖
@@ -434,7 +434,7 @@ theorem measurable_integralNetworkDensity (ρ : SchwartzMap ℝ ℝ) (lam : Meas
     h1.stronglyMeasurable.smul (hγ'.comp_measurable measurable_snd)
   exact hF.integral_prod_right'.measurable
 
-/-- The pairing identity of Lemma `lem:weak-equals-strong`:
+/-- The pairing identity of Lemma `lem:B.4`:
 `∫ γ conj(R_ρ g) dλ = ∫ S_ρ[γ λ] conj g dμ` for integrable `γ` and `g` (Fubini). -/
 theorem integral_mul_conj_ridgelet (μ : Measure H) [IsFiniteMeasure μ] (ν : Measure H)
     [SFinite ν] (ρ : SchwartzMap ℝ ℝ) {γ : H × ℝ → ℂ} (hγ : Integrable γ (parameterMeasure ν))
@@ -698,7 +698,7 @@ theorem coeFn_spectralCoefficient_coe (hα : 0 < α) (G : Lp ℂ 2 ν) :
   rw [spectralCoefficient_congr_ae hν ρ hGG', spectralCoefficient_eq_toLp hν hα hρ hG'm hG'₂]
   exact (MemLp.coeFn_toLp _).trans (coefficientFormula_congr_ae hν hGG'.symm)
 
-/-- Theorem `thm:C`(iii), last part: for `G ∈ 𝒦` with `γ_G ∈ L¹(λ)`, the functional `U' G`
+/-- Theorem `thm:4.3`(iii), last part: for `G ∈ 𝒦` with `γ_G ∈ L¹(λ)`, the functional `U' G`
 paired with `g ∈ 𝒟` is `C⁻¹ ∫ S_ρ[γ_G λ] conj g dμ`. -/
 theorem transposeEmbed_apply_eq_integral_integralNetworkDensity (hα : 0 < α)
     (G : spectralRange μ ν)
@@ -852,7 +852,7 @@ theorem ae_eq_zero_of_spectralTarget_eq_zero_vec (ν : Measure H) {G : H → Y}
 
 end VectorUniqueness
 
-/-! ### Vector-valued targets: Theorem `thm:A`(ii) -/
+/-! ### Vector-valued targets: Theorem `thm:4.2`(ii) -/
 
 section VectorSynthesis
 

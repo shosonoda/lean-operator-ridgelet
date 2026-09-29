@@ -8,7 +8,7 @@ import Mathlib.Analysis.Fourier.Inversion
 
 For an integrable `f`, the bias function `c ↦ R_ρ f(a, c)` is continuous and integrable, its
 Fourier transform is `ρ̂(ω) 𝒢_μ f(-ωa)` (the Fourier-slice identity, Lemma
-`lem:fourier-slice`), and Fourier inversion gives `R_ρ f = γ_G` for `G = 𝒢_μ f`
+`lem:3.4`), and Fourier inversion gives `R_ρ f = γ_G` for `G = 𝒢_μ f`
 (`eq:slice-as-coefficient`).  The lemmas here only assume that the coordinates `x ↦ ⟪x, v⟫`
 are a.e.-measurable under `μ` (which holds under a centred Gaussian measure for any σ-algebra
 on `H`, `IsCenteredGaussian.aemeasurable_inner`), so that they apply to the statements of
