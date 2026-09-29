@@ -1,6 +1,8 @@
 import Verso
 import VersoManual
 import VersoBlueprint
+import OperatorRidgeletBlueprint.Chapters.Transform
+import OperatorRidgeletBlueprint.Chapters.Tempered
 import OperatorRidgelet.BasisIndependence
 import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Paper.Networks
