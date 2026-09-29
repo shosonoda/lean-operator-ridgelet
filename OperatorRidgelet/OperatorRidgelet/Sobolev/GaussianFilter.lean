@@ -10,7 +10,7 @@ import OperatorRidgelet.ToMathlib.AbsRpowGaussian
 /-!
 # The Gaussian-derivative filters of Appendix I
 
-The non-band-pass filters of `prop:nonbandpass-sobolev` are the real Schwartz functions whose
+The non-band-pass filters of `prop:I.3` are the real Schwartz functions whose
 Fourier transform is `ρ̂(ω) = ω^{2k} e^{-ω²}`.  This module builds the filter from the
 polynomial-times-Gaussian Schwartz functions and the angular Fourier inversion, and records the
 two elementary properties that separate it from the band-pass filters of Appendix I: its

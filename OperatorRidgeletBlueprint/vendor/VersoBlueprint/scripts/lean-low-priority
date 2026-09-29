@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if (( $# == 0 )); then
+  echo "Usage: scripts/lean-low-priority COMMAND [ARG...]" >&2
+  exit 1
+fi
+
+niceness="${BP_LEAN_NICENESS:-10}"
+
+# Heavy reference projects can exceed hosted-runner resources at Lake's default
+# parallelism. Keep the throttle specific to the GitHub reference workflow so
+# ordinary local builds and user-invoked wrapper calls retain Lake's defaults.
+if [[ "${GITHUB_WORKFLOW:-}" == "Reference Blueprints" && "$1" == "lake" ]]; then
+  lake_threads="${BP_LAKE_THREADS:-1}"
+  lean_threads="${BP_LEAN_THREADS:-$lake_threads}"
+  command_args=("lake")
+  if [[ -n "$lake_threads" ]]; then
+    command_args+=("-Kthreads=$lake_threads")
+  fi
+  if [[ "${2:-}" == "env" && "${3:-}" == "lean" ]]; then
+    command_args+=("env" "lean")
+    if [[ -n "$lean_threads" ]]; then
+      command_args+=("-Dweak.threads=$lean_threads")
+    fi
+    command_args+=("${@:4}")
+  else
+    command_args+=("${@:2}")
+  fi
+else
+  command_args=("$@")
+fi
+
+script_dir="$(cd "$(dirname "$0")" && pwd -P)"
+command_args=("$script_dir/with-blueprint-lake-cache" "${command_args[@]}")
+
+if command -v nice >/dev/null 2>&1; then
+  exec nice -n "$niceness" "${command_args[@]}"
+else
+  exec "${command_args[@]}"
+fi

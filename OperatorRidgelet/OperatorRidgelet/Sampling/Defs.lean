@@ -17,7 +17,7 @@ module.
 `{‖f x‖ : x ∈ K}` (junk value `0` when `K` is empty or the norms are unbounded on `K`; for
 continuous `f` and compact `K` it is the manuscript's norm).  `R_K = sup_{x ∈ K} √(‖x‖² + 1)` is
 `compactRadius K`.  The statements that need the Banach space `C(K)` itself (Theorem
-`thm:general-rademacher`) use `BoundedContinuousFunction K Y` on the subtype `K`.
+`thm:6.2`) use `BoundedContinuousFunction K Y` on the subtype `K`.
 
 ## The polar decomposition and the sampled network
 
@@ -32,7 +32,7 @@ For a `Y`-valued measure `Γ` of bounded variation (`MeasureTheory.VectorMeasure
 * `polarLaw Γ = p = |Γ|/V`, the probability law of the parameters (the zero measure when
   `Γ = 0`, which represents the manuscript's "if `Γ = 0` take the zero network").
 
-For a coefficient measure `Γ = γ λ` with a density (Theorems `thm:E` and `thm:D`), the
+For a coefficient measure `Γ = γ λ` with a density (Theorems `thm:6.4` and `thm:6.5`), the
 manuscript writes `V = ‖γ‖_{L¹(λ)}`, `p = |γ| λ / V`, `h = γ/|γ|` explicitly; these are
 `densityWeight`, `densityLaw`, and `densityPhase`.
 
@@ -48,9 +48,9 @@ Expectations `𝔼‖f_N − f‖_{C(K)}` are Bochner integrals against `sampleL
 Independent Rademacher signs `ε ∈ {-1, 1}^N` are represented by real-valued coordinates with
 the law `rademacherMeasure N = Measure.pi (fun _ => (δ_{-1} + δ_{1})/2)` on `Fin N → ℝ`.  The
 activation-dependent Rademacher complexity `𝔑_N(K; p, β)` of Definition
-`def:rademacher-complexity` is `rademacherComplexity N K p β h`, the joint expectation over
+`def:6.1` is `rademacherComplexity N K p β h`, the joint expectation over
 `(θ, ε) ∼ p^{⊗N} ⊗ rademacherMeasure N` of `sup_{x ∈ K} ‖N⁻¹ ∑_j ε_j β(⟪a_j, x⟫ + c_j) h(θ_j)‖`;
-it is polymorphic in the output space, so that `𝔑^Y_N` of Corollary `cor:vector-rates` is the
+it is polymorphic in the output space, so that `𝔑^Y_N` of Corollary `cor:6.6` is the
 same definition with `Y`-valued phases `h`.
 
 ## Moments, atomic measures, and operator parameters
@@ -59,10 +59,10 @@ same definition with `Y`-valued phases `h`.
 constant `Lip(β)` is not a separate definition: the statements take any `L` with
 `LipschitzWith L β` and are stated with `L`, which is equivalent to the statement with the least
 Lipschitz constant.  A finite atomic measure `∑_j w_j δ_{θ_j}` is `atomicMeasure w θ`.  The
-operator-parameter sampled network of Corollary `cor:operator-sampling` is
+operator-parameter sampled network of Corollary `cor:D.7` is
 `sampledOperatorNetwork σ ℓ V h ω`, an `operatorFiniteNetwork` with outer weights
 `(V/N) h(A_j, b_j)`, and `operatorSecondMoment ψ p = M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) dp`.
-`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:two-stage-error` on each `Π_m`.
+`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:D.8` on each `Π_m`.
 -/
 
 noncomputable section
@@ -86,7 +86,7 @@ def compactSupNorm (K : Set X) (f : X → Y) : ℝ :=
 
 end SupNorm
 
-/-- The radius `R_K = sup_{x ∈ K} √(‖x‖² + 1)` of a set `K` (Theorem `thm:lipschitz-barron`). -/
+/-- The radius `R_K = sup_{x ∈ K} √(‖x‖² + 1)` of a set `K` (Theorem `thm:6.3`). -/
 def compactRadius {H : Type*} [NormedAddCommGroup H] (K : Set H) : ℝ :=
   sSup ((fun x => Real.sqrt (‖x‖ ^ 2 + 1)) '' K)
 
@@ -164,11 +164,11 @@ def densitySampledNetwork {N : ℕ} (β : ℝ → ℂ) (lam : Measure (H × ℝ)
     (θ : Fin N → H × ℝ) : H → Y :=
   sampledNetwork β (densityWeight lam γ) (densityPhase γ) θ
 
-/-- **Definition [def:rademacher-complexity]** The activation-dependent Rademacher complexity
+/-- **Definition [def:6.1]** The activation-dependent Rademacher complexity
 `𝔑_N(K; p, β) = 𝔼_{θ,ε} sup_{x ∈ K} ‖N⁻¹ ∑_j ε_j β(⟪a_j, x⟫ + c_j) h(θ_j)‖`
 (`eq:rademacher-complexity`), with `θ_j ∼ p` independent and `ε_j` independent Rademacher
 signs; `h` is the phase of the polar decomposition.  The scalar case is `Y = ℂ`, and `Y`-valued
-phases give `𝔑^Y_N(K; p, β)` of Corollary `cor:vector-rates`. -/
+phases give `𝔑^Y_N(K; p, β)` of Corollary `cor:6.6`. -/
 def rademacherComplexity (N : ℕ) (K : Set H) (p : Measure (H × ℝ)) (β : ℝ → ℂ)
     (h : H × ℝ → Y) : ℝ :=
   ∫ ω, compactSupNorm K (fun x =>
@@ -193,7 +193,7 @@ section Operator
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
 /-- The sampled operator network `f_{op,N}(x) = (V/N) ∑_j h(A_j, b_j) n_{ℓ,A_j,b_j}(x)` of
-Corollary `cor:operator-sampling`: a finite-width operator network with the samples
+Corollary `cor:D.7`: a finite-width operator network with the samples
 `(A_j, b_j)` and outer weights `(V/N) h(A_j, b_j)`. -/
 def sampledOperatorNetwork {N : ℕ} (σ : H → H) (ℓ : H) (V : ℝ)
     (h : OperatorRidgeParameter H → ℂ) (ω : Fin N → OperatorRidgeParameter H) : H → ℂ :=
@@ -201,7 +201,7 @@ def sampledOperatorNetwork {N : ℕ} (σ : H → H) (ℓ : H) (V : ℝ)
     (fun j => (ω j).2)
 
 /-- The operator second moment `M_op² = ∫ (‖A^*ψ‖² + |⟪ψ, b⟫|²) p_op(dA, db)` of Corollary
-`cor:operator-sampling`. -/
+`cor:D.7`. -/
 def operatorSecondMoment [MeasurableSpace H] (ψ : H)
     (p : Measure (OperatorRidgeParameter H)) : ℝ :=
   ∫ q, (‖ContinuousLinearMap.adjoint q.1 ψ‖ ^ 2 + |⟪ψ, q.2⟫| ^ 2) ∂p

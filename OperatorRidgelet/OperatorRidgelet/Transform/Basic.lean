@@ -17,7 +17,7 @@ transform of a nonzero filter, the joint integrability of the ridgelet kernel, t
 forms of the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`, the smoothness of the explicit band-pass
 Fourier transform of Appendix I, and the coordinates of a centred Gaussian measure `𝒩(0,Q)`
 (the law of `x ↦ ⟪x, v⟫` is `𝒩(0, ⟪Qv,v⟫)`, and `Q`-orthogonal coordinates are independent),
-which drive the strong law in Proposition `prop:dilation-obstruction`.  General-purpose tools
+which drive the strong law in Proposition `prop:G.3`.  General-purpose tools
 live in `OperatorRidgelet.ToMathlib`.
 -/
 

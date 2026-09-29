@@ -4,17 +4,17 @@ import OperatorRidgelet.Reconstruction.Basic
 import OperatorRidgelet.ToMathlib.GaussianTilt
 
 /-!
-# The Gaussian target `f_W` of Example `ex:closed-form`
+# The Gaussian target `f_W` of Example `ex:7.1`
 
 The Gaussian integral of a quadratic exponential (`integral_exp_quadratic`, Lemma
-`lem:gaussian-quadratic`(ii)) computes the transform of the Gaussian target
+`lem:E.1`(ii)) computes the transform of the Gaussian target
 `f_W(x) = e^{-⟪Wx,x⟫/2}`,
 `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`, `M = Q^{1/2} W Q^{1/2}` and
 `κ_W(ξ) = ⟪S_W ξ, ξ⟫`, `S_W = Q^{1/2}(I+M)^{-1}Q^{1/2}`
 (`gaussFourier_gaussianTarget`).  The resolvent bound `S_W ≥ (1+‖M‖)^{-1} Q`
 (`inner_gaussianTargetResolvent_ge`) turns this into the Gaussian decay of Lemma
-`lem:gaussian-decay` and into the regularity along rays of Lemma
-`lem:ray-regular-examples`(a).
+`lem:3.9` and into the regularity along rays of Lemma
+`lem:D.3`(a).
 -/
 
 noncomputable section
@@ -77,7 +77,7 @@ theorem inner_gaussianTargetResolvent_nonneg {Q W S : H →L[ℝ] H} (hQ0 : ∀ 
   le_trans (mul_nonneg (by positivity) (hQ0 ξ))
     (inner_gaussianTargetResolvent_ge hW hW0 hS hM ξ)
 
-/-- **Example `ex:closed-form`(i)**: `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}`. -/
+/-- **Example `ex:7.1`(i)**: `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}`. -/
 theorem gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q)
     (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hS : IsPositiveSqrt S Q)
     (hM : HasSummableTrace (S * W * S)) {μ : Measure H} [IsProbabilityMeasure μ]
@@ -146,7 +146,7 @@ theorem norm_gaussFourier_gaussianTarget_le {Q W S : H →L[ℝ] H} (hQ : IsPosi
   linarith
 
 /-- The transform of `f_W` is integrable against any measure with the Gaussian decay of
-Lemma `lem:gaussian-decay`(i). -/
+Lemma `lem:3.9`(i). -/
 theorem integrable_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q)
     (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hS : IsPositiveSqrt S Q)
     (hM : HasSummableTrace (S * W * S)) {μ : Measure H} [IsProbabilityMeasure μ]
@@ -165,7 +165,7 @@ theorem integrable_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsP
   have hb := norm_gaussFourier_gaussianTarget_le hQ hW hW0 hS hM hμ ξ
   rwa [harg] at hb
 
-/-- **Example `ex:closed-form`(ii)**: `G = 𝒢_Q f_W` is regular along rays. -/
+/-- **Example `ex:7.1`(ii)**: `G = 𝒢_Q f_W` is regular along rays. -/
 theorem isRegularAlongRays_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H}
     (hQ : IsPositiveTraceClass Q) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) {μ : Measure H}

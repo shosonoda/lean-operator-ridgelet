@@ -18,7 +18,7 @@ Hilbert basis `e_k` of eigenvectors with positive summable eigenvalues `p_k`
 `𝒩(0,P)`; the layers are its dilates
 `𝒩(0,2sP) = (√(2s) ·)_# 𝒩(0,P)`.  By Fourier uniqueness every family of layers is of this form
 (`IsCenteredGaussianLayers.eq_map_smul`), which gives the coordinate description of an arbitrary
-family of layers used in the proofs of Lemma `lem:homogeneous-mixture`: the small-ball estimate
+family of layers used in the proofs of Lemma `lem:3.1`: the small-ball estimate
 `𝒩(0,2sP)(B_r) ≤ C_k s^{-k/2}` through `k` coordinates, and the finiteness of the mixture `ν_α`
 on balls for `k > α`.
 -/
@@ -313,7 +313,7 @@ theorem IsTraceClassCovariance.isLocallyFiniteMeasure_gaussianMixture
   ⟨fun x => ⟨Metric.ball x 1, Metric.ball_mem_nhds x one_pos,
     hP.gaussianMixture_lt_top_of_isBounded hH hN hα Metric.isBounded_ball⟩⟩
 
-/-! ### Gaussian decay: Lemma `lem:gaussian-decay` -/
+/-! ### Gaussian decay: Lemma `lem:3.9` -/
 
 section Decay
 
@@ -412,7 +412,7 @@ theorem lintegral_Ioi_rpow_mul_exp_neg_mul {β r : ℝ} (hβ : 0 < β) (hr : 0 <
       mul_nonneg (Real.rpow_nonneg (le_of_lt hs) _) (Real.exp_pos _).le),
     Real.integral_rpow_mul_exp_neg_mul_Ioi hβ hr]
 
-/-- Lemma `lem:gaussian-decay` (i) in Lebesgue form: `∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν_α < ∞`. -/
+/-- Lemma `lem:3.9` (i) in Lebesgue form: `∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν_α < ∞`. -/
 theorem IsTraceClassCovariance.lintegral_norm_pow_mul_exp_gaussianMixture_lt_top
     (hH : ¬ FiniteDimensional ℝ H) (hP : IsTraceClassCovariance P)
     (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)

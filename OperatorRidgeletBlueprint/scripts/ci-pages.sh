@@ -2,7 +2,7 @@
 # Build the Verso Blueprint, validate it, and assemble the GitHub Pages site in `_site/`.
 #
 # `.github/workflows/pages.yml` runs this script; it can also be run locally (from any directory)
-# after `lake exe cache get` in this project (Python 3 is needed for the generated chapter).  The
+# after `lake exe cache get` in this project. The
 # blueprint's own `index.html` is the top page of the site, so the published site is
 # `_out/site/html-multi/` plus `.nojekyll`.
 
@@ -13,12 +13,17 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 out=_out/site/html-multi
 site=_site
 
-# The comparator review chapter is generated from the data of ../OperatorRidgelet (paper.json,
-# config.json, Challenge/); regenerate it so that the site never shows a stale copy.
-python3 scripts/gen-comparator-chapter.py
-
 lake exe vbp build
+lake build \
+  VersoBlueprintTests.BlueprintImportedFacets.Combined \
+  VersoBlueprintTests.BlueprintImportedFacets.DuplicateProof \
+  VersoBlueprintTests.BlueprintImportedDuplicates.Direct \
+  VersoBlueprintTests.BlueprintImportedDuplicates.Transitive \
+  VersoBlueprintTests.BlueprintExamples
 lake exe vbp check
+python3 scripts/legacy-redirects.py --self-test
+python3 scripts/check-paper-layout.py
+python3 scripts/legacy-redirects.py --site "$out"
 
 test -f "$out/index.html"
 test -f "$out/-verso-data/blueprint-manifest.json"

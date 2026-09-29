@@ -7,7 +7,7 @@ The contraction principle of Ledoux and Talagrand replaces `∑ ε_j φ_j(u_j(x)
 `∑ ε_j u_j(x)` when the `φ_j` are Lipschitz, and it is the tool behind the scalar Barron bound
 (`sum_sSup_abs_contraction` of `OperatorRidgelet.ToFoML.RademacherSigns`).  For Hilbert-valued
 outer weights the same route is not available, and the manuscript replaces it by the comparison
-of this file (`lem:two-coordinate-comparison`): if the increments of `ψ_i` are dominated by the
+of this file (`lem:D.2`): if the increments of `ψ_i` are dominated by the
 increments of `u_i` and `v_i` together, then the Rademacher average of `sup_s ∑ ε_i ψ_i(s)` is at
 most twice the Rademacher average of `sup_s ∑ (ε_{i1} u_i(s) + ε_{i2} v_i(s))`, with independent
 signs for the two coordinates.
@@ -320,7 +320,7 @@ theorem pow_two_mul_sum_iSup_boolSignVector_le [Nonempty S] (N : ℕ) :
             simp only [hP, boolSignVector_cons_succ]
             ring
 
-/-- **Lemma [lem:two-coordinate-comparison]**, in the normalized form of the manuscript: the
+/-- **Lemma [lem:D.2]**, in the normalized form of the manuscript: the
 Rademacher average of `sup_s ∑_i ε_i ψ_i(s)` is at most twice the average of
 `sup_s ∑_i (ε_{i1} u_i(s) + ε_{i2} v_i(s))` over two independent sign vectors. -/
 theorem avg_iSup_boolSignVector_le [Nonempty S] {N : ℕ} {ψ u v : Fin N → S → ℝ}

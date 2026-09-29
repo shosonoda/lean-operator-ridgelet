@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - v*
+
+permissions:
+  contents: read
+
+jobs:
+  blueprint-build:
+    name: Blueprint Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Lake package cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib
+            .lake/packages/verso
+          key: ${{ runner.os }}-lake-packages-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-packages-v2-
+      - name: Restore Lake dependency build cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib/.lake/build
+            .lake/packages/verso/.lake/build
+          key: ${{ runner.os }}-lake-deps-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-deps-
+      - name: Show tool versions
+        run: |
+          lean --version
+          lake --version
+          python3 --version
+      - name: Build package
+        run: ./scripts/lean-low-priority lake build
+
+  blueprint-tests:
+    name: Blueprint Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Lake package cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib
+            .lake/packages/verso
+          key: ${{ runner.os }}-lake-packages-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-packages-v2-
+      - name: Restore Lake dependency build cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib/.lake/build
+            .lake/packages/verso/.lake/build
+          key: ${{ runner.os }}-lake-deps-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-deps-
+      - name: Run Lean tests
+        run: ./scripts/run-lean-tests.sh
+      - name: Run consumer math lint smoke
+        run: python3 ./scripts/check_math_lint_fresh_repo.py
+
+  harness-tests:
+    name: Harness Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run Python harness tests
+        run: python3 -m unittest discover -s tests/harness -p 'test_*.py'
+      - name: Check Python harness syntax
+        run: python3 -m compileall -q scripts
+
+  js-api-tooling:
+    name: JavaScript API Tooling
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Typecheck JavaScript API
+        run: npm run typecheck
+      - name: Build JavaScript API declarations
+        run: npm run build:types
+      - name: Check JavaScript API declarations
+        run: npm run check:types
+      # CI validates the generated API docs and uploads them as a review artifact.
+      # The Pages deployment workflow rebuilds its own published copy.
+      - name: Generate and check JavaScript API docs
+        run: ./scripts/generate-js-api-docs.sh
+      - name: Upload JavaScript API docs artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: js-api-docs
+          path: _out/jsdoc-api
+
+  project-template-fresh-repo:
+    name: Project Template Fresh Repo
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Lint GitHub workflows
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: .github/workflows/ci.yml .github/workflows/backport-discipline.yml .github/workflows/blueprint-pages.yml .github/workflows/reference-blueprints.yml .github/workflows/reference-blueprints-deploy.yml project_template/.github/workflows/blueprint-pages.yml project_template/.github/workflows/pages.yml
+      - name: Check reusable workflow copy stays in sync
+        run: cmp .github/workflows/blueprint-pages.yml project_template/.github/workflows/blueprint-pages.yml
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Show tool versions
+        run: |
+          lean --version
+          lake --version
+          python3 --version
+      - name: Run fresh-repo template CI smoke
+        run: python3 ./scripts/check_project_template_fresh_repo.py --site-output _out/project-template-fresh-repo/html-multi
+      - name: Upload fresh-repo template artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: project-template-fresh-repo
+          path: _out/project-template-fresh-repo

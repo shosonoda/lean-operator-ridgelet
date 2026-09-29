@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/VersoBlueprint/blueprint-js-globals.d.ts",
+    "src/VersoBlueprint/blueprint-api-types.mjs",
+    "src/VersoBlueprint/blueprint-api-common.mjs",
+    "src/VersoBlueprint/blueprint-data-api.mjs",
+    "src/VersoBlueprint/blueprint-graph-api.mjs",
+    "src/VersoBlueprint/blueprint-graph-core.mjs",
+    "src/VersoBlueprint/blueprint-preview-api.mjs",
+    "src/VersoBlueprint/blueprint-preview-core.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-api.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-base.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-data.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-hydration.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-lifecycle.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-render.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-source-metadata.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-surface.mjs",
+    "src/VersoBlueprint/Commands/preview-runtime-template.mjs"
+  ]
+}

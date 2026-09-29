@@ -12,7 +12,7 @@ most `2|β(0)| √N + 4 Lip(β) R_K √(∑_j (‖a_j‖² + c_j²))`.
 
 The scalar bound of `OperatorRidgelet.Sampling.Basic` splits the complex phase into its real and
 imaginary parts and contracts each; for a general Hilbert space this is unavailable, and the
-manuscript replaces it by the two-coordinate comparison `lem:two-coordinate-comparison`
+manuscript replaces it by the two-coordinate comparison `lem:D.2`
 (`OperatorRidgelet.avg_iSup_boolSignVector_le`).  The output norm is written as a supremum over
 the unit ball of `Y` viewed as a real Hilbert space, so the sign process is indexed by the
 product of the compact set with that ball, and the increments of

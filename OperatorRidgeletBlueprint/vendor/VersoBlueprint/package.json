@@ -1,0 +1,39 @@
+{
+  "name": "verso-blueprint",
+  "version": "0.0.0-private",
+  "private": true,
+  "type": "module",
+  "main": "./src/VersoBlueprint/blueprint-preview-api.mjs",
+  "module": "./src/VersoBlueprint/blueprint-preview-api.mjs",
+  "types": "./dist/types/src/VersoBlueprint/blueprint-preview-api.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/src/VersoBlueprint/blueprint-preview-api.d.mts",
+      "import": "./src/VersoBlueprint/blueprint-preview-api.mjs"
+    },
+    "./data": {
+      "types": "./dist/types/src/VersoBlueprint/blueprint-data-api.d.mts",
+      "import": "./src/VersoBlueprint/blueprint-data-api.mjs"
+    },
+    "./graph": {
+      "types": "./dist/types/src/VersoBlueprint/blueprint-graph-api.d.mts",
+      "import": "./src/VersoBlueprint/blueprint-graph-api.mjs"
+    },
+    "./types": {
+      "types": "./dist/types/src/VersoBlueprint/blueprint-api-types.d.mts",
+      "import": "./src/VersoBlueprint/blueprint-api-types.mjs"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "docs": "node scripts/generate-jsdoc-type-names.mjs && rm -rf _out/jsdoc-api && jsdoc -c jsdoc.json",
+    "check:docs": "node scripts/generate-jsdoc-type-names.mjs --check && node scripts/check-js-api-docs.mjs",
+    "check:types": "node scripts/check-js-api-types.mjs"
+  },
+  "devDependencies": {
+    "docdash": "^2.0.2",
+    "jsdoc": "^4.0.5",
+    "typescript": "^6.0.3"
+  }
+}

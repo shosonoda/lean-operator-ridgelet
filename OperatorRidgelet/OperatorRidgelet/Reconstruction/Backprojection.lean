@@ -5,8 +5,8 @@ import OperatorRidgelet.Transform.BiasFourier
 /-!
 # Backprojection: the backprojection integral of a bias-Fourier representative (Appendix B.4)
 
-Ridgelet-specific lemmas behind Theorem `thm:C`(iv)(a)–(b) and Proposition
-`prop:coefficient-projection`(i)–(vi), for the abstract pair `(μ, ν)` of Appendix H.
+Ridgelet-specific lemmas behind Theorem `thm:4.3`(iv)(a)–(b) and Proposition
+`prop:B.8`(i)–(vi), for the abstract pair `(μ, ν)` of Appendix H.
 
 * **The ray substitution.**  `raySubst (ξ, ω) = (-ξ/ω, ω)` inverts `(a, ω) ↦ (-ωa, ω)`; by
   homogeneity it maps the weighted measure `|ω|^{-α} (ν ⊗ dω)` to `ν ⊗ dω`
@@ -444,7 +444,7 @@ include hα hρ
 
 omit hα in
 /-- **Boundedness of the backprojection**: for `γ ∈ L²(λ)`, `Λ_ρ γ ∈ L²(ν)` with
-`∫ ‖Λ_ρ γ‖² dν ≤ C^{(α)}_ρ ‖γ‖²` (Proposition `prop:coefficient-projection`(iii)). -/
+`∫ ‖Λ_ρ γ‖² dν ≤ C^{(α)}_ρ ‖γ‖²` (Proposition `prop:B.8`(iii)). -/
 theorem IsHomogeneous.memLp_backprojection (γ : Lp ℂ 2 (parameterMeasure ν)) :
     MemLp (backprojection α ν ρ γ) 2 ν ∧
       ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ admissibilityConst α ρ * ‖γ‖ ^ 2 := by
@@ -474,8 +474,8 @@ theorem IsHomogeneous.memLp_backprojection (γ : Lp ℂ 2 (parameterMeasure ν))
     (Lp.aestronglyMeasurable γ), ← ENNReal.toReal_ofReal hρ.pos.le, ← ENNReal.toReal_mul]
   exact ENNReal.toReal_mono hfin hlin
 
-/-- **`Λ_ρ W_ρ = C^{(α)}_ρ Id`** on measurable `F ∈ L²(ν)` (Theorem `thm:C`(iv)(b),
-Proposition `prop:coefficient-projection`(v)). -/
+/-- **`Λ_ρ W_ρ = C^{(α)}_ρ Id`** on measurable `F ∈ L²(ν)` (Theorem `thm:4.3`(iv)(b),
+Proposition `prop:B.8`(v)). -/
 theorem IsHomogeneous.backprojection_spectralCoefficient {F : H → ℂ} (hF : Measurable F)
     (hF₂ : MemLp F 2 ν) :
     backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
@@ -547,7 +547,7 @@ theorem IsHomogeneous.integral_mul_conj_coefficientFormula {γ : H × ℝ → �
         simp only [hΘdef, Function.uncurry_apply_pair, raySubst, hξω, map_mul]
         ring
 
-/-- **`Λ_ρ` is the adjoint of `W_ρ`** (Proposition `prop:coefficient-projection`(iv)):
+/-- **`Λ_ρ` is the adjoint of `W_ρ`** (Proposition `prop:B.8`(iv)):
 `⟨γ, W_ρ F⟩_{L²(λ)} = ⟨Λ_ρ γ, F⟩_{L²(ν)}` in the manuscript's convention. -/
 theorem IsHomogeneous.integral_mul_conj_spectralCoefficient (γ : Lp ℂ 2 (parameterMeasure ν))
     {F : H → ℂ} (hF : Measurable F) (hF₂ : MemLp F 2 ν) :
@@ -570,7 +570,7 @@ theorem IsHomogeneous.integral_mul_conj_spectralCoefficient (γ : Lp ℂ 2 (para
     _ = _ := hν.integral_mul_conj_coefficientFormula hα hρ hγ'₂ hΦ (hγΦ.congr_left hγ'e) hF hF₂
 
 /-- **The coefficient projection** `Π_ρ = C⁻¹ W_ρ P_𝒦 Λ_ρ` is the orthogonal projection onto
-`Ran R_ρ` (Proposition `prop:coefficient-projection`(vi)): `Π_ρ γ ∈ Ran R_ρ` and
+`Ran R_ρ` (Proposition `prop:B.8`(vi)): `Π_ρ γ ∈ Ran R_ρ` and
 `γ - Π_ρ γ ⊥ Ran R_ρ`. -/
 theorem IsHomogeneous.coefficientProjection_mem_and_sub_mem_orthogonal (μ : Measure H)
     [IsProbabilityMeasure μ] (γ : Lp ℂ 2 (parameterMeasure ν)) :

@@ -4,7 +4,7 @@ import OperatorRidgelet.ToMathlib.IndicatorTendstoL2
 /-!
 # The partial Fourier transform in the bias of a square-integrable coefficient
 
-Section 3 material behind Theorem `thm:C`(iv) and Proposition `prop:coefficient-projection`:
+Section 3 material behind Theorem `thm:4.3`(iv) and Proposition `prop:B.8`:
 the bias-Fourier representatives of `HasBiasFourier` are unique up to null sets for almost every
 direction, they satisfy Plancherel and Parseval in the bias variable, and every `γ ∈ L²(λ)` has a
 jointly measurable representative.

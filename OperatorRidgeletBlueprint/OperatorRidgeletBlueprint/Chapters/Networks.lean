@@ -1,7 +1,18 @@
 import Verso
 import VersoManual
 import VersoBlueprint
+import OperatorRidgelet.BasisIndependence
+import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Paper.Networks
+import OperatorRidgelet.Paper.Reconstruction
+import OperatorRidgelet.Paper.Revision
+import OperatorRidgelet.Paper.Sampling
+import OperatorRidgelet.Paper.SamplingRevision
+import OperatorRidgelet.Paper.Sobolev
+import OperatorRidgelet.Paper.Tempered
+import OperatorRidgelet.Paper.Transform
+import OperatorRidgelet.ToMathlib.VectorMeasureRadonNikodym
+import OperatorRidgelet.Transform.Infra
 
 open Verso.Genre
 open Verso.Genre.Manual
@@ -14,15 +25,22 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "networks"
 %%%
 
-This chapter is Section 2 of the manuscript together with Appendix F. The input space $`H` is a
-separable real Hilbert space, the output space $`Y` a separable complex Hilbert space, and a
-network is a superposition of ridge functions $`x\mapsto\beta(\langle a,x\rangle+c)`. Section 2
-defines the finite-width and the integral networks; Appendix F shows that networks with
-operator-valued parameters reduce exactly to them.
+A network measures its input through inner products and applies a scalar activation to
+those measurements. The input space $`H` is a separable real Hilbert space; the output
+space $`Y` is a separable complex Hilbert space. Approximation is measured uniformly on
+compact input sets. Finite-width networks are obtained by sampling an integral network.
+
+The statements below use the bias coordinate $`c=-b`, so that a manuscript neuron
+$`\sigma(\langle a,x\rangle-b)` is written $`\beta(\langle a,x\rangle+c)`.
+This coordinate choice agrees with the Lean statements and leaves the represented networks unchanged.
 
 # Finite-width and integral networks
 
-:::definition "def:finite-network" (lean := "OperatorRidgelet.finiteNetwork")
+The finite sum and the integral representation use the same atoms. In the vector-valued
+case the coefficient measure has bounded variation, and integration is understood in the
+Bochner sense.
+
+:::definition "def:2.1" (lean := "OperatorRidgelet.finiteNetwork")
 For a continuous activation $`\beta:\mathbb R\to\mathbb C`, a width-$`N` network on $`H` with
 values in $`Y` is $`f_N(x)=\sum_{j=1}^Nv_j\,\beta(\langle a_j,x\rangle+c_j)` with outer weights
 $`v_j\in Y` and parameters $`(a_j,c_j)\in H\times\mathbb R`; the scalar case is $`Y=\mathbb C`.
@@ -30,7 +48,7 @@ Approximation is measured in the compact-open topology of $`C(H;Y)`, generated b
 $`\|f\|_{C(K;Y)}=\sup_{x\in K}\|f(x)\|_Y` over compact $`K\subset H`.
 :::
 
-:::definition "def:integral-network" (lean := "OperatorRidgelet.integralNetwork, OperatorRidgelet.totalVariation, OperatorRidgelet.integralNetworkDensity, OperatorRidgelet.Paper.def_integral_network_i, OperatorRidgelet.Paper.def_integral_network_ii")
+:::definition "def:2.2" (lean := "OperatorRidgelet.integralNetwork, OperatorRidgelet.totalVariation, OperatorRidgelet.integralNetworkDensity, OperatorRidgelet.Paper.def_2_2_i, OperatorRidgelet.Paper.def_2_2_ii")
 Let $`\Gamma` be a $`Y`-valued Borel measure of bounded variation on $`\Theta=H\times\mathbb R`
 with variation $`|\Gamma|` and total variation $`\|\Gamma\|_{\mathrm{TV}}=|\Gamma|(\Theta)`.
 Whenever the Bochner integral exists, the integral network is
@@ -44,101 +62,8 @@ $`\beta(\langle a,x\rangle+c)\gamma(a,c)` against $`\lambda` (part ii).
 
 # Operator-valued parameters
 
-Networks on function spaces are often written with operator-valued parameters: for an
-activation $`\sigma:H\to H`, a bounded operator $`A`, and $`\ell,b\in H`, the neuron is
-$`\mathrm n_{\ell,A,b}(x)=\langle\ell,\sigma(Ax+b)\rangle`. For the rank-one activation
-$`\sigma_\beta(y)=\beta(\langle\psi,y\rangle)z` the neuron equals
-$`\langle\ell,z\rangle\beta(\langle A^*\psi,x\rangle+\langle\psi,b\rangle)`, so the effective
-parameter is the scalar ridge parameter $`\pi_\psi(A,b)=(A^*\psi,\langle\psi,b\rangle)`. In Lean
-the projection $`\pi_\psi` is `OperatorRidgelet.operatorParameterMap`, and the section
-$`J_\psi(a,c)=(A_a,b_c)` with $`A_a=\|\psi\|^{-2}\psi\otimes a` and $`b_c=c\|\psi\|^{-2}\psi`
-is `OperatorRidgelet.operatorRidgeletSection`, built from `OperatorRidgelet.rankOneLift` and
-`OperatorRidgelet.biasLift`.
-
-:::definition "aux:hilbert-schmidt" (lean := "OperatorRidgelet.hsNormSq, OperatorRidgelet.IsHilbertSchmidt, OperatorRidgelet.hsNorm")
-The squared Hilbert–Schmidt norm of a bounded operator $`A` on $`H` is the supremum
-$`\|A\|_{\mathcal L_2}^2=\sup\{\sum_{e\in s}\|Ae\|^2\}` over finite orthonormal families $`s`,
-and $`\mathcal L_2(H)` is the set of bounded operators with finite Hilbert–Schmidt norm. Mathlib
-has no Hilbert–Schmidt class; the definition is intrinsic, and the equality with
-$`\sum_n\|Ae_n\|^2` along a Hilbert basis is a later obligation.
-:::
-
-:::definition "aux:operator-neuron" (lean := "OperatorRidgelet.operatorNeuron, OperatorRidgelet.operatorNeuronSet, OperatorRidgelet.ridgeSet, OperatorRidgelet.rankOneActivation, OperatorRidgelet.operatorFiniteNetwork, OperatorRidgelet.operatorSynthesis") (uses := "aux:hilbert-schmidt, def:finite-network, def:integral-network")
-The operator neuron $`\mathrm n_{\ell,A,b}(x)=\langle\ell,\sigma(Ax+b)\rangle`, the sets of
-neurons with operator parameter in a given subset of $`\mathcal L(H)` and of scalar ridges
-$`x\mapsto\beta(\langle a,x\rangle+c)`, both as subsets of $`C(H;\mathbb R)` with the
-compact-open topology, the rank-one activation $`\sigma_\beta(y)=\beta(\langle\psi,y\rangle)z`,
-the finite-width operator network $`x\mapsto\sum_jv_j\,\mathrm n_{\ell,A_j,b_j}(x)`, and the
-operator synthesis
-$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}(x)=\int\mathrm n_{\ell,A,b}(x)\,\Gamma_{\mathrm{op}}(\mathrm dA,\mathrm db)`
-of a finite complex measure on $`\mathcal L(H)\times H`.
-:::
-
-:::lemma_ "lem:hs-reduction" (lean := "OperatorRidgelet.Paper.lem_hs_reduction") (uses := "aux:hilbert-schmidt, aux:operator-neuron")
-Suppose $`\sigma:H\to H` is globally Lipschitz. The finite linear spans of the neurons
-$`\mathrm n_{\ell,A,b}` with $`A\in\mathcal L(H)` and with $`A\in\mathcal L_2(H)` have the
-same compact-open closure in $`C(H;\mathbb R)`.
-:::
-
-:::proof "lem:hs-reduction"
-Replace $`A_j` by $`A_j\Pi_n` with $`\Pi_n` the projection onto the first $`n` basis vectors;
-each $`A_j\Pi_n` has finite rank, and strong convergence $`\Pi_nx\to x` is uniform on compact
-sets by a finite-net argument, so the Lipschitz bound gives convergence in $`C(K)`.
-:::
-
-:::lemma_ "lem:rank-one-lift" (lean := "OperatorRidgelet.Paper.lem_rank_one_lift_i, OperatorRidgelet.Paper.lem_rank_one_lift_ii, OperatorRidgelet.Paper.lem_rank_one_lift_iii, OperatorRidgelet.Paper.lem_rank_one_lift_iv, OperatorRidgelet.Paper.lem_rank_one_lift_v, OperatorRidgelet.Paper.lem_rank_one_lift_vi, OperatorRidgelet.Paper.lem_rank_one_lift_vii") (uses := "aux:hilbert-schmidt, aux:operator-neuron, def:finite-network, def:integral-network")
-For $`\psi\ne0` put $`A_a=\|\psi\|^{-2}\psi\otimes a` and $`b_c=c\|\psi\|^{-2}\psi`. Then
-$`A_a\in\mathcal L_2(H)` (i), $`\|A_a\|_{\mathcal L_2}=\|a\|/\|\psi\|` (ii),
-$`\|b_c\|=|c|/\|\psi\|` (iii), and $`\pi_\psi(A_a,b_c)=(a,c)` (iv). The section
-$`J_\psi(a,c)=(A_a,b_c)` is continuous into $`\mathcal L_2(H)\times H` (v), and every scalar
-integral network (vi) or finite-width network (vii) with activation $`\beta` lifts exactly to
-the operator architecture with activation $`\sigma_\beta` and readout normalized by
-$`\langle\ell,z\rangle=1`.
-:::
-
-:::proof "lem:rank-one-lift"
-$`A_a` has rank at most one and $`A_a^*y=\|\psi\|^{-2}\langle y,\psi\rangle a`, so
-$`A_a^*\psi=a`; the norms are computed directly, and pushing a coefficient measure forward by
-$`J_\psi` preserves its synthesis because the neuron at $`J_\psi(a,c)` is the scalar ridge at
-$`(a,c)`.
-:::
-
-:::proposition "prop:scalar-universality" (lean := "OperatorRidgelet.Paper.prop_scalar_universality_i, OperatorRidgelet.Paper.prop_scalar_universality_ii") (uses := "aux:operator-neuron, lem:rank-one-lift, cor:two-stage-error, roadmap:finite-dim-universality")
-Let $`\beta:\mathbb R\to\mathbb R` be continuous and not a polynomial. Finite linear
-combinations of $`\beta(\langle a,x\rangle+c)` are dense in $`C(H;\mathbb R)` for uniform
-convergence on compact sets (i); the same holds for the rank-one operator activation
-$`\sigma_\beta` with Hilbert–Schmidt parameters (ii).
-:::
-
-:::proof "prop:scalar-universality"
-For finite-rank projections $`\Pi_m\to I`, $`f\circ\Pi_m\to f` uniformly on compact sets; the
-finite-dimensional universal approximation theorem approximates $`f` on $`\Pi_mK` by scalar
-ridges, which compose with $`\Pi_m` to ridges on $`H`, and the rank-one lift gives (ii). This
-reduction gives no information on the parameters; the constructive statement is
-{bpref "thm:D"}[].
-:::
-
-:::lemma_ "lem:measure-transport" (lean := "OperatorRidgelet.Paper.lem_measure_transport_i, OperatorRidgelet.Paper.lem_measure_transport_ii, OperatorRidgelet.Paper.lem_measure_transport_iii, OperatorRidgelet.Paper.lem_measure_transport_iv, OperatorRidgelet.Paper.lem_measure_transport_v") (uses := "aux:operator-neuron, lem:rank-one-lift, def:integral-network")
-Each part carries only the hypotheses it needs. For every $`\psi` and every finite complex
-Borel measure $`\Gamma_{\mathrm{op}}` on $`\mathcal L_2(H)\times H`,
-$`|(\pi_\psi)_\#\Gamma_{\mathrm{op}}|\le(\pi_\psi)_\#|\Gamma_{\mathrm{op}}|` (ii). If moreover
-$`\beta` is real and globally Lipschitz, $`\langle\ell,z\rangle=1`, and
-$`\int(1+\|A\|_{\mathcal L_2}+\|b\|)\,\mathrm d|\Gamma_{\mathrm{op}}|<\infty`, then
-$`S_{\mathrm{op}}\Gamma_{\mathrm{op}}=S_\beta[(\pi_\psi)_\#\Gamma_{\mathrm{op}}]` (i) and, for
-compact $`K` with $`r_K=\sup_K\|x\|`,
-$`\|S_{\mathrm{op}}\Gamma_{\mathrm{op}}\|_{C(K)}\le\int[|\beta(0)|+\operatorname{Lip}(\beta)\|\psi\|(r_K\|A\|_{\mathcal L_2}+\|b\|)]\,\mathrm d|\Gamma_{\mathrm{op}}|`
-(iii); $`\psi\ne0` is not needed for any of these. Conversely, for $`\psi\ne0` and
-$`\langle\ell,z\rangle=1`, $`(\pi_\psi)_\#(J_\psi)_\#\Gamma=\Gamma` (iv) and
-$`S_{\mathrm{op}}(J_\psi)_\#\Gamma=S_\beta[\Gamma]` (v) for every activation $`\beta` and every
-finite complex Borel measure $`\Gamma` on $`H\times\mathbb R`, with no Lipschitz and no moment
-condition.
-:::
-
-:::proof "lem:measure-transport"
-The variation inequality is the definition of the variation as a supremum over partitions,
-applied to the preimages of a partition. The atom identity is the rank-one reduction,
-$`\|A^*\psi\|\le\|A\|_{\mathcal L_2}\|\psi\|` supplies the integrable envelope, and the change
-of variables for finite complex measures proves the synthesis identity. Finally
-$`\pi_\psi\circ J_\psi=\mathrm{id}`, and $`J_\psi` is a homeomorphism onto its closed range, so
-the last change of variables holds atomwise.
-:::
+For a rank-one activation $`\Sigma(y)=\beta(\langle\psi,y\rangle)z`, the neuron
+$`\langle\ell,\Sigma(Ax+c)\rangle` equals
+$`\langle\ell,z\rangle\beta(\langle A^*\psi,x\rangle+\langle\psi,c\rangle)`.
+Thus the effective direction is $`A^*\psi`. Appendix F proves the exact lift, the
+Hilbert–Schmidt reduction, and the transport of coefficient measures.

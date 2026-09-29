@@ -8,8 +8,8 @@ import OperatorRidgelet.ToMathlib.VectorMeasureMapDensity
 
 The hinge representation `Φ(u) = ∫ ReLU(u - t) φ''(t) dt` turns a Gaussian-activation network
 into a ReLU network whose coefficient measure is a pushforward of `φ''(t) γ λ(dθ) dt`
-(`hingeCoefficientMeasure`, Example `ex:gaussian-parameter`(vi)) or of `φ''(t) b_y m(dy) dt`
-(`layerHingeMeasure`, Example `ex:operator-layer`(iii)).  This module shows that these measures
+(`hingeCoefficientMeasure`, Example `ex:7.2`(vi)) or of `φ''(t) b_y m(dy) dt`
+(`layerHingeMeasure`, Example `ex:7.4`(iii)).  This module shows that these measures
 have finite variation and finite parameter moments of every order, using the domination of the
 variation of a pushed-forward measure with a density
 (`MeasureTheory.VectorMeasure.lintegral_variation_map_withDensityᵥ_le`) and the moments of `φ''`.
@@ -62,7 +62,7 @@ theorem IsLayerData.integrable_gaussianActDeriv2_smul (hL : IsLayerData m a b) :
 variable [MeasurableSpace H]
 
 omit [InnerProductSpace ℝ H] [IsFiniteMeasure m] in
-/-- **Example `ex:operator-layer`(iii)**: the hinge measure of the layer has finite variation. -/
+/-- **Example `ex:7.4`(iii)**: the hinge measure of the layer has finite variation. -/
 theorem IsLayerData.isFiniteMeasure_layerHingeMeasure_variation (hL : IsLayerData m a b) :
     IsFiniteMeasure (layerHingeMeasure m a b).variation :=
   ⟨by
@@ -71,7 +71,7 @@ theorem IsLayerData.isFiniteMeasure_layerHingeMeasure_variation (hL : IsLayerDat
       hL.integrable_gaussianActDeriv2_smul _) hL.integrable_gaussianActDeriv2_smul.2⟩
 
 omit [IsFiniteMeasure m] [InnerProductSpace ℝ H] in
-/-- **Example `ex:operator-layer`(iii)**: the hinge measure of the layer has finite moments of
+/-- **Example `ex:7.4`(iii)**: the hinge measure of the layer has finite moments of
 every order. -/
 theorem IsLayerData.lintegral_layerHingeMeasure_variation_lt_top (hL : IsLayerData m a b)
     (k : ℕ) :
@@ -116,7 +116,7 @@ theorem integrable_gaussianActDeriv2_smul_of_integrable (hγ : Integrable γ lam
   exact le_of_eq (mul_comm _ _)
 
 omit [NormedAddCommGroup H] [InnerProductSpace ℝ H] [SigmaFinite lam] in
-/-- **Example `ex:gaussian-parameter`(vi)**: the hinge coefficient measure has finite
+/-- **Example `ex:7.2`(vi)**: the hinge coefficient measure has finite
 variation. -/
 theorem isFiniteMeasure_hingeCoefficientMeasure_variation (hγ : Integrable γ lam) :
     IsFiniteMeasure (hingeCoefficientMeasure lam γ).variation :=
@@ -127,7 +127,7 @@ theorem isFiniteMeasure_hingeCoefficientMeasure_variation (hγ : Integrable γ l
       (integrable_gaussianActDeriv2_smul_of_integrable lam hγ).2⟩
 
 omit [InnerProductSpace ℝ H] [SigmaFinite lam] in
-/-- **Example `ex:gaussian-parameter`(vi)**: the hinge coefficient measure has finite moments
+/-- **Example `ex:7.2`(vi)**: the hinge coefficient measure has finite moments
 of every order when the coefficient density does. -/
 theorem lintegral_hingeCoefficientMeasure_variation_lt_top (hγ : Integrable γ lam)
     (hmom : ∀ k : ℕ, Integrable (fun θ : H × ℝ => (1 + ‖θ.1‖ + |θ.2|) ^ k * ‖γ θ‖) lam)

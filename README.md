@@ -16,7 +16,8 @@ The repository tracks the **68 manuscript items of the 2026-09-29 terminology re
 all are recorded as
 verified, comprising **369 Lean statements checked by comparator** and the pure definitions.
 The manuscript itself is not included. See the [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/)
-for a human-readable presentation and [STATUS.md](STATUS.md) for the generated per-item record.
+for a presentation organized by manuscript Sections 1–8 and Appendices A–J, followed by
+supporting infrastructure, and [STATUS.md](STATUS.md) for the generated per-item record.
 
 ## What is formalized, and where?
 
@@ -79,3 +80,6 @@ Apache 2.0. The files under `OperatorRidgelet/NeuralNetworkProofs/` are copied f
 commit `f90942517be8b66dd34574212ada69b2130a48e5`, also Apache 2.0. Their copyright headers
 and license are preserved. `OperatorRidgelet/NeuralNetworkProofs.lean` records the subset and
 the compatibility adaptation for Mathlib v4.32.0.
+`OperatorRidgeletBlueprint/vendor/VersoBlueprint/` preserves Verso Blueprint's Apache-2.0
+license and copyright notices; its pinned revision and Example-kind extension are documented
+in [PROVENANCE.md](OperatorRidgeletBlueprint/vendor/VersoBlueprint/PROVENANCE.md).

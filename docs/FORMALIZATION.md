@@ -3,7 +3,8 @@
 This guide maps the operator ridgelet manuscript to the Lean sources. For an item-by-item list
 of labels, numbers, declaration names, and verification status, see [STATUS.md](../STATUS.md).
 The [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/) presents the informal
-mathematics alongside Lean declarations and their dependencies.
+mathematics alongside Lean declarations and their dependencies, following manuscript
+Sections 1–8 and Appendices A–J and then the supporting infrastructure.
 
 ## Reading a manuscript item in Lean
 
@@ -13,21 +14,21 @@ includes a `note` for each item describing how it is formalized. These notes exp
 choices as explicit hypotheses, representations of operators, and the scope of each statement.
 
 For example, Theorem 3.11 (`thm:B`, Plancherel identity and injectivity) corresponds to the
-`OperatorRidgelet.Paper.thm_B_*` declarations in
+`OperatorRidgelet.Paper.thm_3_11_*` declarations in
 [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean). Its independent
 statements are in [Challenge/Transform.lean](../OperatorRidgelet/Challenge/Transform.lean),
 its definitions in [Transform/Defs.lean](../OperatorRidgelet/OperatorRidgelet/Transform/Defs.lean),
 and its supporting proofs in the other `Transform/` modules.
 
 In general, manuscript results have names
-`OperatorRidgelet.Paper.<kind>_<label>[_<part>]`: the label loses its prefix and hyphens become
-underscores. Multipart results may be split into several Lean declarations. Pure definitions
-usually live directly in the `OperatorRidgelet` namespace.
-
-The blueprint chapter **Comparator review of the Challenge statements** brings together each
-item's informal statement link, formalization note, exact `Challenge` declaration text, and
-recorded comparator status. It is a useful starting point for reviewing whether the formal
-statements express the intended mathematics.
+`OperatorRidgelet.Paper.<kind>_<number>[_<part>]`: dots in the manuscript number become
+underscores, as in `thm_3_11_i` or `cor_G_2_i`. Multipart results may be split into several
+Lean declarations; vector-valued parts use descriptive `plancherel`, `representation`, and
+`frame` suffixes. Pure definitions retain their semantic names, usually directly in the
+`OperatorRidgelet` namespace. The index keeps the source LaTeX `label` separately from the
+numbered `blueprint_label`: Theorem 3.11 has source label `thm:B` and Blueprint label
+`thm:3.11`. Its informal statement and Lean declarations appear together in the corresponding
+mathematical chapter; the index's formalization note explains the verification scope.
 
 ## Mathematical source map
 
@@ -38,11 +39,11 @@ manuscript-facing theorems; the other modules supply definitions and supporting 
 | Subject and manuscript items | Definitions and supporting mathematics | Manuscript-facing proofs |
 | --- | --- | --- |
 | Networks (§2), Hilbert–Schmidt reduction, exact lifts and universality (Appendix F) | [Network/](../OperatorRidgelet/OperatorRidgelet/Network/), [Architecture/](../OperatorRidgelet/OperatorRidgelet/Architecture/), [RankOneLift.lean](../OperatorRidgelet/OperatorRidgelet/RankOneLift.lean), [OperatorValuedRidgelet.lean](../OperatorRidgelet/OperatorRidgelet/OperatorValuedRidgelet.lean) | [Paper/Networks.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Networks.lean) |
-| Homogeneous Gaussian mixtures, Fourier-slice identity, the Hilbert space and Plancherel (§3, Theorem B) | [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
-| Integral representation, reconstruction, frame operator and vector-valued extensions (§4, Theorems A and C; Appendix B) | [Reconstruction/](../OperatorRidgelet/OperatorRidgelet/Reconstruction/) | [Paper/Reconstruction.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Reconstruction.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
+| Homogeneous Gaussian mixtures, Fourier-slice identity, the Hilbert space and Plancherel (§3, Theorem 3.11) | [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
+| Integral representation, reconstruction, frame operator and vector-valued extensions (§4, Theorems 4.2 and 4.3; Appendix B) | [Reconstruction/](../OperatorRidgelet/OperatorRidgelet/Reconstruction/) | [Paper/Reconstruction.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Reconstruction.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
 | Tempered synthesis, ReLU and standard activations (§5, Appendix C) | [Tempered/](../OperatorRidgelet/OperatorRidgelet/Tempered/), [Activation.lean](../OperatorRidgelet/OperatorRidgelet/Activation.lean) | [Paper/Tempered.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Tempered.lean) |
 | Absolute synthesis under a Sobolev condition, Sobolev pairing and non-band-pass Gaussian-derivative filters (§5.6, C.3–C.4, I.3) | [Sobolev/](../OperatorRidgelet/OperatorRidgelet/Sobolev/) | [Paper/Sobolev.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sobolev.lean) |
-| Rademacher bounds, dimension-free finite-width approximation, sampling and input truncation (§6, Theorems D and E; Appendix D) | [Sampling/](../OperatorRidgelet/OperatorRidgelet/Sampling/), [ToFoML/](../OperatorRidgelet/OperatorRidgelet/ToFoML/) | [Paper/Sampling.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean), [Paper/SamplingRevision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/SamplingRevision.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
+| Rademacher bounds, dimension-free finite-width approximation, sampling and input truncation (§6, Theorems 6.4 and 6.5; Appendix D) | [Sampling/](../OperatorRidgelet/OperatorRidgelet/Sampling/), [ToFoML/](../OperatorRidgelet/OperatorRidgelet/ToFoML/) | [Paper/Sampling.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Sampling.lean), [Paper/SamplingRevision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/SamplingRevision.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
 | Gaussian targets, operator layers, convolution, Dirichlet operators and Gaussian integral identities (§7, Appendix E) | [Examples/](../OperatorRidgelet/OperatorRidgelet/Examples/) | [Paper/Examples.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Examples.lean) |
 | Finite-dimensional backprojection and dilation obstruction (Appendix G) | [FiniteDim/](../OperatorRidgelet/OperatorRidgelet/FiniteDim/), [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean) |
 | Extension to general input and direction measures (Appendix H) | [Transform/](../OperatorRidgelet/OperatorRidgelet/Transform/), [Reconstruction/](../OperatorRidgelet/OperatorRidgelet/Reconstruction/) | [Paper/Transform.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Transform.lean), [Paper/Revision.lean](../OperatorRidgelet/OperatorRidgelet/Paper/Revision.lean) |
@@ -91,7 +92,9 @@ weighted square integrability of a specified inverse Fourier transform. A Fourie
 is asserted only in the Hilbert-valued case. `polarLaw` denotes the sampling distribution
 obtained by normalizing the total variation measure (zero when that measure is zero), and
 `IsCenteredGaussianLayers` describes the Gaussian components of a scale mixture.
-The terminology revision preserves the declaration names and formal statements.
+The terminology revision preserves the mathematical statements. Manuscript-facing `Paper`
+declarations and Blueprint identifiers follow the current manuscript numbering; semantic
+names for definitions and supporting mathematics remain unchanged.
 
 The verification record has three components:
 
@@ -121,6 +124,7 @@ generating it does not itself run comparator. Reproduction commands are in
 | --- | --- |
 | [OperatorRidgelet/](../OperatorRidgelet/) | Mathematics Lake project, including `Challenge`, `Solution`, comparator data and scripts |
 | [OperatorRidgeletBlueprint/](../OperatorRidgeletBlueprint/) | Verso Blueprint, depending on the mathematics project by path |
+| [OperatorRidgeletBlueprint/vendor/VersoBlueprint/](../OperatorRidgeletBlueprint/vendor/VersoBlueprint/) | Pinned Verso Blueprint with a distinct Example node kind; [provenance](../OperatorRidgeletBlueprint/vendor/VersoBlueprint/PROVENANCE.md) |
 | [OperatorRidgelet/LeanRidgelet/](../OperatorRidgelet/LeanRidgelet/) | Vendored activation spaces, Fourier conventions and general analysis tools from `shosonoda/lean-ridgelet`; [provenance](../OperatorRidgelet/LeanRidgelet.lean) |
 | [OperatorRidgelet/NeuralNetworkProofs/](../OperatorRidgelet/NeuralNetworkProofs/) | Vendored Leshno theorem and dependencies from `davorrunje/neural-network-proofs`; [provenance and adaptation](../OperatorRidgelet/NeuralNetworkProofs.lean) |
 | [attic/lean/](../attic/lean/) | Retired files, excluded from the build |

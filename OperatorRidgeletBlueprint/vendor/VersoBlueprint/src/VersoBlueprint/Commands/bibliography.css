@@ -1,0 +1,84 @@
+.bp_bibliography {
+  margin-top: 1rem;
+}
+
+.bp_bibliography_section {
+  border: 1px solid var(--bp-color-biblio-border);
+  border-radius: 0.6rem;
+  padding: 0.2rem 0.8rem 0.75rem;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(180deg, var(--bp-color-surface), var(--bp-color-biblio-surface));
+}
+
+.bp_bibliography_section > summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.6rem 0;
+}
+
+.bp_bibliography_list {
+  margin: 0.25rem 0 0.15rem;
+  padding-left: 1.2rem;
+}
+
+.bp_bibliography_empty {
+  color: var(--bp-color-text-faint);
+  font-style: italic;
+}
+
+.bp_bibliography_uses {
+  margin-top: 0.3rem;
+  border: 1px solid var(--bp-color-biblio-border-soft);
+  border-radius: var(--bp-radius-md);
+  padding: 0.2rem 0.5rem 0.4rem;
+  background: var(--bp-color-biblio-surface-soft);
+}
+
+.bp_bibliography_uses > summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--bp-color-biblio-link);
+}
+
+.bp_bibliography_uses_list {
+  margin: 0.2rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.bp_bibliography_use_item {
+  margin-top: 0.18rem;
+}
+
+.bp_bibliography_use_line {
+  color: inherit;
+}
+
+.bp_bibliography_use_inline_meta {
+  color: inherit;
+  font-style: normal;
+}
+
+html[data-bp-style="modern"] .bp_bibliography_section {
+  border-color: var(--bp-color-biblio-border);
+  background: linear-gradient(180deg, var(--bp-color-surface), var(--bp-color-biblio-surface));
+}
+
+html[data-bp-style="modern"] .bp_bibliography_uses {
+  border-color: var(--bp-color-biblio-border-soft);
+  background: var(--bp-color-biblio-surface-soft);
+}
+
+html[data-bp-style="bold"] .bp_bibliography_section {
+  border: 2px solid var(--bp-color-text-strong);
+  border-radius: 0.9rem;
+  box-shadow: var(--bp-shadow-bold);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(167, 139, 250, 0.18), transparent 40%),
+    var(--bp-color-surface);
+}
+
+html[data-bp-style="bold"] .bp_bibliography_uses {
+  border: 2px solid var(--bp-color-text-strong);
+  border-radius: var(--bp-radius-2xl);
+  background: var(--bp-color-surface);
+}

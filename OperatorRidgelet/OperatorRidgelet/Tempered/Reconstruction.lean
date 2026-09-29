@@ -7,7 +7,7 @@ import OperatorRidgelet.ToMathlib.TemperedDistributionConvolution
 /-!
 # Reconstruction with a tempered activation
 
-Theorem `thm:tempered-reconstruction`: for a real tempered `β`, a band-pass `ρ`, a cutoff `χ`,
+Theorem `thm:5.2`: for a real tempered `β`, a band-pass `ρ`, a cutoff `χ`,
 and an approximate identity `(η_ε)`, the regularized syntheses `S_{β_ε} R_ρ f` converge in
 `𝓔_α'` to `C^{(α)}_{β,ρ} T_α f` (`tendsto_regularizedSynthesis`), so that the tempered
 synthesis is `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f` (`temperedSynthesis_ridgeletExtension_eq`).
@@ -245,7 +245,7 @@ theorem tendsto_regularizedSynthesis (μ ν : Measure H) [IsProbabilityMeasure �
       rw [hF']
       exact hχ.zero_notMem_tsupport_regularizedSpectrum η ε β) hρ f]
 
-/-- **Theorem `thm:tempered-reconstruction`**, the frame identity
+/-- **Theorem `thm:5.2`**, the frame identity
 `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f`. -/
 theorem temperedSynthesis_ridgeletExtension_eq (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) {β : TemperedDistribution ℝ ℂ}

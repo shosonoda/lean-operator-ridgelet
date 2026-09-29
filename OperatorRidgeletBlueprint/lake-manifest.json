@@ -27,15 +27,12 @@
       "configFile": "lakefile.lean"
     },
     {
-      "url": "https://github.com/leanprover/verso-blueprint",
-      "type": "git",
-      "subDir": null,
+      "type": "path",
       "scope": "",
-      "rev": "84fafd488acf60e47d3a7e2b029ee4502e740ba8",
       "name": "VersoBlueprint",
       "manifestFile": "lake-manifest.json",
-      "inputRev": "v4.32.0",
       "inherited": false,
+      "dir": "vendor/VersoBlueprint",
       "configFile": "lakefile.lean"
     },
     {

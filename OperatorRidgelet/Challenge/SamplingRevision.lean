@@ -7,9 +7,9 @@ namespace OperatorRidgelet.Paper
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal RealInnerProductSpace
 
-/-- **Lemma [lem:banach-rademacher-vanishing](i).** The signed empirical mean of a
+/-- **Lemma [lem:D.1](i).** The signed empirical mean of a
 Bochner-integrable separable Banach-valued atom tends to zero in expected norm. -/
-theorem lem_banach_rademacher_vanishing_i {Ω E : Type*} [MeasurableSpace Ω]
+theorem lem_D_1_i {Ω E : Type*} [MeasurableSpace Ω]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
     (p : Measure Ω) [IsProbabilityMeasure p] {Φ : Ω → E} (hint : Integrable Φ p) :
@@ -18,10 +18,10 @@ theorem lem_banach_rademacher_vanishing_i {Ω E : Type*} [MeasurableSpace Ω]
         ∂((Measure.pi fun _ : Fin N => p).prod (rademacherMeasure N))) atTop (𝓝 0) := by
   sorry
 
-/-- **Lemma [lem:banach-rademacher-vanishing](ii).** Symmetrization of the empirical mean.
+/-- **Lemma [lem:D.1](ii).** Symmetrization of the empirical mean.
 The finite sum averages over the uniform Boolean sign vectors; the inverse width outside
 the norm is the equivalent normalization of the manuscript's empirical averages. -/
-theorem lem_banach_rademacher_vanishing_ii {Ω E : Type*} [MeasurableSpace Ω]
+theorem lem_D_1_ii {Ω E : Type*} [MeasurableSpace Ω]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (p : Measure Ω) [IsProbabilityMeasure p] {Φ : Ω → E} (hint : Integrable Φ p) (N : ℕ) :
     (N : ℝ)⁻¹ *
@@ -32,9 +32,9 @@ theorem lem_banach_rademacher_vanishing_ii {Ω E : Type*} [MeasurableSpace Ω]
           ∂(Measure.pi fun _ : Fin N => p)) := by
   sorry
 
-/-- **Corollary [cor:vector-rates](i).** The exact integrated variance of the sampled network,
+/-- **Corollary [cor:6.6](i).** The exact integrated variance of the sampled network,
 including the subtracted squared norm of its target and the zero-variation case. -/
-theorem cor_vector_rates_i_exact {H Y : Type*}
+theorem cor_6_6_i_exact {H Y : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H] [BorelSpace H]
     [SecondCountableTopology H] [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
     [CompleteSpace Y] {β : ℝ → ℂ} {L : ℝ≥0}
@@ -49,13 +49,13 @@ theorem cor_vector_rates_i_exact {H Y : Type*}
           ∫ x, ‖integralNetwork β Γ x‖ ^ 2 ∂ζ) := by
   sorry
 
-/-- **Lemma [lem:two-coordinate-comparison]** A two-coordinate Rademacher comparison.  For
+/-- **Lemma [lem:D.2]** A two-coordinate Rademacher comparison.  For
 bounded `ψ_i, u_i, v_i` on a nonempty set `S` whose increments satisfy
 `|ψ_i(s) − ψ_i(t)| ≤ |u_i(s) − u_i(t)| + |v_i(s) − v_i(t)|`, the Rademacher average of
 `sup_s ∑_i ε_i ψ_i(s)` is at most twice the average of
 `sup_s ∑_i (ε_{i1} u_i(s) + ε_{i2} v_i(s))` over two independent sign vectors.  The averages
 are the uniform averages over the Boolean sign vectors. -/
-theorem lem_two_coordinate_comparison {S : Type*} [Nonempty S] {N : ℕ}
+theorem lem_D_2 {S : Type*} [Nonempty S] {N : ℕ}
     {ψ u v : Fin N → S → ℝ} (hψ : ∀ i, ∃ C, ∀ s, |ψ i s| ≤ C)
     (hu : ∀ i, ∃ C, ∀ s, |u i s| ≤ C) (hv : ∀ i, ∃ C, ∀ s, |v i s| ≤ C)
     (hincr : ∀ i s t, |ψ i s - ψ i t| ≤ |u i s - u i t| + |v i s - v i t|) :

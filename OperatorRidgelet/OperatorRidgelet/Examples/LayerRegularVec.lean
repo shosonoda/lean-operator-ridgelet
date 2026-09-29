@@ -92,12 +92,12 @@ theorem contDiff_ofReal_exp_layer (S : H →L[ℝ] H) (a : H) {n : WithTop ℕ�
 
 variable [IsFiniteMeasure m]
 
-/-- **Example `ex:operator-layer`(ii)**: the transform `𝒢_Q F_φ` of the scalar observable of a
+/-- **Example `ex:7.4`(ii)**: the transform `𝒢_Q F_φ` of the scalar observable of a
 layer with Gaussian activation is regular along rays, for every compact frequency window away
 from the origin.  The densities `G_y` are Gaussian with covariances `S_y` satisfying
 `θ Q ≤ S_y` and `‖S_y‖ ≤ ‖Q‖ + ‖Q‖²‖A‖_∞²` uniformly in `y`, so the ray-derivative bounds are
 uniform in `y` up to the factor `|w_φ(y)|`, and the weighted form of Lemma
-`lem:ray-regular-examples`(c) applies. -/
+`lem:D.3`(c) applies. -/
 theorem IsLayerData.isRegularAlongRays_gaussFourierVec_operatorLayer_gaussianFun
     {Q : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (ν : Measure H)

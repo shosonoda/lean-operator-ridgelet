@@ -1,0 +1,260 @@
+name: Reference Blueprints
+
+on:
+  pull_request:
+  push:
+    branches:
+      - v*
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resolve-reference-release:
+    name: Resolve Reference Release
+    runs-on: ubuntu-latest
+    outputs:
+      manifest_path: ${{ steps.resolve.outputs.manifest_path }}
+      release_id: ${{ steps.resolve.outputs.release_id }}
+      rc: ${{ steps.resolve.outputs.rc }}
+      toolchain: ${{ steps.resolve.outputs.toolchain }}
+      verso_ref: ${{ steps.resolve.outputs.verso_ref }}
+      branch: ${{ steps.resolve.outputs.branch }}
+      deploy_pages: ${{ steps.resolve.outputs.deploy_pages }}
+      reference_project_count: ${{ steps.resolve.outputs.reference_project_count }}
+      reference_matrix: ${{ steps.resolve.outputs.reference_matrix }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Select controller catalog
+        id: controller
+        env:
+          BP_DEFAULT_DEV_BRANCH: ${{ github.event.repository.default_branch }}
+          BP_RELEASE_ID: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+          BP_EVENT_NAME: ${{ github.event_name }}
+          BP_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          manifest_path=tests/harness/projects.json
+          use_local_catalog=false
+          if [ "$BP_RELEASE_ID" = "$BP_DEFAULT_DEV_BRANCH" ]; then
+            use_local_catalog=true
+          elif [ "$BP_EVENT_NAME" = "pull_request" ]; then
+            git fetch --no-tags origin "$BP_RELEASE_ID"
+            if ! git diff --quiet "origin/$BP_RELEASE_ID"...HEAD -- "$manifest_path"; then
+              use_local_catalog=true
+            fi
+          elif [ "$BP_EVENT_NAME" = "push" ] &&
+              git rev-parse --verify --quiet "${BP_BEFORE_SHA}^{commit}" >/dev/null &&
+              ! git diff --quiet "$BP_BEFORE_SHA" HEAD -- "$manifest_path"; then
+            use_local_catalog=true
+          fi
+          if [ "$use_local_catalog" != true ]; then
+            git fetch --no-tags origin "$BP_DEFAULT_DEV_BRANCH"
+            manifest_path=_out/controller-projects.json
+            mkdir -p "$(dirname "$manifest_path")"
+            git show "origin/$BP_DEFAULT_DEV_BRANCH:tests/harness/projects.json" > "$manifest_path"
+          fi
+          echo "manifest_path=$manifest_path" >> "$GITHUB_OUTPUT"
+          echo "release_id=$BP_RELEASE_ID" >> "$GITHUB_OUTPUT"
+      - name: Resolve release metadata
+        id: resolve
+        run: |
+          python3 ./scripts/emit_reference_release_matrix.py \
+            --manifest "${{ steps.controller.outputs.manifest_path }}" \
+            --release "${{ steps.controller.outputs.release_id }}" \
+            --github-output >> "$GITHUB_OUTPUT"
+
+  build-reference-blueprints:
+    name: Build Reference ${{ matrix.project_id }}
+    runs-on: ubuntu-latest
+    needs: resolve-reference-release
+    if: ${{ needs.resolve-reference-release.outputs.reference_project_count != '0' }}
+    env:
+      BP_REFERENCE_SOURCE_IDENTITY: ${{ matrix.reference_source_identity }}
+      BP_REFERENCE_DEPENDENCY_PACKAGES_PATH: ${{ matrix.reference_dependency_packages_path }}
+      BP_REFERENCE_DEPENDENCY_PATH_BUILDS_PATH: ${{ matrix.reference_dependency_path_builds_path }}
+      BP_REFERENCE_ARTIFACT_PATH: ${{ matrix.artifact_path }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.resolve-reference-release.outputs.reference_matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Show resolved release target
+        run: |
+          echo "release_id=${{ needs.resolve-reference-release.outputs.release_id }}"
+          echo "rc=${{ matrix.rc }}"
+          echo "toolchain=${{ matrix.toolchain }}"
+          echo "verso_ref=${{ matrix.verso_ref }}"
+          echo "blueprint=${{ matrix.project_id }}"
+          echo "hash=${{ matrix.hash }}"
+          echo "reference_source_identity=${{ matrix.reference_source_identity }}"
+      - name: Write reference project manifest
+        env:
+          BP_PROJECT_ID: ${{ matrix.project_id }}
+          BP_REFERENCE_PROJECT_MANIFEST: ${{ toJSON(matrix.project_manifest) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path("_out/reference-projects") / (os.environ["BP_PROJECT_ID"] + ".json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          manifest = json.loads(os.environ["BP_REFERENCE_PROJECT_MANIFEST"])
+          path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Match reference target toolchain
+        run: printf 'leanprover/lean4:${{ matrix.toolchain }}\n' > lean-toolchain
+      - name: Report disk usage before cache restore
+        run: ./scripts/report-ci-disk-usage.sh "before cache restore"
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Install PDF toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-pygments \
+            texlive-fonts-extra \
+            texlive-fonts-recommended \
+            texlive-latex-extra \
+            texlive-luatex \
+            texlive-plain-generic
+      - name: Restore Lake package cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib
+            .lake/packages/verso
+          key: ${{ runner.os }}-lake-packages-v2-${{ matrix.toolchain }}-${{ hashFiles('lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-packages-v2-${{ matrix.toolchain }}-
+            ${{ runner.os }}-lake-packages-v2-
+      - name: Restore Lake dependency build cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib/.lake/build
+            .lake/packages/verso/.lake/build
+          key: ${{ runner.os }}-lake-deps-${{ matrix.toolchain }}-${{ hashFiles('lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-deps-${{ matrix.toolchain }}-
+            ${{ runner.os }}-lake-deps-
+      - name: Report disk usage after Lake cache restore
+        run: ./scripts/report-ci-disk-usage.sh "after Lake cache restore"
+      - name: Restore external reference dependency cache
+        if: ${{ matrix.reference_source_identity != '' }}
+        uses: actions/cache@v5
+        with:
+          path: |
+            ${{ matrix.reference_dependency_packages_path }}
+            ${{ matrix.reference_dependency_path_builds_path }}
+          key: ${{ runner.os }}-reference-deps-v2-${{ matrix.reference_source_identity }}
+          restore-keys: |
+            ${{ runner.os }}-reference-deps-v2-${{ matrix.project_id }}-
+      - name: Report disk usage after reference cache restore
+        run: ./scripts/report-ci-disk-usage.sh "after reference cache restore"
+      - name: Show tool versions
+        run: |
+          lean --version
+          lake --version
+          lualatex --version | head -n 1
+          python3 --version
+      - name: Generate reference blueprint with PDF
+        run: |
+          ./scripts/generate-reference-blueprints.sh \
+            --allow-unsafe-root-release \
+            --manifest _out/reference-projects/${{ matrix.project_id }}.json \
+            --release ${{ needs.resolve-reference-release.outputs.release_id }} \
+            --pdf \
+            --record-build-metrics \
+            --project ${{ matrix.project_id }}
+      - name: Report disk usage after reference generation
+        if: ${{ always() }}
+        run: ./scripts/report-ci-disk-usage.sh "after reference generation"
+      - name: Upload reference blueprint artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}
+
+  build-test-blueprints:
+    name: Build Test Blueprints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Restore Lake package cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib
+            .lake/packages/verso
+          key: ${{ runner.os }}-lake-packages-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-packages-v2-
+      - name: Restore Lake dependency build cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            .lake/packages/mathlib/.lake/build
+            .lake/packages/verso/.lake/build
+          key: ${{ runner.os }}-lake-deps-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-deps-
+      - name: Show tool versions
+        run: |
+          lean --version
+          lake --version
+          python3 --version
+      - name: Generate test blueprints
+        run: ./scripts/generate-test-blueprints.sh
+      - name: Upload test blueprint artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-blueprints
+          path: _out/test-blueprints
+
+  build-site-artifact:
+    name: Build Site Artifact
+    runs-on: ubuntu-latest
+    needs:
+      - resolve-reference-release
+      - build-reference-blueprints
+      - build-test-blueprints
+    if: ${{ needs.resolve-reference-release.outputs.deploy_pages == 'true' }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Show deploy release target
+        run: |
+          echo "release_id=${{ needs.resolve-reference-release.outputs.release_id }}"
+          echo "deploy_pages=${{ needs.resolve-reference-release.outputs.deploy_pages }}"
+      - name: Download reference blueprint artifacts
+        uses: actions/download-artifact@v7
+        with:
+          pattern: reference-blueprints-*
+          path: _out/reference-blueprints-artifacts
+      - name: Download test blueprints artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: test-blueprints
+          path: _out/test-blueprints
+      - name: Prepare site artifact
+        run: python3 ./scripts/prepare_reference_blueprints_pages.py --reference-root _out/reference-blueprints-artifacts
+      - name: Report reference build metrics
+        run: |
+          python3 ./scripts/reference_build_metrics.py report \
+            --input-root _out/reference-blueprints-artifacts \
+            --output _site/build-data/reference-blueprints.json \
+            --summary-output "$GITHUB_STEP_SUMMARY"
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: reference-blueprints-site
+          path: _site

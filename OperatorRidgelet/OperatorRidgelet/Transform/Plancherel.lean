@@ -11,11 +11,11 @@ import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Analysis.Normed.Operator.Extend
 
 /-!
-# Plancherel in the bias variable, the coefficient operator, and Theorem B
+# Plancherel in the bias variable, the coefficient operator, and Theorem 3.11
 
 Ridgelet-specific results behind Section 3.2–3.4 of the manuscript (Lemma
-`lem:coefficient-isometry`, Lemma `lem:spectral-unitary`, Theorem `thm:B`, and its
-abstract-weight version `thm:general-weights`), for an abstract pair `(μ, ν)`: `μ` a probability
+`lem:B.1`, Lemma `lem:3.8`, Theorem `thm:3.11`, and its
+abstract-weight version `thm:H.1`), for an abstract pair `(μ, ν)`: `μ` a probability
 measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
 
 * **Bridges.** The manuscript's line Fourier transform `ĥ(ω) = ∫ h(t) e^{-itω} dt` and the partial

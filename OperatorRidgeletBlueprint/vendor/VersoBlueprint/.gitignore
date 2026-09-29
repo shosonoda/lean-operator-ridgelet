@@ -1,0 +1,14 @@
+*~
+__pycache__/
+*.py[cod]
+.codex-worktree.json
+.lake
+.runat/
+.beam/
+.worktrees/
+_out/
+_site/
+tests/browser/.venv/
+tests/browser/uv.lock
+node_modules/
+dist/

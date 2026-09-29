@@ -1,0 +1,47 @@
+{
+  "source": {
+    "include": [
+      "src/VersoBlueprint/blueprint-data-api.mjs",
+      "src/VersoBlueprint/blueprint-api-types.mjs",
+      "src/VersoBlueprint/blueprint-preview-api.mjs",
+      "src/VersoBlueprint/blueprint-graph-api.mjs"
+    ],
+    "includePattern": ".+\\.mjs$",
+    "excludePattern": "(^|/)(node_modules|dist|\\.lake|_out)/"
+  },
+  "plugins": ["plugins/markdown"],
+  "opts": {
+    "destination": "_out/jsdoc-api",
+    "readme": "doc/JS_API_DOCS.md",
+    "recurse": false,
+    "template": "node_modules/docdash"
+  },
+  "templates": {
+    "default": {
+      "includeDate": false,
+      "outputSourceFiles": false,
+      "staticFiles": {
+        "include": ["doc/jsdoc-static"]
+      }
+    },
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "docdash": {
+    "collapse": "top",
+    "meta": {
+      "description": "Verso Blueprint JavaScript API reference",
+      "title": "Verso Blueprint JavaScript API"
+    },
+    "nameInOutputPath": false,
+    "private": false,
+    "scopeInOutputPath": false,
+    "scripts": ["jsdoc-type-names.js", "jsdoc-type-links.js"],
+    "search": true,
+    "sort": true,
+    "static": true,
+    "typedefs": true,
+    "versionInOutputPath": false,
+    "wrap": true
+  }
+}

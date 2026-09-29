@@ -6,7 +6,7 @@ import OperatorRidgelet.Sobolev.Basic
 
 The rays of the Gaussian-derivative filters of Appendix I are dilates `b ↦ γ(b/A)` of one
 profile.  This module records what a dilation does to the three ingredients of
-`lem:sobolev-tools`: the Sobolev class, the Sobolev norm, which grows by at most `A^{s+1/2}`
+`lem:C.3`: the Sobolev class, the Sobolev norm, which grows by at most `A^{s+1/2}`
 for `A ≥ 1`, and the frequency profile, which is dilated the other way.
 
 The criterion `memRaySobolev_iff` restates the membership as the integrability of the weighted

@@ -3,7 +3,7 @@ import OperatorRidgelet.Tempered.Fourier
 /-!
 # Weighted Sobolev activation spaces: the coordinate isometry and the duality bound
 
-Lemma `lem:weighted-duality` of the manuscript (Appendix C).  With the vendored objects
+Lemma `lem:C.1` of the manuscript (Appendix C).  With the vendored objects
 `temperedWeightMultiplier r = ⟨·⟩^r`, `angularBesselPotential r = B^r`,
 `angularFourierDistribution = F`, and `MemActivationSpace s t β ↔ B^s ⟨·⟩^{-t} β ∈ L²`, the
 coordinate `⟨ω⟩^s B^{-t} β̂ = activationFourierCoordinate s t β` of `β ∈ 𝒜_{s,t}` is represented
@@ -34,7 +34,7 @@ theorem activationFourierCoordinate_eq (s t : ℝ) (β : TemperedDistribution �
         (angularFourierDistribution (temperedWeightMultiplier (-t) β)) := by
   rw [activationFourierCoordinate, angularBesselPotential_angularFourierDistribution]
 
-/-- **Lemma `lem:weighted-duality`(i)**: the coordinate of `β ∈ 𝒜_{s,t}` is an `L²` function. -/
+/-- **Lemma `lem:C.1`(i)**: the coordinate of `β ∈ 𝒜_{s,t}` is an `L²` function. -/
 theorem exists_activationCoordinate_of_mem {s t : ℝ} {β : TemperedDistribution ℝ ℂ}
     (hβ : MemActivationSpace s t β) :
     ∃ σ : L2 ℝ volume,
@@ -66,7 +66,7 @@ theorem eq_of_activationFourierCoordinate_eq {s t : ℝ} {β β' : TemperedDistr
     angularFourierInvDistribution_angularFourierDistribution,
     temperedWeightMultiplier_temperedWeightMultiplier_neg] using h'
 
-/-- **Lemma `lem:weighted-duality`(ii)**: the coordinate map is injective on `𝒜_{s,t}`. -/
+/-- **Lemma `lem:C.1`(ii)**: the coordinate map is injective on `𝒜_{s,t}`. -/
 theorem eq_of_activationCoordinate_eq {s t : ℝ}
     {β β' : TemperedDistribution ℝ ℂ} (hβ : MemActivationSpace s t β)
     (hβ' : MemActivationSpace s t β')
@@ -139,7 +139,7 @@ theorem angularFourierLp_surjective : Function.Surjective angularFourierLp := by
 
 /-! ### The realization of a coordinate -/
 
-/-- **Lemma `lem:weighted-duality`(iii)**, membership: `F⁻¹ B^t ⟨ω⟩^{-s} σ ∈ 𝒜_{s,t}`. -/
+/-- **Lemma `lem:C.1`(iii)**, membership: `F⁻¹ B^t ⟨ω⟩^{-s} σ ∈ 𝒜_{s,t}`. -/
 theorem memActivationSpace_activationRealization (s t : ℝ) (σ : L2 ℝ volume) :
     MemActivationSpace s t (activationRealization s t σ) := by
   obtain ⟨τ, hτ⟩ := angularFourierLp_surjective σ
@@ -164,7 +164,7 @@ theorem activationFourierCoordinate_activationRealization (s t : ℝ) (σ : L2 �
     angularBesselPotential_neg_angularBesselPotential,
     temperedWeightMultiplier_temperedWeightMultiplier_neg]
 
-/-- **Lemma `lem:weighted-duality`(iii)**, the coordinate of the realization of `σ` is `σ`. -/
+/-- **Lemma `lem:C.1`(iii)**, the coordinate of the realization of `σ` is `σ`. -/
 theorem activationCoordinate_activationRealization (s t : ℝ) (σ : L2 ℝ volume) :
     activationCoordinate s t (activationRealization s t σ) = σ := by
   have h := toTemperedDistribution_activationCoordinate
@@ -209,7 +209,7 @@ theorem inner_star_toLp_eq_integral (ψ : SchwartzMap ℝ ℂ) (σ : L2 ℝ volu
   filter_upwards [Lp.coeFn_star (ψ.toLp 2 volume), ψ.coeFn_toLp 2 volume] with x hx hx'
   rw [hx, Pi.star_apply, hx', RCLike.inner_apply, Complex.star_def, Complex.conj_conj, mul_comm]
 
-/-- **Lemma `lem:weighted-duality`(iv)**: `|⟨β̂, r⟩| ≤ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}`. -/
+/-- **Lemma `lem:C.1`(iv)**: `|⟨β̂, r⟩| ≤ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}`. -/
 theorem norm_angularFourierDistribution_apply_le {s t : ℝ}
     {β : TemperedDistribution ℝ ℂ} (hβ : MemActivationSpace s t β) (r : SchwartzMap ℝ ℂ) :
     ‖angularFourierDistribution β r‖ ≤ activationNorm s t β * testFilterNorm s t r := by
@@ -221,7 +221,7 @@ theorem norm_angularFourierDistribution_apply_le {s t : ℝ}
         rw [norm_star_L2, mul_comm]
         rfl
 
-/-- **Lemma `lem:weighted-duality`(v)**: the pairing extends to `L²(ℝ)` as the functional
+/-- **Lemma `lem:C.1`(v)**: the pairing extends to `L²(ℝ)` as the functional
 `ψ ↦ (2π)⁻¹ ⟪conj σ, ψ⟫`. -/
 theorem exists_pairing_extension {s t : ℝ} {β : TemperedDistribution ℝ ℂ}
     (hβ : MemActivationSpace s t β) :

@@ -42,7 +42,7 @@ jobs:
           path: |
             OperatorRidgelet/.lake/build
             OperatorRidgeletBlueprint/.lake/build
-            OperatorRidgeletBlueprint/.lake/packages/VersoBlueprint/.lake/build
+            OperatorRidgeletBlueprint/vendor/VersoBlueprint/.lake/build
             OperatorRidgeletBlueprint/.lake/packages/verso/.lake/build
             OperatorRidgeletBlueprint/.lake/packages/verso-slides/.lake/build
             OperatorRidgeletBlueprint/.lake/packages/subverso/.lake/build
