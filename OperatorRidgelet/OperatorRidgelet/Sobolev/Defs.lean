@@ -12,7 +12,7 @@ module.
 
 The manuscript works with a frequency profile `h : ℝ → Y` and its inverse Fourier
 transform `γ = ȟ`, the coefficient in the bias variable, in the angular convention
-`ĥ(ω) = ∫ h(b) e^{-iωb} db`.  The Sobolev norm of order `s` is normalized by
+`h♯(ω) = ∫ h(b) e^{-iωb} db`.  The Sobolev norm of order `s` is normalized by
 
 `‖h‖²_{H^s_ω} = 2π ∫ ⟨t⟩^{2s} ‖γ(t)‖² dt`,   `⟨t⟩ = (1 + t²)^{1/2}`,
 

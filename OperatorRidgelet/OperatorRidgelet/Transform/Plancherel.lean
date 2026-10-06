@@ -18,7 +18,7 @@ Ridgelet-specific results behind Section 3.2–3.4 of the manuscript (Lemma
 probability
 measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
 
-* **Bridges.** The manuscript's line Fourier transform `ĥ(ω) = ∫ h(t) e^{-itω} dt` and the partial
+* **Bridges.** The manuscript's line Fourier transform `h♯(ω) = ∫ h(t) e^{-itω} dt` and the partial
   Fourier transform in the bias are Mathlib's `𝓕` at the rescaled frequency `ω / 2π`.
 * **Separation of variables.** Tonelli/Fubini and the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`
   separate `∫ K(ω) F(-ωa) d(ν ⊗ dω) = (∫ K(ω) |ω|^{-α} dω) ∫ F dν`.

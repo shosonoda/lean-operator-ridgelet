@@ -8,8 +8,8 @@ import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 For a Schwartz function `φ` supported away from `0`, write `φ = ω² ψ` with `ψ = φ/ω²` Schwartz
 (`SchwartzMap.exists_eq_inv_sq_mul`).  In the manuscript convention the Fourier transform of
-`ω² ψ` is `-(ψ̂)''`, so that
-`⟨ReLU^, φ⟩ = ∫ ReLU(x) φ♯(x) dx = -∫_0^∞ x (ψ̂)''(x) dx = -ψ̂(0) = -∫ φ(ω) ω^{-2} dω`,
+`ω² ψ` is `-(ψ♯)''`, so that
+`⟨ReLU♯, φ⟩ = ∫ ReLU(x) φ♯(x) dx = -∫_0^∞ x (ψ♯)''(x) dx = -ψ♯(0) = -∫ φ(ω) ω^{-2} dω`,
 by two integrations by parts on `(0, ∞)`.  This is Corollary `cor:5.3`(ii); the
 formula and the positivity of the ReLU admissibility constant `C^{(α)}_{ReLU,ρ}` for even
 nonpositive band-pass `ρ♯` (parts (iii)–(v)) and the instance `ρ = ρ_bp` follow.
@@ -31,7 +31,7 @@ theorem integrable_pow_real_smul_schwartz (φ : SchwartzMap ℝ ℂ) (n : ℕ) :
   · exact ((continuous_id.pow n).smul φ.continuous).aestronglyMeasurable
   · simp
 
-/-- For `φ = ω² ψ`, the angular Fourier transform of `φ` is `-(ψ̂)''`. -/
+/-- For `φ = ω² ψ`, the angular Fourier transform of `φ` is `-(ψ♯)''`. -/
 theorem angularFourierSchwartz_eq_neg_iteratedDeriv_two {ψ φ : SchwartzMap ℝ ℂ}
     (hφ : ∀ ω : ℝ, φ ω = (ω : ℂ) ^ 2 * ψ ω) (x : ℝ) :
     angularFourierSchwartz φ x = -iteratedDeriv 2 (angularFourierSchwartz ψ) x := by
@@ -116,7 +116,7 @@ theorem integral_Ioi_coord_mul_iteratedDeriv_two (φ : SchwartzMap ℝ ℂ) :
 
 /-! ### The Fourier transform of ReLU away from the origin -/
 
-/-- **Corollary `cor:5.3`(ii)**: `⟨ReLU^, φ⟩ = ∫ (-ω^{-2}) φ(ω) dω` for Schwartz `φ`
+/-- **Corollary `cor:5.3`(ii)**: `⟨ReLU♯, φ⟩ = ∫ (-ω^{-2}) φ(ω) dω` for Schwartz `φ`
 supported away from the origin. -/
 theorem angularFourierDistribution_reluDistribution_apply (φ : SchwartzMap ℝ ℂ)
     (hφ : (0 : ℝ) ∉ tsupport φ) :

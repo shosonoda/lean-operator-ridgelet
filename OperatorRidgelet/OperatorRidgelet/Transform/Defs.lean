@@ -111,7 +111,7 @@ theorem norm_character (ξ x : H) : ‖character ξ x‖ = 1 := by
   rw [character, this, Complex.norm_exp_ofReal_mul_I]
 
 /-- The one-dimensional Fourier transform of a complex function in the convention of the
-manuscript, `ĥ(ω) = ∫ h(t) exp(-itω) dt`. -/
+manuscript, `h♯(ω) = ∫ h(t) exp(-itω) dt`. -/
 def lineFourier (h : ℝ → ℂ) (ω : ℝ) : ℂ :=
   LeanRidgelet.Fourier.angularFourierIntegralInner h ω
 
