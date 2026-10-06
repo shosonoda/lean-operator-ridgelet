@@ -687,7 +687,7 @@ theorem sqrt_finset_prod {ι : Type*} (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) (
 
 variable [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-- **Lemma `lem:E.1`(ii)** along a given eigenbasis of `M = Σ^{1/2} S Σ^{1/2}`. -/
+/-- **Lemma `lem:7.1`(ii)** along a given eigenbasis of `M = Σ^{1/2} S Σ^{1/2}`. -/
 theorem integral_exp_quadratic_eigen {Cov S R : H →L[ℝ] H} {κ : Type} [Countable κ]
     {e : HilbertBasis κ ℝ H} {m : κ → ℝ}
     (hCov : IsPositiveTraceClass Cov) (hS : IsSelfAdjoint S) (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫)
@@ -890,7 +890,7 @@ theorem inner_cov_le_resolventForm {Cov S R : H →L[ℝ] H} (hS : IsSelfAdjoint
     | exact one_div_le_one_div_of_le h1 (by linarith [hwle j])
   exact mul_le_mul_of_nonneg_right h3 (sq_nonneg _)
 
-/-- **Lemma `lem:E.1`(ii)**: the Gaussian integral of a quadratic exponential,
+/-- **Lemma `lem:7.1`(ii)**: the Gaussian integral of a quadratic exponential,
 in the form of the manuscript's `fredholmDet` and `resolventForm`. -/
 theorem integral_exp_quadratic {Cov S R : H →L[ℝ] H} (hCov : IsPositiveTraceClass Cov)
     (hS : IsSelfAdjoint S) (hS0 : ∀ y, 0 ≤ ⟪S y, y⟫) (hR : IsPositiveSqrt R Cov)

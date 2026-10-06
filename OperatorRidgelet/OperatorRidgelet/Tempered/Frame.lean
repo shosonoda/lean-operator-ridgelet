@@ -7,11 +7,11 @@ import OperatorRidgelet.Tempered.Defs
 
 For admissible filters `ρ₁, ρ₂` and `f ∈ 𝒦 = 𝓔_α`, the synthesis with `ρ₁` of the transform
 with `ρ₂` is a multiple of the Riesz map:
-`S_{ρ₁} R_{ρ₂} f = C^{(α)}_{ρ₂,ρ₁} J f` (`synthesis_ridgeletExtension_eq`).  On the image of the
+`S_{ρ₁} R_{ρ₂} f = C^{(α)}_{ρ₂,ρ₁} T f` (`synthesis_ridgeletExtension_eq`).  On the image of the
 core this is the Plancherel identity `⟨R_{ρ₂} f, R_{ρ₁} g⟩_{L²(λ)} = C^{(α)}_{ρ₂,ρ₁} ⟨f, g⟩_𝓔`
 (`integral_ridgelet_mul_conj`), and both sides are continuous in `(f, g)`, so the identity
-extends by density.  It is the instance `(ρ, β_ε)` of Theorem `thm:3.11`(i) used in the proof of
-Theorem `thm:5.2`; the chosen extension `ridgeletExtension` is identified
+extends by density.  It is the instance `(ρ, β_ε)` of Theorem `thm:3.14`(i) used in the proof of
+Theorem `thm:5.4`; the chosen extension `ridgeletExtension` is identified
 with the extension by density `ridgeletExtensionCLM` (`ridgeletExtension_eq`).
 -/
 
@@ -67,7 +67,7 @@ theorem synthesis_ridgeletExtension_embed (μ ν : Measure H) [IsProbabilityMeas
     coeFn_ridgeletExtensionCLM_embed hν hρ₂ f] with p h1 h2
   rw [h1, h2, RCLike.inner_apply, mul_comm]
 
-/-- **The cross frame identity** `S_{ρ₁} R_{ρ₂} f = C^{(α)}_{ρ₂,ρ₁} J f` on `𝒦`. -/
+/-- **The cross frame identity** `S_{ρ₁} R_{ρ₂} f = C^{(α)}_{ρ₂,ρ₁} T f` on `𝒦`. -/
 theorem synthesis_ridgeletExtension_eq (μ ν : Measure H) [IsProbabilityMeasure μ] [SFinite ν]
     {α : ℝ} (hν : IsHomogeneous α ν) {ρ₁ ρ₂ : SchwartzMap ℝ ℝ} (hρ₁ : IsAdmissible α ρ₁)
     (hρ₂ : IsAdmissible α ρ₂) (f : spectralRange μ ν) :

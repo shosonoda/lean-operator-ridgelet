@@ -5,8 +5,8 @@ import OperatorRidgelet.Transform.Plancherel
 /-!
 # Representation of targets with a spectral density and the frame identity (Section 4)
 
-Ridgelet-specific lemmas behind Theorem `thm:4.2`(i)–(ii), Theorem `thm:4.3`(i)–(iii), Lemma
-`lem:B.4`, and Proposition `prop:B.8`, for the abstract pair
+Ridgelet-specific lemmas behind Theorem `thm:4.5`(i)–(ii), Theorem `thm:4.8`(i)–(iii), Lemma
+`lem:4.6`, and Proposition `prop:B.1`, for the abstract pair
 `(μ, ν)` used by the supporting lemmas.
 
 * **Regularity along rays.**  The weighted derivative integral `M_0(G)` dominates `∫ ‖G(ω₀ a)‖
@@ -15,22 +15,22 @@ Ridgelet-specific lemmas behind Theorem `thm:4.2`(i)–(ii), Theorem `thm:4.3`(i
   square integrable.
 * **The target `g_G`.**  `g_G` is continuous (dominated convergence) and determines `G`
   (Fourier uniqueness for densities, `OperatorRidgelet.ToMathlib.CharFunDensity`).
-* **Parseval in the bias.**  For a direction `a` whose ray function `ω ↦ ρ̂(ω) G(-ωa)` is
-  integrable, `∫ γ_G(a,c) ρ(u+c) dc = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) ρ̂(-ω) e^{-iωu} dω`
+* **Parseval in the bias.**  For a direction `a` whose ray function `ω ↦ ρ♯(ω) G(-ωa)` is
+  integrable, `∫ γ_G(a,c) ρ(u+c) dc = (2π)⁻¹ ∫ ρ♯(ω) G(-ωa) ρ♯(-ω) e^{-iωu} dω`
   (`eq:bias-parseval`, a Fubini computation); with `u = ⟪a,x⟫` the right side is
-  `(2π)⁻¹ ∫ K(ω) F_x(-ωa) dω` with `K = ρ̂ ρ̂(-·)` and `F_x = G e^{i⟪x,·⟫}`, and the separation
+  `(2π)⁻¹ ∫ K(ω) F_x(-ωa) dω` with `K = ρ♯ ρ♯(-·)` and `F_x = G e^{i⟪x,·⟫}`, and the separation
   of variables `IsHomogeneous.integral_prod_neg_smul` gives the spectral synthesis identity
   `∫∫ γ_G ρ = C_ρ g_G(x)`.
 * **Integral networks.**  For an integrable coefficient `γ`, `S_ρ[γ λ]` is a bounded Borel
   function and `⟨γ, R_ρ g⟩_{L²(λ)} = ∫ S_ρ[γ λ] conj g dμ` (Fubini).
 * **The frame identity.**  `ridgeletExtension` is the extension `ridgeletExtensionCLM`, the
   scaled isometry polarizes to `⟨R g, R f⟩ = C_ρ ⟨g, f⟩` on `𝒦`, hence `S_ρ R_ρ = C_ρ T` and the
-  reconstruction formulas; the synthesis operator is linear, `J⁻¹ J = Id`, and `U' G = J G` for
+  reconstruction formulas; the synthesis operator is linear, `T⁻¹ T = Id`, and `F_Q' G = T G` for
   `G ∈ 𝒦`.
-* **Fubini for the frame operator.**  `∫ g_G conj g dμ = ∫ G conj(𝒢_μ g) dν` for
-  `G ∈ L¹(ν)`, `g ∈ L¹(μ)`; the pairing of `U' G` with the core through the integral network of
-  `γ_G`; the pointwise backprojection `Λ_ρ R_ρ f = C_ρ 𝒢_μ f` of the Fourier-slice
-  representative, and the injectivity of `𝒢_μ` on `L²(μ)` behind the inverse `Δ_Q`.
+* **Fubini for the frame operator.**  `∫ g_G conj g dμ = ∫ G conj(F_μ g) dν` for
+  `G ∈ L¹(ν)`, `g ∈ L¹(μ)`; the pairing of `F_Q' G` with the core through the integral network of
+  `γ_G`; the pointwise backprojection `W_ρ^* R_ρ f = C_ρ F_μ f` of the Fourier-slice
+  representative, and the injectivity of `F_μ` on `L²(μ)` behind the inverse `Δ_Q`.
 * **Vector-valued targets.**  Fourier uniqueness for `Y`-valued densities (pairing with a
   countable dense subset of `Y`), and the `Y`-valued spectral synthesis identity by the same
   Parseval and homogeneity argument with Bochner integrals.
@@ -62,7 +62,7 @@ theorem enorm_le_rayDerivBound (I : Set ℝ) (G : H → Y) (m : ℕ) (a : H) {ω
   exact le_iSup_of_le ⟨0, Nat.succ_pos m⟩ (le_iSup₂_of_le ω hω le_rfl)
 
 /-- The frequency window of a band-pass filter is nonempty: it contains the support of
-`ρ̂ ≠ 0`. -/
+`ρ♯ ≠ 0`. -/
 theorem IsFrequencyWindow.nonempty {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {I : Set ℝ}
     (hI : IsFrequencyWindow ρ I) : I.Nonempty := by
   refine Set.Nonempty.mono hI.tsupport_subset (Set.nonempty_iff_ne_empty.mpr fun h => ?_)
@@ -160,7 +160,7 @@ end SpectralTargetUniqueness
 
 section FilterFourier
 
-/-- `ρ̂(-ω) = ∫ ρ(t) e^{iωt} dt`. -/
+/-- `ρ♯(-ω) = ∫ ρ(t) e^{iωt} dt`. -/
 theorem filterFourier_neg_eq_integral (ρ : ℝ → ℝ) (ω : ℝ) :
     filterFourier ρ (-ω) = ∫ t, (ρ t : ℂ) * Complex.exp ((ω * t : ℝ) * Complex.I) := by
   unfold filterFourier lineFourier LeanRidgelet.Fourier.angularFourierIntegralInner
@@ -171,7 +171,7 @@ theorem filterFourier_neg_eq_integral (ρ : ℝ → ℝ) (ω : ℝ) :
   push_cast
   ring
 
-/-- For a real filter, `ρ̂(-ω) = conj(ρ̂(ω))`. -/
+/-- For a real filter, `ρ♯(-ω) = conj(ρ♯(ω))`. -/
 theorem filterFourier_neg (ρ : ℝ → ℝ) (ω : ℝ) :
     filterFourier ρ (-ω) = (starRingEnd ℂ) (filterFourier ρ ω) := by
   rw [filterFourier_neg_eq_integral]
@@ -194,8 +194,8 @@ section Parseval
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
 /-- The bias integral of `γ_G(a, ·)` against the translated filter `c ↦ ρ(u + c)`
-(`eq:bias-parseval`): when the ray function `ω ↦ ρ̂(ω) G(-ωa)` is integrable,
-`∫ γ_G(a,c) ρ(u+c) dc = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) ρ̂(-ω) e^{-iωu} dω`. -/
+(`eq:bias-parseval`): when the ray function `ω ↦ ρ♯(ω) G(-ωa)` is integrable,
+`∫ γ_G(a,c) ρ(u+c) dc = (2π)⁻¹ ∫ ρ♯(ω) G(-ωa) ρ♯(-ω) e^{-iωu} dω`. -/
 theorem integral_coefficientFormula_mul_shift (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ) (a : H)
     (u : ℝ) (ha : Integrable fun ω : ℝ => filterFourier ρ ω * G (-(ω • a))) :
     ∫ c, coefficientFormula ρ G (a, c) * (ρ (u + c) : ℂ) =
@@ -254,8 +254,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 
 variable {ν : Measure H} [SFinite ν] {α : ℝ} {ρ : SchwartzMap ℝ ℝ} {G : H → ℂ}
 
-/-- The kernel `(a, ω) ↦ ρ̂(ω) ρ̂(-ω) G(-ωa) e^{i⟪x, -ωa⟫}` is integrable on `ν ⊗ dω` for
-`G ∈ L¹(ν)`: its norm is `|ρ̂(ω)|² |G(-ωa)|`, and homogeneity separates the variables. -/
+/-- The kernel `(a, ω) ↦ ρ♯(ω) ρ♯(-ω) G(-ωa) e^{i⟪x, -ωa⟫}` is integrable on `ν ⊗ dω` for
+`G ∈ L¹(ν)`: its norm is `|ρ♯(ω)|² |G(-ωa)|`, and homogeneity separates the variables. -/
 theorem integrable_synthesis_kernel (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (x : H) :
     Integrable (fun p : H × ℝ => (filterFourier ρ p.2 * filterFourier ρ (-p.2)) *
@@ -283,7 +283,7 @@ theorem integrable_synthesis_kernel (hν : IsHomogeneous α ν) (hρ : IsAdmissi
       (hasFiniteIntegral_iff_enorm.mp hG₁.hasFiniteIntegral)
 
 /-- For `ν`-almost every direction, the bias integral of `γ_G` against the ridge function
-`c ↦ ρ(⟪a,x⟫ + c)` is the frequency integral `(2π)⁻¹ ∫ ρ̂(ω) ρ̂(-ω) G(-ωa) e^{i⟪x,-ωa⟫} dω`. -/
+`c ↦ ρ(⟪a,x⟫ + c)` is the frequency integral `(2π)⁻¹ ∫ ρ♯(ω) ρ♯(-ω) G(-ωa) e^{i⟪x,-ωa⟫} dω`. -/
 theorem ae_integral_coefficientFormula_mul_ridge (hα : 0 < α) (hν : IsHomogeneous α ν)
     (hρ : IsAdmissible α ρ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) (x : H) :
     ∀ᵐ a ∂ν, ∫ c, coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ) =
@@ -302,7 +302,7 @@ theorem ae_integral_coefficientFormula_mul_ridge (hα : 0 < α) (hν : IsHomogen
   ring
 
 /-- For `ν`-almost every direction, `c ↦ γ_G(a,c) ρ(⟪a,x⟫ + c)` is integrable: `γ_G(a, ·)` is
-bounded by `(2π)⁻¹ ∫ |ρ̂(ω) G(-ωa)| dω` and the ridge function is integrable. -/
+bounded by `(2π)⁻¹ ∫ |ρ♯(ω) G(-ωa)| dω` and the ridge function is integrable. -/
 theorem ae_integrable_coefficientFormula_mul_ridge (hα : 0 < α) (hν : IsHomogeneous α ν)
     (hρ : IsAdmissible α ρ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) (x : H) :
     ∀ᵐ a ∂ν, Integrable fun c : ℝ => coefficientFormula ρ G (a, c) * (ρ (⟪a, x⟫ + c) : ℂ) := by
@@ -434,7 +434,7 @@ theorem measurable_integralNetworkDensity (ρ : SchwartzMap ℝ ℝ) (lam : Meas
     h1.stronglyMeasurable.smul (hγ'.comp_measurable measurable_snd)
   exact hF.integral_prod_right'.measurable
 
-/-- The pairing identity of Lemma `lem:B.4`:
+/-- The pairing identity of Lemma `lem:4.6`:
 `∫ γ conj(R_ρ g) dλ = ∫ S_ρ[γ λ] conj g dμ` for integrable `γ` and `g` (Fubini). -/
 theorem integral_mul_conj_ridgelet (μ : Measure H) [IsFiniteMeasure μ] (ν : Measure H)
     [SFinite ν] (ρ : SchwartzMap ℝ ℝ) {γ : H × ℝ → ℂ} (hγ : Integrable γ (parameterMeasure ν))
@@ -539,7 +539,7 @@ theorem synthesis_ridgeletExtension (f : spectralRange μ ν) :
     ridgeletExtension_eq hν hρ, smul_eq_mul]
   rw [inner_ridgeletExtensionCLM hν hρ, Submodule.coe_inner]
 
-/-- The minimum-norm solution of `S_ρ γ = F`: `S_ρ (C⁻¹ R_ρ J⁻¹ F) = F`. -/
+/-- The minimum-norm solution of `S_ρ γ = F`: `S_ρ (C⁻¹ R_ρ T⁻¹ F) = F`. -/
 theorem synthesis_smul_ridgeletExtension_rieszInv (F : SpectralAntiDual μ ν) :
     synthesis μ ν ρ
       ((((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) • ridgeletExtension μ ν ρ (rieszInv μ ν F)) = F := by
@@ -597,7 +597,7 @@ theorem synthesis_eq_zero_iff (γ : Lp ℂ 2 (parameterMeasure ν)) :
     rw [synthesis_apply, _root_.zero_apply]
     exact h _ (LinearMap.mem_range.mpr ⟨g, rfl⟩)
 
-/-- `J⁻¹ (J f) = f`. -/
+/-- `T⁻¹ (T f) = f`. -/
 theorem rieszInv_rieszMap (f : spectralRange μ ν) : rieszInv μ ν (rieszMap μ ν f) = f := by
   have h : antiDualConj (rieszMap μ ν f) = InnerProductSpace.toDual ℂ (spectralRange μ ν) f := by
     ext g
@@ -606,7 +606,7 @@ theorem rieszInv_rieszMap (f : spectralRange μ ν) : rieszInv μ ν (rieszMap �
   unfold rieszInv
   rw [h, LinearIsometryEquiv.symm_apply_apply]
 
-/-- `U' G = J G` for `G ∈ 𝒦`: the transpose of the embedding restricted to `𝒦` is the Riesz
+/-- `F_Q' G = T G` for `G ∈ 𝒦`: the transpose of the embedding restricted to `𝒦` is the Riesz
 map. -/
 theorem transposeEmbed_coe (G : spectralRange μ ν) :
     transposeEmbed μ ν (G : Lp ℂ 2 ν) = rieszMap μ ν G := by
@@ -614,7 +614,7 @@ theorem transposeEmbed_coe (G : spectralRange μ ν) :
   simp only [transposeEmbed, rieszMap, ContinuousLinearMap.comp_apply, innerSLFlip_apply_apply,
     Submodule.subtypeL_apply, Submodule.coe_inner]
 
-/-- `J⁻¹ (U' G) = G` for `G ∈ 𝒦`. -/
+/-- `T⁻¹ (F_Q' G) = G` for `G ∈ 𝒦`. -/
 theorem rieszInv_transposeEmbed_coe (G : spectralRange μ ν) :
     rieszInv μ ν (transposeEmbed μ ν (G : Lp ℂ 2 ν)) = G := by
   rw [transposeEmbed_coe, rieszInv_rieszMap]
@@ -628,7 +628,7 @@ section FrameFubini
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [SecondCountableTopology H]
   [MeasurableSpace H] [OpensMeasurableSpace H]
 
-/-- `∫ g_G(x) conj(g(x)) μ(dx) = ∫ G(ξ) conj(𝒢_μ g(ξ)) ν(dξ)` for `G ∈ L¹(ν)` and `g ∈ L¹(μ)`
+/-- `∫ g_G(x) conj(g(x)) μ(dx) = ∫ G(ξ) conj(F_μ g(ξ)) ν(dξ)` for `G ∈ L¹(ν)` and `g ∈ L¹(μ)`
 (Fubini). -/
 theorem integral_spectralTarget_mul_conj (μ : Measure H) [SFinite μ] (ν : Measure H)
     [SFinite ν] {G : H → ℂ} (hG : Integrable G ν) {g : H → ℂ} (hg : Integrable g μ) :
@@ -662,7 +662,7 @@ theorem integral_spectralTarget_mul_conj (μ : Measure H) [SFinite μ] (ν : Mea
 
 end FrameFubini
 
-/-! ### The pairing of `U' G` with the core through the integral network -/
+/-! ### The pairing of `F_Q' G` with the core through the integral network -/
 
 section Pairing
 
@@ -698,7 +698,7 @@ theorem coeFn_spectralCoefficient_coe (hα : 0 < α) (G : Lp ℂ 2 ν) :
   rw [spectralCoefficient_congr_ae hν ρ hGG', spectralCoefficient_eq_toLp hν hα hρ hG'm hG'₂]
   exact (MemLp.coeFn_toLp _).trans (coefficientFormula_congr_ae hν hGG'.symm)
 
-/-- Theorem `thm:4.3`(iii), last part: for `G ∈ 𝒦` with `γ_G ∈ L¹(λ)`, the functional `U' G`
+/-- Theorem `thm:4.8`(iii), last part: for `G ∈ 𝒦` with `γ_G ∈ L¹(λ)`, the functional `F_Q' G`
 paired with `g ∈ 𝒟` is `C⁻¹ ∫ S_ρ[γ_G λ] conj g dμ`. -/
 theorem transposeEmbed_apply_eq_integral_integralNetworkDensity (hα : 0 < α)
     (G : spectralRange μ ν)
@@ -737,8 +737,8 @@ section Backprojection
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
-/-- `Λ_ρ` applied to the continuous Fourier-slice representative `(a, ω) ↦ ρ̂(ω) 𝒢_μ f(-ωa)` of
-`R_ρ f` gives `C^{(α)}_ρ 𝒢_μ f(ξ)` pointwise: along `a = -ξ/ω` the slice is `ρ̂(ω) 𝒢_μ f(ξ)`. -/
+/-- `W_ρ^*` applied to the continuous Fourier-slice representative `(a, ω) ↦ ρ♯(ω) F_μ f(-ωa)` of
+`R_ρ f` gives `C^{(α)}_ρ F_μ f(ξ)` pointwise: along `a = -ξ/ω` the slice is `ρ♯(ω) F_μ f(ξ)`. -/
 theorem backprojectionOf_biasFourier_ridgelet (μ : Measure H) [IsProbabilityMeasure μ] (α : ℝ)
     (ρ : SchwartzMap ℝ ℝ) {f : H → ℂ} (hf : Integrable f μ) (ξ : H) :
     backprojectionOf α ρ (biasFourier (ridgelet μ ρ f)) ξ =
@@ -765,7 +765,7 @@ theorem backprojectionOf_biasFourier_ridgelet (μ : Measure H) [IsProbabilityMea
 
 end Backprojection
 
-/-! ### Injectivity of `𝒢_μ` on `L²(μ)` and the inverse `Δ_Q` -/
+/-! ### Injectivity of `F_μ` on `L²(μ)` and the inverse `Δ_Q` -/
 
 section Inverse
 
@@ -773,7 +773,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- `𝒢_μ` is additive on differences of `L²(μ)` classes. -/
+/-- `F_μ` is additive on differences of `L²(μ)` classes. -/
 theorem gaussFourier_coe_sub (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp ℂ 2 μ) :
     gaussFourier μ ((f - g : Lp ℂ 2 μ) : H → ℂ) = gaussFourier μ f - gaussFourier μ g := by
   funext ξ
@@ -783,7 +783,7 @@ theorem gaussFourier_coe_sub (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp ℂ
   filter_upwards [Lp.coeFn_sub f g] with x hx
   rw [hx, Pi.sub_apply, sub_mul]
 
-/-- `𝒢_μ` is injective on `L²(μ)` (Fourier uniqueness). -/
+/-- `F_μ` is injective on `L²(μ)` (Fourier uniqueness). -/
 theorem Lp.eq_of_gaussFourier_eq (μ : Measure H) [IsFiniteMeasure μ] {f g : Lp ℂ 2 μ}
     (h : gaussFourier μ f = gaussFourier μ g) : f = g := by
   have hint : Integrable ((f - g : Lp ℂ 2 μ) : H → ℂ) μ := (Lp.memLp _).integrable one_le_two
@@ -794,7 +794,7 @@ theorem Lp.eq_of_gaussFourier_eq (μ : Measure H) [IsFiniteMeasure μ] {f g : Lp
   rw [← sub_eq_zero]
   exact Lp.ext (hae.trans (Lp.coeFn_zero ℂ 2 μ).symm)
 
-/-- `Δ_Q (𝒢_μ f) = f` for `f ∈ 𝒟`. -/
+/-- `Δ_Q (F_μ f) = f` for `f ∈ 𝒟`. -/
 theorem gaussFourierInv_gaussFourier (μ ν : Measure H) [IsFiniteMeasure μ]
     (f : spectralCore μ ν) : gaussFourierInv μ ν (gaussFourier μ f) = f := by
   have hex : ∃ f' : Lp ℂ 2 μ, f' ∈ spectralCore μ ν ∧ gaussFourier μ f' = gaussFourier μ f :=
@@ -852,7 +852,7 @@ theorem ae_eq_zero_of_spectralTarget_eq_zero_vec (ν : Measure H) {G : H → Y}
 
 end VectorUniqueness
 
-/-! ### Vector-valued targets: Theorem `thm:4.2`(ii) -/
+/-! ### Vector-valued targets: Theorem `thm:4.5`(ii) -/
 
 section VectorSynthesis
 
@@ -862,7 +862,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y
 
 omit [MeasurableSpace H] [BorelSpace H] in
 /-- The bias integral of the translated filter against the phase:
-`∫ ρ(u+c) e^{iωc} dc = e^{-iωu} ρ̂(-ω)`. -/
+`∫ ρ(u+c) e^{iωc} dc = e^{-iωu} ρ♯(-ω)`. -/
 theorem integral_shift_mul_exp (ρ : SchwartzMap ℝ ℝ) (u ω : ℝ) :
     ∫ c, (ρ (u + c) : ℂ) * Complex.exp ((ω * c : ℝ) * Complex.I) =
       Complex.exp (-((ω * u : ℝ) * Complex.I)) * filterFourier ρ (-ω) := by
@@ -912,7 +912,7 @@ theorem IsHomogeneous.integral_prod_neg_smul_vec {α : ℝ} {ν : Measure H} [SF
 variable {ν : Measure H} [SFinite ν] {α : ℝ} {ρ : SchwartzMap ℝ ℝ} {G : H → Y}
 
 omit [CompleteSpace Y] in
-/-- For `G ∈ L²(ν; Y)` and admissible `ρ`, the ray function `ω ↦ ρ̂(ω) • G(-ωa)` is integrable
+/-- For `G ∈ L²(ν; Y)` and admissible `ρ`, the ray function `ω ↦ ρ♯(ω) • G(-ωa)` is integrable
 for `ν`-almost every direction (the scalar statement applied to `‖G‖`). -/
 theorem ae_integrable_ray_vec (hα : 0 < α) (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ)
     (hG : StronglyMeasurable G) (hG₂ : MemLp G 2 ν) :
@@ -948,7 +948,7 @@ theorem stronglyMeasurable_coefficientFormulaVec (ρ : SchwartzMap ℝ ℝ)
 
 omit [MeasurableSpace H] [BorelSpace H] in
 /-- Parseval in the bias for the `Y`-valued coefficient: when the ray function is integrable,
-`∫ ρ(u+c) • γ_G(a,c) dc = (2π)⁻¹ • ∫ (ρ̂(ω) ρ̂(-ω) e^{-iωu}) • G(-ωa) dω`. -/
+`∫ ρ(u+c) • γ_G(a,c) dc = (2π)⁻¹ • ∫ (ρ♯(ω) ρ♯(-ω) e^{-iωu}) • G(-ωa) dω`. -/
 theorem integral_smul_coefficientFormulaVec (ρ : SchwartzMap ℝ ℝ) (G : H → Y) (a : H) (u : ℝ)
     (ha : Integrable fun ω : ℝ => filterFourier ρ ω • G (-(ω • a))) :
     ∫ c, (ρ (u + c) : ℂ) • coefficientFormulaVec ρ G (a, c) =
@@ -990,7 +990,7 @@ theorem integral_smul_coefficientFormulaVec (ρ : SchwartzMap ℝ ℝ) (G : H �
   ring
 
 /-- For `ν`-almost every direction, the bias integral of `γ_G` against the ridge function is
-`(2π)⁻¹ • ∫ (ρ̂(ω) ρ̂(-ω) e^{i⟪x,-ωa⟫}) • G(-ωa) dω`. -/
+`(2π)⁻¹ • ∫ (ρ♯(ω) ρ♯(-ω) e^{i⟪x,-ωa⟫}) • G(-ωa) dω`. -/
 theorem ae_integral_smul_coefficientFormulaVec_ridge (hα : 0 < α) (hν : IsHomogeneous α ν)
     (hρ : IsAdmissible α ρ) (hG : StronglyMeasurable G) (hG₂ : MemLp G 2 ν) (x : H) :
     ∀ᵐ a ∂ν, ∫ c, (ρ (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) =
@@ -1010,7 +1010,7 @@ theorem ae_integral_smul_coefficientFormulaVec_ridge (hα : 0 < α) (hν : IsHom
   ring
 
 omit [CompleteSpace Y] in
-/-- The `Y`-valued synthesis kernel `(a, ω) ↦ (ρ̂(ω) ρ̂(-ω) e^{i⟪x,-ωa⟫}) • G(-ωa)` is integrable
+/-- The `Y`-valued synthesis kernel `(a, ω) ↦ (ρ♯(ω) ρ♯(-ω) e^{i⟪x,-ωa⟫}) • G(-ωa)` is integrable
 on `ν ⊗ dω` for `G ∈ L¹(ν; Y)`. -/
 theorem integrable_synthesis_kernel_vec (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (x : H) :

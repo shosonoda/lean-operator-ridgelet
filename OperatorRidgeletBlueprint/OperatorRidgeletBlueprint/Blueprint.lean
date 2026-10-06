@@ -17,9 +17,6 @@ import OperatorRidgeletBlueprint.Chapters.AppendixB
 import OperatorRidgeletBlueprint.Chapters.AppendixC
 import OperatorRidgeletBlueprint.Chapters.AppendixD
 import OperatorRidgeletBlueprint.Chapters.AppendixE
-import OperatorRidgeletBlueprint.Chapters.AppendixF
-import OperatorRidgeletBlueprint.Chapters.AppendixG
-import OperatorRidgeletBlueprint.Chapters.AppendixH
 import OperatorRidgeletBlueprint.Chapters.Infrastructure
 
 open Verso.Genre
@@ -31,8 +28,9 @@ open Informal
 This Blueprint follows the manuscript in reading order, from the motivation and the
 Gaussian-weighted construction to reconstruction, finite-width approximation and examples.
 Sections 1–9 contain the main exposition, numerical experiments and discussion.
-Appendices A–H contain detailed proofs, finite-dimensional comparison, filter calculations
-and numerical methods.
+Prerequisites and detailed proofs appear in the main exposition before their use.
+Appendices A–E give optional kernel and projection formulas, additional approximation
+bounds, finite-dimensional comparison and the dilation obstruction, and numerical methods.
 
 Numbered mathematical statements have the manuscript's identifiers and numbers. Their Lean
 panels show the precise formal statements and proof status. Descriptive auxiliary nodes
@@ -54,9 +52,6 @@ experiments are not marked as machine-checked theorems.
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixC}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixD}
 {include 0 OperatorRidgeletBlueprint.Chapters.AppendixE}
-{include 0 OperatorRidgeletBlueprint.Chapters.AppendixF}
-{include 0 OperatorRidgeletBlueprint.Chapters.AppendixG}
-{include 0 OperatorRidgeletBlueprint.Chapters.AppendixH}
 
 {include 0 OperatorRidgeletBlueprint.Chapters.Infrastructure}
 

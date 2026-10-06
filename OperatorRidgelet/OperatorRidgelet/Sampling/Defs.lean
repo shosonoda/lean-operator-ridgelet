@@ -6,7 +6,7 @@ import Mathlib.Topology.ContinuousMap.Bounded.Basic
 import OperatorRidgelet.Network.Defs
 
 /-!
-# Definitions for Section 6 (finite-width approximation) and Appendix D
+# Definitions for Section 6 (finite-width approximation) and Appendix C
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
@@ -17,7 +17,7 @@ module.
 `{‖f x‖ : x ∈ K}` (junk value `0` when `K` is empty or the norms are unbounded on `K`; for
 continuous `f` and compact `K` it is the manuscript's norm).  `R_K = sup_{x ∈ K} √(‖x‖² + 1)` is
 `compactRadius K`.  The statements that need the Banach space `C(K)` itself (Theorem
-`thm:6.2`) use `BoundedContinuousFunction K Y` on the subtype `K`.
+`thm:6.3`) use `BoundedContinuousFunction K Y` on the subtype `K`.
 
 ## The polar decomposition and the sampled network
 
@@ -32,7 +32,7 @@ For a `Y`-valued measure `Γ` of bounded variation (`MeasureTheory.VectorMeasure
 * `polarLaw Γ = p = |Γ|/V`, the probability law of the parameters (the zero measure when
   `Γ = 0`, which represents the manuscript's "if `Γ = 0` take the zero network").
 
-For a coefficient measure `Γ = γ λ` with a density (Theorems `thm:6.4` and `thm:6.5`), the
+For a coefficient measure `Γ = γ λ` with a density (Theorems `thm:6.6` and `thm:6.8`), the
 manuscript writes `V = ‖γ‖_{L¹(λ)}`, `p = |γ| λ / V`, `h = γ/|γ|` explicitly; these are
 `densityWeight`, `densityLaw`, and `densityPhase`.
 
@@ -50,7 +50,7 @@ the law `rademacherMeasure N = Measure.pi (fun _ => (δ_{-1} + δ_{1})/2)` on `F
 activation-dependent Rademacher complexity `𝔑_N(K; p, β)` of Definition
 `def:6.1` is `rademacherComplexity N K p β h`, the joint expectation over
 `(θ, ε) ∼ p^{⊗N} ⊗ rademacherMeasure N` of `sup_{x ∈ K} ‖N⁻¹ ∑_j ε_j β(⟪a_j, x⟫ + c_j) h(θ_j)‖`;
-it is polymorphic in the output space, so that `𝔑^Y_N` of Corollary `cor:6.6` is the
+it is polymorphic in the output space, so that `𝔑^Y_N` of Corollary `cor:6.10` is the
 same definition with `Y`-valued phases `h`.
 
 ## Moments, atomic measures, and input projections
@@ -59,7 +59,7 @@ same definition with `Y`-valued phases `h`.
 constant `Lip(β)` is not a separate definition: the statements take any `L` with
 `LipschitzWith L β` and are stated with `L`, which is equivalent to the statement with the least
 Lipschitz constant. A finite atomic measure `∑_j w_j δ_{θ_j}` is `atomicMeasure w θ`.
-`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:D.7` on each `Π_m`.
+`IsFiniteRankProjection P` is the hypothesis of Corollary `cor:C.2` on each `Π_m`.
 -/
 
 noncomputable section
@@ -83,7 +83,7 @@ def compactSupNorm (K : Set X) (f : X → Y) : ℝ :=
 
 end SupNorm
 
-/-- The radius `R_K = sup_{x ∈ K} √(‖x‖² + 1)` of a set `K` (Theorem `thm:6.3`). -/
+/-- The radius `R_K = sup_{x ∈ K} √(‖x‖² + 1)` of a set `K` (Theorem `thm:6.5`). -/
 def compactRadius {H : Type*} [NormedAddCommGroup H] (K : Set H) : ℝ :=
   sSup ((fun x => Real.sqrt (‖x‖ ^ 2 + 1)) '' K)
 
@@ -165,7 +165,7 @@ def densitySampledNetwork {N : ℕ} (β : ℝ → ℂ) (lam : Measure (H × ℝ)
 `𝔑_N(K; p, β) = 𝔼_{θ,ε} sup_{x ∈ K} ‖N⁻¹ ∑_j ε_j β(⟪a_j, x⟫ + c_j) h(θ_j)‖`
 (`eq:rademacher-complexity`), with `θ_j ∼ p` independent and `ε_j` independent Rademacher
 signs; `h` is the phase of the polar decomposition.  The scalar case is `Y = ℂ`, and `Y`-valued
-phases give `𝔑^Y_N(K; p, β)` of Corollary `cor:6.6`. -/
+phases give `𝔑^Y_N(K; p, β)` of Corollary `cor:6.10`. -/
 def rademacherComplexity (N : ℕ) (K : Set H) (p : Measure (H × ℝ)) (β : ℝ → ℂ)
     (h : H × ℝ → Y) : ℝ :=
   ∫ ω, compactSupNorm K (fun x =>

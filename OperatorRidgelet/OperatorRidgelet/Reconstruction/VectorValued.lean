@@ -3,7 +3,7 @@ import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Transform.Plancherel
 
 /-!
-# The `Y`-valued Plancherel theory (Theorem `thm:4.6`)
+# The `Y`-valued Plancherel theory (Theorem `thm:4.11`)
 
 The vector-valued counterpart of `OperatorRidgelet.Transform.Plancherel` for a complex Hilbert
 target `Y`: the Fourier-slice identity, the Plancherel identity, the bounded extension
@@ -30,7 +30,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
 omit [OpensMeasurableSpace H] in
-/-- `𝒢_μ f` is bounded by `‖f‖_{L¹(μ;Y)}`. -/
+/-- `F_μ f` is bounded by `‖f‖_{L¹(μ;Y)}`. -/
 theorem norm_gaussFourierVec_le' (μ : Measure H) (f : H → Y) (ξ : H) :
     ‖gaussFourierVec μ f ξ‖ ≤ ∫ x, ‖f x‖ ∂μ := by
   unfold gaussFourierVec
@@ -39,7 +39,7 @@ theorem norm_gaussFourierVec_le' (μ : Measure H) (f : H → Y) (ξ : H) :
   funext x
   rw [norm_smul, norm_character, one_mul]
 
-/-- `𝒢_μ f` is continuous for integrable `f` (dominated convergence). -/
+/-- `F_μ f` is continuous for integrable `f` (dominated convergence). -/
 theorem continuous_gaussFourierVec (μ : Measure H) {f : H → Y} (hf : Integrable f μ) :
     Continuous (gaussFourierVec μ f) := by
   unfold gaussFourierVec
@@ -170,7 +170,7 @@ theorem memLp_ridgeletVec_slice {f : H → Y} (hf : Integrable f μ) (hf₂ : Me
   exact hpt c
 
 /-- The `Y`-valued Fourier-slice identity
-`\widehat{R_ρ f}(a, ω) = ρ̂(ω) • 𝒢_μ f(-ωa)`. -/
+`(R_ρ f)^\sharp(a, ω) = ρ♯(ω) • F_μ f(-ωa)`. -/
 theorem biasFourierVec_ridgeletVec {f : H → Y} (hf : Integrable f μ) (a : H) (ω : ℝ) :
     biasFourierVec (ridgeletVec μ ρ f) a ω =
       filterFourier ρ ω • gaussFourierVec μ f (-(ω • a)) := by
@@ -284,7 +284,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
 variable (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
 
 /-- Plancherel along the bias line, `Y`-valued:
-`∫⁻ ‖R_ρ f(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ̂(ω)‖ₑ² ‖𝒢_μ f(-ωa)‖ₑ² dω`. -/
+`∫⁻ ‖R_ρ f(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ♯(ω)‖ₑ² ‖F_μ f(-ωa)‖ₑ² dω`. -/
 theorem lintegral_ridgeletVec_slice_sq {f : H → Y} (hf : Integrable f μ) (hf₂ : MemLp f 2 μ)
     (a : H) :
     ∫⁻ c, ‖ridgeletVec μ ρ f (a, c)‖ₑ ^ 2 =
@@ -330,7 +330,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
   [BorelSpace H]
 variable {Y : Type*} [NormedAddCommGroup Y]
 
-/-- The weighted Tonelli identity for `(a, ω) ↦ ρ̂(ω) • G(-ωa)` with a `Y`-valued `G`. -/
+/-- The weighted Tonelli identity for `(a, ω) ↦ ρ♯(ω) • G(-ωa)` with a `Y`-valued `G`. -/
 theorem IsAdmissible.lintegral_prod_enorm_sq_vec {ν : Measure H} [SFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) {G : H → Y}
     (hG : Measurable fun ξ => ‖G ξ‖ₑ) :
@@ -340,7 +340,7 @@ theorem IsAdmissible.lintegral_prod_enorm_sq_vec {ν : Measure H} [SFinite ν] {
     ((continuous_filterFourier ρ).enorm.measurable.pow_const 2) (hG.pow_const 2),
     hρ.lintegral_enorm_sq_mul]
 
-/-- For `G ∈ L²(ν; Y)`, `(a, ω) ↦ ρ̂(ω) • G(-ωa)` is square integrable on `ν ⊗ dω`. -/
+/-- For `G ∈ L²(ν; Y)`, `(a, ω) ↦ ρ♯(ω) • G(-ωa)` is square integrable on `ν ⊗ dω`. -/
 theorem IsAdmissible.lintegral_prod_enorm_sq_vec_lt_top {ν : Measure H} [SFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) {G : H → Y}
     (hG : Measurable fun ξ => ‖G ξ‖ₑ) (hG₂ : MemLp G 2 ν) :
@@ -381,7 +381,7 @@ theorem lintegral_ridgeletVec_sq (ν : Measure H) [SFinite ν] (ρ : SchwartzMap
   refine lintegral_congr fun a => ?_
   exact lintegral_ridgeletVec_slice_sq μ ρ hf hf₂ a
 
-/-- `R_ρ f ∈ L²(λ; Y)` for `f ∈ L²(μ; Y)` with `𝒢_μ f ∈ L²(ν; Y)` and `α`-admissible `ρ`. -/
+/-- `R_ρ f ∈ L²(λ; Y)` for `f ∈ L²(μ; Y)` with `F_μ f ∈ L²(ν; Y)` and `α`-admissible `ρ`. -/
 theorem memLp_ridgeletVec (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsAdmissible α ρ) {f : H → Y} (hf : Integrable f μ) (hf₂ : MemLp f 2 μ)
     (hG : MemLp (gaussFourierVec μ f) 2 ν) :
@@ -393,7 +393,7 @@ theorem memLp_ridgeletVec (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ}
     (IsAdmissible.lintegral_prod_enorm_sq_vec_lt_top hν hρ
       (continuous_gaussFourierVec μ hf).enorm.measurable hG)
 
-/-- The product `(a, ω) ↦ ρ̂₁ conj ρ̂₂ (ω) ⟪𝒢g, 𝒢f⟫(-ωa)` is integrable on `ν ⊗ dω`. -/
+/-- The product `(a, ω) ↦ ρ♯₁ conj ρ♯₂ (ω) ⟪F_μg, F_μf⟫(-ωa)` is integrable on `ν ⊗ dω`. -/
 theorem integrable_cross_kernel_vec (hν : IsHomogeneous α ν) {ρ₁ ρ₂ : SchwartzMap ℝ ℝ}
     (hρ₁ : IsAdmissible α ρ₁) (hρ₂ : IsAdmissible α ρ₂) {f g : H → Y} (hf : Integrable f μ)
     (hg : Integrable g μ) (hGf : MemLp (gaussFourierVec μ f) 2 ν)
@@ -479,7 +479,7 @@ theorem integral_inner_ridgeletVec (hν : IsHomogeneous α ν) {ρ₁ ρ₂ : Sc
   unfold crossAdmissibilityConst spectralInnerVec
   ring
 
-/-- `‖R_ρ f‖²_{L²(λ;Y)} = C^{(α)}_ρ ∫ ‖𝒢_μ f‖² dν`. -/
+/-- `‖R_ρ f‖²_{L²(λ;Y)} = C^{(α)}_ρ ∫ ‖F_μ f‖² dν`. -/
 theorem integral_ridgeletVec_norm_sq (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsAdmissible α ρ) {f : H → Y} (hf : Integrable f μ) (hf₂ : MemLp f 2 μ)
     (hG : MemLp (gaussFourierVec μ f) 2 ν) :
@@ -543,7 +543,7 @@ theorem gaussFourierLpVec_smul (c : ℂ) (f : spectralCoreVec Y μ ν) :
   rw [gaussFourierVec_smul]
 
 variable (Y) in
-/-- The range `𝒢_μ(𝒟(Y))` as a submodule of `L²(ν; Y)`. -/
+/-- The range `F_μ(𝒟(Y))` as a submodule of `L²(ν; Y)`. -/
 def gaussFourierRangeVec : Submodule ℂ (Lp Y 2 ν) where
   carrier := Set.range (gaussFourierLpVec μ ν)
   add_mem' := by
@@ -558,14 +558,14 @@ def gaussFourierRangeVec : Submodule ℂ (Lp Y 2 ν) where
 theorem coe_gaussFourierRangeVec :
     (gaussFourierRangeVec Y μ ν : Set (Lp Y 2 ν)) = Set.range (gaussFourierLpVec μ ν) := rfl
 
-/-- `𝒦(Y) = closure 𝒢_μ(𝒟(Y))`: the span in the definition of `spectralRangeVec` is
+/-- `𝒦(Y) = closure F_μ(𝒟(Y))`: the span in the definition of `spectralRangeVec` is
 redundant. -/
 theorem spectralRangeVec_eq_topologicalClosure :
     spectralRangeVec Y μ ν = (gaussFourierRangeVec Y μ ν).topologicalClosure := by
   unfold spectralRangeVec
   rw [← coe_gaussFourierRangeVec, Submodule.span_eq]
 
-/-- `𝒢_μ : 𝒟(Y) → 𝒦(Y)` as a linear map. -/
+/-- `F_μ : 𝒟(Y) → 𝒦(Y)` as a linear map. -/
 def spectralEmbedVecₗ : spectralCoreVec Y μ ν →ₗ[ℂ] spectralRangeVec Y μ ν where
   toFun := spectralEmbedVec μ ν
   map_add' f g := Subtype.ext (gaussFourierLpVec_add μ ν f g)
@@ -576,7 +576,7 @@ def spectralEmbedVecₗ : spectralCoreVec Y μ ν →ₗ[ℂ] spectralRangeVec Y
 theorem spectralEmbedVecₗ_apply (f : spectralCoreVec Y μ ν) :
     spectralEmbedVecₗ μ ν f = spectralEmbedVec μ ν f := rfl
 
-/-- The image of the core `𝒟(Y)` under `𝒢_μ` is dense in `𝒦(Y)`. -/
+/-- The image of the core `𝒟(Y)` under `F_μ` is dense in `𝒦(Y)`. -/
 theorem denseRange_spectralEmbedVecₗ : DenseRange (spectralEmbedVecₗ (Y := Y) μ ν) := by
   have key : (spectralRangeVec Y μ ν : Set (Lp Y 2 ν)) ⊆
       closure (Set.range (gaussFourierLpVec μ ν)) := by
@@ -671,7 +671,7 @@ theorem coeFn_ridgeletCoreVecₗ (f : spectralCoreVec Y μ ν) :
   rw [ridgeletCoreVecₗ_apply]
   exact MemLp.coeFn_toLp _
 
-/-- The scaled isometry on the core: `‖R_ρ f‖² = C^{(α)}_ρ ‖𝒢_μ f‖²`. -/
+/-- The scaled isometry on the core: `‖R_ρ f‖² = C^{(α)}_ρ ‖F_μ f‖²`. -/
 theorem norm_ridgeletCoreVecₗ_sq (f : spectralCoreVec Y μ ν) :
     ‖ridgeletCoreVecₗ hν hρ f‖ ^ 2 = admissibilityConst α ρ * ‖spectralEmbedVecₗ μ ν f‖ ^ 2 := by
   rw [ridgeletCoreVecₗ_apply, MemLp.norm_toLp_two_sq]
@@ -681,7 +681,7 @@ theorem norm_ridgeletCoreVecₗ_sq (f : spectralCoreVec Y μ ν) :
     ((Lp.memLp (f : Lp Y 2 μ)).integrable one_le_two) (Lp.memLp _)
     ((mem_spectralCoreVec_iff μ ν (f : Lp Y 2 μ)).mp f.2)
 
-/-- The norm bound `‖R_ρ f‖ ≤ √C_ρ ‖𝒢_μ f‖` on the core. -/
+/-- The norm bound `‖R_ρ f‖ ≤ √C_ρ ‖F_μ f‖` on the core. -/
 theorem norm_ridgeletCoreVecₗ_le (f : spectralCoreVec Y μ ν) :
     ‖ridgeletCoreVecₗ hν hρ f‖ ≤
       Real.sqrt (admissibilityConst α ρ) * ‖spectralEmbedVecₗ μ ν f‖ := by
@@ -865,7 +865,7 @@ theorem synthesisVec_eq_zero_iff (γ : Lp Y 2 (parameterMeasure ν)) :
     rw [synthesisVec_apply, _root_.zero_apply]
     exact h _ (LinearMap.mem_range.mpr ⟨g, rfl⟩)
 
-/-- `J⁻¹ (J f) = f` for the `Y`-valued Riesz map. -/
+/-- `T⁻¹ (T f) = f` for the `Y`-valued Riesz map. -/
 theorem rieszInvVec_rieszMapVec (f : spectralRangeVec Y μ ν) :
     rieszInvVec μ ν (rieszMapVec Y μ ν f) = f := by
   have h : antiDualConj (rieszMapVec Y μ ν f) =
@@ -876,14 +876,14 @@ theorem rieszInvVec_rieszMapVec (f : spectralRangeVec Y μ ν) :
   unfold rieszInvVec
   rw [h, LinearIsometryEquiv.symm_apply_apply]
 
-/-- `U' G = J G` for `G ∈ 𝒦(Y)`. -/
+/-- `F_Q' G = T G` for `G ∈ 𝒦(Y)`. -/
 theorem transposeEmbedVec_coe (G : spectralRangeVec Y μ ν) :
     transposeEmbedVec μ ν (G : Lp Y 2 ν) = rieszMapVec Y μ ν G := by
   ext g
   simp only [transposeEmbedVec, rieszMapVec, ContinuousLinearMap.comp_apply,
     innerSLFlip_apply_apply, Submodule.subtypeL_apply, Submodule.coe_inner]
 
-/-- `J⁻¹ (U' G) = G` for `G ∈ 𝒦(Y)`. -/
+/-- `T⁻¹ (F_Q' G) = G` for `G ∈ 𝒦(Y)`. -/
 theorem rieszInvVec_transposeEmbedVec_coe (G : spectralRangeVec Y μ ν) :
     rieszInvVec μ ν (transposeEmbedVec μ ν (G : Lp Y 2 ν)) = G := by
   rw [transposeEmbedVec_coe, rieszInvVec_rieszMapVec]
@@ -900,7 +900,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
   [SecondCountableTopology Y]
 
 omit [SecondCountableTopology H] in
-/-- `𝒢_μ f` is the target with spectral density `f` at the reflected point. -/
+/-- `F_μ f` is the target with spectral density `f` at the reflected point. -/
 theorem gaussFourierVec_eq_spectralTarget (μ : Measure H) (f : H → Y) (ξ : H) :
     gaussFourierVec μ f ξ = spectralTarget μ f (-ξ) := by
   unfold gaussFourierVec spectralTarget character
@@ -913,7 +913,7 @@ theorem gaussFourierVec_eq_spectralTarget (μ : Measure H) (f : H → Y) (ξ : H
   push_cast
   ring
 
-/-- Fourier uniqueness for `Y`-valued targets: `𝒢_μ f = 0` forces `f = 0` `μ`-almost
+/-- Fourier uniqueness for `Y`-valued targets: `F_μ f = 0` forces `f = 0` `μ`-almost
 everywhere. -/
 theorem ae_eq_zero_of_gaussFourierVec_eq_zero (μ : Measure H) [IsFiniteMeasure μ] {f : H → Y}
     (hf : Integrable f μ) (h : ∀ ξ, gaussFourierVec μ f ξ = 0) : f =ᵐ[μ] 0 := by
@@ -922,7 +922,7 @@ theorem ae_eq_zero_of_gaussFourierVec_eq_zero (μ : Measure H) [IsFiniteMeasure 
   rw [Pi.zero_apply, ← neg_neg x, ← gaussFourierVec_eq_spectralTarget, h]
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- `𝒢_μ` is additive on differences of `L²(μ; Y)` classes. -/
+/-- `F_μ` is additive on differences of `L²(μ; Y)` classes. -/
 theorem gaussFourierVec_coe_sub (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp Y 2 μ) :
     gaussFourierVec μ ((f - g : Lp Y 2 μ) : H → Y) =
       gaussFourierVec μ f - gaussFourierVec μ g := by
@@ -933,7 +933,7 @@ theorem gaussFourierVec_coe_sub (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp 
   filter_upwards [Lp.coeFn_sub f g] with x hx
   rw [hx, Pi.sub_apply, smul_sub]
 
-/-- `𝒢_μ` is injective on `L²(μ; Y)`. -/
+/-- `F_μ` is injective on `L²(μ; Y)`. -/
 theorem Lp.eq_of_gaussFourierVec_eq (μ : Measure H) [IsFiniteMeasure μ] {f g : Lp Y 2 μ}
     (h : gaussFourierVec μ f = gaussFourierVec μ g) : f = g := by
   have hint : Integrable ((f - g : Lp Y 2 μ) : H → Y) μ := (Lp.memLp _).integrable one_le_two
@@ -944,7 +944,7 @@ theorem Lp.eq_of_gaussFourierVec_eq (μ : Measure H) [IsFiniteMeasure μ] {f g :
   rw [← sub_eq_zero]
   exact Lp.ext (hae.trans (Lp.coeFn_zero Y 2 μ).symm)
 
-/-- `Δ_Q (𝒢_μ f) = f` for `f ∈ 𝒟(Y)`. -/
+/-- `Δ_Q (F_μ f) = f` for `f ∈ 𝒟(Y)`. -/
 theorem gaussFourierInvVec_gaussFourierVec (μ ν : Measure H) [IsFiniteMeasure μ]
     (f : spectralCoreVec Y μ ν) :
     gaussFourierInvVec μ ν (gaussFourierVec μ (f : Lp Y 2 μ)) = (f : Lp Y 2 μ) := by
@@ -996,8 +996,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
   [OpensMeasurableSpace H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
 
-/-- `Λ_ρ` applied to the continuous Fourier-slice representative `(a, ω) ↦ ρ̂(ω) • 𝒢_μ f(-ωa)`
-of `R_ρ f` gives `C^{(α)}_ρ • 𝒢_μ f(ξ)` pointwise. -/
+/-- `W_ρ^*` applied to the continuous Fourier-slice representative `(a, ω) ↦ ρ♯(ω) • F_μ f(-ωa)`
+of `R_ρ f` gives `C^{(α)}_ρ • F_μ f(ξ)` pointwise. -/
 theorem backprojectionOfVec_biasFourierVec_ridgeletVec (μ : Measure H) [IsProbabilityMeasure μ]
     (α : ℝ) (ρ : SchwartzMap ℝ ℝ) {f : H → Y} (hf : Integrable f μ) (ξ : H) :
     backprojectionOfVec α ρ (biasFourierVec (ridgeletVec μ ρ f)) ξ =

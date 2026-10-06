@@ -18,18 +18,18 @@ import OperatorRidgelet.Paper.Transform
 Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identical to its twin in
 `Challenge.Reconstruction`, and proved from the library.
 
-Theorems `thm:4.2` and `thm:4.3` are stated for the abstract pair `(μ, ν)` used by the supporting
+Theorems `thm:4.5` and `thm:4.8` are stated for the abstract pair `(μ, ν)` used by the supporting
 lemmas (`μ` a
 probability measure, `ν` σ-finite with full support and homogeneous of degree `α`), which is
-what their proofs use; the Hermite parts of `thm:4.3`(iv) and
-Lemma `lem:B.5` need the Gaussian input measure `μ = 𝒩(0,Q)`, and parts (a), (b) of
-Lemma `lem:D.3` need the Gaussian mixture `ν_α`.  The Gaussian case of the
+what their proofs use; the Hermite parts of `thm:4.8`(iv) and
+Lemma `lem:4.7` need the Gaussian input measure `μ = 𝒩(0,Q)`, and parts (a), (b) of
+Lemma `lem:4.4` need the Gaussian mixture `ν_α`.  The Gaussian case of the
 abstract statements is the instance `IsCenteredGaussian Q μ`, `ν = gaussianMixture N α`.
 
-The representations of `𝓔_α'`, `J_α`, `U_α'`, `T_α`, `R_ρ` on `𝓔_α`, `S_ρ`, `Λ_ρ`, `Π_ρ`, `Δ_Q`,
+The representations of `𝓔_α'`, `T_α`, `F_Q'`, `T_α`, `R_ρ` on `𝓔_α`, `S_ρ`, `W_ρ^*`, `Π_ρ`, `Δ_Q`,
 of tempered activations that are functions, and of the `Y`-valued objects are documented in
-`OperatorRidgelet.Reconstruction.Defs`.  Theorem `thm:4.6` is stated as one theorem per
-part of `thm:4.2`, `thm:3.11`, and `thm:4.3`, mirroring the scalar statements.
+`OperatorRidgelet.Reconstruction.Defs`.  Theorem `thm:4.11` is stated as one theorem per
+part of `thm:4.5`, `thm:3.14`, and `thm:4.8`, mirroring the scalar statements.
 -/
 
 noncomputable section
@@ -42,7 +42,7 @@ open scoped ENNReal RealInnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-! ### Definition `def:4.1`
+/-! ### Definition `def:4.2`
 
 Set `G_a(ω) := G (ω • a)`, the restriction of `G` to the line through the origin spanned
 by `a ≠ 0`; `G_0` is constant. Regularity along rays means the smoothness and weighted
@@ -51,9 +51,9 @@ derivative bounds on these functions bundled in `IsRegularAlongRays`.
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Definition [def:4.1]** Regularity along rays.  A density that is regular along
+/-- **Definition [def:4.2]** Regularity along rays.  A density that is regular along
 rays belongs to `L¹(ν_α) ∩ L²(ν_α)` (homogeneity with a fixed `ω ∈ I`). -/
-theorem def_4_1 (ν : Measure H) [SigmaFinite ν] {α : ℝ} (hα : 0 < α)
+theorem def_4_2 (ν : Measure H) [SigmaFinite ν] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (G : H → ℂ) (hG : IsRegularAlongRays ν I G) :
     Integrable G ν ∧ MemLp G 2 ν := by
@@ -61,13 +61,13 @@ theorem def_4_1 (ν : Measure H) [SigmaFinite ν] {α : ℝ} (hα : 0 < α)
   have hω₀' : ω₀ ≠ 0 := fun h => hI.zero_notMem (h ▸ hω₀)
   exact ⟨hG.integrable hν hω₀ hω₀', hG.memLp_two hν hω₀ hω₀'⟩
 
-/-! ### Theorem `thm:4.2` -/
+/-! ### Theorem `thm:4.5` -/
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α)` the target `g_G` is bounded by `‖G‖_{L¹(ν_α)}`. -/
-theorem thm_4_2_i_a (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν) :
+theorem thm_4_5_i_a (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν) :
     ∀ x : H, ‖spectralTarget ν G x‖ ≤ ∫ ξ, ‖G ξ‖ ∂ν := by
   intro x
   refine (norm_integral_le_integral_norm _).trans (le_of_eq (integral_congr_ae ?_))
@@ -76,27 +76,27 @@ theorem thm_4_2_i_a (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ 
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α)` the target `g_G` is continuous. -/
-theorem thm_4_2_i_b (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν) :
+theorem thm_4_5_i_b (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν) :
     Continuous (spectralTarget ν G) := by
   exact continuous_spectralTarget ν hG₁
 
 set_option linter.unusedVariables false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α)`, `g_G = 0` only if `G = 0` `ν_α`-almost everywhere. -/
-theorem thm_4_2_i_c (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν)
+theorem thm_4_5_i_c (ν : Measure H) (G : H → ℂ) (hG : Measurable G) (hG₁ : Integrable G ν)
     (h : spectralTarget ν G = 0) :
     G =ᵐ[ν] 0 := by
   exact ae_eq_zero_of_spectralTarget_eq_zero ν hG₁ h
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` and every `x`, the iterated integral
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da)` converges absolutely: the inner integral converges
 absolutely for `ν_α`-almost every `a`, and the outer integrand is `ν_α`-integrable. -/
-theorem thm_4_2_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
@@ -110,10 +110,10 @@ theorem thm_4_2_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For
 `G ∈ L¹(ν_α) ∩ L²(ν_α)` the spectral synthesis identity
 `∫ [∫ γ_G(a,c) ρ(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_ρ g_G(x)` holds for every `x`. -/
-theorem thm_4_2_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
@@ -125,10 +125,10 @@ theorem thm_4_2_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  If moreover
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  If moreover
 `γ_G ∈ L¹(λ_α)`, the left side of the spectral synthesis identity is the integral network
 `S_ρ[γ_G λ_α](x)`. -/
-theorem thm_4_2_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormula ρ G) (parameterMeasure ν)) :
@@ -141,11 +141,11 @@ theorem thm_4_2_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For a
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the inner integral `∫ γ_G(a,c) β(⟨a,x⟩+c) dc` converges absolutely for
 `ν_α`-almost every `a`. -/
-theorem thm_4_2_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → ℂ)
@@ -156,10 +156,10 @@ theorem thm_4_2_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {�
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For a
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the `ν_α`-integral of the inner integral converges absolutely. -/
-theorem thm_4_2_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → ℂ)
@@ -172,11 +172,11 @@ theorem thm_4_2_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {�
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For a
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For a
 tempered `β` that is a continuous function `b` of polynomial growth, and
 `G` regular along rays, the tempered spectral synthesis identity
 `∫ [∫ γ_G(a,c) β(⟨a,x⟩+c) dc] ν_α(da) = C^{(α)}_{β,ρ} g_G(x)` holds. -/
-theorem thm_4_2_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_5_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → ℂ)
@@ -186,10 +186,10 @@ theorem thm_4_2_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {�
         temperedAdmissibilityConst α β ρ * spectralTarget ν G x := fun x =>
   integral_integral_coefficientFormula_mul_activation hν hρ hI hG hβ x
 
-/-- **Theorem [thm:4.2]** Integral representation of targets with a spectral density.  For every
+/-- **Theorem [thm:4.5]** Integral representation of targets with a spectral density.  For every
 tempered `β` that is a continuous function of polynomial growth and not a polynomial, there is a
 band-pass filter `ρ` with `C^{(α)}_{β,ρ} ≠ 0`. -/
-theorem thm_4_2_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
+theorem thm_4_5_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (hb : ¬ IsPolynomialFun b) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
   refine exists_isBandPass_temperedAdmissibilityConst_ne_zero hα β
@@ -197,13 +197,13 @@ theorem thm_4_2_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ �
   rw [hβ.apply_eq φ]
   exact integral_congr_ae (Eventually.of_forall fun x => mul_comm _ _)
 
-/-! ### Theorem `thm:4.3` -/
+/-! ### Theorem `thm:4.8` -/
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The frame operator
-`T_α = U_α' U_α` equals the Riesz map `J_α`. -/
-theorem thm_4_3_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The frame operator
+`T_α = F_Q' F_Q` is the Riesz map. -/
+theorem thm_4_8_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν, frameOperator μ ν f = rieszMap μ ν f := by
@@ -212,9 +212,9 @@ theorem thm_4_3_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `J_α` (hence the
-frame operator) is an isometry `𝓔_α → 𝓔_α'`. -/
-theorem thm_4_3_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The Riesz map `T_α` (the frame
+operator) is an isometry `𝓔_α → 𝓔_α'`. -/
+theorem thm_4_8_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     Isometry (rieszMap μ ν) := by
@@ -222,9 +222,9 @@ theorem thm_4_3_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `J_α` (hence the
-frame operator) is a bijection `𝓔_α → 𝓔_α'`. -/
-theorem thm_4_3_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The Riesz map `T_α` (the frame
+operator) is a bijection `𝓔_α → 𝓔_α'`. -/
+theorem thm_4_8_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMap μ ν) := by
@@ -232,9 +232,9 @@ theorem thm_4_3_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The frame identity
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The frame identity
 `S_ρ R_ρ f = C^{(α)}_ρ T_α f` for `f ∈ 𝓔_α`. -/
-theorem thm_4_3_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_8_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
@@ -245,9 +245,9 @@ theorem thm_4_3_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The first reconstruction
-formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α` (`T_α⁻¹ = J_α⁻¹` by part (i)). -/
-theorem thm_4_3_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The first reconstruction
+formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α`. -/
+theorem thm_4_8_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRange μ ν,
@@ -256,14 +256,14 @@ theorem thm_4_3_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   intro f
   have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
-  rw [synthesis_ridgeletExtension hν hρ' f, thm_4_3_i_a μ ν hα hν ρ hρ f, ← map_smul,
+  rw [synthesis_ridgeletExtension hν hρ' f, thm_4_8_i_a μ ν hα hν ρ hρ f, ← map_smul,
     rieszInv_rieszMap, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The second reconstruction
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The second reconstruction
 formula `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
-theorem thm_4_3_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_8_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDual μ ν,
@@ -272,15 +272,15 @@ theorem thm_4_3_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   intro g
   have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
-  rw [synthesis_ridgeletExtension hν hρ', thm_4_3_i_a μ ν hα hν ρ hρ, rieszMap_rieszInv, smul_smul,
+  rw [synthesis_ridgeletExtension hν hρ', thm_4_8_i_a μ ν hα hν ρ hρ, rieszMap_rieszInv, smul_smul,
     Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  If `f ∈ 𝒟_α` and
-`𝒢_Q f ∈ L¹(ν_α)`, then `T_α f` is represented by the bounded continuous function
-`g_{𝒢_Q f}`: `T_α f [g] = ∫ g_{𝒢_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
-theorem thm_4_3_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  If `f ∈ 𝒟_α` and
+`F_Q f ∈ L¹(ν_α)`, then `T_α f` is represented by the bounded continuous function
+`g_{F_Q f}`: `T_α f [g] = ∫ g_{F_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
+theorem thm_4_8_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
     ∀ g : spectralCore μ ν,
@@ -302,9 +302,9 @@ theorem thm_4_3_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  Conversely, for `G ∈ 𝒦_α` the
-functional `U_α' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ U_α' G = W_ρ G`. -/
-theorem thm_4_3_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  Conversely, for `G ∈ 𝒦_α` the
+functional `F_Q' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ F_Q' G = W_ρ G`. -/
+theorem thm_4_8_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
@@ -317,10 +317,10 @@ theorem thm_4_3_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)`, the
-functional `U_α' G` is represented by `g_G`: `U_α' G [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)`, the
+functional `F_Q' G` is represented by `g_G`: `F_Q' G [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for
 `g ∈ 𝒟_α`. -/
-theorem thm_4_3_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_8_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
@@ -341,9 +341,9 @@ theorem thm_4_3_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  For `G ∈ 𝒦_α` the second
-reconstruction formula applied to `U_α' G` reads `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
-theorem thm_4_3_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  For `G ∈ 𝒦_α` the second
+reconstruction formula applied to `F_Q' G` reads `F_Q' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
+theorem thm_4_8_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν,
@@ -359,11 +359,11 @@ theorem thm_4_3_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)` and
-`γ_G ∈ L¹(λ_α)`, the second reconstruction formula for `U_α' G` is the spectral synthesis
-identity: paired with `g ∈ 𝒟_α`, `U_α' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_ρ[γ_G λ_α](x) conj(g(x)) μ_Q(dx)`
-(Lemma `lem:B.4`). -/
-theorem thm_4_3_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)` and
+`γ_G ∈ L¹(λ_α)`, the second reconstruction formula for `F_Q' G` is the spectral synthesis
+identity: paired with `g ∈ 𝒟_α`, `F_Q' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_ρ[γ_G λ_α](x) conj(g(x)) μ_Q(dx)`
+(Lemma `lem:4.6`). -/
+theorem thm_4_8_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRange μ ν, Integrable ((G : Lp ℂ 2 ν) : H → ℂ) ν →
@@ -380,10 +380,10 @@ theorem thm_4_3_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The backprojection `Λ_ρ` is a
-bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
-`‖Λ_ρ γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
-theorem thm_4_3_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The backprojection `W_ρ^*` is a
+bounded operator `L²(λ_α) → L²(ν_α)`: `W_ρ^* γ` is square integrable with
+`‖W_ρ^* γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
+theorem thm_4_8_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp ℂ 2 (parameterMeasure ν),
       MemLp (backprojection α ν ρ γ) 2 ν ∧
@@ -393,9 +393,9 @@ theorem thm_4_3_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  `Λ_ρ W_ρ = C^{(α)}_ρ Id` on
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  `W_ρ^* W_ρ = C^{(α)}_ρ Id` on
 `L²(ν_α)`. -/
-theorem thm_4_3_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
+theorem thm_4_8_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
       backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
@@ -405,10 +405,10 @@ theorem thm_4_3_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  For `f ∈ 𝒟_α` the identity
-`Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` holds pointwise in `ξ`, with `Λ_ρ` computed from the continuous
-Fourier-slice representative `(a,ω) ↦ \widehat{R_ρ f}(a,ω)` of the transform. -/
-theorem thm_4_3_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  For `f ∈ 𝒟_α` the identity
+`W_ρ^* R_ρ f = C^{(α)}_ρ F_Q f` holds pointwise in `ξ`, with `W_ρ^*` computed from the continuous
+Fourier-slice representative `(a,ω) ↦ (R_ρ f)^\sharp(a,ω)` of the transform. -/
+theorem thm_4_8_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) :
     ∀ ξ : H,
@@ -418,10 +418,10 @@ theorem thm_4_3_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   exact backprojectionOf_biasFourier_ridgelet μ α ρ
     ((Lp.memLp (f : Lp ℂ 2 μ)).integrable one_le_two) ξ
 
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Hermite inversion formula
-`E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))] = i^n τ(ξ)^{-n} (d/dt)^n (e^{t²τ(ξ)²/2} 𝒢_Q f(tξ))|_{t=0}`,
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The Hermite inversion formula
+`E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))] = i^n τ(ξ)^{-n} (d/dt)^n (e^{t²τ(ξ)²/2} F_Q f(tξ))|_{t=0}`,
 `τ(ξ) = ⟨Qξ,ξ⟩^{1/2}`, for `f ∈ 𝒟_α` and `ξ ≠ 0`. -/
-theorem thm_4_3_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_8_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
@@ -432,9 +432,9 @@ theorem thm_4_3_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   exact fun ξ hξ n =>
     hermiteCoefficient_eq_iteratedDeriv hμ (Lp.memLp (f : Lp ℂ 2 μ)) (hQ.inner_pos hξ) n
 
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Hermite coefficients over all
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  The Hermite coefficients over all
 `ξ ≠ 0` and `n` determine `f ∈ 𝒟_α` in `L²(μ_Q)`. -/
-theorem thm_4_3_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_8_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
@@ -448,10 +448,10 @@ theorem thm_4_3_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  Reconstruction by
-backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α`, with `Δ_Q` the inverse of
-`𝒢_Q` on its range on `𝒟_α`. -/
-theorem thm_4_3_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.8]** Reconstruction and the frame operator.  Reconstruction by
+backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ W_ρ^* R_ρ f]` for `f ∈ 𝒟_α`, with `Δ_Q` the inverse of
+`F_Q` on its range on `𝒟_α`. -/
+theorem thm_4_8_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCore μ ν) :
@@ -470,14 +470,14 @@ theorem thm_4_3_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   rw [hfun]
   exact gaussFourierInv_gaussFourier μ ν f
 
-/-! ### Lemma `lem:B.4` -/
+/-! ### Lemma `lem:4.6` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.4]** Synthesis of an integrable coefficient is the integral
+/-- **Lemma [lem:4.6]** Synthesis of an integrable coefficient is the integral
 network.  For real Schwartz `ρ` and `γ ∈ L¹(λ_α) ∩ L²(λ_α)`, the integral network
 `S_ρ[γ λ_α]` is a bounded Borel function on `H`. -/
-theorem lem_B_4_i (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
+theorem lem_4_6_i (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
     (γ : Lp ℂ 2 (parameterMeasure ν)) (hγ : Integrable γ (parameterMeasure ν)) :
     Measurable (integralNetworkDensity (fun t => (ρ t : ℂ)) (parameterMeasure ν) γ) ∧
       ∃ M : ℝ, ∀ x : H,
@@ -492,10 +492,10 @@ theorem lem_B_4_i (ν : Measure H) [SigmaFinite ν] (ρ : SchwartzMap ℝ ℝ)
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.4]** Synthesis of an integrable coefficient is the integral
+/-- **Lemma [lem:4.6]** Synthesis of an integrable coefficient is the integral
 network.  For every `g ∈ 𝒟_α`, the synthesis functional `(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ_α)}`
 of `eq:weak-synthesis` equals `∫ S_ρ[γ λ_α](x) conj(g(x)) μ_Q(dx)`. -/
-theorem lem_B_4_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem lem_4_6_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     (ρ : SchwartzMap ℝ ℝ) (γ : Lp ℂ 2 (parameterMeasure ν))
     (hγ : Integrable γ (parameterMeasure ν)) :
     ∀ g : spectralCore μ ν,
@@ -505,22 +505,22 @@ theorem lem_B_4_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
   intro g
   exact integral_mul_conj_ridgelet μ ν ρ hγ ((Lp.memLp _).integrable one_le_two)
 
-/-! ### Lemma `lem:B.5` -/
+/-! ### Lemma `lem:4.7` -/
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
-For `f ∈ L²(μ_Q)` and `ξ ≠ 0`, `z ↦ G_f(zξ) = e^{z²τ(ξ)²/2} 𝒢_Q f(zξ)` is entire. -/
-theorem lem_B_5_i {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
+For `f ∈ L²(μ_Q)` and `ξ ≠ 0`, `z ↦ G_f(zξ) = e^{z²τ(ξ)²/2} F_Q f(zξ)` is entire. -/
+theorem lem_4_7_i {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     Differentiable ℂ (hermiteExtension μ Q f ξ) := by
   exact differentiable_hermiteExtension hμ hf (hQ.inner_pos hξ)
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
 The Hermite series `G_f(zξ) = ∑ₙ (-izτ(ξ))^n/n! E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))]` converges for every
 `z`. -/
-theorem lem_B_5_ii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_4_7_ii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     ∀ z : ℂ,
@@ -531,9 +531,9 @@ theorem lem_B_5_ii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Mea
   exact fun z => hasSum_hermiteExtension hμ hf (hQ.inner_pos hξ) z
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
 The Hermite series converges locally uniformly in `z`. -/
-theorem lem_B_5_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_4_7_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     TendstoLocallyUniformly
@@ -544,9 +544,9 @@ theorem lem_B_5_iii {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Me
   exact tendstoLocallyUniformly_hermiteExtension hμ hf (hQ.inner_pos hξ)
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
 The bound `|G_f(zξ)| ≤ ‖f‖_{L²(μ_Q)} e^{|z|²τ(ξ)²/2}`. -/
-theorem lem_B_5_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_4_7_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     ∀ z : ℂ,
@@ -555,9 +555,9 @@ theorem lem_B_5_iv {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Mea
   exact fun z => norm_hermiteExtension_le hμ hf (hQ.inner_pos hξ) z
 
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
 The Hermite inversion formula `eq:hermite-inversion` holds for `f ∈ L²(μ_Q)` and `ξ ≠ 0`. -/
-theorem lem_B_5_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
+theorem lem_4_7_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
     ∀ n : ℕ,
@@ -566,9 +566,9 @@ theorem lem_B_5_v {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Meas
           iteratedDeriv n (fun t : ℝ => hermiteExtension μ Q f ξ t) 0 := by
   exact fun n => hermiteCoefficient_eq_iteratedDeriv hμ hf (hQ.inner_pos hξ) n
 
-/-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
+/-- **Lemma [lem:4.7]** Entire extension and totality of the Hermite coefficients.
 The Hermite coefficients over all `ξ ≠ 0` and `n` determine `f` in `L²(μ_Q)`. -/
-theorem lem_B_5_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
+theorem lem_4_7_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ) :
     ∀ g : H → ℂ, MemLp g 2 μ →
@@ -576,15 +576,15 @@ theorem lem_B_5_vi [Nontrivial H] {Q : H →L[ℝ] H} (hQ : IsTraceClassCovarian
         f =ᵐ[μ] g := by
   exact fun g hg h => ae_eq_of_hermiteCoefficient_eq hQ hμ hf hg h
 
-/-! ### Proposition `prop:B.8` -/
+/-! ### Proposition `prop:B.1` -/
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
 projection.  For `γ ∈ L²(λ_α)` and a jointly measurable partial bias-Fourier representative
 `Φ` of `γ`, the backprojection integral `eq:ray-average` converges absolutely for `ν_α`-almost
 every `ξ`. -/
-theorem prop_B_8_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+theorem prop_B_1_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (γ : Lp ℂ 2 (parameterMeasure ν)) (Φ : H → ℝ → ℂ) (hΦ : Measurable (Function.uncurry Φ))
     (hγΦ : HasBiasFourier ν γ Φ) :
@@ -596,10 +596,10 @@ theorem prop_B_8_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  As an `L²(ν_α)` class, `Λ_ρ γ` does not depend on the jointly measurable
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  As an `L²(ν_α)` class, `W_ρ^* γ` does not depend on the jointly measurable
 Fourier representative of `γ`. -/
-theorem prop_B_8_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+theorem prop_B_1_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
     (γ : Lp ℂ 2 (parameterMeasure ν)) (Φ Φ' : H → ℝ → ℂ) (hΦ : Measurable (Function.uncurry Φ))
     (hΦ' : Measurable (Function.uncurry Φ')) (hγΦ : HasBiasFourier ν γ Φ)
@@ -609,9 +609,9 @@ theorem prop_B_8_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ γ ∈ L²(ν_α)` with `‖Λ_ρ γ‖_{L²(ν_α)} ≤ √C ‖γ‖_𝒴`, `C = C^{(α)}_ρ`. -/
-theorem prop_B_8_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  `W_ρ^* γ ∈ L²(ν_α)` with `‖W_ρ^* γ‖_{L²(ν_α)} ≤ √C ‖γ‖_𝒴`, `C = C^{(α)}_ρ`. -/
+theorem prop_B_1_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ γ : Lp ℂ 2 (parameterMeasure ν),
@@ -621,10 +621,10 @@ theorem prop_B_8_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ` is the Hilbert adjoint of `W_ρ : L²(ν_α) → 𝒴`:
-`⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨Λ_ρ γ, F⟩_{L²(ν_α)}`. -/
-theorem prop_B_8_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  `W_ρ^*` is the Hilbert adjoint of `W_ρ : L²(ν_α) → 𝒴`:
+`⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨W_ρ^* γ, F⟩_{L²(ν_α)}`. -/
+theorem prop_B_1_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ (γ : Lp ℂ 2 (parameterMeasure ν)) (F : H → ℂ), Measurable F → MemLp F 2 ν →
@@ -635,9 +635,9 @@ theorem prop_B_8_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ W_ρ = C Id`. -/
-theorem prop_B_8_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  `W_ρ^* W_ρ = C Id`. -/
+theorem prop_B_1_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ F : H → ℂ, Measurable F → MemLp F 2 ν →
@@ -647,10 +647,10 @@ theorem prop_B_8_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ` is the orthogonal projection onto `Ran R_ρ`:
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} W_ρ^*` is the orthogonal projection onto `Ran R_ρ`:
 `Π_ρ γ ∈ Ran R_ρ` and `γ - Π_ρ γ ⊥ Ran R_ρ`. -/
-theorem prop_B_8_vi (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem prop_B_1_vi (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ γ : Lp ℂ 2 (parameterMeasure ν),
@@ -660,10 +660,10 @@ theorem prop_B_8_vi (μ ν : Measure H) [IsProbabilityMeasure μ]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  The minimum-norm solution of `S_ρ γ = F ∈ 𝓔_α'` is `C⁻¹ R_ρ J_α⁻¹ F`: it solves
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
+projection.  The minimum-norm solution of `S_ρ γ = F ∈ 𝓔_α'` is `C⁻¹ R_ρ T_α⁻¹ F`: it solves
 the equation, and every solution has at least its norm. -/
-theorem prop_B_8_vii (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem prop_B_1_vii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : SpectralAntiDual μ ν,
@@ -692,10 +692,10 @@ theorem prop_B_8_vii (μ ν : Measure H) [IsProbabilityMeasure μ]
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
+/-- **Proposition [prop:B.1]** Bounded backprojection and orthogonal range
 projection.  The solutions of `S_ρ γ = F` are exactly the coefficients that differ from the
 minimum-norm solution by an element of `(Ran R_ρ)^⊥`. -/
-theorem prop_B_8_viii (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem prop_B_1_viii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ (F : SpectralAntiDual μ ν) (γ : Lp ℂ 2 (parameterMeasure ν)),
@@ -706,15 +706,15 @@ theorem prop_B_8_viii (μ ν : Measure H) [IsProbabilityMeasure μ]
   rw [← synthesis_eq_zero_iff, synthesis_sub, synthesis_smul_ridgeletExtension_rieszInv hν hρ,
     sub_eq_zero]
 
-/-! ### Lemma `lem:D.3` -/
+/-! ### Lemma `lem:4.4` -/
 
 set_option linter.unusedVariables false in
-/-- **Lemma [lem:D.3]** Densities that are regular along rays.  Gaussian-type
+/-- **Lemma [lem:4.4]** Densities that are regular along rays.  Gaussian-type
 densities `G(ξ) = q(ξ) e^{-κ(ξ)/2}`, `κ(ξ) = ⟨Sξ,ξ⟩` with `S` a bounded positive operator with
 `S ≥ θQ`, `θ > 0`, and `q` a polynomial in `κ(ξ)` and in finitely many bounded linear
 functionals `ℓ_i` of `ξ` dominated by the quadratic form, `|ℓ_i(ξ)|² ≤ C_i κ(ξ)`, are regular
 along rays for every band-pass `ρ` (and every frequency window of `ρ`). -/
-theorem lem_D_3_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
+theorem lem_4_4_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (S : H →L[ℝ] H)
     (hS : IsSelfAdjoint S) {θ : ℝ} (hθ : 0 < θ) (hSQ : ∀ ξ, θ * ⟪Q ξ, ξ⟫ ≤ ⟪S ξ, ξ⟫) {k : ℕ}
@@ -727,13 +727,13 @@ theorem lem_D_3_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
           Complex.exp (-((⟪S ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
   intro ρ _ I hI
   exact isRegularAlongRays_of_gaussian_decay (gaussianMixture N α) hQ.inner_nonneg
-    (lem_3_9_i hH hP hQ hN hα) S hθ hSQ ℓ hℓ q hI.isCompact hI.zero_notMem
+    (lem_3_12_i hH hP hQ hN hα) S hθ hSQ ℓ hℓ q hI.isCompact hI.zero_notMem
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:D.3]** Densities that are regular along rays.  Radial bumps
+/-- **Lemma [lem:4.4]** Densities that are regular along rays.  Radial bumps
 `G(ξ) = φ(‖ξ - ξ₀‖²)` with `φ ∈ C_c^∞(ℝ)` are regular along rays for every band-pass `ρ`. -/
-theorem lem_D_3_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_4_4_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) (ξ₀ : H) (φ : ℝ → ℂ) (hφ : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφc : HasCompactSupport φ) :
@@ -746,11 +746,11 @@ theorem lem_D_3_b_i (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:D.3]** Densities that are regular along rays.  More generally,
+/-- **Lemma [lem:4.4]** Densities that are regular along rays.  More generally,
 a bounded Borel `G` that is `C^∞` along rays (on a neighbourhood of the frequency window),
 vanishes outside a bounded set, and satisfies `sup_{ω ∈ I} |∂_ω^k G(ωa)| ≤ C_k (1+‖a‖)^{p_k}`
 for all `k`, is regular along rays for every band-pass `ρ`. -/
-theorem lem_D_3_b_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
+theorem lem_4_4_b_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) {N : ℝ → Measure H} (hN : IsCenteredGaussianLayers P N)
     {α : ℝ} (hα : 0 < α) (G : H → ℂ) (hG : Measurable G) (hGb : ∃ M : ℝ, ∀ ξ, ‖G ξ‖ ≤ M)
     (hG0 : ∃ R₀ : ℝ, ∀ ξ : H, R₀ < ‖ξ‖ → G ξ = 0) :
@@ -768,18 +768,18 @@ theorem lem_D_3_b_ii (hH : ¬ FiniteDimensional ℝ H) {P : H →L[ℝ] H}
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Lemma [lem:D.3]** Densities that are regular along rays.  Finite linear
+/-- **Lemma [lem:4.4]** Densities that are regular along rays.  Finite linear
 combinations of densities that are regular along rays are regular along rays. -/
-theorem lem_D_3_c_i (ν : Measure H) (I : Set ℝ) {ι : Type*} (s : Finset ι)
+theorem lem_4_4_c_i (ν : Measure H) (I : Set ℝ) {ι : Type*} (s : Finset ι)
     (c : ι → ℂ) (G : ι → H → ℂ) (hG : ∀ i ∈ s, IsRegularAlongRays ν I (G i)) :
     IsRegularAlongRays ν I fun ξ => ∑ i ∈ s, c i * G i ξ := by
   exact IsRegularAlongRays.finset_sum s c G hG
 
-/-- **Lemma [lem:D.3]** Densities that are regular along rays.  Bochner
+/-- **Lemma [lem:4.4]** Densities that are regular along rays.  Bochner
 integrals `∫ G_y m(dy)` of a measurable family of densities that are regular along rays, over
 a finite measure `m`, are regular along rays when the densities are uniformly bounded and the
 weights of `eq:ray-regularity` have a `ν_α`-integrable majorant that is uniform in `y`. -/
-theorem lem_D_3_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*}
+theorem lem_4_4_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*}
     [MeasurableSpace Ω] (m : Measure Ω) [IsFiniteMeasure m] (G : Ω → H → ℂ)
     (hGm : Measurable (Function.uncurry G)) (hG : ∀ y, IsRegularAlongRays ν I (G y))
     (hGb : ∃ M : ℝ, ∀ y ξ, ‖G y ξ‖ ≤ M)
@@ -791,7 +791,7 @@ theorem lem_D_3_c_ii (ν : Measure H) (I : Set ℝ) {Ω : Type*}
     IsRegularAlongRays ν I fun ξ => ∫ y, G y ξ ∂m := by
   exact isRegularAlongRays_integral ν I U m G hGm hGb hU hIU hsmooth hunif
 
-/-! ### Theorem `thm:4.6` -/
+/-! ### Theorem `thm:4.11` -/
 
 section VectorValued
 
@@ -801,9 +801,9 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] [CompleteSpace Y]
   [SecondCountableTopology Y] in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(i) for `Y`-valued
 densities: `‖g_G(x)‖_Y ≤ ‖G‖_{L¹(ν_α;Y)}`. -/
-theorem thm_4_6_representation_i_a (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
+theorem thm_4_11_representation_i_a (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
     (hG₁ : Integrable G ν) :
     ∀ x : H, ‖spectralTarget ν G x‖ ≤ ∫ ξ, ‖G ξ‖ ∂ν := by
   intro x
@@ -813,27 +813,27 @@ theorem thm_4_6_representation_i_a (ν : Measure H) (G : H → Y) (hG : Strongly
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(i) for `Y`-valued
 densities: `g_G` is continuous. -/
-theorem thm_4_6_representation_i_b (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
+theorem thm_4_11_representation_i_b (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
     (hG₁ : Integrable G ν) :
     Continuous (spectralTarget ν G) := by
   exact continuous_spectralTarget ν hG₁
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(i) for `Y`-valued
 densities: `g_G = 0` only if `G = 0` `ν_α`-almost everywhere. -/
-theorem thm_4_6_representation_i_c (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
+theorem thm_4_11_representation_i_c (ν : Measure H) (G : H → Y) (hG : StronglyMeasurable G)
     (hG₁ : Integrable G ν) (h : spectralTarget ν G = 0) :
     G =ᵐ[ν] 0 := by
   exact ae_eq_zero_of_spectralTarget_eq_zero_vec ν hG₁ h
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(ii) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(ii) for `Y`-valued
 densities: the iterated integral `∫ [∫ ρ(⟨a,x⟩+c) γ_G(a,c) dc] ν_α(da)` converges absolutely. -/
-theorem thm_4_6_representation_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
@@ -848,9 +848,9 @@ theorem thm_4_6_representation_ii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpen
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(ii) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(ii) for `Y`-valued
 densities: the spectral synthesis identity with the same constant `C^{(α)}_ρ`. -/
-theorem thm_4_6_representation_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν) :
     ∀ x : H,
@@ -862,10 +862,10 @@ theorem thm_4_6_representation_ii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpen
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(ii) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(ii) for `Y`-valued
 densities: if `γ_G ∈ L¹(λ_α; Y)`, the left side is the `Y`-valued integral network
 `S_ρ[γ_G λ_α](x)`. -/
-theorem thm_4_6_representation_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → Y)
     (hG : StronglyMeasurable G) (hG₁ : Integrable G ν) (hG₂ : MemLp G 2 ν)
     (hγ : Integrable (coefficientFormulaVec ρ G) (parameterMeasure ν)) :
@@ -878,10 +878,10 @@ theorem thm_4_6_representation_ii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpen
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(iii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(iii) for
 `Y`-valued densities regular along rays (with `‖·‖_Y` in place of the absolute value): the
 inner integral converges absolutely for `ν_α`-almost every `a`. -/
-theorem thm_4_6_representation_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → Y)
@@ -893,9 +893,9 @@ theorem thm_4_6_representation_iii_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpe
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(iii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(iii) for
 `Y`-valued densities regular along rays: the outer integral converges absolutely. -/
-theorem thm_4_6_representation_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → Y)
@@ -908,10 +908,10 @@ theorem thm_4_6_representation_iii_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpe
 
 set_option linter.unusedVariables false in
 set_option linter.unusedSectionVars false in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.2`(iii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.5`(iii) for
 `Y`-valued densities regular along rays: the tempered spectral synthesis identity with the
 same constant `C^{(α)}_{β,ρ}`. -/
-theorem thm_4_6_representation_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_representation_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (I : Set ℝ)
     (hI : IsFrequencyWindow ρ I) (β : TemperedDistribution ℝ ℂ) (b : ℝ → ℝ)
     (hβ : IsTemperedFunction β b) (G : H → Y)
@@ -921,19 +921,19 @@ theorem thm_4_6_representation_iii_c (ν : Measure H) [SigmaFinite ν] [ν.IsOpe
         temperedAdmissibilityConst α β ρ • spectralTarget ν G x := fun x =>
   integral_integral_smul_coefficientFormulaVec_activation hν hρ hI hG hβ x
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(i) for `Y`-valued
 targets: `R_ρ f ∈ L²(λ_α; Y)` for `f ∈ 𝒟_α(Y)` and `α`-admissible `ρ`. -/
-theorem thm_4_6_plancherel_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : Lp Y 2 μ) (hf : f ∈ spectralCoreVec Y μ ν) :
     MemLp (ridgeletVec μ ρ f) 2 (parameterMeasure ν) := by
   exact memLp_ridgeletVec μ hν hρ ((Lp.memLp f).integrable one_le_two) (Lp.memLp f)
     ((mem_spectralCoreVec_iff μ ν f).mp hf)
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(i) for `Y`-valued
 targets: the Plancherel identity
 `⟨R_{ρ₁} f, R_{ρ₂} g⟩_{L²(λ_α;Y)} = C^{(α)}_{ρ₁,ρ₂} ⟨f,g⟩_{𝓔_α(Y)}`. -/
-theorem thm_4_6_plancherel_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (ρ₁ ρ₂ : SchwartzMap ℝ ℝ) (hρ₁ : IsAdmissible α ρ₁) (hρ₂ : IsAdmissible α ρ₂)
     (f g : Lp Y 2 μ) (hf : f ∈ spectralCoreVec Y μ ν) (hg : g ∈ spectralCoreVec Y μ ν) :
@@ -943,10 +943,10 @@ theorem thm_4_6_plancherel_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
     (Lp.memLp f) ((Lp.memLp g).integrable one_le_two) (Lp.memLp g)
     ((mem_spectralCoreVec_iff μ ν f).mp hf) ((mem_spectralCoreVec_iff μ ν g).mp hg)
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(ii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(ii) for
 `Y`-valued targets: an `α`-admissible `ρ` determines a unique bounded extension
 `R_ρ : 𝓔_α(Y) → L²(λ_α; Y)`. -/
-theorem thm_4_6_plancherel_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∃! R : spectralRangeVec Y μ ν →L[ℂ] Lp Y 2 (parameterMeasure ν),
@@ -954,9 +954,9 @@ theorem thm_4_6_plancherel_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [S
         (R (spectralEmbedVec μ ν f) : H × ℝ → Y) =ᵐ[parameterMeasure ν] ridgeletVec μ ρ f := by
   exact existsUnique_ridgeletExtensionVecCLM hν hρ
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(ii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(ii) for
 `Y`-valued targets: `‖R_ρ f‖² = C^{(α)}_ρ ‖f‖²_{𝓔_α(Y)}`. -/
-theorem thm_4_6_plancherel_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
@@ -965,18 +965,18 @@ theorem thm_4_6_plancherel_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [S
   rw [ridgeletExtensionVec_eq hν hρ]
   exact norm_ridgeletExtensionVecCLM_sq hν hρ G
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(ii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(ii) for
 `Y`-valued targets: the range of `R_ρ` is closed. -/
-theorem thm_4_6_plancherel_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     IsClosed (Set.range (ridgeletExtensionVec Y μ ν ρ)) := by
   rw [ridgeletExtensionVec_eq hν hρ]
   exact isClosed_range_ridgeletExtensionVecCLM hν hρ
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(ii) for
-`Y`-valued targets: `R_ρ = W_ρ U_α`. -/
-theorem thm_4_6_plancherel_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(ii) for
+`Y`-valued targets: `R_ρ = W_ρ F_Q`. -/
+theorem thm_4_11_plancherel_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
@@ -985,9 +985,9 @@ theorem thm_4_6_plancherel_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [S
   rw [ridgeletExtensionVec_eq hν hρ]
   exact ridgeletExtensionVecCLM_eq_spectralCoefficientVec hν hα hρ μ G
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(iii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:3.14`(iii) for
 `Y`-valued targets: `R_ρ f = 0` `λ_α`-a.e. implies `f = 0` `μ_Q`-a.e. for `f ∈ L¹(μ_Q; Y)`. -/
-theorem thm_4_6_plancherel_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_plancherel_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : H → Y) (hf : Integrable f μ)
     (h : ridgeletVec μ ρ f =ᵐ[parameterMeasure ν] 0) :
@@ -997,9 +997,9 @@ theorem thm_4_6_plancherel_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [Si
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
   in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(i) for `Y`-valued
-targets: the frame operator `T_α = U_α' U_α` equals the Riesz map `J_α` of `𝓔_α(Y)`. -/
-theorem thm_4_6_frame_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(i) for `Y`-valued
+targets: the frame operator `T_α = F_Q' F_Q` is the Riesz map of `𝓔_α(Y)`. -/
+theorem thm_4_11_frame_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν, frameOperatorVec μ ν f = rieszMapVec Y μ ν f := by
@@ -1009,9 +1009,9 @@ theorem thm_4_6_frame_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFi
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
   in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(i) for `Y`-valued
 targets: the Riesz map of `𝓔_α(Y)` is an isometry. -/
-theorem thm_4_6_frame_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     Isometry (rieszMapVec Y μ ν) := by
@@ -1019,17 +1019,17 @@ theorem thm_4_6_frame_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFi
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [SecondCountableTopology Y] in
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(i) for `Y`-valued
 targets: the Riesz map of `𝓔_α(Y)` is a bijection onto `𝓔_α(Y)'`. -/
-theorem thm_4_6_frame_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     Function.Bijective (rieszMapVec Y μ ν) := by
   exact ⟨innerSLFlip_injective, fun F => ⟨rieszInvVec μ ν F, rieszMapVec_rieszInvVec μ ν F⟩⟩
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(i) for `Y`-valued
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(i) for `Y`-valued
 targets: the frame identity `S_ρ R_ρ f = C^{(α)}_ρ T_α f`. -/
-theorem thm_4_6_frame_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
@@ -1038,9 +1038,9 @@ theorem thm_4_6_frame_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFi
   intro f
   exact synthesisVec_ridgeletExtensionVec hν hρ f
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(ii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(ii) for
 `Y`-valued targets: `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f`. -/
-theorem thm_4_6_frame_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ f : spectralRangeVec Y μ ν,
@@ -1049,13 +1049,13 @@ theorem thm_4_6_frame_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   intro f
   have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
-  rw [synthesisVec_ridgeletExtensionVec hν hρ' f, thm_4_6_frame_i_a μ ν hα hν ρ hρ f,
+  rw [synthesisVec_ridgeletExtensionVec hν hρ' f, thm_4_11_frame_i_a μ ν hα hν ρ hρ f,
     ← map_smul, rieszInvVec_rieszMapVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC,
     one_smul]
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(ii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(ii) for
 `Y`-valued targets: `g = (C^{(α)}_ρ)⁻¹ S_ρ (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α(Y)'`. -/
-theorem thm_4_6_frame_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ g : SpectralAntiDualVec Y μ ν,
@@ -1064,13 +1064,13 @@ theorem thm_4_6_frame_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   intro g
   have hρ' := hρ
   have hC : (admissibilityConst α ρ : ℂ) ≠ 0 := by exact_mod_cast hρ'.pos.ne'
-  rw [synthesisVec_ridgeletExtensionVec hν hρ', thm_4_6_frame_i_a μ ν hα hν ρ hρ,
+  rw [synthesisVec_ridgeletExtensionVec hν hρ', thm_4_11_frame_i_a μ ν hα hν ρ hρ,
     rieszMapVec_rieszInvVec, smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: for `f ∈ 𝒟_α(Y)` with `𝒢_Q f ∈ L¹(ν_α; Y)`, `T_α f` is represented by
-`g_{𝒢_Q f}`: `T_α f [g] = ∫ ⟨g_{𝒢_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
-theorem thm_4_6_frame_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iii) for
+`Y`-valued targets: for `f ∈ 𝒟_α(Y)` with `F_Q f ∈ L¹(ν_α; Y)`, `T_α f` is represented by
+`g_{F_Q f}`: `T_α f [g] = ∫ ⟨g_{F_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
+theorem thm_4_11_frame_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν)
     (hG : Integrable (gaussFourierVec μ ((f : Lp Y 2 μ) : H → Y)) ν) :
@@ -1088,9 +1088,9 @@ theorem thm_4_6_frame_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   rw [show gaussFourierLpVec μ ν g ξ = gaussFourierVec μ (g : Lp Y 2 μ) ξ from hξg,
     show gaussFourierLpVec μ ν f ξ = gaussFourierVec μ (f : Lp Y 2 μ) ξ from hξf]
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: `R_ρ T_α⁻¹ U_α' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
-theorem thm_4_6_frame_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iii) for
+`Y`-valued targets: `R_ρ T_α⁻¹ F_Q' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
+theorem thm_4_11_frame_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
@@ -1101,9 +1101,9 @@ theorem thm_4_6_frame_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   rw [rieszInvVec_transposeEmbedVec_coe, ridgeletExtensionVec_eq hν hρ']
   exact ridgeletExtensionVecCLM_eq_spectralCoefficientVec hν hα hρ' μ G
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `U_α' G` is represented by `g_G`. -/
-theorem thm_4_6_frame_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iii) for
+`Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `F_Q' G` is represented by `g_G`. -/
+theorem thm_4_11_frame_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
@@ -1113,9 +1113,9 @@ theorem thm_4_6_frame_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   intro G hG g
   exact transposeEmbedVec_apply_eq_integral μ ν G hG g
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
-theorem thm_4_6_frame_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iii) for
+`Y`-valued targets: `F_Q' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
+theorem thm_4_11_frame_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν,
@@ -1129,11 +1129,11 @@ theorem thm_4_6_frame_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
     smul_smul, Complex.ofReal_inv, inv_mul_cancel₀ hC, one_smul]
   rfl
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iii) for
 `Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)` and `γ_G ∈ L¹(λ_α; Y)`, the second
-reconstruction formula for `U_α' G` is the spectral synthesis identity paired with
+reconstruction formula for `F_Q' G` is the spectral synthesis identity paired with
 `g ∈ 𝒟_α(Y)`. -/
-theorem thm_4_6_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
     ∀ G : spectralRangeVec Y μ ν, Integrable ((G : Lp Y 2 ν) : H → Y) ν →
@@ -1151,7 +1151,7 @@ theorem thm_4_6_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
       (admissibilityConst α ρ : ℂ) • spectralTarget ν ((G : Lp Y 2 ν) : H → Y) x := by
     intro x
     rw [← integral_integral_coefficientFormulaVec_eq_integralNetworkDensity hγ x]
-    exact thm_4_6_representation_ii_b ν hα hν ρ hρ _
+    exact thm_4_11_representation_ii_b ν hα hν ρ hρ _
       (Lp.stronglyMeasurable _) hG (Lp.memLp _) x
   simp_rw [hnet, inner_smul_right]
   rw [integral_const_mul, ← mul_assoc, Complex.ofReal_inv]
@@ -1159,10 +1159,10 @@ theorem thm_4_6_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
     Complex.ofReal_ne_zero.mpr hρ.pos.ne'
   rw [inv_mul_cancel₀ hC, one_mul]
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: the backprojection `Λ_ρ` is a bounded operator
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
+`Y`-valued targets: the backprojection `W_ρ^*` is a bounded operator
 `L²(λ_α; Y) → L²(ν_α; Y)`. -/
-theorem thm_4_6_frame_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem thm_4_11_frame_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp Y 2 (parameterMeasure ν),
       MemLp (backprojectionVec α ν ρ γ) 2 ν ∧
@@ -1170,9 +1170,9 @@ theorem thm_4_6_frame_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasur
   exact ⟨admissibilityConst α ρ,
     fun γ => hν.memLp_backprojectionVec hρ γ⟩
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `Λ_ρ W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
-theorem thm_4_6_frame_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
+`Y`-valued targets: `W_ρ^* W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
+theorem thm_4_11_frame_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → Y, StronglyMeasurable F → MemLp F 2 ν →
       backprojectionVec α ν ρ (spectralCoefficientVec ν ρ F) =ᵐ[ν]
@@ -1181,10 +1181,10 @@ theorem thm_4_6_frame_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasur
   exact hν.backprojectionVec_spectralCoefficientVec hα
     hρ hF hF₂
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` pointwise for `f ∈ 𝒟_α(Y)`, with `Λ_ρ`
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
+`Y`-valued targets: `W_ρ^* R_ρ f = C^{(α)}_ρ F_Q f` pointwise for `f ∈ 𝒟_α(Y)`, with `W_ρ^*`
 computed from the Fourier-slice representative of `R_ρ f`. -/
-theorem thm_4_6_frame_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν) :
     ∀ ξ : H,
@@ -1194,10 +1194,10 @@ theorem thm_4_6_frame_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   exact backprojectionOfVec_biasFourierVec_ridgeletVec μ α ρ
     ((Lp.memLp (f : Lp Y 2 μ)).integrable one_le_two) ξ
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
 `Y`-valued targets: the Hermite inversion formula, applied componentwise, for `f ∈ 𝒟_α(Y)` and
 `ξ ≠ 0`. -/
-theorem thm_4_6_frame_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :
@@ -1209,10 +1209,10 @@ theorem thm_4_6_frame_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   intro ξ hξ n
   exact hermiteCoefficientVec_eq_iteratedDeriv μ hμ (f : Lp Y 2 μ) (hQ.inner_pos hξ) n
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
 `Y`-valued targets: the Hermite coefficients over all `ξ ≠ 0` and `n` determine
 `f ∈ 𝒟_α(Y)` in `L²(μ_Q; Y)`. -/
-theorem thm_4_6_frame_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_4_11_frame_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) :
@@ -1226,9 +1226,9 @@ theorem thm_4_6_frame_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   apply Subtype.ext
   exact Lp.ext (ae_eq_of_hermiteCoefficientVec_eq hQ hμ (Lp.memLp _) (Lp.memLp _) hcoeff)
 
-/-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
-theorem thm_4_6_frame_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+/-- **Theorem [thm:4.11]** Vector-valued extension.  Theorem `thm:4.8`(iv) for
+`Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ W_ρ^* R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
+theorem thm_4_11_frame_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
     (hμ : IsCenteredGaussian Q μ) (f : spectralCoreVec Y μ ν) :

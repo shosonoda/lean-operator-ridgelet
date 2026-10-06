@@ -1,7 +1,6 @@
 import Verso
 import VersoManual
 import VersoBlueprint
-import OperatorRidgeletBlueprint.Chapters.Examples
 import OperatorRidgelet.BasisIndependence
 import OperatorRidgelet.Paper.Examples
 import OperatorRidgelet.Paper.Networks
@@ -21,93 +20,79 @@ open Informal
 
 set_option verso.blueprint.externalCode.strictResolve true
 
-#doc (Manual) "Appendix E. Details of the examples" =>
+#doc (Manual) "Appendix E. Numerical methods and additional results" =>
 %%%
 file := "appendix-e"
 number := false
 %%%
 
-A Gaussian integral gives the closed-form transform of the Gaussian target and the
-operator-layer formula. The Gaussian activation also has an exact ReLU hinge representation.
-These identities concern the exact infinite-dimensional objects; the numerical experiments
-in Section 8 use finite representations of their directions.
+This appendix describes the numerical procedures behind Section 8. It records how
+parameters are drawn, how integrals and function-space inputs are discretized, and how
+the reported errors are measured. The figures and result tables are in Section 8.
 
-# E.1 A Gaussian integral
+# E.1 Reproduction and error measurement
 %%%
 number := false
 %%%
 
-:::lemma_ "lem:E.1" (lean := "OperatorRidgelet.Paper.lem_E_1_i, OperatorRidgelet.Paper.lem_E_1_ii") (uses := "aux:trace-class-operators, aux:centered-gaussian")
-Let $`\Sigma` be a positive self-adjoint trace-class operator, $`S` a bounded positive
-self-adjoint operator, and $`x\in H`. Then $`M=\Sigma^{1/2}S\Sigma^{1/2}` is trace class (i),
-and
-$`\int_He^{i\langle x,\xi\rangle-\langle S\xi,\xi\rangle/2}\,\mathcal N(0,\Sigma)(\mathrm d\xi)=\det(I+M)^{-1/2}\exp\bigl(-\tfrac12\langle\Sigma^{1/2}(I+M)^{-1}\Sigma^{1/2}x,x\rangle\bigr)`
-(ii).
-:::
+All experiments use seed 20260908. Errors are supremum errors over 100 or 200 test
+points, averaged over independent trials. Least-squares fits of log error against
+log width use $`N=4,8,\ldots,4096`. The dashed reference lines show $`N^{-1/2}`.
+These are finite test-set errors; they do not certify the supremum over a compact set.
+Within each trial the same sequence of neurons is accumulated as width increases.
+The test set is fixed within each experiment and resolution. The supplementary
+`experiments.py` script reproduces the reported results with the fixed seed.
 
-:::proof "lem:E.1"
-In an orthonormal eigenbasis $`(u_j)` of $`M` with eigenvalues $`m_j`, the Gaussian series
-$`\xi=\sum_j\eta_j\Sigma^{1/2}u_j` has law $`\mathcal N(0,\Sigma)`,
-$`\langle S\xi,\xi\rangle=\sum_jm_j\eta_j^2`, and the expectation factorizes into
-one-dimensional Gaussian integrals $`(1+m_j)^{-1/2}e^{-x_j^2/(2(1+m_j))}`.
-:::
-
-# E.2 Proof of Example 7.1
+# E.2 Gaussian directions and coefficient measures
 %%%
 number := false
 %%%
 
-We prove {bpref "ex:7.1"}[].
+Experiment 1 uses $`Q=\operatorname{diag}(j^{-2})`, truncated to
+$`d=10,100,1000,10000` coordinates. Its 200 test inputs have coordinates $`x_j=u_j/j`
+with independent $`u_j` uniform on $`[-1,1]`. Gaussian directions with covariance $`Q`
+and zero bias give the ReLU networks. Errors are averaged over 20 trials.
 
-:::proof "ex:7.1" (uses := "lem:E.1, lem:3.4, lem:3.9, lem:A.2, thm:4.3, lem:D.3, thm:6.4")
-{bpref "lem:E.1"}[] with $`\Sigma=Q`, $`S=W` gives $`\mathcal G_Qf_W`, Fourier
-inversion in the bias gives the convolution, $`(I+M)^{-1}\ge(1+\|M\|)^{-1}I` gives the decay
-needed by {bpref "lem:3.9"}[], and $`f_W(x)<1=f_W(0)` for $`x\ne0` in the kernel
-of a finite-rank map. Part (ii) is {bpref "thm:4.3"}[] (iii) with the Gaussian integral applied
-on each Gaussian component of $`\nu_\alpha`; part (iii) is {bpref "lem:D.3"}[] (a) with
-$`S_W\ge(1+\|M\|)^{-1}Q` followed by {bpref "thm:6.4"}[].
-:::
+Experiment 2 uses $`\alpha=1`, $`P=Q=\operatorname{diag}(j^{-2})`, $`W=I` and
+$`\rho(t)=\mathrm{He}_4(t)e^{-t^2/2}`. Its coefficient is
+$`\gamma_g(a,b)=D^{-1/2}\sqrt{2\pi}\,\phi_{1+\kappa_W(a)}^{(4)}(b)`, where
+$`\phi_u` is the centered Gaussian density of variance $`u` and
+$`D=\det(I+Q^{1/2}WQ^{1/2})`. Quadrature evaluates the total variation and the target
+$`6f_g`. Conditional biases are drawn by rejection from a mixture of Gaussian moment
+densities. Sampling–importance resampling uses 200000 Gaussian-mixture proposals, with
+effective sample sizes between 2800 and 9700. Ten trials at each of
+$`d=10,100,1000` use 100 test inputs drawn by the same rule as Experiment 1.
+Directions are drawn with replacement from the weighted pool, approximating the
+continuous direction law. The pool is reused across trials at each resolution, so
+trial variation is conditional on that pool and does not measure its approximation error.
+The conditional bias law is exact: with $`u=1+\kappa_W(a)` and $`b=\sqrt u\,z`,
+its density is $`|\mathrm{He}_4(z)|\phi_1(z)/m_4`. The proposal density is
+$`(z^4+6z^2+3)\phi_1(z)/12`, accepted with probability
+$`|\mathrm{He}_4(z)|/(z^4+6z^2+3)`. The code uses $`c=-b`; symmetry of the bias
+density and its sign factor preserves the synthesis integral.
 
-# E.3 The hinge representation of the Gaussian
+# E.3 Dirichlet layer and transform verification
 %%%
 number := false
 %%%
 
-:::definition "aux:relu-identities" (lean := "LeanRidgelet.relu, OperatorRidgelet.relu_sub_relu_neg, OperatorRidgelet.spectralReLUNetwork, OperatorRidgelet.spectralReLUNetwork_eq")
-$`\operatorname{ReLU}(x)=\max(x,0)` and its odd part is the identity,
-$`\operatorname{ReLU}(x)-\operatorname{ReLU}(-x)=x`. For a finite spectral index set, the
-paired-ReLU network $`\sum_i\lambda_i[\operatorname{ReLU}(\langle e_i,x\rangle)-\operatorname{ReLU}(-\langle e_i,x\rangle)]e_i`
-therefore equals the spectral truncation $`\sum_i\lambda_i\langle e_i,x\rangle e_i` exactly.
-:::
+Experiment 3 uses $`d=64,512,4096` midpoint nodes and 100 test inputs
+$`x=\sum_{n\le30}(u_n/n)e_n` with independent uniform $`u_n\in[-1,1]`.
+With the Dirichlet Green's function $`g` and observable 1, the parameter law is
+$`w(y)\,\mathrm dy/V`, where $`w(y)=1-\cosh(y-1/2)/\cosh(1/2)` and
+$`V=1-2\tanh(1/2)`. The networks approximate the integral layer over 20 trials.
+Midpoint quadrature uses weight $`1/d`. Draws from $`w/V` invert a cumulative
+distribution computed by the trapezoidal rule on 20001 uniform grid points with
+linear interpolation; each Green direction is then evaluated on the input grid.
+The coarsest quadrature produces the error floor reported in Section 8.
 
-:::lemma_ "lem:E.2" (lean := "OperatorRidgelet.Paper.lem_E_2_i_a, OperatorRidgelet.Paper.lem_E_2_i_b, OperatorRidgelet.Paper.lem_E_2_ii") (uses := "aux:gaussian-target, aux:relu-identities")
-For $`\phi(u)=e^{-u^2/2}`, the integral $`\int_{\mathbb R}(u-b)_+\phi''(b)\,\mathrm db`
-converges absolutely for each $`u` (i a) and equals $`\phi(u)` (i b), and
-$`\int_{\mathbb R}(1+|b|^k)|\phi''(b)|\,\mathrm db<\infty` for every $`k\ge0` (ii).
-:::
-
-:::proof "lem:E.2"
-$`\phi''(b)=(b^2-1)e^{-b^2/2}` has all polynomially weighted absolute integrals finite, and
-integrating by parts on $`(-L,u)` gives
-$`\int_{-L}^u(u-b)\phi''(b)\mathrm db=\phi(u)-\phi(-L)-(u+L)\phi'(-L)\to\phi(u)`.
-:::
-
-# E.4 Proof of Example 7.4
-%%%
-number := false
-%%%
-
-We prove {bpref "ex:7.4"}[].
-
-:::proof "ex:7.4" (uses := "cor:6.6, thm:6.3, lem:3.4, lem:3.9, lem:D.3, thm:4.6, lem:E.2")
-Part (i) is the change of variables for the pushforward measure and
-$`\|\iota(y)\|^2\le\|A\|_\infty^2`. For (ii), the pair
-$`(\langle a_y,x\rangle,\langle x,\xi\rangle)` is centred Gaussian under $`\mu_Q` and
-$`\mathbb E[e^{-Z^2/2}e^{-iW}]=(1+\sigma^2)^{-1/2}\exp(-\tau^2/2+r^2/(2(1+\sigma^2)))`;
-Cauchy–Schwarz gives the lower bound on $`S_y`, {bpref "lem:D.3"}[] (a) and
-(c) give the condition in {bpref "def:4.1"}[], and {bpref "thm:4.3"}[], {bpref "thm:6.4"}[], and
-{bpref "thm:4.6"}[] give the rest. Part (iii) is Fubini with
-{bpref "lem:E.2"}[]; for (iv), a vector $`x\in\ker L\setminus\ker A` gives
-$`F_\varphi(tx)=F_\varphi(0)` for all $`t`, while dominated convergence gives
-$`F_\varphi(tx)\to\int w_\varphi\mathbf 1_{\{Ax=0\}}\mathrm dm<F_\varphi(0)`.
-:::
+For the independent transform check, use the filter from Experiment 2,
+$`a(t)=\sqrt2\sin(\pi t)+(\sqrt2/2)\sin(3\pi t)` and biases $`b=0,-1/2,-1`.
+Monte Carlo integration over 200000 Gaussian inputs uses Karhunen–Loève truncations
+$`d'=8,64,512`. The comparisons and standard errors are reported in Section 8.
+The closed-form transform uses 2048 midpoints for inner products and 400 for the
+outer integral. Gaussian draws have covariance eigenvalues
+$`\lambda_n=(1+\pi^2n^2)^{-1}` and are evaluated on the same 2048-point grid.
+The standard error is the empirical standard deviation of the integrand divided by
+the square root of the number of draws. This check at the specified direction and
+biases does not eliminate quadrature error or Gaussian-input truncation error.

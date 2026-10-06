@@ -8,10 +8,10 @@ import OperatorRidgelet.Reconstruction.Basic
 
 The transform of the scalar observable of a neural-operator layer with Gaussian activation is a
 Bochner integral
-`𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`
+`F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`
 of Gaussian-type densities whose covariances `S_y` obey the two-sided bound
 `θ Q ≤ S_y`, `‖S_y‖ ≤ ‖Q‖ (1 + ‖Q‖ ‖A‖_∞²)` uniformly in `y`.  The weight `w_φ` is only
-integrable, not bounded, so Lemma `lem:D.3`(c) (`IsRegularAlongRays.integral`)
+integrable, not bounded, so Lemma `lem:4.4`(c) (`IsRegularAlongRays.integral`)
 is applied here in the weighted form `IsRegularAlongRays.integral_weighted`, in which the
 family is dominated by `W y` with `W ∈ L¹(m)` — the manuscript's device of running the argument
 for the finite measure `|w_φ| m` and the family `(w_φ/|w_φ|) G_y`.
@@ -24,7 +24,7 @@ namespace OperatorRidgelet
 open MeasureTheory Complex Filter Topology
 open scoped ENNReal RealInnerProductSpace Polynomial
 
-/-! ### The weighted form of Lemma `lem:D.3`(c) -/
+/-! ### The weighted form of Lemma `lem:4.4`(c) -/
 
 section Weighted
 
@@ -32,7 +32,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
   [OpensMeasurableSpace H]
 
 omit [OpensMeasurableSpace H] in
-/-- **Lemma `lem:D.3`(c), weighted form.**  For a measurable family `G y` of
+/-- **Lemma `lem:4.4`(c), weighted form.**  For a measurable family `G y` of
 densities dominated by an integrable weight `W ∈ L¹(m)`, smooth along rays on a common open
 neighbourhood `U` of `I`, and with ray-derivative bounds of the product form `h(a) W(y)` whose
 `h` is `ν`-integrable against `(1+‖a‖)^{k+2}`, the Bochner integral `ξ ↦ ∫ G y ξ ∂m` is regular
@@ -146,7 +146,7 @@ theorem contDiff_const_mul_ofReal_exp_inner_map_smul_self (S : H →L[ℝ] H) (c
   rw [hfun]
   exact contDiff_const.mul (Polynomial.contDiff_eval_ofReal_mul_cexp _ _)
 
-/-- **The uniform ray-derivative bound of Example `ex:7.4`(ii).**  For a positive `S`
+/-- **The uniform ray-derivative bound of Example `ex:7.6`(ii).**  For a positive `S`
 with `‖S‖ ≤ B`, every ray derivative of `ξ ↦ e^{-⟪Sξ,ξ⟫/2}` on the annulus `r ≤ |ω| ≤ R` is
 bounded by `(n+1)(n + B(1+‖a‖)²)^n (1+|R|)^n e^{-r²⟪Sa,a⟫/2}`, with constants depending on `S`
 only through the bound `B`. -/
@@ -251,7 +251,7 @@ def layerDensityConst (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y)
   layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ : ℝ) : ℂ)
 
 /-- The `y`-th Gaussian density `G_y(ξ) = w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2}` whose Bochner
-integral over `m` is the transform `𝒢_Q F_φ` of the scalar observable of the layer. -/
+integral over `m` is the transform `F_Q F_φ` of the scalar observable of the layer. -/
 def layerDensity (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y) (y : Ω) (ξ : H) : ℂ :=
   layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
     Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ)
@@ -316,12 +316,12 @@ theorem IsLayerData.measurable_uncurry_layerDensity {Q : H →L[ℝ] H} (hL : Is
 
 variable [IsFiniteMeasure m]
 
-/-- **Example `ex:7.4`(ii)**: the transform `𝒢_Q F_φ` of the scalar observable of a
+/-- **Example `ex:7.6`(ii)**: the transform `F_Q F_φ` of the scalar observable of a
 layer with Gaussian activation is regular along rays, for every compact frequency window away
 from the origin.  The densities `G_y` are Gaussian with covariances `S_y` satisfying
 `θ Q ≤ S_y` and `‖S_y‖ ≤ ‖Q‖ + ‖Q‖²‖A‖_∞²` uniformly in `y`, so the ray-derivative bounds are
 uniform in `y` up to the factor `|w_φ(y)|`, and the weighted form of Lemma
-`lem:D.3`(c) applies. -/
+`lem:4.4`(c) applies. -/
 theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
     {Q : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y) (ν : Measure H)
@@ -482,7 +482,7 @@ theorem IsLayerData.isRegularAlongRays_gaussFourier_layerObservable_gaussianFun
                 ‖layerWeight b φ y‖ := by ring
 
 /-- The transform of the scalar observable is integrable against every direction measure with
-the Gaussian decay of Lemma `lem:3.9`(i). -/
+the Gaussian decay of Lemma `lem:3.12`(i). -/
 theorem IsLayerData.integrable_gaussFourier_layerObservable_gaussianFun {Q : H →L[ℝ] H}
     (hQ : IsPositiveTraceClass Q) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y) {ν : Measure H}

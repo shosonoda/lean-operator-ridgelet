@@ -33,11 +33,11 @@ Python scripts require Python 3.
 
 - Every theorem, proposition, lemma, corollary, and example of the manuscript is a theorem
   `OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, with dots in the manuscript number
-  replaced by underscores (for example, `thm_3_11_i` or `cor_F_2_i`). Multipart results
+  replaced by underscores (for example, `thm_3_14_i_a` or `cor_D_2_i`). Multipart results
   retain their part suffixes; vector-valued theorem parts use descriptive `plancherel`,
   `representation`, and `frame` suffixes. Pure definitions retain their semantic names.
   In `paper.json`, `label` remains the source LaTeX label, while `blueprint_label` is the
-  numbered Blueprint identifier (for example, `thm:3.11` for source label `thm:B`).
+  numbered Blueprint identifier (for example, `thm:3.14` for source label `thm:B`).
 - The statement is written twice with identical text: in `Challenge/<Section>.lean` with proof
   `sorry`, and in `OperatorRidgelet/Paper/<Section>.lean` with the real proof (or `sorry` while
   outstanding).  `Challenge` imports only definition modules, never `OperatorRidgelet.Paper`.
@@ -60,7 +60,7 @@ Python scripts require Python 3.
   no other module imports `Architect`, and no blueprint chapter imports `ArchitectBridge`.
 - Tag a statement whose proof is `sorry` with `(notReady := true)`; remove the flag when the proof
   is done.  `scripts/status.py` checks that the flag agrees with `theorem_names`.
-- Blueprint node labels use manuscript numbers (`thm:3.11`, `lem:3.4`, ...), recorded
+- Blueprint node labels use manuscript numbers (`thm:3.14`, `lem:3.5`, ...), recorded
   separately from source LaTeX labels in each item's `blueprint_label` field.
 - Build LeanArchitect metadata with `lake build OperatorRidgelet:blueprintJson` (library name
   required), and the blueprint with `lake exe vbp build && lake exe vbp check` in
@@ -177,7 +177,7 @@ lake exe vbp check
 lake exe vbp query work-queue                             # statements whose proof is still `sorry`
 ```
 
-The Blueprint follows manuscript Sections 1–9 and Appendices A–H, with supporting
+The Blueprint follows manuscript Sections 1–9 and Appendices A–E, with supporting
 infrastructure presented separately. Each mathematical node links its informal statement to
 the corresponding Lean declarations. The formalization notes in `paper.json` record the
 scope of those statements. Comparator independently checks the 341 propositions in

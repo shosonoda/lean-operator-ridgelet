@@ -4,7 +4,7 @@ import OperatorRidgelet.Transform.Gaussian
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 
 /-!
-# Auxiliary lemmas for Section 7 and Appendix E
+# Auxiliary lemmas for Section 7
 
 Elementary facts used by the proofs in `OperatorRidgelet.Paper.Examples`; not imported by
 `Challenge`.
@@ -58,7 +58,7 @@ theorem integrable_gaussianActDeriv2 : Integrable gaussianActDeriv2 := by
   simp only [Pi.add_apply, sq_abs, pow_zero]
   ring
 
-/-- **Lemma `lem:E.2`(ii)**: `∫ (1 + |b|^k) |φ''(b)| db < ∞` for every `k`. -/
+/-- **Lemma `lem:7.3`(ii)**: `∫ (1 + |b|^k) |φ''(b)| db < ∞` for every `k`. -/
 theorem integrable_one_add_abs_pow_mul_abs_gaussianActDeriv2 (k : ℕ) :
     Integrable fun b : ℝ => (1 + |b| ^ k) * |gaussianActDeriv2 b| := by
   have h0 := integrable_abs_pow_mul_exp_neg_sq_half 0
@@ -159,7 +159,7 @@ theorem norm_relu_sub_mul_gaussianActDeriv2_le (u b : ℝ) :
         mul_le_mul hr (abs_gaussianActDeriv2_le b) (abs_nonneg _) (by positivity)
     _ = _ := by ring
 
-/-- **Lemma `lem:E.2`(i)**, absolute convergence: `b ↦ ReLU(u - b) φ''(b)` is
+/-- **Lemma `lem:7.3`(i)**, absolute convergence: `b ↦ ReLU(u - b) φ''(b)` is
 integrable for every `u`. -/
 theorem integrable_relu_sub_mul_gaussianActDeriv2 (u : ℝ) :
     Integrable fun b : ℝ => relu (u - b) * gaussianActDeriv2 b := by
@@ -169,7 +169,7 @@ theorem integrable_relu_sub_mul_gaussianActDeriv2 (u : ℝ) :
   exact ((continuous_relu.comp (continuous_const.sub continuous_id)).mul
     continuous_gaussianActDeriv2).aestronglyMeasurable
 
-/-- **Lemma `lem:E.2`(i)**, the identity: `∫ ReLU(u - b) φ''(b) db = φ(u)`. -/
+/-- **Lemma `lem:7.3`(i)**, the identity: `∫ ReLU(u - b) φ''(b) db = φ(u)`. -/
 theorem integral_relu_sub_mul_gaussianActDeriv2 (u : ℝ) :
     ∫ b : ℝ, relu (u - b) * gaussianActDeriv2 b = gaussianFun u :=
   integral_max_sub_mul_gaussian_deriv2 u

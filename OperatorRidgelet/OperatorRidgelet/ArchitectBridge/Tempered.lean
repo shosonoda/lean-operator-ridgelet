@@ -2,7 +2,7 @@ import Architect
 import OperatorRidgelet.Paper.Tempered
 
 /-!
-# LeanArchitect metadata for Section 5 and Appendix C
+# LeanArchitect metadata for Section 5
 
 Reconstruction formulas and activation functions.
 
@@ -15,15 +15,15 @@ definitions carry `tempered:` labels.  Statements whose proof is still `sorry` c
 /-! ## Definitions: the distributional admissibility constant (shared with Section 4) -/
 
 attribute [blueprint "tempered:test-filter"
-  (statement := /-- The test filter $\omega\mapsto\widehat\rho(-\omega)|\omega|^{-\alpha}$ as
+  (statement := /-- The test filter $\omega\mapsto\rho^\sharp(-\omega)|\omega|^{-\alpha}$ as
     a Schwartz function (when one with these values exists, in particular for band-pass
     $\rho$). -/)
   (hasProof := false)] OperatorRidgelet.temperedTestFilter
 
 attribute [blueprint "tempered:admissibility-const"
   (statement := /-- The distributional admissibility constant
-    $C^{(\alpha)}_{\beta,\rho}=\frac1{2\pi}\langle\widehat\beta,
-    \widehat\rho(-\,\cdot\,)|\cdot|^{-\alpha}\rangle$. -/)
+    $C^{(\alpha)}_{\beta,\rho}=\frac1{2\pi}\langle\beta^\sharp,
+    \rho^\sharp(-\,\cdot\,)|\cdot|^{-\alpha}\rangle$. -/)
   (hasProof := false)] OperatorRidgelet.temperedAdmissibilityConst
 
 /-! ## Definitions: real distributions, cutoffs, approximate identities -/
@@ -47,25 +47,25 @@ attribute [blueprint "tempered:distribution-convolution"
     a tempered distribution with a test function. -/)
   (hasProof := false)] OperatorRidgelet.distributionConvolution
 
-attribute [blueprint "def:5.1-cutoff"
+attribute [blueprint "def:5.3-cutoff"
   (statement := /-- An even $\chi\in C_c^\infty(\mathbb R\setminus\{0\})$ equal to one on a
-    neighbourhood of $\operatorname{supp}\widehat\rho$. -/)
+    neighbourhood of $\operatorname{supp}\rho^\sharp$. -/)
   (hasProof := false)] OperatorRidgelet.IsCutoff
 
-attribute [blueprint "def:5.1-approximate-identity"
+attribute [blueprint "def:5.3-approximate-identity"
   (statement := /-- An even, compactly supported, smooth approximate identity
     $(\eta_\varepsilon)_{\varepsilon>0}$: nonnegative, of integral one, with supports shrinking
     to $\{0\}$. -/)
   (hasProof := false)] OperatorRidgelet.IsApproximateIdentity
 
-attribute [blueprint "def:5.1-spectrum"
+attribute [blueprint "def:5.3-spectrum"
   (statement := /-- The regularized spectrum
-    $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
+    $\beta_\varepsilon^\sharp=\chi\,(\beta^\sharp*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedSpectrum
 
-attribute [blueprint "def:5.1-activation"
+attribute [blueprint "def:5.3-activation"
   (statement := /-- The real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
+    $\beta_\varepsilon^\sharp=\chi\,(\beta^\sharp*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedActivation
 
 /-! ## Definitions: regularized synthesis and its limit
@@ -74,12 +74,12 @@ The anti-dual `𝓔_α'`, the extended transform `R_ρ`, the synthesis `S_ρ`, t
 inverse, the target `g_G`, and regularity along rays are the Section 4 definitions tagged in
 `OperatorRidgelet.ArchitectBridge.Reconstruction`. -/
 
-attribute [blueprint "def:5.1-regularized"
+attribute [blueprint "def:5.3-regularized"
   (statement := /-- The regularized synthesis
     $S_{\beta_\varepsilon}\gamma:=R_{\beta_\varepsilon}'\gamma\in\mathcal E_\alpha'$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedSynthesis
 
-attribute [blueprint "def:5.1"
+attribute [blueprint "def:5.3"
   (statement := /-- Synthesis with an activation represented by a real tempered distribution,
     $S_\beta\gamma:=\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}\gamma$ in
     the norm of $\mathcal E_\alpha'$, whenever the limit exists. -/)
@@ -123,257 +123,257 @@ attribute [blueprint "tempered:mem-activation-space-fun"
     $\mathcal A_{s,t}=\langle\cdot\rangle^tH^s(\mathbb R)$. -/)
   (hasProof := false)] OperatorRidgelet.MemActivationSpaceFun
 
-attribute [blueprint "cor:5.3-scale"
+attribute [blueprint "cor:5.5-scale"
   (statement := /-- The constant $-\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)
+    R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.reluAdmissibilityScale
 
-attribute [blueprint "cor:5.3-normalized-filter"
+attribute [blueprint "cor:5.5-normalized-filter"
   (statement := /-- The filter $\rho$ rescaled so that
     $C^{(\alpha)}_{\operatorname{ReLU},\rho}=1$. -/)
   (hasProof := false)] OperatorRidgelet.reluNormalizedFilter
 
-attribute [blueprint "lem:C.1-fourier-coordinate"
-  (statement := /-- The coordinate $\langle\omega\rangle^sB^{-t}\widehat\beta$ as a tempered
+attribute [blueprint "lem:5.1-fourier-coordinate"
+  (statement := /-- The coordinate $\langle\omega\rangle^sB^{-t}\beta^\sharp$ as a tempered
     distribution. -/)
   (hasProof := false)] OperatorRidgelet.activationFourierCoordinate
 
-attribute [blueprint "lem:C.1-coordinate"
+attribute [blueprint "lem:5.1-coordinate"
   (statement := /-- The element of $L^2(\mathbb R)$ representing
-    $\langle\omega\rangle^sB^{-t}\widehat\beta$, when there is one. -/)
+    $\langle\omega\rangle^sB^{-t}\beta^\sharp$, when there is one. -/)
   (hasProof := false)] OperatorRidgelet.activationCoordinate
 
-attribute [blueprint "lem:C.1-norm"
+attribute [blueprint "lem:5.1-norm"
   (statement := /-- $\|\beta\|_{\mathcal
-    A_{s,t}}=\|\langle\omega\rangle^sB^{-t}\widehat\beta\|_{L^2}$. -/)
+    A_{s,t}}=\|\langle\omega\rangle^sB^{-t}\beta^\sharp\|_{L^2}$. -/)
   (hasProof := false)] OperatorRidgelet.activationNorm
 
-attribute [blueprint "lem:C.1-test-coordinate"
+attribute [blueprint "lem:5.1-test-coordinate"
   (statement := /-- The test coordinate $\langle\omega\rangle^{-s}B^tr$ of a Schwartz filter
     $r$. -/)
   (hasProof := false)] OperatorRidgelet.testFilterCoordinate
 
-attribute [blueprint "lem:C.1-test-norm"
+attribute [blueprint "lem:5.1-test-norm"
   (statement := /-- The dual test norm $\|r\|_{\mathcal
     H^\sharp_{s,t}}=\|\langle\omega\rangle^{-s}B^tr\|_{L^2}$. -/)
   (hasProof := false)] OperatorRidgelet.testFilterNorm
 
-/-! ## Paper statements: Definition `def:5.1` -/
+/-! ## Paper statements: Definition `def:5.3` -/
 
-attribute [blueprint "def:5.1-i"
+attribute [blueprint "def:5.3-i"
   (statement := /-- For band-pass $\rho$ there is an even $\chi\in C_c^\infty(\mathbb
-    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\widehat\rho$. -/)]
-  OperatorRidgelet.Paper.def_5_1_i
+    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\rho^\sharp$. -/)]
+  OperatorRidgelet.Paper.def_5_3_i
 
-attribute [blueprint "def:5.1-ii"
+attribute [blueprint "def:5.3-ii"
   (statement := /-- There is an even, compactly supported, smooth approximate identity
     $(\eta_\varepsilon)_{\varepsilon>0}$. -/)]
-  OperatorRidgelet.Paper.def_5_1_ii
+  OperatorRidgelet.Paper.def_5_3_ii
 
-attribute [blueprint "def:5.1-iii"
-  (statement := /-- $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)\in
+attribute [blueprint "def:5.3-iii"
+  (statement := /-- $\beta_\varepsilon^\sharp=\chi(\beta^\sharp*\eta_\varepsilon)\in
     C_c^\infty(\mathbb R\setminus\{0\})$. -/)]
-  OperatorRidgelet.Paper.def_5_1_iii
+  OperatorRidgelet.Paper.def_5_3_iii
 
-attribute [blueprint "def:5.1-iv"
+attribute [blueprint "def:5.3-iv"
   (statement := /-- There is a real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)]
-  OperatorRidgelet.Paper.def_5_1_iv
+    $\beta_\varepsilon^\sharp=\chi(\beta^\sharp*\eta_\varepsilon)$. -/)]
+  OperatorRidgelet.Paper.def_5_3_iv
 
-attribute [blueprint "def:5.1-v"
+attribute [blueprint "def:5.3-v"
   (statement := /-- The real Schwartz function $\beta_\varepsilon$ is unique. -/)]
-  OperatorRidgelet.Paper.def_5_1_v
+  OperatorRidgelet.Paper.def_5_3_v
 
-attribute [blueprint "def:5.1-vi"
+attribute [blueprint "def:5.3-vi"
   (statement := /-- For $\gamma\in\operatorname{Ran}R_\rho$,
     $S_{\beta_\varepsilon}\gamma=R_{\beta_\varepsilon}'\gamma$ is the continuous anti-linear
     functional $g\mapsto\langle\gamma,R_{\beta_\varepsilon}g\rangle_{L^2(\lambda_\alpha)}$. -/)]
-  OperatorRidgelet.Paper.def_5_1_vi
+  OperatorRidgelet.Paper.def_5_3_vi
 
-/-! ## Paper statements: Theorem `thm:5.2` -/
+/-! ## Paper statements: Theorem `thm:5.4` -/
 
-attribute [blueprint "thm:5.2-i"
+attribute [blueprint "thm:5.4-i"
   (statement := /-- For every $f\in\mathcal E_\alpha$ the limit
     $\lim_{\varepsilon\downarrow0}S_{\beta_\varepsilon}R_\rho f$ exists in $\mathcal
     E_\alpha'$. -/)]
-  OperatorRidgelet.Paper.thm_5_2_i
+  OperatorRidgelet.Paper.thm_5_4_i
 
-attribute [blueprint "thm:5.2-ii"
+attribute [blueprint "thm:5.4-ii"
   (statement := /-- The limit $S_\beta R_\rho f$ does not depend on $\chi$ or
     $(\eta_\varepsilon)$. -/)]
-  OperatorRidgelet.Paper.thm_5_2_ii
+  OperatorRidgelet.Paper.thm_5_4_ii
 
-attribute [blueprint "thm:5.2-iii"
+attribute [blueprint "thm:5.4-iii"
   (statement := /-- $S_\beta R_\rho f=C^{(\alpha)}_{\beta,\rho}T_\alpha f$ for
     $f\in\mathcal E_\alpha$. -/)]
-  OperatorRidgelet.Paper.thm_5_2_iii
+  OperatorRidgelet.Paper.thm_5_4_iii
 
-attribute [blueprint "thm:5.2-iv"
+attribute [blueprint "thm:5.4-iv"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $f=(C^{(\alpha)}_{\beta,\rho})^{-1}T_\alpha^{-1}S_\beta R_\rho f$ for
     $f\in\mathcal E_\alpha$. -/)]
-  OperatorRidgelet.Paper.thm_5_2_iv
+  OperatorRidgelet.Paper.thm_5_4_iv
 
-attribute [blueprint "thm:5.2-v"
+attribute [blueprint "thm:5.4-v"
   (statement := /-- If $C^{(\alpha)}_{\beta,\rho}\ne0$, then
     $g=(C^{(\alpha)}_{\beta,\rho})^{-1}S_\beta(R_\rho T_\alpha^{-1}g)$ for
     $g\in\mathcal E_\alpha'$. -/)]
-  OperatorRidgelet.Paper.thm_5_2_v
+  OperatorRidgelet.Paper.thm_5_4_v
 
-attribute [blueprint "thm:5.2-vi"
+attribute [blueprint "thm:5.4-vi"
   (statement := /-- If $\beta$ is not a polynomial, then a band-pass $\rho$ with
     $C^{(\alpha)}_{\beta,\rho}\ne0$ exists. -/)]
-  OperatorRidgelet.Paper.thm_5_2_vi
+  OperatorRidgelet.Paper.thm_5_4_vi
 
-/-! ## Paper statements: Corollary `cor:5.3` -/
+/-! ## Paper statements: Corollary `cor:5.5` -/
 
-attribute [blueprint "cor:5.3-i"
-  (statement := /-- $\widehat{\operatorname{ReLU}}=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'$:
+attribute [blueprint "cor:5.5-i"
+  (statement := /-- $\operatorname{ReLU}^\sharp=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'$:
     tested against $\varphi$, the finite part
     $\lim_{\varepsilon\downarrow0}\bigl(\int_{|\omega|>\varepsilon}\varphi(\omega)\omega^{-2}\,
     \mathrm d\omega-2\varphi(0)/\varepsilon\bigr)$ equals
-    $-\langle\widehat{\operatorname{ReLU}},\varphi\rangle-i\pi\varphi'(0)$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_i
+    $-\langle\operatorname{ReLU}^\sharp,\varphi\rangle-i\pi\varphi'(0)$. -/)]
+  OperatorRidgelet.Paper.cor_5_5_i
 
-attribute [blueprint "cor:5.3-ii"
-  (statement := /-- $\widehat{\operatorname{ReLU}}=-\omega^{-2}$ away from the origin. -/)]
-  OperatorRidgelet.Paper.cor_5_3_ii
+attribute [blueprint "cor:5.5-ii"
+  (statement := /-- $\operatorname{ReLU}^\sharp=-\omega^{-2}$ away from the origin. -/)]
+  OperatorRidgelet.Paper.cor_5_5_ii
 
-attribute [blueprint "cor:5.3-iii"
-  (statement := /-- For nonzero, even, nonpositive $\widehat\rho\in C_c^\infty(\mathbb
+attribute [blueprint "cor:5.5-iii"
+  (statement := /-- For nonzero, even, nonpositive $\rho^\sharp\in C_c^\infty(\mathbb
     R\setminus\{0\})$, $C^{(\alpha)}_{\operatorname{ReLU},\rho}=-\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_iii
+    R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)]
+  OperatorRidgelet.Paper.cor_5_5_iii
 
-attribute [blueprint "cor:5.3-iv"
-  (statement := /-- $-\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,
+attribute [blueprint "cor:5.5-iv"
+  (statement := /-- $-\frac1{2\pi}\int_{\mathbb R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,
     \mathrm d\omega>0$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_iv
+  OperatorRidgelet.Paper.cor_5_5_iv
 
-attribute [blueprint "cor:5.3-v"
+attribute [blueprint "cor:5.5-v"
   (statement := /-- After rescaling, $\rho$ is band-pass and
     $C^{(\alpha)}_{\operatorname{ReLU},\rho}=1$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_v
+  OperatorRidgelet.Paper.cor_5_5_v
 
-attribute [blueprint "cor:5.3-vi"
+attribute [blueprint "cor:5.5-vi"
   (statement := /-- With the rescaled filter, $f=T_\alpha^{-1}S_{\operatorname{ReLU}}R_\rho f$
     for $f\in\mathcal E_\alpha$ and every $\alpha>0$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_vi
+  OperatorRidgelet.Paper.cor_5_5_vi
 
-attribute [blueprint "cor:5.3-vii"
+attribute [blueprint "cor:5.5-vii"
   (statement := /-- With the rescaled filter, $g=S_{\operatorname{ReLU}}(R_\rho T_\alpha^{-1}g)$
     for $g\in\mathcal E_\alpha'$ and every $\alpha>0$. -/)]
-  OperatorRidgelet.Paper.cor_5_3_vii
+  OperatorRidgelet.Paper.cor_5_5_vii
 
-attribute [blueprint "cor:5.3-viii"
-  (statement := /-- With the rescaled filter, Theorem 4.2(iii) holds with ReLU synthesis: for $G$
+attribute [blueprint "cor:5.5-viii"
+  (statement := /-- With the rescaled filter, Theorem 4.5(iii) holds with ReLU synthesis: for $G$
     regular along rays and every $x$, $\int_H\int_{\mathbb R}\gamma_G(a,c)\operatorname{ReLU}
     (\langle a,x\rangle+c)\,\mathrm dc\,\nu_\alpha(\mathrm da)=g_G(x)$ with absolute
     convergence. -/)]
-  OperatorRidgelet.Paper.cor_5_3_viii
+  OperatorRidgelet.Paper.cor_5_5_viii
 
-/-! ## Paper statements: Example `ex:5.4` -/
+/-! ## Paper statements: Example `ex:5.6` -/
 
-attribute [blueprint "ex:5.4-relu"
+attribute [blueprint "ex:5.6-relu"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
     $C^{(\alpha)}_{\operatorname{ReLU},\rho}\ne0$. -/)]
-  OperatorRidgelet.Paper.ex_5_4_relu
+  OperatorRidgelet.Paper.ex_5_6_relu
 
-attribute [blueprint "ex:5.4-tanh"
+attribute [blueprint "ex:5.6-tanh"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
     $C^{(\alpha)}_{\tanh,\rho}\ne0$. -/)]
-  OperatorRidgelet.Paper.ex_5_4_tanh
+  OperatorRidgelet.Paper.ex_5_6_tanh
 
-attribute [blueprint "ex:5.4-gaussian-cdf"
+attribute [blueprint "ex:5.6-gaussian-cdf"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
     $C^{(\alpha)}_{\Phi,\rho}\ne0$. -/)]
-  OperatorRidgelet.Paper.ex_5_4_gaussianCdf
+  OperatorRidgelet.Paper.ex_5_6_gaussianCdf
 
-attribute [blueprint "ex:5.4-gaussian"
+attribute [blueprint "ex:5.6-gaussian"
   (statement := /-- For every $\alpha>0$ there is a band-pass $\rho$ with
     $C^{(\alpha)}_{e^{-u^2/2},\rho}\ne0$. -/)]
-  OperatorRidgelet.Paper.ex_5_4_gaussian
+  OperatorRidgelet.Paper.ex_5_6_gaussian
 
-/-! ## Paper statements: Lemma `lem:C.1` -/
+/-! ## Paper statements: Lemma `lem:5.1` -/
 
-attribute [blueprint "lem:C.1-i"
+attribute [blueprint "lem:5.1-i"
   (statement := /-- For $\beta\in\mathcal A_{s,t}$ the coordinate
-    $\langle\omega\rangle^sB^{-t}\widehat\beta$ is represented by an element of $L^2(\mathbb
+    $\langle\omega\rangle^sB^{-t}\beta^\sharp$ is represented by an element of $L^2(\mathbb
     R)$. -/)]
-  OperatorRidgelet.Paper.lem_C_1_i
+  OperatorRidgelet.Paper.lem_5_1_i
 
-attribute [blueprint "lem:C.1-ii"
-  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is injective on
+attribute [blueprint "lem:5.1-ii"
+  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\beta^\sharp$ is injective on
     $\mathcal A_{s,t}$. -/)]
-  OperatorRidgelet.Paper.lem_C_1_ii
+  OperatorRidgelet.Paper.lem_5_1_ii
 
-attribute [blueprint "lem:C.1-iii"
-  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is onto $L^2(\mathbb
+attribute [blueprint "lem:5.1-iii"
+  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\beta^\sharp$ is onto $L^2(\mathbb
     R)$: every $\sigma$ is the coordinate of
-    $\beta=\mathcal F^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)]
-  OperatorRidgelet.Paper.lem_C_1_iii
+    $\beta=F_{\mathbb R}^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)]
+  OperatorRidgelet.Paper.lem_5_1_iii
 
-attribute [blueprint "lem:C.1-iv"
-  (statement := /-- $\bigl|\frac1{2\pi}\langle\widehat\beta,r\rangle\bigr|\le\frac1{2\pi}
-    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal H^\sharp_{s,t}}$. -/)]
-  OperatorRidgelet.Paper.lem_C_1_iv
+attribute [blueprint "lem:5.1-iv"
+  (statement := /-- $\bigl|\frac1{2\pi}\langle\beta^\sharp,r\rangle\bigr|\le\frac1{2\pi}
+    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal T^\sharp_{s,t}}$. -/)]
+  OperatorRidgelet.Paper.lem_5_1_iv
 
-attribute [blueprint "lem:C.1-v"
+attribute [blueprint "lem:5.1-v"
   (statement := /-- The pairing extends to the completion of the test filters in $\mathcal
     H^\sharp_{s,t}$. -/)]
-  OperatorRidgelet.Paper.lem_C_1_v
+  OperatorRidgelet.Paper.lem_5_1_v
 
-/-! ## Paper statements: Lemma `lem:C.2` -/
+/-! ## Paper statements: Lemma `lem:5.2` -/
 
-attribute [blueprint "lem:C.2-relu-mem"
+attribute [blueprint "lem:5.2-relu-mem"
   (statement := /-- $\operatorname{ReLU}\in\mathcal A_{0,2}$. -/)]
-  OperatorRidgelet.Paper.lem_C_2_relu_mem
+  OperatorRidgelet.Paper.lem_5_2_relu_mem
 
-attribute [blueprint "lem:C.2-relu-lipschitz"
+attribute [blueprint "lem:5.2-relu-lipschitz"
   (statement := /-- $\operatorname{ReLU}$ is globally Lipschitz. -/)]
-  OperatorRidgelet.Paper.lem_C_2_relu_lipschitz
+  OperatorRidgelet.Paper.lem_5_2_relu_lipschitz
 
-attribute [blueprint "lem:C.2-relu-not-polynomial"
+attribute [blueprint "lem:5.2-relu-not-polynomial"
   (statement := /-- $\operatorname{ReLU}$ is not a polynomial. -/)]
-  OperatorRidgelet.Paper.lem_C_2_relu_not_polynomial
+  OperatorRidgelet.Paper.lem_5_2_relu_not_polynomial
 
-attribute [blueprint "lem:C.2-tanh-mem"
+attribute [blueprint "lem:5.2-tanh-mem"
   (statement := /-- $\tanh\in\mathcal A_{0,2}$. -/)]
-  OperatorRidgelet.Paper.lem_C_2_tanh_mem
+  OperatorRidgelet.Paper.lem_5_2_tanh_mem
 
-attribute [blueprint "lem:C.2-tanh-lipschitz"
+attribute [blueprint "lem:5.2-tanh-lipschitz"
   (statement := /-- $\tanh$ is globally Lipschitz. -/)]
-  OperatorRidgelet.Paper.lem_C_2_tanh_lipschitz
+  OperatorRidgelet.Paper.lem_5_2_tanh_lipschitz
 
-attribute [blueprint "lem:C.2-tanh-not-polynomial"
+attribute [blueprint "lem:5.2-tanh-not-polynomial"
   (statement := /-- $\tanh$ is not a polynomial. -/)]
-  OperatorRidgelet.Paper.lem_C_2_tanh_not_polynomial
+  OperatorRidgelet.Paper.lem_5_2_tanh_not_polynomial
 
-attribute [blueprint "lem:C.2-gaussian-cdf-mem"
+attribute [blueprint "lem:5.2-gaussian-cdf-mem"
   (statement := /-- $\Phi\in\mathcal A_{0,2}$. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussianCdf_mem
+  OperatorRidgelet.Paper.lem_5_2_gaussianCdf_mem
 
-attribute [blueprint "lem:C.2-gaussian-cdf-lipschitz"
+attribute [blueprint "lem:5.2-gaussian-cdf-lipschitz"
   (statement := /-- $\Phi$ is globally Lipschitz. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussianCdf_lipschitz
+  OperatorRidgelet.Paper.lem_5_2_gaussianCdf_lipschitz
 
-attribute [blueprint "lem:C.2-gaussian-cdf-not-polynomial"
+attribute [blueprint "lem:5.2-gaussian-cdf-not-polynomial"
   (statement := /-- $\Phi$ is not a polynomial. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussianCdf_not_polynomial
+  OperatorRidgelet.Paper.lem_5_2_gaussianCdf_not_polynomial
 
-attribute [blueprint "lem:C.2-gaussian-mem"
+attribute [blueprint "lem:5.2-gaussian-mem"
   (statement := /-- $e^{-u^2/2}\in\mathcal A_{0,2}$. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussian_mem
+  OperatorRidgelet.Paper.lem_5_2_gaussian_mem
 
-attribute [blueprint "lem:C.2-gaussian-lipschitz"
+attribute [blueprint "lem:5.2-gaussian-lipschitz"
   (statement := /-- $e^{-u^2/2}$ is globally Lipschitz. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussian_lipschitz
+  OperatorRidgelet.Paper.lem_5_2_gaussian_lipschitz
 
-attribute [blueprint "lem:C.2-gaussian-not-polynomial"
+attribute [blueprint "lem:5.2-gaussian-not-polynomial"
   (statement := /-- $e^{-u^2/2}$ is not a polynomial. -/)]
-  OperatorRidgelet.Paper.lem_C_2_gaussian_not_polynomial
+  OperatorRidgelet.Paper.lem_5_2_gaussian_not_polynomial
 
-attribute [blueprint "lem:C.2-exists-filter"
+attribute [blueprint "lem:5.2-exists-filter"
   (statement := /-- For every non-polynomial real $\beta\in\mathcal S'$ there is a real
     band-pass $\rho$ with $C^{(\alpha)}_{\beta,\rho}=1$. -/)]
-  OperatorRidgelet.Paper.lem_C_2_exists_filter
+  OperatorRidgelet.Paper.lem_5_2_exists_filter

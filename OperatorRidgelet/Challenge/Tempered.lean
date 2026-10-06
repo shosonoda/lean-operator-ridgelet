@@ -2,7 +2,7 @@ import OperatorRidgelet.Tempered.Defs
 import OperatorRidgelet.Reconstruction.Defs
 
 /-!
-# comparator challenge: Section 5 (reconstruction formulas and activation functions) and Appendix C
+# comparator challenge: Section 5 (reconstruction formulas and activation functions)
 
 Statements with proof `sorry`, identical to `OperatorRidgelet.Paper.Tempered`.
 -/
@@ -17,23 +17,23 @@ open scoped ENNReal NNReal RealInnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-! ### Definition `def:5.1` -/
+/-! ### Definition `def:5.3` -/
 
-/-- **Definition [def:5.1]** Regularized synthesis.  For a band-pass `ρ` there
-is an even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ̂`. -/
-theorem def_5_1_i (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
+/-- **Definition [def:5.3]** Regularized synthesis.  For a band-pass `ρ` there
+is an even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ♯`. -/
+theorem def_5_3_i (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
     ∃ χ : ℝ → ℝ, IsCutoff ρ χ := by
   sorry
 
-/-- **Definition [def:5.1]** Regularized synthesis.  There is an even,
+/-- **Definition [def:5.3]** Regularized synthesis.  There is an even,
 compactly supported, smooth approximate identity `(η_ε)_{ε>0}`. -/
-theorem def_5_1_ii : ∃ η : ℝ → ℝ → ℝ, IsApproximateIdentity η := by
+theorem def_5_3_ii : ∃ η : ℝ → ℝ → ℝ, IsApproximateIdentity η := by
   sorry
 
-/-- **Definition [def:5.1]** Regularized synthesis.  For real `β`, band-pass
+/-- **Definition [def:5.3]** Regularized synthesis.  For real `β`, band-pass
 `ρ`, a cutoff `χ`, and an approximate identity `(η_ε)`, the regularized spectrum
-`β̂_ε = χ (β̂ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})` for every `ε > 0`. -/
-theorem def_5_1_iii (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
+`β♯_ε = χ (β♯ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})` for every `ε > 0`. -/
+theorem def_5_3_iii (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
     ContDiff ℝ (⊤ : ℕ∞) (regularizedSpectrum β χ η ε) ∧
@@ -41,18 +41,18 @@ theorem def_5_1_iii (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistributio
       (0 : ℝ) ∉ tsupport (regularizedSpectrum β χ η ε) := by
   sorry
 
-/-- **Definition [def:5.1]** Regularized synthesis.  There is a real Schwartz
-function `β_ε` with `β̂_ε = χ (β̂ * η_ε)`: the chosen `regularizedActivation` has this Fourier
+/-- **Definition [def:5.3]** Regularized synthesis.  There is a real Schwartz
+function `β_ε` with `β♯_ε = χ (β♯ * η_ε)`: the chosen `regularizedActivation` has this Fourier
 transform. -/
-theorem def_5_1_iv (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
+theorem def_5_3_iv (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
     ∀ ω : ℝ, filterFourier (regularizedActivation β χ η ε) ω = regularizedSpectrum β χ η ε ω := by
   sorry
 
-/-- **Definition [def:5.1]** Regularized synthesis.  The real Schwartz function
-`β_ε` with `β̂_ε = χ (β̂ * η_ε)` is unique. -/
-theorem def_5_1_v (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
+/-- **Definition [def:5.3]** Regularized synthesis.  The real Schwartz function
+`β_ε` with `β♯_ε = χ (β♯ * η_ε)` is unique. -/
+theorem def_5_3_v (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
     ∀ b : SchwartzMap ℝ ℝ, (∀ ω : ℝ, filterFourier b ω = regularizedSpectrum β χ η ε ω) →
@@ -60,12 +60,12 @@ theorem def_5_1_v (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution 
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Definition [def:5.1]** Regularized synthesis.  For `γ ∈ Ran R_ρ` the
+/-- **Definition [def:5.3]** Regularized synthesis.  For `γ ∈ Ran R_ρ` the
 regularized synthesis `S_{β_ε} γ = R'_{β_ε} γ` is a well-defined element of `𝓔_α'`: it is the
 continuous anti-linear functional `g ↦ ⟨γ, R_{β_ε} g⟩_{L²(λ)}` (in the representation of
 `OperatorRidgelet.Reconstruction.Defs`, where `S_ρ` is the transpose of the bounded extension
 `R_ρ`, this holds by definition). -/
-theorem def_5_1_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem def_5_3_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -76,11 +76,11 @@ theorem def_5_1_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
         inner ℂ (ridgeletExtension μ ν (regularizedActivation β χ η ε) g) γ := by
   sorry
 
-/-! ### Theorem `thm:5.2` -/
+/-! ### Theorem `thm:5.4` -/
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  For
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  For
 every `f ∈ 𝓔_α` the limit `S_β R_ρ f = lim_{ε ↓ 0} S_{β_ε} R_ρ f` exists in `𝓔_α'`. -/
-theorem thm_5_2_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_5_4_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -90,9 +90,9 @@ theorem thm_5_2_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
         (𝓝[>] 0) (𝓝 F) := by
   sorry
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  The
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  The
 limit `S_β R_ρ f` does not depend on the cutoff `χ` or on the approximate identity `(η_ε)`. -/
-theorem thm_5_2_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem thm_5_4_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ χ' : ℝ → ℝ) (hχ : IsCutoff ρ χ) (hχ' : IsCutoff ρ χ')
@@ -102,9 +102,9 @@ theorem thm_5_2_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
       temperedSynthesis μ ν β χ' η' (ridgeletExtension μ ν ρ f) := by
   sorry
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  The
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  The
 frame identity `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f` for `f ∈ 𝓔_α`. -/
-theorem thm_5_2_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_5_4_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -113,9 +113,9 @@ theorem thm_5_2_iii (μ ν : Measure H) [IsProbabilityMeasure μ]
       temperedAdmissibilityConst α β ρ • rieszMap μ ν f := by
   sorry
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  If
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  If
 `C^{(α)}_{β,ρ} ≠ 0`, then `f = (C^{(α)}_{β,ρ})⁻¹ T_α⁻¹ S_β R_ρ f` for `f ∈ 𝓔_α`. -/
-theorem thm_5_2_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_5_4_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -126,9 +126,9 @@ theorem thm_5_2_iv (μ ν : Measure H) [IsProbabilityMeasure μ]
         (temperedSynthesis μ ν β χ η (ridgeletExtension μ ν ρ f)) := by
   sorry
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  If
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  If
 `C^{(α)}_{β,ρ} ≠ 0`, then `g = (C^{(α)}_{β,ρ})⁻¹ S_β (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
-theorem thm_5_2_v (μ ν : Measure H) [IsProbabilityMeasure μ]
+theorem thm_5_4_v (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -139,25 +139,25 @@ theorem thm_5_2_v (μ ν : Measure H) [IsProbabilityMeasure μ]
         (ridgeletExtension μ ν ρ (rieszInv μ ν g)) := by
   sorry
 
-/-- **Theorem [thm:5.2]** Reconstruction with a tempered activation.  If
+/-- **Theorem [thm:5.4]** Reconstruction with a tempered activation.  If
 `β` is not a polynomial (equivalently `β ≠ 0` in `𝒮'/𝒫`), then a band-pass `ρ` with
 `C^{(α)}_{β,ρ} ≠ 0` exists. -/
-theorem thm_5_2_vi {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ)
+theorem thm_5_4_vi {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ ℂ)
     (hβ : IsRealDistribution β) (hpoly : ¬ IsPolynomialDistribution β) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ ≠ 0 := by
   sorry
 
-/-! ### Corollary `cor:5.3`
+/-! ### Corollary `cor:5.5`
 
 "ReLU is admissible" refers to the existence of a real band-pass analysis filter whose
 reconstruction constant with ReLU is nonzero. The admissibility is a property of the pair.
 -/
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  Under the manuscript's convention
+/-- **Corollary [cor:5.5]** ReLU is admissible.  Under the manuscript's convention
 `ReLU^ = -fp(ω^{-2}) + iπ δ₀'`: tested against a Schwartz function `φ`, the Hadamard finite part
 `⟨fp(ω^{-2}), φ⟩ = lim_{ε ↓ 0} (∫_{|ω|>ε} φ(ω) ω^{-2} dω - 2 φ(0)/ε)` equals
 `-⟨ReLU^, φ⟩ - iπ φ'(0)`. -/
-theorem cor_5_3_i :
+theorem cor_5_5_i :
     ∀ φ : SchwartzMap ℝ ℂ,
       Tendsto (fun ε : ℝ => (∫ ω in {ω : ℝ | ε < |ω|}, φ ω / (ω : ℂ) ^ 2) - 2 * φ 0 / (ε : ℂ))
         (𝓝[>] 0)
@@ -165,34 +165,34 @@ theorem cor_5_3_i :
           (Real.pi : ℂ) * Complex.I * deriv φ 0)) := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  Away from the origin `ReLU^` equals
+/-- **Corollary [cor:5.5]** ReLU is admissible.  Away from the origin `ReLU^` equals
 `-ω^{-2}`: `⟨ReLU^, φ⟩ = ∫ (-ω^{-2}) φ(ω) dω` for every Schwartz `φ` supported away from `0`. -/
-theorem cor_5_3_ii :
+theorem cor_5_5_ii :
     ∀ φ : SchwartzMap ℝ ℂ, (0 : ℝ) ∉ tsupport φ →
       angularFourierDistribution reluDistribution φ = ∫ ω : ℝ, -((ω : ℂ) ^ 2)⁻¹ * φ ω := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  If `ρ̂ ∈ C_c^∞(ℝ ∖ {0})` is
-nonzero, even, and nonpositive, then `C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω`. -/
-theorem cor_5_3_iii {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+/-- **Corollary [cor:5.5]** ReLU is admissible.  If `ρ♯ ∈ C_c^∞(ℝ ∖ {0})` is
+nonzero, even, and nonpositive, then `C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω`. -/
+theorem cor_5_5_iii {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) :
     temperedAdmissibilityConst α reluDistribution ρ = (reluAdmissibilityScale α ρ : ℂ) := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  Under the same hypotheses the
-constant `-(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω` is positive. -/
-theorem cor_5_3_iv {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+/-- **Corollary [cor:5.5]** ReLU is admissible.  Under the same hypotheses the
+constant `-(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω` is positive. -/
+theorem cor_5_5_iv {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) :
     0 < reluAdmissibilityScale α ρ := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  After rescaling, `ρ` is still
+/-- **Corollary [cor:5.5]** ReLU is admissible.  After rescaling, `ρ` is still
 band-pass and `C^{(α)}_{ReLU,ρ} = 1`. -/
-theorem cor_5_3_v {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
+theorem cor_5_5_v {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) :
@@ -200,10 +200,10 @@ theorem cor_5_3_v {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : Is
       temperedAdmissibilityConst α reluDistribution (reluNormalizedFilter α ρ) = 1 := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  With the rescaled filter the first
+/-- **Corollary [cor:5.5]** ReLU is admissible.  With the rescaled filter the first
 reconstruction formula holds with ReLU synthesis for every `α > 0`:
 `f = T_α⁻¹ S_{ReLU} R_ρ f` for `f ∈ 𝓔_α`. -/
-theorem cor_5_3_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem cor_5_5_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
@@ -215,10 +215,10 @@ theorem cor_5_3_vi (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
         (ridgeletExtension μ ν (reluNormalizedFilter α ρ) f)) := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  With the rescaled filter the second
+/-- **Corollary [cor:5.5]** ReLU is admissible.  With the rescaled filter the second
 reconstruction formula holds with ReLU synthesis for every `α > 0`:
 `g = S_{ReLU} (R_ρ T_α⁻¹ g)` for `g ∈ 𝓔_α'`. -/
-theorem cor_5_3_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
+theorem cor_5_5_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
@@ -229,11 +229,11 @@ theorem cor_5_3_vii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
       (ridgeletExtension μ ν (reluNormalizedFilter α ρ) (rieszInv μ ν g)) := by
   sorry
 
-/-- **Corollary [cor:5.3]** ReLU is admissible.  With the rescaled filter Theorem
+/-- **Corollary [cor:5.5]** ReLU is admissible.  With the rescaled filter Theorem
 A(iii) holds with ReLU synthesis for every `α > 0`: for `G` regular along rays and every `x`,
 the inner integral `∫ γ_G(a,c) ReLU(⟪a,x⟫ + c) dc` converges absolutely for `ν`-almost every
 `a`, its `ν`-integral converges absolutely, and it equals `g_G(x)`. -/
-theorem cor_5_3_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
+theorem cor_5_5_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
@@ -249,80 +249,80 @@ theorem cor_5_3_viii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
         spectralTarget ν G x := by
   sorry
 
-/-! ### Example `ex:5.4` -/
+/-! ### Example `ex:5.6` -/
 
-/-- **Example [ex:5.4]** Standard activations.  ReLU is covered by Theorem
-`thm:5.2`, Theorem 4.2(iii), and the finite-width bounds: for every `α > 0`
+/-- **Example [ex:5.6]** Standard activations.  ReLU is covered by Theorem
+`thm:5.4`, Theorem 4.5(iii), and the finite-width bounds: for every `α > 0`
 there is a band-pass `ρ` with `C^{(α)}_{ReLU,ρ} ≠ 0`. -/
-theorem ex_5_4_relu {α : ℝ} (hα : 0 < α) :
+theorem ex_5_6_relu {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α reluDistribution ρ ≠ 0 := by
   sorry
 
-/-- **Example [ex:5.4]** Standard activations.  `tanh` is covered by Theorem
-`thm:5.2`, Theorem 4.2(iii), and the finite-width bounds: for every `α > 0`
+/-- **Example [ex:5.6]** Standard activations.  `tanh` is covered by Theorem
+`thm:5.4`, Theorem 4.5(iii), and the finite-width bounds: for every `α > 0`
 there is a band-pass `ρ` with `C^{(α)}_{tanh,ρ} ≠ 0`. -/
-theorem ex_5_4_tanh {α : ℝ} (hα : 0 < α) :
+theorem ex_5_6_tanh {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α tanhDistribution ρ ≠ 0 := by
   sorry
 
-/-- **Example [ex:5.4]** Standard activations.  The Gaussian distribution
-function `Φ` is covered by Theorem `thm:5.2`, Theorem 4.2(iii), and the
+/-- **Example [ex:5.6]** Standard activations.  The Gaussian distribution
+function `Φ` is covered by Theorem `thm:5.4`, Theorem 4.5(iii), and the
 finite-width bounds: for every `α > 0` there is a band-pass `ρ` with `C^{(α)}_{Φ,ρ} ≠ 0`. -/
-theorem ex_5_4_gaussianCdf {α : ℝ} (hα : 0 < α) :
+theorem ex_5_6_gaussianCdf {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧
       temperedAdmissibilityConst α gaussianCdfDistribution ρ ≠ 0 := by
   sorry
 
-/-- **Example [ex:5.4]** Standard activations.  The Gaussian `e^{-u²/2}` is
-covered by Theorem `thm:5.2`, Theorem 4.2(iii), and the finite-width bounds:
+/-- **Example [ex:5.6]** Standard activations.  The Gaussian `e^{-u²/2}` is
+covered by Theorem `thm:5.4`, Theorem 4.5(iii), and the finite-width bounds:
 for every `α > 0` there is a band-pass `ρ` with `C^{(α)}_{e^{-u²/2},ρ} ≠ 0`. -/
-theorem ex_5_4_gaussian {α : ℝ} (hα : 0 < α) :
+theorem ex_5_6_gaussian {α : ℝ} (hα : 0 < α) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧
       temperedAdmissibilityConst α gaussianDistribution ρ ≠ 0 := by
   sorry
 
-/-! ### Lemma `lem:C.1` -/
+/-! ### Lemma `lem:5.1` -/
 
-/-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is well defined on `𝒜_{s,t}`: its value is represented by an element
+/-- **Lemma [lem:5.1]** Hilbert structure and continuous activation pairing.  The
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is well defined on `𝒜_{s,t}`: its value is represented by an element
 of `L²(ℝ)`. -/
-theorem lem_C_1_i (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
+theorem lem_5_1_i (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) :
     ∃ σ : L2 ℝ volume,
       Lp.toTemperedDistributionCLM ℂ volume 2 σ = activationFourierCoordinate s t β := by
   sorry
 
-/-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is injective on `𝒜_{s,t}`. -/
-theorem lem_C_1_ii (s t : ℝ) (β β' : TemperedDistribution ℝ ℂ)
+/-- **Lemma [lem:5.1]** Hilbert structure and continuous activation pairing.  The
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is injective on `𝒜_{s,t}`. -/
+theorem lem_5_1_ii (s t : ℝ) (β β' : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) (hβ' : MemActivationSpace s t β')
     (h : activationCoordinate s t β = activationCoordinate s t β') :
     β = β' := by
   sorry
 
-/-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is onto `L²(ℝ)`: every `σ ∈ L²(ℝ)` is the coordinate of the activation
+/-- **Lemma [lem:5.1]** Hilbert structure and continuous activation pairing.  The
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is onto `L²(ℝ)`: every `σ ∈ L²(ℝ)` is the coordinate of the activation
 `β = 𝓕⁻¹[B^t ⟨ω⟩^{-s} σ] ∈ 𝒜_{s,t}` (the vendored `activationRealization`); the isometry is the
 definition of the norm `‖β‖_{𝒜_{s,t}} = ‖σ‖_{L²}`. -/
-theorem lem_C_1_iii (s t : ℝ) (σ : L2 ℝ volume) :
+theorem lem_5_1_iii (s t : ℝ) (σ : L2 ℝ volume) :
     MemActivationSpace s t (activationRealization s t σ) ∧
       activationCoordinate s t (activationRealization s t σ) = σ := by
   sorry
 
-/-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-duality bound `|(2π)⁻¹ ⟨β̂, r⟩| ≤ (2π)⁻¹ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}` for `β ∈ 𝒜_{s,t}` and
+/-- **Lemma [lem:5.1]** Hilbert structure and continuous activation pairing.  The
+duality bound `|(2π)⁻¹ ⟨β♯, r⟩| ≤ (2π)⁻¹ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}` for `β ∈ 𝒜_{s,t}` and
 Schwartz `r`. -/
-theorem lem_C_1_iv (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
+theorem lem_5_1_iv (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) (r : SchwartzMap ℝ ℂ) :
     ‖((2 * Real.pi)⁻¹ : ℝ) * angularFourierDistribution β r‖ ≤
       (2 * Real.pi)⁻¹ * activationNorm s t β * testFilterNorm s t r := by
   sorry
 
-/-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
+/-- **Lemma [lem:5.1]** Hilbert structure and continuous activation pairing.  The
 pairing extends to the completion of the test filters in `ℋ^♯_{s,t}`, which is `L²(ℝ)` through
 the coordinate `r ↦ ⟨ω⟩^{-s} B^t r`: there is a continuous linear functional on `L²(ℝ)` of norm
-at most `(2π)⁻¹ ‖β‖_{𝒜_{s,t}}` that agrees with `(2π)⁻¹ ⟨β̂, r⟩` on the test filters. -/
-theorem lem_C_1_v (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
+at most `(2π)⁻¹ ‖β‖_{𝒜_{s,t}}` that agrees with `(2π)⁻¹ ⟨β♯, r⟩` on the test filters. -/
+theorem lem_5_1_v (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) :
     ∃ Φ : L2 ℝ volume →L[ℂ] ℂ, ‖Φ‖ ≤ (2 * Real.pi)⁻¹ * activationNorm s t β ∧
       ∀ r : SchwartzMap ℝ ℂ,
@@ -330,76 +330,76 @@ theorem lem_C_1_v (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
           ((2 * Real.pi)⁻¹ : ℝ) * angularFourierDistribution β r := by
   sorry
 
-/-! ### Lemma `lem:C.2` -/
+/-! ### Lemma `lem:5.2` -/
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 ReLU belongs to `𝒜_{0,2}`. -/
-theorem lem_C_2_relu_mem : MemActivationSpaceFun 0 2 relu := by
+theorem lem_5_2_relu_mem : MemActivationSpaceFun 0 2 relu := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 ReLU is globally Lipschitz. -/
-theorem lem_C_2_relu_lipschitz : ∃ L : ℝ≥0, LipschitzWith L relu := by
+theorem lem_5_2_relu_lipschitz : ∃ L : ℝ≥0, LipschitzWith L relu := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 ReLU is not a polynomial. -/
-theorem lem_C_2_relu_not_polynomial : ¬ IsPolynomialFun relu := by
+theorem lem_5_2_relu_not_polynomial : ¬ IsPolynomialFun relu := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 `tanh` belongs to `𝒜_{0,2}`. -/
-theorem lem_C_2_tanh_mem : MemActivationSpaceFun 0 2 Real.tanh := by
+theorem lem_5_2_tanh_mem : MemActivationSpaceFun 0 2 Real.tanh := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 `tanh` is globally Lipschitz. -/
-theorem lem_C_2_tanh_lipschitz :
+theorem lem_5_2_tanh_lipschitz :
     ∃ L : ℝ≥0, LipschitzWith L Real.tanh := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 `tanh` is not a polynomial. -/
-theorem lem_C_2_tanh_not_polynomial : ¬ IsPolynomialFun Real.tanh := by
+theorem lem_5_2_tanh_not_polynomial : ¬ IsPolynomialFun Real.tanh := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian distribution function `Φ` belongs to `𝒜_{0,2}`. -/
-theorem lem_C_2_gaussianCdf_mem : MemActivationSpaceFun 0 2 gaussianCdf := by
+theorem lem_5_2_gaussianCdf_mem : MemActivationSpaceFun 0 2 gaussianCdf := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian distribution function `Φ` is globally Lipschitz. -/
-theorem lem_C_2_gaussianCdf_lipschitz :
+theorem lem_5_2_gaussianCdf_lipschitz :
     ∃ L : ℝ≥0, LipschitzWith L gaussianCdf := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian distribution function `Φ` is not a polynomial. -/
-theorem lem_C_2_gaussianCdf_not_polynomial :
+theorem lem_5_2_gaussianCdf_not_polynomial :
     ¬ IsPolynomialFun gaussianCdf := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian `e^{-u²/2}` belongs to `𝒜_{0,2}`. -/
-theorem lem_C_2_gaussian_mem : MemActivationSpaceFun 0 2 gaussianFun := by
+theorem lem_5_2_gaussian_mem : MemActivationSpaceFun 0 2 gaussianFun := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian `e^{-u²/2}` is globally Lipschitz. -/
-theorem lem_C_2_gaussian_lipschitz :
+theorem lem_5_2_gaussian_lipschitz :
     ∃ L : ℝ≥0, LipschitzWith L gaussianFun := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 The Gaussian `e^{-u²/2}` is not a polynomial. -/
-theorem lem_C_2_gaussian_not_polynomial : ¬ IsPolynomialFun gaussianFun := by
+theorem lem_5_2_gaussian_not_polynomial : ¬ IsPolynomialFun gaussianFun := by
   sorry
 
-/-- **Lemma [lem:C.2]** Standard activations and admissible test filters.
+/-- **Lemma [lem:5.2]** Standard activations and admissible test filters.
 For every non-polynomial real `β ∈ 𝒮'` there is a real band-pass `ρ` with
 `C^{(α)}_{β,ρ} = 1`. -/
-theorem lem_C_2_exists_filter {α : ℝ} (hα : 0 < α)
+theorem lem_5_2_exists_filter {α : ℝ} (hα : 0 < α)
     (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (hpoly : ¬ IsPolynomialDistribution β) :
     ∃ ρ : SchwartzMap ℝ ℝ, IsBandPass ρ ∧ temperedAdmissibilityConst α β ρ = 1 := by

@@ -2,6 +2,7 @@
 """Check rendered manuscript numbering, kinds, and cross-chapter proof links."""
 
 import json
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -38,13 +39,19 @@ def main():
     expected_chapters = {
         "2": "networks", "3": "transform", "4": "reconstruction", "5": "tempered",
         "6": "sampling", "7": "examples",
-        **{letter: "appendix-" + letter.lower() for letter in "ABCDEF"},
+        **{letter: "appendix-" + letter.lower() for letter in "ABCDE"},
     }
-    retired_labels = {"lem:F.1", "lem:F.2", "lem:F.4", "thm:H.1",
-                      "aux:hilbert-schmidt", "aux:operator-neuron",
-                      "roadmap:finite-dim-universality"}
+    retired_labels = {"aux:hilbert-schmidt", "aux:operator-neuron",
+                      "roadmap:finite-dim-universality", "aux:backprojection", "aux:hermite",
+                      "aux:explicit-filters", "aux:gaussian-parameter-networks",
+                      "aux:operator-layer", "aux:torus", "aux:dirichlet"}
     assert not retired_labels.intersection(by_label), "Retired nodes remain in graph"
     assert len(items) == 62, "Unexpected manuscript inventory"
+    polar = "roadmap:polar-decomposition"
+    assert by_label[polar]["href"].startswith("networks/"), "Polar background misplaced"
+    edges = {(plain(edge["source"]), plain(edge["target"]))
+             for edge in manifest["graphs"][0]["edges"]}
+    assert {(polar, "def:2.2"), (polar, "def:6.1")} <= edges, "Polar dependencies missing"
     proof_count = 0
     for item in items:
         label = item["blueprint_label"]
@@ -67,17 +74,43 @@ def main():
             if urlsplit(proof["href"]).path != statement_route:
                 page = SITE / statement_route / "index.html"
                 assert f'href="{proof["href"]}"' in page.read_text(), (
-                    label, "Missing direct link to appendix proof")
+                    label, "Missing direct link to proof")
+            if chapter.isdigit():
+                assert urlsplit(proof["href"]).path == statement_route, (
+                    label, "Main proof must immediately follow its statement")
             proof_count += 1
         for warning, active in node["warnings"].items():
             assert not active, (label, warning)
-    for label in ["ex:3.12", "ex:3.13", "prop:5.8"]:
-        assert previews[label, "proof"]["href"].startswith("appendix-g/"), label
-    assert "/supplementary-estimates/" in previews["cor:D.7", "statement"]["href"], (
-        "New D.7 must not reuse the retired operator-approximation URL")
-    assert by_label["prop:F.3"]["href"].startswith("appendix-f/"), "Dilation result misplaced"
-    for route in ["numerics/", "discussion/", "appendix-g/", "appendix-h/"]:
+    by_source = {item["label"]: item for item in items}
+    dilation = by_source["prop:dilation-obstruction"]["blueprint_label"]
+    assert by_label[dilation]["href"].startswith("appendix-d/"), "Dilation result misplaced"
+    for route in ["numerics/", "discussion/", "appendix-a/", "appendix-b/",
+                  "appendix-c/", "appendix-d/", "appendix-e/"]:
         check_link(route)
+    chapter_sources = ROOT / "OperatorRidgeletBlueprint/Chapters"
+    main_order = []
+    for name in ["Networks", "Transform", "Reconstruction", "Tempered", "Sampling", "Examples"]:
+        text = (chapter_sources / (name + ".lean")).read_text()
+        authored = re.findall(r'^:::(?!proof)\w+ "([^"\n]+)"', text, re.M)
+        main_order.extend(label for label in authored if label in by_label)
+    numbered = {item["blueprint_label"]: item for item in items}
+    actual = [label for label in main_order if label in numbered]
+    expected = sorted((label for label, item in numbered.items()
+                       if item["number"].split(".")[0].isdigit()),
+                      key=lambda label: tuple(map(int, numbered[label]["number"].split("."))))
+    assert actual == expected, "Authored Blueprint order differs from manuscript order"
+    positions = {label: i for i, label in enumerate(actual)}
+    for name in ["Transform", "Reconstruction", "Tempered", "Sampling", "Examples"]:
+        text = (chapter_sources / (name + ".lean")).read_text()
+        proof_pattern = r'^:::proof "([^"\n]+)"([^\n]*)\n(.*?)^:::\s*$'
+        for proof in re.finditer(proof_pattern, text, re.M | re.S):
+            attrs = re.search(r'uses := "([^"\n]*)"', proof[2])
+            deps = set(attrs[1].split(", ") if attrs else [])
+            deps.update(re.findall(r'\{bpref "([^"\n]+)"', proof[3]))
+            for dep in deps:
+                if dep in numbered:
+                    assert dep in positions and positions[dep] < positions[proof[1]], (
+                        proof[1], "Forward main proof dependency", dep)
     labels = {item["blueprint_label"] for item in items}
     old_labels = {item["label"] for item in items} - labels
     assert not old_labels.intersection(by_label), "Retired manuscript labels in graph"

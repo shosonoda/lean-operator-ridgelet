@@ -19,7 +19,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
 /-- The ray function is smooth: it is a product of smooth functions on a neighbourhood of the
-window, and vanishes on the open complement of the support of `ρ̂`. -/
+window, and vanishes on the open complement of the support of `ρ♯`. -/
 theorem contDiff_rayFilterFun_of_contDiff {n : ℕ∞} {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) {I : Set ℝ}
     (hI : IsFrequencyWindow ρ I) {G : H → Y} {a : H} {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
@@ -36,7 +36,7 @@ theorem contDiff_rayFilterFun_of_contDiff {n : ℕ∞} {ρ : SchwartzMap ℝ ℝ
     rw [rayFilterFun, image_eq_zero_of_notMem_tsupport hy, zero_smul]
 
 /-- **Leibniz' rule on the window.**  The derivatives of the ray function on `I` are bounded by
-the derivatives of `ρ̂` times the ray derivatives of `G`; the window being symmetric, the ray
+the derivatives of `ρ♯` times the ray derivatives of `G`; the window being symmetric, the ray
 derivatives at `-a` are those at `a` reflected. -/
 theorem norm_iteratedDeriv_rayFilterFun_le_of_contDiff {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) {I : Set ℝ}
@@ -86,7 +86,7 @@ theorem norm_iteratedDeriv_rayFilterFun_le_of_contDiff {ρ : SchwartzMap ℝ ℝ
   exact_mod_cast congrArg (Nat.cast : ℕ → ℝ) (Nat.sum_range_choose k)
 
 /-- The `L¹` norm of the `k`-th derivative of the ray function is bounded by the measure of the
-support of `ρ̂` times the pointwise bound. -/
+support of `ρ♯` times the pointwise bound. -/
 theorem integral_norm_iteratedDeriv_rayFilterFun_le_of_contDiff {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ)
     {I : Set ℝ} (hI : IsFrequencyWindow ρ I) {G : H → Y} {a : H} {U : Set ℝ} (hU : IsOpen U)
@@ -234,7 +234,7 @@ theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : Sch
 
 variable [MeasurableSpace H] [BorelSpace H]
 
-/-- **The moment bound of Theorem `thm:6.4`.**  There is a constant, depending only on `ρ`, `I`
+/-- **The moment bound of Theorem `thm:6.6`.**  There is a constant, depending only on `ρ`, `I`
 and `m`, with `∫ (1 + ‖a‖ + |c|)^m ‖γ_G‖ dλ_α ≤ c M_{m+2}(G)` for every density `G` regular
 along rays. -/
 theorem finiteCoefficientMomentConstant_spec

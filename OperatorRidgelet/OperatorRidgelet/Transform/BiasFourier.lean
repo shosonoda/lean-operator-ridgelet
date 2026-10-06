@@ -4,13 +4,13 @@ import OperatorRidgelet.ToMathlib.IndicatorTendstoL2
 /-!
 # The partial Fourier transform in the bias of a square-integrable coefficient
 
-Section 3 material behind Theorem `thm:4.3`(iv) and Proposition `prop:B.8`:
+Section 3 material behind Theorem `thm:4.8`(iv) and Proposition `prop:B.1`:
 the bias-Fourier representatives of `HasBiasFourier` are unique up to null sets for almost every
 direction, they satisfy Plancherel and Parseval in the bias variable, and every `γ ∈ L²(λ)` has a
 jointly measurable representative.
 
 * **Uniqueness for a fixed direction.**  Two square-integrable functions on `ℝ` with the same
-  pairing against `φ̂` for every Schwartz `φ` agree almost everywhere
+  pairing against `φ♯` for every Schwartz `φ` agree almost everywhere
   (`ae_eq_of_forall_integral_mul_conj_lineFourier_eq`): the Fourier transform is a bijection of
   the Schwartz space, and test functions determine locally integrable functions.  Hence two
   representatives of the same coefficient agree almost everywhere for almost every direction
@@ -130,7 +130,7 @@ theorem integral_fourier_toLp_mul_conj_fourier_schwartz {u : ℝ → ℂ} (hu : 
   rw [hx]
 
 /-- The `L²` Fourier transform of `u ∈ L²(ℝ)` in the manuscript's convention
-`û(ω) = ∫ u(t) e^{-itω} dt`: Mathlib's `L²` Fourier transform at the rescaled frequency
+`u♯(ω) = ∫ u(t) e^{-itω} dt`: Mathlib's `L²` Fourier transform at the rescaled frequency
 `ω / 2π`. -/
 def lineFourierL2 (u : ℝ → ℂ) (hu : MemLp u 2 volume) (ω : ℝ) : ℂ :=
   (𝓕 (hu.toLp u) : Lp ℂ 2 (volume : Measure ℝ)) ((2 * Real.pi)⁻¹ * ω)
@@ -141,7 +141,7 @@ theorem memLp_lineFourierL2 {u : ℝ → ℂ} (hu : MemLp u 2 volume) :
   (Lp.memLp _).comp_mul_left (by positivity)
 
 /-- The polarized Plancherel identity for `lineFourierL2`:
-`∫ û conj(v̂) dω = 2π ∫ u conj v dc`. -/
+`∫ u♯ conj(v♯) dω = 2π ∫ u conj v dc`. -/
 theorem integral_lineFourierL2_mul_conj {u v : ℝ → ℂ} (hu : MemLp u 2 volume)
     (hv : MemLp v 2 volume) :
     ∫ ω, lineFourierL2 u hu ω * (starRingEnd ℂ) (lineFourierL2 v hv ω) =
@@ -165,7 +165,7 @@ theorem integral_mul_conj_eq_lineFourierL2 {u : ℝ → ℂ} (hu : MemLp u 2 vol
     Complex.ofReal_one, one_mul]
   exact (integral_fourier_toLp_mul_conj_fourier_schwartz hu φ).symm
 
-/-- Plancherel for `lineFourierL2`: `∫⁻ ‖û‖ₑ² dω = 2π ∫⁻ ‖u‖ₑ² dc`. -/
+/-- Plancherel for `lineFourierL2`: `∫⁻ ‖u♯‖ₑ² dω = 2π ∫⁻ ‖u‖ₑ² dc`. -/
 theorem lintegral_lineFourierL2_sq {u : ℝ → ℂ} (hu : MemLp u 2 volume) :
     ∫⁻ ω, ‖lineFourierL2 u hu ω‖ₑ ^ 2 = ENNReal.ofReal (2 * Real.pi) * ∫⁻ c, ‖u c‖ₑ ^ 2 := by
   unfold lineFourierL2

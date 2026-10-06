@@ -7,7 +7,7 @@ import Mathlib.MeasureTheory.Function.LpSpace.ContinuousCompMeasurePreserving
 /-!
 # The periodic convolution layer
 
-Elementary facts about the convolution layer of Example `ex:7.5`: the directions
+Elementary facts about the convolution layer of Example `ex:7.8`: the directions
 `a_y = k(y - ·)` and outputs `b_y = ψ(· - y)` are translates, so they all have the norm of `k`
 and of `ψ` (`norm_convDirection`, `norm_convOutput`), and the pairing `⟪a_y, x⟫` is the
 convolution `(k * x)(y)` (`inner_convDirection`).  Translation acts continuously on `L²`, so
@@ -35,19 +35,19 @@ theorem norm_convOutput (ψ : TorusL2 d) (y : Torus d) : ‖convOutput ψ y‖ =
   unfold convOutput
   rw [norm_ofRealCLM_compLp, LinearIsometry.norm_map]
 
-/-- **Example `ex:7.5`**: `‖A‖_∞ = ‖k‖₂`. -/
+/-- **Example `ex:7.8`**: `‖A‖_∞ = ‖k‖₂`. -/
 theorem layerSupNorm_convDirection (k : TorusL2 d) : layerSupNorm (convDirection k) = ‖k‖ := by
   unfold layerSupNorm
   simp_rw [norm_convDirection]
   exact ciSup_const
 
-/-- **Example `ex:7.5`**: `∫ ‖b_y‖ dy = ‖ψ‖₂`. -/
+/-- **Example `ex:7.8`**: `∫ ‖b_y‖ dy = ‖ψ‖₂`. -/
 theorem integral_norm_convOutput (ψ : TorusL2 d) :
     ∫ y, ‖convOutput ψ y‖ ∂torusHaar d = ‖ψ‖ := by
   simp_rw [norm_convOutput]
   simp
 
-/-- **Example `ex:7.5`**: `⟪a_y, x⟫ = (k * x)(y)`. -/
+/-- **Example `ex:7.8`**: `⟪a_y, x⟫ = (k * x)(y)`. -/
 theorem inner_convDirection (k x : TorusL2 d) (y : Torus d) :
     ⟪convDirection k y, x⟫ = ∫ t, k (y - t) * x t ∂torusHaar d := by
   rw [L2.inner_def]
@@ -88,7 +88,7 @@ theorem continuous_convOutput (ψ : TorusL2 d) : Continuous (convOutput ψ) :=
   (Complex.ofRealCLM.compLpL 2 (torusHaar d)).continuous.comp
     (continuous_torusTranslate_apply ψ)
 
-/-- **Example `ex:7.5`**: the standing hypotheses of the neural-operator layer hold. -/
+/-- **Example `ex:7.8`**: the standing hypotheses of the neural-operator layer hold. -/
 theorem isLayerData_conv (k ψ : TorusL2 d) :
     IsLayerData (torusHaar d) (convDirection k) (convOutput ψ) where
   stronglyMeasurable_a := (continuous_convDirection k).stronglyMeasurable
@@ -134,7 +134,7 @@ theorem integrable_conv_integrand (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ : C
   · rw [Real.norm_eq_abs]
     exact hC p.1
 
-/-- **Example `ex:7.5`**: the layer is the convolution `ℱ(x) = ψ * β(k * x)`. -/
+/-- **Example `ex:7.8`**: the layer is the convolution `ℱ(x) = ψ * β(k * x)`. -/
 theorem operatorLayer_conv_coeFn_ae (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ : Continuous β)
     (x : TorusL2 d) :
     ⇑(operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β x)
@@ -173,7 +173,7 @@ theorem inner_torusOne_convOutput (ψ : TorusL2 d) (y : Torus d) :
   rw [RCLike.inner_apply, ht, ht']
   simp
 
-/-- **Example `ex:7.5`**: with `φ ≡ 1` the observable is
+/-- **Example `ex:7.8`**: with `φ ≡ 1` the observable is
 `F_1(x) = ψ̂(0) ∫ β((k * x)(y)) dy`. -/
 theorem layerObservable_conv_torusOne (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ : Continuous β)
     (x : TorusL2 d) :
@@ -222,7 +222,7 @@ theorem torusTranslateC_convOutput (ψ : TorusL2 d) (y z : Torus d) :
   simp only [Function.comp_apply] at h2
   rw [h1, h3, h2, sub_sub, add_comm]
 
-/-- **Example `ex:7.5`**: the layer commutes with translations, `ℱ(τ_z x) = τ_z ℱ(x)`. -/
+/-- **Example `ex:7.8`**: the layer commutes with translations, `ℱ(τ_z x) = τ_z ℱ(x)`. -/
 theorem operatorLayer_conv_torusTranslate (k ψ : TorusL2 d) {β : ℝ → ℝ} (hβ : Continuous β)
     (z : Torus d) (x : TorusL2 d) :
     operatorLayer (torusHaar d) (convDirection k) (convOutput ψ) β (torusTranslate d z x) =
@@ -302,7 +302,7 @@ theorem compMeasurePreserving_convOutput {σ : Torus d ≃+ Torus d}
   simp only [Function.comp_apply] at h1 h2 h4
   rw [h1, h2, h3, ← h4, map_sub, AddEquiv.apply_symm_apply]
 
-/-- **Example `ex:7.5`**: the layer commutes with every measure-preserving isometry of
+/-- **Example `ex:7.8`**: the layer commutes with every measure-preserving isometry of
 the torus fixing `k` and `ψ`: `ℱ(x ∘ σ) = ℱ(x) ∘ σ`. -/
 theorem operatorLayer_conv_compMeasurePreserving {σ : Torus d ≃+ Torus d} (hiso : Isometry σ)
     (hσ : MeasurePreserving σ (torusHaar d) (torusHaar d)) (k ψ : TorusL2 d) {β : ℝ → ℝ}

@@ -12,7 +12,7 @@ import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 
 /-!
-# Definitions for Section 5 (reconstruction formulas and activation functions) and Appendix C
+# Definitions for Section 5 (reconstruction formulas and activation functions)
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
@@ -31,33 +31,33 @@ A synthesis activation is a tempered distribution `β : TemperedDistribution ℝ
 "`β` is a polynomial", equivalently `β = 0` in `𝒮'/𝒫`, is `IsPolynomialDistribution`: `β` acts by
 integration against a polynomial.
 
-## Regularized synthesis (Definition `def:5.1`)
+## Regularized synthesis (Definition `def:5.3`)
 
 The cutoff `χ` and the approximate identity `(η_ε)_{ε>0}` are functions `ℝ → ℝ` and
 `ℝ → ℝ → ℝ` with the predicates `IsCutoff ρ χ` (even, `C_c^∞(ℝ ∖ {0})`, equal to one on a
-neighbourhood of `supp ρ̂`) and `IsApproximateIdentity η` (each `η_ε`, `ε > 0`, is smooth,
+neighbourhood of `supp ρ♯`) and `IsApproximateIdentity η` (each `η_ε`, `ε > 0`, is smooth,
 compactly supported, even, nonnegative, with integral one, and the supports shrink to `{0}` as
 `ε ↓ 0`; a mollifier `η_ε = ε⁻¹ η(·/ε)` is the standard instance).  The convolution of a
 tempered distribution with a test function is `(u * η)(ω) = ⟨u, η(ω - ·)⟩`
-(`distributionConvolution`), the regularized spectrum is `β̂_ε = χ (β̂ * η_ε)`
+(`distributionConvolution`), the regularized spectrum is `β♯_ε = χ (β♯ * η_ε)`
 (`regularizedSpectrum`), and `β_ε` (`regularizedActivation`) is the real Schwartz function with
 this Fourier transform, obtained by choice (junk `0` if none; uniqueness follows from Fourier
 injectivity).  The claims implicit in the definition (existence of `χ` and `(η_ε)`, membership
-`β̂_ε ∈ C_c^∞(ℝ ∖ {0})`, existence and uniqueness of `β_ε`, well-definedness of `S_{β_ε} γ`) are
+`β♯_ε ∈ C_c^∞(ℝ ∖ {0})`, existence and uniqueness of `β_ε`, well-definedness of `S_{β_ε} γ`) are
 the theorems `OperatorRidgelet.Paper.def_regularized_synthesis_*`.
 
 ## The anti-dual `𝓔_α'`, the extended transform, synthesis, and the Riesz map
 
 Section 4 defines `𝓔_α'` as the continuous *anti-dual* of `𝓔_α`, `S_ρ := R_ρ'` and the Riesz
-map `T_α = J_α`, `J_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the Section 4 definitions of
+map `T_α`, `T_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the Section 4 definitions of
 `OperatorRidgelet.Reconstruction.Defs`, used here without change:
 
 * `SpectralAntiDual μ ν = spectralRange μ ν →L⋆[ℂ] ℂ`, the continuous conjugate-linear
   functionals on `𝒦_α` (which represents `𝓔_α`, see `Transform/Defs.lean`);
-* `ridgeletExtension μ ν ρ : 𝒦_α →L[ℂ] L²(λ)`, the bounded extension `R_ρ` of Theorem 3.11(ii),
+* `ridgeletExtension μ ν ρ : 𝒦_α →L[ℂ] L²(λ)`, the bounded extension `R_ρ` of Theorem 3.14(ii),
   chosen from its defining property (a continuous linear map agreeing a.e. with `R_ρ` on
-  `U_α(𝒟_α)`).  Its identification with the coefficient operator, `R_ρ G = W_ρ G` for
-  `G ∈ 𝒦_α`, is the content of Theorem 3.11(ii) and Theorem 4.3(iii), i.e. a theorem and not a
+  `F_Q(𝒟_α)`).  Its identification with the coefficient operator, `R_ρ G = W_ρ G` for
+  `G ∈ 𝒦_α`, is the content of Theorem 3.14(ii) and Theorem 4.8(iii), i.e. a theorem and not a
   definition;
 * `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, the transpose `(innerSLFlip ℂ γ).comp (R_ρ)`, so that
   `(S_ρ γ)[g] = ⟪R_ρ g, γ⟫ = ⟨γ, R_ρ g⟩_{L²(λ)}` holds by definition (Mathlib's inner product is
@@ -67,15 +67,15 @@ map `T_α = J_α`, `J_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the S
 
 An earlier version of this module carried local stand-ins for these objects in a namespace
 `Tempered` (`spectralAntiDual`, `ridgeletExtension G := W_ρ G`, a `synthesisFunctional` and a
-`rieszInv` obtained by choice, and for Corollary `cor:5.3` a real-valued
+`rieszInv` obtained by choice, and for Corollary `cor:5.5` a real-valued
 `rayDerivBound`, an `IsRayRegular` with a Bochner-integrable moment, and a `spectralTarget`).
 They were removed in favour of the Section 4 definitions: the extension by choice makes
 `synthesis` a genuine composition of continuous linear maps (no choice, and `S_ρ` is defined on
 all of `L²(λ)` rather than through an existence statement), the Riesz inverse through
 `InnerProductSpace.toDual` needs no junk value, and the `ℝ≥0∞`-valued ray bounds make the
 moment condition `M_m(G) < ∞` literal instead of relying on a junk supremum when the derivative
-bounds are unbounded.  Corollary `cor:5.3`(viii) is therefore stated exactly as the
-instance `b = ReLU` of Theorem 4.2(iii) (`IsFrequencyWindow`, `IsRegularAlongRays`,
+bounds are unbounded.  Corollary `cor:5.5`(viii) is therefore stated exactly as the
+instance `b = ReLU` of Theorem 4.5(iii) (`IsFrequencyWindow`, `IsRegularAlongRays`,
 `spectralTarget`).
 
 The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ = synthesis μ ν β_ε γ` is
@@ -85,7 +85,7 @@ the limit exists (junk `0` otherwise). This is a norm limit in the continuous an
 Here the activation is a tempered distribution; convergence of an ordinary network integral
 requires separate integrability hypotheses.
 
-## Standard activations and the weighted Sobolev spaces (Appendix C)
+## Standard activations and the weighted Sobolev spaces (Section 5)
 
 ReLU and `tanh` are the vendored realizations `reluTemperedDistribution` and
 `tanhTemperedDistribution` (with weight exponent `t = 2`); the Gaussian distribution function
@@ -93,7 +93,7 @@ ReLU and `tanh` are the vendored realizations `reluTemperedDistribution` and
 `weightedDistribution t β = ⟨x⟩^t (⟨x⟩^{-t} β)` with `⟨x⟩^{-t} β ∈ L²(ℝ)`, which acts by
 integration against `β`.  "`β ∈ 𝒜_{s,t}`" for a function `β` is `MemActivationSpaceFun s t β`:
 some tempered distribution acting by integration against `β` satisfies the vendored
-`MemActivationSpace s t`.  The coordinate `⟨ω⟩^s B^{-t} β̂` of the manuscript's isometry
+`MemActivationSpace s t`.  The coordinate `⟨ω⟩^s B^{-t} β♯` of the manuscript's isometry
 `𝒜_{s,t} → L²(ℝ)` is `activationFourierCoordinate` (as a distribution) and
 `activationCoordinate` (as the `L²` element representing it, by choice), the norm
 `‖β‖_{𝒜_{s,t}}` is `activationNorm`, and the dual test norm `‖r‖_{ℋ^♯_{s,t}}` is
@@ -134,7 +134,7 @@ def distributionConvolution (u : TemperedDistribution ℝ ℂ) (η : ℝ → ℝ
 
 /-! ### Cutoffs, approximate identities, and the regularized activations -/
 
-/-- An even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ̂`. -/
+/-- An even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ♯`. -/
 structure IsCutoff (ρ : SchwartzMap ℝ ℝ) (χ : ℝ → ℝ) : Prop where
   /-- `χ` is smooth. -/
   contDiff : ContDiff ℝ (⊤ : ℕ∞) χ
@@ -144,7 +144,7 @@ structure IsCutoff (ρ : SchwartzMap ℝ ℝ) (χ : ℝ → ℝ) : Prop where
   zero_notMem_tsupport : (0 : ℝ) ∉ tsupport χ
   /-- `χ` is even. -/
   even : ∀ ω : ℝ, χ (-ω) = χ ω
-  /-- `χ = 1` on a neighbourhood of `supp ρ̂`. -/
+  /-- `χ = 1` on a neighbourhood of `supp ρ♯`. -/
   eventuallyEq_one : ∀ᶠ ω in 𝓝ˢ (tsupport (filterFourier ρ)), χ ω = 1
 
 /-- An even, compactly supported, smooth approximate identity `(η_ε)_{ε>0}`: for every `ε > 0`
@@ -164,13 +164,13 @@ structure IsApproximateIdentity (η : ℝ → ℝ → ℝ) : Prop where
   /-- The supports of `η_ε` shrink to `{0}` as `ε ↓ 0`. -/
   tendsto_tsupport : Tendsto (fun ε : ℝ => tsupport (η ε)) (𝓝[>] 0) (𝓝 (0 : ℝ)).smallSets
 
-/-- The regularized spectrum `β̂_ε = χ (β̂ * η_ε)` of a tempered activation `β`. -/
+/-- The regularized spectrum `β♯_ε = χ (β♯ * η_ε)` of a tempered activation `β`. -/
 def regularizedSpectrum (β : TemperedDistribution ℝ ℂ) (χ : ℝ → ℝ) (η : ℝ → ℝ → ℝ) (ε : ℝ)
     (ω : ℝ) : ℂ :=
   (χ ω : ℂ) * distributionConvolution (angularFourierDistribution β) (η ε) ω
 
 open Classical in
-/-- The regularized activation `β_ε`: the real Schwartz function with `β̂_ε = χ (β̂ * η_ε)`
+/-- The regularized activation `β_ε`: the real Schwartz function with `β♯_ε = χ (β♯ * η_ε)`
 (unique by Fourier injectivity), and `0` if there is none. -/
 def regularizedActivation (β : TemperedDistribution ℝ ℂ) (χ : ℝ → ℝ) (η : ℝ → ℝ → ℝ) (ε : ℝ) :
     SchwartzMap ℝ ℝ :=
@@ -249,7 +249,7 @@ def MemActivationSpaceFun (s t : ℝ) (β : ℝ → ℝ) : Prop :=
 
 /-! ### ReLU admissibility constants -/
 
-/-- The ReLU admissibility constant `-(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω` of a filter with real `ρ̂`. -/
+/-- The ReLU admissibility constant `-(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω` of a filter with real `ρ♯`. -/
 def reluAdmissibilityScale (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : ℝ :=
   -((2 * Real.pi)⁻¹ * ∫ ω : ℝ, (filterFourier ρ ω).re * |ω| ^ (-α - 2))
 
@@ -259,14 +259,14 @@ def reluNormalizedFilter (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ
 
 /-! ### Weighted Sobolev activation spaces -/
 
-/-- The coordinate `⟨ω⟩^s B^{-t} β̂` of `β` under the manuscript's isometry
+/-- The coordinate `⟨ω⟩^s B^{-t} β♯` of `β` under the manuscript's isometry
 `𝒜_{s,t} → L²(ℝ)`, as a tempered distribution. -/
 def activationFourierCoordinate (s t : ℝ) (β : TemperedDistribution ℝ ℂ) :
     TemperedDistribution ℝ ℂ :=
   temperedWeightMultiplier s (angularBesselPotential (-t) (angularFourierDistribution β))
 
 open Classical in
-/-- The `L²(ℝ)` element representing `⟨ω⟩^s B^{-t} β̂`, when there is one (i.e. when
+/-- The `L²(ℝ)` element representing `⟨ω⟩^s B^{-t} β♯`, when there is one (i.e. when
 `β ∈ 𝒜_{s,t}`), and `0` otherwise. -/
 def activationCoordinate (s t : ℝ) (β : TemperedDistribution ℝ ℂ) : L2 ℝ volume :=
   if h : ∃ σ : L2 ℝ volume,
@@ -274,7 +274,7 @@ def activationCoordinate (s t : ℝ) (β : TemperedDistribution ℝ ℂ) : L2 �
     h.choose
   else 0
 
-/-- The norm `‖β‖_{𝒜_{s,t}} = ‖⟨ω⟩^s B^{-t} β̂‖_{L²}`. -/
+/-- The norm `‖β‖_{𝒜_{s,t}} = ‖⟨ω⟩^s B^{-t} β♯‖_{L²}`. -/
 def activationNorm (s t : ℝ) (β : TemperedDistribution ℝ ℂ) : ℝ :=
   ‖activationCoordinate s t β‖
 

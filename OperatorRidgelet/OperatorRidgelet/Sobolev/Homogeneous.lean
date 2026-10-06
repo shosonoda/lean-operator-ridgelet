@@ -4,7 +4,7 @@ import OperatorRidgelet.Transform.Gaussian
 /-!
 # Polynomial moments of a homogeneous direction measure
 
-Appendix G of the manuscript uses one quantitative consequence of homogeneity: a measure `ν`
+Section 5 of the manuscript uses one quantitative consequence of homogeneity: a measure `ν`
 that is homogeneous of degree `α > 0` and finite on the unit ball has finite moments
 `∫ (1 + ‖a‖²)^e dν` for every exponent `2e + α < 0`
 (`eq:homogeneous-polynomial-integrability`).

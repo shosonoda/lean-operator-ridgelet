@@ -23,8 +23,8 @@ derivative bounds on these one-variable functions specified by `IsRegularAlongRa
 
 * `spectralTarget ν G` is `g_G(x) = ∫ e^{i⟪x,ξ⟫} G(ξ) ν(dξ)`, stated for a density `G` with
   values in any complex normed space (the scalar case is `Y = ℂ`, where `•` is `*`).
-* The compact symmetric set `I ⊆ ℝ ∖ {0}` containing `supp ρ̂` that the manuscript fixes before
-  Definition `def:4.1` is the predicate `IsFrequencyWindow ρ I`.
+* The compact symmetric set `I ⊆ ℝ ∖ {0}` containing `supp ρ♯` that the manuscript fixes before
+  Definition `def:4.2` is the predicate `IsFrequencyWindow ρ I`.
 * `rayDerivBound I G m a = max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` and the moment
   `rayMoment ν I G m = M_m(G)` are taken in `ℝ≥0∞`, so that "`M_m(G) < ∞`" is literally
   `rayMoment ν I G m < ⊤`; `IsRegularAlongRays ν I G` bundles boundedness, Borel measurability
@@ -43,49 +43,50 @@ constant `C^{(α)}_{β,ρ}` is `temperedAdmissibilityConst α β ρ` of
 ## The frame operator, the synthesis operator, and the reconstruction formulas
 
 `𝓔_α` is represented by `𝒦_α = spectralRange μ ν ⊆ L²(ν)` (see `OperatorRidgelet.Transform.Defs`),
-and `U_α` is the inclusion.  The manuscript's continuous anti-dual `𝓔_α'` is taken literally as
+and `F_Q` is the inclusion.  The manuscript's continuous anti-dual `𝓔_α'` is taken literally as
 the space `SpectralAntiDual μ ν = spectralRange μ ν →L⋆[ℂ] ℂ` of continuous conjugate-linear
 functionals, so that the values of all functionals agree with the manuscript without
 conjugation (Mathlib's inner product is conjugate linear in the first argument, the
 manuscript's in the second; `innerSLFlip ℂ f g = ⟪g, f⟫ = ⟨f,g⟩_manuscript`):
 
-* `rieszMap μ ν = J_α`, `J_α f [g] = ⟨f,g⟩_𝓔`, is `innerSLFlip ℂ`; `rieszInv μ ν = J_α⁻¹` is the
+* `rieszMap μ ν = T_α`, `T_α f [g] = ⟨f,g⟩_𝓔`, is `innerSLFlip ℂ`; `rieszInv μ ν = T_α⁻¹` is the
   Riesz representation, obtained from Mathlib's `InnerProductSpace.toDual` after conjugating the
   functional (`antiDualConj`).
-* `transposeEmbed μ ν F = U_α' F`, `U_α' F [g] = ⟨F, U_α g⟩_{L²(ν)}`.
-* `frameOperator μ ν f = T_α f = U_α' U_α f` takes values in the continuous anti-dual.
-  Theorem `thm:4.3`(i) says `T_α = J_α`, so `T_α⁻¹` is `rieszInv`. It describes the correction
+* `transposeEmbed μ ν F = F_Q' F`, `F_Q' F [g] = ⟨F, F_Q g⟩_{L²(ν)}`.
+* `frameOperator μ ν f = T_α f = F_Q' F_Q f` takes values in the continuous anti-dual.
+  Theorem `thm:4.8`(i) says that the frame operator is the Riesz map, so `T_α⁻¹` is `rieszInv`.
+    It describes the correction
   induced by the weights. With `C = admissibilityConst α ρ`, the reconstruction identity is
-  `R_ρ' R_ρ = C J_α = C T_α`; the Hilbert-space adjoint instead satisfies `R_ρ* R_ρ = C I`.
-* `ridgeletExtension μ ν ρ` is the bounded extension `R_ρ : 𝓔_α → L²(λ)` of Theorem `thm:3.11`(ii):
-  the continuous linear map agreeing almost everywhere with `f ↦ R_ρ f` on `U_α(𝒟_α)`, chosen
-  when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:3.11`(ii), a theorem
+  `R_ρ' R_ρ = C T_α`; the Hilbert-space adjoint instead satisfies `R_ρ* R_ρ = C I`.
+* `ridgeletExtension μ ν ρ` is the bounded extension `R_ρ : 𝓔_α → L²(λ)` of Theorem `thm:3.14`(ii):
+  the continuous linear map agreeing almost everywhere with `f ↦ R_ρ f` on `F_Q(𝒟_α)`, chosen
+  when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:3.14`(ii), a theorem
   and not a definition); `ridgeletRange μ ν ρ = Ran R_ρ`.
 * `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, `(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ)}` (`eq:weak-synthesis`).
 
-These are the only definitions of `𝓔_α'`, `R_ρ` on `𝓔_α`, `S_ρ`, `J_α`, `J_α⁻¹`, `g_G`, and
+These are the only definitions of `𝓔_α'`, `R_ρ` on `𝓔_α`, `S_ρ`, `T_α`, `T_α⁻¹`, `g_G`, and
 regularity along rays in the library: Section 5 (`OperatorRidgelet.Tempered.Defs`, the
-regularized synthesis `S_{β_ε}` and its limit `S_β`, and Corollary `cor:5.3`) and
+regularized synthesis `S_{β_ε}` and its limit `S_β`, and Corollary `cor:5.5`) and
 Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 ## Backprojection, coefficient projection, and the Hermite inverse
 
 * `backprojectionOf α ρ Φ ξ` is the integral `eq:ray-average` computed from a partial
-  bias-Fourier representative `Φ` of the coefficient; `backprojection α ν ρ γ = Λ_ρ γ` uses a
+  bias-Fourier representative `Φ` of the coefficient; `backprojection α ν ρ γ = W_ρ^* γ` uses a
   jointly measurable representative of `γ ∈ L²(λ)` chosen through `HasBiasFourier` (`0` if there
   is none), which requires `ω ↦ Φ(a, ω)` to be square integrable for almost every `a`;
-  Proposition `prop:B.8` states that the choice is immaterial.
-  `backprojectionLp` is `Λ_ρ γ` as an element of `L²(ν)`. Backprojection is the Hilbert-space
-  adjoint `Λ_ρ = W_ρ*` of the coefficient operator. The `coefficientProjection` is
-  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ`.  The space `𝒴` of Appendix B is `L²(λ)`: the norm defined
+  Proposition `prop:B.1` states that the choice is immaterial.
+  `backprojectionLp` is `W_ρ^* γ` as an element of `L²(ν)`. Backprojection is the Hilbert-space
+  adjoint `W_ρ^* = W_ρ*` of the coefficient operator. The `coefficientProjection` is
+  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} W_ρ^*`.  The space `𝒴` of Appendix B is `L²(λ)`: the norm defined
   through the partial Fourier transform in the bias coincides with the `L²(λ)`-norm by
   Plancherel.
-* `gaussFourierLine μ f ξ z = 𝒢_μ f(zξ) = ∫ f(x) e^{-iz⟪x,ξ⟫} μ(dx)` for complex `z` is the
-  analytic continuation of `z ↦ 𝒢_μ f(zξ)`; `hermiteExtension μ Q f ξ z = e^{z²τ(ξ)²/2} 𝒢_μ f(zξ)`
+* `gaussFourierLine μ f ξ z = F_μ f(zξ) = ∫ f(x) e^{-iz⟪x,ξ⟫} μ(dx)` for complex `z` is the
+  analytic continuation of `z ↦ F_μ f(zξ)`; `hermiteExtension μ Q f ξ z = e^{z²τ(ξ)²/2} F_μ f(zξ)`
   with `τ(ξ)² = ⟪Qξ,ξ⟫`; `hermiteCoefficient μ Q f ξ n = E_μ[f He_n(⟪x,ξ⟫/τ(ξ))]` with the
   probabilists' Hermite polynomials `Polynomial.hermite` of Mathlib (`He_{n+1} = X He_n - He_n'`).
-* `gaussFourierInv μ ν = Δ_Q`, the inverse of `𝒢_μ` on its range on `𝒟`, chosen as the element
-  of `𝒟` with the given transform (unique by Theorem `thm:4.3`(iv)) and `0` otherwise.
+* `gaussFourierInv μ ν = Δ_Q`, the inverse of `F_μ` on its range on `𝒟`, chosen as the element
+  of `𝒟` with the given transform (unique by Theorem `thm:4.8`(iv)) and `0` otherwise.
 
 ## Vector-valued targets
 
@@ -121,8 +122,8 @@ measure `G ν`; for a scalar density `•` is the product. -/
 def spectralTarget (ν : Measure H) (G : H → Y) (x : H) : Y :=
   ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) • G ξ ∂ν
 
-/-- The frequency window fixed before Definition `def:4.1`: a symmetric compact set
-`I ⊆ ℝ ∖ {0}` containing the support of `ρ̂`. -/
+/-- The frequency window fixed before Definition `def:4.2`: a symmetric compact set
+`I ⊆ ℝ ∖ {0}` containing the support of `ρ♯`. -/
 structure IsFrequencyWindow (ρ : ℝ → ℝ) (I : Set ℝ) : Prop where
   /-- `I` is compact. -/
   isCompact : IsCompact I
@@ -130,7 +131,7 @@ structure IsFrequencyWindow (ρ : ℝ → ℝ) (I : Set ℝ) : Prop where
   zero_notMem : (0 : ℝ) ∉ I
   /-- `I` is symmetric. -/
   neg_mem : ∀ ω ∈ I, -ω ∈ I
-  /-- `I` contains the support of `ρ̂`. -/
+  /-- `I` contains the support of `ρ♯`. -/
   tsupport_subset : tsupport (filterFourier ρ) ⊆ I
 
 /-- The derivative bound `max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G_a(ω)‖`, with
@@ -144,7 +145,7 @@ def rayDerivBound (I : Set ℝ) (G : H → Y) (m : ℕ) (a : H) : ℝ≥0∞ :=
 def rayMoment (ν : Measure H) (I : Set ℝ) (G : H → Y) (m : ℕ) : ℝ≥0∞ :=
   ∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I G m a ∂ν
 
-/-- **Definition [def:4.1]** A bounded Borel density `G` is regular along rays (with
+/-- **Definition [def:4.2]** A bounded Borel density `G` is regular along rays (with
 respect to the direction measure `ν` and the frequency window `I`) if for every direction `a`
 the restriction `G_a(ω) := G (ω • a)` to the line through the origin is `C^∞` on a
 neighbourhood of `I` and every weighted derivative integral `M_m(G)` is finite.
@@ -207,8 +208,8 @@ instance instCompleteSpaceSpectralRange (μ ν : Measure H) [IsFiniteMeasure μ]
   Submodule.topologicalClosure.completeSpace _
 
 open Classical in
-/-- The bounded extension `R_ρ : 𝓔 → L²(λ)` of Theorem `thm:3.11`(ii), represented on `𝒦`: the
-continuous linear map that agrees `λ`-almost everywhere with `f ↦ R_ρ f` on `U(𝒟)`, when one
+/-- The bounded extension `R_ρ : 𝓔 → L²(λ)` of Theorem `thm:3.14`(ii), represented on `𝒦`: the
+continuous linear map that agrees `λ`-almost everywhere with `f ↦ R_ρ f` on `F_Q(𝒟)`, when one
 exists, and `0` otherwise. -/
 def ridgeletExtension (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ) :
     spectralRange μ ν →L[ℂ] Lp ℂ 2 (parameterMeasure ν) :=
@@ -227,25 +228,25 @@ conjugate-linear functionals. -/
 abbrev SpectralAntiDual (μ ν : Measure H) [IsFiniteMeasure μ] : Type _ :=
   spectralRange μ ν →L⋆[ℂ] ℂ
 
-/-- The Riesz map `J : 𝓔 → 𝓔'`, `J f [g] = ⟨f, g⟩_𝓔` (`eq:riesz-map`), linear in `f` and
+/-- The Riesz map `T : 𝓔 → 𝓔'`, `T f [g] = ⟨f, g⟩_𝓔` (`eq:riesz-map`), linear in `f` and
 conjugate linear in `g`. -/
 def rieszMap (μ ν : Measure H) [IsFiniteMeasure μ] :
     spectralRange μ ν →L[ℂ] SpectralAntiDual μ ν :=
   innerSLFlip ℂ
 
-/-- The inverse Riesz map `J⁻¹ : 𝓔' → 𝓔`: the vector representing a continuous conjugate-linear
+/-- The inverse Riesz map `T⁻¹ : 𝓔' → 𝓔`: the vector representing a continuous conjugate-linear
 functional (Riesz representation theorem, through `InnerProductSpace.toDual`). -/
 def rieszInv (μ ν : Measure H) [IsFiniteMeasure μ] (F : SpectralAntiDual μ ν) :
     spectralRange μ ν :=
   (InnerProductSpace.toDual ℂ (spectralRange μ ν)).symm (antiDualConj F)
 
-/-- The anti-dual transpose `U' : L²(ν) → 𝓔'` of the unitary `U : 𝓔 → 𝒦 ⊆ L²(ν)`,
-`U' F [g] = ⟨F, U g⟩_{L²(ν)}` (`eq:transpose-analysis`). -/
+/-- The anti-dual transpose `F_Q' : L²(ν) → 𝓔'` of the unitary `F_Q : 𝓔 → 𝒦 ⊆ L²(ν)`,
+`F_Q' F [g] = ⟨F, F_Q g⟩_{L²(ν)}` (`eq:transpose-analysis`). -/
 def transposeEmbed (μ ν : Measure H) [IsFiniteMeasure μ] (F : Lp ℂ 2 ν) :
     SpectralAntiDual μ ν :=
   (innerSLFlip ℂ F).comp (spectralRange μ ν).subtypeL
 
-/-- The frame operator `T = U' U : 𝓔 → 𝓔'`. -/
+/-- The frame operator `T = F_Q' F_Q : 𝓔 → 𝓔'`. -/
 def frameOperator (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralRange μ ν) :
     SpectralAntiDual μ ν :=
   transposeEmbed μ ν (f : Lp ℂ 2 ν)
@@ -265,20 +266,20 @@ section Backprojection
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
 /-- The backprojection integral (`eq:ray-average`) of a partial bias-Fourier representative
-`Φ` of a coefficient: `Λ_ρ Φ (ξ) = (2π)⁻¹ ∫ conj(ρ̂(ω)) |ω|^{-α} Φ(-ξ/ω, ω) dω`. -/
+`Φ` of a coefficient: `W_ρ^* Φ (ξ) = (2π)⁻¹ ∫ conj(ρ♯(ω)) |ω|^{-α} Φ(-ξ/ω, ω) dω`. -/
 def backprojectionOf (α : ℝ) (ρ : ℝ → ℝ) (Φ : H → ℝ → ℂ) (ξ : H) : ℂ :=
   ((2 * Real.pi)⁻¹ : ℝ) *
     ∫ ω : ℝ, (starRingEnd ℂ) (filterFourier ρ ω) * ((|ω| ^ (-α) : ℝ) : ℂ) * Φ (-(ω⁻¹ • ξ)) ω
 
 open Classical in
-/-- The backprojection `Λ_ρ γ` of a coefficient `γ`, computed from a jointly measurable partial
+/-- The backprojection `W_ρ^* γ` of a coefficient `γ`, computed from a jointly measurable partial
 bias-Fourier representative of `γ` (`HasBiasFourier`), and `0` if there is none.
 
 `HasBiasFourier` requires `ω ↦ Φ(a, ω)` to be square integrable for `ν`-almost every `a`.
 It determines this frequency profile up to a null set (`HasBiasFourier.ae_ae_eq`). The
 substitution `(a, ω) ↦ (-ωa, ω)` preserves null sets by homogeneity, so the backprojection
 integral does not depend on the chosen representative as an element of `L²(ν)`
-(`prop_B_8_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
+(`prop_B_1_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
 (`exists_measurable_hasBiasFourier`), so the junk value is never taken on `L²(λ)`. -/
 def backprojection (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → ℂ) : H → ℂ :=
   if h : ∃ Φ : H → ℝ → ℂ, Measurable (Function.uncurry Φ) ∧ HasBiasFourier ν γ Φ then
@@ -286,14 +287,14 @@ def backprojection (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ
   else 0
 
 open Classical in
-/-- The backprojection `Λ_ρ γ` as an element of `L²(ν)` (`0` if it is not square
+/-- The backprojection `W_ρ^* γ` as an element of `L²(ν)` (`0` if it is not square
 integrable). -/
 def backprojectionLp (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → ℂ) : Lp ℂ 2 ν :=
   if h : MemLp (backprojection α ν ρ γ) 2 ν then h.toLp _ else 0
 
 variable [OpensMeasurableSpace H]
 
-/-- The coefficient projection `Π_ρ = C⁻¹ W_ρ P_𝒦 Λ_ρ` (`eq:coefficient-projection`), with
+/-- The coefficient projection `Π_ρ = C⁻¹ W_ρ P_𝒦 W_ρ^*` (`eq:coefficient-projection`), with
 `P_𝒦` the orthogonal projection of `L²(ν)` onto `𝒦`. -/
 def coefficientProjection (α : ℝ) (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ)
     (γ : H × ℝ → ℂ) : Lp ℂ 2 (parameterMeasure ν) :=
@@ -309,12 +310,12 @@ section Hermite
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
-/-- The analytic continuation `z ↦ 𝒢_μ f(zξ) = ∫ f(x) e^{-iz⟪x,ξ⟫} μ(dx)` of the weighted Fourier
+/-- The analytic continuation `z ↦ F_μ f(zξ) = ∫ f(x) e^{-iz⟪x,ξ⟫} μ(dx)` of the weighted Fourier
 transform on the line through `ξ` and the origin to complex `z`. -/
 def gaussFourierLine (μ : Measure H) (f : H → ℂ) (ξ : H) (z : ℂ) : ℂ :=
   ∫ x, f x * Complex.exp (-(z * (⟪x, ξ⟫ : ℝ) * Complex.I)) ∂μ
 
-/-- The entire function `G_f(zξ) = e^{z²τ(ξ)²/2} 𝒢_μ f(zξ)` of Lemma `lem:B.5`,
+/-- The entire function `G_f(zξ) = e^{z²τ(ξ)²/2} F_μ f(zξ)` of Lemma `lem:4.7`,
 with `τ(ξ)² = ⟪Qξ,ξ⟫`. -/
 def hermiteExtension (μ : Measure H) (Q : H →L[ℝ] H) (f : H → ℂ) (ξ : H) (z : ℂ) : ℂ :=
   Complex.exp (z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2) * gaussFourierLine μ f ξ z
@@ -328,8 +329,8 @@ def hermiteCoefficient (μ : Measure H) (Q : H →L[ℝ] H) (f : H → ℂ) (ξ 
 variable [OpensMeasurableSpace H]
 
 open Classical in
-/-- The inverse `Δ_Q` of `𝒢_μ` on its range on `𝒟`: the element `f ∈ 𝒟` with `𝒢_μ f = G` when
-one exists (it is unique by Theorem `thm:4.3`(iv)), and `0` otherwise. -/
+/-- The inverse `Δ_Q` of `F_μ` on its range on `𝒟`: the element `f ∈ 𝒟` with `F_μ f = G` when
+one exists (it is unique by Theorem `thm:4.8`(iv)), and `0` otherwise. -/
 def gaussFourierInv (μ ν : Measure H) [IsFiniteMeasure μ] (G : H → ℂ) : Lp ℂ 2 μ :=
   if h : ∃ f : Lp ℂ 2 μ, f ∈ spectralCore μ ν ∧ gaussFourier μ f = G then h.choose else 0
 
@@ -342,7 +343,7 @@ section VectorValued
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- The `Y`-valued weighted Fourier transform `𝒢_μ f(ξ) = ∫ e^{-i⟪x,ξ⟫} f(x) μ(dx)`, a Bochner
+/-- The `Y`-valued weighted Fourier transform `F_μ f(ξ) = ∫ e^{-i⟪x,ξ⟫} f(x) μ(dx)`, a Bochner
 integral. -/
 def gaussFourierVec (μ : Measure H) (f : H → Y) (ξ : H) : Y :=
   ∫ x, character ξ x • f x ∂μ
@@ -351,13 +352,13 @@ def gaussFourierVec (μ : Measure H) (f : H → Y) (ξ : H) : Y :=
 def ridgeletVec (μ : Measure H) (ρ : ℝ → ℝ) (f : H → Y) (p : H × ℝ) : Y :=
   ∫ x, (ρ (⟪p.1, x⟫ + p.2) : ℂ) • f x ∂μ
 
-/-- The explicit `Y`-valued coefficient `γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) e^{iωc} G(-ωa) dω`. -/
+/-- The explicit `Y`-valued coefficient `γ_G(a,c) = (2π)⁻¹ ∫ ρ♯(ω) e^{iωc} G(-ωa) dω`. -/
 def coefficientFormulaVec (ρ : ℝ → ℝ) (G : H → Y) (p : H × ℝ) : Y :=
   ((2 * Real.pi)⁻¹ : ℝ) •
     ∫ ω : ℝ, (filterFourier ρ ω * Complex.exp ((ω * p.2 : ℝ) * Complex.I)) • G (-(ω • p.1))
 
 /-- The partial Fourier transform in the bias of a `Y`-valued coefficient,
-`γ̂(a,ω) = ∫ e^{-iωc} γ(a,c) dc`. -/
+`γ♯(a,ω) = ∫ e^{-iωc} γ(a,c) dc`. -/
 def biasFourierVec (γ : H × ℝ → Y) (a : H) (ω : ℝ) : Y :=
   ∫ c : ℝ, Complex.exp (-((ω * c : ℝ) * Complex.I)) • γ (a, c)
 
@@ -375,7 +376,7 @@ structure HasBiasFourierVec (ν : Measure H) (γ : H × ℝ → Y) (Φ : H → �
 
 open Classical in
 /-- The `Y`-valued coefficient operator `W_ρ G ∈ L²(λ; Y)`: the element whose partial Fourier
-transform in the bias is `(a,ω) ↦ ρ̂(ω) G(-ωa)`, and `0` if there is none. -/
+transform in the bias is `(a,ω) ↦ ρ♯(ω) G(-ωa)`, and `0` if there is none. -/
 def spectralCoefficientVec (ν : Measure H) (ρ : ℝ → ℝ) (G : H → Y) :
     Lp Y 2 (parameterMeasure ν) :=
   if h : ∃ γ : Lp Y 2 (parameterMeasure ν),
@@ -383,12 +384,12 @@ def spectralCoefficientVec (ν : Measure H) (ρ : ℝ → ℝ) (G : H → Y) :
     h.choose
   else 0
 
-/-- The analytic continuation `z ↦ 𝒢_μ f(zξ)` of the `Y`-valued weighted Fourier transform along
+/-- The analytic continuation `z ↦ F_μ f(zξ)` of the `Y`-valued weighted Fourier transform along
 the line through `ξ` and the origin. -/
 def gaussFourierLineVec (μ : Measure H) (f : H → Y) (ξ : H) (z : ℂ) : Y :=
   ∫ x, Complex.exp (-(z * (⟪x, ξ⟫ : ℝ) * Complex.I)) • f x ∂μ
 
-/-- The `Y`-valued entire function `G_f(zξ) = e^{z²τ(ξ)²/2} 𝒢_μ f(zξ)`. -/
+/-- The `Y`-valued entire function `G_f(zξ) = e^{z²τ(ξ)²/2} F_μ f(zξ)`. -/
 def hermiteExtensionVec (μ : Measure H) (Q : H →L[ℝ] H) (f : H → Y) (ξ : H) (z : ℂ) : Y :=
   Complex.exp (z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2) • gaussFourierLineVec μ f ξ z
 
@@ -398,13 +399,13 @@ def hermiteCoefficientVec (μ : Measure H) (Q : H →L[ℝ] H) (f : H → Y) (ξ
     ∂μ
 
 /-- The `Y`-valued backprojection of a partial bias-Fourier representative `Φ`:
-`Λ_ρ Φ (ξ) = (2π)⁻¹ ∫ conj(ρ̂(ω)) |ω|^{-α} Φ(-ξ/ω, ω) dω`. -/
+`W_ρ^* Φ (ξ) = (2π)⁻¹ ∫ conj(ρ♯(ω)) |ω|^{-α} Φ(-ξ/ω, ω) dω`. -/
 def backprojectionOfVec (α : ℝ) (ρ : ℝ → ℝ) (Φ : H → ℝ → Y) (ξ : H) : Y :=
   ((2 * Real.pi)⁻¹ : ℝ) •
     ∫ ω : ℝ, ((starRingEnd ℂ) (filterFourier ρ ω) * ((|ω| ^ (-α) : ℝ) : ℂ)) • Φ (-(ω⁻¹ • ξ)) ω
 
 open Classical in
-/-- The `Y`-valued backprojection `Λ_ρ γ`, computed from a jointly strongly measurable partial
+/-- The `Y`-valued backprojection `W_ρ^* γ`, computed from a jointly strongly measurable partial
 bias-Fourier representative of `γ`, and `0` if there is none. -/
 def backprojectionVec (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → Y) : H → Y :=
   if h : ∃ Φ : H → ℝ → Y, StronglyMeasurable (Function.uncurry Φ) ∧ HasBiasFourierVec ν γ Φ then
@@ -412,7 +413,7 @@ def backprojectionVec (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × 
   else 0
 
 open Classical in
-/-- The `Y`-valued backprojection `Λ_ρ γ` as an element of `L²(ν; Y)`. -/
+/-- The `Y`-valued backprojection `W_ρ^* γ` as an element of `L²(ν; Y)`. -/
 def backprojectionLpVec (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → Y) : Lp Y 2 ν :=
   if h : MemLp (backprojectionVec α ν ρ γ) 2 ν then h.toLp _ else 0
 
@@ -459,7 +460,7 @@ theorem gaussFourierVec_add (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp Y 2 
   rw [hx, Pi.add_apply, smul_add]
 
 variable (Y) in
-/-- The `Y`-valued core `𝒟(Y) = {f ∈ L²(μ; Y) : 𝒢_μ f ∈ L²(ν; Y)}`. -/
+/-- The `Y`-valued core `𝒟(Y) = {f ∈ L²(μ; Y) : F_μ f ∈ L²(ν; Y)}`. -/
 def spectralCoreVec (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp Y 2 μ) where
   carrier := {f | MemLp (gaussFourierVec μ f) 2 ν}
   add_mem' {f g} hf hg := by
@@ -480,17 +481,17 @@ theorem mem_spectralCoreVec_iff (μ ν : Measure H) [IsFiniteMeasure μ] (f : Lp
     f ∈ spectralCoreVec Y μ ν ↔ MemLp (gaussFourierVec μ f) 2 ν :=
   Iff.rfl
 
-/-- `𝒢_μ f` as an element of `L²(ν; Y)`, for `f ∈ 𝒟(Y)`. -/
+/-- `F_μ f` as an element of `L²(ν; Y)`, for `f ∈ 𝒟(Y)`. -/
 def gaussFourierLpVec (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralCoreVec Y μ ν) :
     Lp Y 2 ν :=
   MemLp.toLp (gaussFourierVec μ f) f.2
 
 variable (Y) in
-/-- The closed subspace `𝒦(Y) = closure (𝒢_μ 𝒟(Y)) ⊆ L²(ν; Y)`, which represents `𝓔_α(Y)`. -/
+/-- The closed subspace `𝒦(Y) = closure (F_μ 𝒟(Y)) ⊆ L²(ν; Y)`, which represents `𝓔_α(Y)`. -/
 def spectralRangeVec (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp Y 2 ν) :=
   (Submodule.span ℂ (Set.range (gaussFourierLpVec μ ν))).topologicalClosure
 
-/-- The map `U : 𝒟(Y) → 𝒦(Y)`, `f ↦ 𝒢_μ f`. -/
+/-- The map `F_Q : 𝒟(Y) → 𝒦(Y)`, `f ↦ F_μ f`. -/
 def spectralEmbedVec (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralCoreVec Y μ ν) :
     spectralRangeVec Y μ ν :=
   ⟨gaussFourierLpVec μ ν f,
@@ -499,7 +500,7 @@ def spectralEmbedVec (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralCoreV
 variable (Y) in
 open Classical in
 /-- The bounded extension `R_ρ : 𝓔(Y) → L²(λ; Y)`, represented on `𝒦(Y)`: the continuous linear
-map agreeing almost everywhere with `f ↦ R_ρ f` on `U(𝒟(Y))`, when one exists, and `0`
+map agreeing almost everywhere with `f ↦ R_ρ f` on `F_Q(𝒟(Y))`, when one exists, and `0`
 otherwise. -/
 def ridgeletExtensionVec (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ) :
     spectralRangeVec Y μ ν →L[ℂ] Lp Y 2 (parameterMeasure ν) :=
@@ -515,7 +516,7 @@ def ridgeletRangeVec (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ)
   LinearMap.range (ridgeletExtensionVec Y μ ν ρ).toLinearMap
 
 open Classical in
-/-- The inverse `Δ_Q` of the `Y`-valued `𝒢_μ` on its range on `𝒟(Y)`. -/
+/-- The inverse `Δ_Q` of the `Y`-valued `F_μ` on its range on `𝒟(Y)`. -/
 def gaussFourierInvVec (μ ν : Measure H) [IsFiniteMeasure μ] (G : H → Y) : Lp Y 2 μ :=
   if h : ∃ f : Lp Y 2 μ, f ∈ spectralCoreVec Y μ ν ∧ gaussFourierVec μ f = G then h.choose
   else 0
@@ -527,7 +528,7 @@ section VectorValuedHilbert
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteSpace Y]
 
-/-- The `Y`-valued spectral inner product `⟨f,g⟩_{𝓔(Y)} = ∫ ⟨𝒢_μ f, 𝒢_μ g⟩_Y dν`, linear in the
+/-- The `Y`-valued spectral inner product `⟨f,g⟩_{𝓔(Y)} = ∫ ⟨F_μ f, F_μ g⟩_Y dν`, linear in the
 first argument as in the manuscript (Mathlib's `inner` is conjugate linear in the first). -/
 def spectralInnerVec (μ ν : Measure H) (f g : H → Y) : ℂ :=
   ∫ ξ, inner ℂ (gaussFourierVec μ g ξ) (gaussFourierVec μ f ξ) ∂ν
@@ -545,22 +546,22 @@ abbrev SpectralAntiDualVec (μ ν : Measure H) [IsFiniteMeasure μ] : Type _ :=
   spectralRangeVec Y μ ν →L⋆[ℂ] ℂ
 
 variable (Y) in
-/-- The `Y`-valued Riesz map `J : 𝓔(Y) → 𝓔(Y)'`, `J f [g] = ⟨f, g⟩_{𝓔(Y)}`. -/
+/-- The `Y`-valued Riesz map `T : 𝓔(Y) → 𝓔(Y)'`, `T f [g] = ⟨f, g⟩_{𝓔(Y)}`. -/
 def rieszMapVec (μ ν : Measure H) [IsFiniteMeasure μ] :
     spectralRangeVec Y μ ν →L[ℂ] SpectralAntiDualVec Y μ ν :=
   innerSLFlip ℂ
 
-/-- The `Y`-valued inverse Riesz map `J⁻¹ : 𝓔(Y)' → 𝓔(Y)`. -/
+/-- The `Y`-valued inverse Riesz map `T⁻¹ : 𝓔(Y)' → 𝓔(Y)`. -/
 def rieszInvVec (μ ν : Measure H) [IsFiniteMeasure μ] (F : SpectralAntiDualVec Y μ ν) :
     spectralRangeVec Y μ ν :=
   (InnerProductSpace.toDual ℂ (spectralRangeVec Y μ ν)).symm (antiDualConj F)
 
-/-- The `Y`-valued transpose `U' : L²(ν; Y) → 𝓔(Y)'`, `U' F [g] = ⟨F, U g⟩_{L²(ν;Y)}`. -/
+/-- The `Y`-valued transpose `F_Q' : L²(ν; Y) → 𝓔(Y)'`, `F_Q' F [g] = ⟨F, F_Q g⟩_{L²(ν;Y)}`. -/
 def transposeEmbedVec (μ ν : Measure H) [IsFiniteMeasure μ] (F : Lp Y 2 ν) :
     SpectralAntiDualVec Y μ ν :=
   (innerSLFlip ℂ F).comp (spectralRangeVec Y μ ν).subtypeL
 
-/-- The `Y`-valued frame operator `T = U' U : 𝓔(Y) → 𝓔(Y)'`. -/
+/-- The `Y`-valued frame operator `T = F_Q' F_Q : 𝓔(Y) → 𝓔(Y)'`. -/
 def frameOperatorVec (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralRangeVec Y μ ν) :
     SpectralAntiDualVec Y μ ν :=
   transposeEmbedVec μ ν (f : Lp Y 2 ν)
@@ -571,7 +572,7 @@ def synthesisVec (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ)
     (γ : Lp Y 2 (parameterMeasure ν)) : SpectralAntiDualVec Y μ ν :=
   (innerSLFlip ℂ γ).comp (ridgeletExtensionVec Y μ ν ρ)
 
-/-- The `Y`-valued coefficient projection `Π_ρ = C⁻¹ W_ρ P_{𝒦(Y)} Λ_ρ`. -/
+/-- The `Y`-valued coefficient projection `Π_ρ = C⁻¹ W_ρ P_{𝒦(Y)} W_ρ^*`. -/
 def coefficientProjectionVec (α : ℝ) (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ)
     (γ : H × ℝ → Y) : Lp Y 2 (parameterMeasure ν) :=
   (((admissibilityConst α ρ)⁻¹ : ℝ) : ℂ) •

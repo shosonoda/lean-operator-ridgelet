@@ -7,17 +7,17 @@ import OperatorRidgelet.ToMathlib.TemperedDistributionConvolution
 /-!
 # Reconstruction with a tempered activation
 
-Theorem `thm:5.2`: for a real tempered `β`, a band-pass `ρ`, a cutoff `χ`,
+Theorem `thm:5.4`: for a real tempered `β`, a band-pass `ρ`, a cutoff `χ`,
 and an approximate identity `(η_ε)`, the regularized syntheses `S_{β_ε} R_ρ f` converge in
 `𝓔_α'` to `C^{(α)}_{β,ρ} T_α f` (`tendsto_regularizedSynthesis`), so that the tempered
 synthesis is `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f` (`temperedSynthesis_ridgeletExtension_eq`).
 
-Each `β_ε` is a real Schwartz function with `β̂_ε ∈ C_c^∞(ℝ ∖ {0})`, hence either zero or
+Each `β_ε` is a real Schwartz function with `β♯_ε ∈ C_c^∞(ℝ ∖ {0})`, hence either zero or
 band-pass, and the cross frame identity `S_{β_ε} R_ρ f = C^{(α)}_{ρ,β_ε} T_α f`
 (`synthesis_ridgeletExtension_eq_of_bandLimited`) holds.  The constant is
-`C^{(α)}_{ρ,β_ε} = (2π)⁻¹ ∫ (β̂ * η_ε)(ω) ρ̂(-ω)|ω|^{-α} dω`
+`C^{(α)}_{ρ,β_ε} = (2π)⁻¹ ∫ (β♯ * η_ε)(ω) ρ♯(-ω)|ω|^{-α} dω`
 (`crossAdmissibilityConst_regularizedActivation`), which by
-`TemperedDistribution.integral_mul_apply_translate` is `(2π)⁻¹ ⟨β̂, T ⋆ η_ε⟩` with `T` the test
+`TemperedDistribution.integral_mul_apply_translate` is `(2π)⁻¹ ⟨β♯, T ⋆ η_ε⟩` with `T` the test
 filter, and `T ⋆ η_ε → T` in the Schwartz topology as `ε ↓ 0`
 (`tendsto_crossAdmissibilityConst_regularizedActivation`).
 -/
@@ -70,7 +70,7 @@ section FrameIdentity
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H]
 
-/-- The cross frame identity for a real Schwartz `ρ₁` with `ρ̂₁ ∈ C_c^∞(ℝ ∖ {0})`, possibly
+/-- The cross frame identity for a real Schwartz `ρ₁` with `ρ♯₁ ∈ C_c^∞(ℝ ∖ {0})`, possibly
 zero, and a band-pass `ρ`. -/
 theorem synthesis_ridgeletExtension_eq_of_bandLimited (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) {ρ₁ ρ : SchwartzMap ℝ ℝ}
@@ -95,7 +95,7 @@ end FrameIdentity
 
 /-! ### The constants `C^{(α)}_{ρ,β_ε}` and their limit -/
 
-/-- The cutoff is one where `ρ̂(-·)` does not vanish. -/
+/-- The cutoff is one where `ρ♯(-·)` does not vanish. -/
 theorem IsCutoff.apply_eq_one_of_filterFourier_neg_ne_zero {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ}
     (hχ : IsCutoff ρ χ) {ω : ℝ} (h : filterFourier ρ (-ω) ≠ 0) : χ ω = 1 := by
   have hmem : -ω ∈ tsupport (filterFourier ρ) := subset_tsupport _ (Function.mem_support.mpr h)
@@ -104,7 +104,7 @@ theorem IsCutoff.apply_eq_one_of_filterFourier_neg_ne_zero {ρ : SchwartzMap ℝ
   rw [← hχ.even ω]
   exact h1
 
-/-- `C^{(α)}_{ρ,β_ε} = (2π)⁻¹ ∫ ρ̂(-ω)|ω|^{-α} (β̂ * η_ε)(ω) dω`. -/
+/-- `C^{(α)}_{ρ,β_ε} = (2π)⁻¹ ∫ ρ♯(-ω)|ω|^{-α} (β♯ * η_ε)(ω) dω`. -/
 theorem crossAdmissibilityConst_regularizedActivation {α : ℝ} {β : TemperedDistribution ℝ ℂ}
     (hβ : IsRealDistribution β) {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {χ : ℝ → ℝ}
     (hχ : IsCutoff ρ χ) {η : ℝ → ℝ → ℝ} (hη : IsApproximateIdentity η) {ε : ℝ} (hε : 0 < ε) :
@@ -245,7 +245,7 @@ theorem tendsto_regularizedSynthesis (μ ν : Measure H) [IsProbabilityMeasure �
       rw [hF']
       exact hχ.zero_notMem_tsupport_regularizedSpectrum η ε β) hρ f]
 
-/-- **Theorem `thm:5.2`**, the frame identity
+/-- **Theorem `thm:5.4`**, the frame identity
 `S_β R_ρ f = C^{(α)}_{β,ρ} T_α f`. -/
 theorem temperedSynthesis_ridgeletExtension_eq (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) {β : TemperedDistribution ℝ ℂ}

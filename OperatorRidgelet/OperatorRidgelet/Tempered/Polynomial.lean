@@ -9,17 +9,17 @@ import Mathlib.Topology.Algebra.Polynomial
 /-!
 # Non-polynomial activations pair nontrivially with some band-pass filter
 
-The last statement of Theorem `thm:5.2` and of Lemma
-`lem:C.2`: if `β ∈ 𝒮'(ℝ)` is not a polynomial, then there is a band-pass
+The last statement of Theorem `thm:5.4` and of Lemma
+`lem:5.2`: if `β ∈ 𝒮'(ℝ)` is not a polynomial, then there is a band-pass
 `ρ` with `C^{(α)}_{β,ρ} ≠ 0`, and (for real `β`) one with `C^{(α)}_{β,ρ} = 1`.
 
-Every Hermitian symmetric `ψ ∈ C_c^∞(ℝ ∖ {0})` is the test filter `ρ̂(-·)|·|^{-α}` of the real
-band-pass filter `ρ` with `ρ̂(ω) = ψ(-ω)|ω|^α` (`exists_isBandPass_temperedTestFilter_eq`), and
+Every Hermitian symmetric `ψ ∈ C_c^∞(ℝ ∖ {0})` is the test filter `ρ♯(-·)|·|^{-α}` of the real
+band-pass filter `ρ` with `ρ♯(ω) = ψ(-ω)|ω|^α` (`exists_isBandPass_temperedTestFilter_eq`), and
 every `φ ∈ C_c^∞(ℝ ∖ {0})` is a combination `ψ₁ + i ψ₂` of two Hermitian symmetric ones.  So if
-all the constants vanish, `β̂` vanishes on `C_c^∞(ℝ ∖ {0})`, hence is a combination of
+all the constants vanish, `β♯` vanishes on `C_c^∞(ℝ ∖ {0})`, hence is a combination of
 derivatives of `δ₀`
 (`TemperedDistribution.exists_sum_iteratedDeriv_zero_of_forall_hasCompactSupport`), and
-`β = F⁻¹ β̂` acts by integration against a polynomial
+`β = F⁻¹ β♯` acts by integration against a polynomial
 (`isPolynomialDistribution_of_forall_angularFourierDistribution_eq_zero`).  For real `β` the
 constant is real (`IsRealDistribution.temperedAdmissibilityConst_eq_re`), so a real rescaling of
 `ρ` normalizes it to one.  Finally, a bounded continuous nonconstant function is not a
@@ -114,7 +114,7 @@ theorem exists_schwartz_abs_rpow_mul_neg (ψ : SchwartzMap ℝ ℂ) (hψ : (0 : 
   exact ⟨g, fun ω => by rw [hg ω, reflectSchwartz_apply]⟩
 
 /-- For a nonzero Hermitian symmetric `ψ ∈ C_c^∞(ℝ ∖ {0})` and `α > 0` there is a real band-pass
-filter whose test filter `ρ̂(-·)|·|^{-α}` is `ψ`. -/
+filter whose test filter `ρ♯(-·)|·|^{-α}` is `ψ`. -/
 theorem exists_isBandPass_temperedTestFilter_eq {α : ℝ} (hα : 0 < α) (ψ : SchwartzMap ℝ ℂ)
     (hψc : HasCompactSupport ψ) (hψ0 : (0 : ℝ) ∉ tsupport ψ)
     (hψh : ∀ ω : ℝ, conj (ψ (-ω)) = ψ ω) (hne : ψ ≠ 0) :
@@ -184,7 +184,7 @@ theorem exists_isBandPass_temperedTestFilter_eq {α : ℝ} (hα : 0 < α) (ψ : 
 
 /-! ### The Hermitian decomposition -/
 
-/-- If `β̂` vanishes on the Hermitian symmetric functions of `C_c^∞(ℝ ∖ {0})`, it vanishes on
+/-- If `β♯` vanishes on the Hermitian symmetric functions of `C_c^∞(ℝ ∖ {0})`, it vanishes on
 `C_c^∞(ℝ ∖ {0})`. -/
 theorem angularFourierDistribution_eq_zero_of_hermitian (β : TemperedDistribution ℝ ℂ)
     (h : ∀ ψ : SchwartzMap ℝ ℂ, HasCompactSupport ψ → (0 : ℝ) ∉ tsupport ψ →
@@ -265,7 +265,7 @@ theorem angularFourierInvDistribution_apply (u : TemperedDistribution ℝ ℂ)
   push_cast
   rfl
 
-/-- If `β̂` vanishes on `C_c^∞(ℝ ∖ {0})`, then `β` acts by integration against a polynomial. -/
+/-- If `β♯` vanishes on `C_c^∞(ℝ ∖ {0})`, then `β` acts by integration against a polynomial. -/
 theorem isPolynomialDistribution_of_forall_angularFourierDistribution_eq_zero
     (β : TemperedDistribution ℝ ℂ)
     (h : ∀ φ : SchwartzMap ℝ ℂ, HasCompactSupport φ → (0 : ℝ) ∉ tsupport φ →
@@ -342,7 +342,7 @@ theorem exists_isBandPass_temperedAdmissibilityConst_ne_zero {α : ℝ} (hα : 0
 
 /-! ### Reality of the constant and normalization -/
 
-/-- `conj ρ̂(ω) = ρ̂(-ω)` for a real filter. -/
+/-- `conj ρ♯(ω) = ρ♯(-ω)` for a real filter. -/
 theorem conj_filterFourier (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     conj (filterFourier ρ ω) = filterFourier ρ (-ω) := by
   unfold filterFourier lineFourier angularFourierIntegralInner
@@ -356,7 +356,7 @@ theorem conj_filterFourier (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
   push_cast
   ring
 
-/-- For real `β`, `conj ⟨β̂, φ⟩ = ⟨β̂, conj φ(-·)⟩`. -/
+/-- For real `β`, `conj ⟨β♯, φ⟩ = ⟨β♯, conj φ(-·)⟩`. -/
 theorem IsRealDistribution.conj_angularFourierDistribution_apply {β : TemperedDistribution ℝ ℂ}
     (hβ : IsRealDistribution β) (φ : SchwartzMap ℝ ℂ) :
     conj (angularFourierDistribution β φ) =

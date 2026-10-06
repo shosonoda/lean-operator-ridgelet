@@ -6,25 +6,25 @@ import OperatorRidgelet.ToMathlib.InvOneAddSqLintegral
 /-!
 # Synthesis with a tempered activation
 
-The material behind Theorem `thm:4.2`(iii): for a density `G` regular along rays and a band-pass
-filter `ρ`, the ray function `ω ↦ ρ̂(ω) G(-ωa)` is smooth with compact support in the frequency
+The material behind Theorem `thm:4.5`(iii): for a density `G` regular along rays and a band-pass
+filter `ρ`, the ray function `ω ↦ ρ♯(ω) G(-ωa)` is smooth with compact support in the frequency
 window `I`, so the explicit coefficient `γ_G(a, ·)` is a Schwartz function whose decay is
 controlled, uniformly in the direction `a`, by the ray-derivative bound
-`max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` of Definition `def:4.1`.  Pairing `γ_G(a, ·)`
+`max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` of Definition `def:4.2`.  Pairing `γ_G(a, ·)`
 with a tempered activation that is a continuous function `b` of polynomial growth is therefore an
 absolutely convergent integral on `ν ⊗ dc`, because the ray moments `M_m(G)` are finite; Fubini
 then gives the absolute convergence of the inner and of the outer integral separately.
 
-The identity itself is the one of Theorem `thm:4.2`(ii) with the concrete integral against `ρ`
+The identity itself is the one of Theorem `thm:4.5`(ii) with the concrete integral against `ρ`
 replaced by the integral against `b`: after the translation `t = ⟪a,x⟫ + c` the direction
 integral of `γ_G(a, t - ⟪a,x⟫)` separates by homogeneity into `(2π)⁻¹ g_G(x)` times the value at
-`t` of the Fourier transform of the test filter `ω ↦ ρ̂(-ω)|ω|^{-α}`, and integrating against `b`
+`t` of the Fourier transform of the test filter `ω ↦ ρ♯(-ω)|ω|^{-α}`, and integrating against `b`
 produces the pairing `C^{(α)}_{β,ρ}`.
 
 Everything is proved for a density with values in a complex Banach space `Y` (the `Vec` objects
-of `Reconstruction.Defs`), which is Theorem `thm:4.6`; the scalar statements of
-`thm:4.2`(iii) are the case `Y = ℂ`, recorded at the end of the file.  The last section collects
-the instances that Corollary `cor:5.3`(viii) needs.
+of `Reconstruction.Defs`), which is Theorem `thm:4.11`; the scalar statements of
+`thm:4.5`(iii) are the case `Y = ℂ`, recorded at the end of the file.  The last section collects
+the instances that Corollary `cor:5.5`(viii) needs.
 -/
 
 noncomputable section
@@ -35,14 +35,14 @@ open MeasureTheory Complex Filter Topology LeanRidgelet LeanRidgelet.Fourier
 
 open scoped ENNReal RealInnerProductSpace
 
-/-! ### The ray function `ω ↦ ρ̂(ω) G(-ωa)` -/
+/-! ### The ray function `ω ↦ ρ♯(ω) G(-ωa)` -/
 
 section RayFilter
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- The integrand `ω ↦ ρ̂(ω) G(-ωa)` of the explicit coefficient `γ_G(a, ·)`. -/
+/-- The integrand `ω ↦ ρ♯(ω) G(-ωa)` of the explicit coefficient `γ_G(a, ·)`. -/
 def rayFilterFun (ρ : SchwartzMap ℝ ℝ) (G : H → Y) (a : H) (ω : ℝ) : Y :=
   filterFourier ρ ω • G (-(ω • a))
 
@@ -59,7 +59,7 @@ theorem coefficientFormulaVec_eq (ρ : SchwartzMap ℝ ℝ) (G : H → Y) (a : H
     Complex.exp ((ω * c : ℝ) * Complex.I) • filterFourier ρ ω • G (-(ω • a))
   rw [smul_smul, mul_comm]
 
-/-- The ray function is supported in the support of `ρ̂`. -/
+/-- The ray function is supported in the support of `ρ♯`. -/
 theorem tsupport_rayFilterFun_subset (ρ : SchwartzMap ℝ ℝ) (G : H → Y) (a : H) :
     tsupport (rayFilterFun ρ G a) ⊆ tsupport (filterFourier ρ) := by
   refine closure_mono fun ω hω => ?_
@@ -72,7 +72,7 @@ theorem hasCompactSupport_rayFilterFun {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandP
     (a : H) : HasCompactSupport (rayFilterFun ρ G a) :=
   hρ.hasCompactSupport.of_isClosed_subset isClosed_closure (tsupport_rayFilterFun_subset ρ G a)
 
-/-- Off the support of `ρ̂` every derivative of the ray function vanishes. -/
+/-- Off the support of `ρ♯` every derivative of the ray function vanishes. -/
 theorem iteratedDeriv_rayFilterFun_eq_zero (ρ : SchwartzMap ℝ ℝ) (G : H → Y) (a : H) (k : ℕ)
     {ω : ℝ} (hω : ω ∉ tsupport (filterFourier ρ)) :
     iteratedDeriv k (rayFilterFun ρ G a) ω = 0 := by
@@ -83,7 +83,7 @@ theorem iteratedDeriv_rayFilterFun_eq_zero (ρ : SchwartzMap ℝ ℝ) (G : H →
   rw [← norm_eq_zero, ← norm_iteratedFDeriv_eq_norm_iteratedDeriv, h2, norm_zero]
 
 /-- The ray function is smooth: it is a product of smooth functions on a neighbourhood of the
-window, and vanishes on the open complement of the support of `ρ̂`. -/
+window, and vanishes on the open complement of the support of `ρ♯`. -/
 theorem contDiff_rayFilterFun {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {I : Set ℝ}
     (hI : IsFrequencyWindow ρ I) {G : H → Y} {a : H} {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
     (hv : ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (-(ω • a))) U) :
@@ -97,7 +97,7 @@ theorem contDiff_rayFilterFun {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {
     filter_upwards [(isClosed_tsupport (filterFourier ρ)).isOpen_compl.mem_nhds hns] with y hy
     rw [rayFilterFun, image_eq_zero_of_notMem_tsupport hy, zero_smul]
 
-/-- A single bound for all derivatives of `ρ̂` of order at most `m`. -/
+/-- A single bound for all derivatives of `ρ♯` of order at most `m`. -/
 theorem exists_bound_iteratedDeriv_filterFourier {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
     (m : ℕ) : ∃ B : ℝ, 0 ≤ B ∧ ∀ j ≤ m, ∀ ω : ℝ, ‖iteratedDeriv j (filterFourier ρ) ω‖ ≤ B := by
   classical
@@ -121,7 +121,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
 /-- **Leibniz' rule on the window.**  The derivatives of the ray function on `I` are bounded by
-the derivatives of `ρ̂` times the ray derivatives of `G`; the window being symmetric, the ray
+the derivatives of `ρ♯` times the ray derivatives of `G`; the window being symmetric, the ray
 derivatives at `-a` are those at `a` reflected. -/
 theorem norm_iteratedDeriv_rayFilterFun_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {I : Set ℝ}
     (hI : IsFrequencyWindow ρ I) {G : H → Y} {a : H} {U : Set ℝ} (hU : IsOpen U) (hIU : I ⊆ U)
@@ -169,7 +169,7 @@ theorem norm_iteratedDeriv_rayFilterFun_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsB
   exact_mod_cast congrArg (Nat.cast : ℕ → ℝ) (Nat.sum_range_choose k)
 
 /-- The `L¹` norm of the `k`-th derivative of the ray function is bounded by the measure of the
-support of `ρ̂` times the pointwise bound. -/
+support of `ρ♯` times the pointwise bound. -/
 theorem integral_norm_iteratedDeriv_rayFilterFun_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
     {I : Set ℝ} (hI : IsFrequencyWindow ρ I) {G : H → Y} {a : H} {U : Set ℝ} (hU : IsOpen U)
     (hIU : I ⊆ U) (hv : ContDiffOn ℝ (⊤ : ℕ∞) (fun ω : ℝ => G (-(ω • a))) U) {m : ℕ} {B D : ℝ}
@@ -336,7 +336,7 @@ theorem one_add_abs_add_le (u c : ℝ) : 1 + |u + c| ≤ (1 + |u|) * (1 + |c|) :
   nlinarith [abs_nonneg u, abs_nonneg c]
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- The uniform bound behind the absolute convergence of Theorem `thm:4.2`(iii): the integrand of
+/-- The uniform bound behind the absolute convergence of Theorem `thm:4.5`(iii): the integrand of
 the tempered bias integral is dominated, for *every* direction, by a product of a function of
 the direction with finite ray moment and the integrable weight `(1 + c²)⁻¹`. -/
 theorem exists_bound_enorm_smul_coefficientFormulaVec {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
@@ -411,7 +411,7 @@ theorem measurable_ofReal_inv_one_add_sq :
     Measurable fun c : ℝ => ENNReal.ofReal ((1 + c ^ 2)⁻¹) := by
   fun_prop
 
-/-- **Theorem `thm:4.2`(iii), absolute convergence.**  For a density regular along rays the
+/-- **Theorem `thm:4.5`(iii), absolute convergence.**  For a density regular along rays the
 integrand `γ_G(a,c) b(⟪a,x⟫+c)` is integrable on `ν ⊗ dc`. -/
 theorem integrable_prod_smul_coefficientFormulaVec {ν : Measure H} [SFinite ν] {I : Set ℝ}
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I) {G : H → Y}
@@ -456,7 +456,7 @@ theorem integrable_prod_smul_coefficientFormulaVec {ν : Measure H} [SFinite ν]
   rw [lintegral_const_mul' _ _ (ENNReal.mul_lt_top hKtop hCfin).ne]
   exact ENNReal.mul_lt_top (ENNReal.mul_lt_top hKtop hCfin) (hG.rayMoment_lt_top (n + 2))
 
-/-- **Theorem `thm:4.2`(iii), first part.**  For a density regular along rays the bias integral
+/-- **Theorem `thm:4.5`(iii), first part.**  For a density regular along rays the bias integral
 `∫ γ_G(a,c) b(⟪a,x⟫+c) dc` converges absolutely for `ν`-almost every direction. -/
 theorem ae_integrable_smul_coefficientFormulaVec_activation {ν : Measure H} [SFinite ν]
     {I : Set ℝ} {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I)
@@ -466,7 +466,7 @@ theorem ae_integrable_smul_coefficientFormulaVec_activation {ν : Measure H} [SF
       Integrable fun c : ℝ => (b (⟪a, x⟫ + c) : ℂ) • coefficientFormulaVec ρ G (a, c) :=
   (integrable_prod_smul_coefficientFormulaVec hρ hI hG hbc hbp x).prod_right_ae
 
-/-- **Theorem `thm:4.2`(iii), second part.**  The direction integral of the bias integral converges
+/-- **Theorem `thm:4.5`(iii), second part.**  The direction integral of the bias integral converges
 absolutely: the ray moment `M_{n+2}(G)` dominates it. -/
 theorem integrable_integral_smul_coefficientFormulaVec_activation {ν : Measure H} [SFinite ν]
     {I : Set ℝ} {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I)
@@ -487,7 +487,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- For a band-pass filter the weighted integral `∫ ‖ρ̂(ω)‖ |ω|^{-α} dω` is finite: the
+/-- For a band-pass filter the weighted integral `∫ ‖ρ♯(ω)‖ |ω|^{-α} dω` is finite: the
 integrand is the modulus of the reflected test filter, a Schwartz function. -/
 theorem IsBandPass.lintegral_enorm_filterFourier_mul_lt_top {α : ℝ} {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) :
@@ -503,7 +503,7 @@ theorem IsBandPass.lintegral_enorm_filterFourier_mul_lt_top {α : ℝ} {ρ : Sch
     abs_of_nonneg (Real.rpow_nonneg (abs_nonneg ω) _)]
 
 omit [CompleteSpace Y] in
-/-- The kernel `(a, ω) ↦ ρ̂(ω) e^{iωt} G(-ωa) e^{i⟪x,-ωa⟫}` is integrable on `ν ⊗ dω`. -/
+/-- The kernel `(a, ω) ↦ ρ♯(ω) e^{iωt} G(-ωa) e^{i⟪x,-ωa⟫}` is integrable on `ν ⊗ dω`. -/
 theorem integrable_shift_kernel {ν : Measure H} [SFinite ν] {α : ℝ} (hν : IsHomogeneous α ν)
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {G : H → Y} (hGm : StronglyMeasurable G)
     (hG₁ : Integrable G ν) (x : H) (t : ℝ) :
@@ -538,7 +538,7 @@ theorem integrable_shift_kernel {ν : Measure H} [SFinite ν] {α : ℝ} (hν : 
     (hasFiniteIntegral_iff_enorm.mp hG₁.hasFiniteIntegral)
 
 /-- **Homogeneity separates the shifted coefficient.**  The direction integral of
-`γ_G(a, t - ⟪a,x⟫)` is `(2π)⁻¹` times the Fourier integral of `ρ̂(·)|·|^{-α}` at `t` times the
+`γ_G(a, t - ⟪a,x⟫)` is `(2π)⁻¹` times the Fourier integral of `ρ♯(·)|·|^{-α}` at `t` times the
 target `g_G(x)`. -/
 theorem integral_coefficientFormulaVec_shift {ν : Measure H} [SFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) {G : H → Y}
@@ -669,7 +669,7 @@ theorem integrable_prod_smul_coefficientFormulaVec_shift {ν : Measure H} [SFini
   rw [lintegral_const_mul' _ _ (ENNReal.mul_lt_top hKtop hCfin).ne]
   exact ENNReal.mul_lt_top (ENNReal.mul_lt_top hKtop hCfin) (hG.rayMoment_lt_top (n + 2))
 
-/-- **Theorem `thm:4.2`(iii), the identity.**  For a density regular along rays and a tempered
+/-- **Theorem `thm:4.5`(iii), the identity.**  For a density regular along rays and a tempered
 activation acting by integration against `b`,
 `∫ [∫ γ_G(a,c) b(⟪a,x⟫+c) dc] ν(da) = C^{(α)}_{β,ρ} g_G(x)`. -/
 theorem integral_integral_smul_coefficientFormulaVec_activation {ν : Measure H} [SFinite ν]
@@ -757,7 +757,7 @@ theorem coefficientFormula_mul_eq_smul (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ
       (b (u + c) : ℂ) • coefficientFormulaVec ρ G (a, c) := by
   rw [coefficientFormulaVec_eq_coefficientFormula, smul_eq_mul, mul_comm]
 
-/-- **Theorem `thm:4.2`(iii), first part.**  For a density regular along rays the bias integral
+/-- **Theorem `thm:4.5`(iii), first part.**  For a density regular along rays the bias integral
 `∫ γ_G(a,c) b(⟪a,x⟫+c) dc` converges absolutely for `ν`-almost every direction. -/
 theorem ae_integrable_coefficientFormula_mul_activation {ν : Measure H} [SFinite ν] {I : Set ℝ}
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I) {G : H → ℂ}
@@ -769,7 +769,7 @@ theorem ae_integrable_coefficientFormula_mul_activation {ν : Measure H} [SFinit
   exact ha.congr (Eventually.of_forall fun c =>
     (coefficientFormula_mul_eq_smul ρ G b a ⟪a, x⟫ c).symm)
 
-/-- **Theorem `thm:4.2`(iii), second part.**  The direction integral of the bias integral converges
+/-- **Theorem `thm:4.5`(iii), second part.**  The direction integral of the bias integral converges
 absolutely. -/
 theorem integrable_integral_coefficientFormula_mul_activation {ν : Measure H} [SFinite ν]
     {I : Set ℝ} {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (hI : IsFrequencyWindow ρ I)
@@ -782,7 +782,7 @@ theorem integrable_integral_coefficientFormula_mul_activation {ν : Measure H} [
   exact integral_congr_ae (Eventually.of_forall fun c =>
     (coefficientFormula_mul_eq_smul ρ G b a ⟪a, x⟫ c).symm)
 
-/-- **Theorem `thm:4.2`(iii), the identity.**  For a density regular along rays and a tempered
+/-- **Theorem `thm:4.5`(iii), the identity.**  For a density regular along rays and a tempered
 activation acting by integration against `b`,
 `∫ [∫ γ_G(a,c) b(⟪a,x⟫+c) dc] ν(da) = C^{(α)}_{β,ρ} g_G(x)`. -/
 theorem integral_integral_coefficientFormula_mul_activation {ν : Measure H} [SFinite ν] {α : ℝ}
@@ -804,7 +804,7 @@ end Scalar
 section Instances
 
 /-- A frequency window for `ρ` is a frequency window for every scalar multiple of `ρ`: scaling
-does not enlarge the support of `ρ̂`. -/
+does not enlarge the support of `ρ♯`. -/
 theorem IsFrequencyWindow.smul {ρ : SchwartzMap ℝ ℝ} {I : Set ℝ} (hI : IsFrequencyWindow ρ I)
     (c : ℝ) : IsFrequencyWindow (⇑(c • ρ)) I where
   isCompact := hI.isCompact

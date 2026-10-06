@@ -9,7 +9,7 @@ import OperatorRidgelet.ToMathlib.EntirePowerSeries
 
 For a centred Gaussian `μ = 𝒩(0,Q)` and `ξ ≠ 0`, the coordinate `Y(x) = ⟪x,ξ⟫/τ(ξ)`,
 `τ(ξ) = ⟪Qξ,ξ⟫^{1/2}`, is a standard Gaussian coordinate (`isStdGaussianCoord_inner_div`).
-Under this identification the objects of Lemma `lem:B.5` are the objects of
+Under this identification the objects of Lemma `lem:4.7` are the objects of
 `OperatorRidgelet.ToMathlib.HermiteExpansion` at the complex parameter `-i z τ(ξ)`:
 
 * `hermiteCoefficient_eq`: `E_μ[f Heₙ(Y)] = ∫ f Heₙ(Y) dμ`;
@@ -123,7 +123,7 @@ theorem differentiable_hermiteExtension (hμ : IsCenteredGaussian Q μ) {f : H �
     Differentiable ℂ (hermiteExtension μ Q f ξ) :=
   differentiable_of_hasSum_pow fun z => hasSum_hermiteExtension_pow hμ hf hpos z
 
-/-- The Hermite series of `G_f(zξ)` in the form of Lemma `lem:B.5`(ii). -/
+/-- The Hermite series of `G_f(zξ)` in the form of Lemma `lem:4.7`(ii). -/
 theorem hasSum_hermiteExtension (hμ : IsCenteredGaussian Q μ) {f : H → ℂ}
     (hf : MemLp f 2 μ) {ξ : H} (hpos : 0 < ⟪Q ξ, ξ⟫) (z : ℂ) :
     HasSum (fun n : ℕ =>

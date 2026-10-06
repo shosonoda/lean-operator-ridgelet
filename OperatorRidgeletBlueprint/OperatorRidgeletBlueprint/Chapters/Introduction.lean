@@ -50,47 +50,26 @@ analysis norm identity, reconstruction and finite-width approximation.
 
 # The integration problem and its resolution
 
-An infinite-dimensional Hilbert space has no locally finite translation-invariant analogue
-of Lebesgue measure. We therefore choose the input and direction measures separately.
-The input is a Gaussian probability law $`\mu_Q` with injective trace-class covariance.
-For a real Schwartz analysis filter $`\rho`, set
-$`R_\rho f(a,b)=\int_H f(x)\rho(\langle a,x\rangle-b)\,\mu_Q(\mathrm dx)`.
-
-The direction measure is the homogeneous Gaussian mixture
-$`\nu_\alpha=\int_0^\infty\mu_{2sP}s^{\alpha/2-1}\,\mathrm ds`, where $`\alpha>0`
-and $`P` is another injective trace-class covariance. It is sigma-finite, finite on
-bounded sets, and satisfies
-$`(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha` for $`\omega\ne0`.
-The parameter measure is $`\lambda_\alpha=\nu_\alpha\otimes\mathrm db`.
-
-Fourier transformation in the bias gives
-$`\widehat{R_\rho f}(a,\omega)=\widehat\rho(-\omega)F_Qf(\omega a)`, with
-$`F_Qf(\xi)=\int_H f(x)e^{-i\langle x,\xi\rangle}\,\mu_Q(\mathrm dx)`.
-For nonzero $`a`, the right side uses the restriction of $`F_Qf` to the line through
-$`a`. Homogeneity separates direction and frequency integration. Direct dilation of a
-Gaussian spectral measure has a different behavior: distinct scales can be mutually
-singular, producing the obstruction proved in {bpref "prop:F.3"}[].
-
-For a spectral density $`g`, write $`g_a(\omega)=g(\omega a)`. Reading the slice
-identity in reverse suggests the coefficient
-$`\gamma_g(a,b)=(2\pi)^{-1}\int_{\mathbb R}\widehat\rho(-\omega)g_a(\omega)e^{i\omega b}\,\mathrm d\omega`.
-The results establish its norm, its reconstruction identity, and the decay conditions
-that give a finite coefficient measure with moments. For ReLU and other unbounded
-activations the Fourier pairing is interpreted distributionally.
+An infinite-dimensional Hilbert space has no locally finite translation-invariant
+analogue of Lebesgue measure. We use Gaussian input weights and a homogeneous mixture
+of Gaussian direction measures to construct the integrals directly on that space.
+This also resolves the dimension-dependent weight in the finite-dimensional
+admissibility condition. The measure construction and Fourier identities are given
+in Section 3, before the reconstruction and approximation theorems use them.
 
 # Main results
 
 The assumptions on filters and activations belong to the individual statements.
 
-* {bpref "thm:3.11"}[] proves the Plancherel identity, closed range and injectivity on
+* {bpref "thm:3.14"}[] proves the Plancherel identity, closed range and injectivity on
   the Hilbert space $`\mathcal E_\alpha`.
-* {bpref "thm:4.2"}[] gives explicit coefficients for targets with a spectral density,
+* {bpref "thm:4.5"}[] gives explicit coefficients for targets with a spectral density,
   including an absolutely convergent network integral under regularity along rays.
-* {bpref "thm:4.3"}[] identifies the frame operator as the Riesz isomorphism and gives
+* {bpref "thm:4.8"}[] identifies the frame operator as the Riesz isomorphism and gives
   reconstruction, backprojection and inversion formulas.
-* {bpref "thm:6.4"}[] proves finite total variation and parameter moments from
+* {bpref "thm:6.6"}[] proves finite total variation and parameter moments from
   regularity along rays, connecting representation to finite-width approximation.
-* {bpref "thm:6.5"}[] gives constructive compact-open universality through spectral
+* {bpref "thm:6.8"}[] gives constructive compact-open universality through spectral
   targets, with approximation rates for the resulting integral networks.
 
 The frame operator $`T_\alpha` is the correction induced by the weights. Analysis
@@ -137,21 +116,25 @@ Unless otherwise stated, $`H` is an infinite-dimensional separable real Hilbert 
 $`Y` is a separable complex Hilbert space, and $`P,Q` are injective positive self-adjoint
 trace-class operators. Functions are complex valued unless a real activation or output is
 specified. The one-dimensional Fourier convention is
-$`\widehat h(\omega)=\int h(t)e^{-it\omega}\,\mathrm dt` and
-$`h(t)=(2\pi)^{-1}\int\widehat h(\omega)e^{it\omega}\,\mathrm d\omega`.
-Distributional pairings are bilinear.
+$`h^\sharp(\omega)=\int h(t)e^{-it\omega}\,\mathrm dt` and
+$`h(t)=(2\pi)^{-1}\int h^\sharp(\omega)e^{it\omega}\,\mathrm d\omega`.
+We use $`\sharp` for one-dimensional and partial bias transforms and
+$`\widehat{\phantom f}` for spatial Fourier–Stieltjes transforms and torus
+coefficients. Distributional pairings are bilinear.
 
 The manuscript uses $`b` and $`\sigma`; the formal statements and the mathematical
-nodes below use $`c=-b` and $`\beta`. They write $`\mathcal G_Q` for $`F_Q` and often
+nodes below use $`c=-b` and $`\beta`. They use the same spatial symbol $`F_Q` and often
 $`G` for a spectral density $`g`. These are changes of coordinates and notation, not
 changes in the network or theorem hypotheses.
 
 Sections 2–7 develop the definitions, analysis, reconstruction, activations, approximation and
-examples. Section 8 reports numerical experiments and Section 9 discusses computation
-and open questions. Appendices A–E collect the detailed proofs; F compares the construction
-with finite-dimensional formulas, G verifies the explicit filters, and H gives numerical methods.
+examples, with their prerequisites and proofs supplied before use. Section 8 reports
+numerical experiments and Section 9 discusses computation and open questions. Appendix A
+gives a kernel interpretation, B gives coefficient projections, C gives additional
+approximation bounds, D compares finite-dimensional formulas and explains the dilation
+obstruction, and E gives numerical methods.
 
-Each numbered result links to its Lean declarations. The $`L^2` clause of Theorem 5.6
-and the closed-form reconstruction constants of Proposition 5.8 are carried in weaker
+Each numbered result links to its Lean declarations. The $`L^2` clause of Theorem 5.10
+and the closed-form reconstruction constants of Proposition 5.12 are carried in weaker
 forms by the Lean statements. The formalization infrastructure is documented separately
 after the manuscript chapters.

@@ -3,10 +3,10 @@ import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Transform.BiasFourier
 
 /-!
-# Backprojection: the backprojection integral of a bias-Fourier representative (Appendix B.4)
+# Backprojection of a bias-Fourier representative (Section 3 and Appendix B)
 
-Ridgelet-specific lemmas behind Theorem `thm:4.3`(iv)(a)–(b) and Proposition
-`prop:B.8`(i)–(vi), for the abstract pair `(μ, ν)` used by the supporting lemmas.
+Ridgelet-specific lemmas behind Theorem `thm:4.8`(iv)(a)–(b) and Proposition
+`prop:B.1`(i)–(vi), for the abstract pair `(μ, ν)` used by the supporting lemmas.
 
 * **The ray substitution.**  `raySubst (ξ, ω) = (-ξ/ω, ω)` inverts `(a, ω) ↦ (-ωa, ω)`; by
   homogeneity it maps the weighted measure `|ω|^{-α} (ν ⊗ dω)` to `ν ⊗ dω`
@@ -17,18 +17,18 @@ Ridgelet-specific lemmas behind Theorem `thm:4.3`(iv)(a)–(b) and Proposition
   `γ ∈ L²(λ)` the weighted integral `rayEnergy α Φ ξ = ∫ |ω|^{-α} ‖Φ(-ξ/ω, ω)‖² dω` integrates
   over `ξ` to `2π ‖γ‖²` (ray substitution and Plancherel in the bias variable), so it is finite for
   almost every `ξ`; weighted Cauchy–Schwarz then gives the absolute convergence of the ray
-  average and `‖Λ_ρ Φ(ξ)‖² ≤ (2π)⁻¹ C rayEnergy α Φ ξ`, hence `‖Λ_ρ γ‖² ≤ C ‖γ‖²`.
+  average and `‖W_ρ^* Φ(ξ)‖² ≤ (2π)⁻¹ C rayEnergy α Φ ξ`, hence `‖W_ρ^* γ‖² ≤ C ‖γ‖²`.
 * **Independence of the representative.**  Two representatives agree almost everywhere on
   almost every ray, hence on a `ν ⊗ dω`-full set, whose image under the ray substitution is
   again full; the backprojection integrals agree `ν`-almost everywhere.
-* **Adjointness and `Λ_ρ W_ρ = C`.**  Parseval in the bias variable turns `⟨γ, W_ρ F⟩_{L²(λ)}`
+* **Adjointness and `W_ρ^* W_ρ = C`.**  Parseval in the bias variable turns `⟨γ, W_ρ F⟩_{L²(λ)}`
   into the
   pairing of the representatives, the ray substitution turns it into
-  `⟨Λ_ρ γ, F⟩_{L²(ν)}`; on the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` the backprojection
+  `⟨W_ρ^* γ, F⟩_{L²(ν)}`; on the representative `ρ♯(ω) F(-ωa)` of `W_ρ F` the backprojection
 integral is
   `C F(ξ)` pointwise.
-* **The projection.**  `Π_ρ = C⁻¹ W_ρ P_𝒦 Λ_ρ` maps into `Ran R_ρ = W_ρ(𝒦)`, and
-  `γ - Π_ρ γ ⊥ R_ρ g` for `g ∈ 𝒦` by adjointness, `Λ_ρ W_ρ = C`, and the self-adjointness of
+* **The projection.**  `Π_ρ = C⁻¹ W_ρ P_𝒦 W_ρ^*` maps into `Ran R_ρ = W_ρ(𝒦)`, and
+  `γ - Π_ρ γ ⊥ R_ρ g` for `g ∈ 𝒦` by adjointness, `W_ρ^* W_ρ = C`, and the self-adjointness of
   `P_𝒦`.
 -/
 
@@ -218,7 +218,7 @@ theorem measurable_backprojectionOf (α : ℝ) (ρ : SchwartzMap ℝ ℝ) {Φ : 
   exact measurable_const.mul
     (measurable_backprojection_integrand α ρ hΦ).stronglyMeasurable.integral_prod_right'.measurable
 
-/-- The representative `ρ̂(ω) F(-ωa)` of `W_ρ F` is jointly measurable. -/
+/-- The representative `ρ♯(ω) F(-ωa)` of `W_ρ F` is jointly measurable. -/
 theorem measurable_coefficient_representative {ρ : SchwartzMap ℝ ℝ} {F : H → ℂ}
     (hF : Measurable F) :
     Measurable (Function.uncurry fun a ω => filterFourier ρ ω * F (-(ω • a))) :=
@@ -226,7 +226,7 @@ theorem measurable_coefficient_representative {ρ : SchwartzMap ℝ ℝ} {F : H 
     (hF.comp (by fun_prop : Continuous fun p : H × ℝ => -(p.2 • p.1)).measurable)
 
 omit [MeasurableSpace H] [BorelSpace H] in
-/-- The backprojection integral of the representative `ρ̂(ω) F(-ωa)` of `W_ρ F` is `C^{(α)}_ρ F(ξ)`,
+/-- The backprojection integral of the representative `ρ♯(ω) F(-ωa)` of `W_ρ F` is `C^{(α)}_ρ F(ξ)`,
 pointwise in `ξ`. -/
 theorem backprojectionOf_coefficient_representative (α : ℝ) (ρ : SchwartzMap ℝ ℝ) (F : H → ℂ)
     (ξ : H) :
@@ -338,7 +338,7 @@ theorem integrable_backprojection_integrand {ρ : SchwartzMap ℝ ℝ} (hρ : Is
     mul_nonneg (mul_nonneg (norm_nonneg (filterFourier ρ ω)) hw) (norm_nonneg (Φ (-(ω⁻¹ • ξ)) ω))]
 
 omit hν in
-/-- **The bound on the backprojection integral**: `‖Λ_ρ Φ(ξ)‖² ≤ (2π)⁻¹ C_ρ · rayEnergy α Φ ξ`
+/-- **The bound on the backprojection integral**: `‖W_ρ^* Φ(ξ)‖² ≤ (2π)⁻¹ C_ρ · rayEnergy α Φ ξ`
 (weighted
 Cauchy–Schwarz). -/
 theorem enorm_backprojectionOf_sq_le {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
@@ -443,8 +443,8 @@ variable (hα : 0 < α) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
 include hα hρ
 
 omit hα in
-/-- **Boundedness of the backprojection**: for `γ ∈ L²(λ)`, `Λ_ρ γ ∈ L²(ν)` with
-`∫ ‖Λ_ρ γ‖² dν ≤ C^{(α)}_ρ ‖γ‖²` (Proposition `prop:B.8`(iii)). -/
+/-- **Boundedness of the backprojection**: for `γ ∈ L²(λ)`, `W_ρ^* γ ∈ L²(ν)` with
+`∫ ‖W_ρ^* γ‖² dν ≤ C^{(α)}_ρ ‖γ‖²` (Proposition `prop:B.1`(iii)). -/
 theorem IsHomogeneous.memLp_backprojection (γ : Lp ℂ 2 (parameterMeasure ν)) :
     MemLp (backprojection α ν ρ γ) 2 ν ∧
       ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ admissibilityConst α ρ * ‖γ‖ ^ 2 := by
@@ -474,8 +474,8 @@ theorem IsHomogeneous.memLp_backprojection (γ : Lp ℂ 2 (parameterMeasure ν))
     (Lp.aestronglyMeasurable γ), ← ENNReal.toReal_ofReal hρ.pos.le, ← ENNReal.toReal_mul]
   exact ENNReal.toReal_mono hfin hlin
 
-/-- **`Λ_ρ W_ρ = C^{(α)}_ρ Id`** on measurable `F ∈ L²(ν)` (Theorem `thm:4.3`(iv)(b),
-Proposition `prop:B.8`(v)). -/
+/-- **`W_ρ^* W_ρ = C^{(α)}_ρ Id`** on measurable `F ∈ L²(ν)` (Theorem `thm:4.8`(iv)(b),
+Proposition `prop:B.1`(v)). -/
 theorem IsHomogeneous.backprojection_spectralCoefficient {F : H → ℂ} (hF : Measurable F)
     (hF₂ : MemLp F 2 ν) :
     backprojection α ν ρ (spectralCoefficient ν ρ F) =ᵐ[ν]
@@ -494,7 +494,8 @@ theorem IsHomogeneous.backprojection_spectralCoefficient {F : H → ℂ} (hF : M
 
 /-- **Adjointness for a representative**: for a jointly measurable representative `Φ` of a
 measurable `γ ∈ L²(λ)` and measurable `F ∈ L²(ν)`,
-`∫ γ conj(γ_F) dλ = ∫ Λ_ρ Φ conj(F) dν`, by Parseval in the bias variable, the ray substitution, and
+`∫ γ conj(γ_F) dλ = ∫ W_ρ^* Φ conj(F) dν`, by Parseval in the bias variable, the ray
+  substitution, and
 Fubini. -/
 theorem IsHomogeneous.integral_mul_conj_coefficientFormula {γ : H × ℝ → ℂ}
     (hγ : MemLp γ 2 (ν.prod volume)) {Φ : H → ℝ → ℂ} (hΦ : Measurable (Function.uncurry Φ))
@@ -547,8 +548,8 @@ theorem IsHomogeneous.integral_mul_conj_coefficientFormula {γ : H × ℝ → �
         simp only [hΘdef, Function.uncurry_apply_pair, raySubst, hξω, map_mul]
         ring
 
-/-- **`Λ_ρ` is the adjoint of `W_ρ`** (Proposition `prop:B.8`(iv)):
-`⟨γ, W_ρ F⟩_{L²(λ)} = ⟨Λ_ρ γ, F⟩_{L²(ν)}` in the manuscript's convention. -/
+/-- **`W_ρ^*` is the adjoint of `W_ρ`** (Proposition `prop:B.1`(iv)):
+`⟨γ, W_ρ F⟩_{L²(λ)} = ⟨W_ρ^* γ, F⟩_{L²(ν)}` in the manuscript's convention. -/
 theorem IsHomogeneous.integral_mul_conj_spectralCoefficient (γ : Lp ℂ 2 (parameterMeasure ν))
     {F : H → ℂ} (hF : Measurable F) (hF₂ : MemLp F 2 ν) :
     ∫ p, γ p * (starRingEnd ℂ) ((spectralCoefficient ν ρ F : H × ℝ → ℂ) p) ∂parameterMeasure ν =
@@ -569,8 +570,8 @@ theorem IsHomogeneous.integral_mul_conj_spectralCoefficient (γ : Lp ℂ 2 (para
         rw [h1, h2]
     _ = _ := hν.integral_mul_conj_coefficientFormula hα hρ hγ'₂ hΦ (hγΦ.congr_left hγ'e) hF hF₂
 
-/-- **The coefficient projection** `Π_ρ = C⁻¹ W_ρ P_𝒦 Λ_ρ` is the orthogonal projection onto
-`Ran R_ρ` (Proposition `prop:B.8`(vi)): `Π_ρ γ ∈ Ran R_ρ` and
+/-- **The coefficient projection** `Π_ρ = C⁻¹ W_ρ P_𝒦 W_ρ^*` is the orthogonal projection onto
+`Ran R_ρ` (Proposition `prop:B.1`(vi)): `Π_ρ γ ∈ Ran R_ρ` and
 `γ - Π_ρ γ ⊥ Ran R_ρ`. -/
 theorem IsHomogeneous.coefficientProjection_mem_and_sub_mem_orthogonal (μ : Measure H)
     [IsProbabilityMeasure μ] (γ : Lp ℂ 2 (parameterMeasure ν)) :
@@ -623,7 +624,7 @@ theorem IsHomogeneous.coefficientProjection_mem_and_sub_mem_orthogonal (μ : Mea
     obtain ⟨g, rfl⟩ := LinearMap.mem_range.mp hv
     change inner ℂ (ridgeletExtension μ ν ρ g) (γ - coefficientProjection α μ ν ρ γ) = 0
     rw [inner_sub_right, hProj, inner_smul_right, hpair, hpair, sub_eq_zero]
-    -- the pairing with `Λ_ρ (R_ρ ⟨P, _⟩)` is `C ⟨g, P⟩`
+    -- the pairing with `W_ρ^* (R_ρ ⟨P, _⟩)` is `C ⟨g, P⟩`
     have hP' : ∫ ξ, (starRingEnd ℂ) ((g : Lp ℂ 2 ν) ξ) *
         backprojection α ν ρ (ridgeletExtension μ ν ρ ⟨P, hPmem⟩) ξ ∂ν =
         (admissibilityConst α ρ : ℂ) * inner ℂ (g : Lp ℂ 2 ν) P := by

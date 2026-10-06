@@ -34,7 +34,7 @@ The results give two complementary chains. For an admissible filter with constan
 analysis and synthesis give
 $`f\xrightarrow{R_\rho}R_\rho f\xrightarrow{S_\rho}C T_\alpha f\xrightarrow{C^{-1}T_\alpha^{-1}}f`.
 Backprojection gives
-$`R_\rho f\xrightarrow{C^{-1}\Lambda_\rho}F_Qf\xrightarrow{\Delta_Q}f`, where
+$`R_\rho f\xrightarrow{C^{-1}W_\rho^*}F_Qf\xrightarrow{\Delta_Q}f`, where
 the Hermite inversion step is stated for $`f` in the core $`\mathcal D_\alpha`.
 
 The admissibility constant is a one-dimensional Calderón-type integral with no dimension
@@ -53,7 +53,7 @@ activation also gives explicit transforms for these layers.
 
 # Approximation rates and numerical implementation
 
-{bpref "thm:5.6"}[] allows non-band-pass filters and a finite range
+{bpref "thm:5.10"}[] allows non-band-pass filters and a finite range
 of coefficient moments. When $`s>5/2`, its second-moment conclusion connects to the
 Hilbert-valued uniform approximation theorem.
 
@@ -64,21 +64,9 @@ direction with finitely many numbers remain distinct numerical tasks.
 
 # Open problems
 
-* *An intrinsic description of the Hilbert space.* In finite dimension its norm is
-  a homogeneous Sobolev norm of a Gaussian-weighted density. A comparable description
-  through a Gaussian Sobolev or Wiener-chaos scale in infinite dimension is open.
-* *General operator activations.* The reconstruction theory treats scalar activations
-  composed with linear functionals. General nonlinear maps
-  $`\Sigma:H\to H` would require an appropriate representation and nondegeneracy condition.
-* *Rates for spectral approximation.* The first step of {bpref "thm:6.5"}[] has no
-  quantitative rate without regularity assumptions on the target. Function classes
-  controlling the coefficient variation would make this step quantitative.
-* *Coefficient-space discretization.* Averaged coefficient observations and stronger
-  coefficient norms may complement Monte Carlo sampling. A coorbit approach requires
-  verification of its observation and discretization hypotheses in this setting.
-* *The cost of directions.* Width alone does not measure the cost of storing
-  $`a_j\in H`. Kernel translates and Green's functions offer structured direction
-  families for operator layers; Gaussian directions require separate tail estimates.
-
-Extending the construction beyond the Gaussian-based choice of measures, while retaining
-a nontrivial analysis space and an explicit inverse, is a direction for future work.
+Further work includes an intrinsic description of the analysis space, quantitative
+control of spectral approximation and coefficient cost for regular target classes,
+and the cost of representing infinite-dimensional directions in finite computations.
+Alternative coefficient discretizations may improve numerical implementation.
+Extensions to more general operator activations and to input and direction measures
+beyond the Gaussian construction are also natural questions.
