@@ -54,11 +54,3 @@ The trace is compared through the orthonormal eigenbasis supplied by its converg
 the multiplicity of a nonzero eigenvalue is identified with the trace of the projection
 onto its eigenspace.
 :::
-
-:::theorem "roadmap:polar-decomposition" (lean := "MeasureTheory.VectorMeasure.exists_withDensityᵥ_variation_eq")
-Every complex or Hilbert-space-valued measure $`\Gamma` of bounded variation has a polar
-decomposition $`\Gamma=h|\Gamma|` with $`\|h\|=1` $`|\Gamma|`-almost everywhere (the
-Radon–Nikodym theorem for vector measures). Mathlib has the scalar Radon–Nikodym theorem but
-not this form; it is proved in the project's `ToMathlib` modules, so the density that the
-sampled network of Section 6 chooses always exists.
-:::

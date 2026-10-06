@@ -68,6 +68,8 @@ number := false
 %%%
 
 :::definition "aux:finite-dim" (lean := "OperatorRidgelet.FiniteDim.mixtureConst, OperatorRidgelet.FiniteDim.directionMeasure, OperatorRidgelet.FiniteDim.frameConst, OperatorRidgelet.FiniteDim.fourier, OperatorRidgelet.FiniteDim.densityMeasure, OperatorRidgelet.FiniteDim.frameRepresentative, OperatorRidgelet.FiniteDim.fracLaplacian, OperatorRidgelet.strongLawSet") (uses := "aux:centered-gaussian")
+This is the finite-dimensional reference measure introduced in Section D.2 and used in Corollary D.2.
+
 On $`H=\mathbb R^m` with $`P=I` and $`0<\alpha<m`, the mixture is
 $`\nu_\alpha(\mathrm da)=c_{m,\alpha}\|a\|^{\alpha-m}\,\mathrm da` with
 $`c_{m,\alpha}=2^{-\alpha}\pi^{-m/2}\Gamma((m-\alpha)/2)` and $`k_{m,\alpha}=(2\pi)^mc_{m,\alpha}`;

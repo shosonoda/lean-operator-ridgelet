@@ -42,9 +42,16 @@ def main():
         **{letter: "appendix-" + letter.lower() for letter in "ABCDE"},
     }
     retired_labels = {"aux:hilbert-schmidt", "aux:operator-neuron",
-                      "roadmap:finite-dim-universality"}
+                      "roadmap:finite-dim-universality", "aux:backprojection", "aux:hermite",
+                      "aux:explicit-filters", "aux:gaussian-parameter-networks",
+                      "aux:operator-layer", "aux:torus", "aux:dirichlet"}
     assert not retired_labels.intersection(by_label), "Retired nodes remain in graph"
     assert len(items) == 62, "Unexpected manuscript inventory"
+    polar = "roadmap:polar-decomposition"
+    assert by_label[polar]["href"].startswith("networks/"), "Polar background misplaced"
+    edges = {(plain(edge["source"]), plain(edge["target"]))
+             for edge in manifest["graphs"][0]["edges"]}
+    assert {(polar, "def:2.2"), (polar, "def:6.1")} <= edges, "Polar dependencies missing"
     proof_count = 0
     for item in items:
         label = item["blueprint_label"]

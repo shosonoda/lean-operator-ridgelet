@@ -28,7 +28,7 @@ number := false
 
 The coefficient adjoint and reconstruction theorem have already been proved in the main text. This appendix derives further range, orthogonal projection, and minimum-norm coefficient formulas from them.
 
-:::proposition "prop:B.1" (lean := "OperatorRidgelet.Paper.prop_B_1_i, OperatorRidgelet.Paper.prop_B_1_ii, OperatorRidgelet.Paper.prop_B_1_iii, OperatorRidgelet.Paper.prop_B_1_iv, OperatorRidgelet.Paper.prop_B_1_v, OperatorRidgelet.Paper.prop_B_1_vi, OperatorRidgelet.Paper.prop_B_1_vii, OperatorRidgelet.Paper.prop_B_1_viii") (uses := "aux:backprojection, aux:frame-operator")
+:::proposition "prop:B.1" (lean := "OperatorRidgelet.Paper.prop_B_1_i, OperatorRidgelet.Paper.prop_B_1_ii, OperatorRidgelet.Paper.prop_B_1_iii, OperatorRidgelet.Paper.prop_B_1_iv, OperatorRidgelet.Paper.prop_B_1_v, OperatorRidgelet.Paper.prop_B_1_vi, OperatorRidgelet.Paper.prop_B_1_vii, OperatorRidgelet.Paper.prop_B_1_viii, OperatorRidgelet.coefficientProjection") (uses := "lem:3.9, aux:frame-operator, def:3.10")
 Let $`\rho` be $`\alpha`-admissible with $`C=(\!(\rho,\rho)\!)_\alpha` and
 $`\mathcal Y=L^2(\lambda_\alpha)`. The integral defining $`W_\rho^*\gamma`
 converges absolutely for $`\nu_\alpha`-almost every $`\xi` (i), is independent as an $`L^2`

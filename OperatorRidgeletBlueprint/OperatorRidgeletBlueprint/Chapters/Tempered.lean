@@ -30,6 +30,10 @@ The synthesis activation may be a tempered distribution, including ReLU. Weighte
 # Weighted Sobolev activation spaces
 
 :::definition "aux:tempered-distributions" (lean := "OperatorRidgelet.IsPolynomialDistribution, OperatorRidgelet.schwartzOfFun, OperatorRidgelet.tanhDistribution, OperatorRidgelet.gaussianCdfDistribution, OperatorRidgelet.gaussianDistribution") (uses := "aux:conventions")
+This is the common distributional setup of Section 5. Polynomiality enters Lemma 5.2
+and Theorem 5.4, the realizations of standard activations enter Lemma 5.2, and
+the choice of a Schwartz representative enters Definition 5.3.
+
 A tempered distribution $`\beta\in\mathcal S'(\mathbb R)` is a polynomial, equivalently
 $`\beta=0` in $`\mathcal S'/\mathcal P`, when it acts by integration against some polynomial.
 The Schwartz function with prescribed values is obtained by choice when one exists. The

@@ -30,6 +30,14 @@ numbered `blueprint_label`: Theorem 3.14 has source label `thm:B` and Blueprint 
 `thm:3.14`. Its informal statement and Lean declarations appear together in the corresponding
 mathematical chapter; the index's formalization note explains the verification scope.
 
+A numbered Blueprint node also collects the Lean definitions used in that manuscript item.
+For example, the backprojection definitions belong to Lemma 3.9 and the coefficient
+projection to Proposition B.1; the Hermite definitions belong to Lemma 4.7. Setup for
+a numbered example appears with that example. Shared conventions without a unique numbered
+counterpart retain descriptive identifiers and state their manuscript locations. The polar
+decomposition is the unnumbered vector-measure fact before Definition 2.2; it supplies the
+sampling data of Definition 6.1, and both dependency edges are recorded.
+
 ## Mathematical source map
 
 All paths in this table are relative to

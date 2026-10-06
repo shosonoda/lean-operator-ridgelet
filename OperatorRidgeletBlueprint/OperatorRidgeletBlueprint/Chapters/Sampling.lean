@@ -31,7 +31,7 @@ Monte Carlo approximation turns a finite coefficient measure into a finite-width
 
 For a finite coefficient measure with $`V=\|\Gamma\|_{\mathrm{TV}}>0`, choose its polar decomposition $`\Gamma=h|\Gamma|`, where $`\|h\|_Y=1` almost everywhere, and put $`p=|\Gamma|/V`. Draw neuron parameters independently from $`p`; the polar density supplies the output weights. For $`V=0`, use the zero network.
 
-:::definition "def:6.1" (lean := "OperatorRidgelet.compactSupNorm, OperatorRidgelet.polarDensity, OperatorRidgelet.polarWeight, OperatorRidgelet.polarLaw, OperatorRidgelet.sampleLaw, OperatorRidgelet.rademacherMeasure, OperatorRidgelet.sampledNetwork, OperatorRidgelet.rademacherComplexity") (uses := "def:2.1, def:2.2")
+:::definition "def:6.1" (lean := "OperatorRidgelet.compactSupNorm, OperatorRidgelet.polarDensity, OperatorRidgelet.polarWeight, OperatorRidgelet.polarLaw, OperatorRidgelet.sampleLaw, OperatorRidgelet.rademacherMeasure, OperatorRidgelet.sampledNetwork, OperatorRidgelet.rademacherComplexity") (uses := "def:2.1, def:2.2, roadmap:polar-decomposition")
 For a compact $`K\subset H`, the activation-dependent Rademacher complexity is
 $`\mathfrak R_N(K;p,\beta)=\mathbb E_{\theta,\varepsilon}\sup_{x\in K}\bigl|\frac1N\sum_{j=1}^N\varepsilon_jh(\theta_j)\beta(\langle a_j,x\rangle+c_j)\bigr|`,
 where $`\varepsilon_j` are independent Rademacher signs; with $`Y`-valued phases $`h` it is
@@ -41,6 +41,10 @@ network, and the compact sup norm $`\|f\|_{C(K)}=\sup_{x\in K}\|f(x)\|`.
 :::
 
 :::definition "aux:sampling-data" (lean := "OperatorRidgelet.compactRadius, OperatorRidgelet.densityWeight, OperatorRidgelet.densityLaw, OperatorRidgelet.densityPhase, OperatorRidgelet.polarSampledNetwork, OperatorRidgelet.densitySampledNetwork, OperatorRidgelet.secondMoment, OperatorRidgelet.atomicMeasure, OperatorRidgelet.IsFiniteRankProjection") (uses := "def:6.1")
+These are the sampling definitions used across Section 6: polar data in Section 6.1,
+radius and moment bounds in Theorem 6.5, atomic measures in Lemma 6.7,
+and finite-rank projections in Corollary C.2.
+
 The radius $`R_K=\sup_{x\in K}\sqrt{\|x\|^2+1}` of a compact set, the second moment
 $`M_2^2=\int_{H\times\mathbb R}(\|a\|^2+|c|^2)\,p(\mathrm da,\mathrm dc)`, the polar data
 $`V=\|\gamma\|_{L^1(\lambda)}`, $`p=|\gamma|\lambda/V`, $`h=\gamma/|\gamma|` of a coefficient

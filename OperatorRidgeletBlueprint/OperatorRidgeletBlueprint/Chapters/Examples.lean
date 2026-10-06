@@ -30,6 +30,8 @@ The exact targets and integral networks have genuinely infinite-dimensional inpu
 # A Gaussian integral and a target with a closed-form transform
 
 :::definition "aux:cylindrical" (lean := "OperatorRidgelet.IsCylindrical, OperatorRidgelet.HasInfiniteRank, OperatorRidgelet.FactorsThrough, OperatorRidgelet.not_factorsThrough_of_fibre_separation, OperatorRidgelet.not_factorsThrough_linear_of_kernel_separation")
+These are the cylindricality and observation-map conventions used in the examples of Section 7.
+
 A function $`f` on $`H` is cylindrical if $`f=\widetilde f\circ L` for a linear map
 $`L:H\to\mathbb R^m`, and a linear map has infinite rank when its range is not finite
 dimensional. The elementary obstruction: a target $`F` cannot factor through an observation
@@ -38,6 +40,8 @@ in the kernel of a linear $`P`, then $`F` is not cylindrical through $`P`.
 :::
 
 :::definition "aux:trace-class-operators" (lean := "OperatorRidgelet.traceAlong, OperatorRidgelet.HasSummableTrace, OperatorRidgelet.traceOf, OperatorRidgelet.IsPositiveTraceClass, OperatorRidgelet.IsPositiveSqrt, OperatorRidgelet.HasEigenbasis, OperatorRidgelet.fredholmDetAlong, OperatorRidgelet.fredholmDet, OperatorRidgelet.resolventForm") (uses := "aux:centered-gaussian, roadmap:trace-and-determinant")
+These are the trace and determinant conventions for Lemma 7.1 and Example 7.2.
+
 Mathlib has neither trace-class operators nor Fredholm determinants. The trace
 $`\operatorname{tr}P=\sum_i\langle Pe_i,e_i\rangle` is taken along a Hilbert basis for which
 the sum converges; a positive trace-class operator is positive, self-adjoint, with summable
@@ -48,6 +52,8 @@ $`\langle S(I+M)^{-1}Sx,x\rangle`.
 :::
 
 :::definition "aux:gaussian-target" (lean := "OperatorRidgelet.gaussianFun, OperatorRidgelet.gaussianActDeriv2, OperatorRidgelet.gaussianSmooth, OperatorRidgelet.gaussianTarget, OperatorRidgelet.gaussianKappa, OperatorRidgelet.gaussianTargetResolvent, OperatorRidgelet.mixtureLayerCovariance, OperatorRidgelet.MemSpectralCore, OperatorRidgelet.MemSpectralCoreVec, OperatorRidgelet.toLpOrZero, OperatorRidgelet.gaussFourier_congr_ae, OperatorRidgelet.toLp_mem_spectralCore_iff, OperatorRidgelet.memSpectralCore_iff") (uses := "aux:trace-class-operators, def:3.10, aux:gaussian-mixture")
+These are the Gaussian-target and activation definitions used in Sections 7.1 and 7.2, including Example 7.2.
+
 The Gaussian activation $`\Phi(u)=\phi(u)=e^{-u^2/2}` with $`\phi''(b)=(b^2-1)e^{-b^2/2}`,
 the convolution $`(\rho*\phi_v)(c)` with the centred Gaussian of variance $`v\ge0`, the
 Gaussian target $`f_W(x)=e^{-\langle Wx,x\rangle/2}`, and, for $`M=Q^{1/2}WQ^{1/2}`,
@@ -102,6 +108,8 @@ $`S_W\ge(1+\|M\|)^{-1}Q` followed by {bpref "thm:6.6"}[].
 # Gaussian-parameter networks on l2
 
 :::definition "aux:relu-identities" (lean := "LeanRidgelet.relu, OperatorRidgelet.relu_sub_relu_neg, OperatorRidgelet.spectralReLUNetwork, OperatorRidgelet.spectralReLUNetwork_eq")
+These are the elementary ReLU identities used in Lemma 7.3 and the truncation in Example 7.9.
+
 $`\operatorname{ReLU}(x)=\max(x,0)` and its odd part is the identity,
 $`\operatorname{ReLU}(x)-\operatorname{ReLU}(-x)=x`. For a finite spectral index set, the
 paired-ReLU network $`\sum_i\lambda_i[\operatorname{ReLU}(\langle e_i,x\rangle)-\operatorname{ReLU}(-\langle e_i,x\rangle)]e_i`
@@ -120,15 +128,15 @@ integrating by parts on $`(-L,u)` gives
 $`\int_{-L}^u(u-b)\phi''(b)\mathrm db=\phi(u)-\phi(-L)-(u+L)\phi'(-L)\to\phi(u)`.
 :::
 
-:::definition "aux:gaussian-parameter-networks" (lean := "OperatorRidgelet.gaussianParameterReLU, OperatorRidgelet.gaussianParameterGauss, OperatorRidgelet.hingeCoefficientMeasure") (uses := "def:2.2, aux:gaussian-target, aux:centered-gaussian")
+
+
+:::example_ "ex:7.4" (lean := "OperatorRidgelet.Paper.ex_7_4_i, OperatorRidgelet.Paper.ex_7_4_ii, OperatorRidgelet.Paper.ex_7_4_iii, OperatorRidgelet.Paper.ex_7_4_iv, OperatorRidgelet.Paper.ex_7_4_v, OperatorRidgelet.Paper.ex_7_4_vi_a, OperatorRidgelet.Paper.ex_7_4_vi_b, OperatorRidgelet.Paper.ex_7_4_vi_c, OperatorRidgelet.gaussianParameterReLU, OperatorRidgelet.gaussianParameterGauss, OperatorRidgelet.hingeCoefficientMeasure") (uses := "aux:cylindrical, aux:centered-gaussian, def:2.2, aux:gaussian-target")
 The integral networks $`F_Q(x)=\int_H\operatorname{ReLU}(\langle a,x\rangle)\,\mathcal N(0,Q)(\mathrm da)`
 and $`\Phi_Q(x)=\int_H\Phi(\langle a,x\rangle)\,\mathcal N(0,Q)(\mathrm da)`, and the ReLU
 coefficient measure of a Gaussian-activation network with coefficient density $`\gamma`: the
 pushforward of $`\phi''(b)\gamma(a,c)\,\lambda(\mathrm da,\mathrm dc)\,\mathrm db` under
 $`(a,c,b)\mapsto(a,c-b)`.
-:::
 
-:::example_ "ex:7.4" (lean := "OperatorRidgelet.Paper.ex_7_4_i, OperatorRidgelet.Paper.ex_7_4_ii, OperatorRidgelet.Paper.ex_7_4_iii, OperatorRidgelet.Paper.ex_7_4_iv, OperatorRidgelet.Paper.ex_7_4_v, OperatorRidgelet.Paper.ex_7_4_vi_a, OperatorRidgelet.Paper.ex_7_4_vi_b, OperatorRidgelet.Paper.ex_7_4_vi_c") (uses := "aux:gaussian-parameter-networks, aux:cylindrical, aux:centered-gaussian")
 $`F_Q(x)=\sqrt{\langle Qx,x\rangle/2\pi}` (i) and
 $`\Phi_Q(x)=(1+\langle Qx,x\rangle)^{-1/2}` (ii), which also equals
 $`\int_{H\times\mathbb R}\operatorname{ReLU}(\langle a,x\rangle-b)\,\phi''(b)\,\mathcal N(0,Q)(\mathrm da)\,\mathrm db`
@@ -158,7 +166,9 @@ $`\operatorname{Lip}(\beta)=1`, and $`M_2^2=\mathbb E\|a\|^2=\operatorname{tr}Q`
 
 # Neural-operator layers
 
-:::definition "aux:operator-layer" (lean := "OperatorRidgelet.HasPolynomialGrowth, OperatorRidgelet.IsLayerData, OperatorRidgelet.layerSupNorm, OperatorRidgelet.operatorLayer, OperatorRidgelet.layerWeight, OperatorRidgelet.layerObservable, OperatorRidgelet.layerA, OperatorRidgelet.layerCovariance, OperatorRidgelet.layerMeasure, OperatorRidgelet.layerHingeMeasure") (uses := "def:2.2, aux:gaussian-target, aux:centered-gaussian")
+
+
+:::example_ "ex:7.6" (lean := "OperatorRidgelet.Paper.ex_7_6_i_a, OperatorRidgelet.Paper.ex_7_6_i_b, OperatorRidgelet.Paper.ex_7_6_i_c, OperatorRidgelet.Paper.ex_7_6_i_d, OperatorRidgelet.Paper.ex_7_6_i_e, OperatorRidgelet.Paper.ex_7_6_i_f, OperatorRidgelet.Paper.ex_7_6_ii_a, OperatorRidgelet.Paper.ex_7_6_ii_b, OperatorRidgelet.Paper.ex_7_6_ii_c, OperatorRidgelet.Paper.ex_7_6_ii_d, OperatorRidgelet.Paper.ex_7_6_ii_e, OperatorRidgelet.Paper.ex_7_6_ii_f, OperatorRidgelet.Paper.ex_7_6_ii_g, OperatorRidgelet.Paper.ex_7_6_ii_h, OperatorRidgelet.Paper.ex_7_6_ii_i, OperatorRidgelet.Paper.ex_7_6_ii_j, OperatorRidgelet.Paper.ex_7_6_ii_k, OperatorRidgelet.Paper.ex_7_6_ii_l, OperatorRidgelet.Paper.ex_7_6_ii_m, OperatorRidgelet.Paper.ex_7_6_ii_n, OperatorRidgelet.Paper.ex_7_6_ii_o, OperatorRidgelet.Paper.ex_7_6_ii_p, OperatorRidgelet.Paper.ex_7_6_iii_a, OperatorRidgelet.Paper.ex_7_6_iii_b, OperatorRidgelet.Paper.ex_7_6_iii_c, OperatorRidgelet.Paper.ex_7_6_iii_d, OperatorRidgelet.Paper.ex_7_6_iv, OperatorRidgelet.HasPolynomialGrowth, OperatorRidgelet.IsLayerData, OperatorRidgelet.layerSupNorm, OperatorRidgelet.operatorLayer, OperatorRidgelet.layerWeight, OperatorRidgelet.layerObservable, OperatorRidgelet.layerA, OperatorRidgelet.layerCovariance, OperatorRidgelet.layerMeasure, OperatorRidgelet.layerHingeMeasure") (uses := "aux:cylindrical, aux:gaussian-target, def:2.2, thm:4.8, thm:6.6, aux:centered-gaussian")
 The standing hypotheses on $`(a,b)`, the norm $`\|A\|_\infty`, the layer $`\mathcal F`, the
 observable $`F_\varphi`, the weight $`w_\varphi`, the operator $`A:H\to L^2(m)`, the
 covariances $`S_y=Q-(1+\sigma_y^2)^{-1}(Qa_y)\otimes(Qa_y)` with
@@ -166,9 +176,7 @@ $`\sigma_y^2=\langle Qa_y,a_y\rangle`, the $`Y`-valued coefficient measure
 $`\Gamma=\iota_\#(b_y\,m(\mathrm dy))` with $`\iota(y)=(a_y,0)`, and the coefficient measure
 of the ReLU form, the pushforward of $`\phi''(b)\,b_y\,m(\mathrm dy)\,\mathrm db` under
 $`(y,b)\mapsto(a_y,-b)`.
-:::
 
-:::example_ "ex:7.6" (lean := "OperatorRidgelet.Paper.ex_7_6_i_a, OperatorRidgelet.Paper.ex_7_6_i_b, OperatorRidgelet.Paper.ex_7_6_i_c, OperatorRidgelet.Paper.ex_7_6_i_d, OperatorRidgelet.Paper.ex_7_6_i_e, OperatorRidgelet.Paper.ex_7_6_i_f, OperatorRidgelet.Paper.ex_7_6_ii_a, OperatorRidgelet.Paper.ex_7_6_ii_b, OperatorRidgelet.Paper.ex_7_6_ii_c, OperatorRidgelet.Paper.ex_7_6_ii_d, OperatorRidgelet.Paper.ex_7_6_ii_e, OperatorRidgelet.Paper.ex_7_6_ii_f, OperatorRidgelet.Paper.ex_7_6_ii_g, OperatorRidgelet.Paper.ex_7_6_ii_h, OperatorRidgelet.Paper.ex_7_6_ii_i, OperatorRidgelet.Paper.ex_7_6_ii_j, OperatorRidgelet.Paper.ex_7_6_ii_k, OperatorRidgelet.Paper.ex_7_6_ii_l, OperatorRidgelet.Paper.ex_7_6_ii_m, OperatorRidgelet.Paper.ex_7_6_ii_n, OperatorRidgelet.Paper.ex_7_6_ii_o, OperatorRidgelet.Paper.ex_7_6_ii_p, OperatorRidgelet.Paper.ex_7_6_iii_a, OperatorRidgelet.Paper.ex_7_6_iii_b, OperatorRidgelet.Paper.ex_7_6_iii_c, OperatorRidgelet.Paper.ex_7_6_iii_d, OperatorRidgelet.Paper.ex_7_6_iv") (uses := "aux:operator-layer, aux:cylindrical, aux:gaussian-target, def:2.2, thm:4.8, thm:6.6")
 (i) $`\mathcal F=S_\beta[\Gamma]` with $`\Gamma=\iota_\#(b_y\,m(\mathrm dy))`, whose total
 variation is at most $`\int\|b_y\|m(\mathrm dy)` and whose second parameter moment is at most
 $`\|A\|_\infty^2`; hence width-$`N` networks approximate $`\mathcal F` at the rate
@@ -217,16 +225,16 @@ input weight.
 
 # Periodic convolution layers
 
-:::definition "aux:torus" (lean := "OperatorRidgelet.Torus, OperatorRidgelet.torusHaar, OperatorRidgelet.TorusL2, OperatorRidgelet.TorusL2C, OperatorRidgelet.torusTranslate, OperatorRidgelet.torusTranslateC, OperatorRidgelet.convDirection, OperatorRidgelet.convOutput, OperatorRidgelet.torusOne, OperatorRidgelet.torusCharacter, OperatorRidgelet.torusFourierCoeff, OperatorRidgelet.torusFreqNormSq, OperatorRidgelet.besselOperator") (uses := "aux:operator-layer")
+
+
+:::example_ "ex:7.8" (lean := "OperatorRidgelet.Paper.ex_7_8_i, OperatorRidgelet.Paper.ex_7_8_ii, OperatorRidgelet.Paper.ex_7_8_iii, OperatorRidgelet.Paper.ex_7_8_iv, OperatorRidgelet.Paper.ex_7_8_v, OperatorRidgelet.Paper.ex_7_8_vi, OperatorRidgelet.Paper.ex_7_8_vii, OperatorRidgelet.Paper.ex_7_8_viii, OperatorRidgelet.Paper.ex_7_8_ix, OperatorRidgelet.Paper.ex_7_8_x, OperatorRidgelet.Paper.ex_7_8_xi, OperatorRidgelet.Paper.ex_7_8_xii, OperatorRidgelet.Paper.ex_7_8_xiii, OperatorRidgelet.Torus, OperatorRidgelet.torusHaar, OperatorRidgelet.TorusL2, OperatorRidgelet.TorusL2C, OperatorRidgelet.torusTranslate, OperatorRidgelet.torusTranslateC, OperatorRidgelet.convDirection, OperatorRidgelet.convOutput, OperatorRidgelet.torusOne, OperatorRidgelet.torusCharacter, OperatorRidgelet.torusFourierCoeff, OperatorRidgelet.torusFreqNormSq, OperatorRidgelet.besselOperator") (uses := "ex:7.6, aux:cylindrical, aux:centered-gaussian, def:3.4")
 The torus $`\mathbb T^d=(\mathbb R/2\pi\mathbb Z)^d` with normalized Haar measure,
 $`H=L^2(\mathbb T^d;\mathbb R)` and $`Y=L^2(\mathbb T^d)`, the translations
 $`(\tau_zx)(t)=x(t-z)`, the convolution-layer data $`a_y=k(y-\cdot)` and
 $`b_y=\psi(\cdot-y)`, the constant function $`1`, the characters
 $`e_n(t)=e^{i\langle n,t\rangle}` and Fourier coefficients $`\widehat f(n)`, and the Bessel
 operator $`(I-\Delta)^{-s}`, multiplying the $`n`-th Fourier coefficient by $`(1+|n|^2)^{-s}`.
-:::
 
-:::example_ "ex:7.8" (lean := "OperatorRidgelet.Paper.ex_7_8_i, OperatorRidgelet.Paper.ex_7_8_ii, OperatorRidgelet.Paper.ex_7_8_iii, OperatorRidgelet.Paper.ex_7_8_iv, OperatorRidgelet.Paper.ex_7_8_v, OperatorRidgelet.Paper.ex_7_8_vi, OperatorRidgelet.Paper.ex_7_8_vii, OperatorRidgelet.Paper.ex_7_8_viii, OperatorRidgelet.Paper.ex_7_8_ix, OperatorRidgelet.Paper.ex_7_8_x, OperatorRidgelet.Paper.ex_7_8_xi, OperatorRidgelet.Paper.ex_7_8_xii, OperatorRidgelet.Paper.ex_7_8_xiii") (uses := "aux:torus, aux:operator-layer, aux:cylindrical, aux:centered-gaussian, def:3.4")
 Let $`k,\psi\in L^2(\mathbb T^d;\mathbb R)`, $`a_y=k(y-\cdot)`, and $`b_y=\psi(\cdot-y)`.
 Then $`\langle a_y,x\rangle=(k*x)(y)` (i), the layer is $`\mathcal F(x)=\psi*\beta(k*x)`
 (ii), $`\|A\|_\infty=\|k\|_2` (iii), $`\int\|b_y\|\mathrm dy=\|\psi\|_2` (iv), the standing
@@ -250,16 +258,16 @@ has eigenvalues $`(1+|n|^2)^{-s}`, summable for $`s>d/2`.
 
 # Dirichlet solution layers
 
-:::definition "aux:dirichlet" (lean := "OperatorRidgelet.UnitOpenInterval, OperatorRidgelet.UnitL2, OperatorRidgelet.UnitL2C, OperatorRidgelet.dirichletKernel, OperatorRidgelet.dirichletKernelFn, OperatorRidgelet.dirichletDirection, OperatorRidgelet.dirichletOutput, OperatorRidgelet.dirichletSolution, OperatorRidgelet.integralOperator, OperatorRidgelet.dirichletOperator, OperatorRidgelet.dirichletEigenvalue, OperatorRidgelet.dirichletEigenfunction, OperatorRidgelet.dirichletReLUTruncation") (uses := "aux:operator-layer, aux:relu-identities")
+
+
+:::example_ "ex:7.9" (lean := "OperatorRidgelet.Paper.ex_7_9_i, OperatorRidgelet.Paper.ex_7_9_ii, OperatorRidgelet.Paper.ex_7_9_iii, OperatorRidgelet.Paper.ex_7_9_iv, OperatorRidgelet.Paper.ex_7_9_v, OperatorRidgelet.Paper.ex_7_9_vi, OperatorRidgelet.Paper.ex_7_9_vii, OperatorRidgelet.Paper.ex_7_9_viii, OperatorRidgelet.Paper.ex_7_9_ix, OperatorRidgelet.Paper.ex_7_9_x, OperatorRidgelet.Paper.ex_7_9_xi, OperatorRidgelet.UnitOpenInterval, OperatorRidgelet.UnitL2, OperatorRidgelet.UnitL2C, OperatorRidgelet.dirichletKernel, OperatorRidgelet.dirichletKernelFn, OperatorRidgelet.dirichletDirection, OperatorRidgelet.dirichletOutput, OperatorRidgelet.dirichletSolution, OperatorRidgelet.integralOperator, OperatorRidgelet.dirichletOperator, OperatorRidgelet.dirichletEigenvalue, OperatorRidgelet.dirichletEigenfunction, OperatorRidgelet.dirichletReLUTruncation") (uses := "ex:7.6, aux:relu-identities, aux:trace-class-operators")
 The interval $`\Omega=(0,1)` with Lebesgue measure, $`H=Y=L^2(0,1)`, the Green kernel
 $`g(y,t)=\sinh(\min(y,t))\sinh(1-\max(y,t))/\sinh1`, the layer data $`a_y=b_y=g(y,\cdot)`,
 the Dirichlet solution operator $`\mathsf G=(I-\partial_t^2)^{-1}` as the integral operator
 with kernel $`g`, its eigenvalues $`\lambda_n=(1+\pi^2n^2)^{-1}` and eigenfunctions
 $`e_n(t)=\sqrt2\sin(n\pi t)`, and the $`2N`-neuron ReLU truncation
 $`\mathsf G_Nx=\sum_{n=1}^N\lambda_n[\operatorname{ReLU}(\langle e_n,x\rangle)-\operatorname{ReLU}(-\langle e_n,x\rangle)]e_n`.
-:::
 
-:::example_ "ex:7.9" (lean := "OperatorRidgelet.Paper.ex_7_9_i, OperatorRidgelet.Paper.ex_7_9_ii, OperatorRidgelet.Paper.ex_7_9_iii, OperatorRidgelet.Paper.ex_7_9_iv, OperatorRidgelet.Paper.ex_7_9_v, OperatorRidgelet.Paper.ex_7_9_vi, OperatorRidgelet.Paper.ex_7_9_vii, OperatorRidgelet.Paper.ex_7_9_viii, OperatorRidgelet.Paper.ex_7_9_ix, OperatorRidgelet.Paper.ex_7_9_x, OperatorRidgelet.Paper.ex_7_9_xi") (uses := "aux:dirichlet, aux:operator-layer, aux:relu-identities, aux:trace-class-operators")
 $`(\mathsf Gx)(y)=\int_0^1g(y,t)x(t)\,\mathrm dt` (i) and $`u=\mathsf Gx` solves
 $`-u''+u=x`, $`u(0)=u(1)=0` (ii); $`\mathsf Ge_n=\lambda_ne_n` (iii), so $`\mathsf G` is an
 injective trace-class covariance (iv) of infinite rank (v), and

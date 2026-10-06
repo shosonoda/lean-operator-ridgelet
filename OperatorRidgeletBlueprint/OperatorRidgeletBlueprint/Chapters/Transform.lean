@@ -30,6 +30,8 @@ We construct the input and direction measures, the partial Fourier transform, an
 # Gaussian input and homogeneous direction measures
 
 :::definition "aux:centered-gaussian" (lean := "OperatorRidgelet.IsTraceClassCovariance, OperatorRidgelet.IsCenteredGaussian")
+These are the covariance and Gaussian-measure conventions of Section 3.1.
+
 A covariance is an injective, positive, self-adjoint, trace-class operator; the trace is taken
 along a Hilbert basis. The centred Gaussian measure $`\mu=\mathcal N(0,Q)` is the Borel
 probability measure with characteristic functional
@@ -37,6 +39,8 @@ $`\int_He^{i\langle x,\xi\rangle}\mu(\mathrm dx)=e^{-\langle Q\xi,\xi\rangle/2}`
 :::
 
 :::definition "aux:gaussian-mixture" (lean := "OperatorRidgelet.IsCenteredGaussianLayers, OperatorRidgelet.mixtureWeight, OperatorRidgelet.gaussianMixtureOn, OperatorRidgelet.gaussianMixture") (uses := "aux:centered-gaussian, roadmap:gaussian-layers")
+This is the scale-mixture setup of Section 3.1, used in Lemmas 3.1 and 3.2.
+
 The Gaussian components of the mixture form a family $`N_s=\mathcal N(0,2sP)`, $`s>0`, with characteristic
 functionals $`e^{-s\langle P\xi,\xi\rangle}`. For $`\alpha>0` the homogeneous Gaussian mixture
 is $`\nu_\alpha=\int_0^\infty\mathcal N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds`, the Giry-monad
@@ -80,6 +84,8 @@ $`P` gives full support, and the substitution $`u=s\omega^2` in each component p
 # Filters, the ridgelet transform, and the Fourier slice
 
 :::definition "aux:conventions" (lean := "OperatorRidgelet.character, OperatorRidgelet.lineFourier, OperatorRidgelet.filterFourier, OperatorRidgelet.biasFourier, OperatorRidgelet.IsHomogeneous")
+These are the Fourier and bias conventions fixed in the preliminaries and used throughout Section 3.
+
 The Fourier convention is $`h^\sharp(\omega)=\int_{\mathbb R}h(t)e^{-it\omega}\,\mathrm dt`
 for functions on the line (for a real filter $`\rho` this is $`\rho^\sharp`), and the partial
 Fourier transform in the bias of a coefficient is
@@ -179,7 +185,7 @@ the same computation with $`|G|` on a compact set gives local integrability, and
 Fourier transform in $`\omega` for almost every $`a` gives the formula.
 :::
 
-:::lemma_ "lem:3.9" (lean := "OperatorRidgelet.Paper.lem_3_9_i, OperatorRidgelet.Paper.lem_3_9_ii, OperatorRidgelet.Paper.lem_3_9_iii")
+:::lemma_ "lem:3.9" (lean := "OperatorRidgelet.Paper.lem_3_9_i, OperatorRidgelet.Paper.lem_3_9_ii, OperatorRidgelet.Paper.lem_3_9_iii, OperatorRidgelet.backprojectionOf, OperatorRidgelet.backprojection, OperatorRidgelet.backprojectionLp") (uses := "def:3.7, lem:3.6")
 For an admissible Schwartz filter and a sigma-finite homogeneous direction measure,
 the backprojection $`W_\rho^*` is the Hilbert adjoint of the coefficient operator,
 with values in the frequency space $`L^2(\nu_\alpha)`. It satisfies
@@ -282,15 +288,15 @@ and the argument of {bpref "lem:3.11"}[] finishes.
 
 A band-pass filter works for every positive homogeneity exponent. The Mexican hat distinguishes admissibility from the extra support assumption in band-pass reconstruction.
 
-:::definition "aux:explicit-filters" (lean := "OperatorRidgelet.Filters.bump, OperatorRidgelet.Filters.bandPassHat, OperatorRidgelet.Filters.bandPassFun, OperatorRidgelet.Filters.bandPass, OperatorRidgelet.Filters.mexicanHatFun, OperatorRidgelet.Filters.mexicanHat") (uses := "aux:conventions")
-With the bump $`\eta(u)=\exp(-1/(1-u^2))` for $`|u|<1` and $`0` otherwise, the band-pass
-filter $`\rho_{\mathrm{bp}}` is the real even Schwartz function with
-$`\rho_{\mathrm{bp}}^\sharp(\omega)=-\eta(2|\omega|-3)`, obtained by Fourier inversion; the
-Mexican hat is $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}`. Both are taken as Schwartz maps by
-choice, with junk value $`0` should the explicit function fail to be Schwartz.
-:::
 
-:::example_ "ex:3.15" (lean := "OperatorRidgelet.Paper.ex_3_15_i, OperatorRidgelet.Paper.ex_3_15_ii, OperatorRidgelet.Paper.ex_3_15_iii, OperatorRidgelet.Paper.ex_3_15_iv, OperatorRidgelet.Paper.ex_3_15_v, OperatorRidgelet.Paper.ex_3_15_vi, OperatorRidgelet.Paper.ex_3_15_vii, OperatorRidgelet.Paper.ex_3_15_viii, OperatorRidgelet.Paper.ex_3_15_ix, OperatorRidgelet.Paper.ex_3_15_x") (uses := "aux:explicit-filters, def:3.3, aux:conventions")
+
+:::example_ "ex:3.15" (lean := "OperatorRidgelet.Paper.ex_3_15_i, OperatorRidgelet.Paper.ex_3_15_ii, OperatorRidgelet.Paper.ex_3_15_iii, OperatorRidgelet.Paper.ex_3_15_iv, OperatorRidgelet.Paper.ex_3_15_v, OperatorRidgelet.Paper.ex_3_15_vi, OperatorRidgelet.Paper.ex_3_15_vii, OperatorRidgelet.Paper.ex_3_15_viii, OperatorRidgelet.Paper.ex_3_15_ix, OperatorRidgelet.Paper.ex_3_15_x, OperatorRidgelet.Filters.bump, OperatorRidgelet.Filters.bandPassHat, OperatorRidgelet.Filters.bandPassFun, OperatorRidgelet.Filters.bandPass") (uses := "def:3.3, aux:conventions")
+Let $`\eta(u)=\exp(-1/(1-u^2))` for $`|u|<1` and $`0` otherwise, and
+choose the real Schwartz filter with
+$`\rho_{\mathrm{bp}}^\sharp(\omega)=-\eta(2|\omega|-3)`.
+The choice-based Lean representative is $`0` if the Schwartz condition fails;
+the statements below verify that condition and the prescribed Fourier transform.
+
 $`\rho_{\mathrm{bp}}^\sharp` is smooth (i), nonpositive (ii), nonzero (iii), and supported in
 $`\{1\le|\omega|\le2\}` (iv), so $`\rho_{\mathrm{bp}}\in\mathcal S(\mathbb R)` is real (v)
 and even (vi) with the prescribed Fourier transform (vii), satisfies the band-pass condition
@@ -306,7 +312,11 @@ give an even real inverse, and on the compact support $`|\omega|^{-\alpha}` is b
 and below.
 :::
 
-:::example_ "ex:3.16" (lean := "OperatorRidgelet.Paper.ex_3_16_i, OperatorRidgelet.Paper.ex_3_16_ii, OperatorRidgelet.Paper.ex_3_16_iii, OperatorRidgelet.Paper.ex_3_16_iv, OperatorRidgelet.Paper.ex_3_16_v, OperatorRidgelet.Paper.ex_3_16_vi") (uses := "aux:explicit-filters, def:3.3, aux:conventions")
+:::example_ "ex:3.16" (lean := "OperatorRidgelet.Paper.ex_3_16_i, OperatorRidgelet.Paper.ex_3_16_ii, OperatorRidgelet.Paper.ex_3_16_iii, OperatorRidgelet.Paper.ex_3_16_iv, OperatorRidgelet.Paper.ex_3_16_v, OperatorRidgelet.Paper.ex_3_16_vi, OperatorRidgelet.Filters.mexicanHatFun, OperatorRidgelet.Filters.mexicanHat") (uses := "def:3.3, aux:conventions")
+The Mexican hat is $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}`.
+Its Schwartz representative is obtained by choice, with junk value $`0`
+outside the Schwartz condition verified below.
+
 $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}` is a Schwartz function (i) with
 $`\rho_{\mathrm{MH}}^\sharp(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}` (ii). It is
 $`\alpha`-admissible exactly for $`0<\alpha<5` (iii), with

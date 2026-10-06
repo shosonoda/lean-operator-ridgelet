@@ -60,7 +60,17 @@ meaning an almost-everywhere limit of measurable simple functions, and its norm
 is integrable; integrating simple-function approximants in $`L^1` gives its integral.
 For further details, see Diestel and Uhl, *Vector Measures* (1977).
 
-:::definition "def:2.2" (lean := "OperatorRidgelet.integralNetwork, OperatorRidgelet.totalVariation, OperatorRidgelet.integralNetworkDensity, OperatorRidgelet.Paper.def_2_2_i, OperatorRidgelet.Paper.def_2_2_ii")
+:::theorem "roadmap:polar-decomposition" (lean := "MeasureTheory.VectorMeasure.exists_withDensityᵥ_variation_eq, OperatorRidgelet.polarDensity_spec, OperatorRidgelet.ae_norm_polarDensity_eq_one, OperatorRidgelet.withDensityᵥ_polarDensity")
+This is the polar-decomposition fact recalled before Definition 2.2 in Section 2.1.
+It also supplies the sampling data before Definition 6.1 in Section 6.1.
+Every complex or Hilbert-space-valued measure $`\Gamma` of bounded variation has a polar
+decomposition $`\Gamma=h|\Gamma|` with $`\|h\|=1` $`|\Gamma|`-almost everywhere (the
+Radon–Nikodym theorem for vector measures). Mathlib has the scalar Radon–Nikodym theorem but
+not this form; it is proved in the project's `ToMathlib` modules, so the density that the
+sampled network of Section 6 chooses always exists.
+:::
+
+:::definition "def:2.2" (lean := "OperatorRidgelet.integralNetwork, OperatorRidgelet.totalVariation, OperatorRidgelet.integralNetworkDensity, OperatorRidgelet.Paper.def_2_2_i, OperatorRidgelet.Paper.def_2_2_ii") (uses := "roadmap:polar-decomposition")
 Let $`\Gamma` be a $`Y`-valued Borel measure of bounded variation on $`\Theta=H\times\mathbb R`
 with variation $`|\Gamma|` and total variation $`\|\Gamma\|_{\mathrm{TV}}=|\Gamma|(\Theta)`.
 Whenever the Bochner integral exists, the integral network is

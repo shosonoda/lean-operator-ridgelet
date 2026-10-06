@@ -73,7 +73,7 @@
   },
   {
     "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_aux___hermite_FLQQ_--statement",
-    "targetlabel": "aux:hermite"
+    "targetlabel": "lem:4.7"
   },
   {
     "oldhref": "appendix-b/B___4-Proof-of-Theorem-4___3_LPAR_iii_RPAR_-and-_LPAR_iv_RPAR_/#--informal-preview-_FLQQ_lem___B___5_FLQQ_--proof",
@@ -429,7 +429,7 @@
   },
   {
     "oldhref": "appendix-i/#--informal-preview-_FLQQ_aux___explicit-filters_FLQQ_--statement",
-    "targetlabel": "aux:explicit-filters"
+    "targetlabel": "ex:3.15"
   },
   {
     "oldhref": "appendix-i/#--informal-preview-_FLQQ_ex___I___1_FLQQ_--proof",
@@ -513,7 +513,7 @@
   },
   {
     "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_aux___gaussian-parameter-networks_FLQQ_--statement",
-    "targetlabel": "aux:gaussian-parameter-networks"
+    "targetlabel": "ex:7.4"
   },
   {
     "oldhref": "examples/Gaussian-parameter-networks-on-l2/#--informal-preview-_FLQQ_cor___7___3_FLQQ_--proof",
@@ -533,7 +533,7 @@
   },
   {
     "oldhref": "examples/Gaussian-parameter-networks-on-the-sequence-space/#--informal-preview-_FLQQ_aux___gaussian-parameter-networks_FLQQ_--statement",
-    "targetlabel": "aux:gaussian-parameter-networks"
+    "targetlabel": "ex:7.4"
   },
   {
     "oldhref": "examples/Gaussian-parameter-networks-on-the-sequence-space/#--informal-preview-_FLQQ_cor___relu-discretization_FLQQ_--proof",
@@ -553,15 +553,15 @@
   },
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_aux___dirichlet_FLQQ_--statement",
-    "targetlabel": "aux:dirichlet"
+    "targetlabel": "ex:7.9"
   },
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_aux___operator-layer_FLQQ_--statement",
-    "targetlabel": "aux:operator-layer"
+    "targetlabel": "ex:7.6"
   },
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_aux___torus_FLQQ_--statement",
-    "targetlabel": "aux:torus"
+    "targetlabel": "ex:7.8"
   },
   {
     "oldhref": "examples/Neural-operator-layers/#--informal-preview-_FLQQ_ex___7___4_FLQQ_--statement",
@@ -797,7 +797,7 @@
   },
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_aux___backprojection_FLQQ_--statement",
-    "targetlabel": "aux:backprojection"
+    "targetlabel": "lem:3.9"
   },
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_aux___frame-operator_FLQQ_--statement",
@@ -805,7 +805,7 @@
   },
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_aux___hermite_FLQQ_--statement",
-    "targetlabel": "aux:hermite"
+    "targetlabel": "lem:4.7"
   },
   {
     "oldhref": "reconstruction/The-frame-operator-and-the-reconstruction-formula/#--informal-preview-_FLQQ_cor___4___4_FLQQ_--proof",
@@ -1273,7 +1273,7 @@
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_aux___explicit-filters_FLQQ_--statement",
-    "targetlabel": "aux:explicit-filters"
+    "targetlabel": "ex:3.15"
   },
   {
     "oldhref": "transform/Explicit-admissible-filters/#--informal-preview-_FLQQ_ex___bandlimited-filter_FLQQ_--proof",
@@ -1429,7 +1429,7 @@
   },
   {
     "oldhref": "transform/Examples-of-analysis-filters/#--informal-preview-_FLQQ_aux___explicit-filters_FLQQ_--statement",
-    "targetlabel": "aux:explicit-filters"
+    "targetlabel": "ex:3.15"
   },
   {
     "oldhref": "appendix-f/F___3-Filtered-backprojection/#--informal-preview-_FLQQ_aux___finite-dim_FLQQ_--statement",
@@ -1506,5 +1506,21 @@
   {
     "oldhref": "appendix-f/F___4-Why-the-spectral-measure-cannot-be-dilated/#--informal-preview-_FLQQ_prop___F___3_FLQQ_--statement",
     "targetlabel": "prop:D.3"
+  },
+  {
+    "oldhref": "reconstruction/Synthesis___-Hermite-recovery___-and-reconstruction/#--informal-preview-_FLQQ_aux___backprojection_FLQQ_--statement",
+    "targetlabel": "lem:3.9"
+  },
+  {
+    "oldhref": "examples/Dirichlet-solution-layers/#--informal-preview-_FLQQ_aux___dirichlet_FLQQ_--statement",
+    "targetlabel": "ex:7.9"
+  },
+  {
+    "oldhref": "reconstruction/Synthesis___-Hermite-recovery___-and-reconstruction/#--informal-preview-_FLQQ_aux___hermite_FLQQ_--statement",
+    "targetlabel": "lem:4.7"
+  },
+  {
+    "oldhref": "examples/Periodic-convolution-layers/#--informal-preview-_FLQQ_aux___torus_FLQQ_--statement",
+    "targetlabel": "ex:7.8"
   }
 ]

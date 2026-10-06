@@ -124,6 +124,8 @@ $`M_m(G)\le m(\Omega)\int_H(1+\|a\|)^{m+2}\max_{k\le m}h_k(a)\,\nu_\alpha(\mathr
 # Integral representation
 
 :::definition "aux:tempered-activation" (lean := "OperatorRidgelet.IsTemperedFunction, OperatorRidgelet.temperedTestFilter, OperatorRidgelet.temperedAdmissibilityConst") (uses := "def:3.3, aux:conventions")
+This is the activation and distributional-pairing setup for Theorem 4.5(iii).
+
 A tempered distribution $`\beta\in\mathcal S'(\mathbb R)` that is a continuous function of
 polynomial growth is the pair of $`\beta` and a continuous $`b:\mathbb R\to\mathbb R` with
 $`|b(t)|\le C(1+|t|)^p` and $`\langle\beta,\varphi\rangle=\int b\varphi`. For a band-pass
@@ -167,6 +169,8 @@ $`\beta^\sharp`, its support would be $`\{0\}` and $`\beta` a polynomial.
 # Synthesis, Hermite recovery, and reconstruction
 
 :::definition "aux:frame-operator" (lean := "OperatorRidgelet.SpectralAntiDual, OperatorRidgelet.antiDualConj, OperatorRidgelet.rieszMap, OperatorRidgelet.rieszInv, OperatorRidgelet.transposeEmbed, OperatorRidgelet.frameOperator, OperatorRidgelet.ridgeletExtension, OperatorRidgelet.ridgeletRange, OperatorRidgelet.synthesis") (uses := "def:3.10, thm:3.14")
+These are the anti-dual, transpose, and frame-operator definitions preceding Theorem 4.8 in Section 4.2.
+
 Let $`\mathcal E_\alpha'` be the continuous anti-dual of $`\mathcal E_\alpha`, represented as
 the continuous conjugate-linear functionals on $`\mathcal K_\alpha`. The Riesz map is
 $`T_\alpha f[g]=\langle f,g\rangle_{\mathcal E_\alpha}`, with inverse $`T_\alpha^{-1}` from the
@@ -184,17 +188,7 @@ $`R_\rho^*R_\rho=C I_{\mathcal E_\alpha}` and
 $`R_\rho'R_\rho=CT_\alpha`.
 :::
 
-:::definition "aux:backprojection" (lean := "OperatorRidgelet.backprojectionOf, OperatorRidgelet.backprojection, OperatorRidgelet.backprojectionLp, OperatorRidgelet.coefficientProjection") (uses := "def:3.7, def:3.10, lem:3.6, lem:3.9")
-For $`\gamma\in L^2(\lambda_\alpha)`, define the backprojection as $`W_\rho^*`.
-By {bpref "lem:3.9"}[], it is represented by the integral
-$`W_\rho^*\gamma(\xi)=\frac1{2\pi}\int_{\mathbb R\setminus\{0\}}
-    \overline{\rho^\sharp(\omega)}\,|\omega|^{-\alpha}\,\gamma^\sharp(-\xi/\omega,\omega)\,\mathrm d\omega`,
-computed from any jointly strongly measurable partial Fourier representative supplied by
-{bpref "lem:3.6"}[]. The integral converges absolutely for almost every
-$`\xi`, and its $`L^2(\nu_\alpha)` class is independent of the representative. With $`P_{\mathcal K_\alpha}` the
-orthogonal projection onto $`\mathcal K_\alpha`, the coefficient projection is
-$`\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}W_\rho^*`.
-:::
+
 
 :::lemma_ "lem:4.6" (lean := "OperatorRidgelet.Paper.lem_4_6_i, OperatorRidgelet.Paper.lem_4_6_ii") (uses := "def:2.2, def:3.4, def:3.10, aux:frame-operator")
 Let $`\rho\in\mathcal S(\mathbb R)` be real and
@@ -212,7 +206,9 @@ of $`|\gamma||g||\rho(\langle a,x\rangle+c)|` is at most
 $`\|\gamma\|_{L^1}\|\rho\|_\infty\|g\|_{L^1(\mu_Q)}`, so Fubini applies; $`\rho` is real.
 :::
 
-:::definition "aux:hermite" (lean := "OperatorRidgelet.gaussFourierLine, OperatorRidgelet.hermiteExtension, OperatorRidgelet.hermiteCoefficient, OperatorRidgelet.gaussFourierInv") (uses := "aux:centered-gaussian, def:3.4, def:3.10")
+
+
+:::lemma_ "lem:4.7" (lean := "OperatorRidgelet.Paper.lem_4_7_i, OperatorRidgelet.Paper.lem_4_7_ii, OperatorRidgelet.Paper.lem_4_7_iii, OperatorRidgelet.Paper.lem_4_7_iv, OperatorRidgelet.Paper.lem_4_7_v, OperatorRidgelet.Paper.lem_4_7_vi, OperatorRidgelet.gaussFourierLine, OperatorRidgelet.hermiteExtension, OperatorRidgelet.hermiteCoefficient, OperatorRidgelet.gaussFourierInv") (uses := "aux:centered-gaussian, def:3.4, def:3.10")
 For $`f\in L^2(\mu_Q)`, $`\xi\ne0`, and $`\tau(\xi)=\langle Q\xi,\xi\rangle^{1/2}`, the
 analytic continuation $`z\mapsto F_Qf(z\xi)=\int_Hf(x)e^{-iz\langle x,\xi\rangle}\mu_Q(\mathrm dx)`
 and the entire function $`G_f(z\xi)=e^{z^2\tau(\xi)^2/2}F_Qf(z\xi)`; the Hermite
@@ -220,9 +216,7 @@ coefficients $`\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi)
 probabilists' Hermite polynomials; and $`\Delta_Q`, the inverse of $`F_Q` on its
 range on $`\mathcal D_\alpha`, chosen as the element of $`\mathcal D_\alpha` with the given
 transform.
-:::
 
-:::lemma_ "lem:4.7" (lean := "OperatorRidgelet.Paper.lem_4_7_i, OperatorRidgelet.Paper.lem_4_7_ii, OperatorRidgelet.Paper.lem_4_7_iii, OperatorRidgelet.Paper.lem_4_7_iv, OperatorRidgelet.Paper.lem_4_7_v, OperatorRidgelet.Paper.lem_4_7_vi") (uses := "aux:hermite, aux:centered-gaussian")
 For $`f\in L^2(\mu_Q)` and $`\xi\ne0`, the function $`z\mapsto G_f(z\xi)` is entire (i),
 $`G_f(z\xi)=\sum_{n\ge0}\frac{(-iz\tau(\xi))^n}{n!}\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]`
 (ii) with locally uniform convergence (iii),
@@ -242,7 +236,7 @@ decomposition), and polarization of Wick powers expresses them through the direc
 powers.
 :::
 
-:::theorem "thm:4.8" (lean := "OperatorRidgelet.Paper.thm_4_8_i_a, OperatorRidgelet.Paper.thm_4_8_i_b, OperatorRidgelet.Paper.thm_4_8_i_c, OperatorRidgelet.Paper.thm_4_8_i_d, OperatorRidgelet.Paper.thm_4_8_ii_a, OperatorRidgelet.Paper.thm_4_8_ii_b, OperatorRidgelet.Paper.thm_4_8_iii_a, OperatorRidgelet.Paper.thm_4_8_iii_b, OperatorRidgelet.Paper.thm_4_8_iii_c, OperatorRidgelet.Paper.thm_4_8_iii_d, OperatorRidgelet.Paper.thm_4_8_iii_e, OperatorRidgelet.Paper.thm_4_8_iv_a, OperatorRidgelet.Paper.thm_4_8_iv_b, OperatorRidgelet.Paper.thm_4_8_iv_c, OperatorRidgelet.Paper.thm_4_8_iv_d, OperatorRidgelet.Paper.thm_4_8_iv_e, OperatorRidgelet.Paper.thm_4_8_iv_f, OperatorRidgelet.Paper.thm_4_8_iv_completion") (uses := "aux:frame-operator, aux:backprojection, aux:hermite, def:4.2")
+:::theorem "thm:4.8" (lean := "OperatorRidgelet.Paper.thm_4_8_i_a, OperatorRidgelet.Paper.thm_4_8_i_b, OperatorRidgelet.Paper.thm_4_8_i_c, OperatorRidgelet.Paper.thm_4_8_i_d, OperatorRidgelet.Paper.thm_4_8_ii_a, OperatorRidgelet.Paper.thm_4_8_ii_b, OperatorRidgelet.Paper.thm_4_8_iii_a, OperatorRidgelet.Paper.thm_4_8_iii_b, OperatorRidgelet.Paper.thm_4_8_iii_c, OperatorRidgelet.Paper.thm_4_8_iii_d, OperatorRidgelet.Paper.thm_4_8_iii_e, OperatorRidgelet.Paper.thm_4_8_iv_a, OperatorRidgelet.Paper.thm_4_8_iv_b, OperatorRidgelet.Paper.thm_4_8_iv_c, OperatorRidgelet.Paper.thm_4_8_iv_d, OperatorRidgelet.Paper.thm_4_8_iv_e, OperatorRidgelet.Paper.thm_4_8_iv_f, OperatorRidgelet.Paper.thm_4_8_iv_completion") (uses := "aux:frame-operator, lem:3.9, lem:4.7, def:4.2")
 Let $`\alpha>0` and let $`\rho` be an $`\alpha`-admissible Schwartz filter. (i) The frame operator
 $`T_\alpha=F_Q'F_Q` is the Riesz map, an isometric bijection
 $`\mathcal E_\alpha\to\mathcal E_\alpha'`, and $`S_\rho R_\rho f=(\!(\rho,\rho)\!)_\alpha T_\alpha f`
@@ -306,7 +300,9 @@ expansion makes the last two steps constructive.
 
 # Vector-valued targets
 
-:::definition "aux:vector-valued" (lean := "OperatorRidgelet.gaussFourierVec, OperatorRidgelet.ridgeletVec, OperatorRidgelet.coefficientFormulaVec, OperatorRidgelet.biasFourierVec, OperatorRidgelet.HasBiasFourierVec, OperatorRidgelet.spectralCoefficientVec, OperatorRidgelet.spectralInnerVec, OperatorRidgelet.spectralCoreVec, OperatorRidgelet.gaussFourierLpVec, OperatorRidgelet.spectralRangeVec, OperatorRidgelet.spectralEmbedVec, OperatorRidgelet.ridgeletExtensionVec, OperatorRidgelet.ridgeletRangeVec, OperatorRidgelet.SpectralAntiDualVec, OperatorRidgelet.rieszMapVec, OperatorRidgelet.rieszInvVec, OperatorRidgelet.transposeEmbedVec, OperatorRidgelet.frameOperatorVec, OperatorRidgelet.synthesisVec, OperatorRidgelet.backprojectionOfVec, OperatorRidgelet.backprojectionVec, OperatorRidgelet.backprojectionLpVec, OperatorRidgelet.coefficientProjectionVec, OperatorRidgelet.gaussFourierLineVec, OperatorRidgelet.hermiteExtensionVec, OperatorRidgelet.hermiteCoefficientVec, OperatorRidgelet.gaussFourierInvVec") (uses := "def:3.4, def:3.7, def:3.10, aux:frame-operator, aux:backprojection, aux:hermite")
+:::definition "aux:vector-valued" (lean := "OperatorRidgelet.gaussFourierVec, OperatorRidgelet.ridgeletVec, OperatorRidgelet.coefficientFormulaVec, OperatorRidgelet.biasFourierVec, OperatorRidgelet.HasBiasFourierVec, OperatorRidgelet.spectralCoefficientVec, OperatorRidgelet.spectralInnerVec, OperatorRidgelet.spectralCoreVec, OperatorRidgelet.gaussFourierLpVec, OperatorRidgelet.spectralRangeVec, OperatorRidgelet.spectralEmbedVec, OperatorRidgelet.ridgeletExtensionVec, OperatorRidgelet.ridgeletRangeVec, OperatorRidgelet.SpectralAntiDualVec, OperatorRidgelet.rieszMapVec, OperatorRidgelet.rieszInvVec, OperatorRidgelet.transposeEmbedVec, OperatorRidgelet.frameOperatorVec, OperatorRidgelet.synthesisVec, OperatorRidgelet.backprojectionOfVec, OperatorRidgelet.backprojectionVec, OperatorRidgelet.backprojectionLpVec, OperatorRidgelet.coefficientProjectionVec, OperatorRidgelet.gaussFourierLineVec, OperatorRidgelet.hermiteExtensionVec, OperatorRidgelet.hermiteCoefficientVec, OperatorRidgelet.gaussFourierInvVec") (uses := "def:3.4, def:3.7, def:3.10, aux:frame-operator, lem:3.9, lem:4.7")
+These are the vector-valued objects introduced for Theorem 4.11 in Section 4.3.
+
 Let $`Y` be a separable complex Hilbert space. All objects above have $`Y`-valued versions:
 $`L^2(\mu_Q;Y)`, the Bochner integral
 $`F_Qf(\xi)=\int_Hf(x)e^{-i\langle x,\xi\rangle}\mu_Q(\mathrm dx)\in Y`, the core
