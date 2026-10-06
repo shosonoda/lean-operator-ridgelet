@@ -7,7 +7,7 @@ import OperatorRidgelet.Tempered.Basic
 /-!
 # The neural-operator layer: transforms, hinge form, and non-cylindricity
 
-Auxiliary results for Example `ex:7.4` of the manuscript.
+Auxiliary results for Example `ex:7.6` of the manuscript.
 
 * `IsLayerData.norm_le_layerSupNorm`: `‖a_y‖ ≤ ‖A‖_∞`.
 * `inner_layerCovariance`: `⟪S_y ξ, ξ⟫ = ⟪Qξ,ξ⟫ - ⟪Qa_y,ξ⟫²/(1+σ_y²)`.
@@ -77,7 +77,7 @@ theorem inner_layerCovariance (Q : H →L[ℝ] H) (a : Ω → H) (y : Ω) (ξ : 
 variable [CompleteSpace H]
 
 omit [InnerProductSpace ℂ Y] [CompleteSpace Y] in
-/-- The lower bound `S_y ≥ (1 + ‖Q‖ ‖A‖_∞²)⁻¹ Q` (Example `ex:7.4`(ii)). -/
+/-- The lower bound `S_y ≥ (1 + ‖Q‖ ‖A‖_∞²)⁻¹ Q` (Example `ex:7.6`(ii)). -/
 theorem IsLayerData.inner_layerCovariance_ge {Q : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q)
     {m : Measure Ω} {a : Ω → H} {b : Ω → Y} (hL : IsLayerData m a b) (y : Ω) (ξ : H) :
     (1 + ‖Q‖ * layerSupNorm a ^ 2)⁻¹ * ⟪Q ξ, ξ⟫ ≤ ⟪layerCovariance Q a y ξ, ξ⟫ := by
@@ -268,7 +268,7 @@ theorem IsLayerData.integrable_gaussianFun_mul_layerWeight_mul_character (hL : I
     one_mul]
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_gaussianFun_le_one _)
 
-/-- **Example `ex:7.4`(ii)**, the transform of the scalar observable:
+/-- **Example `ex:7.6`(ii)**, the transform of the scalar observable:
 `F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/
 theorem IsLayerData.gaussFourier_layerObservable_gaussianFun {Q : H →L[ℝ] H}
     (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) {μ : Measure H} [IsProbabilityMeasure μ]
@@ -338,7 +338,7 @@ theorem IsLayerData.integrable_character_mul_gaussianFun_smul (hL : IsLayerData 
     one_mul]
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_gaussianFun_le_one _)
 
-/-- **Example `ex:7.4`(ii)**, the `Y`-valued transform of the layer:
+/-- **Example `ex:7.6`(ii)**, the `Y`-valued transform of the layer:
 `F_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} b_y m(dy)`. -/
 theorem IsLayerData.gaussFourierVec_operatorLayer_gaussianFun {Q : H →L[ℝ] H}
     (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) {μ : Measure H} [IsProbabilityMeasure μ]
@@ -485,7 +485,7 @@ theorem IsLayerData.integrable_hinge_smul (hL : IsLayerData m a b) (x : H) :
   calc |⟪a p.1, x⟫| ≤ ‖a p.1‖ * ‖x‖ := abs_real_inner_le_norm _ _
     _ ≤ layerSupNorm a * ‖x‖ := by gcongr; exact hL.norm_le_layerSupNorm p.1
 
-/-- **Example `ex:7.4`(iii)**, the ReLU form of the Gaussian-activation layer:
+/-- **Example `ex:7.6`(iii)**, the ReLU form of the Gaussian-activation layer:
 `ℱ(x) = ∫∫ b_y φ''(t) ReLU(⟪a_y,x⟫ - t) m(dy) dt`. -/
 theorem IsLayerData.operatorLayer_gaussianFun_eq_integral_prod (hL : IsLayerData m a b)
     (x : H) :
@@ -570,7 +570,7 @@ theorem IsLayerData.tendsto_layerObservable_gaussianFun_nat_smul (hL : IsLayerDa
     · split_ifs <;> simp
 
 omit [IsFiniteMeasure m] in
-/-- **Example `ex:7.4`(iv)**: if `A` has infinite rank and `w_φ > 0` almost
+/-- **Example `ex:7.6`(iv)**: if `A` has infinite rank and `w_φ > 0` almost
 everywhere, the Gaussian-activation observable `F_φ` is not cylindrical. -/
 theorem IsLayerData.not_isCylindrical_layerObservable_gaussianFun (hL : IsLayerData m a b)
     (φ : Y) (hA : HasInfiniteRank (layerA m a))

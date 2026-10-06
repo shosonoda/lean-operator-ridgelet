@@ -8,12 +8,12 @@ import OperatorRidgelet.ToMathlib.SchwartzFourier
 import OperatorRidgelet.ToMathlib.AbsRpowGaussian
 
 /-!
-# The Gaussian-derivative filters of Appendix G
+# The Gaussian-derivative filters of Section 5
 
-The non-band-pass filters of `prop:5.8` are the real Schwartz functions whose
+The non-band-pass filters of `prop:5.12` are the real Schwartz functions whose
 Fourier transform is `ρ♯(ω) = ω^{2k} e^{-ω²}`.  This module builds the filter from the
 polynomial-times-Gaussian Schwartz functions and the angular Fourier inversion, and records the
-two elementary properties that separate it from the band-pass filters of Appendix G: its
+two elementary properties that separate it from the band-pass filters of Section 3: its
 transform vanishes only at the origin, so it is not band pass, while `|ρ♯|² |ω|^{-α}` is still
 integrable for `α < 4k + 1`, so it is `α`-admissible.
 -/

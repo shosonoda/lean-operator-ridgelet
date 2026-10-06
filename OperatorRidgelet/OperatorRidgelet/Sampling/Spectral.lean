@@ -4,7 +4,7 @@ import OperatorRidgelet.Reconstruction.Tempered
 /-!
 # Finite total variation and moments of the coefficient measure
 
-The material behind Theorem `thm:6.4`.  For a band-pass filter `ρ` with frequency window `I` and a
+The material behind Theorem `thm:6.6`.  For a band-pass filter `ρ` with frequency window `I` and a
 density `G` regular along rays, the uniform decay of the explicit coefficient
 (`exists_const_forall_enorm_coefficientFormulaVec_le`) bounds `(1 + |c|)^{m+2} ‖γ_G(a,c)‖` by a
 constant, depending only on `ρ` and `m`, times the ray-derivative bound
@@ -18,7 +18,7 @@ The second half of the file records the bridge between the two descriptions of t
 measure `Γ = γ λ` used in Section 6: the polar data `polarWeight`, `polarLaw`, `polarDensity` of
 the vector measure `λ.withDensityᵥ γ` agree (almost everywhere) with the explicit density data
 `densityWeight`, `densityLaw`, `densityPhase` of `γ`, so the Barron bound of Theorem
-`thm:6.3`, which is stated for a measure of bounded variation, applies verbatim to
+`thm:6.5`, which is stated for a measure of bounded variation, applies verbatim to
 the sampled network `densitySampledNetwork` of a coefficient density.
 -/
 
@@ -63,7 +63,7 @@ theorem enorm_coefficientFormulaVec_mul_pow_le {ρ : SchwartzMap ℝ ℝ} {I : S
   rw [hleft] at hmul
   exact hmul.trans (mul_le_mul' le_rfl (ENNReal.ofReal_le_ofReal hsq))
 
-/-- **The moment bound of Theorem `thm:6.4`.**  There is a constant, depending only on `ρ`, `I`
+/-- **The moment bound of Theorem `thm:6.6`.**  There is a constant, depending only on `ρ`, `I`
 and `m`, with `∫ (1 + ‖a‖ + |c|)^m ‖γ_G‖ dλ_α ≤ c M_{m+2}(G)` for every density `G` regular
 along rays. -/
 theorem exists_const_lintegral_moment_enorm_coefficientFormulaVec_le {ν : Measure H} [SFinite ν]

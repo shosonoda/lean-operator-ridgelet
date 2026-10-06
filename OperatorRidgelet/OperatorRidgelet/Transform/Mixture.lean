@@ -5,7 +5,7 @@ import OperatorRidgelet.ToMathlib.RpowIntegral
 /-!
 # The Gaussian mixture as a Giry-monad bind
 
-Infrastructure for Lemmas `lem:3.1` and `lem:A.2`: the Gaussian
+Infrastructure for Lemmas `lem:3.2` and `lem:3.1`: the Gaussian
 layers `N s = 𝒩(0,2sP)` are the dilates `(√s • ·)_# N 1` of the layer at `s = 1` (by Fourier
 uniqueness of finite measures on a separable Hilbert space), which gives a *measurable* family
 `scaledLayer N`; the mixture `∫_S N s s^{α/2-1} ds` is the bind of the weight against this

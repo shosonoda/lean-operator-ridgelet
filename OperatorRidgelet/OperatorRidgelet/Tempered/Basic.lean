@@ -8,7 +8,7 @@ import Mathlib.Analysis.Calculus.BumpFunction.Normed
 import Mathlib.Analysis.Calculus.BumpFunction.InnerProduct
 
 /-!
-# Auxiliary lemmas for Section 5 and Appendix C
+# Auxiliary lemmas for Section 5
 
 Lemmas about the definitions of `OperatorRidgelet.Tempered.Defs` used by the proofs in
 `OperatorRidgelet.Paper.Tempered`: the action and the activation-space membership of the

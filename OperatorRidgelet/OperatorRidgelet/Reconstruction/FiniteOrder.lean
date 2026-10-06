@@ -234,7 +234,7 @@ theorem exists_const_forall_enorm_coefficientFormulaVec_le_of_contDiff {ρ : Sch
 
 variable [MeasurableSpace H] [BorelSpace H]
 
-/-- **The moment bound of Theorem `thm:6.4`.**  There is a constant, depending only on `ρ`, `I`
+/-- **The moment bound of Theorem `thm:6.6`.**  There is a constant, depending only on `ρ`, `I`
 and `m`, with `∫ (1 + ‖a‖ + |c|)^m ‖γ_G‖ dλ_α ≤ c M_{m+2}(G)` for every density `G` regular
 along rays. -/
 theorem finiteCoefficientMomentConstant_spec

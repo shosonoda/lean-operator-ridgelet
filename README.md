@@ -12,11 +12,11 @@ following the manuscript by Sho Sonoda and coauthors. It covers the Gaussian-wei
 transform, Plancherel and reconstruction theorems, activations represented by tempered
 distributions such as ReLU, and dimension-free finite-width approximation.
 
-The repository tracks the **62 manuscript items of the 2026-09-30 manuscript revision**:
+The repository tracks the **62 manuscript items of the 2026-10-07 reading-order manuscript revision**:
 all are recorded as
 verified, comprising **341 Lean statements checked by comparator** and the pure definitions.
 The manuscript itself is not included. See the [Verso Blueprint](https://shosonoda.github.io/lean-operator-ridgelet/)
-for a presentation organized by manuscript Sections 1–9 and Appendices A–H, followed by
+for a presentation organized by manuscript Sections 1–9 and Appendices A–E, followed by
 supporting infrastructure, and [STATUS.md](STATUS.md) for the generated per-item record.
 
 ## What is formalized, and where?

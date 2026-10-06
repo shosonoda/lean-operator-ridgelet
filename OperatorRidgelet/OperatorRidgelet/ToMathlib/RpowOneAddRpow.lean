@@ -7,7 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 The Beta-type weight `u ↦ u^a (1+u)^c` is integrable on `(0,∞)` exactly when it is integrable at
 both ends, `-1 < a` at the origin and `a + c < -1` at infinity.  Only the sufficiency is proved
 here, which is all that the subordination formula `|ω|^{-α} = Γ(α/2)^{-1} ∫ u^{α/2-1}
-e^{-uω²} du` of Appendix G needs.
+e^{-uω²} du` used in Gaussian integral estimates needs.
 -/
 
 open MeasureTheory Set Real

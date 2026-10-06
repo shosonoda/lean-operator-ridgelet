@@ -32,15 +32,15 @@ the links expose its Lean formulation and dependencies. Auxiliary definitions el
 the Blueprint likewise have descriptive identifiers and are not additional manuscript results.
 
 The formalization uses the bias coordinate $`c=-b`; some statements carry the abstract
-input/direction measures used in the supporting proofs. The $`L^2` conclusion of Theorem 5.6 and the closed
-forms of the constants in Proposition 5.8 are recorded in weaker forms in the Lean statements.
+input/direction measures used in the supporting proofs. The $`L^2` conclusion of Theorem 5.10 and the closed
+forms of the constants in Proposition 5.12 are recorded in weaker forms in the Lean statements.
 These distinctions are explained with the corresponding formal statements.
 
 :::theorem "roadmap:gaussian-layers" (lean := "OperatorRidgelet.exists_isCenteredGaussianLayers") (uses := "aux:centered-gaussian")
 For an injective, positive, self-adjoint, trace-class $`P` on a separable Hilbert space there
 is a family of Gaussian components $`\mathcal N(0,2sP)`, $`s>0`, with characteristic functionals
 $`e^{-s\langle P\xi,\xi\rangle}`: the Gaussian series $`X=\sum_j\sqrt{p_j}Z_je_j` of
-Appendix A, which converges in $`L^2(\Omega;H)` and almost surely. Mathlib has the class of
+Section 3, which converges in $`L^2(\Omega;H)` and almost surely. Mathlib has the class of
 Gaussian measures but no constructor of a centred Gaussian measure with a prescribed
 trace-class covariance in infinite dimension.
 :::

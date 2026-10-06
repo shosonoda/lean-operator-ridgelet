@@ -5,7 +5,7 @@ import LeanRidgelet.ToMathlib.BochnerIntegralL2
 /-!
 # The Dirichlet solution operator as an integral operator
 
-The Green kernel `g` of Example `ex:7.6` is bounded by `sinh 1` on `(0,1)²`, so
+The Green kernel `g` of Example `ex:7.9` is bounded by `sinh 1` on `(0,1)²`, so
 `x ↦ (y ↦ ∫₀¹ g(y,t) x(t) dt)` is a bounded linear operator on `L²(0,1)` of norm at most
 `sinh 1` (`dirichletIntegralCLM`).  Hence the integral operator `integralOperator volume g` of
 `OperatorRidgelet.Examples.Defs`, which is defined by choice among the bounded operators with
@@ -122,7 +122,7 @@ theorem exists_dirichlet_integralOperator :
         ∫ t : UnitOpenInterval, (fun y t : UnitOpenInterval => dirichletKernel y t) y t * x t :=
   ⟨dirichletIntegralCLM, dirichletIntegralCLM_apply_ae⟩
 
-/-- **Example `ex:7.6`**: `𝖦 x = ∫₀¹ g(·,t) x(t) dt` almost everywhere. -/
+/-- **Example `ex:7.9`**: `𝖦 x = ∫₀¹ g(·,t) x(t) dt` almost everywhere. -/
 theorem dirichletOperator_apply_ae (x : UnitL2) :
     (dirichletOperator x : UnitOpenInterval → ℝ) =ᵐ[volume]
       fun y : UnitOpenInterval => ∫ t : UnitOpenInterval, dirichletKernel y t * x t := by
@@ -202,7 +202,7 @@ theorem integrable_dirichlet_layer_integrand {β : ℝ → ℝ} (hβ : Continuou
     exact mul_le_mul (hC p.1) (abs_dirichletKernel_le p.1.2 p.2.2) (abs_nonneg _)
       ((abs_nonneg _).trans (hC p.1))
 
-/-- **Example `ex:7.6`**: with `a_y = b_y = g(y,·)` the layer is `ℱ(x) = 𝖦 β(𝖦x)`. -/
+/-- **Example `ex:7.9`**: with `a_y = b_y = g(y,·)` the layer is `ℱ(x) = 𝖦 β(𝖦x)`. -/
 theorem operatorLayer_dirichlet_eq {β : ℝ → ℝ} (hβ : Continuous β) (x : UnitL2) :
     operatorLayer volume dirichletDirection dirichletOutput β x =
       Complex.ofRealCLM.compLp

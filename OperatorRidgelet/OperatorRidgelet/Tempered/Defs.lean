@@ -12,7 +12,7 @@ import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 
 /-!
-# Definitions for Section 5 (reconstruction formulas and activation functions) and Appendix C
+# Definitions for Section 5 (reconstruction formulas and activation functions)
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
@@ -31,7 +31,7 @@ A synthesis activation is a tempered distribution `β : TemperedDistribution ℝ
 "`β` is a polynomial", equivalently `β = 0` in `𝒮'/𝒫`, is `IsPolynomialDistribution`: `β` acts by
 integration against a polynomial.
 
-## Regularized synthesis (Definition `def:5.1`)
+## Regularized synthesis (Definition `def:5.3`)
 
 The cutoff `χ` and the approximate identity `(η_ε)_{ε>0}` are functions `ℝ → ℝ` and
 `ℝ → ℝ → ℝ` with the predicates `IsCutoff ρ χ` (even, `C_c^∞(ℝ ∖ {0})`, equal to one on a
@@ -54,10 +54,10 @@ map `T_α`, `T_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the Section 
 
 * `SpectralAntiDual μ ν = spectralRange μ ν →L⋆[ℂ] ℂ`, the continuous conjugate-linear
   functionals on `𝒦_α` (which represents `𝓔_α`, see `Transform/Defs.lean`);
-* `ridgeletExtension μ ν ρ : 𝒦_α →L[ℂ] L²(λ)`, the bounded extension `R_ρ` of Theorem 3.11(ii),
+* `ridgeletExtension μ ν ρ : 𝒦_α →L[ℂ] L²(λ)`, the bounded extension `R_ρ` of Theorem 3.14(ii),
   chosen from its defining property (a continuous linear map agreeing a.e. with `R_ρ` on
   `F_Q(𝒟_α)`).  Its identification with the coefficient operator, `R_ρ G = W_ρ G` for
-  `G ∈ 𝒦_α`, is the content of Theorem 3.11(ii) and Theorem 4.3(iii), i.e. a theorem and not a
+  `G ∈ 𝒦_α`, is the content of Theorem 3.14(ii) and Theorem 4.8(iii), i.e. a theorem and not a
   definition;
 * `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, the transpose `(innerSLFlip ℂ γ).comp (R_ρ)`, so that
   `(S_ρ γ)[g] = ⟪R_ρ g, γ⟫ = ⟨γ, R_ρ g⟩_{L²(λ)}` holds by definition (Mathlib's inner product is
@@ -67,15 +67,15 @@ map `T_α`, `T_α f [g] = ⟨f, g⟩_{𝓔_α}`.  These objects are the Section 
 
 An earlier version of this module carried local stand-ins for these objects in a namespace
 `Tempered` (`spectralAntiDual`, `ridgeletExtension G := W_ρ G`, a `synthesisFunctional` and a
-`rieszInv` obtained by choice, and for Corollary `cor:5.3` a real-valued
+`rieszInv` obtained by choice, and for Corollary `cor:5.5` a real-valued
 `rayDerivBound`, an `IsRayRegular` with a Bochner-integrable moment, and a `spectralTarget`).
 They were removed in favour of the Section 4 definitions: the extension by choice makes
 `synthesis` a genuine composition of continuous linear maps (no choice, and `S_ρ` is defined on
 all of `L²(λ)` rather than through an existence statement), the Riesz inverse through
 `InnerProductSpace.toDual` needs no junk value, and the `ℝ≥0∞`-valued ray bounds make the
 moment condition `M_m(G) < ∞` literal instead of relying on a junk supremum when the derivative
-bounds are unbounded.  Corollary `cor:5.3`(viii) is therefore stated exactly as the
-instance `b = ReLU` of Theorem 4.2(iii) (`IsFrequencyWindow`, `IsRegularAlongRays`,
+bounds are unbounded.  Corollary `cor:5.5`(viii) is therefore stated exactly as the
+instance `b = ReLU` of Theorem 4.5(iii) (`IsFrequencyWindow`, `IsRegularAlongRays`,
 `spectralTarget`).
 
 The regularized synthesis `S_{β_ε} γ := R'_{β_ε} γ = synthesis μ ν β_ε γ` is
@@ -85,7 +85,7 @@ the limit exists (junk `0` otherwise). This is a norm limit in the continuous an
 Here the activation is a tempered distribution; convergence of an ordinary network integral
 requires separate integrability hypotheses.
 
-## Standard activations and the weighted Sobolev spaces (Appendix C)
+## Standard activations and the weighted Sobolev spaces (Section 5)
 
 ReLU and `tanh` are the vendored realizations `reluTemperedDistribution` and
 `tanhTemperedDistribution` (with weight exponent `t = 2`); the Gaussian distribution function

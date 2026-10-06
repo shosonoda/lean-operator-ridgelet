@@ -8,7 +8,7 @@ import OperatorRidgelet.ToMathlib.L2Translation
 /-!
 # Weighted inverse Fourier estimates for a fixed direction
 
-The estimates of Lemma `lem:C.3` on the coefficient side: the Sobolev weight is
+The estimates of Lemma `lem:5.8` on the coefficient side: the Sobolev weight is
 integrable in the range that makes the constant `A_{s,r}` finite, and weighted Cauchy–Schwarz
 turns the Sobolev norm of a profile into a weighted `L¹` bound on its coefficient.
 -/
@@ -63,7 +63,7 @@ theorem integrable_one_add_sq_rpow_neg {a : ℝ} (ha : 1 / 2 < a) :
 
 /-! ### The weighted `L¹` bound -/
 
-/-- **Lemma [lem:C.3]**, the weighted inverse Fourier estimate
+/-- **Lemma [lem:5.8]**, the weighted inverse Fourier estimate
 `∫ ⟨t⟩^r ‖γ(t)‖ dt ≤ A_{s,r} ‖h‖_{H^s_ω}` (`eq:sobolev-weighted-l1`), for `0 ≤ r < s - 1/2`. -/
 theorem integral_bracket_rpow_norm_le {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s)
     {γ : ℝ → Y} (hγ : MemRaySobolev s γ) :
@@ -282,7 +282,7 @@ theorem memRaySobolev_translate {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (hγ :
     abs_of_nonneg (Real.rpow_nonneg (by positivity : (0 : ℝ) ≤ 1 + |u|) s), ← mul_assoc]
   exact mul_le_mul_of_nonneg_right (bracket_rpow_le_translate hs t u) (norm_nonneg _)
 
-/-- **Lemma [lem:C.3]**, the modulation bound
+/-- **Lemma [lem:5.8]**, the modulation bound
 `‖M_u h‖_{H^s_ω} ≤ (1 + |u|)^s ‖h‖_{H^s_ω}` (`eq:sobolev-modulation`). -/
 theorem raySobolevNorm_translate_le {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (hγ : MemRaySobolev s γ)
     (u : ℝ) :
@@ -469,7 +469,7 @@ theorem memRaySobolev_translate_sub {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y} (h
   refine (memLp_congr_ae (Filter.Eventually.of_forall fun t => ?_)).1 h
   simp only [Pi.sub_apply, smul_sub]
 
-/-- **Lemma [lem:C.3]**, strong continuity of modulation: the Sobolev norm of
+/-- **Lemma [lem:5.8]**, strong continuity of modulation: the Sobolev norm of
 `M_v h - h` tends to zero with `v`. -/
 theorem tendsto_raySobolevNorm_translate_sub {s : ℝ} (hs : 0 ≤ s) {γ : ℝ → Y}
     (hγ : MemRaySobolev s γ) :
@@ -611,7 +611,7 @@ theorem tendsto_raySobolevNorm_translate_sub {s : ℝ} (hs : 0 ≤ s) {γ : ℝ 
 theorem raySobolevNorm_nonneg (s : ℝ) (γ : ℝ → Y) : 0 ≤ raySobolevNorm s γ :=
   Real.sqrt_nonneg _
 
-/-- **Lemma [lem:C.3]**, joint continuity of modulation: if the biases converge and
+/-- **Lemma [lem:5.8]**, joint continuity of modulation: if the biases converge and
 the profiles converge in `H^s_ω`, then the modulated profiles converge. -/
 theorem tendsto_raySobolevNorm_modulation {S : Type*} {l : Filter S} {s : ℝ} (hs : 0 ≤ s)
     {γ : ℝ → Y} {γ' : S → ℝ → Y} {u : S → ℝ} {u₀ : ℝ}

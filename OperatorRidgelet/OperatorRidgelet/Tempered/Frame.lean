@@ -10,8 +10,8 @@ with `ρ₂` is a multiple of the Riesz map:
 `S_{ρ₁} R_{ρ₂} f = C^{(α)}_{ρ₂,ρ₁} T f` (`synthesis_ridgeletExtension_eq`).  On the image of the
 core this is the Plancherel identity `⟨R_{ρ₂} f, R_{ρ₁} g⟩_{L²(λ)} = C^{(α)}_{ρ₂,ρ₁} ⟨f, g⟩_𝓔`
 (`integral_ridgelet_mul_conj`), and both sides are continuous in `(f, g)`, so the identity
-extends by density.  It is the instance `(ρ, β_ε)` of Theorem `thm:3.11`(i) used in the proof of
-Theorem `thm:5.2`; the chosen extension `ridgeletExtension` is identified
+extends by density.  It is the instance `(ρ, β_ε)` of Theorem `thm:3.14`(i) used in the proof of
+Theorem `thm:5.4`; the chosen extension `ridgeletExtension` is identified
 with the extension by density `ridgeletExtensionCLM` (`ridgeletExtension_eq`).
 -/
 

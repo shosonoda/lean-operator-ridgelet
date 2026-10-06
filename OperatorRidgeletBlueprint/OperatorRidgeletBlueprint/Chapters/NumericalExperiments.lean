@@ -25,19 +25,19 @@ set_option verso.blueprint.externalCode.strictResolve true
 file := "numerics"
 %%%
 
-Three experiments illustrate the sampling step of {bpref "thm:6.5"}[] and
-{bpref "thm:6.4"}[], and the explicit transforms in {bpref "ex:7.1"}[] and
-{bpref "ex:7.4"}[]. The input spaces are $`\ell^2` and $`L^2(0,1)`,
+Three experiments illustrate the sampling step of {bpref "thm:6.8"}[] and
+{bpref "thm:6.6"}[], and the explicit transforms in {bpref "ex:7.2"}[] and
+{bpref "ex:7.6"}[]. The input spaces are $`\ell^2` and $`L^2(0,1)`,
 represented numerically by finitely many coordinates. Varying that resolution tests
 the sensitivity of the observed errors; these finite computations do not prove a
 uniform-in-dimension theorem.
 
 Errors are supremum errors over finite test sets, averaged over independent trials.
-Appendix H records the seed, sampling laws, numerical integration and evaluation procedures.
+Appendix E records the seed, sampling laws, numerical integration and evaluation procedures.
 
 # Experiment 1: ReLU with Gaussian random directions
 
-This experiment illustrates {bpref "cor:7.3"}[]. On $`\ell^2`, set
+This experiment illustrates {bpref "cor:7.5"}[]. On $`\ell^2`, set
 $`Q=\operatorname{diag}(j^{-2})` and truncate to $`d=10,100,1000,10000` coordinates.
 The test set consists of 200 points with coordinates $`x_j=u_j/j`, where the $`u_j`
 are uniform on $`[-1,1]`. Compare
@@ -53,7 +53,7 @@ so this comparison illustrates the rate rather than sharpness of its constant.
 
 # Experiment 2: synthesis of the weighted Gaussian target
 
-Use {bpref "ex:7.1"}[] with $`\alpha=1`,
+Use {bpref "ex:7.2"}[] with $`\alpha=1`,
 $`P=Q=\operatorname{diag}(j^{-2})`, $`W=I`, and
 $`\rho(t)=\mathrm{He}_4(t)e^{-t^2/2}`. Its Fourier transform is
 $`\sqrt{2\pi}\,\omega^4e^{-\omega^2/2}`, and its admissibility constant is 6.
@@ -62,7 +62,7 @@ admissibility. Finite variation and the second parameter moment follow directly 
 the explicit coefficient and the Gaussian decay estimate.
 
 The target $`6f_g`, representing $`6T_\alpha f_W`, is synthesized from its explicit
-coefficient measure. Appendix H describes the quadrature and importance-resampling
+coefficient measure. Appendix E describes the quadrature and importance-resampling
 procedures used to evaluate this target and draw its parameters.
 
 For $`d=10,100,1000` and 100 test inputs drawn by the rule of Experiment 1, ten trials compare
@@ -72,18 +72,18 @@ approximately as $`N^{-1/2}` across the tested resolutions.
 
 The direction law is approximated by a weighted proposal pool shared across trials at
 each resolution. The reported trial variation is conditional on that pool and does not
-measure its approximation error; Appendix H describes this limitation and the sampling procedure.
+measure its approximation error; Appendix E describes this limitation and the sampling procedure.
 
 ![Experiment 2: sampled synthesis error for the Gaussian target at three truncation dimensions](exp2.svg)
 
 # Experiment 3: the Dirichlet operator layer
 
-Use {bpref "ex:7.6"}[] with Gaussian activation and observable $`\varphi=1`.
+Use {bpref "ex:7.9"}[] with Gaussian activation and observable $`\varphi=1`.
 For the Dirichlet Green's function $`g`, the output weight is
 $`w(y)=\int_0^1g(y,t)\,\mathrm dt=1-\cosh(y-1/2)/\cosh(1/2)>0` and
 $`V=\int_0^1w(y)\,\mathrm dy=1-2\tanh(1/2)\approx0.0758`.
 Use $`d=64,512,4096` midpoint nodes and 100 test inputs with 30 sine modes.
-Appendix H gives the input and parameter distributions.
+Appendix E gives the input and parameter distributions.
 
 For sampling, compare
 $`f_N(x)=(V/N)\sum_j e^{-\langle g(y_j,\cdot),x\rangle^2/2}`, with

@@ -2,7 +2,7 @@ import OperatorRidgelet.Transform.Defs
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 
 /-!
-# Definitions for Appendix G (the finite-dimensional case)
+# Definitions for Appendix D (the finite-dimensional case)
 
 Definitions only, free of `sorry`.  On `H = ℝ^m` (`EuclideanSpace ℝ (Fin m)`) with `P = I` and
 `0 < α < m`, the homogeneous Gaussian mixture is the explicit measure
@@ -38,7 +38,7 @@ def frameConst (m : ℕ) (α : ℝ) : ℝ :=
 def fourier {m : ℕ} (g : Euclid m → ℂ) (ξ : Euclid m) : ℂ :=
   LeanRidgelet.Fourier.angularFourierIntegralInner g ξ
 
-/-- The measure `p dx` with a nonnegative density `p` (the pivot measure of Appendix G). -/
+/-- The measure `p dx` with a nonnegative density `p` (the pivot measure of Appendix D). -/
 def densityMeasure {m : ℕ} (p : Euclid m → ℝ) : Measure (Euclid m) :=
   volume.withDensity fun x => ENNReal.ofReal (p x)
 

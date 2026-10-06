@@ -3,7 +3,7 @@ import OperatorRidgelet.Paper.Transform
 import OperatorRidgelet.Transform.Infra
 
 /-!
-# LeanArchitect metadata for Section 3 (the ridgelet transform) and Appendices A, F, G
+# LeanArchitect metadata for Section 3 (the ridgelet transform) and Appendices A and D
 
 `attribute [blueprint ...]` commands for the declarations of `OperatorRidgelet.Paper.Transform`
 and the definitions it uses.  Labels are the manuscript labels with the part appended; auxiliary
@@ -92,33 +92,33 @@ attribute [blueprint "transform:strong-law-set"
     of the dilation obstruction. -/)
   (hasProof := false)] OperatorRidgelet.strongLawSet
 
-attribute [blueprint "def:3.2-cross"
+attribute [blueprint "def:3.3-cross"
   (statement := /-- $C^{(\alpha)}_{\rho_1,\rho_2}=\frac1{2\pi}\int_{\mathbb
     R}\rho_1^\sharp(\omega)\overline{\rho_2^\sharp(\omega)}|\omega|^{-\alpha}\,\mathrm
     d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.crossAdmissibilityConst
 
-attribute [blueprint "def:3.2-const"
+attribute [blueprint "def:3.3-const"
   (statement := /-- $C^{(\alpha)}_\rho=\frac1{2\pi}\int_{\mathbb
     R}|\rho^\sharp(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.admissibilityConst
 
-attribute [blueprint "def:3.2"
+attribute [blueprint "def:3.3"
   (statement := /-- A real $\rho\in\mathcal S(\mathbb R)$ is $\alpha$-admissible if
     $0<C^{(\alpha)}_\rho<\infty$. -/)
   (hasProof := false)] OperatorRidgelet.IsAdmissible
 
-attribute [blueprint "def:3.2-bandpass"
+attribute [blueprint "def:3.3-bandpass"
   (statement := /-- $\rho$ is a band-pass filter if moreover $\rho^\sharp\in C_c^\infty(\mathbb
     R\setminus\{0\})$ (and $\rho\ne0$). -/)
   (hasProof := false)] OperatorRidgelet.IsBandPass
 
-attribute [blueprint "def:3.3"
+attribute [blueprint "def:3.4"
   (statement := /-- The weighted ridgelet transform $R_\rho f(a,c)=\int_Hf(x)\rho(\langle
     a,x\rangle+c)\,\mu(\mathrm dx)$. -/)
   (hasProof := false)] OperatorRidgelet.ridgelet
 
-attribute [blueprint "def:3.3-parameter-measure"
+attribute [blueprint "def:3.4-parameter-measure"
   (statement := /-- The parameter measure $\lambda=\nu\otimes\mathrm dc$ on $H\times\mathbb R$. -/)
   (hasProof := false)] OperatorRidgelet.parameterMeasure
 
@@ -128,41 +128,41 @@ attribute [blueprint "transform:bias-fourier"
     dc$. -/)
   (hasProof := false)] OperatorRidgelet.biasFourier
 
-attribute [blueprint "def:3.5-formula"
+attribute [blueprint "def:3.7-formula"
   (statement := /-- The explicit coefficient $\gamma_G(a,c)=\frac1{2\pi}\int_{\mathbb
     R}\rho^\sharp(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.coefficientFormula
 
-attribute [blueprint "def:3.5-bias-fourier"
+attribute [blueprint "def:3.7-bias-fourier"
   (statement := /-- $\gamma$ has partial Fourier transform $\Phi$ in the bias: Parseval's
     identity against Schwartz test functions holds for $\nu$-almost every
     direction. -/)
   (hasProof := false)] OperatorRidgelet.HasBiasFourier
 
-attribute [blueprint "def:3.5"
+attribute [blueprint "def:3.7"
   (statement := /-- The coefficient $W_\rho G\in L^2(\lambda)$, the element whose partial
     Fourier transform in the bias is $\rho^\sharp(\omega)G(-\omega a)$. -/)
   (hasProof := false)] OperatorRidgelet.spectralCoefficient
 
-attribute [blueprint "def:3.7"
+attribute [blueprint "def:3.10"
   (statement := /-- $\mathcal D=\{f\in L^2(\mu):F_\mu f\in L^2(\nu)\}$. -/)
   (hasProof := false)] OperatorRidgelet.spectralCore
 
-attribute [blueprint "def:3.7-inner"
+attribute [blueprint "def:3.10-inner"
   (statement := /-- $\langle f,g\rangle_{\mathcal E}=\int_HF_\mu f\,\overline{F_\mu g}\,\mathrm
     d\nu$. -/)
   (hasProof := false)] OperatorRidgelet.spectralInner
 
-attribute [blueprint "def:3.7-fourier-lp"
+attribute [blueprint "def:3.10-fourier-lp"
   (statement := /-- $F_\mu f$ as an element of $L^2(\nu)$ for $f\in\mathcal D$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierLp
 
-attribute [blueprint "def:3.7-range"
+attribute [blueprint "def:3.10-range"
   (statement := /-- $\mathcal K=\overline{F_\mu(\mathcal D)}^{L^2(\nu)}$, which
     represents $\mathcal E_\alpha$. -/)
   (hasProof := false)] OperatorRidgelet.spectralRange
 
-attribute [blueprint "def:3.7-embed"
+attribute [blueprint "def:3.10-embed"
   (statement := /-- The map $F_Q:\mathcal D\to\mathcal K$, $f\mapsto F_\mu f$. -/)
   (hasProof := false)] OperatorRidgelet.spectralEmbed
 
@@ -228,310 +228,310 @@ attribute [blueprint "filters:mexican-hat"
 attribute [blueprint "infra:gaussian-layers-exist"
   (statement := /-- For an injective, positive, self-adjoint, trace-class $P$ there is a family
     of Gaussian components $\mathcal N(0,2sP)$, $s>0$ (the Gaussian series of
-    Appendix A). -/)
+    Section 3). -/)
   ] OperatorRidgelet.exists_isCenteredGaussianLayers
 
 /-! ## Paper statements -/
 
-attribute [blueprint "lem:3.1-i"
+attribute [blueprint "lem:3.2-i"
   (statement := /-- If $\dim H=\infty$ and $\alpha>0$, then $\nu_\alpha$ is sigma-finite. -/)
-  ] OperatorRidgelet.Paper.lem_3_1_i
+  ] OperatorRidgelet.Paper.lem_3_2_i
 
-attribute [blueprint "lem:3.1-ii"
+attribute [blueprint "lem:3.2-ii"
   (statement := /-- $\nu_\alpha$ is finite on bounded Borel sets. -/)
-  ] OperatorRidgelet.Paper.lem_3_1_ii
+  ] OperatorRidgelet.Paper.lem_3_2_ii
 
-attribute [blueprint "lem:3.1-iii"
+attribute [blueprint "lem:3.2-iii"
   (statement := /-- $\nu_\alpha(H)=\infty$. -/)]
-  OperatorRidgelet.Paper.lem_3_1_iii
+  OperatorRidgelet.Paper.lem_3_2_iii
 
-attribute [blueprint "lem:3.1-iv"
+attribute [blueprint "lem:3.2-iv"
   (statement := /-- $\nu_\alpha$ has full support. -/)
-  ] OperatorRidgelet.Paper.lem_3_1_iv
+  ] OperatorRidgelet.Paper.lem_3_2_iv
 
-attribute [blueprint "lem:3.1-v"
+attribute [blueprint "lem:3.2-v"
   (statement := /-- $(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha$ for $\omega\ne0$. -/)]
-  OperatorRidgelet.Paper.lem_3_1_v
+  OperatorRidgelet.Paper.lem_3_2_v
 
-attribute [blueprint "lem:3.1-vi"
+attribute [blueprint "lem:3.2-vi"
   (statement := /-- $\int_HF(\omega a)\,\nu_\alpha(\mathrm
     da)=|\omega|^{-\alpha}\int_HF\,\mathrm d\nu_\alpha$ for nonnegative Borel
     $F$. -/)]
-  OperatorRidgelet.Paper.lem_3_1_vi
+  OperatorRidgelet.Paper.lem_3_2_vi
 
-attribute [blueprint "def:3.2-every-alpha"
+attribute [blueprint "def:3.3-every-alpha"
   (statement := /-- A band-pass filter is $\alpha$-admissible for every $\alpha>0$. -/)]
-  OperatorRidgelet.Paper.def_3_2
+  OperatorRidgelet.Paper.def_3_3
 
-attribute [blueprint "lem:3.4-i"
+attribute [blueprint "lem:3.5-i"
   (statement := /-- $R_\rho f$ is bounded on $H\times\mathbb R$. -/)]
-  OperatorRidgelet.Paper.lem_3_4_i
+  OperatorRidgelet.Paper.lem_3_5_i
 
-attribute [blueprint "lem:3.4-ii"
+attribute [blueprint "lem:3.5-ii"
   (statement := /-- $R_\rho f$ is jointly continuous on $H\times\mathbb R$. -/)]
-  OperatorRidgelet.Paper.lem_3_4_ii
+  OperatorRidgelet.Paper.lem_3_5_ii
 
-attribute [blueprint "lem:3.4-iii"
+attribute [blueprint "lem:3.5-iii"
   (statement := /-- $\|R_\rho f(a,\cdot)\|_{L^1(\mathbb
     R)}\le\|f\|_{L^1(\mu)}\|\rho\|_{L^1(\mathbb R)}$. -/)]
-  OperatorRidgelet.Paper.lem_3_4_iii
+  OperatorRidgelet.Paper.lem_3_5_iii
 
-attribute [blueprint "lem:3.4-iv"
+attribute [blueprint "lem:3.5-iv"
   (statement := /-- $\|R_\rho f(a,\cdot)\|_{L^2(\mathbb
     R)}^2\le\|f\|_{L^2(\mu)}^2\|\rho\|_{L^2(\mathbb R)}^2$ if $f\in L^2(\mu)$. -/)]
-  OperatorRidgelet.Paper.lem_3_4_iv
+  OperatorRidgelet.Paper.lem_3_5_iv
 
-attribute [blueprint "lem:3.4-v"
+attribute [blueprint "lem:3.5-v"
   (statement := /-- $(R_\rho f)^\sharp(a,\omega)=\rho^\sharp(\omega)\,F_\mu f(-\omega
     a)$. -/)]
-  OperatorRidgelet.Paper.lem_3_4_v
+  OperatorRidgelet.Paper.lem_3_5_v
 
-attribute [blueprint "def:3.5-formula-ae"
+attribute [blueprint "def:3.7-formula-ae"
   (statement := /-- If $G\in L^2(\nu)$, then $W_\rho G=\gamma_G$ almost
     everywhere. -/)]
-  OperatorRidgelet.Paper.def_3_5
-
-attribute [blueprint "lem:B.1-i"
-  (statement := /-- $W_\rho G$ is well defined: exactly one element of $L^2(\lambda)$ has
-    partial bias Fourier transform $\rho^\sharp(\omega)G(-\omega a)$. -/)]
-  OperatorRidgelet.Paper.lem_B_1_i
-
-attribute [blueprint "lem:B.1-ii"
-  (statement := /-- $W_\rho G$ is independent of the Borel representative of $G$. -/)]
-  OperatorRidgelet.Paper.lem_B_1_ii
-
-attribute [blueprint "lem:B.1-iii"
-  (statement := /-- $\|W_\rho G\|_{L^2(\lambda)}^2=C^{(\alpha)}_\rho\|G\|_{L^2(\nu)}^2$. -/)]
-  OperatorRidgelet.Paper.lem_B_1_iii
-
-attribute [blueprint "lem:B.1-iv"
-  (statement := /-- If $G\in L^1(\nu)$, then $\omega\mapsto G(-\omega a)$ is integrable on
-    compact subsets of $\mathbb R\setminus\{0\}$ for $\nu$-almost every $a$. -/)]
-  OperatorRidgelet.Paper.lem_B_1_iv
+  OperatorRidgelet.Paper.def_3_7
 
 attribute [blueprint "lem:3.8-i"
-  (statement := /-- The spectral form is positive definite on $\mathcal D$. -/)]
+  (statement := /-- $W_\rho G$ is well defined: exactly one element of $L^2(\lambda)$ has
+    partial bias Fourier transform $\rho^\sharp(\omega)G(-\omega a)$. -/)]
   OperatorRidgelet.Paper.lem_3_8_i
 
 attribute [blueprint "lem:3.8-ii"
-  (statement := /-- $F_\mu$ is an isometry from $(\mathcal
-    D,\langle\cdot,\cdot\rangle_{\mathcal E})$ into $\mathcal K$. -/)]
+  (statement := /-- $W_\rho G$ is independent of the Borel representative of $G$. -/)]
   OperatorRidgelet.Paper.lem_3_8_ii
 
 attribute [blueprint "lem:3.8-iii"
+  (statement := /-- $\|W_\rho G\|_{L^2(\lambda)}^2=C^{(\alpha)}_\rho\|G\|_{L^2(\nu)}^2$. -/)]
+  OperatorRidgelet.Paper.lem_3_8_iii
+
+attribute [blueprint "lem:3.8-iv"
+  (statement := /-- If $G\in L^1(\nu)$, then $\omega\mapsto G(-\omega a)$ is integrable on
+    compact subsets of $\mathbb R\setminus\{0\}$ for $\nu$-almost every $a$. -/)]
+  OperatorRidgelet.Paper.lem_3_8_iv
+
+attribute [blueprint "lem:3.11-i"
+  (statement := /-- The spectral form is positive definite on $\mathcal D$. -/)]
+  OperatorRidgelet.Paper.lem_3_11_i
+
+attribute [blueprint "lem:3.11-ii"
+  (statement := /-- $F_\mu$ is an isometry from $(\mathcal
+    D,\langle\cdot,\cdot\rangle_{\mathcal E})$ into $\mathcal K$. -/)]
+  OperatorRidgelet.Paper.lem_3_11_ii
+
+attribute [blueprint "lem:3.11-iii"
   (statement := /-- $F_\mu(\mathcal D)$ is dense in $\mathcal K$, so $F_\mu$
     extends uniquely to a unitary $F_Q:\mathcal E_\alpha\to\mathcal
     K_\alpha$. -/)]
-  OperatorRidgelet.Paper.lem_3_8_iii
+  OperatorRidgelet.Paper.lem_3_11_iii
 
-attribute [blueprint "lem:3.9-i"
+attribute [blueprint "lem:3.12-i"
   (statement := /-- $\int_H\|\xi\|^{2m}e^{-t\langle Q\xi,\xi\rangle}\,\nu_\alpha(\mathrm
     d\xi)<\infty$ for $t>0$, $\alpha>0$, $m\ge0$. -/)
-  ] OperatorRidgelet.Paper.lem_3_9_i
+  ] OperatorRidgelet.Paper.lem_3_12_i
 
-attribute [blueprint "lem:3.9-ii"
+attribute [blueprint "lem:3.12-ii"
   (statement := /-- If $f\in L^2(\mu_Q)$ and $|F_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle
     Q\xi,\xi\rangle/2}$, then $f\in\mathcal D_\alpha$. -/)
-  ] OperatorRidgelet.Paper.lem_3_9_ii
-
-attribute [blueprint "ex:3.10-i"
-  (statement := /-- $F_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}$. -/)]
-  OperatorRidgelet.Paper.ex_3_10_i
-
-attribute [blueprint "ex:3.10-ii"
-  (statement := /-- $1\in\mathcal D_\alpha$ for every $\alpha>0$. -/)
-  ] OperatorRidgelet.Paper.ex_3_10_ii
-
-attribute [blueprint "ex:3.10-iii"
-  (statement := /-- $\mathcal E_\alpha\ne\{0\}$. -/)
-  ] OperatorRidgelet.Paper.ex_3_10_iii
-
-attribute [blueprint "thm:3.11-i-a"
-  (statement := /-- For $f\in\mathcal D_\alpha$ and $\alpha$-admissible $\rho$, $R_\rho f\in
-    L^2(\lambda_\alpha)$. -/)]
-  OperatorRidgelet.Paper.thm_3_11_i_a
-
-attribute [blueprint "thm:3.11-i-b"
-  (statement := /-- $\langle
-    R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=C^{(\alpha)}_{\rho_1,\rho_2}\langle
-    f,g\rangle_{\mathcal E_\alpha}$. -/)]
-  OperatorRidgelet.Paper.thm_3_11_i_b
-
-attribute [blueprint "thm:3.11-ii-a"
-  (statement := /-- An $\alpha$-admissible $\rho$ determines a unique bounded extension
-    $R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)$. -/)]
-  OperatorRidgelet.Paper.thm_3_11_ii_a
-
-attribute [blueprint "thm:3.11-ii-b"
-  (statement := /-- $\|R_\rho f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha}^2$. -/)]
-  OperatorRidgelet.Paper.thm_3_11_ii_b
-
-attribute [blueprint "thm:3.11-ii-c"
-  (statement := /-- The range of $R_\rho$ is closed. -/)]
-  OperatorRidgelet.Paper.thm_3_11_ii_c
-
-attribute [blueprint "thm:3.11-ii-d"
-  (statement := /-- $R_\rho=W_\rho F_Q$. -/)]
-  OperatorRidgelet.Paper.thm_3_11_ii_d
-
-attribute [blueprint "thm:3.11-iii"
-  (statement := /-- If $\rho$ is $\alpha$-admissible and $f\in L^1(\mu_Q)$, then $R_\rho f=0$
-    $\lambda_\alpha$-a.e. implies $f=0$ $\mu_Q$-a.e. -/)] OperatorRidgelet.Paper.thm_3_11_iii
-
-attribute [blueprint "lem:A.2-i"
-  (statement := /-- $s\mapsto\mathcal N(0,2sP)(E)$ is Borel measurable on $(0,\infty)$. -/)]
-  OperatorRidgelet.Paper.lem_A_2_i
-
-attribute [blueprint "lem:A.2-ii"
-  (statement := /-- $\nu_\alpha(E)=\int_0^\infty\mathcal N(0,2sP)(E)\,s^{\alpha/2-1}\,\mathrm
-    ds$ defines a countably additive Borel measure. -/)]
-  OperatorRidgelet.Paper.lem_A_2_ii
-
-attribute [blueprint "lem:A.2-iii"
-  (statement := /-- $\int_HF\,\mathrm d\nu_\alpha=\int_0^\infty\int_HF\,\mathrm d\mathcal
-    N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds$ for nonnegative Borel $F$. -/)]
-  OperatorRidgelet.Paper.lem_A_2_iii
-
-attribute [blueprint "lem:A.2-iv"
-  (statement := /-- The integration formula holds for complex $F$ with $\int_H|F|\,\mathrm
-    d\nu_\alpha<\infty$. -/)]
-  OperatorRidgelet.Paper.lem_A_2_iv
-
-attribute [blueprint "lem:A.3-i"
-  (statement := /-- $q=\langle Pz,z\rangle>0$ for $z\ne0$. -/)]
-  OperatorRidgelet.Paper.lem_A_3_i
-
-attribute [blueprint "lem:A.3-ii"
-  (statement := /-- $\lim_{\varepsilon\downarrow0,M\uparrow\infty}\int_He^{i\langle
-    z,\xi\rangle}\,\nu_\alpha^{\varepsilon,M}(\mathrm
-    d\xi)=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
-  OperatorRidgelet.Paper.lem_A_3_ii
-
-attribute [blueprint "lem:A.3-iii"
-  (statement := /-- $\int_0^\infty e^{-sq}s^{\alpha/2-1}\,\mathrm
-    ds=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
-  OperatorRidgelet.Paper.lem_A_3_iii
-
-attribute [blueprint "lem:A.3-iv"
-  (statement := /-- $\int_H|e^{i\langle z,\xi\rangle}|\,\nu_\alpha(\mathrm d\xi)=\infty$. -/)]
-  OperatorRidgelet.Paper.lem_A_3_iv
-
-attribute [blueprint "cor:F.2-i"
-  (statement := /-- If $f\in L^2(p\,\mathrm dx)$ with $g=fp\in\mathcal S(\mathbb R^m)$, then
-    $f\in\mathcal D_\alpha$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_i
-
-attribute [blueprint "cor:F.2-ii"
-  (statement := /-- $t_f=\int e^{i\langle x,\xi\rangle}\widehat g(\xi)\,\nu_\alpha(\mathrm
-    d\xi)=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_ii
-
-attribute [blueprint "cor:F.2-iii"
-  (statement := /-- For band-pass $\rho$, $S_\rho R_\rho f$ is represented against $p\,\mathrm
-    dx$ by $C^{(\alpha)}_\rho t_f$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_iii
-
-attribute [blueprint "cor:F.2-iv"
-  (statement := /-- Distributionally,
-    $f=\frac{p^{-1}}{k_{m,\alpha}C^{(\alpha)}_\rho}(-\Delta)^{(m-\alpha)/2}S_\rho
-    R_\rho f$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_iv
-
-attribute [blueprint "cor:F.2-v"
-  (statement := /-- With Lebesgue direction measure and $\alpha=m$, $t_f=(2\pi)^mg$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_v
-
-attribute [blueprint "cor:F.2-vi"
-  (statement := /-- With Lebesgue direction measure and $\alpha=m$,
-    $f=(2\pi)^{-m}(C^{(m)}_\rho)^{-1}p^{-1}S_\rho R_\rho f$. -/)]
-  OperatorRidgelet.Paper.cor_F_2_vi
-
-attribute [blueprint "prop:F.3-i-a"
-  (statement := /-- The sets $E_t$ are Borel. -/)]
-  OperatorRidgelet.Paper.prop_F_3_i_a
-
-attribute [blueprint "prop:F.3-i-b"
-  (statement := /-- The sets $E_t$ are pairwise disjoint. -/)]
-  OperatorRidgelet.Paper.prop_F_3_i_b
-
-attribute [blueprint "prop:F.3-i-c"
-  (statement := /-- $\mathcal N(0,tW)(E_t)=1$ for $t>0$. -/)]
-  OperatorRidgelet.Paper.prop_F_3_i_c
-
-attribute [blueprint "prop:F.3-i-d"
-  (statement := /-- A sigma-finite measure dominates $\mathcal N(0,tW)$ for at most countably
-    many $t$. -/)]
-  OperatorRidgelet.Paper.prop_F_3_i_d
-
-attribute [blueprint "prop:F.3-ii"
-  (statement := /-- No finite complex Borel measure on $H\times\mathbb R$ has bias slices
-    $r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)$ for almost every $\omega\ne0$. -/)]
-  OperatorRidgelet.Paper.prop_F_3_ii
-
-attribute [blueprint "ex:3.12-i"
-  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is smooth. -/)]
-  OperatorRidgelet.Paper.ex_3_12_i
-
-attribute [blueprint "ex:3.12-ii"
-  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonpositive. -/)]
-  OperatorRidgelet.Paper.ex_3_12_ii
-
-attribute [blueprint "ex:3.12-iii"
-  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonzero. -/)]
-  OperatorRidgelet.Paper.ex_3_12_iii
-
-attribute [blueprint "ex:3.12-iv"
-  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is supported in $\{1\le|\omega|\le2\}$. -/)]
-  OperatorRidgelet.Paper.ex_3_12_iv
-
-attribute [blueprint "ex:3.12-v"
-  (statement := /-- $\rho_{\mathrm{bp}}$ is a real Schwartz function, the inverse Fourier
-    transform of $\rho_{\mathrm{bp}}^\sharp$. -/)]
-  OperatorRidgelet.Paper.ex_3_12_v
-
-attribute [blueprint "ex:3.12-vi"
-  (statement := /-- $\rho_{\mathrm{bp}}$ is even. -/)]
-  OperatorRidgelet.Paper.ex_3_12_vi
-
-attribute [blueprint "ex:3.12-vii"
-  (statement := /-- The Fourier transform of $\rho_{\mathrm{bp}}$ is the prescribed
-    $\rho_{\mathrm{bp}}^\sharp$. -/)]
-  OperatorRidgelet.Paper.ex_3_12_vii
-
-attribute [blueprint "ex:3.12-viii"
-  (statement := /-- $\rho_{\mathrm{bp}}$ satisfies the band-pass condition. -/)]
-  OperatorRidgelet.Paper.ex_3_12_viii
-
-attribute [blueprint "ex:3.12-ix"
-  (statement := /-- $\rho_{\mathrm{bp}}$ is $\alpha$-admissible for every $\alpha>0$. -/)]
-  OperatorRidgelet.Paper.ex_3_12_ix
-
-attribute [blueprint "ex:3.12-x"
-  (statement := /-- Multiplying by $(C^{(\alpha)}_{\rho_{\mathrm{bp}}})^{-1/2}$ normalizes the
-    admissibility constant to one. -/)]
-  OperatorRidgelet.Paper.ex_3_12_x
+  ] OperatorRidgelet.Paper.lem_3_12_ii
 
 attribute [blueprint "ex:3.13-i"
-  (statement := /-- $\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}$ is a Schwartz function. -/)]
+  (statement := /-- $F_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}$. -/)]
   OperatorRidgelet.Paper.ex_3_13_i
 
 attribute [blueprint "ex:3.13-ii"
-  (statement := /-- $\rho_{\mathrm{MH}}^\sharp(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)]
-  OperatorRidgelet.Paper.ex_3_13_ii
+  (statement := /-- $1\in\mathcal D_\alpha$ for every $\alpha>0$. -/)
+  ] OperatorRidgelet.Paper.ex_3_13_ii
 
 attribute [blueprint "ex:3.13-iii"
+  (statement := /-- $\mathcal E_\alpha\ne\{0\}$. -/)
+  ] OperatorRidgelet.Paper.ex_3_13_iii
+
+attribute [blueprint "thm:3.14-i-a"
+  (statement := /-- For $f\in\mathcal D_\alpha$ and $\alpha$-admissible $\rho$, $R_\rho f\in
+    L^2(\lambda_\alpha)$. -/)]
+  OperatorRidgelet.Paper.thm_3_14_i_a
+
+attribute [blueprint "thm:3.14-i-b"
+  (statement := /-- $\langle
+    R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=C^{(\alpha)}_{\rho_1,\rho_2}\langle
+    f,g\rangle_{\mathcal E_\alpha}$. -/)]
+  OperatorRidgelet.Paper.thm_3_14_i_b
+
+attribute [blueprint "thm:3.14-ii-a"
+  (statement := /-- An $\alpha$-admissible $\rho$ determines a unique bounded extension
+    $R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)$. -/)]
+  OperatorRidgelet.Paper.thm_3_14_ii_a
+
+attribute [blueprint "thm:3.14-ii-b"
+  (statement := /-- $\|R_\rho f\|^2=C^{(\alpha)}_\rho\|f\|_{\mathcal E_\alpha}^2$. -/)]
+  OperatorRidgelet.Paper.thm_3_14_ii_b
+
+attribute [blueprint "thm:3.14-ii-c"
+  (statement := /-- The range of $R_\rho$ is closed. -/)]
+  OperatorRidgelet.Paper.thm_3_14_ii_c
+
+attribute [blueprint "thm:3.14-ii-d"
+  (statement := /-- $R_\rho=W_\rho F_Q$. -/)]
+  OperatorRidgelet.Paper.thm_3_14_ii_d
+
+attribute [blueprint "thm:3.14-iii"
+  (statement := /-- If $\rho$ is $\alpha$-admissible and $f\in L^1(\mu_Q)$, then $R_\rho f=0$
+    $\lambda_\alpha$-a.e. implies $f=0$ $\mu_Q$-a.e. -/)] OperatorRidgelet.Paper.thm_3_14_iii
+
+attribute [blueprint "lem:3.1-i"
+  (statement := /-- $s\mapsto\mathcal N(0,2sP)(E)$ is Borel measurable on $(0,\infty)$. -/)]
+  OperatorRidgelet.Paper.lem_3_1_i
+
+attribute [blueprint "lem:3.1-ii"
+  (statement := /-- $\nu_\alpha(E)=\int_0^\infty\mathcal N(0,2sP)(E)\,s^{\alpha/2-1}\,\mathrm
+    ds$ defines a countably additive Borel measure. -/)]
+  OperatorRidgelet.Paper.lem_3_1_ii
+
+attribute [blueprint "lem:3.1-iii"
+  (statement := /-- $\int_HF\,\mathrm d\nu_\alpha=\int_0^\infty\int_HF\,\mathrm d\mathcal
+    N(0,2sP)\,s^{\alpha/2-1}\,\mathrm ds$ for nonnegative Borel $F$. -/)]
+  OperatorRidgelet.Paper.lem_3_1_iii
+
+attribute [blueprint "lem:3.1-iv"
+  (statement := /-- The integration formula holds for complex $F$ with $\int_H|F|\,\mathrm
+    d\nu_\alpha<\infty$. -/)]
+  OperatorRidgelet.Paper.lem_3_1_iv
+
+attribute [blueprint "lem:A.1-i"
+  (statement := /-- $q=\langle Pz,z\rangle>0$ for $z\ne0$. -/)]
+  OperatorRidgelet.Paper.lem_A_1_i
+
+attribute [blueprint "lem:A.1-ii"
+  (statement := /-- $\lim_{\varepsilon\downarrow0,M\uparrow\infty}\int_He^{i\langle
+    z,\xi\rangle}\,\nu_\alpha^{\varepsilon,M}(\mathrm
+    d\xi)=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
+  OperatorRidgelet.Paper.lem_A_1_ii
+
+attribute [blueprint "lem:A.1-iii"
+  (statement := /-- $\int_0^\infty e^{-sq}s^{\alpha/2-1}\,\mathrm
+    ds=\Gamma(\alpha/2)q^{-\alpha/2}$. -/)]
+  OperatorRidgelet.Paper.lem_A_1_iii
+
+attribute [blueprint "lem:A.1-iv"
+  (statement := /-- $\int_H|e^{i\langle z,\xi\rangle}|\,\nu_\alpha(\mathrm d\xi)=\infty$. -/)]
+  OperatorRidgelet.Paper.lem_A_1_iv
+
+attribute [blueprint "cor:D.2-i"
+  (statement := /-- If $f\in L^2(p\,\mathrm dx)$ with $g=fp\in\mathcal S(\mathbb R^m)$, then
+    $f\in\mathcal D_\alpha$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_i
+
+attribute [blueprint "cor:D.2-ii"
+  (statement := /-- $t_f=\int e^{i\langle x,\xi\rangle}\widehat g(\xi)\,\nu_\alpha(\mathrm
+    d\xi)=k_{m,\alpha}(-\Delta)^{-(m-\alpha)/2}g$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_ii
+
+attribute [blueprint "cor:D.2-iii"
+  (statement := /-- For band-pass $\rho$, $S_\rho R_\rho f$ is represented against $p\,\mathrm
+    dx$ by $C^{(\alpha)}_\rho t_f$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_iii
+
+attribute [blueprint "cor:D.2-iv"
+  (statement := /-- Distributionally,
+    $f=\frac{p^{-1}}{k_{m,\alpha}C^{(\alpha)}_\rho}(-\Delta)^{(m-\alpha)/2}S_\rho
+    R_\rho f$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_iv
+
+attribute [blueprint "cor:D.2-v"
+  (statement := /-- With Lebesgue direction measure and $\alpha=m$, $t_f=(2\pi)^mg$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_v
+
+attribute [blueprint "cor:D.2-vi"
+  (statement := /-- With Lebesgue direction measure and $\alpha=m$,
+    $f=(2\pi)^{-m}(C^{(m)}_\rho)^{-1}p^{-1}S_\rho R_\rho f$. -/)]
+  OperatorRidgelet.Paper.cor_D_2_vi
+
+attribute [blueprint "prop:D.3-i-a"
+  (statement := /-- The sets $E_t$ are Borel. -/)]
+  OperatorRidgelet.Paper.prop_D_3_i_a
+
+attribute [blueprint "prop:D.3-i-b"
+  (statement := /-- The sets $E_t$ are pairwise disjoint. -/)]
+  OperatorRidgelet.Paper.prop_D_3_i_b
+
+attribute [blueprint "prop:D.3-i-c"
+  (statement := /-- $\mathcal N(0,tW)(E_t)=1$ for $t>0$. -/)]
+  OperatorRidgelet.Paper.prop_D_3_i_c
+
+attribute [blueprint "prop:D.3-i-d"
+  (statement := /-- A sigma-finite measure dominates $\mathcal N(0,tW)$ for at most countably
+    many $t$. -/)]
+  OperatorRidgelet.Paper.prop_D_3_i_d
+
+attribute [blueprint "prop:D.3-ii"
+  (statement := /-- No finite complex Borel measure on $H\times\mathbb R$ has bias slices
+    $r(\omega)(D_{1/\omega})_\#\mathcal N(0,W)$ for almost every $\omega\ne0$. -/)]
+  OperatorRidgelet.Paper.prop_D_3_ii
+
+attribute [blueprint "ex:3.15-i"
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is smooth. -/)]
+  OperatorRidgelet.Paper.ex_3_15_i
+
+attribute [blueprint "ex:3.15-ii"
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonpositive. -/)]
+  OperatorRidgelet.Paper.ex_3_15_ii
+
+attribute [blueprint "ex:3.15-iii"
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonzero. -/)]
+  OperatorRidgelet.Paper.ex_3_15_iii
+
+attribute [blueprint "ex:3.15-iv"
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is supported in $\{1\le|\omega|\le2\}$. -/)]
+  OperatorRidgelet.Paper.ex_3_15_iv
+
+attribute [blueprint "ex:3.15-v"
+  (statement := /-- $\rho_{\mathrm{bp}}$ is a real Schwartz function, the inverse Fourier
+    transform of $\rho_{\mathrm{bp}}^\sharp$. -/)]
+  OperatorRidgelet.Paper.ex_3_15_v
+
+attribute [blueprint "ex:3.15-vi"
+  (statement := /-- $\rho_{\mathrm{bp}}$ is even. -/)]
+  OperatorRidgelet.Paper.ex_3_15_vi
+
+attribute [blueprint "ex:3.15-vii"
+  (statement := /-- The Fourier transform of $\rho_{\mathrm{bp}}$ is the prescribed
+    $\rho_{\mathrm{bp}}^\sharp$. -/)]
+  OperatorRidgelet.Paper.ex_3_15_vii
+
+attribute [blueprint "ex:3.15-viii"
+  (statement := /-- $\rho_{\mathrm{bp}}$ satisfies the band-pass condition. -/)]
+  OperatorRidgelet.Paper.ex_3_15_viii
+
+attribute [blueprint "ex:3.15-ix"
+  (statement := /-- $\rho_{\mathrm{bp}}$ is $\alpha$-admissible for every $\alpha>0$. -/)]
+  OperatorRidgelet.Paper.ex_3_15_ix
+
+attribute [blueprint "ex:3.15-x"
+  (statement := /-- Multiplying by $(C^{(\alpha)}_{\rho_{\mathrm{bp}}})^{-1/2}$ normalizes the
+    admissibility constant to one. -/)]
+  OperatorRidgelet.Paper.ex_3_15_x
+
+attribute [blueprint "ex:3.16-i"
+  (statement := /-- $\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}$ is a Schwartz function. -/)]
+  OperatorRidgelet.Paper.ex_3_16_i
+
+attribute [blueprint "ex:3.16-ii"
+  (statement := /-- $\rho_{\mathrm{MH}}^\sharp(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)]
+  OperatorRidgelet.Paper.ex_3_16_ii
+
+attribute [blueprint "ex:3.16-iii"
   (statement := /-- For $\alpha>0$, $\rho_{\mathrm{MH}}$ is $\alpha$-admissible exactly when
     $\alpha<5$. -/)]
-  OperatorRidgelet.Paper.ex_3_13_iii
+  OperatorRidgelet.Paper.ex_3_16_iii
 
-attribute [blueprint "ex:3.13-iv"
+attribute [blueprint "ex:3.16-iv"
   (statement := /-- $C^{(\alpha)}_{\rho_{\mathrm{MH}}}=\Gamma((5-\alpha)/2)$ for $0<\alpha<5$. -/)]
-  OperatorRidgelet.Paper.ex_3_13_iv
+  OperatorRidgelet.Paper.ex_3_16_iv
 
-attribute [blueprint "ex:3.13-v"
+attribute [blueprint "ex:3.16-v"
   (statement := /-- $C^{(1)}_{\rho_{\mathrm{MH}}}=1$. -/)]
-  OperatorRidgelet.Paper.ex_3_13_v
+  OperatorRidgelet.Paper.ex_3_16_v
 
-attribute [blueprint "ex:3.13-vi"
+attribute [blueprint "ex:3.16-vi"
   (statement := /-- $\rho_{\mathrm{MH}}$ is not band pass. -/)]
-  OperatorRidgelet.Paper.ex_3_13_vi
+  OperatorRidgelet.Paper.ex_3_16_vi

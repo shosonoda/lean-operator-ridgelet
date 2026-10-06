@@ -6,7 +6,7 @@ import LeanRidgelet.Fourier.AngularDistribution
 
 The manuscript treats the activation as a tempered distribution `β ∈ 𝒮'(ℝ)` and pairs its
 Fourier transform with the band-pass analysis filter:
-`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β♯, ρ♯(-·) |·|^{-α}⟩` (Theorem 4.2(iii); the "distributional
+`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β♯, ρ♯(-·) |·|^{-α}⟩` (Theorem 4.5(iii); the "distributional
 admissibility" displayed at the start of Section 5).  The test function `ω ↦ ρ♯(-ω) |ω|^{-α}` is
 Schwartz exactly when `ρ♯` vanishes near the origin, which is the band-pass condition; below it
 is taken as a `SchwartzMap` whenever one with these values exists, and as `0` otherwise, so that
@@ -15,7 +15,7 @@ definition.  Tempered distributions are Mathlib's `TemperedDistribution ℝ ℂ`
 transform on them is the manuscript-convention `angularFourierDistribution` of the vendored
 `LeanRidgelet` files.
 
-This module is shared by Section 4 (Theorem 4.2(iii)) and Section 5; do not restate the constant
+This module is shared by Section 4 (Theorem 4.5(iii)) and Section 5; do not restate the constant
 elsewhere.
 -/
 

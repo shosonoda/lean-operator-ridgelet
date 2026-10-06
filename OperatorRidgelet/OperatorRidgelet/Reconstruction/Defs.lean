@@ -24,7 +24,7 @@ derivative bounds on these one-variable functions specified by `IsRegularAlongRa
 * `spectralTarget ν G` is `g_G(x) = ∫ e^{i⟪x,ξ⟫} G(ξ) ν(dξ)`, stated for a density `G` with
   values in any complex normed space (the scalar case is `Y = ℂ`, where `•` is `*`).
 * The compact symmetric set `I ⊆ ℝ ∖ {0}` containing `supp ρ♯` that the manuscript fixes before
-  Definition `def:4.1` is the predicate `IsFrequencyWindow ρ I`.
+  Definition `def:4.2` is the predicate `IsFrequencyWindow ρ I`.
 * `rayDerivBound I G m a = max_{k ≤ m} sup_{ω ∈ I} ‖∂_ω^k G(ωa)‖` and the moment
   `rayMoment ν I G m = M_m(G)` are taken in `ℝ≥0∞`, so that "`M_m(G) < ∞`" is literally
   `rayMoment ν I G m < ⊤`; `IsRegularAlongRays ν I G` bundles boundedness, Borel measurability
@@ -54,19 +54,19 @@ manuscript's in the second; `innerSLFlip ℂ f g = ⟪g, f⟫ = ⟨f,g⟩_manusc
   functional (`antiDualConj`).
 * `transposeEmbed μ ν F = F_Q' F`, `F_Q' F [g] = ⟨F, F_Q g⟩_{L²(ν)}`.
 * `frameOperator μ ν f = T_α f = F_Q' F_Q f` takes values in the continuous anti-dual.
-  Theorem `thm:4.3`(i) says that the frame operator is the Riesz map, so `T_α⁻¹` is `rieszInv`.
+  Theorem `thm:4.8`(i) says that the frame operator is the Riesz map, so `T_α⁻¹` is `rieszInv`.
     It describes the correction
   induced by the weights. With `C = admissibilityConst α ρ`, the reconstruction identity is
   `R_ρ' R_ρ = C T_α`; the Hilbert-space adjoint instead satisfies `R_ρ* R_ρ = C I`.
-* `ridgeletExtension μ ν ρ` is the bounded extension `R_ρ : 𝓔_α → L²(λ)` of Theorem `thm:3.11`(ii):
+* `ridgeletExtension μ ν ρ` is the bounded extension `R_ρ : 𝓔_α → L²(λ)` of Theorem `thm:3.14`(ii):
   the continuous linear map agreeing almost everywhere with `f ↦ R_ρ f` on `F_Q(𝒟_α)`, chosen
-  when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:3.11`(ii), a theorem
+  when one exists and `0` otherwise (existence and uniqueness are Theorem `thm:3.14`(ii), a theorem
   and not a definition); `ridgeletRange μ ν ρ = Ran R_ρ`.
 * `synthesis μ ν ρ γ = S_ρ γ = R_ρ' γ`, `(S_ρ γ)[g] = ⟨γ, R_ρ g⟩_{L²(λ)}` (`eq:weak-synthesis`).
 
 These are the only definitions of `𝓔_α'`, `R_ρ` on `𝓔_α`, `S_ρ`, `T_α`, `T_α⁻¹`, `g_G`, and
 regularity along rays in the library: Section 5 (`OperatorRidgelet.Tempered.Defs`, the
-regularized synthesis `S_{β_ε}` and its limit `S_β`, and Corollary `cor:5.3`) and
+regularized synthesis `S_{β_ε}` and its limit `S_β`, and Corollary `cor:5.5`) and
 Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
 
 ## Backprojection, coefficient projection, and the Hermite inverse
@@ -75,7 +75,7 @@ Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
   bias-Fourier representative `Φ` of the coefficient; `backprojection α ν ρ γ = W_ρ^* γ` uses a
   jointly measurable representative of `γ ∈ L²(λ)` chosen through `HasBiasFourier` (`0` if there
   is none), which requires `ω ↦ Φ(a, ω)` to be square integrable for almost every `a`;
-  Proposition `prop:B.8` states that the choice is immaterial.
+  Proposition `prop:B.1` states that the choice is immaterial.
   `backprojectionLp` is `W_ρ^* γ` as an element of `L²(ν)`. Backprojection is the Hilbert-space
   adjoint `W_ρ^* = W_ρ*` of the coefficient operator. The `coefficientProjection` is
   `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} W_ρ^*`.  The space `𝒴` of Appendix B is `L²(λ)`: the norm defined
@@ -86,7 +86,7 @@ Section 7 (`OperatorRidgelet.Examples.Defs`) build on them.
   with `τ(ξ)² = ⟪Qξ,ξ⟫`; `hermiteCoefficient μ Q f ξ n = E_μ[f He_n(⟪x,ξ⟫/τ(ξ))]` with the
   probabilists' Hermite polynomials `Polynomial.hermite` of Mathlib (`He_{n+1} = X He_n - He_n'`).
 * `gaussFourierInv μ ν = Δ_Q`, the inverse of `F_μ` on its range on `𝒟`, chosen as the element
-  of `𝒟` with the given transform (unique by Theorem `thm:4.3`(iv)) and `0` otherwise.
+  of `𝒟` with the given transform (unique by Theorem `thm:4.8`(iv)) and `0` otherwise.
 
 ## Vector-valued targets
 
@@ -122,7 +122,7 @@ measure `G ν`; for a scalar density `•` is the product. -/
 def spectralTarget (ν : Measure H) (G : H → Y) (x : H) : Y :=
   ∫ ξ, Complex.exp ((⟪x, ξ⟫ : ℝ) * Complex.I) • G ξ ∂ν
 
-/-- The frequency window fixed before Definition `def:4.1`: a symmetric compact set
+/-- The frequency window fixed before Definition `def:4.2`: a symmetric compact set
 `I ⊆ ℝ ∖ {0}` containing the support of `ρ♯`. -/
 structure IsFrequencyWindow (ρ : ℝ → ℝ) (I : Set ℝ) : Prop where
   /-- `I` is compact. -/
@@ -145,7 +145,7 @@ def rayDerivBound (I : Set ℝ) (G : H → Y) (m : ℕ) (a : H) : ℝ≥0∞ :=
 def rayMoment (ν : Measure H) (I : Set ℝ) (G : H → Y) (m : ℕ) : ℝ≥0∞ :=
   ∫⁻ a, ENNReal.ofReal ((1 + ‖a‖) ^ (m + 2)) * rayDerivBound I G m a ∂ν
 
-/-- **Definition [def:4.1]** A bounded Borel density `G` is regular along rays (with
+/-- **Definition [def:4.2]** A bounded Borel density `G` is regular along rays (with
 respect to the direction measure `ν` and the frequency window `I`) if for every direction `a`
 the restriction `G_a(ω) := G (ω • a)` to the line through the origin is `C^∞` on a
 neighbourhood of `I` and every weighted derivative integral `M_m(G)` is finite.
@@ -208,7 +208,7 @@ instance instCompleteSpaceSpectralRange (μ ν : Measure H) [IsFiniteMeasure μ]
   Submodule.topologicalClosure.completeSpace _
 
 open Classical in
-/-- The bounded extension `R_ρ : 𝓔 → L²(λ)` of Theorem `thm:3.11`(ii), represented on `𝒦`: the
+/-- The bounded extension `R_ρ : 𝓔 → L²(λ)` of Theorem `thm:3.14`(ii), represented on `𝒦`: the
 continuous linear map that agrees `λ`-almost everywhere with `f ↦ R_ρ f` on `F_Q(𝒟)`, when one
 exists, and `0` otherwise. -/
 def ridgeletExtension (μ ν : Measure H) [IsFiniteMeasure μ] (ρ : ℝ → ℝ) :
@@ -279,7 +279,7 @@ bias-Fourier representative of `γ` (`HasBiasFourier`), and `0` if there is none
 It determines this frequency profile up to a null set (`HasBiasFourier.ae_ae_eq`). The
 substitution `(a, ω) ↦ (-ωa, ω)` preserves null sets by homogeneity, so the backprojection
 integral does not depend on the chosen representative as an element of `L²(ν)`
-(`prop_B_8_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
+(`prop_B_1_ii`).  For `γ ∈ L²(λ)` a jointly measurable representative exists
 (`exists_measurable_hasBiasFourier`), so the junk value is never taken on `L²(λ)`. -/
 def backprojection (α : ℝ) (ν : Measure H) (ρ : ℝ → ℝ) (γ : H × ℝ → ℂ) : H → ℂ :=
   if h : ∃ Φ : H → ℝ → ℂ, Measurable (Function.uncurry Φ) ∧ HasBiasFourier ν γ Φ then
@@ -315,7 +315,7 @@ transform on the line through `ξ` and the origin to complex `z`. -/
 def gaussFourierLine (μ : Measure H) (f : H → ℂ) (ξ : H) (z : ℂ) : ℂ :=
   ∫ x, f x * Complex.exp (-(z * (⟪x, ξ⟫ : ℝ) * Complex.I)) ∂μ
 
-/-- The entire function `G_f(zξ) = e^{z²τ(ξ)²/2} F_μ f(zξ)` of Lemma `lem:B.5`,
+/-- The entire function `G_f(zξ) = e^{z²τ(ξ)²/2} F_μ f(zξ)` of Lemma `lem:4.7`,
 with `τ(ξ)² = ⟪Qξ,ξ⟫`. -/
 def hermiteExtension (μ : Measure H) (Q : H →L[ℝ] H) (f : H → ℂ) (ξ : H) (z : ℂ) : ℂ :=
   Complex.exp (z ^ 2 * ((⟪Q ξ, ξ⟫ : ℝ) : ℂ) / 2) * gaussFourierLine μ f ξ z
@@ -330,7 +330,7 @@ variable [OpensMeasurableSpace H]
 
 open Classical in
 /-- The inverse `Δ_Q` of `F_μ` on its range on `𝒟`: the element `f ∈ 𝒟` with `F_μ f = G` when
-one exists (it is unique by Theorem `thm:4.3`(iv)), and `0` otherwise. -/
+one exists (it is unique by Theorem `thm:4.8`(iv)), and `0` otherwise. -/
 def gaussFourierInv (μ ν : Measure H) [IsFiniteMeasure μ] (G : H → ℂ) : Lp ℂ 2 μ :=
   if h : ∃ f : Lp ℂ 2 μ, f ∈ spectralCore μ ν ∧ gaussFourier μ f = G then h.choose else 0
 

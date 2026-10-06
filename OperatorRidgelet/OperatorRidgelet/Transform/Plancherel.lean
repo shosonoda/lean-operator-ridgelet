@@ -11,14 +11,14 @@ import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Analysis.Normed.Operator.Extend
 
 /-!
-# Plancherel in the bias variable, the coefficient operator, and Theorem 3.11
+# Plancherel in the bias variable, the coefficient operator, and Theorem 3.14
 
 Ridgelet-specific results behind Section 3.2–3.4 of the manuscript (Lemma
-`lem:B.1`, Lemma `lem:3.8`, and Theorem `thm:3.11`), for an abstract pair `(μ, ν)`: `μ` a
+`lem:3.8`, Lemma `lem:3.11`, and Theorem `thm:3.14`), for an abstract pair `(μ, ν)`: `μ` a
 probability
 measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
 
-* **Bridges.** The manuscript's line Fourier transform `ĥ(ω) = ∫ h(t) e^{-itω} dt` and the partial
+* **Bridges.** The manuscript's line Fourier transform `h♯(ω) = ∫ h(t) e^{-itω} dt` and the partial
   Fourier transform in the bias are Mathlib's `𝓕` at the rescaled frequency `ω / 2π`.
 * **Separation of variables.** Tonelli/Fubini and the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`
   separate `∫ K(ω) F(-ωa) d(ν ⊗ dω) = (∫ K(ω) |ω|^{-α} dω) ∫ F dν`.

@@ -48,6 +48,18 @@ Approximation is measured in the compact-open topology of $`C(H;Y)`, generated b
 $`\|f\|_{C(K;Y)}=\sup_{x\in K}\|f(x)\|_Y` over compact $`K\subset H`.
 :::
 
+A vector measure assigns a vector to each Borel set and is countably additive
+in the output norm. Its variation is
+$`|\Gamma|(E)=\sup\sum_j\|\Gamma(E_j)\|_Y`, over finite Borel partitions of $`E`;
+bounded variation means finite mass on the whole parameter space. Since $`Y` is a
+separable Hilbert space, $`\Gamma(E)=\int_E h\,\mathrm d|\Gamma|` with
+$`\|h\|_Y=1` almost everywhere, and the integral of a scalar function $`u` against
+$`\Gamma` means the Bochner integral $`\int uh\,\mathrm d|\Gamma|`.
+A vector-valued function is Bochner integrable when it is strongly measurable,
+meaning an almost-everywhere limit of measurable simple functions, and its norm
+is integrable; integrating simple-function approximants in $`L^1` gives its integral.
+For further details, see Diestel and Uhl, *Vector Measures* (1977).
+
 :::definition "def:2.2" (lean := "OperatorRidgelet.integralNetwork, OperatorRidgelet.totalVariation, OperatorRidgelet.integralNetworkDensity, OperatorRidgelet.Paper.def_2_2_i, OperatorRidgelet.Paper.def_2_2_ii")
 Let $`\Gamma` be a $`Y`-valued Borel measure of bounded variation on $`\Theta=H\times\mathbb R`
 with variation $`|\Gamma|` and total variation $`\|\Gamma\|_{\mathrm{TV}}=|\Gamma|(\Theta)`.

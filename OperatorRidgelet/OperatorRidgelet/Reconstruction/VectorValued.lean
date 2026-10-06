@@ -3,7 +3,7 @@ import OperatorRidgelet.Reconstruction.Representation
 import OperatorRidgelet.Transform.Plancherel
 
 /-!
-# The `Y`-valued Plancherel theory (Theorem `thm:4.6`)
+# The `Y`-valued Plancherel theory (Theorem `thm:4.11`)
 
 The vector-valued counterpart of `OperatorRidgelet.Transform.Plancherel` for a complex Hilbert
 target `Y`: the Fourier-slice identity, the Plancherel identity, the bounded extension

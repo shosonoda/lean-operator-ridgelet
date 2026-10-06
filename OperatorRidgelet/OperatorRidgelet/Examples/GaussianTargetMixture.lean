@@ -4,7 +4,7 @@ import OperatorRidgelet.Examples.GaussianTarget
 # The layers of the Gaussian mixture applied to a Gaussian density
 
 Each layer `𝒩(0,2sP)` of the mixture `ν_α` integrates the Gaussian density
-`e^{-⟪Tξ,ξ⟫/2}` by Lemma `lem:E.1`(ii) applied with the covariance `2sP`, whose
+`e^{-⟪Tξ,ξ⟫/2}` by Lemma `lem:7.1`(ii) applied with the covariance `2sP`, whose
 positive square root is `√(2s) P^{1/2}`:
 `∫ e^{i⟪x,ξ⟫ - ⟪Tξ,ξ⟫/2} 𝒩(0,2sP)(dξ) = det(I + 2sP^{1/2}TP^{1/2})^{-1/2} e^{-⟪Σ_s x,x⟫/2}`
 with `Σ_s = 2sP^{1/2}(I + 2sP^{1/2}TP^{1/2})^{-1}P^{1/2}` (`integral_layer_exp_quadratic`); this
@@ -65,7 +65,7 @@ theorem IsPositiveSqrt.smul {P R : H →L[ℝ] H} (hR : IsPositiveSqrt R P) {c :
 
 variable [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-- The layer integral of `eq:filtered-gaussian-target`: Lemma `lem:E.1`(ii) on
+/-- The layer integral of `eq:filtered-gaussian-target`: Lemma `lem:7.1`(ii) on
 the layer `𝒩(0,2sP)` of the mixture. -/
 theorem integral_layer_exp_quadratic {P T R : H →L[ℝ] H} (hP : IsPositiveTraceClass P)
     (hT : IsSelfAdjoint T) (hT0 : ∀ y, 0 ≤ ⟪T y, y⟫) (hR : IsPositiveSqrt R P)

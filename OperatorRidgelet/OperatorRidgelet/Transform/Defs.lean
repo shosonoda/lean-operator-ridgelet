@@ -11,7 +11,7 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Topology.Algebra.Module.Basic
 
 /-!
-# Definitions for Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A, F, G
+# Definitions for Section 3 (the Gaussian-weighted ridgelet transform) and Appendices A and D
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.
@@ -28,7 +28,7 @@ The Gaussian objects are represented as follows.
   characteristic functional `ξ ↦ exp(-⟨Qξ,ξ⟩/2)`, which is the manuscript's definition of the
   centred Gaussian measure with covariance `Q`.
 * "positive, self-adjoint, trace class" is the predicate `IsPositiveTraceClass` (the
-  hypothesis of Lemma `lem:E.1`), and "injective, positive, self-adjoint, trace
+  hypothesis of Lemma `lem:7.1`), and "injective, positive, self-adjoint, trace
   class" is `IsTraceClassCovariance`, which extends it by injectivity.  The trace condition
   `HasSummableTrace P` is the summability of `∑ ⟪P e_j, e_j⟫` along some Hilbert basis, and the
   trace `tr P` is `traceOf P`, the sum along such a basis (`traceAlong`); for a positive
@@ -39,14 +39,14 @@ The Gaussian objects are represented as follows.
   prescribed trace-class covariance in infinite dimension, so the existence of such a family is
   recorded as a separate infrastructure statement (`exists_isCenteredGaussianLayers`).
 * The mixture `ν_α = ∫₀^∞ 𝒩(0,2sP) s^{α/2-1} ds` is `gaussianMixture N α`, the Giry-monad bind
-  of the weight `s^{α/2-1} ds` on `(0,∞)` against the components (Lemma A.1).
+  of the weight `s^{α/2-1} ds` on `(0,∞)` against the components (Lemma `lem:mixture-integration`).
 
 ## The Hilbert space `𝓔_α`
 
 The manuscript completes the pre-Hilbert space `𝒟_α = {f ∈ L²(μ) : F_μ f ∈ L²(ν)}` in the
 spectral norm.  Building that completion in Lean would require the positivity of the spectral
-form inside a definition (it is Lemma 3.8, a theorem).  We therefore represent `𝓔_α` by the
-closed subspace `𝒦_α = closure (F_μ 𝒟_α) ⊆ L²(ν)` (`spectralRange`), to which Lemma 3.8 shows
+form inside a definition (it is Lemma 3.11, a theorem).  We therefore represent `𝓔_α` by the
+closed subspace `𝒦_α = closure (F_μ 𝒟_α) ⊆ L²(ν)` (`spectralRange`), to which Lemma 3.11 shows
 `𝓔_α` is unitarily equivalent; the unitary `F_Q` becomes the map `spectralEmbed : 𝒟_α → 𝒦_α`,
 and the Riesz map and the extension of `R_ρ` are stated on `𝒦_α`.
 
@@ -62,7 +62,7 @@ For `a ≠ 0`, this is the restriction to the line through the origin spanned by
 Parseval's identity against Schwartz test functions in the bias variable together with the
 square integrability of the transform for almost every direction (`HasBiasFourier`), and
 `spectralCoefficient` is the element of `L²(λ_α)` with that property (junk value `0` if there is
-none); Lemma 3.6 states existence, uniqueness, and the explicit formula `coefficientFormula`.
+none); Lemma `lem:3.8` establishes the coefficient and its explicit formula `coefficientFormula`.
 
 ## Fourier convention
 
@@ -111,7 +111,7 @@ theorem norm_character (ξ x : H) : ‖character ξ x‖ = 1 := by
   rw [character, this, Complex.norm_exp_ofReal_mul_I]
 
 /-- The one-dimensional Fourier transform of a complex function in the convention of the
-manuscript, `ĥ(ω) = ∫ h(t) exp(-itω) dt`. -/
+manuscript, `h♯(ω) = ∫ h(t) exp(-itω) dt`. -/
 def lineFourier (h : ℝ → ℂ) (ω : ℝ) : ℂ :=
   LeanRidgelet.Fourier.angularFourierIntegralInner h ω
 
@@ -188,7 +188,7 @@ def traceOf (P : H →L[ℝ] H) : ℝ :=
   if h : HasSummableTrace P then traceAlong h.choose_spec.choose P else 0
 
 /-- A positive, self-adjoint, trace-class operator: the hypothesis on `Σ` in Lemma
-`lem:E.1`, and the covariance hypothesis `IsTraceClassCovariance` without
+`lem:7.1`, and the covariance hypothesis `IsTraceClassCovariance` without
 injectivity. -/
 structure IsPositiveTraceClass (P : H →L[ℝ] H) : Prop where
   /-- `P` is self-adjoint. -/
@@ -313,7 +313,7 @@ integral of a non-integrable function is `0`: without the clause an arbitrary no
 function would be a "representative" of every coefficient, and the backprojection integral
 `backprojectionOf` computed from it would be meaningless.  With the clause all representatives
 of `γ` agree almost everywhere for almost every direction, so `backprojection` is independent
-of the choice (Proposition `prop:B.8`(ii)). -/
+of the choice (Proposition `prop:B.1`(ii)). -/
 structure HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → ℝ → ℂ) : Prop where
   /-- `Φ(a,·) ∈ L²(ℝ)` for `ν`-almost every direction `a`. -/
   memLp : ∀ᵐ a ∂ν, MemLp (Φ a) 2 volume

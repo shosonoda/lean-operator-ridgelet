@@ -7,7 +7,7 @@ import Mathlib.MeasureTheory.Group.LIntegral
 /-!
 # Integral representation under Sobolev conditions on frequency profiles
 
-The material behind Theorem `thm:5.6`: the moment bound of the coefficient,
+The material behind Theorem `thm:5.10`: the moment bound of the coefficient,
 the finite total variation of its coefficient measure, and the integral representation.
 The network integral converges absolutely under these hypotheses; for vector-valued
 coefficients, this means Bochner integrability of the network integrand.
@@ -45,7 +45,7 @@ theorem one_add_add_abs_le (c b : ℝ) (hc : 1 ≤ c) :
   have h2 : (0 : ℝ) ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   nlinarith [abs_nonneg b, one_le_bracket b]
 
-/-- The moment bound for each fixed direction of Theorem `thm:5.6`. -/
+/-- The moment bound for each fixed direction of Theorem `thm:5.10`. -/
 theorem lintegral_ray_moment_le {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s) (c : ℝ)
     (hc : 1 ≤ c) {γ : ℝ → Y} (hγ : MemRaySobolev s γ) :
     ∫⁻ b : ℝ, ENNReal.ofReal ((c + |b|) ^ r * ‖γ b‖) ≤
@@ -97,7 +97,7 @@ theorem lintegral_ray_moment_le {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s
         congr 1
         ring
 
-/-- **The moment bound** `eq:sobolev-moments` of Theorem `thm:5.6`. -/
+/-- **The moment bound** `eq:sobolev-moments` of Theorem `thm:5.10`. -/
 theorem lintegral_prod_moment_le {s r : ℝ} (hr0 : 0 ≤ r) (hrs : r + 1 / 2 < s)
     {ν : Measure H} [SFinite ν] {γ : H × ℝ → Y} (hγm : StronglyMeasurable γ)
     (hray : ∀ᵐ a ∂ν, MemRaySobolev s fun b => γ (a, b)) :
@@ -396,7 +396,7 @@ theorem integral_synthesis_eq {s p Cσ : ℝ} (hp : 0 ≤ p) (hps : p + 1 / 2 < 
 /-! ### The synthesis identity -/
 
 /-- **The synthesis identity** `eq:weak-sobolev-synthesis` of Theorem
-`thm:5.6`. -/
+`thm:5.10`. -/
 theorem integral_synthesis_eq_pairing_smul {s p α Cσ : ℝ} (hp : 0 ≤ p) (hps : p + 1 / 2 < s)
     {ν : Measure H} [SFinite ν] (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ}
     {g : H → Y} (hgm : StronglyMeasurable g) {σ : ℝ → ℂ} (hσc : Continuous σ)

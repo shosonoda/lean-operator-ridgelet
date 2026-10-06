@@ -14,15 +14,15 @@ Elementary facts about the anti-dual representation of `𝓔_α'` used by the pr
 the inverse Riesz map `rieszInv` is a right inverse of the Riesz map `rieszMap`.
 
 The second half treats the Gaussian-type densities `G(ξ) = q(κ(ξ), ℓ₁(ξ), …) e^{-κ(ξ)/2}`,
-`κ(ξ) = ⟪Sξ, ξ⟫`, of Lemma `lem:D.3`(a) (`gaussianTypeDensity`).  Along a ray,
+`κ(ξ) = ⟪Sξ, ξ⟫`, of Lemma `lem:4.4`(a) (`gaussianTypeDensity`).  Along a ray,
 `G(ωa) = P_a(ω) e^{-ω² κ(a)/2}` with a polynomial `P_a` (`rayPolynomial`) whose degree is bounded
 uniformly in `a` and whose coefficients grow polynomially in `‖a‖`; the derivative formula of
 `OperatorRidgelet.ToMathlib.PolynomialGaussianDeriv` then gives the pointwise ray-derivative
 bound `sup_{ω ∈ I} |∂_ω^n G(ωa)| ≤ C_n (1 + ‖a‖)^{p_n} e^{-r² κ(a)/2}`, `r = min_I |ω|`, and the
 reduction lemma `isRegularAlongRays_of_gaussian_decay` derives regularity along rays from the
-Gaussian-decay integrability of Lemma `lem:3.9`, taken as a hypothesis.
+Gaussian-decay integrability of Lemma `lem:3.12`, taken as a hypothesis.
 
-The remaining sections prove the other parts of Lemma `lem:D.3`: densities
+The remaining sections prove the other parts of Lemma `lem:4.4`: densities
 vanishing outside a bounded set with polynomially bounded ray derivatives are regular along rays
 for any direction measure finite on balls (the ray derivatives vanish for `‖a‖ > R₀ / min_I |ω|`),
 radial bumps `φ(‖ξ - ξ₀‖²)` by the chain-rule bound `norm_iteratedFDeriv_comp_le`, and finite
@@ -97,7 +97,7 @@ section GaussianType
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 
 /-- The Gaussian-type density `G(ξ) = q(κ(ξ), ℓ₁(ξ), …, ℓ_k(ξ)) e^{-κ(ξ)/2}`, `κ(ξ) = ⟪Sξ, ξ⟫`,
-of Lemma `lem:D.3`(a): `q` is a polynomial with complex coefficients in the
+of Lemma `lem:4.4`(a): `q` is a polynomial with complex coefficients in the
 quadratic form `κ` (variable `none`) and in the bounded linear functionals `ℓ i` (variables
 `some i`). -/
 def gaussianTypeDensity (S : H →L[ℝ] H) {k : ℕ} (ℓ : Fin k → (H →L[ℝ] ℝ))
@@ -270,7 +270,7 @@ theorem contDiff_gaussianTypeDensity_smul (S : H →L[ℝ] H) {k : ℕ} (ℓ : F
   rw [this]
   exact Polynomial.contDiff_eval_ofReal_mul_cexp _ _
 
-/-- The pointwise ray-derivative bound of Lemma `lem:D.3`(a): on the annulus
+/-- The pointwise ray-derivative bound of Lemma `lem:4.4`(a): on the annulus
 `r ≤ |ω| ≤ R`, `‖∂_ω^n G(ωa)‖ ≤ C (1 + ‖a‖)^p e^{-r² κ(a)/2}` with `C`, `p` independent of
 `a` and `ω`. -/
 theorem exists_norm_iteratedDeriv_gaussianTypeDensity_smul_le (S : H →L[ℝ] H)
@@ -353,7 +353,7 @@ variable [MeasurableSpace H]
 
 /-- The weighted derivative integrals of a Gaussian-type density are finite, given the
 Gaussian-decay
-integrability `∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν < ∞` of Lemma `lem:3.9` and `S ≥ θQ`. -/
+integrability `∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν < ∞` of Lemma `lem:3.12` and `S ≥ θQ`. -/
 theorem rayMoment_gaussianTypeDensity_lt_top (ν : Measure H) {Q : H →L[ℝ] H}
     (hQ0 : ∀ ξ, 0 ≤ ⟪Q ξ, ξ⟫)
     (hdecay : ∀ t : ℝ, 0 < t → ∀ m : ℕ,
@@ -394,11 +394,11 @@ theorem rayMoment_gaussianTypeDensity_lt_top (ν : Measure H) {Q : H →L[ℝ] H
 
 variable [OpensMeasurableSpace H]
 
-/-- **Reduction of Lemma `lem:D.3`(a) to Gaussian decay.**  A Gaussian-type
+/-- **Reduction of Lemma `lem:4.4`(a) to Gaussian decay.**  A Gaussian-type
 density `G(ξ) = q(κ(ξ), ℓ₁(ξ), …) e^{-κ(ξ)/2}` with `κ(ξ) = ⟪Sξ, ξ⟫ ≥ θ⟪Qξ, ξ⟫`, `θ > 0`, and
 functionals dominated by the quadratic form, `ℓ_i(ξ)² ≤ C_i κ(ξ)`, is regular along rays with
 respect to any direction measure `ν` satisfying the Gaussian-decay integrability
-`∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν < ∞` of Lemma `lem:3.9`, for every compact frequency window
+`∫ ‖ξ‖^{2m} e^{-t⟪Qξ,ξ⟫} dν < ∞` of Lemma `lem:3.12`, for every compact frequency window
 `I ⊆ ℝ ∖ {0}`. -/
 theorem isRegularAlongRays_of_gaussian_decay (ν : Measure H) {Q : H →L[ℝ] H}
     (hQ0 : ∀ ξ, 0 ≤ ⟪Q ξ, ξ⟫)
@@ -469,7 +469,7 @@ theorem rayDerivBound_le_ofReal_sum {I : Set ℝ} {G : H → ℂ} {m : ℕ} {a :
 
 variable [MeasurableSpace H] [OpensMeasurableSpace H]
 
-/-- **Lemma `lem:D.3`(b), general form.**  A bounded Borel density that is
+/-- **Lemma `lem:4.4`(b), general form.**  A bounded Borel density that is
 smooth along rays near the compact window `I ⊆ ℝ ∖ {0}`, vanishes outside a bounded set, and
 has polynomially bounded ray derivatives on `I` is regular along rays with respect to any
 direction measure that is finite on balls: the ray derivatives vanish for `‖a‖ > R₀ / min_I |ω|`
@@ -618,7 +618,7 @@ theorem norm_iteratedDeriv_comp_quadratic_le {φ : ℝ → ℂ} (hφ : ContDiff 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
-/-- **Lemma `lem:D.3`(b), radial bumps.**  `G(ξ) = φ(‖ξ - ξ₀‖²)` with
+/-- **Lemma `lem:4.4`(b), radial bumps.**  `G(ξ) = φ(‖ξ - ξ₀‖²)` with
 `φ ∈ C_c^∞(ℝ)` is regular along rays with respect to any direction measure finite on balls,
 for every compact window `I ⊆ ℝ ∖ {0}`. -/
 theorem isRegularAlongRays_radialBump (ν : Measure H)
@@ -838,7 +838,7 @@ theorem rayDerivBound_finset_sum_le {ι : Type*} (s : Finset ι) (c : ι → ℂ
 
 variable [MeasurableSpace H] [BorelSpace H]
 
-/-- **Lemma `lem:D.3`(c), finite linear combinations.**  Finite linear
+/-- **Lemma `lem:4.4`(c), finite linear combinations.**  Finite linear
 combinations of densities regular along rays are regular along rays: the ray moments are
 subadditive, the summands' ray-derivative bounds being Borel. -/
 theorem IsRegularAlongRays.finset_sum {ν : Measure H} {I : Set ℝ} {ι : Type*} (s : Finset ι)
@@ -945,7 +945,7 @@ theorem rayDerivBound_finset_sum_smul_le {ι : Type*} (s : Finset ι) (G : ι �
   rw [enorm_smul, mul_comm]
   exact mul_le_mul' le_rfl (le_iSup_of_le k (le_iSup₂_of_le ω hω le_rfl))
 
-/-- **Lemma `lem:D.3`(c) with vector weights.**  A finite combination
+/-- **Lemma `lem:4.4`(c) with vector weights.**  A finite combination
 `∑ G_i(ξ) • w_i` of scalar densities regular along rays with constant weights in a Banach space
 is regular along rays.  The measurability of the ray-derivative bounds stays with the scalar
 summands, so no `Y`-valued analogue of `measurable_rayDerivBound` is needed. -/
@@ -1017,7 +1017,7 @@ theorem enorm_iteratedDeriv_le_rayDerivBound {Y : Type*} [NormedAddCommGroup Y] 
 variable [MeasurableSpace H] [BorelSpace H]
 
 omit [BorelSpace H] in
-/-- **Bochner integrals of densities regular along rays** (Lemma `lem:D.3`(c)):
+/-- **Bochner integrals of densities regular along rays** (Lemma `lem:4.4`(c)):
 for a measurable family `G y` of bounded densities over a finite measure `m`, smooth along rays
 on a common open neighbourhood `U` of `I` and with a `y`-independent `ν`-integrable majorant of
 the ray-derivative bounds on `U`, the Bochner integral `ξ ↦ ∫ G y ξ ∂m` is regular along rays:

@@ -9,8 +9,8 @@ import Mathlib.Topology.Algebra.Polynomial
 /-!
 # Non-polynomial activations pair nontrivially with some band-pass filter
 
-The last statement of Theorem `thm:5.2` and of Lemma
-`lem:C.2`: if `β ∈ 𝒮'(ℝ)` is not a polynomial, then there is a band-pass
+The last statement of Theorem `thm:5.4` and of Lemma
+`lem:5.2`: if `β ∈ 𝒮'(ℝ)` is not a polynomial, then there is a band-pass
 `ρ` with `C^{(α)}_{β,ρ} ≠ 0`, and (for real `β`) one with `C^{(α)}_{β,ρ} = 1`.
 
 Every Hermitian symmetric `ψ ∈ C_c^∞(ℝ ∖ {0})` is the test filter `ρ♯(-·)|·|^{-α}` of the real
