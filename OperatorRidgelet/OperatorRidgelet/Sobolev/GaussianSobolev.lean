@@ -5,7 +5,7 @@ import OperatorRidgelet.ToMathlib.RpowOneAddRpow
 # The Sobolev test `q_{α,ρ}` of the Gaussian-derivative filters
 
 The third hypothesis of `thm:5.6` is that
-`q_{α,ρ}(ω) = ρ̂(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)`.  For the Gaussian-derivative filters this is
+`q_{α,ρ}(ω) = ρ♯(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)`.  For the Gaussian-derivative filters this is
 proved by subordination: the Gamma integral
 
 `|ω|^{-α} = Γ(α/2)^{-1} ∫_0^∞ u^{α/2-1} e^{-uω²} du`
@@ -170,7 +170,7 @@ theorem integrable_subordination (k : ℕ) {α : ℝ} (hα : 0 < α) (hk : α < 
 /-! ### The profile of the subordination superposition -/
 
 /-- **The profile of `q_{α,ρ_k}`**: the superposition has the profile
-`ρ̂_k(-ω) |ω|^{-α}` of `thm:5.6`. -/
+`ρ♯_k(-ω) |ω|^{-α}` of `thm:5.6`. -/
 theorem rayProfile_gaussSobolevRay {k : ℕ} (hk1 : 1 ≤ k) {α : ℝ} (hα : 0 < α)
     (hk : α < 2 * k) (ω : ℝ) :
     rayProfile (gaussSobolevRay k α) ω =

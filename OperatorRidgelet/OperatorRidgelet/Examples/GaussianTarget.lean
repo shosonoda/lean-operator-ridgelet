@@ -9,7 +9,7 @@ import OperatorRidgelet.ToMathlib.GaussianTilt
 The Gaussian integral of a quadratic exponential (`integral_exp_quadratic`, Lemma
 `lem:E.1`(ii)) computes the transform of the Gaussian target
 `f_W(x) = e^{-⟪Wx,x⟫/2}`,
-`𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`, `M = Q^{1/2} W Q^{1/2}` and
+`F_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`, `M = Q^{1/2} W Q^{1/2}` and
 `κ_W(ξ) = ⟪S_W ξ, ξ⟫`, `S_W = Q^{1/2}(I+M)^{-1}Q^{1/2}`
 (`gaussFourier_gaussianTarget`).  The resolvent bound `S_W ≥ (1+‖M‖)^{-1} Q`
 (`inner_gaussianTargetResolvent_ge`) turns this into the Gaussian decay of Lemma
@@ -26,7 +26,7 @@ open scoped RealInnerProductSpace ENNReal NNReal
 
 /-! ### A frequency window always exists -/
 
-/-- The symmetrized support of `ρ̂` is a frequency window for a band-pass `ρ`. -/
+/-- The symmetrized support of `ρ♯` is a frequency window for a band-pass `ρ`. -/
 theorem IsBandPass.exists_isFrequencyWindow {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) :
     ∃ I : Set ℝ, IsFrequencyWindow (⇑ρ) I := by
   classical
@@ -77,7 +77,7 @@ theorem inner_gaussianTargetResolvent_nonneg {Q W S : H →L[ℝ] H} (hQ0 : ∀ 
   le_trans (mul_nonneg (by positivity) (hQ0 ξ))
     (inner_gaussianTargetResolvent_ge hW hW0 hS hM ξ)
 
-/-- **Example `ex:7.1`(i)**: `𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}`. -/
+/-- **Example `ex:7.1`(i)**: `F_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}`. -/
 theorem gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsPositiveTraceClass Q)
     (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫) (hS : IsPositiveSqrt S Q)
     (hM : HasSummableTrace (S * W * S)) {μ : Measure H} [IsProbabilityMeasure μ]
@@ -165,7 +165,7 @@ theorem integrable_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H} (hQ : IsP
   have hb := norm_gaussFourier_gaussianTarget_le hQ hW hW0 hS hM hμ ξ
   rwa [harg] at hb
 
-/-- **Example `ex:7.1`(ii)**: `G = 𝒢_Q f_W` is regular along rays. -/
+/-- **Example `ex:7.1`(ii)**: `G = F_Q f_W` is regular along rays. -/
 theorem isRegularAlongRays_gaussFourier_gaussianTarget {Q W S : H →L[ℝ] H}
     (hQ : IsPositiveTraceClass Q) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 ≤ ⟪W x, x⟫)
     (hS : IsPositiveSqrt S Q) (hM : HasSummableTrace (S * W * S)) {μ : Measure H}
@@ -198,7 +198,7 @@ open ProbabilityTheory
 
 omit [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] [CompleteSpace H]
 
-/-- The inverse Fourier transform of `ρ̂(ω) e^{-vω²/2}` is the Gaussian smoothing `ρ * φ_v`:
+/-- The inverse Fourier transform of `ρ♯(ω) e^{-vω²/2}` is the Gaussian smoothing `ρ * φ_v`:
 the one-dimensional slice-as-coefficient identity for the law `𝒩(0,v)`. -/
 theorem twoPi_inv_integral_filterFourier_mul_gaussian (ρ : SchwartzMap ℝ ℝ) {v : ℝ}
     (hv : 0 ≤ v) (c : ℝ) :

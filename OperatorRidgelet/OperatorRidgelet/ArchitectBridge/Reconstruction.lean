@@ -19,7 +19,7 @@ attribute [blueprint "reconstruction:spectral-target"
 
 attribute [blueprint "reconstruction:frequency-window"
   (statement := /-- A symmetric compact set $I\subset\mathbb R\setminus\{0\}$ containing
-    $\operatorname{supp}\widehat\rho$. -/)
+    $\operatorname{supp}\rho^\sharp$. -/)
   (hasProof := false)] OperatorRidgelet.IsFrequencyWindow
 
 attribute [blueprint "reconstruction:ray-deriv-bound"
@@ -65,20 +65,20 @@ attribute [blueprint "reconstruction:spectral-anti-dual"
   (hasProof := false)] OperatorRidgelet.SpectralAntiDual
 
 attribute [blueprint "reconstruction:riesz-map"
-  (statement := /-- The Riesz map $J_\alpha f[g]=\langle f,g\rangle_{\mathcal E_\alpha}$. -/)
+  (statement := /-- The Riesz map $T_\alpha f[g]=\langle f,g\rangle_{\mathcal E_\alpha}$. -/)
   (hasProof := false)] OperatorRidgelet.rieszMap
 
 attribute [blueprint "reconstruction:riesz-inv"
-  (statement := /-- The inverse Riesz map $J_\alpha^{-1}:\mathcal E_\alpha'\to\mathcal E_\alpha$
+  (statement := /-- The inverse Riesz map $T_\alpha^{-1}:\mathcal E_\alpha'\to\mathcal E_\alpha$
     (Riesz representation). -/)
   (hasProof := false)] OperatorRidgelet.rieszInv
 
 attribute [blueprint "reconstruction:transpose-embed"
-  (statement := /-- The transpose $U_\alpha'F[g]=\langle F,U_\alpha g\rangle_{L^2(\nu_\alpha)}$. -/)
+  (statement := /-- The transpose $F_Q'F[g]=\langle F,F_Q g\rangle_{L^2(\nu_\alpha)}$. -/)
   (hasProof := false)] OperatorRidgelet.transposeEmbed
 
 attribute [blueprint "reconstruction:frame-operator"
-  (statement := /-- The frame operator $T_\alpha=U_\alpha'U_\alpha$. -/)
+  (statement := /-- The frame operator $T_\alpha=F_Q'F_Q$. -/)
   (hasProof := false)] OperatorRidgelet.frameOperator
 
 attribute [blueprint "reconstruction:synthesis"
@@ -87,32 +87,33 @@ attribute [blueprint "reconstruction:synthesis"
   (hasProof := false)] OperatorRidgelet.synthesis
 
 attribute [blueprint "reconstruction:backprojection-of"
-  (statement := /-- The backprojection integral $\Lambda_\rho\Phi(\xi)=\frac1{2\pi}\int_{\mathbb
-    R}\overline{\widehat\rho(\omega)}|\omega|^{-\alpha}\Phi(-\xi/\omega,\omega)\,\mathrm
+  (statement := /-- The backprojection integral $W_\rho^*\Phi(\xi)=\frac1{2\pi}\int_{\mathbb
+    R\setminus\{0\}}
+    \overline{\rho^\sharp(\omega)}|\omega|^{-\alpha}\Phi(-\xi/\omega,\omega)\,\mathrm
     d\omega$ of a bias-Fourier representative $\Phi$. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionOf
 
 attribute [blueprint "reconstruction:backprojection"
-  (statement := /-- The backprojection $\Lambda_\rho\gamma$, computed from a jointly measurable
+  (statement := /-- The backprojection $W_\rho^*\gamma$, computed from a jointly measurable
     bias-Fourier representative of $\gamma$. -/)
   (hasProof := false)] OperatorRidgelet.backprojection
 
 attribute [blueprint "reconstruction:backprojection-lp"
-  (statement := /-- $\Lambda_\rho\gamma$ as an element of $L^2(\nu_\alpha)$. -/)
+  (statement := /-- $W_\rho^*\gamma$ as an element of $L^2(\nu_\alpha)$. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionLp
 
 attribute [blueprint "reconstruction:coefficient-projection"
   (statement := /-- The coefficient projection $\Pi_\rho=C^{-1}W_\rho P_{\mathcal
-    K_\alpha}\Lambda_\rho$. -/)
+    K_\alpha}W_\rho^*$. -/)
   (hasProof := false)] OperatorRidgelet.coefficientProjection
 
 attribute [blueprint "reconstruction:gauss-fourier-line"
-  (statement := /-- The analytic continuation $z\mapsto\mathcal G_\mu
+  (statement := /-- The analytic continuation $z\mapsto F_\mu
     f(z\xi)=\int_Hf(x)e^{-iz\langle x,\xi\rangle}\,\mu(\mathrm dx)$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierLine
 
 attribute [blueprint "reconstruction:hermite-extension"
-  (statement := /-- $G_f(z\xi)=e^{z^2\tau(\xi)^2/2}\mathcal G_Qf(z\xi)$ with
+  (statement := /-- $G_f(z\xi)=e^{z^2\tau(\xi)^2/2}F_Qf(z\xi)$ with
     $\tau(\xi)^2=\langle Q\xi,\xi\rangle$. -/)
   (hasProof := false)] OperatorRidgelet.hermiteExtension
 
@@ -122,12 +123,12 @@ attribute [blueprint "reconstruction:hermite-coefficient"
   (hasProof := false)] OperatorRidgelet.hermiteCoefficient
 
 attribute [blueprint "reconstruction:gauss-fourier-inv"
-  (statement := /-- $\Delta_Q$, the inverse of $\mathcal G_Q$ on its range on $\mathcal
+  (statement := /-- $\Delta_Q$, the inverse of $F_Q$ on its range on $\mathcal
     D_\alpha$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierInv
 
 attribute [blueprint "reconstruction:gauss-fourier-vec"
-  (statement := /-- The $Y$-valued weighted Fourier transform $\mathcal G_\mu
+  (statement := /-- The $Y$-valued weighted Fourier transform $F_\mu
     f(\xi)=\int_He^{-i\langle x,\xi\rangle}f(x)\,\mu(\mathrm dx)$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierVec
 
@@ -138,7 +139,7 @@ attribute [blueprint "reconstruction:ridgelet-vec"
 
 attribute [blueprint "reconstruction:coefficient-formula-vec"
   (statement := /-- The explicit $Y$-valued coefficient
-    $\gamma_G(a,c)=\frac1{2\pi}\int\widehat\rho(\omega)e^{i\omega c}G(-\omega a)\,\mathrm
+    $\gamma_G(a,c)=\frac1{2\pi}\int\rho^\sharp(\omega)e^{i\omega c}G(-\omega a)\,\mathrm
     d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.coefficientFormulaVec
 
@@ -156,12 +157,12 @@ attribute [blueprint "reconstruction:spectral-coefficient-vec"
   (hasProof := false)] OperatorRidgelet.spectralCoefficientVec
 
 attribute [blueprint "reconstruction:gauss-fourier-line-vec"
-  (statement := /-- The analytic continuation of the $Y$-valued $z\mapsto\mathcal G_\mu
+  (statement := /-- The analytic continuation of the $Y$-valued $z\mapsto F_\mu
     f(z\xi)$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierLineVec
 
 attribute [blueprint "reconstruction:hermite-extension-vec"
-  (statement := /-- The $Y$-valued $G_f(z\xi)=e^{z^2\tau(\xi)^2/2}\mathcal G_Qf(z\xi)$. -/)
+  (statement := /-- The $Y$-valued $G_f(z\xi)=e^{z^2\tau(\xi)^2/2}F_Qf(z\xi)$. -/)
   (hasProof := false)] OperatorRidgelet.hermiteExtensionVec
 
 attribute [blueprint "reconstruction:hermite-coefficient-vec"
@@ -174,31 +175,31 @@ attribute [blueprint "reconstruction:backprojection-of-vec"
   (hasProof := false)] OperatorRidgelet.backprojectionOfVec
 
 attribute [blueprint "reconstruction:backprojection-vec"
-  (statement := /-- The $Y$-valued backprojection $\Lambda_\rho\gamma$. -/)
+  (statement := /-- The $Y$-valued backprojection $W_\rho^*\gamma$. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionVec
 
 attribute [blueprint "reconstruction:backprojection-lp-vec"
-  (statement := /-- The $Y$-valued $\Lambda_\rho\gamma$ as an element of $L^2(\nu_\alpha;Y)$. -/)
+  (statement := /-- The $Y$-valued $W_\rho^*\gamma$ as an element of $L^2(\nu_\alpha;Y)$. -/)
   (hasProof := false)] OperatorRidgelet.backprojectionLpVec
 
 attribute [blueprint "reconstruction:spectral-core-vec"
-  (statement := /-- The $Y$-valued core $\mathcal D_\alpha(Y)=\{f\in L^2(\mu;Y):\mathcal G_\mu
+  (statement := /-- The $Y$-valued core $\mathcal D_\alpha(Y)=\{f\in L^2(\mu;Y):F_\mu
     f\in L^2(\nu;Y)\}$. -/)
   (hasProof := false)] OperatorRidgelet.spectralCoreVec
 
 attribute [blueprint "reconstruction:gauss-fourier-lp-vec"
-  (statement := /-- $\mathcal G_\mu f$ as an element of $L^2(\nu;Y)$ for $f\in\mathcal
+  (statement := /-- $F_\mu f$ as an element of $L^2(\nu;Y)$ for $f\in\mathcal
     D_\alpha(Y)$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierLpVec
 
 attribute [blueprint "reconstruction:spectral-range-vec"
-  (statement := /-- $\mathcal K_\alpha(Y)=\overline{\mathcal G_\mu(\mathcal
+  (statement := /-- $\mathcal K_\alpha(Y)=\overline{F_\mu(\mathcal
     D_\alpha(Y))}\subseteq L^2(\nu;Y)$, representing $\mathcal E_\alpha(Y)$. -/)
   (hasProof := false)] OperatorRidgelet.spectralRangeVec
 
 attribute [blueprint "reconstruction:spectral-embed-vec"
-  (statement := /-- The map $U:\mathcal D_\alpha(Y)\to\mathcal K_\alpha(Y)$, $f\mapsto\mathcal
-    G_\mu f$. -/)
+  (statement := /-- The map $F_Q:\mathcal D_\alpha(Y)\to\mathcal K_\alpha(Y)$, $f\mapsto F_\mu
+    f$. -/)
   (hasProof := false)] OperatorRidgelet.spectralEmbedVec
 
 attribute [blueprint "reconstruction:ridgelet-extension-vec"
@@ -215,8 +216,8 @@ attribute [blueprint "reconstruction:gauss-fourier-inv-vec"
   (hasProof := false)] OperatorRidgelet.gaussFourierInvVec
 
 attribute [blueprint "reconstruction:spectral-inner-vec"
-  (statement := /-- $\langle f,g\rangle_{\mathcal E_\alpha(Y)}=\int_H\langle\mathcal G_\mu
-    f,\mathcal G_\mu g\rangle_Y\,\mathrm d\nu$. -/)
+  (statement := /-- $\langle f,g\rangle_{\mathcal E_\alpha(Y)}=\int_H\langle F_\mu
+    f,F_\mu g\rangle_Y\,\mathrm d\nu$. -/)
   (hasProof := false)] OperatorRidgelet.spectralInnerVec
 
 attribute [blueprint "reconstruction:spectral-anti-dual-vec"
@@ -232,11 +233,11 @@ attribute [blueprint "reconstruction:riesz-inv-vec"
   (hasProof := false)] OperatorRidgelet.rieszInvVec
 
 attribute [blueprint "reconstruction:transpose-embed-vec"
-  (statement := /-- The $Y$-valued transpose $U_\alpha'$. -/)
+  (statement := /-- The $Y$-valued transpose $F_Q'$. -/)
   (hasProof := false)] OperatorRidgelet.transposeEmbedVec
 
 attribute [blueprint "reconstruction:frame-operator-vec"
-  (statement := /-- The $Y$-valued frame operator $T_\alpha=U_\alpha'U_\alpha$. -/)
+  (statement := /-- The $Y$-valued frame operator $T_\alpha=F_Q'F_Q$. -/)
   (hasProof := false)] OperatorRidgelet.frameOperatorVec
 
 attribute [blueprint "reconstruction:synthesis-vec"
@@ -245,7 +246,7 @@ attribute [blueprint "reconstruction:synthesis-vec"
 
 attribute [blueprint "reconstruction:coefficient-projection-vec"
   (statement := /-- The $Y$-valued coefficient projection $\Pi_\rho=C^{-1}W_\rho P_{\mathcal
-    K_\alpha(Y)}\Lambda_\rho$. -/)
+    K_\alpha(Y)}W_\rho^*$. -/)
   (hasProof := false)] OperatorRidgelet.coefficientProjectionVec
 
 /-! ## Paper statements -/
@@ -304,16 +305,15 @@ attribute [blueprint "thm:4.2-iii-d"
   OperatorRidgelet.Paper.thm_4_2_iii_d
 
 attribute [blueprint "thm:4.3-i-a"
-  (statement := /-- The frame operator $T_\alpha=U_\alpha'U_\alpha$ equals the Riesz map
-    $J_\alpha$. -/)]
+  (statement := /-- The frame operator $T_\alpha=F_Q'F_Q$ is the Riesz map. -/)]
   OperatorRidgelet.Paper.thm_4_3_i_a
 
 attribute [blueprint "thm:4.3-i-b"
-  (statement := /-- $J_\alpha$ is an isometry $\mathcal E_\alpha\to\mathcal E_\alpha'$. -/)]
+  (statement := /-- $T_\alpha$ is an isometry $\mathcal E_\alpha\to\mathcal E_\alpha'$. -/)]
   OperatorRidgelet.Paper.thm_4_3_i_b
 
 attribute [blueprint "thm:4.3-i-c"
-  (statement := /-- $J_\alpha$ is a bijection $\mathcal E_\alpha\to\mathcal E_\alpha'$. -/)]
+  (statement := /-- $T_\alpha$ is a bijection $\mathcal E_\alpha\to\mathcal E_\alpha'$. -/)]
   OperatorRidgelet.Paper.thm_4_3_i_c
 
 attribute [blueprint "thm:4.3-i-d"
@@ -331,49 +331,49 @@ attribute [blueprint "thm:4.3-ii-b"
   OperatorRidgelet.Paper.thm_4_3_ii_b
 
 attribute [blueprint "thm:4.3-iii-a"
-  (statement := /-- If $f\in\mathcal D_\alpha$ and $\mathcal G_Qf\in L^1(\nu_\alpha)$, then
-    $T_\alpha f[g]=\int_Hg_{\mathcal G_Qf}(x)\overline{g(x)}\,\mu_Q(\mathrm dx)$ for
+  (statement := /-- If $f\in\mathcal D_\alpha$ and $F_Qf\in L^1(\nu_\alpha)$, then
+    $T_\alpha f[g]=\int_Hg_{F_Qf}(x)\overline{g(x)}\,\mu_Q(\mathrm dx)$ for
     $g\in\mathcal D_\alpha$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iii_a
 
 attribute [blueprint "thm:4.3-iii-b"
-  (statement := /-- For $G\in\mathcal K_\alpha$, $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$. -/)]
+  (statement := /-- For $G\in\mathcal K_\alpha$, $R_\rho T_\alpha^{-1}F_Q'G=W_\rho G$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iii_b
 
 attribute [blueprint "thm:4.3-iii-c"
-  (statement := /-- For $G\in\mathcal K_\alpha\cap L^1(\nu_\alpha)$, $U_\alpha'G$ is represented
+  (statement := /-- For $G\in\mathcal K_\alpha\cap L^1(\nu_\alpha)$, $F_Q'G$ is represented
     by $g_G$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iii_c
 
 attribute [blueprint "thm:4.3-iii-d"
-  (statement := /-- For $G\in\mathcal K_\alpha$, $U_\alpha'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
+  (statement := /-- For $G\in\mathcal K_\alpha$, $F_Q'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
     W_\rho G$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iii_d
 
 attribute [blueprint "thm:4.3-iii-e"
   (statement := /-- For $G\in\mathcal K_\alpha\cap L^1(\nu_\alpha)$ with $\gamma_G\in
-    L^1(\lambda_\alpha)$, the second reconstruction formula for $U_\alpha'G$ is the spectral
+    L^1(\lambda_\alpha)$, the second reconstruction formula for $F_Q'G$ is the spectral
     synthesis identity paired with $g\in\mathcal D_\alpha$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iii_e
 
 attribute [blueprint "thm:4.3-iv-a"
-  (statement := /-- $\Lambda_\rho$ is a bounded operator $L^2(\lambda_\alpha)\to
+  (statement := /-- $W_\rho^*$ is a bounded operator $L^2(\lambda_\alpha)\to
     L^2(\nu_\alpha)$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iv_a
 
 attribute [blueprint "thm:4.3-iv-b"
-  (statement := /-- $\Lambda_\rho W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$. -/)]
+  (statement := /-- $W_\rho^* W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iv_b
 
 attribute [blueprint "thm:4.3-iv-c"
-  (statement := /-- $\Lambda_\rho R_\rho f=C^{(\alpha)}_\rho\mathcal G_Qf$ pointwise for
+  (statement := /-- $W_\rho^* R_\rho f=C^{(\alpha)}_\rho F_Qf$ pointwise for
     $f\in\mathcal D_\alpha$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iv_c
 
 attribute [blueprint "thm:4.3-iv-d"
   (statement := /-- $\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle
     x,\xi\rangle/\tau(\xi))]=\frac{i^n}{\tau(\xi)^n}\frac{\mathrm d^n}{\mathrm
-    dt^n}(e^{t^2\tau(\xi)^2/2}\mathcal G_Qf(t\xi))|_{t=0}$ for $f\in\mathcal D_\alpha$,
+    dt^n}(e^{t^2\tau(\xi)^2/2}F_Qf(t\xi))|_{t=0}$ for $f\in\mathcal D_\alpha$,
     $\xi\ne0$. -/)
   ] OperatorRidgelet.Paper.thm_4_3_iv_d
 
@@ -383,7 +383,7 @@ attribute [blueprint "thm:4.3-iv-e"
   ] OperatorRidgelet.Paper.thm_4_3_iv_e
 
 attribute [blueprint "thm:4.3-iv-f"
-  (statement := /-- $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}\Lambda_\rho R_\rho f]$ for
+  (statement := /-- $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}W_\rho^* R_\rho f]$ for
     $f\in\mathcal D_\alpha$. -/)]
   OperatorRidgelet.Paper.thm_4_3_iv_f
 
@@ -430,32 +430,32 @@ attribute [blueprint "prop:B.8-i"
   OperatorRidgelet.Paper.prop_B_8_i
 
 attribute [blueprint "prop:B.8-ii"
-  (statement := /-- $\Lambda_\rho\gamma$ is independent, as an $L^2$ class, of the jointly
+  (statement := /-- $W_\rho^*\gamma$ is independent, as an $L^2$ class, of the jointly
     measurable Fourier representative of $\gamma$. -/)]
   OperatorRidgelet.Paper.prop_B_8_ii
 
 attribute [blueprint "prop:B.8-iii"
-  (statement := /-- $\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}
+  (statement := /-- $\|W_\rho^*\gamma\|_{L^2(\nu_\alpha)}
     \le\sqrt C\|\gamma\|_{\mathcal Y}$. -/)]
   OperatorRidgelet.Paper.prop_B_8_iii
 
 attribute [blueprint "prop:B.8-iv"
-  (statement := /-- $\Lambda_\rho$ is the Hilbert adjoint of $W_\rho$: $\langle\gamma,W_\rho
-    F\rangle=\langle\Lambda_\rho\gamma,F\rangle$. -/)]
+  (statement := /-- $W_\rho^*$ is the Hilbert adjoint of $W_\rho$: $\langle\gamma,W_\rho
+    F\rangle=\langle W_\rho^*\gamma,F\rangle$. -/)]
   OperatorRidgelet.Paper.prop_B_8_iv
 
 attribute [blueprint "prop:B.8-v"
-  (statement := /-- $\Lambda_\rho W_\rho=C\,\mathrm{Id}$. -/)]
+  (statement := /-- $W_\rho^* W_\rho=C\,\mathrm{Id}$. -/)]
   OperatorRidgelet.Paper.prop_B_8_v
 
 attribute [blueprint "prop:B.8-vi"
-  (statement := /-- $\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}\Lambda_\rho$ is the orthogonal
+  (statement := /-- $\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}W_\rho^*$ is the orthogonal
     projection onto $\operatorname{Ran}R_\rho$. -/)]
   OperatorRidgelet.Paper.prop_B_8_vi
 
 attribute [blueprint "prop:B.8-vii"
   (statement := /-- The minimum-norm solution of $S_\rho\gamma=F\in\mathcal E_\alpha'$ is
-    $C^{-1}R_\rho J_\alpha^{-1}F$. -/)]
+    $C^{-1}R_\rho T_\alpha^{-1}F$. -/)]
   OperatorRidgelet.Paper.prop_B_8_vii
 
 attribute [blueprint "prop:B.8-viii"
@@ -560,7 +560,7 @@ attribute [blueprint "thm:4.6-plancherel-ii-c"
   OperatorRidgelet.Paper.thm_4_6_plancherel_ii_c
 
 attribute [blueprint "thm:4.6-plancherel-ii-d"
-  (statement := /-- Theorem 3.11 for $Y$-valued targets: $R_\rho=W_\rho U_\alpha$. -/)
+  (statement := /-- Theorem 3.11 for $Y$-valued targets: $R_\rho=W_\rho F_Q$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_plancherel_ii_d
 
 attribute [blueprint "thm:4.6-plancherel-iii"
@@ -569,17 +569,17 @@ attribute [blueprint "thm:4.6-plancherel-iii"
   ] OperatorRidgelet.Paper.thm_4_6_plancherel_iii
 
 attribute [blueprint "thm:4.6-frame-i-a"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha=J_\alpha$ on $\mathcal
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha=F_Q'F_Q$ on $\mathcal
     E_\alpha(Y)$. -/)]
   OperatorRidgelet.Paper.thm_4_6_frame_i_a
 
 attribute [blueprint "thm:4.6-frame-i-b"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $J_\alpha$ is an isometry $\mathcal
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha$ is an isometry $\mathcal
     E_\alpha(Y)\to\mathcal E_\alpha(Y)'$. -/)]
   OperatorRidgelet.Paper.thm_4_6_frame_i_b
 
 attribute [blueprint "thm:4.6-frame-i-c"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $J_\alpha$ is a bijection $\mathcal
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha$ is a bijection $\mathcal
     E_\alpha(Y)\to\mathcal E_\alpha(Y)'$. -/)]
   OperatorRidgelet.Paper.thm_4_6_frame_i_c
 
@@ -599,44 +599,44 @@ attribute [blueprint "thm:4.6-frame-ii-b"
   OperatorRidgelet.Paper.thm_4_6_frame_ii_b
 
 attribute [blueprint "thm:4.6-frame-iii-a"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha f[g]=\int_H\langle g_{\mathcal
-    G_Qf}(x),g(x)\rangle_Y\,\mu_Q(\mathrm dx)$ for $f\in\mathcal D_\alpha(Y)$ with $\mathcal
-    G_Qf\in L^1(\nu_\alpha;Y)$. -/)
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $T_\alpha f[g]=\int_H\langle
+    g_{F_Qf}(x),g(x)\rangle_Y\,\mu_Q(\mathrm dx)$ for $f\in\mathcal D_\alpha(Y)$ with $F_Qf\in
+    L^1(\nu_\alpha;Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iii_a
 
 attribute [blueprint "thm:4.6-frame-iii-b"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $R_\rho T_\alpha^{-1}U_\alpha'G=W_\rho G$
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $R_\rho T_\alpha^{-1}F_Q'G=W_\rho G$
     for $G\in\mathcal K_\alpha(Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iii_b
 
 attribute [blueprint "thm:4.6-frame-iii-c"
   (statement := /-- Theorem 4.3 for $Y$-valued targets: For $G\in\mathcal K_\alpha(Y)\cap
-    L^1(\nu_\alpha;Y)$, $U_\alpha'G$ is represented by $g_G$. -/)
+    L^1(\nu_\alpha;Y)$, $F_Q'G$ is represented by $g_G$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iii_c
 
 attribute [blueprint "thm:4.6-frame-iii-d"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $U_\alpha'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $F_Q'G=(C^{(\alpha)}_\rho)^{-1}S_\rho
     W_\rho G$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iii_d
 
 attribute [blueprint "thm:4.6-frame-iii-e"
   (statement := /-- Theorem 4.3 for $Y$-valued targets: The second reconstruction formula for
-    $U_\alpha'G$ is the spectral synthesis identity paired with $g\in\mathcal D_\alpha(Y)$. -/)
+    $F_Q'G$ is the spectral synthesis identity paired with $g\in\mathcal D_\alpha(Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iii_e
 
 attribute [blueprint "thm:4.6-frame-iv-a"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $\Lambda_\rho$ is a bounded operator
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $W_\rho^*$ is a bounded operator
     $L^2(\lambda_\alpha;Y)\to L^2(\nu_\alpha;Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iv_a
 
 attribute [blueprint "thm:4.6-frame-iv-b"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $\Lambda_\rho
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $W_\rho^*
     W_\rho=C^{(\alpha)}_\rho\,\mathrm{Id}$ on $L^2(\nu_\alpha;Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iv_b
 
 attribute [blueprint "thm:4.6-frame-iv-c"
-  (statement := /-- Theorem 4.3 for $Y$-valued targets: $\Lambda_\rho R_\rho
-    f=C^{(\alpha)}_\rho\mathcal G_Qf$ pointwise for $f\in\mathcal D_\alpha(Y)$. -/)
+  (statement := /-- Theorem 4.3 for $Y$-valued targets: $W_\rho^* R_\rho
+    f=C^{(\alpha)}_\rho F_Qf$ pointwise for $f\in\mathcal D_\alpha(Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iv_c
 
 attribute [blueprint "thm:4.6-frame-iv-d"
@@ -651,5 +651,5 @@ attribute [blueprint "thm:4.6-frame-iv-e"
 
 attribute [blueprint "thm:4.6-frame-iv-f"
   (statement := /-- Theorem 4.3 for $Y$-valued targets:
-    $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}\Lambda_\rho R_\rho f]$ for $f\in\mathcal D_\alpha(Y)$. -/)
+    $f=\Delta_Q[(C^{(\alpha)}_\rho)^{-1}W_\rho^* R_\rho f]$ for $f\in\mathcal D_\alpha(Y)$. -/)
   ] OperatorRidgelet.Paper.thm_4_6_frame_iv_f

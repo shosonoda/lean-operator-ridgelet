@@ -71,7 +71,7 @@ theorem lem_E_2_ii (k : ℕ) :
 /-- **Example [ex:7.1]** Closed-form transform and integral representation of `T_α f_W`.
 For `W` bounded,
 positive, injective, self-adjoint with `M = Q^{1/2} W Q^{1/2}` trace class,
-`𝒢_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`. -/
+`F_Q f_W(ξ) = D^{-1/2} e^{-κ_W(ξ)/2}` with `D = det(I+M)`. -/
 theorem ex_7_1_i_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -120,7 +120,7 @@ theorem ex_7_1_i_d (W : H →L[ℝ] H) (hW : IsSelfAdjoint W) (hW0 : ∀ x, 0 �
 
 /-- **Example [ex:7.1]** Closed-form transform and integral representation of `T_α f_W`.
 For every
-band-pass `ρ`, the density `G = 𝒢_Q f_W` is regular along rays. -/
+band-pass `ρ`, the density `G = F_Q f_W` is regular along rays. -/
 theorem ex_7_1_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -133,7 +133,7 @@ theorem ex_7_1_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 /-- **Example [ex:7.1]** Closed-form transform and integral representation of `T_α f_W`.
 The image
-`T_α f_W` is represented by the bounded continuous function `g_G`, `G = 𝒢_Q f_W`:
+`T_α f_W` is represented by the bounded continuous function `g_G`, `G = F_Q f_W`:
 `T_α f_W [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
 theorem ex_7_1_ii_b (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -171,7 +171,7 @@ theorem ex_7_1_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 /-- **Example [ex:7.1]** Closed-form transform and integral representation of `T_α f_W`.
 The ridgelet
-coefficient of `f_W` is the coefficient `γ_G` of its density `G = 𝒢_Q f_W`:
+coefficient of `f_W` is the coefficient `γ_G` of its density `G = F_Q f_W`:
 `R_ρ f_W = γ_G`. -/
 theorem ex_7_1_iii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -458,7 +458,7 @@ theorem ex_7_4_ii_a (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  Gaussian
 activation: with `σ_y² = ⟨Qa_y,a_y⟩` and `S_y = Q - (1+σ_y²)⁻¹ (Qa_y) ⊗ (Qa_y)`,
-`𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟨S_yξ,ξ⟩/2} m(dy)` (`eq:operator-layer-transform`). -/
+`F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟨S_yξ,ξ⟩/2} m(dy)` (`eq:operator-layer-transform`). -/
 theorem ex_7_4_ii_b {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) (φ : Y) :
@@ -492,7 +492,7 @@ theorem ex_7_4_ii_d {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (m : Mea
   sorry
 
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  Gaussian
-activation: consequently `𝒢_Q F_φ` is regular along rays, for every band-pass `ρ`. -/
+activation: consequently `F_Q F_φ` is regular along rays, for every band-pass `ρ`. -/
 theorem ex_7_4_ii_e (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -506,7 +506,7 @@ theorem ex_7_4_ii_e (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  Gaussian
 activation: the reconstruction formulas of Theorem `thm:4.3` hold for `F_φ`; in particular
-`T_α F_φ` is represented by `g_G`, `G = 𝒢_Q F_φ`: `T_α F_φ [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)`
+`T_α F_φ` is represented by `g_G`, `G = F_Q F_φ`: `T_α F_φ [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)`
 for `g ∈ 𝒟_α`. -/
 theorem ex_7_4_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -525,7 +525,7 @@ theorem ex_7_4_ii_f (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  Gaussian
-activation: the ridgelet coefficient of `F_φ` is the coefficient `γ_G` of `G = 𝒢_Q F_φ`. -/
+activation: the ridgelet coefficient of `F_φ` is the coefficient `γ_G` of `G = F_Q F_φ`. -/
 theorem ex_7_4_ii_g {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
@@ -607,7 +607,7 @@ theorem ex_7_4_ii_k (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target:
-`𝒢_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟨S_yξ,ξ⟩/2} b_y m(dy)`. -/
+`F_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟨S_yξ,ξ⟩/2} b_y m(dy)`. -/
 theorem ex_7_4_ii_l {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (m : Measure Ω) [IsFiniteMeasure m]
     (a : Ω → H) (b : Ω → Y) (hL : IsLayerData m a b) :
@@ -617,7 +617,7 @@ theorem ex_7_4_ii_l {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Me
   sorry
 
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  The same
-holds for `ℱ` itself as a `Y`-valued target: `𝒢_Q ℱ` is regular along rays for every band-pass
+holds for `ℱ` itself as a `Y`-valued target: `F_Q ℱ` is regular along rays for every band-pass
 `ρ`. -/
 theorem ex_7_4_ii_m (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
@@ -632,7 +632,7 @@ theorem ex_7_4_ii_m (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 omit [SecondCountableTopology H] [BorelSpace H] [SecondCountableTopology Y] in
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  The same
-holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ = γ_{𝒢_Q ℱ}` for every band-pass `ρ`. -/
+holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ = γ_{F_Q ℱ}` for every band-pass `ρ`. -/
 theorem ex_7_4_ii_n {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsBandPass ρ) (m : Measure Ω) [IsFiniteMeasure m] (a : Ω → H) (b : Ω → Y)
@@ -657,7 +657,7 @@ theorem ex_7_4_ii_o (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 /-- **Example [ex:7.4]** Neural-operator layer as an integral network.  The same
 holds for `ℱ` itself as a `Y`-valued target: `R_ρ ℱ` synthesizes, with any real Lipschitz
-non-polynomial `β'`, the `Y`-valued target `C^{(α)}_{β',ρ} g_{𝒢_Q ℱ}`. -/
+non-polynomial `β'`, the `Y`-valued target `C^{(α)}_{β',ρ} g_{F_Q ℱ}`. -/
 theorem ex_7_4_ii_p (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)

@@ -62,7 +62,7 @@ $`\kappa_W(\xi)=\langle Q^{1/2}(I+M)^{-1}Q^{1/2}\xi,\xi\rangle`,
 $`S_W=Q^{1/2}(I+M)^{-1}Q^{1/2}`, and
 $`\Sigma_s=2sP^{1/2}(I+2sP^{1/2}S_WP^{1/2})^{-1}P^{1/2}`. Membership $`f\in\mathcal D_\alpha`
 of a function (rather than of an $`L^2` class) means $`f\in L^2(\mu)` and
-$`\mathcal G_\mu f\in L^2(\nu)`, related to the submodule $`\mathcal D_\alpha` by the stated
+$`F_\mu f\in L^2(\nu)`, related to the submodule $`\mathcal D_\alpha` by the stated
 lemmas.
 :::
 
@@ -70,9 +70,9 @@ lemmas.
 Let $`W` be bounded, positive, injective, self-adjoint with $`M=Q^{1/2}WQ^{1/2}` trace class,
 $`f_W(x)=e^{-\langle Wx,x\rangle/2}`, $`D=\det(I+M)`, and
 $`\kappa_W(\xi)=\langle Q^{1/2}(I+M)^{-1}Q^{1/2}\xi,\xi\rangle`. For every $`\alpha>0` and
-band-pass $`\rho`: (i) $`\mathcal G_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}` and
+band-pass $`\rho`: (i) $`F_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}` and
 $`R_\rho f_W(a,c)=D^{-1/2}(\rho*\phi_{\kappa_W(a)})(c)`, so $`f_W\in\mathcal D_\alpha`, and
-$`f_W` is not cylindrical when $`W` has infinite rank. (ii) $`G=\mathcal G_Qf_W` satisfies
+$`f_W` is not cylindrical when $`W` has infinite rank. (ii) $`G=F_Qf_W` satisfies
 {bpref "def:4.1"}[] and $`T_\alpha f_W` is represented by
 $`g_G(x)=D^{-1/2}\int_0^\infty\det(I+2sP^{1/2}S_WP^{1/2})^{-1/2}\exp(-\tfrac12\langle\Sigma_sx,x\rangle)\,s^{\alpha/2-1}\,\mathrm ds`.
 (iii) For every real, globally Lipschitz, non-polynomial $`\beta`, the coefficient measure
@@ -144,9 +144,9 @@ $`\mathbb E\|F_N-\mathcal F\|_{C(K;Y)}\le\frac{B_1}{\sqrt N}(4|\beta(0)|+8\opera
 with $`B_1=\int\|v_y\|\,m(\mathrm dy)`, the scalar observable having the same bound with
 $`\|w_\varphi\|_{L^1(m)}` in place of $`B_1`.
 (ii) For $`\beta=\Phi`, $`F_\varphi\in\mathcal D_\alpha` for every $`\alpha>0`,
-$`\mathcal G_QF_\varphi(\xi)=\int_\Omega w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm dy)`,
+$`F_QF_\varphi(\xi)=\int_\Omega w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm dy)`,
 $`R_\rho F_\varphi(a,c)=\int_\Omega w_\varphi(y)(1+\sigma_y^2)^{-1/2}(\rho*\phi_{\langle S_ya,a\rangle})(c)\,m(\mathrm dy)`,
-and $`S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q`; consequently $`\mathcal G_QF_\varphi` satisfies
+and $`S_y\ge(1+\|Q\|\|A\|_\infty^2)^{-1}Q`; consequently $`F_QF_\varphi` satisfies
 {bpref "def:4.1"}[], the reconstruction formulas of {bpref "thm:4.3"}[] hold for $`F_\varphi`, and
 $`R_\rho F_\varphi` synthesizes, with any real Lipschitz non-polynomial $`\beta'`, the target
 $`C_{\beta',\rho}^{(\alpha)}T_\alpha F_\varphi` with the finite-width rate of

@@ -78,6 +78,17 @@ The short phrase *regularity along rays* means smoothness of these functions nea
 specified frequency window together with weighted integrability of their derivative bounds.
 `IsRegularAlongRays`, `rayDerivBound`, and related declaration names retain this convention.
 
+The current notation uses `T_α` alone for the frame/Riesz operator, and `F_Q`
+for both the Gaussian-weighted transform on its concrete core and its unitary
+extension to `𝓔_α`. In the spectral-range realization the completed map is the
+inclusion into `L²(ν)`; its core restriction is `spectralEmbed`. The transpose
+`F_Q′` has domain `L²(ν)` and codomain `𝓔_α′`, rather than ambient `L²(μ)`.
+General elements of the completion need not have pointwise input representatives.
+Paper notation uses sharp for one-dimensional and bias Fourier transforms and
+hat for spatial Fourier–Stieltjes transforms and torus coefficients. The actual
+Lean Fourier definitions retain the angular convention and their semantic names;
+Mathlib's `𝓕`, where used, retains its own `2π` normalization.
+
 The *frame operator* is used in its dual-space form: `frameOperator` maps the Hilbert space
 to its continuous anti-dual and equals the Riesz map. The *backprojection* is the adjoint
 of the coefficient operator, with values in the frequency-domain density space.

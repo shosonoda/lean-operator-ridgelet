@@ -40,13 +40,13 @@ $`G\in L^1(\nu_\alpha)`, then $`\omega\mapsto G(-\omega a)` is integrable on com
 $`\mathbb R\setminus\{0\}` for $`\nu_\alpha`-almost every $`a` (iv), and the explicit formula
 for $`\gamma_G` holds already for $`G\in L^2(\nu_\alpha)`, with absolute convergence on
 almost every $`a` and every bias. In this notation the Fourier-slice identity reads
-$`R_\rho f=W_\rho\,\mathcal G_Qf`.
+$`R_\rho f=W_\rho\,F_Qf`.
 :::
 
 :::proof "lem:B.1" (uses := "lem:3.1")
 $`(a,\omega)\mapsto G(-\omega a)` is Borel, and the homogeneous change of variables with
 Tonelli gives
-$`\frac1{2\pi}\int\int|\widehat\rho(\omega)|^2|G(-\omega a)|^2\,\nu_\alpha(\mathrm da)\,\mathrm d\omega=(\!(\rho,\rho)\!)_\alpha\|G\|^2_{L^2(\nu_\alpha)}`;
+$`\frac1{2\pi}\int\int|\rho^\sharp(\omega)|^2|G(-\omega a)|^2\,\nu_\alpha(\mathrm da)\,\mathrm d\omega=(\!(\rho,\rho)\!)_\alpha\|G\|^2_{L^2(\nu_\alpha)}`;
 the same computation with $`|G|` on a compact set gives local integrability, and the inverse
 Fourier transform in $`\omega` for almost every $`a` gives the formula.
 :::
@@ -93,7 +93,7 @@ The constants do not depend on $`G` or the dimension of $`Y`.
 :::proof "lem:B.3" (uses := "lem:B.1, lem:3.1")
 Difference quotients and countable dense subsets of $`I` give measurability of $`D_m`.
 Homogeneity at one fixed nonzero frequency gives $`G\in L^1`; boundedness gives $`G\in L^2`.
-Set $`m=r+2` and $`h_a(\omega)=\widehat\rho(\omega)G(-\omega a)`. Leibniz' rule bounds
+Set $`m=r+2` and $`h_a(\omega)=\rho^\sharp(\omega)G(-\omega a)`. Leibniz' rule bounds
 $`\|h_a\|_1+\|h_a^{(m)}\|_1` by a filter-dependent constant times $`D_m(a)`. The function
 $`h_a` is compactly supported and $`C^m`; the derivatives of the filter vanish at its support
 boundary. Bound the inverse Fourier integral directly for $`|c|\le1`, and integrate by parts
@@ -113,15 +113,15 @@ We prove {bpref "thm:4.2"}[].
 :::proof "thm:4.2" (uses := "lem:B.1, lem:B.2, lem:B.3, lem:3.1")
 Part (i) is {bpref "lem:B.2"}[]. Parseval in the bias turns the inner
 integral into a frequency integral of
-$`\widehat\rho(\omega)G(-\omega a)` against $`\widehat\rho(-\omega)e^{-i\omega\langle a,x\rangle}`,
+$`\rho^\sharp(\omega)G(-\omega a)` against $`\rho^\sharp(-\omega)e^{-i\omega\langle a,x\rangle}`,
 and the homogeneous substitution $`\xi=-\omega a` separates the admissibility constant from
 $`g_G(x)`. For a tempered $`\beta` the bias integral is a distributional pairing with a test
-function supported in $`-\operatorname{supp}\widehat\rho`; {bpref "def:4.1"}[] makes
+function supported in $`-\operatorname{supp}\rho^\sharp`; {bpref "def:4.1"}[] makes
 $`a\mapsto` (test function) Bochner integrable in a $`C^m` norm, so the pairing commutes with
 the direction integral. Joint absolute integrability follows independently from
 {bpref "lem:B.3"}[], choosing a moment at least as large as the
 activation's polynomial growth order. If every band-pass test function paired to zero with
-$`\widehat\beta`, its support would be $`\{0\}` and $`\beta` a polynomial.
+$`\beta^\sharp`, its support would be $`\{0\}` and $`\beta` a polynomial.
 :::
 
 # B.3 The synthesis operator on integrable coefficients
@@ -153,24 +153,24 @@ number := false
 We prove {bpref "thm:4.3"}[].
 
 :::proof "thm:4.3" (uses := "thm:3.11, lem:3.8, lem:3.4, lem:3.1, lem:B.4, lem:B.5, prop:B.8")
-Since $`U_\alpha` is unitary onto $`\mathcal K_\alpha`,
-$`U_\alpha'U_\alpha f[g]=\langle U_\alpha f,U_\alpha g\rangle=\langle f,g\rangle_{\mathcal E_\alpha}`,
-the Riesz representation theorem makes $`J_\alpha` an isometric bijection, and the Plancherel
-identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=(\!(\rho,\rho)\!)_\alpha J_\alpha f[g]`;
+Since $`F_Q` is unitary onto $`\mathcal K_\alpha`,
+$`F_Q'F_Q f[g]=\langle F_Q f,F_Q g\rangle=\langle f,g\rangle_{\mathcal E_\alpha}`,
+the Riesz representation theorem makes $`T_\alpha` an isometric bijection, and the Plancherel
+identity gives $`(S_\rho R_\rho f)[g]=\langle R_\rho f,R_\rho g\rangle=(\!(\rho,\rho)\!)_\alpha T_\alpha f[g]`;
 (ii) follows by applying $`T_\alpha^{-1}` or substituting $`f=T_\alpha^{-1}g`. Part (iii) is a
-Fubini computation with $`u=J_\alpha^{-1}U_\alpha'G` and {bpref "lem:B.4"}[],
-and (iv) first uses $`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` from
-{bpref "lem:3.6"}[] and $`R_\rho=W_\rho U_\alpha` on the completion.
+Fubini computation with $`u=T_\alpha^{-1}F_Q'G` and {bpref "lem:B.4"}[],
+and (iv) first uses $`W_\rho^* W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` from
+{bpref "lem:3.6"}[] and $`R_\rho=W_\rho F_Q` on the completion.
 The pointwise core formula uses the continuous Fourier-slice representative; only the final
 Hermite inversion invokes {bpref "lem:B.5"}[] and Gaussian input.
 :::
 
 :::definition "aux:hermite" (lean := "OperatorRidgelet.gaussFourierLine, OperatorRidgelet.hermiteExtension, OperatorRidgelet.hermiteCoefficient, OperatorRidgelet.gaussFourierInv") (uses := "aux:centered-gaussian, def:3.3, def:3.7")
 For $`f\in L^2(\mu_Q)`, $`\xi\ne0`, and $`\tau(\xi)=\langle Q\xi,\xi\rangle^{1/2}`, the
-analytic continuation $`z\mapsto\mathcal G_Qf(z\xi)=\int_Hf(x)e^{-iz\langle x,\xi\rangle}\mu_Q(\mathrm dx)`
-and the entire function $`G_f(z\xi)=e^{z^2\tau(\xi)^2/2}\mathcal G_Qf(z\xi)`; the Hermite
+analytic continuation $`z\mapsto F_Qf(z\xi)=\int_Hf(x)e^{-iz\langle x,\xi\rangle}\mu_Q(\mathrm dx)`
+and the entire function $`G_f(z\xi)=e^{z^2\tau(\xi)^2/2}F_Qf(z\xi)`; the Hermite
 coefficients $`\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]` with the
-probabilists' Hermite polynomials; and $`\Delta_Q`, the inverse of $`\mathcal G_Q` on its
+probabilists' Hermite polynomials; and $`\Delta_Q`, the inverse of $`F_Q` on its
 range on $`\mathcal D_\alpha`, chosen as the element of $`\mathcal D_\alpha` with the given
 transform.
 :::
@@ -181,7 +181,7 @@ $`G_f(z\xi)=\sum_{n\ge0}\frac{(-iz\tau(\xi))^n}{n!}\mathbb E_{\mu_Q}[f\,\mathrm{
 (ii) with locally uniform convergence (iii),
 $`|G_f(z\xi)|\le\|f\|_{L^2(\mu_Q)}e^{|z|^2\tau(\xi)^2/2}` (iv), and the Hermite inversion
 formula
-$`\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]=\frac{i^n}{\tau(\xi)^n}\frac{\mathrm d^n}{\mathrm dt^n}\bigl(e^{t^2\tau(\xi)^2/2}\mathcal G_Qf(t\xi)\bigr)\big|_{t=0}`
+$`\mathbb E_{\mu_Q}[f\,\mathrm{He}_n(\langle x,\xi\rangle/\tau(\xi))]=\frac{i^n}{\tau(\xi)^n}\frac{\mathrm d^n}{\mathrm dt^n}\bigl(e^{t^2\tau(\xi)^2/2}F_Qf(t\xi)\bigr)\big|_{t=0}`
 holds (v). The coefficients, over all $`\xi\ne0` and $`n`, determine $`f` in $`L^2(\mu_Q)`
 (vi).
 :::
@@ -207,8 +207,8 @@ with the Riesz-potential interpretation of {bpref "cor:F.2"}[].
 
 The closed range is $`R_\rho\mathcal E_\alpha=W_\rho\mathcal K_\alpha`, which is
 contained in the closed space $`W_\rho L^2(\nu_\alpha)`. Their orthogonal projections
-are respectively $`C^{-1}W_\rho P_{\mathcal K_\alpha}\Lambda_\rho` and
-$`C^{-1}W_\rho\Lambda_\rho`. Retaining the closed spectral subspace distinguishes
+are respectively $`C^{-1}W_\rho P_{\mathcal K_\alpha}W_\rho^*` and
+$`C^{-1}W_\rho W_\rho^*`. Retaining the closed spectral subspace distinguishes
 coefficients obtained by analysis from arbitrary synthesis coefficients. The next result
 also identifies the minimum-norm coefficient and the kernel of synthesis.
 
@@ -219,25 +219,25 @@ number := false
 
 :::proposition "prop:B.8" (lean := "OperatorRidgelet.Paper.prop_B_8_i, OperatorRidgelet.Paper.prop_B_8_ii, OperatorRidgelet.Paper.prop_B_8_iii, OperatorRidgelet.Paper.prop_B_8_iv, OperatorRidgelet.Paper.prop_B_8_v, OperatorRidgelet.Paper.prop_B_8_vi, OperatorRidgelet.Paper.prop_B_8_vii, OperatorRidgelet.Paper.prop_B_8_viii") (uses := "aux:backprojection, aux:frame-operator")
 Let $`\rho` be $`\alpha`-admissible with $`C=(\!(\rho,\rho)\!)_\alpha` and
-$`\mathcal Y=L^2(\lambda_\alpha)`. The integral defining $`\Lambda_\rho\gamma`
+$`\mathcal Y=L^2(\lambda_\alpha)`. The integral defining $`W_\rho^*\gamma`
 converges absolutely for $`\nu_\alpha`-almost every $`\xi` (i), is independent as an $`L^2`
 class of the jointly measurable Fourier representative (ii), and satisfies
-$`\|\Lambda_\rho\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}` (iii);
-$`\Lambda_\rho` is the Hilbert adjoint of $`W_\rho` (iv) and $`\Lambda_\rho W_\rho=C\,\mathrm{Id}`
-(v). The operator $`C^{-1}W_\rho\Lambda_\rho` projects onto $`W_\rho L^2(\nu_\alpha)`.
-The operator $`\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}\Lambda_\rho` is the orthogonal
+$`\|W_\rho^*\gamma\|_{L^2(\nu_\alpha)}\le\sqrt C\|\gamma\|_{\mathcal Y}` (iii);
+$`W_\rho^*` is the Hilbert adjoint of $`W_\rho` (iv) and $`W_\rho^* W_\rho=C\,\mathrm{Id}`
+(v). The operator $`C^{-1}W_\rho W_\rho^*` projects onto $`W_\rho L^2(\nu_\alpha)`.
+The operator $`\Pi_\rho=C^{-1}W_\rho P_{\mathcal K_\alpha}W_\rho^*` is the orthogonal
 projection onto $`\operatorname{Ran}R_\rho` (vi), the minimum-norm solution of
-$`S_\rho\gamma=F\in\mathcal E_\alpha'` is $`C^{-1}R_\rho J_\alpha^{-1}F` (vii), and all
+$`S_\rho\gamma=F\in\mathcal E_\alpha'` is $`C^{-1}R_\rho T_\alpha^{-1}F` (vii), and all
 solutions differ from it by an element of $`(\operatorname{Ran}R_\rho)^\perp` (viii).
 :::
 
 :::proof "prop:B.8" (uses := "lem:B.1, lem:3.1, thm:3.11")
 The change of variables $`\xi=-\omega a` gives
-$`\frac1{2\pi}\int\int|\omega|^{-\alpha}|\widehat\gamma(-\xi/\omega,\omega)|^2\mathrm d\omega\,\nu_\alpha(\mathrm d\xi)=\|\gamma\|_{\mathcal Y}^2`,
+$`\frac1{2\pi}\int\int|\omega|^{-\alpha}|\gamma^\sharp(-\xi/\omega,\omega)|^2\mathrm d\omega\,\nu_\alpha(\mathrm d\xi)=\|\gamma\|_{\mathcal Y}^2`,
 and weighted Cauchy–Schwarz in $`\omega` proves absolute convergence, representative
-independence, the bound, and the adjoint identity. Since $`R_\rho=W_\rho U_\alpha` with
-$`U_\alpha` unitary onto $`\mathcal K_\alpha`, $`C^{-1/2}W_\rho|_{\mathcal K_\alpha}` is an
-isometry with closed image, and $`R_\rho'R_\rho=CJ_\alpha` (the frame identity, which is the
+independence, the bound, and the adjoint identity. Since $`R_\rho=W_\rho F_Q` with
+$`F_Q` unitary onto $`\mathcal K_\alpha`, $`C^{-1/2}W_\rho|_{\mathcal K_\alpha}` is an
+isometry with closed image, and $`R_\rho'R_\rho=CT_\alpha` (the frame identity, which is the
 Plancherel identity read through the transpose) identifies the kernel of $`R_\rho'` with
 $`(\operatorname{Ran}R_\rho)^\perp`.
 :::

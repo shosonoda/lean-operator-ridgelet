@@ -11,10 +11,10 @@ import OperatorRidgelet.ToMathlib.AbsRpowGaussian
 # The Gaussian-derivative filters of Appendix G
 
 The non-band-pass filters of `prop:5.8` are the real Schwartz functions whose
-Fourier transform is `ρ̂(ω) = ω^{2k} e^{-ω²}`.  This module builds the filter from the
+Fourier transform is `ρ♯(ω) = ω^{2k} e^{-ω²}`.  This module builds the filter from the
 polynomial-times-Gaussian Schwartz functions and the angular Fourier inversion, and records the
 two elementary properties that separate it from the band-pass filters of Appendix G: its
-transform vanishes only at the origin, so it is not band pass, while `|ρ̂|² |ω|^{-α}` is still
+transform vanishes only at the origin, so it is not band pass, while `|ρ♯|² |ω|^{-α}` is still
 integrable for `α < 4k + 1`, so it is `α`-admissible.
 -/
 
@@ -25,7 +25,7 @@ namespace OperatorRidgelet
 open MeasureTheory Complex LeanRidgelet LeanRidgelet.Fourier
 open scoped Polynomial FourierTransform
 
-/-- The value `ρ̂_k(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative symbol. -/
+/-- The value `ρ♯_k(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative symbol. -/
 @[simp]
 theorem gaussDerivHat_apply (k : ℕ) (ω : ℝ) :
     gaussDerivHat k ω = ω ^ (2 * k) * Real.exp (-ω ^ 2) := by
@@ -81,7 +81,7 @@ theorem filterFourier_eq_rayProfile (ρ : ℝ → ℝ) (ω : ℝ) :
   push_cast
   ring
 
-/-- The profile of the complex filter is the symbol `ρ̂_k`. -/
+/-- The profile of the complex filter is the symbol `ρ♯_k`. -/
 theorem rayProfile_gaussDerivFilterC (k : ℕ) (ω : ℝ) :
     rayProfile (gaussDerivFilterC k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
   have hprof : rayProfile (⇑(gaussDerivFilterC k)) ω
@@ -92,7 +92,7 @@ theorem rayProfile_gaussDerivFilterC (k : ℕ) (ω : ℝ) :
   simp only [SchwartzMap.ofReal_apply, gaussDerivDilatedHat_apply, gaussDerivHat_apply]
   rw [mul_div_cancel₀ _ (by positivity : (2 * Real.pi) ≠ 0)]
 
-/-- **The defining property of the Gaussian-derivative filter**: `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
+/-- **The defining property of the Gaussian-derivative filter**: `ρ♯_k(ω) = ω^{2k} e^{-ω²}`. -/
 theorem filterFourier_gaussDerivFilter (k : ℕ) (ω : ℝ) :
     filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
   have hfun : (fun t => ((gaussDerivFilter k t : ℝ) : ℂ)) = ⇑(gaussDerivFilterC k) :=
@@ -101,7 +101,7 @@ theorem filterFourier_gaussDerivFilter (k : ℕ) (ω : ℝ) :
 
 /-! ### The filter is not band pass, but is still admissible -/
 
-/-- The transform `ρ̂_k` vanishes only at the origin. -/
+/-- The transform `ρ♯_k` vanishes only at the origin. -/
 theorem filterFourier_gaussDerivFilter_ne_zero {k : ℕ} {ω : ℝ} (hω : ω ≠ 0) :
     filterFourier (gaussDerivFilter k) ω ≠ 0 := by
   rw [filterFourier_gaussDerivFilter]
@@ -142,7 +142,7 @@ theorem admissibility_integrand_gaussDerivFilter (k : ℕ) (α : ℝ) :
   simp
 
 /-- **The Gaussian-derivative filter is `α`-admissible** for `α < 4k + 1`: the weight
-`|ρ̂_k|² |ω|^{-α}` is integrable and its integral is positive. -/
+`|ρ♯_k|² |ω|^{-α}` is integrable and its integral is positive. -/
 theorem isAdmissible_gaussDerivFilter {k : ℕ} {α : ℝ} (hk : α < 4 * k + 1) :
     IsAdmissible α (gaussDerivFilter k) where
   integrable := by

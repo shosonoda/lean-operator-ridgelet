@@ -13,7 +13,7 @@ Auxiliary results for Example `ex:7.4` of the manuscript.
 * `inner_layerCovariance`: `⟪S_y ξ, ξ⟫ = ⟪Qξ,ξ⟫ - ⟪Qa_y,ξ⟫²/(1+σ_y²)`.
 * `IsLayerData.layerObservable_gaussianFun_eq`: `F_φ(x) = ∫ Φ(⟪a_y,x⟫) w_φ(y) m(dy)`.
 * `IsLayerData.gaussFourier_layerObservable_gaussianFun`: the transform
-  `𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)` (`eq:operator-layer-transform`).
+  `F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)` (`eq:operator-layer-transform`).
 * `IsLayerData.gaussFourierVec_operatorLayer_gaussianFun`: the `Y`-valued transform.
 * `IsLayerData.operatorLayer_gaussianFun_eq_integral_prod`: the ReLU form
   `ℱ(x) = ∫∫ b_y φ''(b) ReLU(⟪a_y,x⟫ - b) m(dy) db`.
@@ -269,7 +269,7 @@ theorem IsLayerData.integrable_gaussianFun_mul_layerWeight_mul_character (hL : I
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_gaussianFun_le_one _)
 
 /-- **Example `ex:7.4`(ii)**, the transform of the scalar observable:
-`𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/
+`F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/
 theorem IsLayerData.gaussFourier_layerObservable_gaussianFun {Q : H →L[ℝ] H}
     (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y) (ξ : H) :
@@ -293,7 +293,7 @@ theorem IsLayerData.gaussFourier_layerObservable_gaussianFun {Q : H →L[ℝ] H}
   rfl
 
 /-- The Gaussian decay of the transform of the scalar observable:
-`|𝒢_Q F_φ(ξ)| ≤ (∫ |w_φ| dm) e^{-θ ⟪Qξ,ξ⟫/2}` with `θ = (1 + ‖Q‖ ‖A‖_∞²)⁻¹`. -/
+`|F_Q F_φ(ξ)| ≤ (∫ |w_φ| dm) e^{-θ ⟪Qξ,ξ⟫/2}` with `θ = (1 + ‖Q‖ ‖A‖_∞²)⁻¹`. -/
 theorem IsLayerData.norm_gaussFourier_layerObservable_gaussianFun_le {Q : H →L[ℝ] H}
     (hQ : IsPositiveTraceClass Q) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y) (ξ : H) :
@@ -339,7 +339,7 @@ theorem IsLayerData.integrable_character_mul_gaussianFun_smul (hL : IsLayerData 
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_gaussianFun_le_one _)
 
 /-- **Example `ex:7.4`(ii)**, the `Y`-valued transform of the layer:
-`𝒢_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} b_y m(dy)`. -/
+`F_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} b_y m(dy)`. -/
 theorem IsLayerData.gaussFourierVec_operatorLayer_gaussianFun {Q : H →L[ℝ] H}
     (hQ : IsSelfAdjoint Q) (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) {μ : Measure H} [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (ξ : H) :

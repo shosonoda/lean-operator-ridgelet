@@ -10,7 +10,7 @@ direction, they satisfy Plancherel and Parseval in the bias variable, and every 
 jointly measurable representative.
 
 * **Uniqueness for a fixed direction.**  Two square-integrable functions on `ℝ` with the same
-  pairing against `φ̂` for every Schwartz `φ` agree almost everywhere
+  pairing against `φ♯` for every Schwartz `φ` agree almost everywhere
   (`ae_eq_of_forall_integral_mul_conj_lineFourier_eq`): the Fourier transform is a bijection of
   the Schwartz space, and test functions determine locally integrable functions.  Hence two
   representatives of the same coefficient agree almost everywhere for almost every direction

@@ -34,7 +34,7 @@ ReLU is admissible in this sense and is the primary exact example.
 A dual-space identity and an ordinary integral network have different integrability
 requirements. The Sobolev criterion below supplies an absolutely convergent network
 integral, including non-band-pass filters, under direct conditions on the inverse Fourier
-transform of $`h_a(\omega)=\widehat\rho(-\omega)G(\omega a)`.
+transform of $`h_a(\omega)=\rho^\sharp(-\omega)G(\omega a)`.
 Appendix C gives the pairing and its estimates; Appendix G gives explicit filters.
 
 :::definition "aux:tempered-distributions" (lean := "OperatorRidgelet.IsPolynomialDistribution, OperatorRidgelet.schwartzOfFun, OperatorRidgelet.tanhDistribution, OperatorRidgelet.gaussianCdfDistribution, OperatorRidgelet.gaussianDistribution") (uses := "aux:conventions")
@@ -49,10 +49,10 @@ function; ReLU is treated in {bpref "cor:5.3"}[].
 :::definition "def:5.1" (lean := "OperatorRidgelet.IsRealDistribution, OperatorRidgelet.IsCutoff, OperatorRidgelet.IsApproximateIdentity, OperatorRidgelet.distributionConvolution, OperatorRidgelet.regularizedSpectrum, OperatorRidgelet.regularizedActivation, OperatorRidgelet.regularizedSynthesis, OperatorRidgelet.temperedSynthesis, OperatorRidgelet.Paper.def_5_1_i, OperatorRidgelet.Paper.def_5_1_ii, OperatorRidgelet.Paper.def_5_1_iii, OperatorRidgelet.Paper.def_5_1_iv, OperatorRidgelet.Paper.def_5_1_v, OperatorRidgelet.Paper.def_5_1_vi") (uses := "def:3.2, aux:conventions, aux:tempered-distributions, aux:frame-operator, thm:3.11")
 Let $`\beta\in\mathcal S'(\mathbb R)` be real, that is, fixed by distributional conjugation,
 and let $`\rho` be a band-pass filter. Choose an even $`\chi\in C_c^\infty(\mathbb R\setminus\{0\})`
-equal to one on a neighbourhood of $`\operatorname{supp}\widehat\rho` (i) and an even,
+equal to one on a neighbourhood of $`\operatorname{supp}\rho^\sharp` (i) and an even,
 compactly supported, smooth approximate identity $`(\eta_\varepsilon)_{\varepsilon>0}` (ii),
 and define the real Schwartz functions $`\beta_\varepsilon` by
-$`\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)\in C_c^\infty(\mathbb R\setminus\{0\})`
+$`\beta_\varepsilon^\sharp=\chi\,(\beta^\sharp*\eta_\varepsilon)\in C_c^\infty(\mathbb R\setminus\{0\})`
 (iii–v: membership, existence, and uniqueness of $`\beta_\varepsilon`). For
 $`\gamma\in\operatorname{Ran}R_\rho`, the regularized synthesis is
 $`S_{\beta_\varepsilon}\gamma=R_{\beta_\varepsilon}'\gamma\in\mathcal E_\alpha'` (vi), and
@@ -77,20 +77,20 @@ See the [proof in Appendix C](appendix-c/C___1-Proof-of-Theorem-5___2/#--informa
 
 :::corollary "cor:5.3" (lean := "OperatorRidgelet.reluDistribution, OperatorRidgelet.reluAdmissibilityScale, OperatorRidgelet.reluNormalizedFilter, OperatorRidgelet.Paper.cor_5_3_i, OperatorRidgelet.Paper.cor_5_3_ii, OperatorRidgelet.Paper.cor_5_3_iii, OperatorRidgelet.Paper.cor_5_3_iv, OperatorRidgelet.Paper.cor_5_3_v, OperatorRidgelet.Paper.cor_5_3_vi, OperatorRidgelet.Paper.cor_5_3_vii, OperatorRidgelet.Paper.cor_5_3_viii") (uses := "thm:5.2, thm:4.2, def:3.2, aux:tempered-activation, def:4.1")
 Let $`\beta=\operatorname{ReLU}`, $`\operatorname{ReLU}(t)=\max(t,0)`. Then
-$`\widehat{\operatorname{ReLU}}=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'` (i), which
+$`\operatorname{ReLU}^\sharp=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'` (i), which
 equals $`-\omega^{-2}` away from the origin (ii). If
-$`\widehat\rho\in C_c^\infty(\mathbb R\setminus\{0\})` is nonzero, even, and nonpositive, then
-$`C_{\operatorname{ReLU},\rho}^{(\alpha)}=-\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega`
+$`\rho^\sharp\in C_c^\infty(\mathbb R\setminus\{0\})` is nonzero, even, and nonpositive, then
+$`C_{\operatorname{ReLU},\rho}^{(\alpha)}=-\frac1{2\pi}\int_{\mathbb R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega`
 (iii), which is positive (iv). After rescaling $`\rho` the constant is one (v), and the two
 reconstruction formulas of {bpref "thm:5.2"}[] (vi, vii) and
 {bpref "thm:4.2"}[] (iii) (viii) hold with ReLU synthesis for every $`\alpha>0`.
 :::
 
 :::proof "cor:5.3"
-From $`\operatorname{ReLU}(t)=(|t|+t)/2`, the identities $`\widehat{|t|}=-2\operatorname{fp}(\omega^{-2})`
-and $`\widehat t=2\pi i\delta_0'` give the Fourier transform; the test function is supported
+From $`\operatorname{ReLU}(t)=(|t|+t)/2`, the identities $`(|t|)^\sharp=-2\operatorname{fp}(\omega^{-2})`
+and $`t^\sharp=2\pi i\delta_0'` give the Fourier transform; the test function is supported
 away from zero, so the $`\delta_0'` term vanishes and the finite part is ordinary
-multiplication by $`\omega^{-2}`, and evenness and the sign of $`\widehat\rho` give the
+multiplication by $`\omega^{-2}`, and evenness and the sign of $`\rho^\sharp` give the
 constant.
 :::
 
@@ -119,7 +119,7 @@ this stronger conclusion.
 # Integral representation under Sobolev conditions
 
 The condition is imposed directly on
-$`h_a(\omega)=\widehat\rho(-\omega)G(\omega a)` through its inverse Fourier transform.
+$`h_a(\omega)=\rho^\sharp(-\omega)G(\omega a)` through its inverse Fourier transform.
 For Hilbert-valued functions the resulting weighted norm is the Bessel-potential
 $`H^s` norm in the frequency variable. In a Banach space the weighted inverse-transform
 norm is the assumption itself; a Fourier isometry is used only for Hilbert-valued outputs.
@@ -131,14 +131,14 @@ where $`D_ta=ta` and $`\alpha>0`. Let $`\rho\in\mathcal S(\mathbb R;\mathbb R)` 
 let $`\sigma:\mathbb R\to\mathbb C` be continuous with
 $`|\sigma(t)|\le C_\sigma(1+|t|)^p`, $`p\ge0` and $`s>p+1/2`, and let
 $`g:H\to Y` be strongly measurable into a complex Banach space $`Y`. Write
-$`g_a(\omega):=g(\omega a)` and $`h_a(\omega):=\widehat\rho(-\omega)g_a(\omega)`.
+$`g_a(\omega):=g(\omega a)` and $`h_a(\omega):=\rho^\sharp(-\omega)g_a(\omega)`.
 Suppose there is a jointly measurable $`\gamma_g` such that for almost every $`a`,
 $`\int\langle b\rangle^{2s}\|\gamma_g(a,b)\|^2\,\mathrm db<\infty` and
 $`\int\gamma_g(a,b)e^{-i\omega b}\,\mathrm db=h_a(\omega)` for every $`\omega`.
 For Hilbert $`Y` this means $`h_a\in H^s_\omega(\mathbb R;Y)` with
 $`\check h_a=\gamma_g(a,\cdot)`. Assume also that
 $`\mathfrak B_s(\rho,g)=\int(1+\|a\|)^s\|h_a\|_{H^s_\omega}\,\mathrm d\nu<\infty`, and that
-$`q_{\alpha,\rho}(\omega)=\widehat\rho(-\omega)|\omega|^{-\alpha}` lies in
+$`q_{\alpha,\rho}(\omega)=\rho^\sharp(-\omega)|\omega|^{-\alpha}` lies in
 $`H^s_\omega(\mathbb R)` as a Lebesgue class, without prescribing its value at zero.
 Then $`g\in L^1(\nu;Y)`; for $`0\le r<s-1/2`
 $`\int(1+\|a\|+|b|)^r\|\gamma_g\|\le2^{r/2}A_{s,r}\mathfrak B_s(\rho,g)`, so the coefficient
@@ -147,7 +147,7 @@ $`\Psi_x(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu` is integrable an
 $`\check q_{\alpha,\rho}(-t)f_g(x)` almost everywhere; and the absolutely convergent
 network integral satisfies
 $`S_\sigma[\Gamma_g](x)=(\!(\sigma,\rho)\!)_\alpha f_g(x)` with
-$`(\!(\sigma,\rho)\!)_\alpha=(2\pi)^{-1}\langle\widehat\sigma,q_{\alpha,\rho}\rangle`, uniformly
+$`(\!(\sigma,\rho)\!)_\alpha=(2\pi)^{-1}\langle\sigma^\sharp,q_{\alpha,\rho}\rangle`, uniformly
 absolutely on bounded input sets and continuously in $`x`. Here
 $`A_{s,r}=(2\pi)^{-1/2}(\int_{\mathbb R}(1+t^2)^{-(s-r)}\,\mathrm dt)^{1/2}`.
 Admissibility of $`\rho` and non-polynomiality of $`\sigma` are not assumed for this
@@ -174,7 +174,7 @@ homogeneity of the direction measure, and completeness of the output norm. The o
 Hilbert structure is needed only for the $`L^2` coefficient conclusion. Positivity of the
 admissibility constant is not required. The ray hypotheses already imply
 $`G\in L^1(\nu;Y)` by evaluating the weighted inverse-transform estimate at a nonzero
-frequency where $`\widehat\rho` does not vanish and then using homogeneity.
+frequency where $`\rho^\sharp` does not vanish and then using homogeneity.
 
 A second parameter moment needs $`s>5/2`. With a globally Lipschitz activation,
 {bpref "thm:6.3"}[] then applies; reconstruction of $`f_G` also requires
@@ -190,11 +190,11 @@ Their coefficient estimates and constants are proved in Appendix G.
 Under the input-space and sigma-finite Borel measure hypotheses of {bpref "thm:5.6"}[],
 let $`\nu` be homogeneous of degree $`\alpha>0` and finite on the unit ball. Fix $`s>1/2` and an
 integer $`k\ge1` with $`2k>\alpha+2s-1/2`, and let
-$`\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}`, $`g(\xi)=e^{-\|\xi\|^2}v`. Then $`\rho_k` is
+$`\rho_k^\sharp(\omega)=\omega^{2k}e^{-\omega^2}`, $`g(\xi)=e^{-\|\xi\|^2}v`. Then $`\rho_k` is
 a real Schwartz filter (i) that is not band pass (ii) but is $`\alpha`-admissible for
 $`\alpha<4k+1` (iii). The homogeneous moments $`\int(1+\|a\|^2)^{-d/2}\mathrm d\nu` are finite
 for $`d>\alpha` (iv); the coefficient $`\gamma_g` is jointly measurable (v), each function
-$`h_a(\omega)=\widehat\rho_k(-\omega)g(\omega a)` lies in $`H^s_\omega` (vi), and
+$`h_a(\omega)=\rho_k^\sharp(-\omega)g(\omega a)` lies in $`H^s_\omega` (vi), and
 $`\mathfrak B_s(\rho_k,g)<\infty` (vii). The Sobolev test $`q_{\alpha,\rho_k}` lies in
 $`H^s_\omega` (viii). Hence {bpref "thm:5.6"}[] applies to this filter for
 every continuous activation of growth order $`p<s-1/2` (ix).

@@ -8,7 +8,7 @@ import OperatorRidgelet.Reconstruction.Basic
 
 The transform of the scalar observable of a neural-operator layer with Gaussian activation is a
 Bochner integral
-`𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`
+`F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`
 of Gaussian-type densities whose covariances `S_y` obey the two-sided bound
 `θ Q ≤ S_y`, `‖S_y‖ ≤ ‖Q‖ (1 + ‖Q‖ ‖A‖_∞²)` uniformly in `y`.  The weight `w_φ` is only
 integrable, not bounded, so Lemma `lem:D.3`(c) (`IsRegularAlongRays.integral`)
@@ -251,7 +251,7 @@ def layerDensityConst (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y)
   layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ : ℝ) : ℂ)
 
 /-- The `y`-th Gaussian density `G_y(ξ) = w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2}` whose Bochner
-integral over `m` is the transform `𝒢_Q F_φ` of the scalar observable of the layer. -/
+integral over `m` is the transform `F_Q F_φ` of the scalar observable of the layer. -/
 def layerDensity (Q : H →L[ℝ] H) (a : Ω → H) (b : Ω → Y) (φ : Y) (y : Ω) (ξ : H) : ℂ :=
   layerWeight b φ y * (((Real.sqrt (1 + ⟪Q (a y), a y⟫))⁻¹ *
     Real.exp (-⟪layerCovariance Q a y ξ, ξ⟫ / 2) : ℝ) : ℂ)
@@ -316,7 +316,7 @@ theorem IsLayerData.measurable_uncurry_layerDensity {Q : H →L[ℝ] H} (hL : Is
 
 variable [IsFiniteMeasure m]
 
-/-- **Example `ex:7.4`(ii)**: the transform `𝒢_Q F_φ` of the scalar observable of a
+/-- **Example `ex:7.4`(ii)**: the transform `F_Q F_φ` of the scalar observable of a
 layer with Gaussian activation is regular along rays, for every compact frequency window away
 from the origin.  The densities `G_y` are Gaussian with covariances `S_y` satisfying
 `θ Q ≤ S_y` and `‖S_y‖ ≤ ‖Q‖ + ‖Q‖²‖A‖_∞²` uniformly in `y`, so the ray-derivative bounds are

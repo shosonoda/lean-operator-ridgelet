@@ -12,7 +12,7 @@ import Mathlib.Probability.StrongLaw
 
 Ridgelet-specific facts used by the proofs of `OperatorRidgelet.Paper.Transform`: positivity of
 the quadratic form of a trace-class covariance, the bridge between the manuscript's Fourier
-transform `ρ̂(ω) = ∫ ρ(t) e^{-itω} dt` and Mathlib's `𝓕`, the nonvanishing of the Fourier
+transform `ρ♯(ω) = ∫ ρ(t) e^{-itω} dt` and Mathlib's `𝓕`, the nonvanishing of the Fourier
 transform of a nonzero filter, the joint integrability of the ridgelet kernel, the integrated
 forms of the homogeneity `(D_ω)_# ν = |ω|^{-α} ν`, the smoothness of the explicit band-pass
 Fourier transform of Appendix G, and the coordinates of a centred Gaussian measure `𝒩(0,Q)`
@@ -45,7 +45,7 @@ end Covariance
 
 section Fourier
 
-/-- The manuscript's Fourier transform `ρ̂(ω) = ∫ ρ(t) e^{-itω} dt` is Mathlib's `𝓕` at the
+/-- The manuscript's Fourier transform `ρ♯(ω) = ∫ ρ(t) e^{-itω} dt` is Mathlib's `𝓕` at the
 rescaled frequency `ω / 2π`. -/
 theorem filterFourier_eq_fourier (ρ : ℝ → ℝ) (ω : ℝ) :
     filterFourier ρ ω = 𝓕 (fun t => (ρ t : ℂ)) ((2 * Real.pi)⁻¹ * ω) := by
@@ -245,8 +245,8 @@ theorem contDiff_bump : ContDiff ℝ (⊤ : ℕ∞) bump := by
   rw [this]
   exact expNegInvGlue.contDiff.comp (by fun_prop)
 
-/-- The prescribed Fourier transform `ρ̂_bp(ω) = -η(2|ω| - 3)` is smooth: away from the origin
-`|ω|` is smooth, and near the origin `ρ̂_bp` vanishes identically. -/
+/-- The prescribed Fourier transform `ρ♯_bp(ω) = -η(2|ω| - 3)` is smooth: away from the origin
+`|ω|` is smooth, and near the origin `ρ♯_bp` vanishes identically. -/
 theorem contDiff_bandPassHat : ContDiff ℝ (⊤ : ℕ∞) bandPassHat := by
   rw [contDiff_iff_contDiffAt]
   intro ω
@@ -300,7 +300,7 @@ theorem hasCompactSupport_bandPassHat : HasCompactSupport bandPassHat :=
       by_contra h
       exact hω (abs_le.mp (not_lt.mp h)))
 
-/-- The rescaled Fourier data `u ↦ ρ̂_bp(2πu)` is smooth with compact support. -/
+/-- The rescaled Fourier data `u ↦ ρ♯_bp(2πu)` is smooth with compact support. -/
 theorem hasCompactSupport_bandPassHat_ofReal_comp :
     HasCompactSupport fun u : ℝ => (bandPassHat (2 * Real.pi * u) : ℂ) :=
   HasCompactSupport.intro isCompact_Icc fun u hu => by
@@ -316,7 +316,7 @@ theorem contDiff_bandPassHat_ofReal_comp :
     ContDiff ℝ (⊤ : ℕ∞) fun u : ℝ => (bandPassHat (2 * Real.pi * u) : ℂ) :=
   Complex.ofRealCLM.contDiff.comp (contDiff_bandPassHat.comp (contDiff_const.mul contDiff_id))
 
-/-- The rescaled Fourier data `u ↦ ρ̂_bp(2πu)` as a complex Schwartz function. -/
+/-- The rescaled Fourier data `u ↦ ρ♯_bp(2πu)` as a complex Schwartz function. -/
 def bandPassHatSchwartz : SchwartzMap ℝ ℂ :=
   hasCompactSupport_bandPassHat_ofReal_comp.toSchwartzMap contDiff_bandPassHat_ofReal_comp
 
@@ -346,7 +346,7 @@ theorem ofReal_bandPassSchwartz_apply (t : ℝ) :
   Complex.conj_eq_iff_re.mp (conj_fourierInv_bandPassHatSchwartz t)
 
 /-- The Schwartz band-pass filter has the manuscript's values
-`ρ_bp(t) = (2π)⁻¹ ∫ ρ̂_bp(ω) e^{itω} dω`. -/
+`ρ_bp(t) = (2π)⁻¹ ∫ ρ♯_bp(ω) e^{itω} dω`. -/
 theorem bandPassSchwartz_apply (t : ℝ) : bandPassSchwartz t = bandPassFun t := by
   unfold bandPassFun
   show Complex.reCLM (𝓕⁻ bandPassHatSchwartz t) = _
@@ -373,7 +373,7 @@ theorem coe_bandPass : ⇑bandPass = bandPassFun := by
   rw [dif_pos exists_schwartz_eq_bandPassFun]
   exact exists_schwartz_eq_bandPassFun.choose_spec
 
-/-- The Fourier transform of the band-pass filter is the prescribed `ρ̂_bp`. -/
+/-- The Fourier transform of the band-pass filter is the prescribed `ρ♯_bp`. -/
 theorem filterFourier_bandPass (ω : ℝ) : filterFourier bandPass ω = (bandPassHat ω : ℂ) := by
   rw [filterFourier_eq_fourier, coe_bandPass]
   have hreal : (fun t : ℝ => (bandPassFun t : ℂ)) =
@@ -420,7 +420,7 @@ theorem gaussFourierLp_smul (μ ν : Measure H) [IsFiniteMeasure μ] (c : ℂ)
   show gaussFourier μ ((c • f : Lp ℂ 2 μ) : H → ℂ) ξ = _
   rw [gaussFourier_smul]
 
-/-- The range `𝒢_μ(𝒟)` of the weighted Fourier transform on the core, as a submodule of
+/-- The range `F_μ(𝒟)` of the weighted Fourier transform on the core, as a submodule of
 `L²(ν)`. -/
 def gaussFourierRange (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp ℂ 2 ν) where
   carrier := Set.range (gaussFourierLp μ ν)
@@ -436,7 +436,7 @@ def gaussFourierRange (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (
 theorem coe_gaussFourierRange (μ ν : Measure H) [IsFiniteMeasure μ] :
     (gaussFourierRange μ ν : Set (Lp ℂ 2 ν)) = Set.range (gaussFourierLp μ ν) := rfl
 
-/-- `𝒦 = closure 𝒢_μ(𝒟)`: the span in the definition of `spectralRange` is redundant. -/
+/-- `𝒦 = closure F_μ(𝒟)`: the span in the definition of `spectralRange` is redundant. -/
 theorem spectralRange_eq_topologicalClosure (μ ν : Measure H) [IsFiniteMeasure μ] :
     spectralRange μ ν = (gaussFourierRange μ ν).topologicalClosure := by
   unfold spectralRange

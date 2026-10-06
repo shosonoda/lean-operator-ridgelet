@@ -6,10 +6,10 @@ import OperatorRidgelet.Tempered.Fourier
 Lemma `lem:C.1` of the manuscript (Appendix C).  With the vendored objects
 `temperedWeightMultiplier r = ⟨·⟩^r`, `angularBesselPotential r = B^r`,
 `angularFourierDistribution = F`, and `MemActivationSpace s t β ↔ B^s ⟨·⟩^{-t} β ∈ L²`, the
-coordinate `⟨ω⟩^s B^{-t} β̂ = activationFourierCoordinate s t β` of `β ∈ 𝒜_{s,t}` is represented
+coordinate `⟨ω⟩^s B^{-t} β♯ = activationFourierCoordinate s t β` of `β ∈ 𝒜_{s,t}` is represented
 by the `L²` function `activationCoordinate s t β`, the coordinate map is injective, every
 `σ ∈ L²` is the coordinate of the vendored `activationRealization s t σ ∈ 𝒜_{s,t}`, and the
-pairing `⟨β̂, r⟩` with a Schwartz test filter is the `L²` pairing of the coordinate with the test
+pairing `⟨β♯, r⟩` with a Schwartz test filter is the `L²` pairing of the coordinate with the test
 coordinate `⟨ω⟩^{-s} B^t r = testFilterCoordinate s t r`, whence the duality bound by
 Cauchy–Schwarz and its extension to `L²(ℝ)`.
 
@@ -27,7 +27,7 @@ open scoped FourierTransform
 
 /-! ### The coordinate of an activation -/
 
-/-- `⟨ω⟩^s B^{-t} β̂ = ⟨ω⟩^s F(⟨x⟩^{-t} β)`. -/
+/-- `⟨ω⟩^s B^{-t} β♯ = ⟨ω⟩^s F(⟨x⟩^{-t} β)`. -/
 theorem activationFourierCoordinate_eq (s t : ℝ) (β : TemperedDistribution ℝ ℂ) :
     activationFourierCoordinate s t β =
       temperedWeightMultiplier s
@@ -48,7 +48,7 @@ theorem exists_activationCoordinate_of_mem {s t : ℝ} {β : TemperedDistributio
   rw [hv, angularFourierDistribution_angularBesselPotential,
     temperedWeightMultiplier_temperedWeightMultiplier_neg]
 
-/-- The chosen `L²` coordinate represents `⟨ω⟩^s B^{-t} β̂`. -/
+/-- The chosen `L²` coordinate represents `⟨ω⟩^s B^{-t} β♯`. -/
 theorem toTemperedDistribution_activationCoordinate {s t : ℝ}
     {β : TemperedDistribution ℝ ℂ} (hβ : MemActivationSpace s t β) :
     Lp.toTemperedDistributionCLM ℂ volume 2 (activationCoordinate s t β) =
@@ -176,7 +176,7 @@ theorem activationCoordinate_activationRealization (s t : ℝ) (σ : L2 ℝ volu
 
 /-! ### The pairing with a test filter -/
 
-/-- `⟨β̂, r⟩ = ∫ (⟨ω⟩^{-s} B^t r)(ω) σ(ω) dω` with `σ` the coordinate of `β ∈ 𝒜_{s,t}`. -/
+/-- `⟨β♯, r⟩ = ∫ (⟨ω⟩^{-s} B^t r)(ω) σ(ω) dω` with `σ` the coordinate of `β ∈ 𝒜_{s,t}`. -/
 theorem angularFourierDistribution_apply_eq_integral {s t : ℝ}
     {β : TemperedDistribution ℝ ℂ} (hβ : MemActivationSpace s t β) (r : SchwartzMap ℝ ℂ) :
     angularFourierDistribution β r =
@@ -209,7 +209,7 @@ theorem inner_star_toLp_eq_integral (ψ : SchwartzMap ℝ ℂ) (σ : L2 ℝ volu
   filter_upwards [Lp.coeFn_star (ψ.toLp 2 volume), ψ.coeFn_toLp 2 volume] with x hx hx'
   rw [hx, Pi.star_apply, hx', RCLike.inner_apply, Complex.star_def, Complex.conj_conj, mul_comm]
 
-/-- **Lemma `lem:C.1`(iv)**: `|⟨β̂, r⟩| ≤ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}`. -/
+/-- **Lemma `lem:C.1`(iv)**: `|⟨β♯, r⟩| ≤ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}`. -/
 theorem norm_angularFourierDistribution_apply_le {s t : ℝ}
     {β : TemperedDistribution ℝ ℂ} (hβ : MemActivationSpace s t β) (r : SchwartzMap ℝ ℂ) :
     ‖angularFourierDistribution β r‖ ≤ activationNorm s t β * testFilterNorm s t r := by

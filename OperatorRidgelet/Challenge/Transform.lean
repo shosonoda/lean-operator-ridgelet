@@ -111,7 +111,7 @@ theorem lem_3_4_iv (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap 
   sorry
 
 /-- **Lemma [lem:3.4]** Fourier-slice identity.  The partial Fourier transform in the
-bias is `\widehat{R_ρ f}(a,ω) = ρ̂(ω) 𝒢_μ f(-ωa)`. -/
+bias is `(R_ρ f)^\sharp(a,ω) = ρ♯(ω) F_μ f(-ωa)`. -/
 theorem lem_3_4_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap ℝ ℝ)
     (f : H → ℂ) (hf : Integrable f μ) :
     ∀ (a : H) (ω : ℝ),
@@ -122,7 +122,7 @@ theorem lem_3_4_v (μ : Measure H) [IsProbabilityMeasure μ] (ρ : SchwartzMap �
 
 /-- **Definition [def:3.5]** The coefficient operator.  For
 `G ∈ L²(ν)` the coefficient `W_ρ G` is given by the explicit formula
-`γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
+`γ_G(a,c) = (2π)⁻¹ ∫ ρ♯(ω) G(-ωa) e^{iωc} dω`, `λ`-almost everywhere. -/
 theorem def_3_5 {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
@@ -131,7 +131,7 @@ theorem def_3_5 {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
 
 /-- **Lemma [lem:B.1]** The coefficient operator is a scaled isometry.  `W_ρ G`
 is well defined: there is exactly one element of `L²(λ)` whose partial Fourier transform in the
-bias is `ρ̂(ω) G(-ωa)`. -/
+bias is `ρ♯(ω) G(-ωa)`. -/
 theorem lem_B_1_i {α : ℝ} (hα : 0 < α) (ν : Measure H) [SigmaFinite ν]
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) (G : H → ℂ)
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
@@ -176,8 +176,8 @@ theorem lem_3_8_i (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
   sorry
 
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Lemma [lem:3.8]** Positivity and the unitary extension.  `𝒢_μ` is an
-isometry from `(𝒟, ⟨·,·⟩_𝓔)` into `𝒦`: the `L²(ν)` inner product of `U f` and `U g` (which in
+/-- **Lemma [lem:3.8]** Positivity and the unitary extension.  `F_μ` is an
+isometry from `(𝒟, ⟨·,·⟩_𝓔)` into `𝒦`: the `L²(ν)` inner product of `F_Q f` and `F_Q g` (which in
 Mathlib is conjugate linear in the first argument) is `⟨g,f⟩_𝓔`. -/
 theorem lem_3_8_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
@@ -187,7 +187,7 @@ theorem lem_3_8_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
   sorry
 
 /-- **Lemma [lem:3.8]** Positivity and the unitary extension.  The image of `𝒟`
-under `𝒢_μ` is dense in `𝒦`, so the isometry extends uniquely to a unitary `U_α : 𝓔_α → 𝒦_α`
+under `F_μ` is dense in `𝒦`, so the isometry extends uniquely to a unitary `F_Q : 𝓔_α → 𝒦_α`
 (the identity of `𝒦` in this representation). -/
 theorem lem_3_8_iii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] :
@@ -207,7 +207,7 @@ theorem lem_3_9_i (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   sorry
 
 /-- **Lemma [lem:3.9]** Gaussian decay with polynomial weights.  If `f ∈ L²(μ_Q)` and
-`|𝒢_Q f(ξ)| ≤ C (1+‖ξ‖)^p e^{-t⟨Qξ,ξ⟩/2}`, then `f ∈ 𝒟_α` for every `α > 0`. -/
+`|F_Q f(ξ)| ≤ C (1+‖ξ‖)^p e^{-t⟨Qξ,ξ⟩/2}`, then `f ∈ 𝒟_α` for every `α > 0`. -/
 theorem lem_3_9_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -220,7 +220,7 @@ theorem lem_3_9_ii (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
 
 omit [CompleteSpace H] [SecondCountableTopology H] [BorelSpace H] in
 /-- **Example [ex:3.10]** Elements of `𝒟_α`.  The constant function has
-`𝒢_Q 1 (ξ) = e^{-⟨Qξ,ξ⟩/2}`. -/
+`F_Q 1 (ξ) = e^{-⟨Qξ,ξ⟩/2}`. -/
 theorem ex_3_10_i {Q : H →L[ℝ] H} (μ : Measure H) [IsProbabilityMeasure μ]
     (hμ : IsCenteredGaussian Q μ) :
     ∀ ξ : H, gaussFourier μ (fun _ => (1 : ℂ)) ξ = Complex.exp (-((⟪Q ξ, ξ⟫ / 2 : ℝ) : ℂ)) := by
@@ -313,7 +313,7 @@ theorem thm_3_11_ii_c (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
   sorry
 
 /-- **Theorem [thm:3.11]** Plancherel identity and injectivity.  The extension factors as
-`R_ρ = W_ρ U_α`: on `𝒦_α` it is the coefficient operator. -/
+`R_ρ = W_ρ F_Q`: on `𝒦_α` it is the coefficient operator. -/
 theorem thm_3_11_ii_d (hH : ¬ FiniteDimensional ℝ H) {P Q : H →L[ℝ] H}
     (hP : IsTraceClassCovariance P) (hQ : IsTraceClassCovariance Q) {N : ℝ → Measure H}
     (hN : IsCenteredGaussianLayers P N) {α : ℝ} (hα : 0 < α) (μ : Measure H)
@@ -566,27 +566,27 @@ section Filters
 open OperatorRidgelet.Filters
 
 /-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The prescribed
-Fourier transform `ρ̂_bp` is smooth. -/
+Fourier transform `ρ♯_bp` is smooth. -/
 theorem ex_3_12_i : ContDiff ℝ (⊤ : ℕ∞) bandPassHat := by
   sorry
 
-/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ♯_bp` is
 nonpositive. -/
 theorem ex_3_12_ii : ∀ ω : ℝ, bandPassHat ω ≤ 0 := by
   sorry
 
-/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ♯_bp` is
 nonzero. -/
 theorem ex_3_12_iii : bandPassHat ≠ 0 := by
   sorry
 
-/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ̂_bp` is
+/-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  `ρ♯_bp` is
 supported in `{1 ≤ |ω| ≤ 2}`. -/
 theorem ex_3_12_iv : tsupport bandPassHat ⊆ {ω : ℝ | 1 ≤ |ω| ∧ |ω| ≤ 2} := by
   sorry
 
 /-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The inverse
-Fourier transform `ρ_bp` of `ρ̂_bp` is a real Schwartz function. -/
+Fourier transform `ρ_bp` of `ρ♯_bp` is a real Schwartz function. -/
 theorem ex_3_12_v : ⇑bandPass = bandPassFun := by
   sorry
 
@@ -595,7 +595,7 @@ theorem ex_3_12_vi : ∀ t : ℝ, bandPass (-t) = bandPass t := by
   sorry
 
 /-- **Example [ex:3.12]** A band-pass filter for every `α > 0`.  The Fourier
-transform of `ρ_bp` is the prescribed `ρ̂_bp`. -/
+transform of `ρ_bp` is the prescribed `ρ♯_bp`. -/
 theorem ex_3_12_vii : ∀ ω : ℝ, filterFourier bandPass ω = (bandPassHat ω : ℂ) := by
   sorry
 
@@ -623,7 +623,7 @@ function. -/
 theorem ex_3_13_i : ⇑mexicanHat = mexicanHatFun := by
   sorry
 
-/-- **Example [ex:3.13]** Mexican hat.  `ρ̂_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
+/-- **Example [ex:3.13]** Mexican hat.  `ρ♯_MH(ω) = √(2π) ω² e^{-ω²/2}`. -/
 theorem ex_3_13_ii :
     ∀ ω : ℝ, filterFourier mexicanHat ω =
       ((Real.sqrt (2 * Real.pi) * ω ^ 2 * Real.exp (-ω ^ 2 / 2) : ℝ) : ℂ) := by

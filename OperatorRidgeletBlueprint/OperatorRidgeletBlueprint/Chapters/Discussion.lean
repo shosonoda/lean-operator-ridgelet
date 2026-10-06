@@ -34,7 +34,7 @@ The results give two complementary chains. For an admissible filter with constan
 analysis and synthesis give
 $`f\xrightarrow{R_\rho}R_\rho f\xrightarrow{S_\rho}C T_\alpha f\xrightarrow{C^{-1}T_\alpha^{-1}}f`.
 Backprojection gives
-$`R_\rho f\xrightarrow{C^{-1}\Lambda_\rho}F_Qf\xrightarrow{\Delta_Q}f`, where
+$`R_\rho f\xrightarrow{C^{-1}W_\rho^*}F_Qf\xrightarrow{\Delta_Q}f`, where
 the Hermite inversion step is stated for $`f` in the core $`\mathcal D_\alpha`.
 
 The admissibility constant is a one-dimensional Calderón-type integral with no dimension

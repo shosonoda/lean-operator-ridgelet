@@ -51,7 +51,7 @@ def MemRaySobolev (s : ℝ) (γ : ℝ → Y) : Prop :=
 def raySobolevNorm (s : ℝ) (γ : ℝ → Y) : ℝ :=
   Real.sqrt (2 * Real.pi * ∫ t : ℝ, (bracket t ^ (2 * s) : ℝ) * ‖γ t‖ ^ 2)
 
-/-- The frequency profile `γ̂(ω) = ∫ γ(b) e^{-iωb} db` of a bias coefficient, in the angular
+/-- The frequency profile `γ♯(ω) = ∫ γ(b) e^{-iωb} db` of a bias coefficient, in the angular
 convention of the manuscript. -/
 def rayProfile (γ : ℝ → Y) (ω : ℝ) : Y :=
   ∫ b : ℝ, Complex.exp ((-(ω * b) : ℝ) * Complex.I) • γ b

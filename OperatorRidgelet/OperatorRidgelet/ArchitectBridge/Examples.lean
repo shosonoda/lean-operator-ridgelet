@@ -72,8 +72,8 @@ attribute [blueprint "examples:mixture-layer-covariance"
   (hasProof := false)] OperatorRidgelet.mixtureLayerCovariance
 
 attribute [blueprint "examples:mem-spectral-core"
-  (statement := /-- $f\in\mathcal D_\alpha$ for a function $f$: $f\in L^2(\mu)$ and $\mathcal
-    G_\mu f\in L^2(\nu)$. -/)
+  (statement := /-- $f\in\mathcal D_\alpha$ for a function $f$: $f\in L^2(\mu)$ and $F_\mu f\in
+    L^2(\nu)$. -/)
   (hasProof := false)] OperatorRidgelet.MemSpectralCore
 
 attribute [blueprint "examples:mem-spectral-core-vec"
@@ -257,12 +257,12 @@ attribute [blueprint "examples:dirichlet-relu-truncation"
 /-! ## Auxiliary lemmas -/
 
 attribute [blueprint "examples:gauss-fourier-congr-ae"
-  (statement := /-- $\mathcal G_\mu f=\mathcal G_\mu g$ when $f=g$ $\mu$-almost everywhere. -/)]
+  (statement := /-- $F_\mu f=F_\mu g$ when $f=g$ $\mu$-almost everywhere. -/)]
   OperatorRidgelet.gaussFourier_congr_ae
 
 attribute [blueprint "examples:to-lp-mem-spectral-core-iff"
   (statement := /-- For $f\in L^2(\mu)$, the class of $f$ lies in $\mathcal D$ if and only if
-    $\mathcal G_\mu f\in L^2(\nu)$. -/)]
+    $F_\mu f\in L^2(\nu)$. -/)]
   OperatorRidgelet.toLp_mem_spectralCore_iff
 
 attribute [blueprint "examples:mem-spectral-core-iff"
@@ -297,7 +297,7 @@ attribute [blueprint "lem:E.2-ii"
   OperatorRidgelet.Paper.lem_E_2_ii
 
 attribute [blueprint "ex:7.1-i-a"
-  (statement := /-- $\mathcal G_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}$. -/)]
+  (statement := /-- $F_Qf_W(\xi)=D^{-1/2}e^{-\kappa_W(\xi)/2}$. -/)]
   OperatorRidgelet.Paper.ex_7_1_i_a
 
 attribute [blueprint "ex:7.1-i-b"
@@ -313,7 +313,7 @@ attribute [blueprint "ex:7.1-i-d"
   OperatorRidgelet.Paper.ex_7_1_i_d
 
 attribute [blueprint "ex:7.1-ii-a"
-  (statement := /-- $G=\mathcal G_Qf_W$ is regular along rays. -/)]
+  (statement := /-- $G=F_Qf_W$ is regular along rays. -/)]
   OperatorRidgelet.Paper.ex_7_1_ii_a
 
 attribute [blueprint "ex:7.1-ii-b"
@@ -426,7 +426,7 @@ attribute [blueprint "ex:7.4-ii-a"
   OperatorRidgelet.Paper.ex_7_4_ii_a
 
 attribute [blueprint "ex:7.4-ii-b"
-  (statement := /-- $\mathcal G_QF_\varphi(\xi)=\int_\Omega
+  (statement := /-- $F_QF_\varphi(\xi)=\int_\Omega
     w_\varphi(y)(1+\sigma_y^2)^{-1/2}e^{-\langle S_y\xi,\xi\rangle/2}\,m(\mathrm
     dy)$. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_b
@@ -442,16 +442,16 @@ attribute [blueprint "ex:7.4-ii-d"
   OperatorRidgelet.Paper.ex_7_4_ii_d
 
 attribute [blueprint "ex:7.4-ii-e"
-  (statement := /-- $\mathcal G_QF_\varphi$ is regular along rays. -/)]
+  (statement := /-- $F_QF_\varphi$ is regular along rays. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_e
 
 attribute [blueprint "ex:7.4-ii-f"
   (statement := /-- The reconstruction formulas hold for $F_\varphi$: $T_\alpha F_\varphi$ is
-    represented by $g_{\mathcal G_QF_\varphi}$. -/)]
+    represented by $g_{F_QF_\varphi}$. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_f
 
 attribute [blueprint "ex:7.4-ii-g"
-  (statement := /-- $R_\rho F_\varphi=\gamma_{\mathcal G_QF_\varphi}$. -/)]
+  (statement := /-- $R_\rho F_\varphi=\gamma_{F_QF_\varphi}$. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_g
 
 attribute [blueprint "ex:7.4-ii-h"
@@ -474,16 +474,16 @@ attribute [blueprint "ex:7.4-ii-k"
   OperatorRidgelet.Paper.ex_7_4_ii_k
 
 attribute [blueprint "ex:7.4-ii-l"
-  (statement := /-- $\mathcal G_Q\mathcal F(\xi)=\int_\Omega(1+\sigma_y^2)^{-1/2}e^{-\langle
+  (statement := /-- $F_Q\mathcal F(\xi)=\int_\Omega(1+\sigma_y^2)^{-1/2}e^{-\langle
     S_y\xi,\xi\rangle/2}b_y\,m(\mathrm dy)$. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_l
 
 attribute [blueprint "ex:7.4-ii-m"
-  (statement := /-- $\mathcal G_Q\mathcal F$ is regular along rays. -/)
+  (statement := /-- $F_Q\mathcal F$ is regular along rays. -/)
 ] OperatorRidgelet.Paper.ex_7_4_ii_m
 
 attribute [blueprint "ex:7.4-ii-n"
-  (statement := /-- $R_\rho\mathcal F=\gamma_{\mathcal G_Q\mathcal F}$. -/)]
+  (statement := /-- $R_\rho\mathcal F=\gamma_{F_Q\mathcal F}$. -/)]
   OperatorRidgelet.Paper.ex_7_4_ii_n
 
 attribute [blueprint "ex:7.4-ii-o"
@@ -493,8 +493,7 @@ attribute [blueprint "ex:7.4-ii-o"
 
 attribute [blueprint "ex:7.4-ii-p"
   (statement := /-- $R_\rho\mathcal F$ synthesizes, with any real Lipschitz non-polynomial
-    $\beta'$, the $Y$-valued target $C^{(\alpha)}_{\beta',\rho}g_{\mathcal
-    G_Q\mathcal F}$. -/)
+    $\beta'$, the $Y$-valued target $C^{(\alpha)}_{\beta',\rho}g_{F_Q\mathcal F}$. -/)
 ] OperatorRidgelet.Paper.ex_7_4_ii_p
 
 attribute [blueprint "ex:7.4-iii-a"

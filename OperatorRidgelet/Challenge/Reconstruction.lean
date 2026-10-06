@@ -145,7 +145,7 @@ theorem thm_4_2_iii_d {α : ℝ} (hα : 0 < α) (β : TemperedDistribution ℝ �
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The frame operator
-`T_α = U_α' U_α` equals the Riesz map `J_α`. -/
+`T_α = F_Q' F_Q` is the Riesz map. -/
 theorem thm_4_3_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -154,8 +154,8 @@ theorem thm_4_3_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `J_α` (hence the
-frame operator) is an isometry `𝓔_α → 𝓔_α'`. -/
+/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `T_α` (the frame
+operator) is an isometry `𝓔_α → 𝓔_α'`. -/
 theorem thm_4_3_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -164,8 +164,8 @@ theorem thm_4_3_i_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
 
 set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] in
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `J_α` (hence the
-frame operator) is a bijection `𝓔_α → 𝓔_α'`. -/
+/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Riesz map `T_α` (the frame
+operator) is a bijection `𝓔_α → 𝓔_α'`. -/
 theorem thm_4_3_i_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -183,7 +183,7 @@ theorem thm_4_3_i_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite �
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The first reconstruction
-formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α` (`T_α⁻¹ = J_α⁻¹` by part (i)). -/
+formula `f = (C^{(α)}_ρ)⁻¹ T_α⁻¹ S_ρ R_ρ f` for `f ∈ 𝓔_α`. -/
 theorem thm_4_3_ii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -203,8 +203,8 @@ theorem thm_4_3_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  If `f ∈ 𝒟_α` and
-`𝒢_Q f ∈ L¹(ν_α)`, then `T_α f` is represented by the bounded continuous function
-`g_{𝒢_Q f}`: `T_α f [g] = ∫ g_{𝒢_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
+`F_Q f ∈ L¹(ν_α)`, then `T_α f` is represented by the bounded continuous function
+`g_{F_Q f}`: `T_α f [g] = ∫ g_{F_Q f}(x) conj(g(x)) μ_Q(dx)` for `g ∈ 𝒟_α`. -/
 theorem thm_4_3_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) (hG : Integrable (gaussFourier μ f) ν) :
@@ -214,7 +214,7 @@ theorem thm_4_3_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  Conversely, for `G ∈ 𝒦_α` the
-functional `U_α' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ U_α' G = W_ρ G`. -/
+functional `F_Q' G ∈ 𝓔_α'` satisfies `R_ρ T_α⁻¹ F_Q' G = W_ρ G`. -/
 theorem thm_4_3_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -224,7 +224,7 @@ theorem thm_4_3_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)`, the
-functional `U_α' G` is represented by `g_G`: `U_α' G [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for
+functional `F_Q' G` is represented by `g_G`: `F_Q' G [g] = ∫ g_G(x) conj(g(x)) μ_Q(dx)` for
 `g ∈ 𝒟_α`. -/
 theorem thm_4_3_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
@@ -237,7 +237,7 @@ theorem thm_4_3_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  For `G ∈ 𝒦_α` the second
-reconstruction formula applied to `U_α' G` reads `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
+reconstruction formula applied to `F_Q' G` reads `F_Q' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G`. -/
 theorem thm_4_3_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -247,8 +247,8 @@ theorem thm_4_3_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  When `G ∈ 𝒦_α ∩ L¹(ν_α)` and
-`γ_G ∈ L¹(λ_α)`, the second reconstruction formula for `U_α' G` is the spectral synthesis
-identity: paired with `g ∈ 𝒟_α`, `U_α' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_ρ[γ_G λ_α](x) conj(g(x)) μ_Q(dx)`
+`γ_G ∈ L¹(λ_α)`, the second reconstruction formula for `F_Q' G` is the spectral synthesis
+identity: paired with `g ∈ 𝒟_α`, `F_Q' G [g] = (C^{(α)}_ρ)⁻¹ ∫ S_ρ[γ_G λ_α](x) conj(g(x)) μ_Q(dx)`
 (Lemma `lem:B.4`). -/
 theorem thm_4_3_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
@@ -263,9 +263,9 @@ theorem thm_4_3_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite
               (starRingEnd ℂ) ((g : Lp ℂ 2 μ) x) ∂μ := by
   sorry
 
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The backprojection `Λ_ρ` is a
-bounded operator `L²(λ_α) → L²(ν_α)`: `Λ_ρ γ` is square integrable with
-`‖Λ_ρ γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
+/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The backprojection `W_ρ^*` is a
+bounded operator `L²(λ_α) → L²(ν_α)`: `W_ρ^* γ` is square integrable with
+`‖W_ρ^* γ‖²_{L²(ν_α)} ≤ M ‖γ‖²_{L²(λ_α)}` for a constant `M`. -/
 theorem thm_4_3_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∃ M : ℝ, ∀ γ : Lp ℂ 2 (parameterMeasure ν),
@@ -273,7 +273,7 @@ theorem thm_4_3_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
         ∫ ξ, ‖backprojection α ν ρ γ ξ‖ ^ 2 ∂ν ≤ M * ‖γ‖ ^ 2 := by
   sorry
 
-/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  `Λ_ρ W_ρ = C^{(α)}_ρ Id` on
+/-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  `W_ρ^* W_ρ = C^{(α)}_ρ Id` on
 `L²(ν_α)`. -/
 theorem thm_4_3_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α)
     (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
@@ -283,8 +283,8 @@ theorem thm_4_3_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  For `f ∈ 𝒟_α` the identity
-`Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` holds pointwise in `ξ`, with `Λ_ρ` computed from the continuous
-Fourier-slice representative `(a,ω) ↦ \widehat{R_ρ f}(a,ω)` of the transform. -/
+`W_ρ^* R_ρ f = C^{(α)}_ρ F_Q f` holds pointwise in `ξ`, with `W_ρ^*` computed from the continuous
+Fourier-slice representative `(a,ω) ↦ (R_ρ f)^\sharp(a,ω)` of the transform. -/
 theorem thm_4_3_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCore μ ν) :
@@ -294,7 +294,7 @@ theorem thm_4_3_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  The Hermite inversion formula
-`E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))] = i^n τ(ξ)^{-n} (d/dt)^n (e^{t²τ(ξ)²/2} 𝒢_Q f(tξ))|_{t=0}`,
+`E_{μ_Q}[f He_n(⟨x,ξ⟩/τ(ξ))] = i^n τ(ξ)^{-n} (d/dt)^n (e^{t²τ(ξ)²/2} F_Q f(tξ))|_{t=0}`,
 `τ(ξ) = ⟨Qξ,ξ⟩^{1/2}`, for `f ∈ 𝒟_α` and `ξ ≠ 0`. -/
 theorem thm_4_3_iv_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
@@ -318,8 +318,8 @@ theorem thm_4_3_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite 
   sorry
 
 /-- **Theorem [thm:4.3]** Reconstruction and the frame operator.  Reconstruction by
-backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α`, with `Δ_Q` the inverse of
-`𝒢_Q` on its range on `𝒟_α`. -/
+backprojection: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ W_ρ^* R_ρ f]` for `f ∈ 𝒟_α`, with `Δ_Q` the inverse of
+`F_Q` on its range on `𝒟_α`. -/
 theorem thm_4_3_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)
@@ -357,7 +357,7 @@ theorem lem_B_4_ii (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν
 /-! ### Lemma `lem:B.5` -/
 
 /-- **Lemma [lem:B.5]** Entire extension and totality of the Hermite coefficients.
-For `f ∈ L²(μ_Q)` and `ξ ≠ 0`, `z ↦ G_f(zξ) = e^{z²τ(ξ)²/2} 𝒢_Q f(zξ)` is entire. -/
+For `f ∈ L²(μ_Q)` and `ξ ≠ 0`, `z ↦ G_f(zξ) = e^{z²τ(ξ)²/2} F_Q f(zξ)` is entire. -/
 theorem lem_B_5_i {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q) (μ : Measure H)
     [IsProbabilityMeasure μ] (hμ : IsCenteredGaussian Q μ) (f : H → ℂ) (hf : MemLp f 2 μ)
     (ξ : H) (hξ : ξ ≠ 0) :
@@ -436,7 +436,7 @@ theorem prop_B_8_i (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  As an `L²(ν_α)` class, `Λ_ρ γ` does not depend on the jointly measurable
+projection.  As an `L²(ν_α)` class, `W_ρ^* γ` does not depend on the jointly measurable
 Fourier representative of `γ`. -/
 theorem prop_B_8_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ)
@@ -447,7 +447,7 @@ theorem prop_B_8_ii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ γ ∈ L²(ν_α)` with `‖Λ_ρ γ‖_{L²(ν_α)} ≤ √C ‖γ‖_𝒴`, `C = C^{(α)}_ρ`. -/
+projection.  `W_ρ^* γ ∈ L²(ν_α)` with `‖W_ρ^* γ‖_{L²(ν_α)} ≤ √C ‖γ‖_𝒴`, `C = C^{(α)}_ρ`. -/
 theorem prop_B_8_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -457,8 +457,8 @@ theorem prop_B_8_iii (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ` is the Hilbert adjoint of `W_ρ : L²(ν_α) → 𝒴`:
-`⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨Λ_ρ γ, F⟩_{L²(ν_α)}`. -/
+projection.  `W_ρ^*` is the Hilbert adjoint of `W_ρ : L²(ν_α) → 𝒴`:
+`⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨W_ρ^* γ, F⟩_{L²(ν_α)}`. -/
 theorem prop_B_8_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -469,7 +469,7 @@ theorem prop_B_8_iv (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Λ_ρ W_ρ = C Id`. -/
+projection.  `W_ρ^* W_ρ = C Id`. -/
 theorem prop_B_8_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
     {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -479,7 +479,7 @@ theorem prop_B_8_v (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ` is the orthogonal projection onto `Ran R_ρ`:
+projection.  `Π_ρ = C⁻¹ W_ρ P_{𝒦_α} W_ρ^*` is the orthogonal projection onto `Ran R_ρ`:
 `Π_ρ γ ∈ Ran R_ρ` and `γ - Π_ρ γ ⊥ Ran R_ρ`. -/
 theorem prop_B_8_vi (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -490,7 +490,7 @@ theorem prop_B_8_vi (μ ν : Measure H) [IsProbabilityMeasure μ]
   sorry
 
 /-- **Proposition [prop:B.8]** Bounded backprojection and orthogonal range
-projection.  The minimum-norm solution of `S_ρ γ = F ∈ 𝓔_α'` is `C⁻¹ R_ρ J_α⁻¹ F`: it solves
+projection.  The minimum-norm solution of `S_ρ γ = F ∈ 𝓔_α'` is `C⁻¹ R_ρ T_α⁻¹ F`: it solves
 the equation, and every solution has at least its norm. -/
 theorem prop_B_8_vii (μ ν : Measure H) [IsProbabilityMeasure μ]
     [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν)
@@ -736,7 +736,7 @@ theorem thm_4_6_plancherel_ii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [S
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:3.11`(ii) for
-`Y`-valued targets: `R_ρ = W_ρ U_α`. -/
+`Y`-valued targets: `R_ρ = W_ρ F_Q`. -/
 theorem thm_4_6_plancherel_ii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -757,7 +757,7 @@ set_option linter.unusedVariables false in
 omit [CompleteSpace H] [SecondCountableTopology H] [CompleteSpace Y] [SecondCountableTopology Y]
   in
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(i) for `Y`-valued
-targets: the frame operator `T_α = U_α' U_α` equals the Riesz map `J_α` of `𝓔_α(Y)`. -/
+targets: the frame operator `T_α = F_Q' F_Q` is the Riesz map of `𝓔_α(Y)`. -/
 theorem thm_4_6_frame_i_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -816,8 +816,8 @@ theorem thm_4_6_frame_ii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: for `f ∈ 𝒟_α(Y)` with `𝒢_Q f ∈ L¹(ν_α; Y)`, `T_α f` is represented by
-`g_{𝒢_Q f}`: `T_α f [g] = ∫ ⟨g_{𝒢_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
+`Y`-valued targets: for `f ∈ 𝒟_α(Y)` with `F_Q f ∈ L¹(ν_α; Y)`, `T_α f` is represented by
+`g_{F_Q f}`: `T_α f [g] = ∫ ⟨g_{F_Q f}(x), g(x)⟩_Y μ_Q(dx)`. -/
 theorem thm_4_6_frame_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) (f : spectralCoreVec Y μ ν)
@@ -829,7 +829,7 @@ theorem thm_4_6_frame_iii_a (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: `R_ρ T_α⁻¹ U_α' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
+`Y`-valued targets: `R_ρ T_α⁻¹ F_Q' G = W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_4_6_frame_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -839,7 +839,7 @@ theorem thm_4_6_frame_iii_b (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `U_α' G` is represented by `g_G`. -/
+`Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)`, `F_Q' G` is represented by `g_G`. -/
 theorem thm_4_6_frame_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -850,7 +850,7 @@ theorem thm_4_6_frame_iii_c (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
-`Y`-valued targets: `U_α' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
+`Y`-valued targets: `F_Q' G = (C^{(α)}_ρ)⁻¹ S_ρ W_ρ G` for `G ∈ 𝒦_α(Y)`. -/
 theorem thm_4_6_frame_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) :
@@ -861,7 +861,7 @@ theorem thm_4_6_frame_iii_d (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iii) for
 `Y`-valued targets: when `G ∈ 𝒦_α(Y) ∩ L¹(ν_α; Y)` and `γ_G ∈ L¹(λ_α; Y)`, the second
-reconstruction formula for `U_α' G` is the spectral synthesis identity paired with
+reconstruction formula for `F_Q' G` is the spectral synthesis identity paired with
 `g ∈ 𝒟_α(Y)`. -/
 theorem thm_4_6_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
@@ -877,7 +877,7 @@ theorem thm_4_6_frame_iii_e (μ ν : Measure H) [IsProbabilityMeasure μ] [Sigma
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: the backprojection `Λ_ρ` is a bounded operator
+`Y`-valued targets: the backprojection `W_ρ^*` is a bounded operator
 `L²(λ_α; Y) → L²(ν_α; Y)`. -/
 theorem thm_4_6_frame_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
@@ -887,7 +887,7 @@ theorem thm_4_6_frame_iv_a (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasur
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `Λ_ρ W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
+`Y`-valued targets: `W_ρ^* W_ρ = C^{(α)}_ρ Id` on `L²(ν_α; Y)`. -/
 theorem thm_4_6_frame_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasure] {α : ℝ}
     (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ) (hρ : IsAdmissible α ρ) :
     ∀ F : H → Y, StronglyMeasurable F → MemLp F 2 ν →
@@ -896,7 +896,7 @@ theorem thm_4_6_frame_iv_b (ν : Measure H) [SigmaFinite ν] [ν.IsOpenPosMeasur
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `Λ_ρ R_ρ f = C^{(α)}_ρ 𝒢_Q f` pointwise for `f ∈ 𝒟_α(Y)`, with `Λ_ρ`
+`Y`-valued targets: `W_ρ^* R_ρ f = C^{(α)}_ρ F_Q f` pointwise for `f ∈ 𝒟_α(Y)`, with `W_ρ^*`
 computed from the Fourier-slice representative of `R_ρ f`. -/
 theorem thm_4_6_frame_iv_c (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
@@ -935,7 +935,7 @@ theorem thm_4_6_frame_iv_e (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaF
   sorry
 
 /-- **Theorem [thm:4.6]** Vector-valued extension.  Theorem `thm:4.3`(iv) for
-`Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ Λ_ρ R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
+`Y`-valued targets: `f = Δ_Q[(C^{(α)}_ρ)⁻¹ W_ρ^* R_ρ f]` for `f ∈ 𝒟_α(Y)`. -/
 theorem thm_4_6_frame_iv_f (μ ν : Measure H) [IsProbabilityMeasure μ] [SigmaFinite ν]
     [ν.IsOpenPosMeasure] {α : ℝ} (hα : 0 < α) (hν : IsHomogeneous α ν) (ρ : SchwartzMap ℝ ℝ)
     (hρ : IsAdmissible α ρ) {Q : H →L[ℝ] H} (hQ : IsTraceClassCovariance Q)

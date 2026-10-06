@@ -15,15 +15,15 @@ definitions carry `tempered:` labels.  Statements whose proof is still `sorry` c
 /-! ## Definitions: the distributional admissibility constant (shared with Section 4) -/
 
 attribute [blueprint "tempered:test-filter"
-  (statement := /-- The test filter $\omega\mapsto\widehat\rho(-\omega)|\omega|^{-\alpha}$ as
+  (statement := /-- The test filter $\omega\mapsto\rho^\sharp(-\omega)|\omega|^{-\alpha}$ as
     a Schwartz function (when one with these values exists, in particular for band-pass
     $\rho$). -/)
   (hasProof := false)] OperatorRidgelet.temperedTestFilter
 
 attribute [blueprint "tempered:admissibility-const"
   (statement := /-- The distributional admissibility constant
-    $C^{(\alpha)}_{\beta,\rho}=\frac1{2\pi}\langle\widehat\beta,
-    \widehat\rho(-\,\cdot\,)|\cdot|^{-\alpha}\rangle$. -/)
+    $C^{(\alpha)}_{\beta,\rho}=\frac1{2\pi}\langle\beta^\sharp,
+    \rho^\sharp(-\,\cdot\,)|\cdot|^{-\alpha}\rangle$. -/)
   (hasProof := false)] OperatorRidgelet.temperedAdmissibilityConst
 
 /-! ## Definitions: real distributions, cutoffs, approximate identities -/
@@ -49,7 +49,7 @@ attribute [blueprint "tempered:distribution-convolution"
 
 attribute [blueprint "def:5.1-cutoff"
   (statement := /-- An even $\chi\in C_c^\infty(\mathbb R\setminus\{0\})$ equal to one on a
-    neighbourhood of $\operatorname{supp}\widehat\rho$. -/)
+    neighbourhood of $\operatorname{supp}\rho^\sharp$. -/)
   (hasProof := false)] OperatorRidgelet.IsCutoff
 
 attribute [blueprint "def:5.1-approximate-identity"
@@ -60,12 +60,12 @@ attribute [blueprint "def:5.1-approximate-identity"
 
 attribute [blueprint "def:5.1-spectrum"
   (statement := /-- The regularized spectrum
-    $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
+    $\beta_\varepsilon^\sharp=\chi\,(\beta^\sharp*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedSpectrum
 
 attribute [blueprint "def:5.1-activation"
   (statement := /-- The real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi\,(\widehat\beta*\eta_\varepsilon)$. -/)
+    $\beta_\varepsilon^\sharp=\chi\,(\beta^\sharp*\eta_\varepsilon)$. -/)
   (hasProof := false)] OperatorRidgelet.regularizedActivation
 
 /-! ## Definitions: regularized synthesis and its limit
@@ -125,7 +125,7 @@ attribute [blueprint "tempered:mem-activation-space-fun"
 
 attribute [blueprint "cor:5.3-scale"
   (statement := /-- The constant $-\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)
+    R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.reluAdmissibilityScale
 
 attribute [blueprint "cor:5.3-normalized-filter"
@@ -134,18 +134,18 @@ attribute [blueprint "cor:5.3-normalized-filter"
   (hasProof := false)] OperatorRidgelet.reluNormalizedFilter
 
 attribute [blueprint "lem:C.1-fourier-coordinate"
-  (statement := /-- The coordinate $\langle\omega\rangle^sB^{-t}\widehat\beta$ as a tempered
+  (statement := /-- The coordinate $\langle\omega\rangle^sB^{-t}\beta^\sharp$ as a tempered
     distribution. -/)
   (hasProof := false)] OperatorRidgelet.activationFourierCoordinate
 
 attribute [blueprint "lem:C.1-coordinate"
   (statement := /-- The element of $L^2(\mathbb R)$ representing
-    $\langle\omega\rangle^sB^{-t}\widehat\beta$, when there is one. -/)
+    $\langle\omega\rangle^sB^{-t}\beta^\sharp$, when there is one. -/)
   (hasProof := false)] OperatorRidgelet.activationCoordinate
 
 attribute [blueprint "lem:C.1-norm"
   (statement := /-- $\|\beta\|_{\mathcal
-    A_{s,t}}=\|\langle\omega\rangle^sB^{-t}\widehat\beta\|_{L^2}$. -/)
+    A_{s,t}}=\|\langle\omega\rangle^sB^{-t}\beta^\sharp\|_{L^2}$. -/)
   (hasProof := false)] OperatorRidgelet.activationNorm
 
 attribute [blueprint "lem:C.1-test-coordinate"
@@ -162,7 +162,7 @@ attribute [blueprint "lem:C.1-test-norm"
 
 attribute [blueprint "def:5.1-i"
   (statement := /-- For band-pass $\rho$ there is an even $\chi\in C_c^\infty(\mathbb
-    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\widehat\rho$. -/)]
+    R\setminus\{0\})$ equal to one on a neighbourhood of $\operatorname{supp}\rho^\sharp$. -/)]
   OperatorRidgelet.Paper.def_5_1_i
 
 attribute [blueprint "def:5.1-ii"
@@ -171,13 +171,13 @@ attribute [blueprint "def:5.1-ii"
   OperatorRidgelet.Paper.def_5_1_ii
 
 attribute [blueprint "def:5.1-iii"
-  (statement := /-- $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)\in
+  (statement := /-- $\beta_\varepsilon^\sharp=\chi(\beta^\sharp*\eta_\varepsilon)\in
     C_c^\infty(\mathbb R\setminus\{0\})$. -/)]
   OperatorRidgelet.Paper.def_5_1_iii
 
 attribute [blueprint "def:5.1-iv"
   (statement := /-- There is a real Schwartz function $\beta_\varepsilon$ with
-    $\widehat{\beta_\varepsilon}=\chi(\widehat\beta*\eta_\varepsilon)$. -/)]
+    $\beta_\varepsilon^\sharp=\chi(\beta^\sharp*\eta_\varepsilon)$. -/)]
   OperatorRidgelet.Paper.def_5_1_iv
 
 attribute [blueprint "def:5.1-v"
@@ -228,25 +228,25 @@ attribute [blueprint "thm:5.2-vi"
 /-! ## Paper statements: Corollary `cor:5.3` -/
 
 attribute [blueprint "cor:5.3-i"
-  (statement := /-- $\widehat{\operatorname{ReLU}}=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'$:
+  (statement := /-- $\operatorname{ReLU}^\sharp=-\operatorname{fp}(\omega^{-2})+i\pi\delta_0'$:
     tested against $\varphi$, the finite part
     $\lim_{\varepsilon\downarrow0}\bigl(\int_{|\omega|>\varepsilon}\varphi(\omega)\omega^{-2}\,
     \mathrm d\omega-2\varphi(0)/\varepsilon\bigr)$ equals
-    $-\langle\widehat{\operatorname{ReLU}},\varphi\rangle-i\pi\varphi'(0)$. -/)]
+    $-\langle\operatorname{ReLU}^\sharp,\varphi\rangle-i\pi\varphi'(0)$. -/)]
   OperatorRidgelet.Paper.cor_5_3_i
 
 attribute [blueprint "cor:5.3-ii"
-  (statement := /-- $\widehat{\operatorname{ReLU}}=-\omega^{-2}$ away from the origin. -/)]
+  (statement := /-- $\operatorname{ReLU}^\sharp=-\omega^{-2}$ away from the origin. -/)]
   OperatorRidgelet.Paper.cor_5_3_ii
 
 attribute [blueprint "cor:5.3-iii"
-  (statement := /-- For nonzero, even, nonpositive $\widehat\rho\in C_c^\infty(\mathbb
+  (statement := /-- For nonzero, even, nonpositive $\rho^\sharp\in C_c^\infty(\mathbb
     R\setminus\{0\})$, $C^{(\alpha)}_{\operatorname{ReLU},\rho}=-\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)]
+    R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,\mathrm d\omega$. -/)]
   OperatorRidgelet.Paper.cor_5_3_iii
 
 attribute [blueprint "cor:5.3-iv"
-  (statement := /-- $-\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)|\omega|^{-\alpha-2}\,
+  (statement := /-- $-\frac1{2\pi}\int_{\mathbb R}\rho^\sharp(\omega)|\omega|^{-\alpha-2}\,
     \mathrm d\omega>0$. -/)]
   OperatorRidgelet.Paper.cor_5_3_iv
 
@@ -298,24 +298,24 @@ attribute [blueprint "ex:5.4-gaussian"
 
 attribute [blueprint "lem:C.1-i"
   (statement := /-- For $\beta\in\mathcal A_{s,t}$ the coordinate
-    $\langle\omega\rangle^sB^{-t}\widehat\beta$ is represented by an element of $L^2(\mathbb
+    $\langle\omega\rangle^sB^{-t}\beta^\sharp$ is represented by an element of $L^2(\mathbb
     R)$. -/)]
   OperatorRidgelet.Paper.lem_C_1_i
 
 attribute [blueprint "lem:C.1-ii"
-  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is injective on
+  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\beta^\sharp$ is injective on
     $\mathcal A_{s,t}$. -/)]
   OperatorRidgelet.Paper.lem_C_1_ii
 
 attribute [blueprint "lem:C.1-iii"
-  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta$ is onto $L^2(\mathbb
+  (statement := /-- $\beta\mapsto\langle\omega\rangle^sB^{-t}\beta^\sharp$ is onto $L^2(\mathbb
     R)$: every $\sigma$ is the coordinate of
-    $\beta=\mathcal F^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)]
+    $\beta=F_{\mathbb R}^{-1}[B^t\langle\omega\rangle^{-s}\sigma]\in\mathcal A_{s,t}$. -/)]
   OperatorRidgelet.Paper.lem_C_1_iii
 
 attribute [blueprint "lem:C.1-iv"
-  (statement := /-- $\bigl|\frac1{2\pi}\langle\widehat\beta,r\rangle\bigr|\le\frac1{2\pi}
-    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal H^\sharp_{s,t}}$. -/)]
+  (statement := /-- $\bigl|\frac1{2\pi}\langle\beta^\sharp,r\rangle\bigr|\le\frac1{2\pi}
+    \|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal T^\sharp_{s,t}}$. -/)]
   OperatorRidgelet.Paper.lem_C_1_iv
 
 attribute [blueprint "lem:C.1-v"

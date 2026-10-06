@@ -9,10 +9,10 @@ import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 For a Schwartz function `φ` supported away from `0`, write `φ = ω² ψ` with `ψ = φ/ω²` Schwartz
 (`SchwartzMap.exists_eq_inv_sq_mul`).  In the manuscript convention the Fourier transform of
 `ω² ψ` is `-(ψ̂)''`, so that
-`⟨ReLU^, φ⟩ = ∫ ReLU(x) φ̂(x) dx = -∫_0^∞ x (ψ̂)''(x) dx = -ψ̂(0) = -∫ φ(ω) ω^{-2} dω`,
+`⟨ReLU^, φ⟩ = ∫ ReLU(x) φ♯(x) dx = -∫_0^∞ x (ψ̂)''(x) dx = -ψ̂(0) = -∫ φ(ω) ω^{-2} dω`,
 by two integrations by parts on `(0, ∞)`.  This is Corollary `cor:5.3`(ii); the
 formula and the positivity of the ReLU admissibility constant `C^{(α)}_{ReLU,ρ}` for even
-nonpositive band-pass `ρ̂` (parts (iii)–(v)) and the instance `ρ = ρ_bp` follow.
+nonpositive band-pass `ρ♯` (parts (iii)–(v)) and the instance `ρ = ρ_bp` follow.
 -/
 
 noncomputable section
@@ -157,8 +157,8 @@ theorem angularFourierDistribution_reluDistribution_apply (φ : SchwartzMap ℝ 
 
 /-! ### The ReLU admissibility constant -/
 
-/-- **Corollary `cor:5.3`(iii)**: for even real band-pass `ρ̂`,
-`C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω`. -/
+/-- **Corollary `cor:5.3`(iii)**: for even real band-pass `ρ♯`,
+`C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω`. -/
 theorem temperedAdmissibilityConst_reluDistribution {α : ℝ} (hα : 0 < α) {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω) :
@@ -190,7 +190,7 @@ theorem temperedAdmissibilityConst_reluDistribution {α : ℝ} (hα : 0 < α) {�
   push_cast
   ring
 
-/-- The integrand `ω ↦ ρ̂(ω).re |ω|^s` of the ReLU admissibility constant is continuous for
+/-- The integrand `ω ↦ ρ♯(ω).re |ω|^s` of the ReLU admissibility constant is continuous for
 band-pass `ρ` (it vanishes near the origin). -/
 theorem continuous_filterFourier_re_mul_abs_rpow {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ)
     (s : ℝ) : Continuous fun ω : ℝ => (filterFourier ρ ω).re * |ω| ^ s := by
@@ -216,8 +216,8 @@ theorem hasCompactSupport_filterFourier_re_mul_abs_rpow {ρ : SchwartzMap ℝ �
     HasCompactSupport fun ω : ℝ => (filterFourier ρ ω).re * |ω| ^ s :=
   (hρ.hasCompactSupport.comp_left (g := Complex.re) Complex.zero_re).mul_right
 
-/-- **Corollary `cor:5.3`(iv)**: for nonzero even nonpositive band-pass `ρ̂`, the
-constant `-(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω` is positive. -/
+/-- **Corollary `cor:5.3`(iv)**: for nonzero even nonpositive band-pass `ρ♯`, the
+constant `-(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω` is positive. -/
 theorem reluAdmissibilityScale_pos (α : ℝ) {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsBandPass ρ) (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_nonpos : ∀ ω : ℝ, (filterFourier ρ ω).re ≤ 0) :
@@ -252,7 +252,7 @@ theorem reluAdmissibilityScale_pos (α : ℝ) {ρ : SchwartzMap ℝ ℝ}
     exact mul_neg_of_neg_of_pos hre (Real.rpow_pos_of_pos (abs_pos.mpr hω₀0) _)
   exact hG_cont.isOpen_support.measure_pos volume ⟨ω₀, hGpos.ne'⟩
 
-/-- The constant `-(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω` is homogeneous in the filter. -/
+/-- The constant `-(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω` is homogeneous in the filter. -/
 theorem reluAdmissibilityScale_smul (α c : ℝ) (ρ : SchwartzMap ℝ ℝ) :
     reluAdmissibilityScale α (c • ρ) = c * reluAdmissibilityScale α ρ := by
   unfold reluAdmissibilityScale
@@ -281,7 +281,7 @@ section BandPass
 
 open OperatorRidgelet.Filters
 
-/-- `ρ̂_bp` is nonpositive. -/
+/-- `ρ♯_bp` is nonpositive. -/
 theorem bandPassHat_nonpos (ω : ℝ) : bandPassHat ω ≤ 0 := by
   unfold bandPassHat bump
   split_ifs

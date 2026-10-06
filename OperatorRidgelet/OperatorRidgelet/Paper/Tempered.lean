@@ -42,7 +42,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteS
 /-! ### Definition `def:5.1` -/
 
 /-- **Definition [def:5.1]** Regularized synthesis.  For a band-pass `ρ` there
-is an even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ̂`. -/
+is an even `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a neighbourhood of `supp ρ♯`. -/
 theorem def_5_1_i (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) :
     ∃ χ : ℝ → ℝ, IsCutoff ρ χ :=
   hρ.exists_isCutoff
@@ -55,7 +55,7 @@ theorem def_5_1_ii : ∃ η : ℝ → ℝ → ℝ, IsApproximateIdentity η :=
 set_option linter.unusedVariables false in
 /-- **Definition [def:5.1]** Regularized synthesis.  For real `β`, band-pass
 `ρ`, a cutoff `χ`, and an approximate identity `(η_ε)`, the regularized spectrum
-`β̂_ε = χ (β̂ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})` for every `ε > 0`. -/
+`β♯_ε = χ (β♯ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})` for every `ε > 0`. -/
 theorem def_5_1_iii (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
@@ -67,7 +67,7 @@ theorem def_5_1_iii (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistributio
 
 set_option linter.unusedVariables false in
 /-- **Definition [def:5.1]** Regularized synthesis.  There is a real Schwartz
-function `β_ε` with `β̂_ε = χ (β̂ * η_ε)`: the chosen `regularizedActivation` has this Fourier
+function `β_ε` with `β♯_ε = χ (β♯ * η_ε)`: the chosen `regularizedActivation` has this Fourier
 transform. -/
 theorem def_5_1_iv (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
@@ -77,7 +77,7 @@ theorem def_5_1_iv (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution
 
 set_option linter.unusedVariables false in
 /-- **Definition [def:5.1]** Regularized synthesis.  The real Schwartz function
-`β_ε` with `β̂_ε = χ (β̂ * η_ε)` is unique. -/
+`β_ε` with `β♯_ε = χ (β♯ * η_ε)` is unique. -/
 theorem def_5_1_v (β : TemperedDistribution ℝ ℂ) (hβ : IsRealDistribution β)
     (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ) (χ : ℝ → ℝ) (hχ : IsCutoff ρ χ) (η : ℝ → ℝ → ℝ)
     (hη : IsApproximateIdentity η) (ε : ℝ) (hε : 0 < ε) :
@@ -219,8 +219,8 @@ theorem cor_5_3_ii :
   fun φ hφ => angularFourierDistribution_reluDistribution_apply φ hφ
 
 set_option linter.unusedVariables false in
-/-- **Corollary [cor:5.3]** ReLU is admissible.  If `ρ̂ ∈ C_c^∞(ℝ ∖ {0})` is
-nonzero, even, and nonpositive, then `C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω`. -/
+/-- **Corollary [cor:5.3]** ReLU is admissible.  If `ρ♯ ∈ C_c^∞(ℝ ∖ {0})` is
+nonzero, even, and nonpositive, then `C^{(α)}_{ReLU,ρ} = -(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω`. -/
 theorem cor_5_3_iii {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
@@ -230,7 +230,7 @@ theorem cor_5_3_iii {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : 
 
 set_option linter.unusedVariables false in
 /-- **Corollary [cor:5.3]** ReLU is admissible.  Under the same hypotheses the
-constant `-(2π)⁻¹ ∫ ρ̂(ω) |ω|^{-α-2} dω` is positive. -/
+constant `-(2π)⁻¹ ∫ ρ♯(ω) |ω|^{-α-2} dω` is positive. -/
 theorem cor_5_3_iv {α : ℝ} (hα : 0 < α) (ρ : SchwartzMap ℝ ℝ) (hρ : IsBandPass ρ)
     (hρ_real : ∀ ω : ℝ, (filterFourier ρ ω).im = 0)
     (hρ_even : ∀ ω : ℝ, filterFourier ρ (-ω) = filterFourier ρ ω)
@@ -353,7 +353,7 @@ theorem ex_5_4_gaussian {α : ℝ} (hα : 0 < α) :
 /-! ### Lemma `lem:C.1` -/
 
 /-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is well defined on `𝒜_{s,t}`: its value is represented by an element
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is well defined on `𝒜_{s,t}`: its value is represented by an element
 of `L²(ℝ)`. -/
 theorem lem_C_1_i (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) :
@@ -362,7 +362,7 @@ theorem lem_C_1_i (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
   exists_activationCoordinate_of_mem hβ
 
 /-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is injective on `𝒜_{s,t}`. -/
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is injective on `𝒜_{s,t}`. -/
 theorem lem_C_1_ii (s t : ℝ) (β β' : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) (hβ' : MemActivationSpace s t β')
     (h : activationCoordinate s t β = activationCoordinate s t β') :
@@ -370,7 +370,7 @@ theorem lem_C_1_ii (s t : ℝ) (β β' : TemperedDistribution ℝ ℂ)
   eq_of_activationCoordinate_eq hβ hβ' h
 
 /-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-map `β ↦ ⟨ω⟩^s B^{-t} β̂` is onto `L²(ℝ)`: every `σ ∈ L²(ℝ)` is the coordinate of the activation
+map `β ↦ ⟨ω⟩^s B^{-t} β♯` is onto `L²(ℝ)`: every `σ ∈ L²(ℝ)` is the coordinate of the activation
 `β = 𝓕⁻¹[B^t ⟨ω⟩^{-s} σ] ∈ 𝒜_{s,t}` (the vendored `activationRealization`); the isometry is the
 definition of the norm `‖β‖_{𝒜_{s,t}} = ‖σ‖_{L²}`. -/
 theorem lem_C_1_iii (s t : ℝ) (σ : L2 ℝ volume) :
@@ -379,7 +379,7 @@ theorem lem_C_1_iii (s t : ℝ) (σ : L2 ℝ volume) :
   ⟨memActivationSpace_activationRealization s t σ, activationCoordinate_activationRealization s t σ⟩
 
 /-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
-duality bound `|(2π)⁻¹ ⟨β̂, r⟩| ≤ (2π)⁻¹ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}` for `β ∈ 𝒜_{s,t}` and
+duality bound `|(2π)⁻¹ ⟨β♯, r⟩| ≤ (2π)⁻¹ ‖β‖_{𝒜_{s,t}} ‖r‖_{ℋ^♯_{s,t}}` for `β ∈ 𝒜_{s,t}` and
 Schwartz `r`. -/
 theorem lem_C_1_iv (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) (r : SchwartzMap ℝ ℂ) :
@@ -392,7 +392,7 @@ theorem lem_C_1_iv (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
 /-- **Lemma [lem:C.1]** Hilbert structure and continuous activation pairing.  The
 pairing extends to the completion of the test filters in `ℋ^♯_{s,t}`, which is `L²(ℝ)` through
 the coordinate `r ↦ ⟨ω⟩^{-s} B^t r`: there is a continuous linear functional on `L²(ℝ)` of norm
-at most `(2π)⁻¹ ‖β‖_{𝒜_{s,t}}` that agrees with `(2π)⁻¹ ⟨β̂, r⟩` on the test filters. -/
+at most `(2π)⁻¹ ‖β‖_{𝒜_{s,t}}` that agrees with `(2π)⁻¹ ⟨β♯, r⟩` on the test filters. -/
 theorem lem_C_1_v (s t : ℝ) (β : TemperedDistribution ℝ ℂ)
     (hβ : MemActivationSpace s t β) :
     ∃ Φ : L2 ℝ volume →L[ℂ] ℂ, ‖Φ‖ ≤ (2 * Real.pi)⁻¹ * activationNorm s t β ∧

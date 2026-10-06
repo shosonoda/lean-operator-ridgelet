@@ -43,11 +43,11 @@ The Gaussian objects are represented as follows.
 
 ## The Hilbert space `𝓔_α`
 
-The manuscript completes the pre-Hilbert space `𝒟_α = {f ∈ L²(μ) : 𝒢_μ f ∈ L²(ν)}` in the
+The manuscript completes the pre-Hilbert space `𝒟_α = {f ∈ L²(μ) : F_μ f ∈ L²(ν)}` in the
 spectral norm.  Building that completion in Lean would require the positivity of the spectral
 form inside a definition (it is Lemma 3.8, a theorem).  We therefore represent `𝓔_α` by the
-closed subspace `𝒦_α = closure (𝒢_μ 𝒟_α) ⊆ L²(ν)` (`spectralRange`), to which Lemma 3.8 shows
-`𝓔_α` is unitarily equivalent; the unitary `U_α` becomes the map `spectralEmbed : 𝒟_α → 𝒦_α`,
+closed subspace `𝒦_α = closure (F_μ 𝒟_α) ⊆ L²(ν)` (`spectralRange`), to which Lemma 3.8 shows
+`𝓔_α` is unitarily equivalent; the unitary `F_Q` becomes the map `spectralEmbed : 𝒟_α → 𝒦_α`,
 and the Riesz map and the extension of `R_ρ` are stated on `𝒦_α`.
 
 ## The coefficient operator
@@ -58,7 +58,7 @@ For `a ≠ 0`, this is the restriction to the line through the origin spanned by
 `⟨a,x⟩ + c`, with `c = -b` relative to the manuscript.
 
 `W_ρ G ∈ L²(λ_α)` is "the function whose partial Fourier transform in the bias is
-`ρ̂(ω) G(-ωa)`".  The partial Fourier transform of an `L²` function is characterized through
+`ρ♯(ω) G(-ωa)`".  The partial Fourier transform of an `L²` function is characterized through
 Parseval's identity against Schwartz test functions in the bias variable together with the
 square integrability of the transform for almost every direction (`HasBiasFourier`), and
 `spectralCoefficient` is the element of `L²(λ_α)` with that property (junk value `0` if there is
@@ -66,7 +66,7 @@ none); Lemma 3.6 states existence, uniqueness, and the explicit formula `coeffic
 
 ## Fourier convention
 
-The one-dimensional Fourier transform `ρ̂(ω) = ∫ ρ(t) e^{-itω} dt` is the vendored
+The one-dimensional Fourier transform `ρ♯(ω) = ∫ ρ(t) e^{-itω} dt` is the vendored
 `LeanRidgelet.Fourier.angularFourierIntegralInner` on `ℝ`, not Mathlib's `𝓕` (which carries
 `2π` in the exponent).
 -/
@@ -115,7 +115,7 @@ manuscript, `ĥ(ω) = ∫ h(t) exp(-itω) dt`. -/
 def lineFourier (h : ℝ → ℂ) (ω : ℝ) : ℂ :=
   LeanRidgelet.Fourier.angularFourierIntegralInner h ω
 
-/-- The Fourier transform `ρ̂(ω) = ∫ ρ(t) exp(-itω) dt` of a real filter. -/
+/-- The Fourier transform `ρ♯(ω) = ∫ ρ(t) exp(-itω) dt` of a real filter. -/
 def filterFourier (ρ : ℝ → ℝ) (ω : ℝ) : ℂ :=
   lineFourier (fun t => (ρ t : ℂ)) ω
 
@@ -136,8 +136,8 @@ section Basic
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
 
-/-- The weighted Fourier transform `𝒢_μ f (ξ) = ∫ f(x) exp(-i⟪x,ξ⟫) dμ(x)`, the Fourier
-transform of the finite complex measure `f μ`; for `μ = μ_Q` this is the manuscript's `𝒢_Q`. -/
+/-- The weighted Fourier transform `F_μ f (ξ) = ∫ f(x) exp(-i⟪x,ξ⟫) dμ(x)`, the Fourier
+transform of the finite complex measure `f μ`; for `μ = μ_Q` this is the manuscript's `F_Q`. -/
 def gaussFourier (μ : Measure H) (f : H → ℂ) (ξ : H) : ℂ :=
   ∫ x, f x * character ξ x ∂μ
 
@@ -237,18 +237,18 @@ end Gaussian
 /-! ### Admissible filters -/
 
 /-- The cross admissibility constant
-`C^{(α)}_{ρ₁,ρ₂} = (2π)⁻¹ ∫ ρ̂₁(ω) conj(ρ̂₂(ω)) |ω|^{-α} dω`. -/
+`C^{(α)}_{ρ₁,ρ₂} = (2π)⁻¹ ∫ ρ♯₁(ω) conj(ρ♯₂(ω)) |ω|^{-α} dω`. -/
 def crossAdmissibilityConst (α : ℝ) (ρ₁ ρ₂ : ℝ → ℝ) : ℂ :=
   ((2 * Real.pi)⁻¹ : ℝ) *
     ∫ ω : ℝ, filterFourier ρ₁ ω * (starRingEnd ℂ) (filterFourier ρ₂ ω) *
       ((|ω| ^ (-α) : ℝ) : ℂ)
 
-/-- The admissibility constant `C^{(α)}_ρ = (2π)⁻¹ ∫ |ρ̂(ω)|² |ω|^{-α} dω`. -/
+/-- The admissibility constant `C^{(α)}_ρ = (2π)⁻¹ ∫ |ρ♯(ω)|² |ω|^{-α} dω`. -/
 def admissibilityConst (α : ℝ) (ρ : ℝ → ℝ) : ℝ :=
   (2 * Real.pi)⁻¹ * ∫ ω : ℝ, ‖filterFourier ρ ω‖ ^ 2 * |ω| ^ (-α)
 
 /-- A real Schwartz function `ρ` is `α`-admissible if `0 < C^{(α)}_ρ < ∞`; finiteness is the
-integrability of `|ρ̂(ω)|² |ω|^{-α}`. -/
+integrability of `|ρ♯(ω)|² |ω|^{-α}`. -/
 structure IsAdmissible (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : Prop where
   /-- `C^{(α)}_ρ < ∞`. -/
   integrable : Integrable fun ω : ℝ => ‖filterFourier ρ ω‖ ^ 2 * |ω| ^ (-α)
@@ -261,11 +261,11 @@ of the notion so that band-pass filters are `α`-admissible for every `α > 0`.)
 structure IsBandPass (ρ : SchwartzMap ℝ ℝ) : Prop where
   /-- `ρ ≠ 0`. -/
   ne_zero : ρ ≠ 0
-  /-- `ρ̂` is smooth. -/
+  /-- `ρ♯` is smooth. -/
   contDiff : ContDiff ℝ (⊤ : ℕ∞) (filterFourier ρ)
-  /-- `ρ̂` has compact support. -/
+  /-- `ρ♯` has compact support. -/
   hasCompactSupport : HasCompactSupport (filterFourier ρ)
-  /-- The support of `ρ̂` stays away from the origin. -/
+  /-- The support of `ρ♯` stays away from the origin. -/
   zero_notMem_tsupport : (0 : ℝ) ∉ tsupport (filterFourier ρ)
 
 /-! ### The transform, the parameter measure, and the coefficient operator -/
@@ -289,26 +289,26 @@ def parameterMeasure (ν : Measure H) : Measure (H × ℝ) :=
   ν.prod volume
 
 /-- The partial Fourier transform in the bias variable,
-`γ̂(a,ω) = ∫ γ(a,c) exp(-iωc) dc`. -/
+`γ♯(a,ω) = ∫ γ(a,c) exp(-iωc) dc`. -/
 def biasFourier (γ : H × ℝ → ℂ) (a : H) (ω : ℝ) : ℂ :=
   ∫ c : ℝ, γ (a, c) * Complex.exp (-((ω * c : ℝ) * Complex.I))
 
 /-- The explicit coefficient
-`γ_G(a,c) = (2π)⁻¹ ∫ ρ̂(ω) G(-ωa) exp(iωc) dω` of a spectral density `G`. -/
+`γ_G(a,c) = (2π)⁻¹ ∫ ρ♯(ω) G(-ωa) exp(iωc) dω` of a spectral density `G`. -/
 def coefficientFormula (ρ : ℝ → ℝ) (G : H → ℂ) (p : H × ℝ) : ℂ :=
   ((2 * Real.pi)⁻¹ : ℝ) *
     ∫ ω : ℝ, filterFourier ρ ω * G (-(ω • p.1)) * Complex.exp ((ω * p.2 : ℝ) * Complex.I)
 
 /-- `HasBiasFourier ν γ Φ` says that the partial Fourier transform of `γ` in the bias is `Φ`:
 for `ν`-almost every direction `a`, the function `ω ↦ Φ(a,ω)` is square integrable and
-Parseval's identity `∫ γ(a,c) conj(φ(c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(φ̂(ω)) dω` holds for every
+Parseval's identity `∫ γ(a,c) conj(φ(c)) dc = (2π)⁻¹ ∫ Φ(a,ω) conj(φ♯(ω)) dω` holds for every
 Schwartz test function `φ` on `ℝ`.  This characterizes `Φ(a,·)` up to a null set as the `L²`
 Fourier transform of `γ(a,·)` (`HasBiasFourier.ae_ae_eq`), and for `γ ∈ L²(λ)` such a
 representative exists and can be chosen jointly measurable
 (`exists_measurable_hasBiasFourier`).
 
 The square-integrability clause is essential.  Parseval's identity alone says nothing about
-`Φ(a,·)` where the integrand `Φ(a,ω) conj(φ̂(ω))` fails to be integrable, since Lean's Bochner
+`Φ(a,·)` where the integrand `Φ(a,ω) conj(φ♯(ω))` fails to be integrable, since Lean's Bochner
 integral of a non-integrable function is `0`: without the clause an arbitrary non-integrable
 function would be a "representative" of every coefficient, and the backprojection integral
 `backprojectionOf` computed from it would be meaningless.  With the clause all representatives
@@ -324,7 +324,7 @@ structure HasBiasFourier (ν : Measure H) (γ : H × ℝ → ℂ) (Φ : H → �
 
 open Classical in
 /-- The coefficient operator `W_ρ G ∈ L²(λ)`: the element of `L²(λ)` whose partial Fourier
-transform in the bias is `(a,ω) ↦ ρ̂(ω) G(-ωa)`, and `0` if there is none. -/
+transform in the bias is `(a,ω) ↦ ρ♯(ω) G(-ωa)`, and `0` if there is none. -/
 def spectralCoefficient (ν : Measure H) (ρ : ℝ → ℝ) (G : H → ℂ) :
     Lp ℂ 2 (parameterMeasure ν) :=
   if h : ∃ γ : Lp ℂ 2 (parameterMeasure ν),
@@ -360,7 +360,7 @@ theorem gaussFourier_zero' (μ : Measure H) :
   rw [hx]
   simp
 
-/-- The spectral inner product `⟨f,g⟩_𝓔 = ∫ 𝒢_μ f conj(𝒢_μ g) dν`, linear in the first
+/-- The spectral inner product `⟨f,g⟩_𝓔 = ∫ F_μ f conj(F_μ g) dν`, linear in the first
 argument as in the manuscript. -/
 def spectralInner (μ ν : Measure H) (f g : H → ℂ) : ℂ :=
   ∫ ξ, gaussFourier μ f ξ * (starRingEnd ℂ) (gaussFourier μ g ξ) ∂ν
@@ -384,7 +384,7 @@ theorem gaussFourier_add (μ : Measure H) [IsFiniteMeasure μ] (f g : Lp ℂ 2 �
   filter_upwards [Lp.coeFn_add f g] with x hx
   rw [hx, Pi.add_apply, add_mul]
 
-/-- The core `𝒟 = {f ∈ L²(μ) : 𝒢_μ f ∈ L²(ν)}` (the manuscript's `𝒟_α` for `ν = ν_α`), as a
+/-- The core `𝒟 = {f ∈ L²(μ) : F_μ f ∈ L²(ν)}` (the manuscript's `𝒟_α` for `ν = ν_α`), as a
 submodule of `L²(μ)`. -/
 def spectralCore (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp ℂ 2 μ) where
   carrier := {f | MemLp (gaussFourier μ f) 2 ν}
@@ -406,16 +406,16 @@ theorem mem_spectralCore_iff (μ ν : Measure H) [IsFiniteMeasure μ] (f : Lp �
     f ∈ spectralCore μ ν ↔ MemLp (gaussFourier μ f) 2 ν :=
   Iff.rfl
 
-/-- `𝒢_μ f` as an element of `L²(ν)`, for `f ∈ 𝒟`. -/
+/-- `F_μ f` as an element of `L²(ν)`, for `f ∈ 𝒟`. -/
 def gaussFourierLp (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralCore μ ν) : Lp ℂ 2 ν :=
   MemLp.toLp (gaussFourier μ f) f.2
 
-/-- The closed subspace `𝒦 = closure (𝒢_μ 𝒟) ⊆ L²(ν)` (the manuscript's `𝒦_α`), which
+/-- The closed subspace `𝒦 = closure (F_μ 𝒟) ⊆ L²(ν)` (the manuscript's `𝒦_α`), which
 represents the Hilbert space `𝓔_α` in this formalization. -/
 def spectralRange (μ ν : Measure H) [IsFiniteMeasure μ] : Submodule ℂ (Lp ℂ 2 ν) :=
   (Submodule.span ℂ (Set.range (gaussFourierLp μ ν))).topologicalClosure
 
-/-- The map `U : 𝒟 → 𝒦`, `f ↦ 𝒢_μ f`; the unitary `U_α : 𝓔_α → 𝒦_α` of the manuscript is
+/-- The map `F_Q : 𝒟 → 𝒦`, `f ↦ F_μ f`; the unitary `F_Q : 𝓔_α → 𝒦_α` of the manuscript is
 its extension to the completion, which is the identity of `𝒦` in this representation. -/
 def spectralEmbed (μ ν : Measure H) [IsFiniteMeasure μ] (f : spectralCore μ ν) :
     spectralRange μ ν :=

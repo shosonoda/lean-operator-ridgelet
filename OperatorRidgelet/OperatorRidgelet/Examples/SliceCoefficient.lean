@@ -7,8 +7,8 @@ import Mathlib.Analysis.Fourier.Inversion
 # The ridgelet coefficient as the explicit coefficient of its spectral density
 
 For an integrable `f`, the bias function `c ↦ R_ρ f(a, c)` is continuous and integrable, its
-Fourier transform is `ρ̂(ω) 𝒢_μ f(-ωa)` (the Fourier-slice identity, Lemma
-`lem:3.4`), and Fourier inversion gives `R_ρ f = γ_G` for `G = 𝒢_μ f`
+Fourier transform is `ρ♯(ω) F_μ f(-ωa)` (the Fourier-slice identity, Lemma
+`lem:3.4`), and Fourier inversion gives `R_ρ f = γ_G` for `G = F_μ f`
 (`eq:slice-as-coefficient`).  The lemmas here only assume that the coordinates `x ↦ ⟪x, v⟫`
 are a.e.-measurable under `μ` (which holds under a centred Gaussian measure for any σ-algebra
 on `H`, `IsCenteredGaussian.aemeasurable_inner`), so that they apply to the statements of
@@ -95,7 +95,7 @@ theorem continuous_ridgelet_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H
     exact continuous_const.mul (Complex.continuous_ofReal.comp
       (ρ.continuous.comp (continuous_const.add continuous_id)))
 
-/-- The Fourier-slice identity `\widehat{R_ρ f}(a, ω) = ρ̂(ω) 𝒢_μ f(-ωa)`. -/
+/-- The Fourier-slice identity `(R_ρ f)^\sharp(a, ω) = ρ♯(ω) F_μ f(-ωa)`. -/
 theorem biasFourier_ridgelet' {f : H → ℂ} (hf : Integrable f μ) (a : H) (ω : ℝ) :
     biasFourier (ridgelet μ ρ f) a ω = filterFourier ρ ω * gaussFourier μ f (-(ω • a)) := by
   have hF := integrable_ridgelet_kernel' μ ρ hcoord hf a
@@ -167,7 +167,7 @@ theorem aestronglyMeasurable_character' (ξ : H) : AEStronglyMeasurable (charact
   exact h
 
 omit [SFinite μ] in
-/-- `𝒢_μ f` is continuous for integrable `f`. -/
+/-- `F_μ f` is continuous for integrable `f`. -/
 theorem continuous_gaussFourier' {f : H → ℂ} (hf : Integrable f μ) :
     Continuous (gaussFourier μ f) := by
   unfold gaussFourier
@@ -181,7 +181,7 @@ theorem continuous_gaussFourier' {f : H → ℂ} (hf : Integrable f μ) :
     exact continuous_const.mul (by unfold character; fun_prop)
 
 omit [SFinite μ] in
-/-- The Fourier slice `u ↦ ρ̂(2πu) 𝒢_μ f(-2πu a)` is integrable. -/
+/-- The Fourier slice `u ↦ ρ♯(2πu) F_μ f(-2πu a)` is integrable. -/
 theorem integrable_fourier_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H) :
     Integrable fun u : ℝ =>
       filterFourier ρ (2 * Real.pi * u) * gaussFourier μ f (-((2 * Real.pi * u) • a)) := by
@@ -193,7 +193,7 @@ theorem integrable_fourier_slice' {f : H → ℂ} (hf : Integrable f μ) (a : H)
   · exact norm_gaussFourier_le μ f _
 
 /-- **The slice as a coefficient** (`eq:slice-as-coefficient`): for integrable `f`,
-`R_ρ f = γ_G` with `G = 𝒢_μ f`, by Fourier inversion along the bias variable. -/
+`R_ρ f = γ_G` with `G = F_μ f`, by Fourier inversion along the bias variable. -/
 theorem ridgelet_eq_coefficientFormula' {f : H → ℂ} (hf : Integrable f μ) :
     ridgelet μ ρ f = coefficientFormula ρ (gaussFourier μ f) := by
   funext p

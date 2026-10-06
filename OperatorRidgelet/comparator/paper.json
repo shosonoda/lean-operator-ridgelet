@@ -1,9 +1,9 @@
 {
   "manuscript": {
     "file": "main.tex",
-    "version": "2026-09-30 manuscript revision",
-    "synced": "2026-09-30",
-    "conventions": "Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G_Q -> F_Q, scalar activation beta -> sigma, spectral density G -> g, target g_G -> f_g, coefficient gamma_G -> gamma_g, \\mathcal N(0,Q) -> mu_Q, Gaussian activation Phi -> sigma_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L_D^{-1}, the Gaussian-parameter ReLU target F_Q -> f_{ReLU,Q}. The 2026-09-29 numbering revision changes manuscript-facing declaration names without changing formal statements. G_a(ω) := G(ωa) denotes a restriction to a line through the origin; names containing ray, Layer, or polarLaw remain stable, while prose describes the corresponding restrictions, Gaussian mixture components, and sampling distribution."
+    "version": "2026-10-07 notation revision",
+    "synced": "2026-10-07",
+    "conventions": "Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G_Q -> F_Q, scalar activation beta -> sigma, spectral density G -> g, target g_G -> f_g, coefficient gamma_G -> gamma_g, \\mathcal N(0,Q) -> mu_Q, Gaussian activation Phi -> sigma_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L_D^{-1}, the Gaussian-parameter ReLU target F_Q -> f_{ReLU,Q}. The 2026-09-29 numbering revision changes manuscript-facing declaration names without changing formal statements. G_a(ω) := G(ωa) denotes a restriction to a line through the origin; names containing ray, Layer, or polarLaw remain stable, while prose describes the corresponding restrictions, Gaussian mixture components, and sampling distribution. The 2026-10-07 notation revision uses T_α alone for the frame/Riesz map, F_Q for both its concrete Gaussian-weighted Fourier transform and the unitary core completion, and W_ρ* for the adjoint coefficient operator (backprojection). One-dimensional and partial bias Fourier transforms use sharp; spatial Fourier–Stieltjes transforms and torus coefficients use hat. Semantic Lean declaration names and the plus-c bias coordinate remain unchanged; general weights are written F_μ, specializing to F_Q for μ_Q."
   },
   "naming": "OperatorRidgelet.Paper.<kind>_<number>[_<part>] with dots in manuscript numbers replaced by underscores; source labels remain stable identifiers",
   "items": [
@@ -11,7 +11,7 @@
       "label": "def:finite-network",
       "kind": "definition",
       "number": "2.1",
-      "page": "9",
+      "page": "8",
       "title": "Finite-width network",
       "lean": [
         "OperatorRidgelet.finiteNetwork"
@@ -23,7 +23,7 @@
       "label": "def:integral-network",
       "kind": "definition",
       "number": "2.2",
-      "page": "9",
+      "page": "8",
       "title": "Integral network",
       "lean": [
         "OperatorRidgelet.integralNetwork",
@@ -39,7 +39,7 @@
       "label": "lem:homogeneous-mixture",
       "kind": "lemma",
       "number": "3.1",
-      "page": "10",
+      "page": "9",
       "title": "Homogeneous Gaussian mixture",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_1_i",
@@ -56,7 +56,7 @@
       "label": "def:admissible-filter",
       "kind": "definition",
       "number": "3.2",
-      "page": "11",
+      "page": "10",
       "title": "Admissible analysis filter",
       "lean": [
         "OperatorRidgelet.IsAdmissible",
@@ -72,21 +72,21 @@
       "label": "def:ridgelet-analysis",
       "kind": "definition",
       "number": "3.3",
-      "page": "11",
+      "page": "10",
       "title": "Gaussian-weighted ridgelet transform",
       "lean": [
         "OperatorRidgelet.ridgelet",
         "OperatorRidgelet.parameterMeasure",
         "OperatorRidgelet.gaussFourier"
       ],
-      "note": "Defined for a general input measure μ (μ_Q is the instance IsCenteredGaussian Q μ); 𝒢_μ f is gaussFourier.",
+      "note": "Defined for a general input measure μ (μ_Q is the instance IsCenteredGaussian Q μ); F_μ f is gaussFourier.",
       "blueprint_label": "def:3.3"
     },
     {
       "label": "lem:fourier-slice",
       "kind": "lemma",
       "number": "3.4",
-      "page": "11",
+      "page": "10",
       "title": "Fourier-slice identity",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_4_i",
@@ -102,7 +102,7 @@
       "label": "def:spectral-coefficient",
       "kind": "definition",
       "number": "3.5",
-      "page": "12",
+      "page": "11",
       "title": "The coefficient operator",
       "lean": [
         "OperatorRidgelet.HasBiasFourier",
@@ -110,28 +110,28 @@
         "OperatorRidgelet.coefficientFormula",
         "OperatorRidgelet.Paper.def_3_5"
       ],
-      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ̂(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability of the frequency profile for ν-almost every a (HasBiasFourier), junk 0 if none; def_3_5 is the L² formula claim (λ-a.e. equality with coefficientFormula).",
+      "note": "W_ρ G is the element of L²(λ) whose partial bias Fourier transform is ρ♯(ω)G(-ωa), characterized by Parseval against Schwartz test functions together with square integrability of the frequency profile for ν-almost every a (HasBiasFourier), junk 0 if none; def_3_5 is the L² formula claim (λ-a.e. equality with coefficientFormula).",
       "blueprint_label": "def:3.5"
     },
     {
       "label": "lem:coefficient-adjoint",
       "kind": "lemma",
       "number": "3.6",
-      "page": "12",
-      "title": "The backprojection is the adjoint coefficient operator",
+      "page": "11",
+      "title": "The adjoint coefficient operator",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_6_i",
         "OperatorRidgelet.Paper.lem_3_6_ii",
         "OperatorRidgelet.Paper.lem_3_6_iii"
       ],
-      "note": "The backprojection Λ_ρ is the Hilbert adjoint of W_ρ, taking values in the frequency-domain density space L²(ν_α). Its integral formula uses the existing bias convention.",
+      "note": "The backprojection W_ρ^* is the Hilbert adjoint of W_ρ, taking values in the frequency-domain density space L²(ν_α). Its integral formula uses the existing bias convention.",
       "blueprint_label": "lem:3.6"
     },
     {
       "label": "def:spectral-space",
       "kind": "definition",
       "number": "3.7",
-      "page": "13",
+      "page": "12",
       "title": "The Hilbert space \\(\\cE_\\alpha\\)",
       "lean": [
         "OperatorRidgelet.spectralCore",
@@ -140,28 +140,28 @@
         "OperatorRidgelet.gaussFourierLp",
         "OperatorRidgelet.spectralEmbed"
       ],
-      "note": "𝓔_α is represented by 𝒦_α = spectralRange (the closure of 𝒢_μ(𝒟) in L²(ν)) rather than by an abstract completion, since the positivity of the spectral form (Lemma 3.8) cannot enter a definition; U_α is spectralEmbed, the identity of 𝒦_α on the completion.",
+      "note": "𝓔_α is represented by 𝒦_α = spectralRange (the closure of F_μ(𝒟) in L²(ν)) rather than by an abstract completion, since the positivity of the spectral form (Lemma 3.8) cannot enter a definition; F_Q is spectralEmbed, the identity of 𝒦_α on the completion.",
       "blueprint_label": "def:3.7"
     },
     {
       "label": "lem:spectral-unitary",
       "kind": "lemma",
       "number": "3.8",
-      "page": "13",
+      "page": "12",
       "title": "Positivity and the unitary extension",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_8_i",
         "OperatorRidgelet.Paper.lem_3_8_ii",
         "OperatorRidgelet.Paper.lem_3_8_iii"
       ],
-      "note": "Stated for abstract (μ, ν) with ν σ-finite of full support; parts: positive definiteness, isometry of 𝒢_μ into 𝒦 (Mathlib's inner product is conjugate linear in the first slot, hence ⟨Uf,Ug⟩ = ⟨g,f⟩_𝓔), density of the image (the unitary extension is the identity of 𝒦 in this representation).",
+      "note": "Stated for abstract (μ, ν) with ν σ-finite of full support; parts: positive definiteness, isometry of F_μ into 𝒦 (Mathlib's inner product is conjugate linear in the first slot, hence ⟨F_μ f,F_μ g⟩ = ⟨g,f⟩_𝓔), density of the image (the unitary extension is the identity of 𝒦 in this representation).",
       "blueprint_label": "lem:3.8"
     },
     {
       "label": "lem:gaussian-decay",
       "kind": "lemma",
       "number": "3.9",
-      "page": "13",
+      "page": "12",
       "title": "Gaussian decay with polynomial weights",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_9_i",
@@ -183,14 +183,14 @@
         "OperatorRidgelet.Paper.ex_3_10_iv",
         "OperatorRidgelet.Paper.ex_3_10_v"
       ],
-      "note": "Claims i–iii (in Paper.Transform) are the first sentence: 𝒢_Q 1, 1 ∈ 𝒟_α, 𝓔_α ≠ {0}. Claims iv (f_W ∈ 𝒟_α, with the hypotheses of ex:closed-form: W positive injective self-adjoint, S = Q^{1/2} as data with IsPositiveSqrt S Q, M = S W S with a summable trace) and v (the observables F_φ = ⟨ℱ(·),φ⟩ of the Gaussian-activation operator layers, under IsLayerData) are in Paper.Examples; membership of a function in 𝒟_α is MemSpectralCore μ ν f (f ∈ L²(μ) and 𝒢_μ f ∈ L²(ν)), related to the submodule spectralCore by memSpectralCore_iff.",
+      "note": "Claims i–iii (in Paper.Transform) are the first sentence: F_Q 1, 1 ∈ 𝒟_α, 𝓔_α ≠ {0}. Claims iv (f_W ∈ 𝒟_α, with the hypotheses of ex:closed-form: W positive injective self-adjoint, S = Q^{1/2} as data with IsPositiveSqrt S Q, M = S W S with a summable trace) and v (the observables F_φ = ⟨ℱ(·),φ⟩ of the Gaussian-activation operator layers, under IsLayerData) are in Paper.Examples; membership of a function in 𝒟_α is MemSpectralCore μ ν f (f ∈ L²(μ) and F_μ f ∈ L²(ν)), related to the submodule spectralCore by memSpectralCore_iff.",
       "blueprint_label": "ex:3.10"
     },
     {
       "label": "thm:B",
       "kind": "theorem",
       "number": "3.11",
-      "page": "14",
+      "page": "13",
       "title": "Plancherel identity and injectivity",
       "lean": [
         "OperatorRidgelet.Paper.thm_3_11_i_a",
@@ -201,7 +201,7 @@
         "OperatorRidgelet.Paper.thm_3_11_ii_d",
         "OperatorRidgelet.Paper.thm_3_11_iii"
       ],
-      "note": "Gaussian case with explicit hypotheses (IsCenteredGaussian Q μ, IsCenteredGaussianLayers P N, P, Q trace-class covariances, dim H = ∞); (i) split into membership in L²(λ_α) and the identity, (ii) into unique extension, norm identity, closed range, R_ρ = W_ρ U_α; the same claims for the abstract pair are thm:general-weights.",
+      "note": "Gaussian case with explicit hypotheses (IsCenteredGaussian Q μ, IsCenteredGaussianLayers P N, P, Q trace-class covariances, dim H = ∞); (i) split into membership in L²(λ_α) and the identity, (ii) into unique extension, norm identity, closed range, R_ρ = W_ρ F_Q; the same claims for the abstract pair are thm:general-weights.",
       "blueprint_label": "thm:3.11"
     },
     {
@@ -222,14 +222,14 @@
         "OperatorRidgelet.Paper.ex_3_12_ix",
         "OperatorRidgelet.Paper.ex_3_12_x"
       ],
-      "note": "ρ_bp is obtained by choice as the Schwartz map equal to the Fourier inversion of ρ̂_bp (bandPass); the ReLU-synthesis admissibility claim belongs to the tempered work package (cor:relu-admissible).",
+      "note": "ρ_bp is obtained by choice as the Schwartz map equal to the Fourier inversion of ρ♯_bp (bandPass); the ReLU-synthesis admissibility claim belongs to the tempered work package (cor:relu-admissible).",
       "blueprint_label": "ex:3.12"
     },
     {
       "label": "ex:mexican-hat",
       "kind": "example",
       "number": "3.13",
-      "page": "15",
+      "page": "14",
       "title": "Mexican hat",
       "lean": [
         "OperatorRidgelet.Paper.ex_3_13_i",
@@ -256,14 +256,14 @@
         "OperatorRidgelet.spectralTarget",
         "OperatorRidgelet.Paper.def_4_1"
       ],
-      "note": "The compact symmetric set I ⊆ ℝ∖{0} containing supp ρ̂ fixed before the definition is the predicate IsFrequencyWindow ρ I; the derivative bound for G_a(ω) := G(ωa) max_{k≤m} sup_{ω∈I} |∂^k_ω G(ωa)| and the moment M_m(G) are taken in ℝ≥0∞ so that 'M_m(G) < ∞' is literally rayMoment ν I G m < ⊤; IsRegularAlongRays bundles boundedness, Borel measurability (StronglyMeasurable), smoothness of ω ↦ G(ωa) on an open neighbourhood of I, and finiteness of every M_m(G); it is polymorphic in the target space (the Y-valued version with ‖·‖_Y is the same predicate). The target g_G with spectral density G is spectralTarget ν G (stated for the abstract direction measure ν), and the coefficient γ_G is coefficientFormula ρ G of Section 3. The remark after the definition (regular along rays ⇒ G ∈ L¹(ν_α) ∩ L²(ν_α)) is def_4_1. Write G_a(ω) := G(ωa): for a ≠ 0 this is the restriction to the line through the origin spanned by a; G_0 is constant.",
+      "note": "The compact symmetric set I ⊆ ℝ∖{0} containing supp ρ♯ fixed before the definition is the predicate IsFrequencyWindow ρ I; the derivative bound for G_a(ω) := G(ωa) max_{k≤m} sup_{ω∈I} |∂^k_ω G(ωa)| and the moment M_m(G) are taken in ℝ≥0∞ so that 'M_m(G) < ∞' is literally rayMoment ν I G m < ⊤; IsRegularAlongRays bundles boundedness, Borel measurability (StronglyMeasurable), smoothness of ω ↦ G(ωa) on an open neighbourhood of I, and finiteness of every M_m(G); it is polymorphic in the target space (the Y-valued version with ‖·‖_Y is the same predicate). The target g_G with spectral density G is spectralTarget ν G (stated for the abstract direction measure ν), and the coefficient γ_G is coefficientFormula ρ G of Section 3. The remark after the definition (regular along rays ⇒ G ∈ L¹(ν_α) ∩ L²(ν_α)) is def_4_1. Write G_a(ω) := G(ωa): for a ≠ 0 this is the restriction to the line through the origin spanned by a; G_0 is constant.",
       "blueprint_label": "def:4.1"
     },
     {
       "label": "thm:A",
       "kind": "theorem",
       "number": "4.2",
-      "page": "16",
+      "page": "15",
       "title": "Integral representation of targets with a spectral density",
       "lean": [
         "OperatorRidgelet.Paper.thm_4_2_i_a",
@@ -278,14 +278,14 @@
         "OperatorRidgelet.Paper.thm_4_2_iii_d",
         "OperatorRidgelet.Paper.thm_4_2_iii_e"
       ],
-      "note": "Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α), as the manuscript notes after the proof; the Gaussian case is ν = gaussianMixture N α. Part i (bound, continuity, uniqueness) involves neither ρ nor homogeneity and is stated for G ∈ L¹(ν) alone. Part ii: absolute convergence is the a.e. integrability of the inner integrand plus the ν-integrability of the inner integral (ii_a), the identity with C^{(α)}_ρ (ii_b), and the integral-network form integralNetworkDensity when γ_G ∈ L¹(λ_α) (ii_c); it is stated with the band-pass hypothesis of the theorem although, as the manuscript remarks, only admissibility is used. Part iii: a tempered β that is a continuous function of polynomial growth is the pair (β : TemperedDistribution ℝ ℂ, b : ℝ → ℝ) with IsTemperedFunction β b (b continuous, |b| ≤ C(1+|t|)^p, β = integration against b); 'not a polynomial' is ¬ IsPolynomialFun b; the constant is temperedAdmissibilityConst α β ρ of Tempered/Const; iii_a, iii_b are the two absolute convergences, iii_c the identity, iii_d the existence of a band-pass ρ with C^{(α)}_{β,ρ} ≠ 0 for every such non-polynomial β. The remark that the constant is a pairing with a test function supported in -supp ρ̂ is the definition of temperedTestFilter and is not restated.",
+      "note": "Stated for the abstract direction measure ν (σ-finite, full support, homogeneous of degree α), as the manuscript notes after the proof; the Gaussian case is ν = gaussianMixture N α. Part i (bound, continuity, uniqueness) involves neither ρ nor homogeneity and is stated for G ∈ L¹(ν) alone. Part ii: absolute convergence is the a.e. integrability of the inner integrand plus the ν-integrability of the inner integral (ii_a), the identity with C^{(α)}_ρ (ii_b), and the integral-network form integralNetworkDensity when γ_G ∈ L¹(λ_α) (ii_c); it is stated with the band-pass hypothesis of the theorem although, as the manuscript remarks, only admissibility is used. Part iii: a tempered β that is a continuous function of polynomial growth is the pair (β : TemperedDistribution ℝ ℂ, b : ℝ → ℝ) with IsTemperedFunction β b (b continuous, |b| ≤ C(1+|t|)^p, β = integration against b); 'not a polynomial' is ¬ IsPolynomialFun b; the constant is temperedAdmissibilityConst α β ρ of Tempered/Const; iii_a, iii_b are the two absolute convergences, iii_c the identity, iii_d the existence of a band-pass ρ with C^{(α)}_{β,ρ} ≠ 0 for every such non-polynomial β. The remark that the constant is a pairing with a test function supported in -supp ρ♯ is the definition of temperedTestFilter and is not restated.",
       "blueprint_label": "thm:4.2"
     },
     {
       "label": "thm:C",
       "kind": "theorem",
       "number": "4.3",
-      "page": "17",
+      "page": "16",
       "title": "Reconstruction and the frame operator",
       "lean": [
         "OperatorRidgelet.Paper.thm_4_3_i_a",
@@ -307,14 +307,14 @@
         "OperatorRidgelet.Paper.thm_4_3_iv_f",
         "OperatorRidgelet.Paper.thm_4_3_iv_completion"
       ],
-      "note": "Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv_d–iv_f add μ = 𝒩(0,Q). 𝓔_α is represented by 𝒦_α = spectralRange μ ν with U_α the inclusion; the continuous anti-dual 𝓔_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆[ℂ] ℂ), so that J_α = rieszMap = innerSLFlip ℂ, U_α' = transposeEmbed, T_α = frameOperator = U_α' U_α, S_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R_ρ on 𝓔_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T_α⁻¹ is rieszInv = J_α⁻¹ (part i_a says T_α = J_α, proved by rfl; i_b/i_c: J_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii_a is the representation of T_α f by g_{𝒢f}, iii_b the converse identity R_ρ T_α⁻¹ U_α' G = W_ρ G, iii_c the representation of U_α' G by g_G for G ∈ L¹, iii_d the second reconstruction formula for U_α' G, and iii_e its concrete form (U_α' G paired with g ∈ 𝒟_α equals C⁻¹ ∫ S_ρ[γ_G λ_α] conj g dμ, the spectral synthesis identity) when γ_G ∈ L¹(λ_α). Part iv: Λ_ρ = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the integral formula for a given representative); boundedness iv_a is square integrability with a norm bound (linearity of Λ_ρ on L²(λ_α) is a consequence of prop_B_8_iv); iv_b is Λ_ρ W_ρ = C Id; iv_c is the pointwise identity Λ_ρ R_ρ f = C 𝒢f using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^{t²τ²/2} 𝒢f(tξ)); iv_e is totality on 𝒟_α; iv_f is f = Δ_Q[C⁻¹ Λ_ρ R_ρ f] with Δ_Q = gaussFourierInv the inverse of 𝒢 on its range on 𝒟_α (chosen by uniqueness). The term frame operator refers to the dual-space form: the Hilbert adjoint satisfies R_ρ* R_ρ = C Id, whereas the anti-dual transpose satisfies R_ρ′ R_ρ = C J_α = C T_α, with C = ((ρ,ρ))_α.",
+      "note": "Stated for the abstract pair (μ, ν) (Theorem thm:general-weights asserts parts i–iii for it); the Hermite parts iv_d–iv_f add μ = 𝒩(0,Q). 𝓔_α is represented by 𝒦_α = spectralRange μ ν with F_Q the inclusion; the continuous anti-dual 𝓔_α' is taken literally as SpectralAntiDual μ ν = (spectralRange μ ν →L⋆[ℂ] ℂ), so that T_α = rieszMap = innerSLFlip ℂ, F_Q' = transposeEmbed, T_α = frameOperator = F_Q' F_Q, S_ρ = synthesis (the anti-dual transpose of the extended transform, eq:weak-synthesis) have exactly the manuscript's values; R_ρ on 𝓔_α is ridgeletExtension, the bounded extension of Theorem thm:B(ii) chosen when it exists; T_α⁻¹ is rieszInv (part i_a identifies the frame operator with the Riesz map, proved by rfl; i_b/i_c: T_α is an isometry and a bijection, proved from the Riesz representation theorem). Part iii: iii_a is the representation of T_α f by g_{F_μf}, iii_b the converse identity R_ρ T_α⁻¹ F_Q' G = W_ρ G, iii_c the representation of F_Q' G by g_G for G ∈ L¹, iii_d the second reconstruction formula for F_Q' G, and iii_e its concrete form (F_Q' G paired with g ∈ 𝒟_α equals C⁻¹ ∫ S_ρ[γ_G λ_α] conj g dμ, the spectral synthesis identity) when γ_G ∈ L¹(λ_α). Part iv: W_ρ^* = backprojection (computed from a jointly measurable bias-Fourier representative; backprojectionOf is the integral formula for a given representative); boundedness iv_a is square integrability with a norm bound (linearity of W_ρ^* on L²(λ_α) is a consequence of prop_B_8_iv); iv_b is W_ρ^* W_ρ = C Id; iv_c is the pointwise identity W_ρ^* R_ρ f = C F_μf using the continuous Fourier-slice representative biasFourier (ridgelet μ ρ f); iv_d is the Hermite inversion formula with Mathlib's probabilists' Polynomial.hermite, τ(ξ) = √⟨Qξ,ξ⟩, and the real-variable iterated derivative of hermiteExtension (the analytic continuation e^{t²τ²/2} F_μf(tξ)); iv_e is totality on 𝒟_α; iv_f is f = Δ_Q[C⁻¹ W_ρ^* R_ρ f] with Δ_Q = gaussFourierInv the inverse of F_μ on its range on 𝒟_α (chosen by uniqueness). The term frame operator refers to the dual-space form: the Hilbert adjoint satisfies R_ρ* R_ρ = C Id, whereas the anti-dual transpose satisfies R_ρ′ R_ρ = C T_α, with C = ((ρ,ρ))_α.",
       "blueprint_label": "thm:4.3"
     },
     {
       "label": "cor:coefficient-stability",
       "kind": "corollary",
       "number": "4.4",
-      "page": "18",
+      "page": "17",
       "title": "Stability under coefficient perturbations",
       "lean": [
         "OperatorRidgelet.Paper.cor_4_4_i",
@@ -393,7 +393,7 @@
         "OperatorRidgelet.Paper.def_5_1_v",
         "OperatorRidgelet.Paper.def_5_1_vi"
       ],
-      "note": "A real β ∈ 𝒮'(ℝ) is a `TemperedDistribution ℝ ℂ` fixed by the vendored distributional conjugation (`IsRealDistribution`); χ and (η_ε) are functions with the predicates `IsCutoff ρ χ` (even, C_c^∞(ℝ∖{0}), = 1 on a neighbourhood of supp ρ̂) and `IsApproximateIdentity η` (each η_ε smooth, compactly supported, even, nonnegative, of integral one, supports shrinking to {0}); β̂ * η_ε is the pairing ⟨β̂, η_ε(ω - ·)⟩ and β_ε is the real Schwartz map with Fourier transform χ(β̂ * η_ε), obtained by choice (junk 0). 𝓔_α', R_ρ on 𝓔_α ≅ 𝒦_α, and S_ρ = R_ρ' are the Section 4 objects `SpectralAntiDual μ ν` (= `spectralRange μ ν →L⋆[ℂ] ℂ`), `ridgeletExtension μ ν ρ` (the bounded extension of Theorem B(ii), chosen from its defining property) and `synthesis μ ν ρ γ = (innerSLFlip ℂ γ).comp (ridgeletExtension μ ν ρ)` of Reconstruction/Defs, so that S_{β_ε} γ = `regularizedSynthesis` = `synthesis μ ν β_ε γ` and (S_{β_ε} γ)[g] = ⟨γ, R_{β_ε} g⟩ holds by definition (the earlier local stand-ins `Tempered.spectralAntiDual`, `Tempered.ridgeletExtension` = G ↦ W_ρ G, and the choice-based `Tempered.synthesisFunctional` were removed in favour of these). S_β γ is the limit of S_{β_ε} γ in the norm of 𝓔_α' along ε ↓ 0, obtained by choice whenever it exists (junk 0). Parts i–vi are the claims implicit in the definition: existence of χ and of (η_ε), β̂_ε ∈ C_c^∞(ℝ∖{0}), existence and uniqueness of β_ε, and well-definedness of S_{β_ε} γ for γ ∈ Ran R_ρ = `ridgeletRange μ ν ρ` (part vi, which is now `rfl`).",
+      "note": "A real β ∈ 𝒮'(ℝ) is a `TemperedDistribution ℝ ℂ` fixed by the vendored distributional conjugation (`IsRealDistribution`); χ and (η_ε) are functions with the predicates `IsCutoff ρ χ` (even, C_c^∞(ℝ∖{0}), = 1 on a neighbourhood of supp ρ♯) and `IsApproximateIdentity η` (each η_ε smooth, compactly supported, even, nonnegative, of integral one, supports shrinking to {0}); β♯ * η_ε is the pairing ⟨β♯, η_ε(ω - ·)⟩ and β_ε is the real Schwartz map with Fourier transform χ(β♯ * η_ε), obtained by choice (junk 0). 𝓔_α', R_ρ on 𝓔_α ≅ 𝒦_α, and S_ρ = R_ρ' are the Section 4 objects `SpectralAntiDual μ ν` (= `spectralRange μ ν →L⋆[ℂ] ℂ`), `ridgeletExtension μ ν ρ` (the bounded extension of Theorem B(ii), chosen from its defining property) and `synthesis μ ν ρ γ = (innerSLFlip ℂ γ).comp (ridgeletExtension μ ν ρ)` of Reconstruction/Defs, so that S_{β_ε} γ = `regularizedSynthesis` = `synthesis μ ν β_ε γ` and (S_{β_ε} γ)[g] = ⟨γ, R_{β_ε} g⟩ holds by definition (the earlier local stand-ins `Tempered.spectralAntiDual`, `Tempered.ridgeletExtension` = G ↦ W_ρ G, and the choice-based `Tempered.synthesisFunctional` were removed in favour of these). S_β γ is the limit of S_{β_ε} γ in the norm of 𝓔_α' along ε ↓ 0, obtained by choice whenever it exists (junk 0). Parts i–vi are the claims implicit in the definition: existence of χ and of (η_ε), β♯_ε ∈ C_c^∞(ℝ∖{0}), existence and uniqueness of β_ε, and well-definedness of S_{β_ε} γ for γ ∈ Ran R_ρ = `ridgeletRange μ ν ρ` (part vi, which is now `rfl`).",
       "blueprint_label": "def:5.1"
     },
     {
@@ -417,7 +417,7 @@
       "label": "cor:relu-admissible",
       "kind": "corollary",
       "number": "5.3",
-      "page": "20",
+      "page": "19",
       "title": "ReLU is admissible",
       "lean": [
         "OperatorRidgelet.reluDistribution",
@@ -432,7 +432,7 @@
         "OperatorRidgelet.Paper.cor_5_3_vii",
         "OperatorRidgelet.Paper.cor_5_3_viii"
       ],
-      "note": "ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^{-2}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim_{ε↓0}(∫_{|ω|>ε} φ ω^{-2} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^{-2} φ for φ supported away from 0 (part ii). 'ρ̂ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ̂ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ̂(ω)|ω|^{-α-2} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm_4_2_iii_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖{0} containing supp ρ̂, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed. Admissibility here is a property of the activation-filter pair: the reconstruction constant is nonzero. It does not assert that ReLU is an admissible Schwartz analysis filter.",
+      "note": "ReLU is the vendored `reluTemperedDistribution 2` (acts by integration against max(t,0)). The Fourier identity ReLU^ = -fp(ω^{-2}) + iπδ₀' is stated tested against every Schwartz φ as the finite-part limit formula lim_{ε↓0}(∫_{|ω|>ε} φ ω^{-2} - 2φ(0)/ε) = -⟨ReLU^, φ⟩ - iπ φ'(0) (part i; fp is not constructed as a distribution), and away from the origin as ⟨ReLU^, φ⟩ = ∫ -ω^{-2} φ for φ supported away from 0 (part ii). 'ρ♯ nonzero, even, nonpositive' is IsBandPass ρ (includes ρ ≠ 0) with ρ♯ real, even, of nonpositive real part. Parts iii–iv: the constant equals -(2π)⁻¹ ∫ ρ♯(ω)|ω|^{-α-2} (`reluAdmissibilityScale`) and is positive; v: the rescaled filter `reluNormalizedFilter` is band-pass with constant one; vi–vii: the two reconstruction formulas of thm:tempered-reconstruction with ReLU synthesis and the rescaled filter (`rieszInv`, `ridgeletExtension` of Reconstruction/Defs); viii: Theorem A(iii) with ReLU synthesis, stated exactly as the instance b = ReLU of thm_4_2_iii_a–c: the frequency window is `IsFrequencyWindow ρ I` (symmetric compact I ⊆ ℝ∖{0} containing supp ρ♯, previously four separate hypotheses), regularity along rays is `IsRegularAlongRays ν I G` (ℝ≥0∞-valued ray moments), and g_G = `spectralTarget ν G`; the earlier local `Tempered.IsRayRegular` (real-valued ray bound, Bochner-integrable moment) and `Tempered.spectralTarget` were removed. Admissibility here is a property of the activation-filter pair: the reconstruction constant is nonzero. It does not assert that ReLU is an admissible Schwartz analysis filter.",
       "blueprint_label": "cor:5.3"
     },
     {
@@ -475,14 +475,14 @@
         "OperatorRidgelet.Paper.thm_5_6_iv",
         "OperatorRidgelet.Paper.thm_5_6_v"
       ],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under a weighted inverse Fourier condition of order s. Formalized in the pair formulation of OperatorRidgelet.Sobolev.Defs: hypothesis 1 of the manuscript, a jointly measurable coefficient with a prescribed Fourier transform in the bias variable, is a jointly measurable γ : H × ℝ → Y (hγm) whose functions b ↦ γ(a,b) satisfy MemRaySobolev s (γ(a,·)) and rayProfile (γ(a,·)) ω = ρ̂(-ω) • g(ω a) for ν-almost every a; 𝔅_s(ρ,g) is the lower integral ∫⁻ (1+‖a‖)^s ‖h_a‖_{H^s_ω} dν, assumed finite. Hypothesis 3 is MemRaySobolev s γq together with rayProfile γq ω = ρ̂(-ω)|ω|^{-α}, and the reconstruction constant C^{(α)}_{σ,ρ} = (2π)⁻¹⟨σ̂, q_{α,ρ}⟩ is the Sobolev pairing sobolevPairing σ γq of lem:sobolev-pairing. i is eq:sobolev-moments for every 0 ≤ r < s - 1/2; ii is the finite total variation of Γ_g; iii is eq:weak-sobolev-synthesis, stated as the Bochner integral of σ(⟪a,x⟫ - b) • γ(a,b) over ν ⊗ db — this theorem is written in the manuscript's bias convention, since its coefficient is defined by its own Fourier relation, and the library lemma OperatorRidgelet.integral_synthesis_eq_integralNetworkDensity rewrites it as integralNetworkDensity of the transported coefficient γ ∘ τ, τ(a,c) = (a,-c); iv is the uniform integrable majorant on a ball of inputs; v is the continuity of the synthesis. Only strong measurability of g is needed for iii, as in the manuscript, which derives g ∈ L¹(ν;Y) from hypotheses 1 and 2; the final clause of the manuscript statement, that γ_g lies in L²(ν ⊗ db) with ‖γ_g‖² = ((ρ,ρ))_α ‖g‖²_{L²(ν)} when Y is Hilbert and g ∈ L²(ν;Y), is not part of the Lean statement. Neither the Lean statement nor the manuscript uses the inner product or separability of Y, the separability or completeness of H, or the admissibility of ρ, for iii. For Banach-valued coefficients, MemRaySobolev and raySobolevNorm mean the stated weighted inverse-transform condition and norm directly. Their interpretation as a Bessel-potential norm using Plancherel is restricted to Hilbert-valued functions.",
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:thm:weak-sobolev-synthesis`. Absolute synthesis for filters that need not be band pass, under a weighted inverse Fourier condition of order s. Formalized in the pair formulation of OperatorRidgelet.Sobolev.Defs: hypothesis 1 of the manuscript, a jointly measurable coefficient with a prescribed Fourier transform in the bias variable, is a jointly measurable γ : H × ℝ → Y (hγm) whose functions b ↦ γ(a,b) satisfy MemRaySobolev s (γ(a,·)) and rayProfile (γ(a,·)) ω = ρ♯(-ω) • g(ω a) for ν-almost every a; 𝔅_s(ρ,g) is the lower integral ∫⁻ (1+‖a‖)^s ‖h_a‖_{H^s_ω} dν, assumed finite. Hypothesis 3 is MemRaySobolev s γq together with rayProfile γq ω = ρ♯(-ω)|ω|^{-α}, and the reconstruction constant C^{(α)}_{σ,ρ} = (2π)⁻¹⟨σ♯, q_{α,ρ}⟩ is the Sobolev pairing sobolevPairing σ γq of lem:sobolev-pairing. i is eq:sobolev-moments for every 0 ≤ r < s - 1/2; ii is the finite total variation of Γ_g; iii is eq:weak-sobolev-synthesis, stated as the Bochner integral of σ(⟪a,x⟫ - b) • γ(a,b) over ν ⊗ db — this theorem is written in the manuscript's bias convention, since its coefficient is defined by its own Fourier relation, and the library lemma OperatorRidgelet.integral_synthesis_eq_integralNetworkDensity rewrites it as integralNetworkDensity of the transported coefficient γ ∘ τ, τ(a,c) = (a,-c); iv is the uniform integrable majorant on a ball of inputs; v is the continuity of the synthesis. Only strong measurability of g is needed for iii, as in the manuscript, which derives g ∈ L¹(ν;Y) from hypotheses 1 and 2; the final clause of the manuscript statement, that γ_g lies in L²(ν ⊗ db) with ‖γ_g‖² = ((ρ,ρ))_α ‖g‖²_{L²(ν)} when Y is Hilbert and g ∈ L²(ν;Y), is not part of the Lean statement. Neither the Lean statement nor the manuscript uses the inner product or separability of Y, the separability or completeness of H, or the admissibility of ρ, for iii. For Banach-valued coefficients, MemRaySobolev and raySobolevNorm mean the stated weighted inverse-transform condition and norm directly. Their interpretation as a Bessel-potential norm using Plancherel is restricted to Hilbert-valued functions.",
       "blueprint_label": "thm:5.6"
     },
     {
       "label": "prop:nonbandpass-sobolev",
       "kind": "proposition",
       "number": "5.8",
-      "page": "23",
+      "page": "22",
       "title": "Non-band-pass Gaussian-derivative filters",
       "lean": [
         "OperatorRidgelet.Paper.prop_5_8_i",
@@ -502,7 +502,7 @@
       "label": "def:rademacher-complexity",
       "kind": "definition",
       "number": "6.1",
-      "page": "24",
+      "page": "23",
       "title": "Activation-dependent Rademacher complexity",
       "lean": [
         "OperatorRidgelet.compactSupNorm",
@@ -521,7 +521,7 @@
       "label": "thm:general-rademacher",
       "kind": "theorem",
       "number": "6.2",
-      "page": "24",
+      "page": "23",
       "title": "Compact-open approximation bound",
       "lean": [
         "OperatorRidgelet.Paper.thm_6_2"
@@ -533,7 +533,7 @@
       "label": "thm:lipschitz-barron",
       "kind": "theorem",
       "number": "6.3",
-      "page": "24",
+      "page": "23",
       "title": "Dimension-free uniform Hilbert-valued Barron bound",
       "lean": [
         "OperatorRidgelet.Paper.thm_6_3_i",
@@ -547,7 +547,7 @@
       "label": "thm:E",
       "kind": "theorem",
       "number": "6.4",
-      "page": "25",
+      "page": "24",
       "title": "Finite total variation and moments of the coefficient measure",
       "lean": [
         "OperatorRidgelet.Paper.thm_6_4_i",
@@ -577,7 +577,7 @@
       "label": "cor:vector-rates",
       "kind": "corollary",
       "number": "6.6",
-      "page": "26",
+      "page": "25",
       "title": "Vector-valued rates",
       "lean": [
         "OperatorRidgelet.Paper.cor_6_6_i_a",
@@ -593,7 +593,7 @@
       "label": "ex:closed-form",
       "kind": "example",
       "number": "7.1",
-      "page": "27",
+      "page": "26",
       "title": "Closed-form transform and integral representation of \\(T_\\alpha f_W\\)",
       "lean": [
         "OperatorRidgelet.Paper.ex_7_1_i_a",
@@ -608,14 +608,14 @@
         "OperatorRidgelet.Paper.ex_7_1_iii_c",
         "OperatorRidgelet.Paper.ex_7_1_iii_d"
       ],
-      "note": "Standing hypotheses: W self-adjoint, ⟨Wx,x⟩ ≥ 0, injective; Q^{1/2} is data S with IsPositiveSqrt S Q; M = S * W * S with HasSummableTrace; f_W = gaussianTarget W, D = fredholmDet (S*W*S), κ_W = gaussianKappa S W = ⟨S (I+M)⁻¹ S ξ, ξ⟩ with Ring.inverse. i_a: 𝒢_Q f_W = D^{-1/2} e^{-κ_W/2}; i_b: R_ρ f_W(a,c) = D^{-1/2}(ρ*φ_{κ_W(a)})(c) with gaussianSmooth (convolution with Mathlib's gaussianReal 0 v, δ_0 for v = 0), stated for every (a,c); i_c: f_W ∈ 𝒟_α (MemSpectralCore); i_d: non-cylindricity for W of infinite rank (IsCylindrical allows any finite-rank linear L, continuous or not, as in the manuscript's definition). ii_a: G = 𝒢_Q f_W regular along rays for every frequency window of ρ; ii_b: T_α f_W is represented by g_G (frame-operator identity of thm:C(iii), for the element of 𝒟_α equal a.e. to f_W); ii_c: eq:filtered-gaussian-target with P^{1/2} as data R, S_W = gaussianTargetResolvent S W, Σ_s = mixtureLayerCovariance R S_W s, det(I + 2s P^{1/2} S_W P^{1/2}) = fredholmDet ((2s) • (R S_W R)), the s-integral over Ioi 0. iii: β is a tempered distribution that is a Lipschitz non-polynomial function b (IsTemperedFunction, LipschitzWith L b, ¬IsPolynomialFun b); iii_a: R_ρ f_W = γ_G pointwise; iii_b: ∫ (1+‖a‖²+|c|²)|R_ρ f_W| dλ_α < ∞ (finite total variation of the coefficient measure and second moment); iii_c: S_β[R_ρ f_W λ_α] = C_{β,ρ} g_G (integralNetworkDensity, temperedAdmissibilityConst); iii_d: the rate eq:spectral-barron in the conventions of Section 6, exactly as thm_6_4_iv with γ = R_ρ f_W: the Bochner expectation over sampleLaw n (densityLaw λ_α γ) of ‖densitySampledNetwork β λ_α γ θ − C g_G‖_{C(K)} (compactSupNorm) is at most 8V/√n (|β(0)| + Lip(β) R_K M₂) with V = densityWeight λ_α γ, R_K = compactRadius K, M₂² = secondMoment (densityLaw λ_α γ), n ≥ 1 (the earlier local Examples.polarSample/normalizedLaw/supNormOn/compactRadius/secondMoment and the lower-integral form were replaced by the Sampling/Defs objects).",
+      "note": "Standing hypotheses: W self-adjoint, ⟨Wx,x⟩ ≥ 0, injective; Q^{1/2} is data S with IsPositiveSqrt S Q; M = S * W * S with HasSummableTrace; f_W = gaussianTarget W, D = fredholmDet (S*W*S), κ_W = gaussianKappa S W = ⟨S (I+M)⁻¹ S ξ, ξ⟩ with Ring.inverse. i_a: F_Q f_W = D^{-1/2} e^{-κ_W/2}; i_b: R_ρ f_W(a,c) = D^{-1/2}(ρ*φ_{κ_W(a)})(c) with gaussianSmooth (convolution with Mathlib's gaussianReal 0 v, δ_0 for v = 0), stated for every (a,c); i_c: f_W ∈ 𝒟_α (MemSpectralCore); i_d: non-cylindricity for W of infinite rank (IsCylindrical allows any finite-rank linear L, continuous or not, as in the manuscript's definition). ii_a: G = F_Q f_W regular along rays for every frequency window of ρ; ii_b: T_α f_W is represented by g_G (frame-operator identity of thm:C(iii), for the element of 𝒟_α equal a.e. to f_W); ii_c: eq:filtered-gaussian-target with P^{1/2} as data R, S_W = gaussianTargetResolvent S W, Σ_s = mixtureLayerCovariance R S_W s, det(I + 2s P^{1/2} S_W P^{1/2}) = fredholmDet ((2s) • (R S_W R)), the s-integral over Ioi 0. iii: β is a tempered distribution that is a Lipschitz non-polynomial function b (IsTemperedFunction, LipschitzWith L b, ¬IsPolynomialFun b); iii_a: R_ρ f_W = γ_G pointwise; iii_b: ∫ (1+‖a‖²+|c|²)|R_ρ f_W| dλ_α < ∞ (finite total variation of the coefficient measure and second moment); iii_c: S_β[R_ρ f_W λ_α] = C_{β,ρ} g_G (integralNetworkDensity, temperedAdmissibilityConst); iii_d: the rate eq:spectral-barron in the conventions of Section 6, exactly as thm_6_4_iv with γ = R_ρ f_W: the Bochner expectation over sampleLaw n (densityLaw λ_α γ) of ‖densitySampledNetwork β λ_α γ θ − C g_G‖_{C(K)} (compactSupNorm) is at most 8V/√n (|β(0)| + Lip(β) R_K M₂) with V = densityWeight λ_α γ, R_K = compactRadius K, M₂² = secondMoment (densityLaw λ_α γ), n ≥ 1 (the earlier local Examples.polarSample/normalizedLaw/supNormOn/compactRadius/secondMoment and the lower-integral form were replaced by the Sampling/Defs objects).",
       "blueprint_label": "ex:7.1"
     },
     {
       "label": "ex:gaussian-parameter",
       "kind": "example",
       "number": "7.2",
-      "page": "28",
+      "page": "27",
       "title": "ReLU and Gaussian networks with Gaussian parameters",
       "lean": [
         "OperatorRidgelet.Paper.ex_7_2_i",
@@ -646,7 +646,7 @@
       "label": "ex:operator-layer",
       "kind": "example",
       "number": "7.4",
-      "page": "29",
+      "page": "28",
       "title": "Neural-operator layer as an integral network",
       "lean": [
         "OperatorRidgelet.Paper.ex_7_4_i_a",
@@ -677,14 +677,14 @@
         "OperatorRidgelet.Paper.ex_7_4_iii_d",
         "OperatorRidgelet.Paper.ex_7_4_iv"
       ],
-      "note": "Setting: (Ω,m) a finite measure space, a : Ω → H, b : Ω → Y with IsLayerData m a b (Borel, ‖a_y‖ bounded, ∫‖b_y‖ < ∞), β continuous of polynomial growth (HasPolynomialGrowth), ℱ = operatorLayer m a b β, F_φ = layerObservable = ⟨ℱ(·),φ⟩_Y = inner ℂ φ (ℱ x), w_φ = layerWeight, ‖A‖_∞ = layerSupNorm a, A = layerA m a : H →ₗ (Ω →ₘ[m] ℝ), Γ = layerMeasure m a b (VectorMeasure map of withDensityᵥ), S_y = layerCovariance Q a y. i_a: ℱ = integralNetwork β Γ; i_b: ‖Γ‖_TV ≤ ∫⁻‖b_y‖; i_c: ∫(‖a‖²+c²)d|Γ| ≤ ‖A‖²_∞ ‖Γ‖_TV (second parameter moment ≤ ‖A‖²_∞); i_d: the L²(ζ;Y) rate of cor:vector-rates for the polar sampled network polarSampledNetwork β Γ of Γ = layerMeasure m a b with samples from polarLaw Γ (Sampling/Defs, exactly the objects of cor:vector-rates), as a Bochner expectation over sampleLaw n, with the manuscript's constant 2(∫‖b_y‖ dm)²/n(|β(0)|²+Lip(β)²(1+∫‖x‖²dζ)‖A‖²_∞) (which dominates the constant of cor:vector-rates by i_b and i_c); i_e: the C(K) bound of thm:lipschitz-barron for the polar sampled network of the scalar measure Γ_φ = layerMeasure m a w_φ = ι_#(w_φ m) with samples from polarLaw Γ_φ, with the constant 8‖w_φ‖_{L¹(m)}/√n(|β(0)|+Lip(β)R_K‖A‖_∞), n ≥ 1 (the earlier local Examples.layerSampleVec/layerSampleScalar, which sampled y ∈ Ω from normalizedLaw, and the lower-integral form were replaced by the Sampling/Defs objects the manuscript's proof invokes). ii (β = Φ = gaussianFun): ii_a F_φ ∈ 𝒟_α; ii_b, ii_c the two formulas of eq:operator-layer-transform (with gaussianSmooth); ii_d S_y ≥ (1+‖Q‖‖A‖²_∞)⁻¹Q; ii_e regularity along rays; ii_f the frame-operator representation of thm:C(iii); ii_g R_ρ F_φ = γ_G; ii_h finite variation and moments; ii_i the synthesis identity with any Lipschitz non-polynomial β'; ii_j the rate of eq:spectral-barron in the conventions of Section 6, as thm_6_4_iv with γ = R_ρ F_φ (densitySampledNetwork, densityLaw, densityWeight, secondMoment, compactSupNorm, compactRadius); ii_k–ii_p the same for ℱ as a Y-valued target (membership in 𝒟_α(Y), 𝒢_Q ℱ, regularity, R_ρ ℱ = γ, moments, synthesis). iii_a: the ReLU double integral over m ⊗ db; iii_b: ℱ = integralNetwork ReLU of layerHingeMeasure; iii_c, iii_d: finiteness and moments of that measure. iv: A of infinite rank (HasInfiniteRank (layerA m a)), w_φ > 0 a.e. (real positive: 0 < re, im = 0) ⇒ F_φ not cylindrical. The pushforward identities i_a/iii_b and sampling rates i_d/i_e retain BorelSpace H. The integrated sampling rate i_d also retains SecondCountableTopology H and SecondCountableTopology Y for joint measurability, as provided by the standing separability assumption. i_f: the uniform bound E||F_N - F||_{C(K;Y)} <= B_1(4|beta(0)| + 8 Lip(beta) R_K ||A||_infty)/sqrt N of eq:operator-layer-uniform for the whole output function, new in the 2026-09-13 revision, for the polar sampled network of Gamma = layerMeasure m a b itself with B_1 = int ||b_y|| dm; the manuscript renames the output kernel b_y -> v_y, and i_e remains the scalar observable with ||w_phi||_{L^1(m)} in place of B_1.",
+      "note": "Setting: (Ω,m) a finite measure space, a : Ω → H, b : Ω → Y with IsLayerData m a b (Borel, ‖a_y‖ bounded, ∫‖b_y‖ < ∞), β continuous of polynomial growth (HasPolynomialGrowth), ℱ = operatorLayer m a b β, F_φ = layerObservable = ⟨ℱ(·),φ⟩_Y = inner ℂ φ (ℱ x), w_φ = layerWeight, ‖A‖_∞ = layerSupNorm a, A = layerA m a : H →ₗ (Ω →ₘ[m] ℝ), Γ = layerMeasure m a b (VectorMeasure map of withDensityᵥ), S_y = layerCovariance Q a y. i_a: ℱ = integralNetwork β Γ; i_b: ‖Γ‖_TV ≤ ∫⁻‖b_y‖; i_c: ∫(‖a‖²+c²)d|Γ| ≤ ‖A‖²_∞ ‖Γ‖_TV (second parameter moment ≤ ‖A‖²_∞); i_d: the L²(ζ;Y) rate of cor:vector-rates for the polar sampled network polarSampledNetwork β Γ of Γ = layerMeasure m a b with samples from polarLaw Γ (Sampling/Defs, exactly the objects of cor:vector-rates), as a Bochner expectation over sampleLaw n, with the manuscript's constant 2(∫‖b_y‖ dm)²/n(|β(0)|²+Lip(β)²(1+∫‖x‖²dζ)‖A‖²_∞) (which dominates the constant of cor:vector-rates by i_b and i_c); i_e: the C(K) bound of thm:lipschitz-barron for the polar sampled network of the scalar measure Γ_φ = layerMeasure m a w_φ = ι_#(w_φ m) with samples from polarLaw Γ_φ, with the constant 8‖w_φ‖_{L¹(m)}/√n(|β(0)|+Lip(β)R_K‖A‖_∞), n ≥ 1 (the earlier local Examples.layerSampleVec/layerSampleScalar, which sampled y ∈ Ω from normalizedLaw, and the lower-integral form were replaced by the Sampling/Defs objects the manuscript's proof invokes). ii (β = Φ = gaussianFun): ii_a F_φ ∈ 𝒟_α; ii_b, ii_c the two formulas of eq:operator-layer-transform (with gaussianSmooth); ii_d S_y ≥ (1+‖Q‖‖A‖²_∞)⁻¹Q; ii_e regularity along rays; ii_f the frame-operator representation of thm:C(iii); ii_g R_ρ F_φ = γ_G; ii_h finite variation and moments; ii_i the synthesis identity with any Lipschitz non-polynomial β'; ii_j the rate of eq:spectral-barron in the conventions of Section 6, as thm_6_4_iv with γ = R_ρ F_φ (densitySampledNetwork, densityLaw, densityWeight, secondMoment, compactSupNorm, compactRadius); ii_k–ii_p the same for ℱ as a Y-valued target (membership in 𝒟_α(Y), F_Q ℱ, regularity, R_ρ ℱ = γ, moments, synthesis). iii_a: the ReLU double integral over m ⊗ db; iii_b: ℱ = integralNetwork ReLU of layerHingeMeasure; iii_c, iii_d: finiteness and moments of that measure. iv: A of infinite rank (HasInfiniteRank (layerA m a)), w_φ > 0 a.e. (real positive: 0 < re, im = 0) ⇒ F_φ not cylindrical. The pushforward identities i_a/iii_b and sampling rates i_d/i_e retain BorelSpace H. The integrated sampling rate i_d also retains SecondCountableTopology H and SecondCountableTopology Y for joint measurability, as provided by the standing separability assumption. i_f: the uniform bound E||F_N - F||_{C(K;Y)} <= B_1(4|beta(0)| + 8 Lip(beta) R_K ||A||_infty)/sqrt N of eq:operator-layer-uniform for the whole output function, new in the 2026-09-13 revision, for the polar sampled network of Gamma = layerMeasure m a b itself with B_1 = int ||b_y|| dm; the manuscript renames the output kernel b_y -> v_y, and i_e remains the scalar observable with ||w_phi||_{L^1(m)} in place of B_1.",
       "blueprint_label": "ex:7.4"
     },
     {
       "label": "ex:convolution",
       "kind": "example",
       "number": "7.5",
-      "page": "30",
+      "page": "29",
       "title": "Periodic convolution layer",
       "lean": [
         "OperatorRidgelet.Paper.ex_7_5_i",
@@ -730,7 +730,7 @@
       "label": "lem:partial-fourier-l2",
       "kind": "lemma",
       "number": "A.1",
-      "page": "35",
+      "page": "34",
       "title": "Partial Fourier transform of a square-integrable coefficient",
       "lean": [
         "OperatorRidgelet.Paper.lem_A_1",
@@ -743,7 +743,7 @@
       "label": "lem:mixture-integration",
       "kind": "lemma",
       "number": "A.2",
-      "page": "36",
+      "page": "35",
       "title": "Measurability and integration of the mixture",
       "lean": [
         "OperatorRidgelet.Paper.lem_A_2_i",
@@ -758,7 +758,7 @@
       "label": "lem:mixture-character",
       "kind": "lemma",
       "number": "A.3",
-      "page": "38",
+      "page": "37",
       "title": "Truncation of the scale integral",
       "lean": [
         "OperatorRidgelet.Paper.lem_A_3_i",
@@ -773,7 +773,7 @@
       "label": "lem:coefficient-isometry",
       "kind": "lemma",
       "number": "B.1",
-      "page": "38",
+      "page": "37",
       "title": "The coefficient operator is a scaled isometry",
       "lean": [
         "OperatorRidgelet.Paper.lem_B_1_i",
@@ -804,7 +804,7 @@
       "label": "lem:coefficient-finite-order",
       "kind": "lemma",
       "number": "B.3",
-      "page": "39",
+      "page": "38",
       "title": "Finite-order coefficient decay and moments",
       "lean": [
         "OperatorRidgelet.Paper.lem_B_3_i",
@@ -820,7 +820,7 @@
       "label": "lem:weak-equals-strong",
       "kind": "lemma",
       "number": "B.4",
-      "page": "41",
+      "page": "40",
       "title": "Synthesis of an integrable coefficient is the integral network",
       "lean": [
         "OperatorRidgelet.Paper.lem_B_4_i",
@@ -833,7 +833,7 @@
       "label": "lem:hermite-totality",
       "kind": "lemma",
       "number": "B.5",
-      "page": "42",
+      "page": "41",
       "title": "Entire extension and totality of the Hermite coefficients",
       "lean": [
         "OperatorRidgelet.Paper.lem_B_5_i",
@@ -843,14 +843,14 @@
         "OperatorRidgelet.Paper.lem_B_5_v",
         "OperatorRidgelet.Paper.lem_B_5_vi"
       ],
-      "note": "𝒢_Q f(zξ) for complex z is the analytic continuation gaussFourierLine μ f ξ z = ∫ f(x) e^{-iz⟨x,ξ⟩} dμ, and G_f(zξ) = hermiteExtension μ Q f ξ z = e^{z²⟨Qξ,ξ⟩/2} 𝒢_Q f(zξ); He_n is Mathlib's Polynomial.hermite (probabilists' normalization, He_{n+1} = X He_n − He_n'), evaluated at ⟨x,ξ⟩/√⟨Qξ,ξ⟩ through Polynomial.aeval; the coefficients E_{μ_Q}[f He_n(⟨x,ξ⟩/τ)] are hermiteCoefficient μ Q f ξ n. Parts: i entire (Differentiable ℂ), ii the series (HasSum for every z), iii locally uniform convergence of the partial sums (TendstoLocallyUniformly), iv the bound with ‖f‖_{L²} = √∫|f|², v the Hermite inversion formula (real-variable iterated derivative at 0), vi totality (the coefficients over all ξ ≠ 0 and n determine f in L²(μ_Q), as injectivity). μ = 𝒩(0,Q) with Q a trace-class covariance. Part (vi) carries `[Nontrivial H]`: on a trivial space no `ξ ≠ 0` exists, the hypothesis is vacuous and the conclusion fails. The manuscript is unaffected, since `H` is infinite-dimensional throughout.",
+      "note": "F_Q f(zξ) for complex z is the analytic continuation gaussFourierLine μ f ξ z = ∫ f(x) e^{-iz⟨x,ξ⟩} dμ, and G_f(zξ) = hermiteExtension μ Q f ξ z = e^{z²⟨Qξ,ξ⟩/2} F_Q f(zξ); He_n is Mathlib's Polynomial.hermite (probabilists' normalization, He_{n+1} = X He_n − He_n'), evaluated at ⟨x,ξ⟩/√⟨Qξ,ξ⟩ through Polynomial.aeval; the coefficients E_{μ_Q}[f He_n(⟨x,ξ⟩/τ)] are hermiteCoefficient μ Q f ξ n. Parts: i entire (Differentiable ℂ), ii the series (HasSum for every z), iii locally uniform convergence of the partial sums (TendstoLocallyUniformly), iv the bound with ‖f‖_{L²} = √∫|f|², v the Hermite inversion formula (real-variable iterated derivative at 0), vi totality (the coefficients over all ξ ≠ 0 and n determine f in L²(μ_Q), as injectivity). μ = 𝒩(0,Q) with Q a trace-class covariance. Part (vi) carries `[Nontrivial H]`: on a trivial space no `ξ ≠ 0` exists, the hypothesis is vacuous and the conclusion fails. The manuscript is unaffected, since `H` is infinite-dimensional throughout.",
       "blueprint_label": "lem:B.5"
     },
     {
       "label": "prop:coefficient-projection",
       "kind": "proposition",
       "number": "B.8",
-      "page": "43",
+      "page": "42",
       "title": "Bounded backprojection and orthogonal range projection",
       "lean": [
         "OperatorRidgelet.Paper.prop_B_8_i",
@@ -862,14 +862,14 @@
         "OperatorRidgelet.Paper.prop_B_8_vii",
         "OperatorRidgelet.Paper.prop_B_8_viii"
       ],
-      "note": "𝒴 = L²(λ_α) with its usual norm (the norm through the partial bias Fourier transform equals the L²(λ_α)-norm by Plancherel). Λ_ρ = backprojection α ν ρ γ is the ray average eq:ray-average of a jointly measurable bias-Fourier representative of γ chosen through HasBiasFourier; backprojectionOf α ρ Φ is the ray average of a given representative Φ. Parts: i absolute convergence ν_α-a.e. for every jointly measurable representative, ii independence of the representative (a.e. equality of the ray averages of two representatives), iii square integrability with ∫|Λ_ρ γ|² ≤ C ‖γ‖² (the bound ‖Λ_ρ γ‖ ≤ √C ‖γ‖_𝒴 squared), iv the Hilbert-adjoint identity ⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨Λ_ρ γ, F⟩_{L²(ν_α)} in the manuscript's convention (linear in the first argument), v Λ_ρ W_ρ = C Id a.e., vi Π_ρ = coefficientProjection = C⁻¹ W_ρ P_{𝒦_α} Λ_ρ (with Mathlib's starProjection onto spectralRange, which is complete) is the orthogonal projection onto Ran R_ρ = ridgeletRange, encoded as Π_ρ γ ∈ Ran R_ρ and γ − Π_ρ γ ∈ (Ran R_ρ)ᗮ, vii the minimum-norm solution C⁻¹ R_ρ J_α⁻¹ F of S_ρ γ = F (it solves the equation and has the least norm among solutions), viii the solution set is the minimum-norm solution plus (Ran R_ρ)ᗮ. ρ is α-admissible as in the manuscript; parts vi–viii involve μ through 𝒦_α and R_ρ.",
+      "note": "𝒴 = L²(λ_α) with its usual norm (the norm through the partial bias Fourier transform equals the L²(λ_α)-norm by Plancherel). W_ρ^* = backprojection α ν ρ γ is the ray average eq:ray-average of a jointly measurable bias-Fourier representative of γ chosen through HasBiasFourier; backprojectionOf α ρ Φ is the ray average of a given representative Φ. Parts: i absolute convergence ν_α-a.e. for every jointly measurable representative, ii independence of the representative (a.e. equality of the ray averages of two representatives), iii square integrability with ∫|W_ρ^* γ|² ≤ C ‖γ‖² (the bound ‖W_ρ^* γ‖ ≤ √C ‖γ‖_𝒴 squared), iv the Hilbert-adjoint identity ⟨γ, W_ρ F⟩_{L²(λ_α)} = ⟨W_ρ^* γ, F⟩_{L²(ν_α)} in the manuscript's convention (linear in the first argument), v W_ρ^* W_ρ = C Id a.e., vi Π_ρ = coefficientProjection = C⁻¹ W_ρ P_{𝒦_α} W_ρ^* (with Mathlib's starProjection onto spectralRange, which is complete) is the orthogonal projection onto Ran R_ρ = ridgeletRange, encoded as Π_ρ γ ∈ Ran R_ρ and γ − Π_ρ γ ∈ (Ran R_ρ)ᗮ, vii the minimum-norm solution C⁻¹ R_ρ T_α⁻¹ F of S_ρ γ = F (it solves the equation and has the least norm among solutions), viii the solution set is the minimum-norm solution plus (Ran R_ρ)ᗮ. ρ is α-admissible as in the manuscript; parts vi–viii involve μ through 𝒦_α and R_ρ.",
       "blueprint_label": "prop:B.8"
     },
     {
       "label": "lem:weighted-duality",
       "kind": "lemma",
       "number": "C.1",
-      "page": "44",
+      "page": "43",
       "title": "Hilbert structure and continuous activation pairing",
       "lean": [
         "OperatorRidgelet.activationFourierCoordinate",
@@ -883,7 +883,7 @@
         "OperatorRidgelet.Paper.lem_C_1_iv",
         "OperatorRidgelet.Paper.lem_C_1_v"
       ],
-      "note": "𝒜_{s,t} is the vendored `MemActivationSpace s t` (⟨x⟩^{-t} β ∈ H^s), B^q is the vendored angular Bessel potential, and the coordinate ⟨ω⟩^s B^{-t} β̂ is `activationFourierCoordinate` with L² representative `activationCoordinate` (by choice); the norm ‖β‖_{𝒜_{s,t}} is its L² norm (the isometry is the definition of the norm). 'Isometric isomorphism 𝒜_{s,t} → L²' is split into: the coordinate exists for β ∈ 𝒜_{s,t} (i), injectivity (ii), surjectivity through the vendored `activationRealization` (iii). The dual test norm ‖r‖_{ℋ^♯_{s,t}} = ‖⟨ω⟩^{-s} B^t r‖_{L²} is `testFilterNorm`; the bound is (iv), and the extension to the completion (v) is a continuous linear functional on L²(ℝ) (the completion of the test filters via r ↦ ⟨ω⟩^{-s} B^t r) of norm ≤ (2π)⁻¹‖β‖ that agrees with (2π)⁻¹⟨β̂, r⟩ on test filters.",
+      "note": "𝒜_{s,t} is the vendored `MemActivationSpace s t` (⟨x⟩^{-t} β ∈ H^s), B^q is the vendored angular Bessel potential, and the coordinate ⟨ω⟩^s B^{-t} β♯ is `activationFourierCoordinate` with L² representative `activationCoordinate` (by choice); the norm ‖β‖_{𝒜_{s,t}} is its L² norm (the isometry is the definition of the norm). 'Isometric isomorphism 𝒜_{s,t} → L²' is split into: the coordinate exists for β ∈ 𝒜_{s,t} (i), injectivity (ii), surjectivity through the vendored `activationRealization` (iii). The dual test norm ‖r‖_{ℋ^♯_{s,t}} = ‖⟨ω⟩^{-s} B^t r‖_{L²} is `testFilterNorm`; the bound is (iv), and the extension to the completion (v) is a continuous linear functional on L²(ℝ) (the completion of the test filters via r ↦ ⟨ω⟩^{-s} B^t r) of norm ≤ (2π)⁻¹‖β‖ that agrees with (2π)⁻¹⟨β♯, r⟩ on test filters.",
       "blueprint_label": "lem:C.1"
     },
     {
@@ -918,7 +918,7 @@
       "label": "lem:sobolev-tools",
       "kind": "lemma",
       "number": "C.3",
-      "page": "45",
+      "page": "44",
       "title": "Weighted inverse Fourier estimates and modulation",
       "lean": [
         "OperatorRidgelet.Paper.lem_C_3_i",
@@ -926,28 +926,28 @@
         "OperatorRidgelet.Paper.lem_C_3_iii",
         "OperatorRidgelet.Paper.lem_C_3_iv"
       ],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-tools`. For Hilbert Y, the Bessel-potential space H^s_ω(ℝ;Y) is carried by the pair of a profile h and its inverse Fourier transform γ = ȟ (OperatorRidgelet.Sobolev.Defs): MemRaySobolev s γ is the membership (γ square integrable against the weight ⟨t⟩^{2s} = (1+t²)^s), raySobolevNorm s γ is the norm (2π ∫ ⟨t⟩^{2s} ‖γ‖²)^{1/2} of eq:sobolev-norm, rayProfile γ = γ̂ in the angular convention (for s > 1/2 the coefficient is integrable by part i, so the profile is an ordinary Fourier integral), and sobolevMomentConst s r is A_{s,r}. i is eq:sobolev-weighted-l1; ii is the reflection isometry together with the identity Rh = (γ(-·))^; iii is eq:sobolev-modulation together with the identity M_u h = (γ(·+u))^; iv is the joint continuity of (u,h) ↦ M_u h, stated along an arbitrary filter as the convergence of ‖M_{u_i} h_i − M_{u₀} h‖_{H^s_ω} to zero when u_i → u₀ and ‖h_i − h‖_{H^s_ω} → 0. For general Banach Y, the same Lean definitions encode the weighted inverse-transform condition without invoking a Fourier isometry.",
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-tools`. For Hilbert Y, the Bessel-potential space H^s_ω(ℝ;Y) is carried by the pair of a profile h and its inverse Fourier transform γ = ȟ (OperatorRidgelet.Sobolev.Defs): MemRaySobolev s γ is the membership (γ square integrable against the weight ⟨t⟩^{2s} = (1+t²)^s), raySobolevNorm s γ is the norm (2π ∫ ⟨t⟩^{2s} ‖γ‖²)^{1/2} of eq:sobolev-norm, rayProfile γ = γ♯ in the angular convention (for s > 1/2 the coefficient is integrable by part i, so the profile is an ordinary Fourier integral), and sobolevMomentConst s r is A_{s,r}. i is eq:sobolev-weighted-l1; ii is the reflection isometry together with the identity Rh = (γ(-·))^; iii is eq:sobolev-modulation together with the identity M_u h = (γ(·+u))^; iv is the joint continuity of (u,h) ↦ M_u h, stated along an arbitrary filter as the convergence of ‖M_{u_i} h_i − M_{u₀} h‖_{H^s_ω} to zero when u_i → u₀ and ‖h_i − h‖_{H^s_ω} → 0. For general Banach Y, the same Lean definitions encode the weighted inverse-transform condition without invoking a Fourier isometry.",
       "blueprint_label": "lem:C.3"
     },
     {
       "label": "lem:sobolev-pairing",
       "kind": "lemma",
       "number": "C.4",
-      "page": "46",
+      "page": "45",
       "title": "The bilinear Sobolev pairing and its translation formula",
       "lean": [
         "OperatorRidgelet.Paper.lem_C_4_i",
         "OperatorRidgelet.Paper.lem_C_4_ii",
         "OperatorRidgelet.Paper.lem_C_4_iii"
       ],
-      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-pairing`. In the pair formulation of OperatorRidgelet.Sobolev.Defs the pairing is the absolutely convergent integral sobolevPairing σ γ = ∫ σ(t) • γ(-t) dt, which is the manuscript's normalization (2π)⁻¹⟨σ̂, q⟩ = ∫ σ(t) q̌(-t) dt written on the coefficient side, and sobolevPairingConst σ s is b_{σ,s}. i is the finiteness of b_{σ,s} for a continuous σ of polynomial growth p and s > p + 1/2, stated as square integrability of ⟨·⟩^{-s}σ; ii is the absolute convergence together with the bound ‖L_σ^Y(h)‖ ≤ (2π)^{-1/2} b_{σ,s} ‖h‖_{H^s_ω}, which is the assertion that the functional lies in the bilinear dual with that norm; iii is eq:sobolev-bias-pairing. The identification of the extended functional with the distributional Fourier transform of σ on Schwartz tests is the manuscript's interpretation of the same integral and is not restated in Lean.",
+      "note": "New in the 2026-09-13 revision; taken from supp.tex `supp:lem:sobolev-pairing`. In the pair formulation of OperatorRidgelet.Sobolev.Defs the pairing is the absolutely convergent integral sobolevPairing σ γ = ∫ σ(t) • γ(-t) dt, which is the manuscript's normalization (2π)⁻¹⟨σ♯, q⟩ = ∫ σ(t) q̌(-t) dt written on the coefficient side, and sobolevPairingConst σ s is b_{σ,s}. i is the finiteness of b_{σ,s} for a continuous σ of polynomial growth p and s > p + 1/2, stated as square integrability of ⟨·⟩^{-s}σ; ii is the absolute convergence together with the bound ‖L_σ^Y(h)‖ ≤ (2π)^{-1/2} b_{σ,s} ‖h‖_{H^s_ω}, which is the assertion that the functional lies in the bilinear dual with that norm; iii is eq:sobolev-bias-pairing. The identification of the extended functional with the distributional Fourier transform of σ on Schwartz tests is the manuscript's interpretation of the same integral and is not restated in Lean.",
       "blueprint_label": "lem:C.4"
     },
     {
       "label": "lem:banach-rademacher-vanishing",
       "kind": "lemma",
       "number": "D.1",
-      "page": "47",
+      "page": "46",
       "title": "Approximation by averages of integrable Banach-valued atoms",
       "lean": [
         "OperatorRidgelet.Paper.lem_D_1_i",
@@ -960,7 +960,7 @@
       "label": "lem:two-coordinate-comparison",
       "kind": "lemma",
       "number": "D.2",
-      "page": "48",
+      "page": "47",
       "title": "A two-coordinate Rademacher comparison",
       "lean": [
         "OperatorRidgelet.Paper.lem_D_2"
@@ -1000,7 +1000,7 @@
       "label": "cor:sampling-concentration",
       "kind": "corollary",
       "number": "D.5",
-      "page": "53",
+      "page": "52",
       "title": "Concentration for bounded parameters",
       "lean": [
         "OperatorRidgelet.Paper.cor_D_5"
@@ -1012,7 +1012,7 @@
       "label": "lem:hilbert-sampling",
       "kind": "lemma",
       "number": "D.6",
-      "page": "53",
+      "page": "52",
       "title": "Mean-square error identity for Hilbert-valued averages",
       "lean": [
         "OperatorRidgelet.Paper.lem_D_6_i",
@@ -1039,7 +1039,7 @@
       "label": "lem:gaussian-quadratic",
       "kind": "lemma",
       "number": "E.1",
-      "page": "54",
+      "page": "53",
       "title": "Gaussian integral of a quadratic exponential",
       "lean": [
         "OperatorRidgelet.Paper.lem_E_1_i",
@@ -1066,7 +1066,7 @@
       "label": "cor:finite-backprojection",
       "kind": "corollary",
       "number": "F.2",
-      "page": "57",
+      "page": "56",
       "title": "The frame operator in finite dimension",
       "lean": [
         "OperatorRidgelet.Paper.cor_F_2_i",
@@ -1083,7 +1083,7 @@
       "label": "prop:dilation-obstruction",
       "kind": "proposition",
       "number": "F.3",
-      "page": "58",
+      "page": "57",
       "title": "Dilation obstruction",
       "lean": [
         "OperatorRidgelet.Paper.prop_F_3_i_a",

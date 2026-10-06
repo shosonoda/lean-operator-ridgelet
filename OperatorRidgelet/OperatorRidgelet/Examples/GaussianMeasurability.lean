@@ -244,7 +244,7 @@ theorem IsLayerData.integrable_operatorLayer_gaussianFun' (hμ : IsCenteredGauss
 
 /-- **Example `ex:7.4`(ii)**, the transform of the scalar observable, for an
 arbitrary σ-algebra on `H`:
-`𝒢_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/
+`F_Q F_φ(ξ) = ∫ w_φ(y) (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} m(dy)`. -/
 theorem IsLayerData.gaussFourier_layerObservable_gaussianFun' (hQ : IsSelfAdjoint Q)
     (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (φ : Y)
     (ξ : H) :
@@ -296,7 +296,7 @@ theorem IsLayerData.integrable_character_mul_gaussianFun_smul' (hμ : IsCentered
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_gaussianFun_le_one _)
 
 /-- **Example `ex:7.4`(ii)**, the `Y`-valued transform of the layer, for an
-arbitrary σ-algebra on `H`: `𝒢_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} b_y m(dy)`. -/
+arbitrary σ-algebra on `H`: `F_Q ℱ(ξ) = ∫ (1+σ_y²)^{-1/2} e^{-⟪S_yξ,ξ⟫/2} b_y m(dy)`. -/
 theorem IsLayerData.gaussFourierVec_operatorLayer_gaussianFun' (hQ : IsSelfAdjoint Q)
     (hQ0 : ∀ x, 0 ≤ ⟪Q x, x⟫) (hμ : IsCenteredGaussian Q μ) (hL : IsLayerData m a b) (ξ : H) :
     gaussFourierVec μ (operatorLayer m a b gaussianFun) ξ =

@@ -24,21 +24,21 @@ measure on `H` and `ν` an s-finite measure homogeneous of degree `α`.
   separate `∫ K(ω) F(-ωa) d(ν ⊗ dω) = (∫ K(ω) |ω|^{-α} dω) ∫ F dν`.
 * **Plancherel identity.** Along each bias line `R_ρ f(a, ·) ∈ L¹ ∩ L²`, so the `L¹ ∩ L²`
   Plancherel and Parseval identities of `LeanRidgelet.ToMathlib.FourierPlancherel` apply, and
-  the Fourier-slice identity gives `‖R_ρ f‖²_{L²(λ)} = C_ρ ‖𝒢_μ f‖²_{L²(ν)}` and the cross
+  the Fourier-slice identity gives `‖R_ρ f‖²_{L²(λ)} = C_ρ ‖F_μ f‖²_{L²(ν)}` and the cross
   identity `⟨R_{ρ₁} f, R_{ρ₂} g⟩ = C_{ρ₁,ρ₂} ⟨f, g⟩_𝓔` (`memLp_ridgelet`,
   `integral_ridgelet_mul_conj`).
-* **The coefficient operator.** For measurable `G ∈ L²(ν)` the ray function `ω ↦ ρ̂(ω) G(-ωa)`
+* **The coefficient operator.** For measurable `G ∈ L²(ν)` the ray function `ω ↦ ρ♯(ω) G(-ωa)`
   is in `L¹ ∩ L²` for `ν`-almost every `a` (a weighted Cauchy–Schwarz argument with the weight
   `|ω|^α (1 + ω²)⁻¹`), so the explicit coefficient `γ_G = coefficientFormula ρ G` is defined
   pointwise, is jointly measurable, square integrable, and has the partial Fourier transform
-  `ρ̂(ω) G(-ωa)` in the sense of `HasBiasFourier`; uniqueness of the coefficient with a given
+  `ρ♯(ω) G(-ωa)` in the sense of `HasBiasFourier`; uniqueness of the coefficient with a given
   bias transform follows from the density of test functions.  Hence
   `W_ρ G = spectralCoefficient ν ρ G` is the class of `γ_G` (`spectralCoefficient_eq_toLp`)
   with `‖W_ρ G‖² = C_ρ ‖G‖²`.
 * **The bounded extension.** `R_ρ` extends from the dense image of the core to
   `ridgeletExtensionCLM : 𝒦 →L L²(λ)` (`LinearMap.extendOfNorm`), a scaled isometry with closed
   range, uniquely determined by its values on the core, and equal to `W_ρ` on `𝒦`.
-* **Injectivity.** `R_ρ f = 0` forces `𝒢_μ f = 0` on a set of full `ν`-measure by the slice
+* **Injectivity.** `R_ρ f = 0` forces `F_μ f = 0` on a set of full `ν`-measure by the slice
   identity and homogeneity, hence everywhere for full-support `ν`, and Fourier uniqueness for
   densities (`OperatorRidgelet.ToMathlib.CharFunDensity`) gives `f = 0`.
 * **The Gaussian mixture** `ν_α` is s-finite (`IsCenteredGaussianLayers.sfinite_gaussianMixture`),
@@ -168,7 +168,7 @@ section GaussFourier
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
-/-- `𝒢_μ f` is continuous for integrable `f` (dominated convergence). -/
+/-- `F_μ f` is continuous for integrable `f` (dominated convergence). -/
 theorem continuous_gaussFourier (μ : Measure H) {f : H → ℂ} (hf : Integrable f μ) :
     Continuous (gaussFourier μ f) := by
   unfold gaussFourier
@@ -183,7 +183,7 @@ theorem continuous_gaussFourier (μ : Measure H) {f : H → ℂ} (hf : Integrabl
     fun_prop
 
 omit [OpensMeasurableSpace H] in
-/-- `𝒢_μ f` is bounded by `‖f‖_{L¹(μ)}`. -/
+/-- `F_μ f` is bounded by `‖f‖_{L¹(μ)}`. -/
 theorem norm_gaussFourier_le (μ : Measure H) (f : H → ℂ) (ξ : H) :
     ‖gaussFourier μ f ξ‖ ≤ ∫ x, ‖f x‖ ∂μ := by
   unfold gaussFourier
@@ -237,29 +237,29 @@ end Rays
 
 section FilterFourier
 
-/-- `ρ̂` is the Schwartz function `𝓕 ρ` at the rescaled frequency. -/
+/-- `ρ♯` is the Schwartz function `𝓕 ρ` at the rescaled frequency. -/
 theorem filterFourier_eq_fourier_ofReal (ρ : SchwartzMap ℝ ℝ) :
     filterFourier ρ = fun ω => (𝓕 (SchwartzMap.ofReal ρ)) ((2 * Real.pi)⁻¹ * ω) := by
   funext ω
   rw [filterFourier_eq_fourier, SchwartzMap.fourier_coe]
   rfl
 
-/-- `ρ̂` is continuous. -/
+/-- `ρ♯` is continuous. -/
 theorem continuous_filterFourier (ρ : SchwartzMap ℝ ℝ) : Continuous (filterFourier ρ) := by
   rw [filterFourier_eq_fourier_ofReal]
   exact (𝓕 (SchwartzMap.ofReal ρ)).continuous.comp (continuous_const.mul continuous_id)
 
-/-- `ρ̂` is integrable. -/
+/-- `ρ♯` is integrable. -/
 theorem integrable_filterFourier (ρ : SchwartzMap ℝ ℝ) : Integrable (filterFourier ρ) := by
   rw [filterFourier_eq_fourier_ofReal]
   exact (𝓕 (SchwartzMap.ofReal ρ)).integrable.comp_mul_left' (by positivity)
 
-/-- `ρ̂` is square integrable. -/
+/-- `ρ♯` is square integrable. -/
 theorem memLp_filterFourier (ρ : SchwartzMap ℝ ℝ) : MemLp (filterFourier ρ) 2 volume := by
   rw [filterFourier_eq_fourier_ofReal]
   exact ((𝓕 (SchwartzMap.ofReal ρ)).memLp 2).comp_mul_left (by positivity)
 
-/-- Quadratic decay of `ρ̂`: `ω² ‖ρ̂(ω)‖ ≤ C`. -/
+/-- Quadratic decay of `ρ♯`: `ω² ‖ρ♯(ω)‖ ≤ C`. -/
 theorem exists_sq_mul_norm_filterFourier_le (ρ : SchwartzMap ℝ ℝ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ ω : ℝ, ω ^ 2 * ‖filterFourier ρ ω‖ ≤ C := by
   obtain ⟨C, hC0, hC⟩ := (𝓕 (SchwartzMap.ofReal ρ)).decay 2 0
@@ -272,7 +272,7 @@ theorem exists_sq_mul_norm_filterFourier_le (ρ : SchwartzMap ℝ ℝ) :
   rw [h2, mul_assoc]
   exact mul_le_mul_of_nonneg_left h (by positivity)
 
-/-- The admissibility integral as a lower Lebesgue integral: `∫⁻ ‖ρ̂‖ₑ² |ω|^{-α} = 2π C_ρ`. -/
+/-- The admissibility integral as a lower Lebesgue integral: `∫⁻ ‖ρ♯‖ₑ² |ω|^{-α} = 2π C_ρ`. -/
 theorem IsAdmissible.lintegral_enorm_sq_mul {α : ℝ} {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) :
     ∫⁻ ω, ‖filterFourier ρ ω‖ₑ ^ 2 * ENNReal.ofReal (|ω| ^ (-α)) =
       ENNReal.ofReal (2 * Real.pi * admissibilityConst α ρ) := by
@@ -282,8 +282,8 @@ theorem IsAdmissible.lintegral_enorm_sq_mul {α : ℝ} {ρ : SchwartzMap ℝ ℝ
   funext ω
   rw [ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
-/-- The weighted admissibility integral `∫ ‖ρ̂(ω)‖² |ω|^{-α} (1 + ω²) dω` is finite: near the
-origin it is the admissibility integral, at infinity `ρ̂` decays quadratically. -/
+/-- The weighted admissibility integral `∫ ‖ρ♯(ω)‖² |ω|^{-α} (1 + ω²) dω` is finite: near the
+origin it is the admissibility integral, at infinity `ρ♯` decays quadratically. -/
 theorem IsAdmissible.integrable_mul_one_add_sq {α : ℝ} (hα : 0 < α) {ρ : SchwartzMap ℝ ℝ}
     (hρ : IsAdmissible α ρ) :
     Integrable fun ω : ℝ => ‖filterFourier ρ ω‖ ^ 2 * (|ω| ^ (-α) * (1 + ω ^ 2)) := by
@@ -324,8 +324,8 @@ section Rays2
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [BorelSpace H]
 
-/-- The weighted Tonelli identity for `(a, ω) ↦ ρ̂(ω) G(-ωa)`:
-`∫⁻ ‖ρ̂(ω)‖ₑ² ‖G(-ωa)‖ₑ² d(ν ⊗ dω) = 2π C_ρ ∫⁻ ‖G‖ₑ² dν`. -/
+/-- The weighted Tonelli identity for `(a, ω) ↦ ρ♯(ω) G(-ωa)`:
+`∫⁻ ‖ρ♯(ω)‖ₑ² ‖G(-ωa)‖ₑ² d(ν ⊗ dω) = 2π C_ρ ∫⁻ ‖G‖ₑ² dν`. -/
 theorem IsAdmissible.lintegral_prod_enorm_sq {ν : Measure H} [SFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) {G : H → ℂ}
     (hG : Measurable G) :
@@ -335,7 +335,7 @@ theorem IsAdmissible.lintegral_prod_enorm_sq {ν : Measure H} [SFinite ν] {α :
     ((continuous_filterFourier ρ).measurable.enorm.pow_const 2) (hG.enorm.pow_const 2),
     hρ.lintegral_enorm_sq_mul]
 
-/-- For `G ∈ L²(ν)`, `(a, ω) ↦ ρ̂(ω) G(-ωa)` is square integrable on `ν ⊗ dω`. -/
+/-- For `G ∈ L²(ν)`, `(a, ω) ↦ ρ♯(ω) G(-ωa)` is square integrable on `ν ⊗ dω`. -/
 theorem IsAdmissible.lintegral_prod_enorm_sq_lt_top {ν : Measure H} [SFinite ν] {α : ℝ}
     (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) {G : H → ℂ}
     (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
@@ -432,7 +432,7 @@ theorem memLp_ridgelet_slice {f : H → ℂ} (hf : Integrable f μ) (hf₂ : Mem
   rw [norm_pow, norm_norm]
   exact hpt c
 
-/-- The Fourier-slice identity `\widehat{R_ρ f}(a, ω) = ρ̂(ω) 𝒢_μ f(-ωa)`. -/
+/-- The Fourier-slice identity `(R_ρ f)^\sharp(a, ω) = ρ♯(ω) F_μ f(-ωa)`. -/
 theorem biasFourier_ridgelet {f : H → ℂ} (hf : Integrable f μ) (a : H) (ω : ℝ) :
     biasFourier (ridgelet μ ρ f) a ω = filterFourier ρ ω * gaussFourier μ f (-(ω • a)) := by
   have hF := integrable_ridgelet_kernel μ ρ hf a
@@ -495,7 +495,7 @@ theorem fourier_ridgelet_slice {f : H → ℂ} (hf : Integrable f μ) (a : H) (u
   rw [fourier_bias_eq, biasFourier_ridgelet μ ρ hf]
 
 /-- Plancherel along the bias line:
-`∫⁻ ‖R_ρ f(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ̂(ω)‖ₑ² ‖𝒢_μ f(-ωa)‖ₑ² dω`. -/
+`∫⁻ ‖R_ρ f(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ♯(ω)‖ₑ² ‖F_μ f(-ωa)‖ₑ² dω`. -/
 theorem lintegral_ridgelet_slice_sq {f : H → ℂ} (hf : Integrable f μ) (hf₂ : MemLp f 2 μ)
     (a : H) :
     ∫⁻ c, ‖ridgelet μ ρ f (a, c)‖ₑ ^ 2 =
@@ -512,7 +512,7 @@ theorem lintegral_ridgelet_slice_sq {f : H → ℂ} (hf : Integrable f μ) (hf�
     (by positivity), abs_of_pos (by positivity)]
 
 /-- Parseval along the bias line for two transforms:
-`∫ R_{ρ₁}f(a,c) conj(R_{ρ₂}g(a,c)) dc = (2π)⁻¹ ∫ ρ̂₁ conj ρ̂₂ (ω) 𝒢f conj 𝒢g (-ωa) dω`. -/
+`∫ R_{ρ₁}f(a,c) conj(R_{ρ₂}g(a,c)) dc = (2π)⁻¹ ∫ ρ♯₁ conj ρ♯₂ (ω) F_μf conj F_μg (-ωa) dω`. -/
 theorem integral_ridgelet_slice_mul_conj (ρ₁ ρ₂ : SchwartzMap ℝ ℝ) {f g : H → ℂ}
     (hf : Integrable f μ) (hf₂ : MemLp f 2 μ) (hg : Integrable g μ) (hg₂ : MemLp g 2 μ) (a : H) :
     ∫ c, ridgelet μ ρ₁ f (a, c) * (starRingEnd ℂ) (ridgelet μ ρ₂ g (a, c)) =
@@ -581,7 +581,7 @@ theorem lintegral_ridgelet_sq (ν : Measure H) [SFinite ν] (ρ : SchwartzMap �
   refine lintegral_congr fun a => ?_
   exact lintegral_ridgelet_slice_sq μ ρ hf hf₂ a
 
-/-- `R_ρ f ∈ L²(λ)` for `f ∈ L²(μ)` with `𝒢_μ f ∈ L²(ν)` and `α`-admissible `ρ`. -/
+/-- `R_ρ f ∈ L²(λ)` for `f ∈ L²(μ)` with `F_μ f ∈ L²(ν)` and `α`-admissible `ρ`. -/
 theorem memLp_ridgelet (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
     {f : H → ℂ}
     (hf : Integrable f μ) (hf₂ : MemLp f 2 μ) (hG : MemLp (gaussFourier μ f) 2 ν) :
@@ -593,7 +593,7 @@ theorem memLp_ridgelet (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (h
     (hρ.lintegral_prod_enorm_sq_lt_top hν (continuous_gaussFourier μ hf).measurable hG)
 
 omit [IsProbabilityMeasure μ] in
-/-- The product `(a, ω) ↦ ρ̂₁ conj ρ̂₂ (ω) 𝒢f conj 𝒢g (-ωa)` is integrable on `ν ⊗ dω`. -/
+/-- The product `(a, ω) ↦ ρ♯₁ conj ρ♯₂ (ω) F_μf conj F_μg (-ωa)` is integrable on `ν ⊗ dω`. -/
 theorem integrable_cross_kernel (hν : IsHomogeneous α ν) {ρ₁ ρ₂ : SchwartzMap ℝ ℝ}
     (hρ₁ : IsAdmissible α ρ₁)
     (hρ₂ : IsAdmissible α ρ₂) {f g : H → ℂ} (hf : Integrable f μ) (hg : Integrable g μ)
@@ -707,7 +707,7 @@ theorem integrable_prod_ray_weight (hν : IsHomogeneous α ν) (hG : Measurable 
         refine lt_of_eq_of_lt (lintegral_congr fun ω => ?_) h
         rw [Real.enorm_eq_ofReal (by positivity)]
 
-/-- For `G ∈ L²(ν)` and admissible `ρ`, the ray function `ω ↦ ρ̂(ω) G(-ωa)` is integrable for
+/-- For `G ∈ L²(ν)` and admissible `ρ`, the ray function `ω ↦ ρ♯(ω) G(-ωa)` is integrable for
 `ν`-almost every direction `a`: a weighted Cauchy–Schwarz inequality against the weight
 `|ω|^α (1 + ω²)⁻¹`. -/
 theorem ae_integrable_ray (hα : 0 < α) (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ)
@@ -731,7 +731,7 @@ theorem ae_integrable_ray (hα : 0 < α) (hν : IsHomogeneous α ν) (hρ : IsAd
       (norm_nonneg (G (-(ω • a)))) hw
     rwa [hinv] at this
 
-/-- For `G ∈ L²(ν)` and admissible `ρ`, the ray function `ω ↦ ρ̂(ω) G(-ωa)` is square
+/-- For `G ∈ L²(ν)` and admissible `ρ`, the ray function `ω ↦ ρ♯(ω) G(-ωa)` is square
 integrable for `ν`-almost every direction `a`. -/
 theorem ae_memLp_ray (hν : IsHomogeneous α ν) (hρ : IsAdmissible α ρ) (hG : Measurable G)
     (hG₂ : MemLp G 2 ν) :
@@ -762,7 +762,7 @@ theorem stronglyMeasurable_coefficientFormula (ρ : SchwartzMap ℝ ℝ) (hG : M
 
 omit [MeasurableSpace H] [BorelSpace H] in
 /-- The explicit coefficient is a Fourier transform for each fixed direction:
-`γ_G(a, c) = 𝓕 (u ↦ ρ̂(2πu) G(-2πu a)) (-c)` (a formal change of variables). -/
+`γ_G(a, c) = 𝓕 (u ↦ ρ♯(2πu) G(-2πu a)) (-c)` (a formal change of variables). -/
 theorem coefficientFormula_eq_fourier (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ) (a : H) (c : ℝ) :
     coefficientFormula ρ G (a, c) =
       𝓕 (fun u : ℝ => filterFourier ρ (2 * Real.pi * u) * G (-((2 * Real.pi * u) • a))) (-c) := by
@@ -780,7 +780,7 @@ theorem coefficientFormula_eq_fourier (ρ : SchwartzMap ℝ ℝ) (G : H → ℂ)
   rw [this]
   ring
 
-/-- Plancherel for a fixed direction: `∫⁻ ‖γ_G(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ̂(ω) G(-ωa)‖ₑ² dω`. -/
+/-- Plancherel for a fixed direction: `∫⁻ ‖γ_G(a,c)‖ₑ² dc = (2π)⁻¹ ∫⁻ ‖ρ♯(ω) G(-ωa)‖ₑ² dω`. -/
 theorem lintegral_coefficientFormula_slice_sq (ρ : SchwartzMap ℝ ℝ) (hG : Measurable G) {a : H}
     (ha₁ : Integrable fun ω : ℝ => filterFourier ρ ω * G (-(ω • a)))
     (ha₂ : MemLp (fun ω : ℝ => filterFourier ρ ω * G (-(ω • a))) 2 volume) :
@@ -865,7 +865,7 @@ theorem integrable_conj_schwartz (φ : SchwartzMap ℝ ℂ) :
   φ.integrable.norm.mono' (Complex.continuous_conj.comp φ.continuous).aestronglyMeasurable
     (Eventually.of_forall fun c => by rw [Complex.norm_conj])
 
-/-- The explicit coefficient `γ_G` has the partial Fourier transform `ρ̂(ω) G(-ωa)` in the
+/-- The explicit coefficient `γ_G` has the partial Fourier transform `ρ♯(ω) G(-ωa)` in the
 bias, in the sense of `HasBiasFourier` (Parseval against Schwartz test functions, by Fubini). -/
 theorem hasBiasFourier_coefficientFormula (hα : 0 < α) (hν : IsHomogeneous α ν)
     (hρ : IsAdmissible α ρ) (hG : Measurable G) (hG₂ : MemLp G 2 ν) :
@@ -1021,7 +1021,7 @@ theorem crossAdmissibilityConst_self (α : ℝ) (ρ : ℝ → ℝ) :
   push_cast
   rfl
 
-/-- `‖R_ρ f‖²_{L²(λ)} = C^{(α)}_ρ ∫ ‖𝒢_μ f‖² dν`. -/
+/-- `‖R_ρ f‖²_{L²(λ)} = C^{(α)}_ρ ∫ ‖F_μ f‖² dν`. -/
 theorem integral_ridgelet_norm_sq (μ : Measure H) [IsProbabilityMeasure μ] {ν : Measure H}
     [SFinite ν] {α : ℝ} (hν : IsHomogeneous α ν) {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ)
     {f : H → ℂ} (hf : Integrable f μ) (hf₂ : MemLp f 2 μ) (hG : MemLp (gaussFourier μ f) 2 ν) :
@@ -1043,7 +1043,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Measurabl
 
 variable (μ ν : Measure H) [IsFiniteMeasure μ]
 
-/-- `𝒢_μ : 𝒟 → 𝒦` as a linear map. -/
+/-- `F_μ : 𝒟 → 𝒦` as a linear map. -/
 def spectralEmbedₗ : spectralCore μ ν →ₗ[ℂ] spectralRange μ ν where
   toFun := spectralEmbed μ ν
   map_add' f g := Subtype.ext (gaussFourierLp_add μ ν f g)
@@ -1054,7 +1054,7 @@ def spectralEmbedₗ : spectralCore μ ν →ₗ[ℂ] spectralRange μ ν where
 theorem spectralEmbedₗ_apply (f : spectralCore μ ν) :
     spectralEmbedₗ μ ν f = spectralEmbed μ ν f := rfl
 
-/-- The image of the core `𝒟` under `𝒢_μ` is dense in `𝒦`. -/
+/-- The image of the core `𝒟` under `F_μ` is dense in `𝒦`. -/
 theorem denseRange_spectralEmbedₗ : DenseRange (spectralEmbedₗ μ ν) := by
   have key : (spectralRange μ ν : Set (Lp ℂ 2 ν)) ⊆ closure (Set.range (gaussFourierLp μ ν)) := by
     rw [← coe_gaussFourierRange, spectralRange_eq_topologicalClosure,
@@ -1144,7 +1144,7 @@ theorem coeFn_ridgeletCoreₗ (f : spectralCore μ ν) :
   rw [ridgeletCoreₗ_apply]
   exact MemLp.coeFn_toLp _
 
-/-- The scaled isometry on the core: `‖R_ρ f‖² = C^{(α)}_ρ ‖𝒢_μ f‖²`. -/
+/-- The scaled isometry on the core: `‖R_ρ f‖² = C^{(α)}_ρ ‖F_μ f‖²`. -/
 theorem norm_ridgeletCoreₗ_sq (f : spectralCore μ ν) :
     ‖ridgeletCoreₗ hν hρ f‖ ^ 2 = admissibilityConst α ρ * ‖spectralEmbedₗ μ ν f‖ ^ 2 := by
   rw [ridgeletCoreₗ_apply, MemLp.norm_toLp_two_sq]
@@ -1153,7 +1153,7 @@ theorem norm_ridgeletCoreₗ_sq (f : spectralCore μ ν) :
   exact integral_ridgelet_norm_sq μ hν hρ ((Lp.memLp (f : Lp ℂ 2 μ)).integrable one_le_two)
     (Lp.memLp _) f.2
 
-/-- The norm bound `‖R_ρ f‖ ≤ √C_ρ ‖𝒢_μ f‖` on the core, in the form used for the extension. -/
+/-- The norm bound `‖R_ρ f‖ ≤ √C_ρ ‖F_μ f‖` on the core, in the form used for the extension. -/
 theorem norm_ridgeletCoreₗ_le (f : spectralCore μ ν) :
     ‖ridgeletCoreₗ hν hρ f‖ ≤ Real.sqrt (admissibilityConst α ρ) * ‖spectralEmbedₗ μ ν f‖ := by
   refine le_of_eq ((sq_eq_sq₀ (norm_nonneg _) (by positivity)).mp ?_)
@@ -1391,7 +1391,7 @@ section Injectivity
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
   [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
 
-/-- Fourier uniqueness: `𝒢_μ f = 0` forces `f = 0` `μ`-almost everywhere. -/
+/-- Fourier uniqueness: `F_μ f = 0` forces `f = 0` `μ`-almost everywhere. -/
 theorem ae_eq_zero_of_gaussFourier_eq_zero (μ : Measure H) [IsFiniteMeasure μ] {f : H → ℂ}
     (hf : Integrable f μ) (h : ∀ ξ, gaussFourier μ f ξ = 0) : f =ᵐ[μ] 0 := by
   refine hf.ae_eq_zero_of_forall_integral_mul_exp_eq_zero fun t => ?_
@@ -1404,7 +1404,7 @@ theorem ae_eq_zero_of_gaussFourier_eq_zero (μ : Measure H) [IsFiniteMeasure μ]
   ring
 
 omit [CompleteSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] in
-/-- An admissible filter has a nonzero frequency at which `ρ̂` does not vanish. -/
+/-- An admissible filter has a nonzero frequency at which `ρ♯` does not vanish. -/
 theorem IsAdmissible.exists_ne_zero_filterFourier_ne_zero {α : ℝ} (hα : 0 < α)
     {ρ : SchwartzMap ℝ ℝ} (hρ : IsAdmissible α ρ) :
     ∃ ω : ℝ, ω ≠ 0 ∧ filterFourier ρ ω ≠ 0 := by
@@ -1453,7 +1453,7 @@ theorem ae_eq_zero_of_ridgelet_ae_eq_zero (μ : Measure H) [IsProbabilityMeasure
     ((continuous_gaussFourier μ hf).ae_eq_iff_eq ν continuous_const).mp hmap'
   exact ae_eq_zero_of_gaussFourier_eq_zero μ hf fun ξ => congrFun hzero ξ
 
-/-- Positivity of the spectral form: `∫ ‖𝒢_μ f‖² dν = 0` forces `f = 0` `μ`-almost
+/-- Positivity of the spectral form: `∫ ‖F_μ f‖² dν = 0` forces `f = 0` `μ`-almost
 everywhere. -/
 theorem ae_eq_zero_of_integral_norm_gaussFourier_sq_eq_zero (μ : Measure H)
     [IsFiniteMeasure μ] {ν : Measure H} [ν.IsOpenPosMeasure] {f : H → ℂ} (hf : Integrable f μ)

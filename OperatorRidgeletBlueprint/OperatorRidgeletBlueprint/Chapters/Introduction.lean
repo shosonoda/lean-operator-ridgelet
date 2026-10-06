@@ -64,7 +64,7 @@ $`(D_\omega)_\#\nu_\alpha=|\omega|^{-\alpha}\nu_\alpha` for $`\omega\ne0`.
 The parameter measure is $`\lambda_\alpha=\nu_\alpha\otimes\mathrm db`.
 
 Fourier transformation in the bias gives
-$`\widehat{R_\rho f}(a,\omega)=\widehat\rho(-\omega)F_Qf(\omega a)`, with
+$`(R_\rho f)^\sharp(a,\omega)=\rho^\sharp(-\omega)F_Qf(\omega a)`, with
 $`F_Qf(\xi)=\int_H f(x)e^{-i\langle x,\xi\rangle}\,\mu_Q(\mathrm dx)`.
 For nonzero $`a`, the right side uses the restriction of $`F_Qf` to the line through
 $`a`. Homogeneity separates direction and frequency integration. Direct dilation of a
@@ -73,7 +73,7 @@ singular, producing the obstruction proved in {bpref "prop:F.3"}[].
 
 For a spectral density $`g`, write $`g_a(\omega)=g(\omega a)`. Reading the slice
 identity in reverse suggests the coefficient
-$`\gamma_g(a,b)=(2\pi)^{-1}\int_{\mathbb R}\widehat\rho(-\omega)g_a(\omega)e^{i\omega b}\,\mathrm d\omega`.
+$`\gamma_g(a,b)=(2\pi)^{-1}\int_{\mathbb R}\rho^\sharp(-\omega)g_a(\omega)e^{i\omega b}\,\mathrm d\omega`.
 The results establish its norm, its reconstruction identity, and the decay conditions
 that give a finite coefficient measure with moments. For ReLU and other unbounded
 activations the Fourier pairing is interpreted distributionally.
@@ -137,12 +137,14 @@ Unless otherwise stated, $`H` is an infinite-dimensional separable real Hilbert 
 $`Y` is a separable complex Hilbert space, and $`P,Q` are injective positive self-adjoint
 trace-class operators. Functions are complex valued unless a real activation or output is
 specified. The one-dimensional Fourier convention is
-$`\widehat h(\omega)=\int h(t)e^{-it\omega}\,\mathrm dt` and
-$`h(t)=(2\pi)^{-1}\int\widehat h(\omega)e^{it\omega}\,\mathrm d\omega`.
-Distributional pairings are bilinear.
+$`h^\sharp(\omega)=\int h(t)e^{-it\omega}\,\mathrm dt` and
+$`h(t)=(2\pi)^{-1}\int h^\sharp(\omega)e^{it\omega}\,\mathrm d\omega`.
+We use $`\sharp` for one-dimensional and partial bias transforms and
+$`\widehat{\phantom f}` for spatial Fourier–Stieltjes transforms and torus
+coefficients. Distributional pairings are bilinear.
 
 The manuscript uses $`b` and $`\sigma`; the formal statements and the mathematical
-nodes below use $`c=-b` and $`\beta`. They write $`\mathcal G_Q` for $`F_Q` and often
+nodes below use $`c=-b` and $`\beta`. They use the same spatial symbol $`F_Q` and often
 $`G` for a spectral density $`g`. These are changes of coordinates and notation, not
 changes in the network or theorem hypotheses.
 

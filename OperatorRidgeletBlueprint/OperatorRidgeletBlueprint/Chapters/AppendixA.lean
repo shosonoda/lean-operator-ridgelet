@@ -113,8 +113,8 @@ Apply the one-dimensional Plancherel identity in the bias to the Fourier-slice i
 substitute $`\xi=-\omega a` by homogeneity; admissibility gives square integrability and
 Cauchy–Schwarz justifies the cross identity. The norm identity extends $`R_\rho` to the
 completion, an isometry up to a nonzero scalar has closed range, and
-$`R_\rho=W_\rho U_\alpha` holds on the core and extends by continuity. For (iii), a fixed
-frequency with $`\widehat\rho\ne0` and homogeneity give $`\mathcal G_Qf=0` almost everywhere,
+$`R_\rho=W_\rho F_Q` holds on the core and extends by continuity. For (iii), a fixed
+frequency with $`\rho^\sharp\ne0` and homogeneity give $`F_Qf=0` almost everywhere,
 and the argument of {bpref "lem:3.8"}[] finishes.
 :::
 

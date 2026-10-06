@@ -33,7 +33,7 @@ the ridgelet transform to restrictions of the weighted Fourier transform along l
 We construct the coefficient operator, the Hilbert space $`\mathcal E_\alpha`, and the
 Plancherel identity in that order. Appendix A contains the Gaussian and Fourier details;
 Appendix B supplies the coefficient isometry used here. The statements use the coordinate
-$`c=-b` and write $`\mathcal G_Qf` for the manuscript's $`F_Qf`.
+$`c=-b` and write $`F_Qf` for the manuscript's $`F_Qf`.
 
 # The input and direction measures
 
@@ -65,10 +65,10 @@ See the [proof in Appendix A](appendix-a/A___2-Proof-of-Lemma-3___1/#--informal-
 # Admissible filters, the transform, and the Fourier slice
 
 :::definition "aux:conventions" (lean := "OperatorRidgelet.character, OperatorRidgelet.lineFourier, OperatorRidgelet.filterFourier, OperatorRidgelet.biasFourier, OperatorRidgelet.IsHomogeneous")
-The Fourier convention is $`\widehat h(\omega)=\int_{\mathbb R}h(t)e^{-it\omega}\,\mathrm dt`
-for functions on the line (for a real filter $`\rho` this is $`\widehat\rho`), and the partial
+The Fourier convention is $`h^\sharp(\omega)=\int_{\mathbb R}h(t)e^{-it\omega}\,\mathrm dt`
+for functions on the line (for a real filter $`\rho` this is $`\rho^\sharp`), and the partial
 Fourier transform in the bias of a coefficient is
-$`\widehat\gamma(a,\omega)=\int_{\mathbb R}\gamma(a,c)e^{-i\omega c}\,\mathrm dc`; the analysis
+$`\gamma^\sharp(a,\omega)=\int_{\mathbb R}\gamma(a,c)e^{-i\omega c}\,\mathrm dc`; the analysis
 character on $`H` is $`x\mapsto e^{-i\langle x,\xi\rangle}`. A measure $`\nu` on $`H` is
 homogeneous of degree $`\alpha` when $`(D_\omega)_\#\nu=|\omega|^{-\alpha}\nu` for every
 $`\omega\ne0`. The Lean network uses $`\langle a,x\rangle+c`; the manuscript bias is
@@ -78,12 +78,12 @@ $`\omega` relative to the coefficient written in $`c`.
 
 :::definition "def:3.2" (lean := "OperatorRidgelet.IsAdmissible, OperatorRidgelet.admissibilityConst, OperatorRidgelet.IsBandPass, OperatorRidgelet.crossAdmissibilityConst, OperatorRidgelet.Paper.def_3_2") (uses := "aux:conventions")
 A real $`\rho\in\mathcal S(\mathbb R)` is $`\alpha`-admissible if
-$`0<(\!(\rho,\rho)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}|\widehat\rho(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega<\infty`.
-It is a band-pass filter if moreover $`\widehat\rho\in C_c^\infty(\mathbb R\setminus\{0\})`
+$`0<(\!(\rho,\rho)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}|\rho^\sharp(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega<\infty`.
+It is a band-pass filter if moreover $`\rho^\sharp\in C_c^\infty(\mathbb R\setminus\{0\})`
 (and $`\rho\ne0`): band-pass here specifies compact Fourier support away from zero.
 Such a filter is $`\alpha`-admissible for every $`\alpha>0`. For two
 admissible filters,
-$`(\!(\rho_1,\rho_2)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}\widehat\rho_1(\omega)\overline{\widehat\rho_2(\omega)}|\omega|^{-\alpha}\,\mathrm d\omega`;
+$`(\!(\rho_1,\rho_2)\!)_\alpha=\frac1{2\pi}\int_{\mathbb R}\rho_1^\sharp(\omega)\overline{\rho_2^\sharp(\omega)}|\omega|^{-\alpha}\,\mathrm d\omega`;
 self-admissibility is the case $`\rho_1=\rho_2=\rho` of this pairing, since $`\rho` is real.
 :::
 
@@ -92,9 +92,9 @@ For $`f\in L^1(H,\mu_Q)` and $`\rho\in\mathcal S(\mathbb R)`, the Gaussian-weigh
 transform is $`R_\rho f(a,c)=\int_Hf(x)\rho(\langle a,x\rangle+c)\,\mu_Q(\mathrm dx)`, and
 $`\lambda_\alpha=\nu_\alpha\otimes\mathrm dc` is the parameter measure on $`H\times\mathbb R`.
 The analogue of the Fourier transform of $`f` is the Fourier transform of the finite measure
-$`f\mu_Q`, $`\mathcal G_Qf(\xi)=\int_Hf(x)e^{-i\langle x,\xi\rangle}\,\mu_Q(\mathrm dx)`,
+$`f\mu_Q`, $`F_Qf(\xi)=\int_Hf(x)e^{-i\langle x,\xi\rangle}\,\mu_Q(\mathrm dx)`,
 which is bounded and continuous; for a general input measure $`\mu` it is written
-$`\mathcal G_\mu f`.
+$`F_\mu f`.
 :::
 
 :::lemma_ "lem:3.4" (lean := "OperatorRidgelet.Paper.lem_3_4_i, OperatorRidgelet.Paper.lem_3_4_ii, OperatorRidgelet.Paper.lem_3_4_iii, OperatorRidgelet.Paper.lem_3_4_iv, OperatorRidgelet.Paper.lem_3_4_v") (uses := "def:3.3, aux:conventions")
@@ -103,15 +103,15 @@ and jointly continuous (ii) on $`H\times\mathbb R`, and for every $`a`,
 $`\|R_\rho f(a,\cdot)\|_{L^1(\mathbb R)}\le\|f\|_{L^1(\mu)}\|\rho\|_{L^1}` (iii) and
 $`\|R_\rho f(a,\cdot)\|_{L^2(\mathbb R)}^2\le\|f\|_{L^2(\mu)}^2\|\rho\|_{L^2}^2` if
 $`f\in L^2(\mu)` (iv). For every $`a\in H` and $`\omega\in\mathbb R`,
-$`\widehat{R_\rho f}(a,\omega)=\widehat\rho(\omega)\,\mathcal G_\mu f(-\omega a)` (v).
+$`(R_\rho f)^\sharp(a,\omega)=\rho^\sharp(\omega)\,F_\mu f(-\omega a)` (v).
 :::
 
 :::proof "lem:3.4"
 Boundedness is $`|R_\rho f|\le\|f\|_1\|\rho\|_\infty`, joint continuity is dominated
 convergence, the bounds are Cauchy–Schwarz and Tonelli in the probability measure $`\mu`, and
 the substitution $`u=\langle a,x\rangle+c` in the inner Fourier transform gives the slice
-identity. For nonzero $`a`, the function $`\omega\mapsto\mathcal G_\mu f(\omega a)` is
-the restriction of $`\mathcal G_\mu f` to the line through the origin spanned by $`a`.
+identity. For nonzero $`a`, the function $`\omega\mapsto F_\mu f(\omega a)` is
+the restriction of $`F_\mu f` to the line through the origin spanned by $`a`.
 :::
 
 :::definition "def:3.5" (lean := "OperatorRidgelet.HasBiasFourier, OperatorRidgelet.spectralCoefficient, OperatorRidgelet.coefficientFormula, OperatorRidgelet.Paper.def_3_5") (uses := "def:3.2, def:3.3, aux:conventions")
@@ -120,21 +120,22 @@ For $`a\ne0` this is the restriction of $`g` to the line through the origin span
 $`a`; for $`a=0` it is constant. We write $`G_a` when the density is denoted by $`G`.
 Let $`\rho` be $`\alpha`-admissible and $`G\in L^2(\nu_\alpha)` Borel. The coefficient
 $`W_\rho G\in L^2(\lambda_\alpha)` is the function whose partial Fourier transform in the bias
-is $`\widehat{W_\rho G}(a,\omega)=\widehat\rho(\omega)\,G_a(-\omega)`, characterized through
+is $`(W_\rho G)^\sharp(a,\omega)=\rho^\sharp(\omega)\,G_a(-\omega)`, characterized through
 Parseval's identity against Schwartz test functions in the bias. For every such
 $`G\in L^2(\nu_\alpha)` and $`\nu_\alpha`-almost every $`a`,
-$`\gamma_G(a,c)=W_\rho G(a,c)=\frac1{2\pi}\int_{\mathbb R}\widehat\rho(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega`;
+$`\gamma_G(a,c)=W_\rho G(a,c)=\frac1{2\pi}\int_{\mathbb R}\rho^\sharp(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega`;
 the integral converges absolutely for every $`c`. This formula is the theorem part of the definition.
 :::
 
 :::lemma_ "lem:3.6" (lean := "OperatorRidgelet.Paper.lem_3_6_i, OperatorRidgelet.Paper.lem_3_6_ii, OperatorRidgelet.Paper.lem_3_6_iii")
 For an admissible Schwartz filter and a sigma-finite homogeneous direction measure,
-the backprojection $`\Lambda_\rho=W_\rho^*` is the Hilbert adjoint of the coefficient operator,
+the backprojection $`W_\rho^*` is the Hilbert adjoint of the coefficient operator,
 with values in the frequency space $`L^2(\nu_\alpha)`. It satisfies
-$`\Lambda_\rho W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` and
-$`\|\Lambda_\rho\gamma\|_2\le\sqrt{(\!(\rho,\rho)\!)_\alpha}\|\gamma\|_2`.
+$`W_\rho^* W_\rho=(\!(\rho,\rho)\!)_\alpha\mathrm{Id}` and
+$`\|W_\rho^*\gamma\|_2\le\sqrt{(\!(\rho,\rho)\!)_\alpha}\|\gamma\|_2`.
 Its integral formula is
-$`\Lambda_\rho\gamma(\xi)=(2\pi)^{-1}\int\overline{\widehat\rho(\omega)}\widehat\gamma(-\xi/\omega,\omega)|\omega|^{-\alpha}\,\mathrm d\omega`;
+$`W_\rho^*\gamma(\xi)=(2\pi)^{-1}\int_{\mathbb R\setminus\{0\}}
+    \overline{\rho^\sharp(\omega)}\gamma^\sharp(-\xi/\omega,\omega)|\omega|^{-\alpha}\,\mathrm d\omega`;
 this integral is absolutely convergent for almost every $`\xi` and is independent of the
 jointly measurable Fourier representative.
 :::
@@ -148,24 +149,27 @@ norm bound; polarization of the coefficient isometry gives the left inverse iden
 # The Hilbert space E-alpha
 
 :::definition "def:3.7" (lean := "OperatorRidgelet.spectralCore, OperatorRidgelet.spectralInner, OperatorRidgelet.spectralRange, OperatorRidgelet.gaussFourierLp, OperatorRidgelet.spectralEmbed") (uses := "def:3.3, aux:gaussian-mixture")
-$`\mathcal D_\alpha=\{f\in L^2(H,\mu_Q):\mathcal G_Qf\in L^2(H,\nu_\alpha)\}` with
-$`\langle f,g\rangle_{\mathcal E_\alpha}=\int_H\mathcal G_Qf\,\overline{\mathcal G_Qg}\,\mathrm d\nu_\alpha`.
+$`\mathcal D_\alpha=\{f\in L^2(H,\mu_Q):F_Qf\in L^2(H,\nu_\alpha)\}` with
+$`\langle f,g\rangle_{\mathcal E_\alpha}=\int_HF_Qf\,\overline{F_Qg}\,\mathrm d\nu_\alpha`.
 The Hilbert space $`\mathcal E_\alpha` is the completion of $`\mathcal D_\alpha` in this norm,
-and $`\mathcal K_\alpha=\overline{\mathcal G_Q(\mathcal D_\alpha)}^{L^2(\nu_\alpha)}` is the
-closure of the range of $`\mathcal G_Q` on $`\mathcal D_\alpha`. The formalization represents
-$`\mathcal E_\alpha` by $`\mathcal K_\alpha` and the unitary $`U_\alpha` by the map
-$`U:\mathcal D_\alpha\to\mathcal K_\alpha`, $`f\mapsto\mathcal G_Qf`.
+and $`\mathcal K_\alpha=\overline{F_Q(\mathcal D_\alpha)}^{L^2(\nu_\alpha)}` is the
+closure of the range of $`F_Q` on $`\mathcal D_\alpha`. The formalization represents
+$`\mathcal E_\alpha` by $`\mathcal K_\alpha` and the unitary $`F_Q` by the map
+$`F_Q:\mathcal D_\alpha\to\mathcal K_\alpha`, $`f\mapsto F_Qf`.
 :::
 
 :::lemma_ "lem:3.8" (lean := "OperatorRidgelet.Paper.lem_3_8_i, OperatorRidgelet.Paper.lem_3_8_ii, OperatorRidgelet.Paper.lem_3_8_iii") (uses := "def:3.7")
-The spectral form is positive definite on $`\mathcal D_\alpha` (i), $`\mathcal G_Q` is an
+The spectral form is positive definite on $`\mathcal D_\alpha` (i), $`F_Q` is an
 isometry from $`(\mathcal D_\alpha,\langle\cdot,\cdot\rangle_{\mathcal E_\alpha})` into
-$`\mathcal K_\alpha` (ii), and its image is dense (iii), so that $`\mathcal G_Q` extends
-uniquely to a unitary $`U_\alpha:\mathcal E_\alpha\to\mathcal K_\alpha`.
+$`\mathcal K_\alpha` (ii), and its image is dense (iii), so that $`F_Q` extends
+uniquely to a unitary $`F_Q:\mathcal E_\alpha\to\mathcal K_\alpha`.
+The same symbol denotes the concrete Gaussian integral on the core and its unitary
+extension. Outside the core it is an $`L^2(\nu_\alpha)` class; no pointwise
+Gaussian integral representation is assumed.
 :::
 
 :::proof "lem:3.8" (uses := "lem:3.1")
-If the norm of $`f\in\mathcal D_\alpha` vanishes, then $`\mathcal G_Qf=0` almost everywhere,
+If the norm of $`f\in\mathcal D_\alpha` vanishes, then $`F_Qf=0` almost everywhere,
 hence everywhere by continuity and full support of $`\nu_\alpha`; the Fourier transform
 determines finite complex Borel measures on a separable Hilbert space, so $`f\mu_Q=0`.
 :::
@@ -174,14 +178,14 @@ determines finite complex Borel measures on a separable Hilbert space, so $`f\mu
 For every $`t>0`, $`\alpha>0`, and integer $`m\ge0`,
 $`\int_H\|\xi\|^{2m}e^{-t\langle Q\xi,\xi\rangle}\,\nu_\alpha(\mathrm d\xi)<\infty` (i).
 Consequently, if $`f\in L^2(\mu_Q)` and
-$`|\mathcal G_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle Q\xi,\xi\rangle/2}`, then
+$`|F_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle Q\xi,\xi\rangle/2}`, then
 $`f\in\mathcal D_\alpha` for every $`\alpha>0` (ii).
 :::
 
 See the [proof in Appendix A](appendix-a/A___3-Proof-of-Lemma-3___9/#--informal-preview-_FLQQ_lem___3___9_FLQQ_--proof).
 
 :::example_ "ex:3.10" (lean := "OperatorRidgelet.Paper.ex_3_10_i, OperatorRidgelet.Paper.ex_3_10_ii, OperatorRidgelet.Paper.ex_3_10_iii, OperatorRidgelet.Paper.ex_3_10_iv, OperatorRidgelet.Paper.ex_3_10_v") (uses := "def:3.7, aux:centered-gaussian, ex:7.1, ex:7.4")
-The constant function $`1` has $`\mathcal G_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}` (i), so
+The constant function $`1` has $`F_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}` (i), so
 $`1\in\mathcal D_\alpha` for every $`\alpha>0` (ii) and $`\mathcal E_\alpha\ne\{0\}` (iii).
 The non-cylindrical Gaussian target $`f_W(x)=e^{-\langle Wx,x\rangle/2}` of
 {bpref "ex:7.1"}[] belongs to every $`\mathcal D_\alpha` (iv), and so do the
@@ -190,7 +194,7 @@ components of the neural-operator layers with Gaussian activation of
 :::
 
 :::proof "ex:3.10" (uses := "lem:3.9")
-The Gaussian characteristic functional gives $`\mathcal G_Q1`, and the decay lemma with
+The Gaussian characteristic functional gives $`F_Q1`, and the decay lemma with
 $`m=0`, $`p=0`, $`t=1` gives $`1\in\mathcal D_\alpha`; the other two assertions are proved with
 the examples, using only the decay lemma and the Fourier-slice identity.
 :::
@@ -205,7 +209,7 @@ $`\langle R_{\rho_1}f,R_{\rho_2}g\rangle_{L^2(\lambda_\alpha)}=(\!(\rho_1,\rho_2
 (ii) An $`\alpha`-admissible $`\rho` determines a unique bounded extension
 $`R_\rho:\mathcal E_\alpha\to L^2(\lambda_\alpha)` with
 $`\|R_\rho f\|^2=(\!(\rho,\rho)\!)_\alpha\|f\|_{\mathcal E_\alpha}^2`; its range is closed, and
-$`R_\rho=W_\rho U_\alpha`. (iii) If $`\rho` is $`\alpha`-admissible and
+$`R_\rho=W_\rho F_Q`. (iii) If $`\rho` is $`\alpha`-admissible and
 $`f\in L^1(H,\mu_Q)`, then $`R_\rho f=0` $`\lambda_\alpha`-almost everywhere implies $`f=0`
 $`\mu_Q`-almost everywhere.
 :::
@@ -221,13 +225,13 @@ reconstruction. Appendix G supplies the calculations.
 :::definition "aux:explicit-filters" (lean := "OperatorRidgelet.Filters.bump, OperatorRidgelet.Filters.bandPassHat, OperatorRidgelet.Filters.bandPassFun, OperatorRidgelet.Filters.bandPass, OperatorRidgelet.Filters.mexicanHatFun, OperatorRidgelet.Filters.mexicanHat") (uses := "aux:conventions")
 With the bump $`\eta(u)=\exp(-1/(1-u^2))` for $`|u|<1` and $`0` otherwise, the band-pass
 filter $`\rho_{\mathrm{bp}}` is the real even Schwartz function with
-$`\widehat\rho_{\mathrm{bp}}(\omega)=-\eta(2|\omega|-3)`, obtained by Fourier inversion; the
+$`\rho_{\mathrm{bp}}^\sharp(\omega)=-\eta(2|\omega|-3)`, obtained by Fourier inversion; the
 Mexican hat is $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}`. Both are taken as Schwartz maps by
 choice, with junk value $`0` should the explicit function fail to be Schwartz.
 :::
 
 :::example_ "ex:3.12" (lean := "OperatorRidgelet.Paper.ex_3_12_i, OperatorRidgelet.Paper.ex_3_12_ii, OperatorRidgelet.Paper.ex_3_12_iii, OperatorRidgelet.Paper.ex_3_12_iv, OperatorRidgelet.Paper.ex_3_12_v, OperatorRidgelet.Paper.ex_3_12_vi, OperatorRidgelet.Paper.ex_3_12_vii, OperatorRidgelet.Paper.ex_3_12_viii, OperatorRidgelet.Paper.ex_3_12_ix, OperatorRidgelet.Paper.ex_3_12_x") (uses := "aux:explicit-filters, def:3.2, aux:conventions")
-$`\widehat\rho_{\mathrm{bp}}` is smooth (i), nonpositive (ii), nonzero (iii), and supported in
+$`\rho_{\mathrm{bp}}^\sharp` is smooth (i), nonpositive (ii), nonzero (iii), and supported in
 $`\{1\le|\omega|\le2\}` (iv), so $`\rho_{\mathrm{bp}}\in\mathcal S(\mathbb R)` is real (v)
 and even (vi) with the prescribed Fourier transform (vii), satisfies the band-pass condition
 (viii), and is $`\alpha`-admissible for every $`\alpha>0` (ix); multiplying by
@@ -239,7 +243,7 @@ See the [proof in Appendix G](appendix-g/proof-3-12/#--informal-preview-_FLQQ_ex
 
 :::example_ "ex:3.13" (lean := "OperatorRidgelet.Paper.ex_3_13_i, OperatorRidgelet.Paper.ex_3_13_ii, OperatorRidgelet.Paper.ex_3_13_iii, OperatorRidgelet.Paper.ex_3_13_iv, OperatorRidgelet.Paper.ex_3_13_v, OperatorRidgelet.Paper.ex_3_13_vi") (uses := "aux:explicit-filters, def:3.2, aux:conventions")
 $`\rho_{\mathrm{MH}}(t)=(1-t^2)e^{-t^2/2}` is a Schwartz function (i) with
-$`\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}` (ii). It is
+$`\rho_{\mathrm{MH}}^\sharp(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}` (ii). It is
 $`\alpha`-admissible exactly for $`0<\alpha<5` (iii), with
 $`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_\alpha=\Gamma((5-\alpha)/2)` (iv) and
 $`(\!(\rho_{\mathrm{MH}},\rho_{\mathrm{MH}})\!)_1=1` (v). It is not band pass (vi).

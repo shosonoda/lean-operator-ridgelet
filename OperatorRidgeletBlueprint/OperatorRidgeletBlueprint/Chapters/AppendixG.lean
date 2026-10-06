@@ -71,11 +71,11 @@ number := false
 The statement is {bpref "prop:5.8"}[].
 
 :::proof "prop:5.8" (uses := "lem:C.3")
-The Fourier transform $`\widehat\rho_k` is a polynomial times a Gaussian, hence Schwartz,
+The Fourier transform $`\rho_k^\sharp` is a polynomial times a Gaussian, hence Schwartz,
 and real and even, so its inverse
 angular transform is a real Schwartz function. It vanishes only at the origin, which is
 therefore in the closed support, so the filter is not band pass, while
-$`|\widehat\rho_k|^2|\omega|^{-\alpha}=|\omega|^{4k-\alpha}e^{-2\omega^2}` is integrable exactly
+$`|\rho_k^\sharp|^2|\omega|^{-\alpha}=|\omega|^{4k-\alpha}e^{-2\omega^2}` is integrable exactly
 for $`4k-\alpha>-1`. Homogeneity scales balls, $`\nu(B_R)=R^\alpha\nu(B_1)`, and the dyadic
 annuli give a geometric series, which is the moment bound. Write
 $`h_0(\omega)=\omega^{2k}e^{-\omega^2}` and $`A=(1+\|a\|^2)^{1/2}`.
@@ -92,7 +92,7 @@ $`u^{\alpha/2-1}(1+u)^{(s-2k-1/2)/2}` together with Tonelli reduces its Sobolev 
 norms of the dilated filters.
 
 For the Gaussian activation, substitute
-$`\widehat\sigma(\omega)=\sqrt{2\pi}e^{-\omega^2/2}` in the pairing and evaluate
+$`\sigma^\sharp(\omega)=\sqrt{2\pi}e^{-\omega^2/2}` in the pairing and evaluate
 $`\int_{\mathbb R}|\omega|^\delta e^{-3\omega^2/2}\,\mathrm d\omega`
 by the Gamma integral. For ReLU, its Fourier transform away from zero is
 $`-\omega^{-2}`. When $`s>3/2`, the order condition gives $`\delta>5/2`, so

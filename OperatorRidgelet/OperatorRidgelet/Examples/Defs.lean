@@ -57,7 +57,7 @@ derivative `φ''`, `gaussianSmooth ρ v c = (ρ * φ_v)(c)` is
 the convolution with the centred Gaussian of variance `v` (Mathlib's `gaussianReal 0 v`, which
 is `δ_0` for `v = 0`), `gaussianTarget W x = e^{-⟨Wx,x⟩/2}` is `f_W`, and
 `gaussianKappa S W ξ = ⟨S (I+M)⁻¹ S ξ, ξ⟩` is `κ_W` for `S = Q^{1/2}` and `M = S W S`.
-`MemSpectralCore μ ν f` is `f ∈ 𝒟_α` for a function `f` (`f ∈ L²(μ)` and `𝒢_μ f ∈ L²(ν)`);
+`MemSpectralCore μ ν f` is `f ∈ 𝒟_α` for a function `f` (`f ∈ L²(μ)` and `F_μ f ∈ L²(ν)`);
 `toLp_mem_spectralCore_iff` relates it to the submodule `spectralCore`.
 
 ## Gaussian-parameter networks and the neural-operator layer
@@ -229,13 +229,13 @@ theorem gaussFourier_congr_ae {μ : Measure H} {f g : H → ℂ} (h : f =ᵐ[μ]
 
 variable [OpensMeasurableSpace H]
 
-/-- `f ∈ 𝒟_α` for a function `f`: `f ∈ L²(μ)` and `𝒢_μ f ∈ L²(ν)`. -/
+/-- `f ∈ 𝒟_α` for a function `f`: `f ∈ L²(μ)` and `F_μ f ∈ L²(ν)`. -/
 def MemSpectralCore (μ ν : Measure H) (f : H → ℂ) : Prop :=
   MemLp f 2 μ ∧ MemLp (gaussFourier μ f) 2 ν
 
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- `f ∈ 𝒟_α(Y)` for a `Y`-valued function `f`: `f ∈ L²(μ;Y)` and `𝒢_μ f ∈ L²(ν;Y)`. -/
+/-- `f ∈ 𝒟_α(Y)` for a `Y`-valued function `f`: `f ∈ L²(μ;Y)` and `F_μ f ∈ L²(ν;Y)`. -/
 def MemSpectralCoreVec (μ ν : Measure H) (f : H → Y) : Prop :=
   MemLp f 2 μ ∧ MemLp (gaussFourierVec μ f) 2 ν
 

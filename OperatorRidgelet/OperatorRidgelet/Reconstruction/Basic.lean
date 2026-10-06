@@ -77,12 +77,12 @@ section
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [MeasurableSpace H]
   [OpensMeasurableSpace H]
 
-/-- `J (J⁻¹ F) = F`. -/
+/-- `J (T⁻¹ F) = F`. -/
 theorem rieszMap_rieszInv (μ ν : Measure H) [IsFiniteMeasure μ] (F : SpectralAntiDual μ ν) :
     rieszMap μ ν (rieszInv μ ν F) = F :=
   innerSLFlip_toDual_symm_antiDualConj F
 
-/-- `J (J⁻¹ F) = F` for `Y`-valued targets. -/
+/-- `J (T⁻¹ F) = F` for `Y`-valued targets. -/
 theorem rieszMapVec_rieszInvVec {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y]
     [CompleteSpace Y] (μ ν : Measure H) [IsFiniteMeasure μ] (F : SpectralAntiDualVec Y μ ν) :
     rieszMapVec Y μ ν (rieszInvVec μ ν F) = F :=

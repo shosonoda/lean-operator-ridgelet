@@ -6,8 +6,8 @@ import OperatorRidgelet.Reconstruction.Defs
 
 The vector-valued counterpart of `OperatorRidgelet.Examples.SliceCoefficient`: for an
 integrable `F : H → Y`, the bias function `c ↦ R_ρ F(a, c)` is continuous and integrable, its
-Fourier transform is `ρ̂(ω) • 𝒢_μ F(-ωa)` (`fourier_ridgeletVec_slice'`), and Fourier inversion
-gives `R_ρ F = γ_G` for `G = 𝒢_μ F` (`ridgeletVec_eq_coefficientFormulaVec'`).  As in the scalar
+Fourier transform is `ρ♯(ω) • F_μ F(-ωa)` (`fourier_ridgeletVec_slice'`), and Fourier inversion
+gives `R_ρ F = γ_G` for `G = F_μ F` (`ridgeletVec_eq_coefficientFormulaVec'`).  As in the scalar
 case only the a.e.-measurability of the coordinates `x ↦ ⟪x, v⟫` under `μ` is assumed.
 -/
 
@@ -25,7 +25,7 @@ variable {Y : Type*} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [CompleteS
 /-! ### The Fourier transform of a translated filter -/
 
 /-- The line Fourier transform of the translate `c ↦ ρ(t + c)` at frequency `ω` is
-`e^{iωt} ρ̂(ω)`. -/
+`e^{iωt} ρ♯(ω)`. -/
 theorem integral_filter_add_mul_exp (t ω : ℝ) :
     ∫ c : ℝ, (ρ (t + c) : ℂ) * Complex.exp (-((ω * c : ℝ) * Complex.I)) =
       Complex.exp (((ω * t : ℝ) : ℂ) * Complex.I) * filterFourier ρ ω := by
@@ -109,7 +109,7 @@ theorem continuous_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : 
       (ρ.continuous.comp (continuous_const.add continuous_id))).smul continuous_const
 
 /-- The Fourier-slice identity for `Y`-valued targets:
-`𝓕 (c ↦ R_ρ F(a, c)) u = ρ̂(2πu) • 𝒢_μ F(-2πu a)`. -/
+`𝓕 (c ↦ R_ρ F(a, c)) u = ρ♯(2πu) • F_μ F(-2πu a)`. -/
 theorem fourier_ridgeletVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) (u : ℝ) :
     𝓕 (fun c => ridgeletVec μ ρ F (a, c)) u =
       filterFourier ρ (2 * Real.pi * u) • gaussFourierVec μ F (-((2 * Real.pi * u) • a)) := by
@@ -192,7 +192,7 @@ theorem coefficientFormulaVec_eq_fourier (G : H → Y) (a : H) (c : ℝ) :
   ring
 
 omit hcoord [SFinite μ] [CompleteSpace Y] in
-/-- `𝒢_μ F` is bounded by `∫ ‖F‖ dμ`. -/
+/-- `F_μ F` is bounded by `∫ ‖F‖ dμ`. -/
 theorem norm_gaussFourierVec_le (F : H → Y) (ξ : H) :
     ‖gaussFourierVec μ F ξ‖ ≤ ∫ x, ‖F x‖ ∂μ := by
   unfold gaussFourierVec
@@ -202,7 +202,7 @@ theorem norm_gaussFourierVec_le (F : H → Y) (ξ : H) :
   rw [norm_smul, norm_character, one_mul]
 
 omit [SFinite μ] [CompleteSpace Y] in
-/-- `𝒢_μ F` is continuous for integrable `F`. -/
+/-- `F_μ F` is continuous for integrable `F`. -/
 theorem continuous_gaussFourierVec' {F : H → Y} (hF : Integrable F μ) :
     Continuous (gaussFourierVec μ F) := by
   unfold gaussFourierVec
@@ -217,7 +217,7 @@ theorem continuous_gaussFourierVec' {F : H → Y} (hF : Integrable F μ) :
       continuous_const
 
 omit [SFinite μ] [CompleteSpace Y] in
-/-- The Fourier slice `u ↦ ρ̂(2πu) • 𝒢_μ F(-2πu a)` is integrable. -/
+/-- The Fourier slice `u ↦ ρ♯(2πu) • F_μ F(-2πu a)` is integrable. -/
 theorem integrable_fourierVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H) :
     Integrable fun u : ℝ =>
       filterFourier ρ (2 * Real.pi * u) • gaussFourierVec μ F (-((2 * Real.pi * u) • a)) := by
@@ -230,7 +230,7 @@ theorem integrable_fourierVec_slice' {F : H → Y} (hF : Integrable F μ) (a : H
   exact h1.smul_of_top_left hb
 
 /-- **The `Y`-valued slice as a coefficient**: for integrable `F`, `R_ρ F = γ_G` with
-`G = 𝒢_μ F`. -/
+`G = F_μ F`. -/
 theorem ridgeletVec_eq_coefficientFormulaVec' {F : H → Y} (hF : Integrable F μ) :
     ridgeletVec μ ρ F = coefficientFormulaVec ρ (gaussFourierVec μ F) := by
   funext p

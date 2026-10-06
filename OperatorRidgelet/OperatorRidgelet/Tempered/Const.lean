@@ -6,9 +6,9 @@ import LeanRidgelet.Fourier.AngularDistribution
 
 The manuscript treats the activation as a tempered distribution `β ∈ 𝒮'(ℝ)` and pairs its
 Fourier transform with the band-pass analysis filter:
-`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β̂, ρ̂(-·) |·|^{-α}⟩` (Theorem 4.2(iii); the "distributional
-admissibility" displayed at the start of Section 5).  The test function `ω ↦ ρ̂(-ω) |ω|^{-α}` is
-Schwartz exactly when `ρ̂` vanishes near the origin, which is the band-pass condition; below it
+`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β♯, ρ♯(-·) |·|^{-α}⟩` (Theorem 4.2(iii); the "distributional
+admissibility" displayed at the start of Section 5).  The test function `ω ↦ ρ♯(-ω) |ω|^{-α}` is
+Schwartz exactly when `ρ♯` vanishes near the origin, which is the band-pass condition; below it
 is taken as a `SchwartzMap` whenever one with these values exists, and as `0` otherwise, so that
 the constant is defined for every `ρ` and every `α` without a proof obligation inside the
 definition.  Tempered distributions are Mathlib's `TemperedDistribution ℝ ℂ`, and the Fourier
@@ -26,7 +26,7 @@ namespace OperatorRidgelet
 open LeanRidgelet.Fourier
 
 open Classical in
-/-- The test filter `ω ↦ ρ̂(-ω) |ω|^{-α}` as a Schwartz function, when one with these values
+/-- The test filter `ω ↦ ρ♯(-ω) |ω|^{-α}` as a Schwartz function, when one with these values
 exists (in particular when `ρ` is band-pass); `0` otherwise. -/
 def temperedTestFilter (α : ℝ) (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ ℂ :=
   if h : ∃ φ : SchwartzMap ℝ ℂ, ∀ ω : ℝ, φ ω = filterFourier ρ (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ)
@@ -42,7 +42,7 @@ theorem temperedTestFilter_apply {α : ℝ} {ρ : SchwartzMap ℝ ℝ}
   exact h.choose_spec ω
 
 /-- The distributional admissibility constant
-`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β̂, ρ̂(-·) |·|^{-α}⟩` of a tempered activation `β` and a filter `ρ`. -/
+`C^{(α)}_{β,ρ} = (2π)⁻¹ ⟨β♯, ρ♯(-·) |·|^{-α}⟩` of a tempered activation `β` and a filter `ρ`. -/
 def temperedAdmissibilityConst (α : ℝ) (β : TemperedDistribution ℝ ℂ) (ρ : SchwartzMap ℝ ℝ) :
     ℂ :=
   ((2 * Real.pi)⁻¹ : ℝ) * angularFourierDistribution β (temperedTestFilter α ρ)

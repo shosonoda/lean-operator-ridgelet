@@ -13,7 +13,7 @@ Each item is `theorem OperatorRidgelet.Paper.<kind>_<number>[_<part>]`, identica
 For Hilbert-valued `Y`, the Bessel potential space `H^s_ω(ℝ;Y)` is represented by a profile
 `h` and its inverse Fourier transform `γ`. As documented in `OperatorRidgelet.Sobolev.Defs`,
 `MemRaySobolev s γ` and `raySobolevNorm s γ` express the weighted inverse-transform condition
-and norm `eq:sobolev-norm`, and `rayProfile γ = γ̂`. For general Banach `Y`, every use of this
+and norm `eq:sobolev-norm`, and `rayProfile γ = γ♯`. For general Banach `Y`, every use of this
 notation refers directly to the specified weighted inverse transform; no Plancherel identity
 is assumed.
 -/
@@ -169,7 +169,7 @@ theorem thm_5_6_v [CompleteSpace Y] {s p Cσ : ℝ} (hp : 0 ≤ p)
 /-! ### Proposition `prop:5.8` -/
 
 /-- **Proposition [prop:5.8]**(i) The Gaussian-derivative filter of order `k`
-is a real Schwartz function with Fourier transform `ρ̂_k(ω) = ω^{2k} e^{-ω²}`. -/
+is a real Schwartz function with Fourier transform `ρ♯_k(ω) = ω^{2k} e^{-ω²}`. -/
 theorem prop_5_8_i (k : ℕ) (ω : ℝ) :
     filterFourier (gaussDerivFilter k) ω = ((ω ^ (2 * k) * Real.exp (-ω ^ 2) : ℝ) : ℂ) := by
   exact filterFourier_gaussDerivFilter k ω
@@ -201,7 +201,7 @@ theorem prop_5_8_v (k : ℕ) (v : Y) :
 
 /-- **Proposition [prop:5.8]**(vi) Every profile belongs to `H^s_ω(ℝ;Y)` and
 equals the
-profile `h_a(ω) = ρ̂_k(-ω) g(ωa)` required by `thm:5.6`. -/
+profile `h_a(ω) = ρ♯_k(-ω) g(ωa)` required by `thm:5.6`. -/
 theorem prop_5_8_vi [CompleteSpace Y] (k : ℕ) (v : Y) {s : ℝ} (hs : 0 ≤ s)
     (a : H) :
     MemRaySobolev s (fun b => gaussRayCoefficient k v (a, b)) ∧
@@ -220,7 +220,7 @@ theorem prop_5_8_vii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 0 ≤ s)
   exact lintegral_raySobolevNorm_gaussRayCoefficient_ne_top hα hs hk hν hB v
 
 /-- **Proposition [prop:5.8]**(viii) The Sobolev test
-`q_{α,ρ_k}(ω) = ρ̂_k(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)` in the same range. -/
+`q_{α,ρ_k}(ω) = ρ♯_k(-ω) |ω|^{-α}` lies in `H^s_ω(ℝ)` in the same range. -/
 theorem prop_5_8_viii {k : ℕ} {α s : ℝ} (hα : 0 < α) (hs : 1 / 2 < s)
     (hk : α + 2 * s - 1 / 2 < 2 * k) :
     MemRaySobolev s (gaussSobolevRay k α) ∧

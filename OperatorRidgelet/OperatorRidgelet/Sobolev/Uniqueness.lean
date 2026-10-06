@@ -7,7 +7,7 @@ import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
 # `L¹` uniqueness of the ray profile
 
 Two integrable rays with the same profile agree almost everywhere.  The proof is the
-multiplication formula `∫ φ (γ̂) = ∫ (φ̂) γ` together with the fact that every real smooth
+multiplication formula `∫ φ (γ♯) = ∫ (φ♯) γ` together with the fact that every real smooth
 compactly supported function is a profile of an integrable function, so that the profiles
 determine the ray as a distribution.
 -/
@@ -51,7 +51,7 @@ theorem continuous_rayProfile {γ : ℝ → Y} (hγ : Integrable γ volume) :
   · exact Filter.Eventually.of_forall fun b => le_of_eq (norm_exp_smul ω b (γ b))
   · exact Filter.Eventually.of_forall fun b => by fun_prop
 
-/-- **The multiplication formula** for the ray profile: `∫ φ (γ̂) = ∫ (φ̂) γ`. -/
+/-- **The multiplication formula** for the ray profile: `∫ φ (γ♯) = ∫ (φ♯) γ`. -/
 theorem integral_smul_rayProfile {γ : ℝ → Y} (hγ : Integrable γ volume) {φ : ℝ → ℂ}
     (hφ : Integrable φ volume) :
     ∫ ω : ℝ, φ ω • rayProfile γ ω = ∫ t : ℝ, rayProfile φ t • γ t := by
@@ -89,7 +89,7 @@ theorem integral_smul_rayProfile {γ : ℝ → Y} (hγ : Integrable γ volume) {
   exact integral_integral_swap hK
 
 /-- The ray profile is the Fourier integral in Mathlib's convention at the rescaled
-frequency: `γ̂(ω) = 𝓕 γ (ω / 2π)`. -/
+frequency: `γ♯(ω) = 𝓕 γ (ω / 2π)`. -/
 theorem rayProfile_eq_fourier (γ : ℝ → Y) (ω : ℝ) :
     rayProfile γ ω = 𝓕 γ (ω / (2 * Real.pi)) := by
   rw [Real.fourier_eq']

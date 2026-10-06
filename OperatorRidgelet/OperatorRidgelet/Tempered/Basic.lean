@@ -18,7 +18,7 @@ elementary properties (bounds, Lipschitz continuity, derivatives) of the standar
 the mollifier family `bumpApproximateIdentity` built from Mathlib's normalized bump
 functions, which is an approximate identity in the sense of `IsApproximateIdentity`, the
 existence of an even cutoff `IsCutoff ρ χ` for a band-pass `ρ` (a difference of two bumps),
-Fourier uniqueness for real Schwartz filters, the test filter `ω ↦ ρ̂(-ω)|ω|^{-α}` of a band-pass
+Fourier uniqueness for real Schwartz filters, the test filter `ω ↦ ρ♯(-ω)|ω|^{-α}` of a band-pass
 filter as a Schwartz function, and the behaviour of the distributional admissibility constant
 under rescaling of the filter.  Not imported by `Challenge`.
 -/
@@ -337,7 +337,7 @@ theorem isApproximateIdentity_bumpApproximateIdentity :
 /-! ### Cutoffs -/
 
 /-- For a band-pass `ρ` there is an even cutoff `χ ∈ C_c^∞(ℝ ∖ {0})` equal to one on a
-neighbourhood of `supp ρ̂`: the difference of a bump equal to one on a large ball and a bump
+neighbourhood of `supp ρ♯`: the difference of a bump equal to one on a large ball and a bump
 supported near the origin. -/
 theorem IsBandPass.exists_isCutoff {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) :
     ∃ χ : ℝ → ℝ, IsCutoff ρ χ := by
@@ -389,7 +389,7 @@ theorem IsBandPass.exists_isCutoff {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass 
 
 /-! ### Fourier uniqueness for real filters -/
 
-/-- The integrand of `ρ̂(ω)` is integrable. -/
+/-- The integrand of `ρ♯(ω)` is integrable. -/
 theorem integrable_character_mul_schwartz (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     Integrable fun t : ℝ => Complex.exp (-Complex.I * ((inner ℝ t ω : ℝ) : ℂ)) * (ρ t : ℂ) := by
   have hint : Integrable fun t : ℝ => (ρ t : ℂ) := (SchwartzMap.ofReal ρ).integrable
@@ -400,7 +400,7 @@ theorem integrable_character_mul_schwartz (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) 
     rw [Complex.norm_exp]
     simp
 
-/-- `ρ̂` is additive in the filter. -/
+/-- `ρ♯` is additive in the filter. -/
 theorem filterFourier_sub (b b' : SchwartzMap ℝ ℝ) (ω : ℝ) :
     filterFourier (⇑(b - b')) ω = filterFourier b ω - filterFourier b' ω := by
   change filterFourier (⇑b - ⇑b') ω = _
@@ -411,7 +411,7 @@ theorem filterFourier_sub (b b' : SchwartzMap ℝ ℝ) (ω : ℝ) :
   funext t
   simp only [Pi.sub_apply, Complex.ofReal_sub, mul_sub]
 
-/-- `ρ̂` is homogeneous in the filter (Schwartz-level scalar multiple). -/
+/-- `ρ♯` is homogeneous in the filter (Schwartz-level scalar multiple). -/
 theorem filterFourier_smul' (c : ℝ) (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     filterFourier (⇑(c • ρ)) ω = (c : ℂ) * filterFourier ρ ω := by
   rw [← filterFourier_smul]
@@ -428,13 +428,13 @@ theorem SchwartzMap.eq_of_filterFourier_eq {b b' : SchwartzMap ℝ ℝ}
 
 /-! ### The test filter of a band-pass filter -/
 
-/-- `ω ↦ ρ̂(-ω)` as a Schwartz function. -/
+/-- `ω ↦ ρ♯(-ω)` as a Schwartz function. -/
 def filterFourierNegSchwartz (ρ : SchwartzMap ℝ ℝ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ
     (realDilationCLE (-(2 * Real.pi)⁻¹) (neg_ne_zero.mpr (inv_ne_zero two_mul_pi_ne_zero)))
     (𝓕 (SchwartzMap.ofReal ρ))
 
-/-- The reflected Fourier test function evaluates to `ρ̂(-ω)`. -/
+/-- The reflected Fourier test function evaluates to `ρ♯(-ω)`. -/
 theorem filterFourierNegSchwartz_apply (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
     filterFourierNegSchwartz ρ ω = filterFourier ρ (-ω) := by
   rw [filterFourier_eq_fourier_ofReal, filterFourierNegSchwartz,
@@ -442,7 +442,7 @@ theorem filterFourierNegSchwartz_apply (ρ : SchwartzMap ℝ ℝ) (ω : ℝ) :
   congr 1
   ring
 
-/-- The support of `ω ↦ ρ̂(-ω)` stays away from the origin for band-pass `ρ`. -/
+/-- The support of `ω ↦ ρ♯(-ω)` stays away from the origin for band-pass `ρ`. -/
 theorem IsBandPass.zero_notMem_tsupport_neg {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) :
     (0 : ℝ) ∉ tsupport (filterFourierNegSchwartz ρ) := by
   rw [notMem_tsupport_iff_eventuallyEq]
@@ -453,7 +453,7 @@ theorem IsBandPass.zero_notMem_tsupport_neg {ρ : SchwartzMap ℝ ℝ} (hρ : Is
   filter_upwards [h.comp_tendsto hneg] with ω hω
   simpa [filterFourierNegSchwartz_apply] using hω
 
-/-- For band-pass `ρ`, the test filter `ω ↦ ρ̂(-ω)|ω|^{-α}` is a Schwartz function. -/
+/-- For band-pass `ρ`, the test filter `ω ↦ ρ♯(-ω)|ω|^{-α}` is a Schwartz function. -/
 theorem IsBandPass.exists_temperedTestFilter {ρ : SchwartzMap ℝ ℝ} (hρ : IsBandPass ρ) (α : ℝ) :
     ∃ φ : SchwartzMap ℝ ℂ, ∀ ω : ℝ, φ ω = filterFourier ρ (-ω) * ((|ω| ^ (-α) : ℝ) : ℂ) := by
   obtain ⟨ψ, hψ⟩ := SchwartzMap.exists_eq_abs_rpow_mul (filterFourierNegSchwartz ρ)

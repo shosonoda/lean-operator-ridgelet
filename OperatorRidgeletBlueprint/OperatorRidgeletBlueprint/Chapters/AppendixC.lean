@@ -43,8 +43,8 @@ We prove {bpref "thm:5.2"}[].
 :::proof "thm:5.2" (uses := "thm:3.11, thm:4.3, thm:4.2")
 Each $`\beta_\varepsilon` is an admissible real filter, so the Plancherel identity gives
 $`S_{\beta_\varepsilon}R_\rho f=C_{\beta_\varepsilon,\rho}^{(\alpha)}T_\alpha f`;
-distributional convergence of $`\widehat\beta*\eta_\varepsilon` against the fixed test
-function $`\widehat\rho(-\omega)|\omega|^{-\alpha}` gives convergence of the constants, and
+distributional convergence of $`\beta^\sharp*\eta_\varepsilon` against the fixed test
+function $`\rho^\sharp(-\omega)|\omega|^{-\alpha}` gives convergence of the constants, and
 $`T_\alpha` is an isometry, so the functionals converge in $`\mathcal E_\alpha'`. The
 existence of $`\rho` with nonzero constant is the last step of the proof of
 {bpref "thm:4.2"}[].
@@ -56,19 +56,19 @@ number := false
 %%%
 
 :::lemma_ "lem:C.1" (lean := "OperatorRidgelet.activationFourierCoordinate, OperatorRidgelet.activationCoordinate, OperatorRidgelet.activationNorm, OperatorRidgelet.testFilterCoordinate, OperatorRidgelet.testFilterNorm, OperatorRidgelet.Paper.lem_C_1_i, OperatorRidgelet.Paper.lem_C_1_ii, OperatorRidgelet.Paper.lem_C_1_iii, OperatorRidgelet.Paper.lem_C_1_iv, OperatorRidgelet.Paper.lem_C_1_v") (uses := "aux:conventions, aux:tempered-distributions")
-The map $`\beta\mapsto\langle\omega\rangle^sB^{-t}\widehat\beta` is an isometric isomorphism
+The map $`\beta\mapsto\langle\omega\rangle^sB^{-t}\beta^\sharp` is an isometric isomorphism
 $`\mathcal A_{s,t}\to L^2(\mathbb R)`: the coordinate is represented by an $`L^2` function
 (i), the map is injective (ii) and onto (iii). Moreover
-$`|\frac1{2\pi}\langle\widehat\beta,r\rangle|\le\frac1{2\pi}\|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal H^\sharp_{s,t}}`
+$`|\frac1{2\pi}\langle\beta^\sharp,r\rangle|\le\frac1{2\pi}\|\beta\|_{\mathcal A_{s,t}}\|r\|_{\mathcal T^\sharp_{s,t}}`
 (iv), so the pairing extends to the completion of the test filters in
-$`\mathcal H^\sharp_{s,t}` (v).
+$`\mathcal T^\sharp_{s,t}` (v).
 :::
 
 :::proof "lem:C.1"
-$`\beta=\langle\cdot\rangle^t\mathcal F^{-1}[\langle\omega\rangle^{-s}g]` is a preimage of
+$`\beta=\langle\cdot\rangle^tF_{\mathbb R}^{-1}[\langle\omega\rangle^{-s}g]` is a preimage of
 $`g\in L^2`; the multiplier $`\langle u\rangle^t` is real and even, so $`B^t` is symmetric
 for the bilinear pairing, the identity
-$`\langle\widehat\beta,r\rangle=\int(\langle\omega\rangle^sB^{-t}\widehat\beta)(\langle\omega\rangle^{-s}B^tr)\,\mathrm d\omega`
+$`\langle\beta^\sharp,r\rangle=\int(\langle\omega\rangle^sB^{-t}\beta^\sharp)(\langle\omega\rangle^{-s}B^tr)\,\mathrm d\omega`
 extends by density, and Cauchy–Schwarz proves the bound.
 :::
 
@@ -122,7 +122,7 @@ Let $`\sigma` be continuous with $`|\sigma(t)|\le C_\sigma(1+|t|)^p`, $`p\ge0`, 
 $`s>p+1/2`, and put $`b_{\sigma,s}=\|\langle\cdot\rangle^{-s}\sigma\|_2`, which is finite. The
 pairing $`L_\sigma^Y(h)=\int\sigma(t)\check h(-t)\,\mathrm dt` converges absolutely and
 satisfies $`\|L_\sigma^Y(h)\|\le(2\pi)^{-1/2}b_{\sigma,s}\|h\|_{H^s_\omega}`, so it is the
-bounded extension of $`(2\pi)^{-1}\langle\widehat\sigma,\cdot\rangle` to $`H^s_\omega`.
+bounded extension of $`(2\pi)^{-1}\langle\sigma^\sharp,\cdot\rangle` to $`H^s_\omega`.
 Moreover $`\int\sigma(u-b)\gamma(b)\,\mathrm db=L_\sigma^Y(M_uh)`.
 :::
 
@@ -152,7 +152,7 @@ majorant. For the identity, Fubini in the two parameters turns the synthesis int
 $`\int\sigma(t)\Psi(t)\,\mathrm dt` with
 $`\Psi(t)=\int\gamma_g(a,\langle a,x\rangle-t)\,\mathrm d\nu`. Fubini again computes the profile
 of the integrable $`\Psi`, which homogeneity identifies with
-$`\widehat\rho(\omega)|\omega|^{-\alpha}f_g(x)` off the origin, hence everywhere by continuity;
+$`\rho^\sharp(\omega)|\omega|^{-\alpha}f_g(x)` off the origin, hence everywhere by continuity;
 the $`L^1` uniqueness of the profile then identifies $`\Psi` with
 $`\check q_{\alpha,\rho}(-\cdot)f_g(x)`, and the pairing of {bpref "lem:C.4"}[] gives
 the constant. Continuity is dominated convergence with the majorant. The final clause of the

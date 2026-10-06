@@ -18,18 +18,18 @@ attribute [blueprint "transform:character"
   (hasProof := false)] OperatorRidgelet.character
 
 attribute [blueprint "transform:gauss-fourier"
-  (statement := /-- The weighted Fourier transform is $\mathcal G_\mu
+  (statement := /-- The weighted Fourier transform is $F_\mu
     f(\xi)=\int_Hf(x)e^{-i\langle x,\xi\rangle}\,\mu(\mathrm dx)$; for
-    $\mu=\mu_Q$ it is $\mathcal G_Q$. -/)
+    $\mu=\mu_Q$ it is $F_Q$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourier
 
 attribute [blueprint "transform:line-fourier"
-  (statement := /-- The one-dimensional Fourier transform $\widehat h(\omega)=\int_{\mathbb
+  (statement := /-- The one-dimensional Fourier transform $h^\sharp(\omega)=\int_{\mathbb
     R}h(t)e^{-it\omega}\,\mathrm dt$ of a complex function. -/)
   (hasProof := false)] OperatorRidgelet.lineFourier
 
 attribute [blueprint "transform:filter-fourier"
-  (statement := /-- The Fourier transform $\widehat\rho(\omega)=\int_{\mathbb
+  (statement := /-- The Fourier transform $\rho^\sharp(\omega)=\int_{\mathbb
     R}\rho(t)e^{-it\omega}\,\mathrm dt$ of a real filter. -/)
   (hasProof := false)] OperatorRidgelet.filterFourier
 
@@ -94,13 +94,13 @@ attribute [blueprint "transform:strong-law-set"
 
 attribute [blueprint "def:3.2-cross"
   (statement := /-- $C^{(\alpha)}_{\rho_1,\rho_2}=\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho_1(\omega)\overline{\widehat\rho_2(\omega)}|\omega|^{-\alpha}\,\mathrm
+    R}\rho_1^\sharp(\omega)\overline{\rho_2^\sharp(\omega)}|\omega|^{-\alpha}\,\mathrm
     d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.crossAdmissibilityConst
 
 attribute [blueprint "def:3.2-const"
   (statement := /-- $C^{(\alpha)}_\rho=\frac1{2\pi}\int_{\mathbb
-    R}|\widehat\rho(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega$. -/)
+    R}|\rho^\sharp(\omega)|^2|\omega|^{-\alpha}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.admissibilityConst
 
 attribute [blueprint "def:3.2"
@@ -109,7 +109,7 @@ attribute [blueprint "def:3.2"
   (hasProof := false)] OperatorRidgelet.IsAdmissible
 
 attribute [blueprint "def:3.2-bandpass"
-  (statement := /-- $\rho$ is a band-pass filter if moreover $\widehat\rho\in C_c^\infty(\mathbb
+  (statement := /-- $\rho$ is a band-pass filter if moreover $\rho^\sharp\in C_c^\infty(\mathbb
     R\setminus\{0\})$ (and $\rho\ne0$). -/)
   (hasProof := false)] OperatorRidgelet.IsBandPass
 
@@ -124,13 +124,13 @@ attribute [blueprint "def:3.3-parameter-measure"
 
 attribute [blueprint "transform:bias-fourier"
   (statement := /-- The partial Fourier transform in the bias,
-    $\widehat\gamma(a,\omega)=\int_{\mathbb R}\gamma(a,c)e^{-i\omega c}\,\mathrm
+    $\gamma^\sharp(a,\omega)=\int_{\mathbb R}\gamma(a,c)e^{-i\omega c}\,\mathrm
     dc$. -/)
   (hasProof := false)] OperatorRidgelet.biasFourier
 
 attribute [blueprint "def:3.5-formula"
   (statement := /-- The explicit coefficient $\gamma_G(a,c)=\frac1{2\pi}\int_{\mathbb
-    R}\widehat\rho(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega$. -/)
+    R}\rho^\sharp(\omega)G(-\omega a)e^{i\omega c}\,\mathrm d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.coefficientFormula
 
 attribute [blueprint "def:3.5-bias-fourier"
@@ -141,29 +141,29 @@ attribute [blueprint "def:3.5-bias-fourier"
 
 attribute [blueprint "def:3.5"
   (statement := /-- The coefficient $W_\rho G\in L^2(\lambda)$, the element whose partial
-    Fourier transform in the bias is $\widehat\rho(\omega)G(-\omega a)$. -/)
+    Fourier transform in the bias is $\rho^\sharp(\omega)G(-\omega a)$. -/)
   (hasProof := false)] OperatorRidgelet.spectralCoefficient
 
 attribute [blueprint "def:3.7"
-  (statement := /-- $\mathcal D=\{f\in L^2(\mu):\mathcal G_\mu f\in L^2(\nu)\}$. -/)
+  (statement := /-- $\mathcal D=\{f\in L^2(\mu):F_\mu f\in L^2(\nu)\}$. -/)
   (hasProof := false)] OperatorRidgelet.spectralCore
 
 attribute [blueprint "def:3.7-inner"
-  (statement := /-- $\langle f,g\rangle_{\mathcal E}=\int_H\mathcal G_\mu f\,\overline{\mathcal
-    G_\mu g}\,\mathrm d\nu$. -/)
+  (statement := /-- $\langle f,g\rangle_{\mathcal E}=\int_HF_\mu f\,\overline{F_\mu g}\,\mathrm
+    d\nu$. -/)
   (hasProof := false)] OperatorRidgelet.spectralInner
 
 attribute [blueprint "def:3.7-fourier-lp"
-  (statement := /-- $\mathcal G_\mu f$ as an element of $L^2(\nu)$ for $f\in\mathcal D$. -/)
+  (statement := /-- $F_\mu f$ as an element of $L^2(\nu)$ for $f\in\mathcal D$. -/)
   (hasProof := false)] OperatorRidgelet.gaussFourierLp
 
 attribute [blueprint "def:3.7-range"
-  (statement := /-- $\mathcal K=\overline{\mathcal G_\mu(\mathcal D)}^{L^2(\nu)}$, which
+  (statement := /-- $\mathcal K=\overline{F_\mu(\mathcal D)}^{L^2(\nu)}$, which
     represents $\mathcal E_\alpha$. -/)
   (hasProof := false)] OperatorRidgelet.spectralRange
 
 attribute [blueprint "def:3.7-embed"
-  (statement := /-- The map $U:\mathcal D\to\mathcal K$, $f\mapsto\mathcal G_\mu f$. -/)
+  (statement := /-- The map $F_Q:\mathcal D\to\mathcal K$, $f\mapsto F_\mu f$. -/)
   (hasProof := false)] OperatorRidgelet.spectralEmbed
 
 attribute [blueprint "finite-dim:mixture-const"
@@ -202,12 +202,12 @@ attribute [blueprint "filters:bump"
   (hasProof := false)] OperatorRidgelet.Filters.bump
 
 attribute [blueprint "filters:band-pass-hat"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}(\omega)=-\eta(2|\omega|-3)$. -/)
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp(\omega)=-\eta(2|\omega|-3)$. -/)
   (hasProof := false)] OperatorRidgelet.Filters.bandPassHat
 
 attribute [blueprint "filters:band-pass-fun"
   (statement := /-- The inverse Fourier transform
-    $\rho_{\mathrm{bp}}(t)=\frac1{2\pi}\int\widehat\rho_{\mathrm{bp}}(\omega)e^{it\omega}\,\mathrm
+    $\rho_{\mathrm{bp}}(t)=\frac1{2\pi}\int\rho_{\mathrm{bp}}^\sharp(\omega)e^{it\omega}\,\mathrm
     d\omega$. -/)
   (hasProof := false)] OperatorRidgelet.Filters.bandPassFun
 
@@ -282,7 +282,7 @@ attribute [blueprint "lem:3.4-iv"
   OperatorRidgelet.Paper.lem_3_4_iv
 
 attribute [blueprint "lem:3.4-v"
-  (statement := /-- $\widehat{R_\rho f}(a,\omega)=\widehat\rho(\omega)\,\mathcal G_\mu f(-\omega
+  (statement := /-- $(R_\rho f)^\sharp(a,\omega)=\rho^\sharp(\omega)\,F_\mu f(-\omega
     a)$. -/)]
   OperatorRidgelet.Paper.lem_3_4_v
 
@@ -293,7 +293,7 @@ attribute [blueprint "def:3.5-formula-ae"
 
 attribute [blueprint "lem:B.1-i"
   (statement := /-- $W_\rho G$ is well defined: exactly one element of $L^2(\lambda)$ has
-    partial bias Fourier transform $\widehat\rho(\omega)G(-\omega a)$. -/)]
+    partial bias Fourier transform $\rho^\sharp(\omega)G(-\omega a)$. -/)]
   OperatorRidgelet.Paper.lem_B_1_i
 
 attribute [blueprint "lem:B.1-ii"
@@ -314,13 +314,13 @@ attribute [blueprint "lem:3.8-i"
   OperatorRidgelet.Paper.lem_3_8_i
 
 attribute [blueprint "lem:3.8-ii"
-  (statement := /-- $\mathcal G_\mu$ is an isometry from $(\mathcal
+  (statement := /-- $F_\mu$ is an isometry from $(\mathcal
     D,\langle\cdot,\cdot\rangle_{\mathcal E})$ into $\mathcal K$. -/)]
   OperatorRidgelet.Paper.lem_3_8_ii
 
 attribute [blueprint "lem:3.8-iii"
-  (statement := /-- $\mathcal G_\mu(\mathcal D)$ is dense in $\mathcal K$, so $\mathcal G_\mu$
-    extends uniquely to a unitary $U_\alpha:\mathcal E_\alpha\to\mathcal
+  (statement := /-- $F_\mu(\mathcal D)$ is dense in $\mathcal K$, so $F_\mu$
+    extends uniquely to a unitary $F_Q:\mathcal E_\alpha\to\mathcal
     K_\alpha$. -/)]
   OperatorRidgelet.Paper.lem_3_8_iii
 
@@ -330,12 +330,12 @@ attribute [blueprint "lem:3.9-i"
   ] OperatorRidgelet.Paper.lem_3_9_i
 
 attribute [blueprint "lem:3.9-ii"
-  (statement := /-- If $f\in L^2(\mu_Q)$ and $|\mathcal G_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle
+  (statement := /-- If $f\in L^2(\mu_Q)$ and $|F_Qf(\xi)|\le C(1+\|\xi\|)^pe^{-t\langle
     Q\xi,\xi\rangle/2}$, then $f\in\mathcal D_\alpha$. -/)
   ] OperatorRidgelet.Paper.lem_3_9_ii
 
 attribute [blueprint "ex:3.10-i"
-  (statement := /-- $\mathcal G_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}$. -/)]
+  (statement := /-- $F_Q1(\xi)=e^{-\langle Q\xi,\xi\rangle/2}$. -/)]
   OperatorRidgelet.Paper.ex_3_10_i
 
 attribute [blueprint "ex:3.10-ii"
@@ -371,7 +371,7 @@ attribute [blueprint "thm:3.11-ii-c"
   OperatorRidgelet.Paper.thm_3_11_ii_c
 
 attribute [blueprint "thm:3.11-ii-d"
-  (statement := /-- $R_\rho=W_\rho U_\alpha$. -/)]
+  (statement := /-- $R_\rho=W_\rho F_Q$. -/)]
   OperatorRidgelet.Paper.thm_3_11_ii_d
 
 attribute [blueprint "thm:3.11-iii"
@@ -469,24 +469,24 @@ attribute [blueprint "prop:F.3-ii"
   OperatorRidgelet.Paper.prop_F_3_ii
 
 attribute [blueprint "ex:3.12-i"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is smooth. -/)]
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is smooth. -/)]
   OperatorRidgelet.Paper.ex_3_12_i
 
 attribute [blueprint "ex:3.12-ii"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is nonpositive. -/)]
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonpositive. -/)]
   OperatorRidgelet.Paper.ex_3_12_ii
 
 attribute [blueprint "ex:3.12-iii"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is nonzero. -/)]
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is nonzero. -/)]
   OperatorRidgelet.Paper.ex_3_12_iii
 
 attribute [blueprint "ex:3.12-iv"
-  (statement := /-- $\widehat\rho_{\mathrm{bp}}$ is supported in $\{1\le|\omega|\le2\}$. -/)]
+  (statement := /-- $\rho_{\mathrm{bp}}^\sharp$ is supported in $\{1\le|\omega|\le2\}$. -/)]
   OperatorRidgelet.Paper.ex_3_12_iv
 
 attribute [blueprint "ex:3.12-v"
   (statement := /-- $\rho_{\mathrm{bp}}$ is a real Schwartz function, the inverse Fourier
-    transform of $\widehat\rho_{\mathrm{bp}}$. -/)]
+    transform of $\rho_{\mathrm{bp}}^\sharp$. -/)]
   OperatorRidgelet.Paper.ex_3_12_v
 
 attribute [blueprint "ex:3.12-vi"
@@ -495,7 +495,7 @@ attribute [blueprint "ex:3.12-vi"
 
 attribute [blueprint "ex:3.12-vii"
   (statement := /-- The Fourier transform of $\rho_{\mathrm{bp}}$ is the prescribed
-    $\widehat\rho_{\mathrm{bp}}$. -/)]
+    $\rho_{\mathrm{bp}}^\sharp$. -/)]
   OperatorRidgelet.Paper.ex_3_12_vii
 
 attribute [blueprint "ex:3.12-viii"
@@ -516,7 +516,7 @@ attribute [blueprint "ex:3.13-i"
   OperatorRidgelet.Paper.ex_3_13_i
 
 attribute [blueprint "ex:3.13-ii"
-  (statement := /-- $\widehat\rho_{\mathrm{MH}}(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)]
+  (statement := /-- $\rho_{\mathrm{MH}}^\sharp(\omega)=\sqrt{2\pi}\,\omega^2e^{-\omega^2/2}$. -/)]
   OperatorRidgelet.Paper.ex_3_13_ii
 
 attribute [blueprint "ex:3.13-iii"

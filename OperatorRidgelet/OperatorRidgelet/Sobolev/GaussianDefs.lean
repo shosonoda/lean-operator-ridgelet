@@ -8,10 +8,10 @@ import OperatorRidgelet.ToMathlib.SchwartzFourier
 
 Definitions only, free of `sorry`; both `Challenge` and `OperatorRidgelet.Paper` import this
 module.  The filter of `prop:5.8` is the real Schwartz function whose Fourier
-transform is `ρ̂_k(ω) = ω^{2k} e^{-ω²}`: it is built as the inverse angular transform of that
+transform is `ρ♯_k(ω) = ω^{2k} e^{-ω²}`: it is built as the inverse angular transform of that
 symbol, which is real because the symbol is real and even.
 
-The target `g(ξ) = e^{-‖ξ‖²} v` gives the rays `h_a(ω) = ρ̂_k(-ω) g(ωa) = ω^{2k} e^{-A²ω²} v`
+The target `g(ξ) = e^{-‖ξ‖²} v` gives the rays `h_a(ω) = ρ♯_k(-ω) g(ωa) = ω^{2k} e^{-A²ω²} v`
 at the scale `A(a) = (1+‖a‖²)^{1/2}`, whose coefficients are the dilates
 `A^{-2k-1} ρ_k(b/A) v` of the filter, and the Sobolev test `q_{α,ρ_k}` is the subordination
 superposition of the same dilates over the scales `(1+u)^{1/2}`.
@@ -27,14 +27,14 @@ open scoped Polynomial FourierTransform
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 variable {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
 
-/-- The Fourier transform `ρ̂(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative filter of order
+/-- The Fourier transform `ρ♯(ω) = ω^{2k} e^{-ω²}` of the Gaussian-derivative filter of order
 `k`, as a real Schwartz function. -/
 def gaussDerivHat (k : ℕ) : SchwartzMap ℝ ℝ :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (realDilationCLE (Real.sqrt 2) (by positivity))
     (Real.polynomialGaussianSchwartz (Polynomial.C (((2 : ℝ) ^ k)⁻¹) * Polynomial.X ^ (2 * k)))
 
 /-- The Fourier transform of the filter, read in Mathlib's frequency variable:
-`ξ ↦ ρ̂(2πξ)`. -/
+`ξ ↦ ρ♯(2πξ)`. -/
 def gaussDerivDilatedHat (k : ℕ) : SchwartzMap ℝ ℝ :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℝ
     (realDilationCLE (2 * Real.pi) (by positivity)) (gaussDerivHat k)

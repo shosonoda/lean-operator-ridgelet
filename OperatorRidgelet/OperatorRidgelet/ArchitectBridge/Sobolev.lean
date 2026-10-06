@@ -68,7 +68,7 @@ attribute [blueprint "thm:5.6-v"
 
 attribute [blueprint "prop:5.8-i"
   (statement := /-- The Gaussian-derivative filter is a real Schwartz function with
-    $\widehat\rho_k(\omega)=\omega^{2k}e^{-\omega^2}$. -/)]
+    $\rho_k^\sharp(\omega)=\omega^{2k}e^{-\omega^2}$. -/)]
   OperatorRidgelet.Paper.prop_5_8_i
 
 attribute [blueprint "prop:5.8-ii"
@@ -89,7 +89,7 @@ attribute [blueprint "prop:5.8-v"
 
 attribute [blueprint "prop:5.8-vi"
   (statement := /-- Each frequency profile lies in $H^s_\omega$ and equals
-    $\widehat\rho_k(-\omega)g(\omega a)$. -/)]
+    $\rho_k^\sharp(-\omega)g(\omega a)$. -/)]
   OperatorRidgelet.Paper.prop_5_8_vi
 
 attribute [blueprint "prop:5.8-vii"

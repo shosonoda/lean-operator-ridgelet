@@ -6,16 +6,16 @@ import OperatorRidgelet.ToMathlib.TemperedDistributionTranslate
 
 Definition `def:5.1`, parts (iii) and (iv): for a real tempered `β`, a cutoff
 `χ`, and an approximate identity `(η_ε)`, the regularized spectrum
-`β̂_ε = χ (β̂ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})`, and there is a real Schwartz function `β_ε`
-with Fourier transform `β̂_ε`.
+`β♯_ε = χ (β♯ * η_ε)` belongs to `C_c^∞(ℝ ∖ {0})`, and there is a real Schwartz function `β_ε`
+with Fourier transform `β♯_ε`.
 
-The convolution `(β̂ * η_ε)(ω) = ⟨β̂, η_ε(ω - ·)⟩` (`distributionConvolution`) is
-`ω ↦ β̂ (translate η_ε ω)` with the Schwartz translates of
+The convolution `(β♯ * η_ε)(ω) = ⟨β♯, η_ε(ω - ·)⟩` (`distributionConvolution`) is
+`ω ↦ β♯ (translate η_ε ω)` with the Schwartz translates of
 `OperatorRidgelet.ToMathlib.TemperedDistributionTranslate`, hence smooth
 (`contDiff_distributionConvolution`); the cutoff provides the compact support away from the
-origin.  Since `β` is real and `χ`, `η_ε` are real and even, `β̂_ε` is Hermitian symmetric
+origin.  Since `β` is real and `χ`, `η_ε` are real and even, `β♯_ε` is Hermitian symmetric
 (`conj_regularizedSpectrum_neg`), so its inverse Fourier transform `realFilterOfHermitian` is a
-real Schwartz function with Fourier transform `β̂_ε` (`filterFourier_regularizedActivation`).
+real Schwartz function with Fourier transform `β♯_ε` (`filterFourier_regularizedActivation`).
 -/
 
 noncomputable section
@@ -96,7 +96,7 @@ theorem IsCutoff.zero_notMem_tsupport_regularizedSpectrum {ρ : SchwartzMap ℝ 
 
 /-! ### Hermitian symmetry and the regularized activation -/
 
-/-- For real `β` and a real even kernel `η`, the convolution `β̂ * η` is Hermitian symmetric. -/
+/-- For real `β` and a real even kernel `η`, the convolution `β♯ * η` is Hermitian symmetric. -/
 theorem IsRealDistribution.conj_distributionConvolution_neg {β : TemperedDistribution ℝ ℂ}
     (hβ : IsRealDistribution β) {η : ℝ → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hc : HasCompactSupport η) (heven : ∀ x, η (-x) = η x) (ω : ℝ) :
@@ -123,7 +123,7 @@ theorem conj_regularizedSpectrum_neg {β : TemperedDistribution ℝ ℂ} (hβ : 
       (hη.even ε hε)]
 
 /-- **Definition `def:5.1`(iv)**, existence: a real Schwartz function with
-Fourier transform `β̂_ε`. -/
+Fourier transform `β♯_ε`. -/
 theorem exists_regularizedActivation {β : TemperedDistribution ℝ ℂ} (hβ : IsRealDistribution β)
     {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ} (hχ : IsCutoff ρ χ) {η : ℝ → ℝ → ℝ}
     (hη : IsApproximateIdentity η) {ε : ℝ} (hε : 0 < ε) :
@@ -137,7 +137,7 @@ theorem exists_regularizedActivation {β : TemperedDistribution ℝ ℂ} (hβ : 
     exact conj_regularizedSpectrum_neg hβ hχ hη hε ω), hψ]
 
 /-- **Definition `def:5.1`(iv)**: the chosen regularized activation has
-Fourier transform `β̂_ε`. -/
+Fourier transform `β♯_ε`. -/
 theorem filterFourier_regularizedActivation {β : TemperedDistribution ℝ ℂ}
     (hβ : IsRealDistribution β) {ρ : SchwartzMap ℝ ℝ} {χ : ℝ → ℝ} (hχ : IsCutoff ρ χ)
     {η : ℝ → ℝ → ℝ} (hη : IsApproximateIdentity η) {ε : ℝ} (hε : 0 < ε) (ω : ℝ) :

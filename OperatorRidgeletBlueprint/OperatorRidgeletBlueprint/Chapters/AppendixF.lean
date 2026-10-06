@@ -90,7 +90,7 @@ $`f=(2\pi)^{-m}((\!(\rho,\rho)\!)_m)^{-1}p^{-1}S_\rho R_\rho f` (vi).
 :::
 
 :::proof "cor:F.2" (uses := "thm:3.11, thm:4.3")
-Here $`\mathcal G_Qf=\widehat g`, the weight $`\|\xi\|^{\alpha-m}` is locally integrable, and
+Here $`F_Qf=\widehat g`, the weight $`\|\xi\|^{\alpha-m}` is locally integrable, and
 Fourier inversion gives $`\widehat{t_f}=k_{m,\alpha}\|\xi\|^{\alpha-m}\widehat g`; Fubini
 identifies $`\int t_f\overline h\,p\,\mathrm dx` with $`\langle f,h\rangle_{\mathcal E_\alpha}`,
 which is the frame-operator representation of {bpref "thm:4.3"}[] (iii).

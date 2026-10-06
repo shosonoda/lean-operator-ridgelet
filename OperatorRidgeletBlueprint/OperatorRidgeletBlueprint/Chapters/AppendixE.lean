@@ -60,7 +60,7 @@ number := false
 We prove {bpref "ex:7.1"}[].
 
 :::proof "ex:7.1" (uses := "lem:E.1, lem:3.4, lem:3.9, lem:A.2, thm:4.3, lem:D.3, thm:6.4")
-{bpref "lem:E.1"}[] with $`\Sigma=Q`, $`S=W` gives $`\mathcal G_Qf_W`, Fourier
+{bpref "lem:E.1"}[] with $`\Sigma=Q`, $`S=W` gives $`F_Qf_W`, Fourier
 inversion in the bias gives the convolution, $`(I+M)^{-1}\ge(1+\|M\|)^{-1}I` gives the decay
 needed by {bpref "lem:3.9"}[], and $`f_W(x)<1=f_W(0)` for $`x\ne0` in the kernel
 of a finite-rank map. Part (ii) is {bpref "thm:4.3"}[] (iii) with the Gaussian integral applied
