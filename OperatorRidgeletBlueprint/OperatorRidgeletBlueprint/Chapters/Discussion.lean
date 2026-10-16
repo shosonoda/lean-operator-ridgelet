@@ -30,26 +30,20 @@ the remaining limitations in spectral approximation, computation and measure cho
 
 # Main results
 
-The results give two complementary chains. For an admissible filter with constant $`C>0`,
-analysis and synthesis give
-$`f\xrightarrow{R_\rho}R_\rho f\xrightarrow{S_\rho}C T_\alpha f\xrightarrow{C^{-1}T_\alpha^{-1}}f`.
-Backprojection gives
-$`R_\rho f\xrightarrow{C^{-1}W_\rho^*}F_Qf\xrightarrow{\Delta_Q}f`, where
-the Hermite inversion step is stated for $`f` in the core $`\mathcal D_\alpha`.
-
-The admissibility constant is a one-dimensional Calderón-type integral with no dimension
-parameter. The transform is an injective scaled isometry on $`\mathcal E_\alpha`,
-and the frame operator is an isometric isomorphism to its dual. Targets with spectral
-densities have explicit network coefficients. Every continuous target is a compact-open
-limit of such networks, and regularity along rays together with a globally Lipschitz
-activation gives an explicit $`N^{-1/2}` approximation rate.
-
-The reconstruction formula permits any non-polynomial tempered distribution as the activation.
-An absolutely convergent network integral requires a continuous representative of suitable
-growth, and the explicit uniform approximation rate adds Lipschitz continuity. ReLU, tanh, the
-Gaussian distribution function and the Gaussian activation satisfy the relevant conditions.
-Periodic convolution and Dirichlet layers have explicit coefficient measures; Gaussian
-activation also gives explicit transforms for these layers.
+With a Gaussian input weight and a homogeneous Gaussian mixture on the direction
+parameter, the ridgelet transform on an infinite-dimensional Hilbert space keeps the
+structure of the finite-dimensional theory. The admissibility constant is a
+one-dimensional integral in which no dimension appears, the transform is injective with
+a Plancherel identity on $`\mathcal E_\alpha`, and synthesis returns the target up to the
+frame operator $`T_\alpha`, the correction induced by the weights, which is undone after
+synthesis, before analysis, or on the coefficients. Targets with a spectral density are
+integral networks with explicit coefficients; every continuous target is a compact-open
+limit of such networks; and sampling the coefficient gives finite-width networks at the
+rate $`N^{-1/2}` when the density is regular along rays and the activation is globally
+Lipschitz. Weak reconstruction covers every non-polynomial tempered activation, and
+ReLU, tanh, the Gaussian distribution function and the Gaussian activation satisfy all of
+these conditions. The neural-operator layers of the examples are integral networks with
+explicit parameter measures to which the finite-width bounds apply.
 
 # Approximation rates and numerical implementation
 
@@ -62,11 +56,23 @@ sets and check a closed-form transform independently. They also show a discretiz
 floor. Computing an integral coefficient, sampling a direction and representing that
 direction with finitely many numbers remain distinct numerical tasks.
 
+# Position among related results
+
+The universality statement is of a type already available as an existence theorem:
+compact-open density of networks with scalar ridge neurons holds on locally convex spaces
+for every continuous non-polynomial activation, and global density on weighted spaces is
+also known. What the ridgelet transform adds is the construction of the approximants: an
+explicit coefficient for every target with a spectral density and every admissible
+analysis filter, a Plancherel identity with an identified frame operator, and a sampling
+argument that yields the finite-width rate and applies to the examples. The rate is a
+Barron-type statement for a restricted class, consistent with the lower bounds for
+Lipschitz operator classes. The transform differs from the ridgelet transform for Wiener
+functionals in its atoms, its parameter measure, and its Plancherel identity on a single
+space; the manuscript's Appendix F records these comparisons.
+
 # Open problems
 
-Further work includes an intrinsic description of the analysis space, quantitative
-control of spectral approximation and coefficient cost for regular target classes,
-and the cost of representing infinite-dimensional directions in finite computations.
-Alternative coefficient discretizations may improve numerical implementation.
-Extensions to more general operator activations and to input and direction measures
-beyond the Gaussian construction are also natural questions.
+Natural next steps are quantitative control of the spectral approximation for regular
+target classes, the cost of representing infinite-dimensional directions in a finite
+computation, and extensions to operator activations and to input measures beyond the
+Gaussian construction.

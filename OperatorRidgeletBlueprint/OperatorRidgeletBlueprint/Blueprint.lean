@@ -31,6 +31,8 @@ Sections 1–9 contain the main exposition, numerical experiments and discussion
 Prerequisites and detailed proofs appear in the main exposition before their use.
 Appendices A–E give optional kernel and projection formulas, additional approximation
 bounds, finite-dimensional comparison and the dilation obstruction, and numerical methods.
+The manuscript's Appendix F is an extended overview of related work with comparison tables;
+it contains no mathematical statements and is not reproduced here.
 
 Numbered mathematical statements have the manuscript's identifiers and numbers. Their Lean
 panels show the precise formal statements and proof status. Descriptive auxiliary nodes
