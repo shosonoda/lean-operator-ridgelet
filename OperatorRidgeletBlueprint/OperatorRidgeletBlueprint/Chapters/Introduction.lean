@@ -46,21 +46,21 @@ output weights. Variation and parameter moments then control the approximation e
 A ridgelet transform sends a target to coefficients indexed by directions and biases.
 The construction below is made directly on $`H`; it does not begin by selecting a
 finite-dimensional input encoder. Universality of such networks is usually proved by
-reduction to a finite-dimensional theorem, and direct infinite-dimensional versions and
-Hilbert-input random-feature rates are known; those results establish existence or
-sampling bounds without an analysis operator. The construction here supplies that
-operator: an explicit coefficient formula, a norm identity and reconstruction, for the
-full class of continuous non-polynomial activations of polynomial growth, from which
-universality and finite-width rates follow.
+existence arguments, by reduction to a finite-dimensional theorem or by
+Stone–Weierstrass-type density on the infinite-dimensional space, and Hilbert-input
+random-feature rates are known; those results establish existence or sampling bounds
+without an analysis operator. The construction here supplies that operator: an explicit
+coefficient formula, a norm identity and reconstruction, for the full class of
+continuous non-polynomial activations of polynomial growth, from which universality
+and finite-width rates follow.
 
-# The integration problem and its resolution
-
-An infinite-dimensional Hilbert space has no locally finite translation-invariant
-analogue of Lebesgue measure. We use Gaussian input weights and a homogeneous mixture
-of Gaussian direction measures to construct the integrals directly on that space.
-This also resolves the dimension-dependent weight in the finite-dimensional
-admissibility condition. The measure construction and Fourier identities are given
-in Section 3, before the reconstruction and approximation theorems use them.
+The main technical obstacle is that an infinite-dimensional Hilbert space has no locally
+finite translation-invariant analogue of Lebesgue measure. We integrate against a
+Gaussian input measure and a homogeneous mixture of Gaussian direction measures; the
+homogeneity parameter of the mixture replaces the dimension-dependent factor of the
+finite-dimensional admissibility condition. The measure construction and Fourier
+identities are given in Section 3, before the reconstruction and approximation theorems
+use them.
 
 # Main results
 
@@ -85,27 +85,18 @@ $`f`. The correction can equivalently be made before analysis or on the coeffici
 Different admissible analysis filters give different coefficients for the same target, so
 the representation is a family indexed by the filter.
 
-# Scope of the construction
-
-The coefficient formula is explicit once a spectral density is given. For an arbitrary
-continuous target, the first step chooses a spectral approximation by Stone–Weierstrass
-and smooth frequency bumps. Its variation and moments may depend on the approximation
-accuracy. No uniform width–accuracy relation for all continuous targets, efficient
-coefficient-computation algorithm or statistical learning guarantee follows.
-Universality is proved in the compact-open topology, not globally on weighted
-non-compact spaces, and the $`N^{-1/2}` rate is a Barron-type statement for targets whose
-coefficient has finite variation and moments; it does not contradict the known lower
-bounds for Lipschitz operator classes.
-
-Every finite-width network factors through its finite family of input measurements.
-The genuinely infinite-dimensional objects in the examples are the exact targets and
-integral networks. Finite representations of the directions create a further error.
-
-Reconstruction with a tempered distribution as the activation takes place in a dual space.
-Ordinary integral networks use
-continuous activations and appropriate moments. The explicit uniform rate additionally
-requires global Lipschitz continuity and a second moment. General nonlinear operator
-activations are outside this reconstruction theorem.
+Scope. The coefficient formula is explicit once a spectral density is given; for an
+arbitrary continuous target, the universality proof first chooses a spectral
+approximation, and the variation and moment constants depend on that choice. No uniform
+width–accuracy relation for all continuous targets, coefficient-computation algorithm or
+statistical learning guarantee follows. Universality is proved in the compact-open
+topology, not globally on weighted non-compact spaces, and the $`N^{-1/2}` rate is a
+Barron-type statement for targets whose coefficient has finite variation and moments,
+consistent with the known lower bounds for Lipschitz operator classes. Every finite-width
+network factors through finitely many input measurements; representing the directions
+themselves with finitely many numbers is a further approximation problem. Reconstruction
+with a tempered distribution as the activation takes place in a dual space, and general
+nonlinear operator activations are outside that reconstruction theorem.
 
 # Related work
 
