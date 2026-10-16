@@ -9,7 +9,7 @@ Sections 1–9 and Appendices A–E and then the supporting infrastructure.
 ## Reading a manuscript item in Lean
 
 The manuscript itself is not included. Its index,
-[paper.json](../OperatorRidgelet/comparator/paper.json), records the 2026-10-07 reading-order manuscript revision and
+[paper.json](../OperatorRidgelet/comparator/paper.json), records the 2026-10-17 manuscript revision and
 includes a `note` for each item describing how it is formalized. These notes explain such
 choices as explicit hypotheses, representations of operators, and the scope of each statement.
 
@@ -57,6 +57,7 @@ manuscript-facing theorems; the other modules supply definitions and supporting 
 | Concentration and input truncation (Appendix C) | `Sampling/` | `Paper/Sampling.lean`, `Paper/SamplingRevision.lean` |
 | Finite-dimensional comparison and dilation obstruction (Appendix D) | `FiniteDim/`, `Transform/` | `Paper/Transform.lean` |
 | Numerical methods (Appendix E) | Numerical exposition only | No additional theorem assertions |
+| Extended overview of related work (Appendix F) | Prose and comparison tables only | No theorem assertions |
 
 `Revision.lean` and `SamplingRevision.lean` contain additional statements from manuscript
 revisions; consult them together with the main topic files. The `lean` lists in `paper.json`

@@ -1,8 +1,8 @@
 {
   "manuscript": {
     "file": "main.tex",
-    "version": "2026-10-07 reading-order revision",
-    "synced": "2026-10-07",
+    "version": "2026-10-17 revision",
+    "synced": "2026-10-17",
     "conventions": "Bias sign: the 2026-09-13 revision writes neurons as sigma(<a,x> - b), where b = -c is the negative of the bias c of the previous revision and of the Lean definitions (OperatorRidgelet.ridgelet, integralNetwork, ... still use <a,x> + c). The two coordinates are related by the measure-preserving involution tau(a,c) = (a,-c); no Lean statement is invalidated by the change, but the manuscript-to-Lean reading of every bias-dependent statement goes through tau. Also renamed in the manuscript without mathematical effect: H -> \\mathcal H, Y -> \\mathcal Y (outY), \\mathcal G_Q -> F_Q, scalar activation beta -> sigma, spectral density G -> g, target g_G -> f_g, coefficient gamma_G -> gamma_g, \\mathcal N(0,Q) -> mu_Q, Gaussian activation Phi -> sigma_Gauss, operator layer \\mathcal F -> F, Dirichlet Green operator \\mathsf G -> L_D^{-1}, the Gaussian-parameter ReLU target F_Q -> f_{ReLU,Q}. The 2026-09-29 numbering revision changes manuscript-facing declaration names without changing formal statements. G_a(ω) := G(ωa) denotes a restriction to a line through the origin; names containing ray, Layer, or polarLaw remain stable, while prose describes the corresponding restrictions, Gaussian mixture components, and sampling distribution. The 2026-10-07 notation revision uses T_α alone for the frame/Riesz map, F_Q for both its concrete Gaussian-weighted Fourier transform and the unitary core completion, and W_ρ* for the adjoint coefficient operator (backprojection). One-dimensional and partial bias Fourier transforms use sharp; spatial Fourier–Stieltjes transforms and torus coefficients use hat. Semantic Lean declaration names and the plus-c bias coordinate remain unchanged; general weights are written F_μ, specializing to F_Q for μ_Q."
   },
   "naming": "OperatorRidgelet.Paper.<kind>_<number>[_<part>] with dots in manuscript numbers replaced by underscores; source labels remain stable identifiers",
@@ -11,7 +11,7 @@
       "label": "def:finite-network",
       "kind": "definition",
       "number": "2.1",
-      "page": "8",
+      "page": "7",
       "title": "Finite-width network",
       "lean": [
         "OperatorRidgelet.finiteNetwork"
@@ -39,7 +39,7 @@
       "label": "lem:mixture-integration",
       "kind": "lemma",
       "number": "3.1",
-      "page": "10",
+      "page": "9",
       "title": "Measurability and integration of the mixture",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_1_i",
@@ -71,7 +71,7 @@
       "label": "def:admissible-filter",
       "kind": "definition",
       "number": "3.3",
-      "page": "11",
+      "page": "10",
       "title": "Admissible analysis filter",
       "lean": [
         "OperatorRidgelet.IsAdmissible",
@@ -117,7 +117,7 @@
       "label": "lem:partial-fourier-l2",
       "kind": "lemma",
       "number": "3.6",
-      "page": "12",
+      "page": "11",
       "title": "Partial Fourier transform of a square-integrable coefficient",
       "lean": [
         "OperatorRidgelet.Paper.lem_3_6",
@@ -176,7 +176,7 @@
       "label": "def:spectral-space",
       "kind": "definition",
       "number": "3.10",
-      "page": "14",
+      "page": "13",
       "title": "The Hilbert space \\(\\cE_\\alpha\\)",
       "lean": [
         "OperatorRidgelet.spectralCore",
@@ -305,7 +305,7 @@
       "label": "def:ray-regular",
       "kind": "definition",
       "number": "4.2",
-      "page": "18",
+      "page": "17",
       "title": "Regularity along rays",
       "lean": [
         "OperatorRidgelet.IsFrequencyWindow",
